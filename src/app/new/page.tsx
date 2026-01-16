@@ -1,121 +1,102 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import type { Settings, Transaction, Category } from "@/lib/types";
-import { CATEGORY_LABEL } from "@/lib/types";
-import { loadSettings, loadTransactions } from "@/lib/storage";
-import { filterByMonth, sumAmount, sumByCategory } from "@/lib/kakebo";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { loadTransactions, saveTransactions } from "@/lib/storage";
+import { CATEGORY_LABEL, type Category, type Transaction } from "@/lib/types";
 
-function currentMonth(): string {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  return `${y}-${m}`;
-}
-
-function ProgressBar({ value, max }: { value: number; max: number }) {
-  const pct = max > 0 ? Math.min((value / max) * 100, 100) : 0;
-  return (
-    <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-      <div
-        className="h-full bg-black transition-all"
-        style={{ width: `${pct}%` }}
-      />
-    </div>
-  );
-}
-
-function CategoryRow({
-  name,
-  value,
-  total,
-}: {
-  name: string;
-  value: number;
-  total: number;
-}) {
-  const pct = total > 0 ? Math.round((value / total) * 100) : 0;
-  return (
-    <div className="space-y-1">
-      <div className="flex justify-between text-sm">
-        <span>{name}</span>
-        <span className="font-medium">{value.toFixed(2)} €</span>
-      </div>
-      <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-        <div
-          className="h-full bg-black"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-    </div>
-  );
-}
-
-export default function Home() {
-  const [settings, setSettings] = useState<Settings>({
-    monthlyIncome: 0,
-    savingsGoal: 0,
+export default function NewTransactionPage() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    description: "",
+    amount: "",
+    category: "general" as Category,
   });
-  const [txs, setTxs] = useState<Transaction[]>([]);
-  const month = useMemo(() => currentMonth(), []);
 
-  useEffect(() => {
-    setSettings(loadSettings());
-    setTxs(loadTransactions());
-  }, []);
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    
+    // 1. Validar
+    if (!formData.description || !formData.amount) return;
 
-  const monthTxs = useMemo(() => filterByMonth(txs, month), [txs, month]);
-  const spent = useMemo(() => sumAmount(monthTxs), [monthTxs]);
-  const byCat = useMemo(() => sumByCategory(monthTxs), [monthTxs]);
-  const saved = settings.monthlyIncome - spent;
+    // 2. Crear objeto transacción
+    const newTx: Transaction = {
+      // Usamos crypto.randomUUID() que es nativo del navegador (sin librerías extra)
+      id: crypto.randomUUID(), 
+      date: new Date().toISOString().split('T')[0], // Fecha de hoy YYYY-MM-DD
+      description: formData.description,
+      amount: parseFloat(formData.amount),
+      category: formData.category,
+    };
+
+    // 3. Guardar en localStorage
+    const currentTxs = loadTransactions();
+    saveTransactions([newTx, ...currentTxs]);
+
+    // 4. Redirigir al dashboard
+    router.push("/");
+  }
 
   return (
-    <main className="min-h-screen p-6 max-w-3xl mx-auto space-y-8">
-      <header className="space-y-1">
-        <h1 className="text-4xl font-bold tracking-tight">Kakebo</h1>
-        <p className="text-sm text-muted-foreground">
-          Mes activo: <span className="font-medium">{month}</span>
-        </p>
-      </header>
+    <main className="min-h-screen p-6 max-w-xl mx-auto space-y-6">
+      <h1 className="text-2xl font-bold">Añadir Gasto</h1>
 
-      {/* Tarjetas principales */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-2xl border p-5 space-y-2">
-          <p className="text-sm text-muted-foreground">Ingresos</p>
-          <p className="text-3xl font-semibold">
-            {settings.monthlyIncome.toFixed(2)} €
-          </p>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Descripción */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium">Descripción</label>
+          <input
+            type="text"
+            required
+            placeholder="Ej: Supermercado, Cine..."
+            className="w-full border rounded-lg p-3 bg-white"
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          />
         </div>
 
-        <div className="rounded-2xl border p-5 space-y-2">
-          <p className="text-sm text-muted-foreground">Gastado</p>
-          <p className="text-3xl font-semibold">{spent.toFixed(2)} €</p>
+        {/* Cantidad */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium">Cantidad (€)</label>
+          <input
+            type="number"
+            required
+            step="0.01"
+            placeholder="0.00"
+            className="w-full border rounded-lg p-3 bg-white"
+            value={formData.amount}
+            onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+          />
         </div>
 
-        <div className="rounded-2xl border p-5 space-y-2">
-          <p className="text-sm text-muted-foreground">Ahorro</p>
-          <p className="text-3xl font-semibold">{saved.toFixed(2)} €</p>
-          <ProgressBar value={saved} max={settings.savingsGoal} />
-          <p className="text-xs text-muted-foreground">
-            Objetivo: {settings.savingsGoal.toFixed(2)} €
-          </p>
+        {/* Categoría */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium">Categoría</label>
+          <div className="grid grid-cols-2 gap-2">
+            {(Object.keys(CATEGORY_LABEL) as Category[]).map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setFormData({ ...formData, category: cat })}
+                className={`p-3 text-sm rounded-lg border transition-colors ${
+                  formData.category === cat
+                    ? "bg-black text-white border-black"
+                    : "bg-white text-black hover:bg-gray-50"
+                }`}
+              >
+                {CATEGORY_LABEL[cat]}
+              </button>
+            ))}
+          </div>
         </div>
-      </section>
 
-      {/* Categorías */}
-      <section className="rounded-2xl border p-5 space-y-4">
-        <h2 className="text-lg font-semibold">Distribución de gasto</h2>
-        <div className="space-y-3">
-          {Object.entries(byCat).map(([k, v]) => (
-            <CategoryRow
-              key={k}
-              name={CATEGORY_LABEL[k as Category]}
-              value={v}
-              total={spent}
-            />
-          ))}
-        </div>
-      </section>
+        <button
+          type="submit"
+          className="w-full bg-black text-white font-medium rounded-lg p-4 mt-4 hover:opacity-90 transition-opacity"
+        >
+          Guardar Gasto
+        </button>
+      </form>
     </main>
   );
 }
