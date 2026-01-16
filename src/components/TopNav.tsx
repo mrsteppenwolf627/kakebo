@@ -5,27 +5,41 @@ import { usePathname } from "next/navigation";
 
 const items = [
   { href: "/", label: "Dashboard" },
+  { href: "/new", label: "+ Nuevo Gasto", primary: true }, // Destacamos este botón
   { href: "/settings", label: "Ajustes" },
-  { href: "/new", label: "Nuevo" },
 ];
 
 export default function TopNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center gap-6 text-sm">
+    <nav className="flex items-center gap-2">
       {items.map((item) => {
         const active = pathname === item.href;
+        
+        // Estilo especial para el botón "Nuevo Gasto"
+        if (item.primary) {
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="ml-2 px-4 py-2 bg-black text-white text-sm font-medium rounded-full hover:bg-gray-800 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-black/20"
+            >
+              {item.label}
+            </Link>
+          );
+        }
+
+        // Estilo para enlaces normales
         return (
           <Link
             key={item.href}
             href={item.href}
-            className={[
-              "py-4 border-b-2 transition-colors",
+            className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
               active
-                ? "text-black border-black"
-                : "text-black/60 border-transparent hover:text-black hover:border-black/30",
-            ].join(" ")}
+                ? "bg-gray-100 text-black"
+                : "text-gray-500 hover:text-black hover:bg-gray-50"
+            }`}
           >
             {item.label}
           </Link>
