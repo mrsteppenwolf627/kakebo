@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="es">
       <body className="min-h-screen bg-white text-black">
@@ -19,13 +19,18 @@ export default function RootLayout({
           <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
             <div className="flex items-baseline gap-3">
               <span className="font-semibold tracking-tight">Kakebo</span>
-              <span className="text-xs text-black/50">dinero bajo control</span>
+              <span className="text-xs text-black/50">
+                dinero bajo control
+              </span>
             </div>
+
             <TopNav />
           </div>
         </header>
 
-        <main className="max-w-5xl mx-auto px-6 py-8">{children}</main>
+        <main className="max-w-5xl mx-auto px-6 py-8">
+          {children}
+        </main>
       </body>
     </html>
   );

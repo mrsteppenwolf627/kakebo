@@ -1,110 +1,111 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { loadSettings, saveSettings } from "@/lib/storage";
-import type { Settings } from "@/lib/types";
+import { useState } from "react";
+import { loadTransactions, saveTransactions } from "@/lib/storage";
+import { CATEGORY_LABEL, Category, Transaction } from "@/lib/types";
 
-export default function SettingsPage() {
-  const [settings, setSettings] = useState<Settings>({
-    monthlyIncome: 0,
-    savingsGoal: 0,
+const categories: Category[] = ["general", "wants", "culture", "extras"];
+
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+export default function NewExpensePage() {
+  const [form, setForm] = useState({
+    date: todayISO(),
+    description: "",
+    amount: "",
+    category: "general" as Category,
   });
-  const [isSaved, setIsSaved] = useState(false);
-
-  useEffect(() => {
-    setSettings(loadSettings());
-  }, []);
 
   function handleSave() {
-    saveSettings(settings);
-    setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 2000); // Ocultar mensaje a los 2s
+    const txs = loadTransactions();
+
+    const newTx: Transaction = {
+      id: crypto.randomUUID(),
+      date: form.date,
+      description: form.description.trim(),
+      amount: Number(form.amount),
+      category: form.category,
+    };
+
+    if (!newTx.description) {
+      alert("Pon un concepto.");
+      return;
+    }
+    if (!Number.isFinite(newTx.amount) || newTx.amount <= 0) {
+      alert("El importe debe ser mayor que 0.");
+      return;
+    }
+
+    saveTransactions([...txs, newTx]);
+    alert("Gasto guardado.");
+
+    setForm({
+      date: todayISO(),
+      description: "",
+      amount: "",
+      category: "general",
+    });
   }
 
   return (
-    <main className="min-h-screen p-6 max-w-2xl mx-auto space-y-8 animate-in fade-in duration-500">
-      <header>
-        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Ajustes</h1>
-        <p className="text-muted-foreground mt-1">Configura tus objetivos financieros</p>
-      </header>
+    <main className="space-y-6">
+      <h1 className="text-2xl font-bold">Nuevo gasto</h1>
 
-      <section className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm space-y-6">
-        
-        {/* Ingresos */}
-        <div className="space-y-3">
-          <label className="block text-sm font-medium text-gray-700">
-            Ingresos mensuales fijos (€)
-          </label>
-          <div className="relative">
-            <input
-              type="number"
-              className="w-full border-gray-200 rounded-xl p-4 text-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent transition-all outline-none"
-              value={settings.monthlyIncome}
-              onChange={(e) =>
-                setSettings({ ...settings, monthlyIncome: Number(e.target.value) })
-              }
-            />
-            <div className="absolute right-4 top-4 text-gray-400 font-medium">EUR</div>
-          </div>
-          <p className="text-xs text-gray-500">
-            Tu base para calcular el ahorro. Puedes cambiarlo cada mes.
-          </p>
-        </div>
+      <div className="space-y-2">
+        <label className="block text-sm">Fecha</label>
+        <input
+          type="date"
+          className="w-full border p-2"
+          value={form.date}
+          onChange={(e) => setForm({ ...form, date: e.target.value })}
+        />
+      </div>
 
-        <hr className="border-gray-100" />
+      <div className="space-y-2">
+        <label className="block text-sm">Concepto</label>
+        <input
+          type="text"
+          className="w-full border p-2"
+          value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
+        />
+      </div>
 
-        {/* Objetivo Ahorro */}
-        <div className="space-y-3">
-          <label className="block text-sm font-medium text-gray-700">
-            Objetivo de ahorro mensual (€)
-          </label>
-          <div className="relative">
-            <input
-              type="number"
-              className="w-full border-gray-200 rounded-xl p-4 text-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-black focus:border-transparent transition-all outline-none"
-              value={settings.savingsGoal}
-              onChange={(e) =>
-                setSettings({ ...settings, savingsGoal: Number(e.target.value) })
-              }
-            />
-            <div className="absolute right-4 top-4 text-gray-400 font-medium">EUR</div>
-          </div>
-          <p className="text-xs text-gray-500">
-            Kakebo te avisará visualmente según te acerques a este límite.
-          </p>
-        </div>
+      <div className="space-y-2">
+        <label className="block text-sm">Importe (€)</label>
+        <input
+          type="number"
+          className="w-full border p-2"
+          value={form.amount}
+          onChange={(e) => setForm({ ...form, amount: e.target.value })}
+        />
+      </div>
 
-        {/* Botón Guardar */}
-        <div className="pt-4">
-          <button
-            onClick={handleSave}
-            className={`w-full py-4 rounded-xl font-bold text-white transition-all transform active:scale-95 ${
-              isSaved ? "bg-green-600 hover:bg-green-700" : "bg-black hover:bg-gray-800"
-            }`}
-          >
-            {isSaved ? "¡Guardado con éxito!" : "Guardar Cambios"}
-          </button>
-        </div>
-      </section>
-
-      {/* Zona de Peligro (Futuro: Borrar datos) */}
-      <section className="p-6 border border-red-100 bg-red-50/30 rounded-2xl">
-        <h3 className="text-red-600 font-semibold mb-2">Zona de Datos</h3>
-        <p className="text-sm text-gray-600 mb-4">
-          Actualmente tus datos solo se guardan en este navegador.
-        </p>
-        <button 
-          onClick={() => {
-            if(confirm("¿Estás seguro? Esto borrará todos tus gastos.")) {
-              localStorage.clear();
-              window.location.href = "/";
-            }
-          }}
-          className="text-xs text-red-500 underline hover:text-red-700"
+      <div className="space-y-2">
+        <label className="block text-sm">Categoría</label>
+        <select
+          className="w-full border p-2"
+          value={form.category}
+          onChange={(e) =>
+            setForm({ ...form, category: e.target.value as Category })
+          }
         >
-          Borrar todos mis datos y empezar de cero
-        </button>
-      </section>
+          {categories.map((c) => (
+            <option key={c} value={c}>
+              {CATEGORY_LABEL[c]}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <button
+        onClick={handleSave}
+        className="w-full bg-black text-white p-2 hover:opacity-90"
+      >
+        Guardar gasto
+      </button>
     </main>
   );
 }
