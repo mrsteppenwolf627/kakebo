@@ -1,4 +1,5 @@
-"use client";
+"use client";console.log("[new-expense] page mounted");
+
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";

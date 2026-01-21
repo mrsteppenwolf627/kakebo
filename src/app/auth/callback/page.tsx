@@ -2,42 +2,32 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
+  const supabase = createClient();
 
   useEffect(() => {
-    async function run() {
-      // Esto hace que supabase-js lea el hash (#access_token=...) y guarde sesión
-      const { data, error } = await supabase.auth.getSession();
+    (async () => {
+      // En OAuth, Supabase suele guardar la sesión automáticamente con el hash (#access_token...)
+      // Esto fuerza a refrescar y comprobar sesión antes de redirigir.
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      if (error) {
-        console.error("Callback error:", error.message);
-        router.replace("/login");
-        return;
-      }
-
-      // Si ya hay sesión, vamos al dashboard (o home)
-      if (data.session) {
+      if (session) {
         router.replace("/");
-        return;
+      } else {
+        router.replace("/login");
       }
-
-      // Si no hay sesión todavía, reintenta un poco
-      setTimeout(async () => {
-        const again = await supabase.auth.getSession();
-        if (again.data.session) router.replace("/");
-        else router.replace("/login");
-      }, 300);
-    }
-
-    run();
-  }, [router]);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div style={{ padding: 24 }}>
-      Procesando login…
-    </div>
+    <main className="min-h-screen flex items-center justify-center">
+      <p>Finalizando login...</p>
+    </main>
   );
 }

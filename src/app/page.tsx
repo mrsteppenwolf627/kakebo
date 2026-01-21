@@ -1,23 +1,19 @@
 import AuthGate from "@/components/AuthGate";
 import ExpenseCalendar from "@/components/ExpenseCalendar";
 
-export default function MarketingHome() {
+export default function HomePage() {
   return (
-    <main className="space-y-12">
-      <section className="space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight">
-          Kakebo Ahorro
-        </h1>
-        <p className="text-black/60 max-w-xl">
-          El método japonés para controlar tu dinero, ahora en digital.
-          Registra tus gastos, visualízalos en calendario y convierte
-          conciencia en ahorro real.
-        </p>
-      </section>
+    <AuthGate>
+      <main className="min-h-screen px-6 py-10">
+        <div className="max-w-5xl mx-auto space-y-6">
+          <h1 className="text-4xl font-semibold">Kakebo Ahorro</h1>
+          <p className="text-black/60">
+            Registra tus gastos y visualízalos en calendario.
+          </p>
 
-      <AuthGate>
-        <ExpenseCalendar />
-      </AuthGate>
-    </main>
+          <ExpenseCalendar />
+        </div>
+      </main>
+    </AuthGate>
   );
 }

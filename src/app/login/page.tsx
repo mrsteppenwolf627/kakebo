@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/browser";
 
 export default function LoginPage() {
+  const supabase = createClient();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"login" | "signup">("login");
@@ -19,10 +21,11 @@ export default function LoginPage() {
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: { prompt: "select_account" }, // fuerza selector de cuenta
         },
       });
+
       if (error) throw error;
-      // No hacemos redirect manual: Google te saca y vuelve por callback.
     } catch (e: any) {
       setMsg(e?.message ?? "Error desconocido");
       setLoading(false);
@@ -37,7 +40,6 @@ export default function LoginPage() {
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
-
         setMsg("Cuenta creada. Ahora inicia sesión.");
         setMode("login");
       } else {
@@ -46,7 +48,6 @@ export default function LoginPage() {
           password,
         });
         if (error) throw error;
-
         window.location.href = "/";
       }
     } catch (e: any) {
@@ -80,7 +81,6 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
-              autoComplete="email"
             />
           </div>
 
@@ -91,7 +91,6 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
-              autoComplete={mode === "login" ? "current-password" : "new-password"}
             />
           </div>
 

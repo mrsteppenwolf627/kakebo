@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import UserMenu from "@/components/UserMenu";
 
 const items = [
   { href: "/", label: "Dashboard" },
-  { href: "/new", label: "+ Nuevo Gasto", primary: true }, // Destacamos este botón
+  { href: "/new", label: "+ Nuevo Gasto", primary: true },
   { href: "/settings", label: "Ajustes" },
 ];
 
@@ -16,8 +17,7 @@ export default function TopNav() {
     <nav className="flex items-center gap-2">
       {items.map((item) => {
         const active = pathname === item.href;
-        
-        // Estilo especial para el botón "Nuevo Gasto"
+
         if (item.primary) {
           return (
             <Link
@@ -30,7 +30,6 @@ export default function TopNav() {
           );
         }
 
-        // Estilo para enlaces normales
         return (
           <Link
             key={item.href}
@@ -45,6 +44,9 @@ export default function TopNav() {
           </Link>
         );
       })}
+
+      {/* Menú de usuario */}
+      <UserMenu />
     </nav>
   );
 }
