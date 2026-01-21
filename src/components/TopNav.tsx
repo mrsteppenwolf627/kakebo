@@ -6,6 +6,7 @@ import UserMenu from "@/components/UserMenu";
 
 const items = [
   { href: "/", label: "Dashboard" },
+  { href: "/history", label: "Histórico" },
   { href: "/new", label: "+ Nuevo Gasto", primary: true },
   { href: "/settings", label: "Ajustes" },
 ];
