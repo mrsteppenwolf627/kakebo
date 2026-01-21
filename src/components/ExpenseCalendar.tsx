@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
+import Link from "next/link";
+import SpendingChart from "@/components/SpendingChart";
 
 const KAKEBO_CATEGORIES = {
   supervivencia: { label: "Supervivencia", color: "#dc2626" },
@@ -33,6 +35,16 @@ type MonthRow = {
   closed_at: string | null;
 };
 
+type UserSettingsRow = {
+  user_id: string;
+  monthly_income: number | null;
+  monthly_saving_goal: number | null;
+  budget_supervivencia: number | null;
+  budget_opcional: number | null;
+  budget_cultura: number | null;
+  budget_extra: number | null;
+};
+
 export default function ExpenseCalendar({
   year,
   month,
@@ -50,14 +62,18 @@ export default function ExpenseCalendar({
   const [monthRow, setMonthRow] = useState<MonthRow | null>(null);
   const [closing, setClosing] = useState(false);
 
+  const [settings, setSettings] = useState<UserSettingsRow | null>(null);
+  const [settingsLoading, setSettingsLoading] = useState(true);
+
   const ym = useMemo(
     () => `${year}-${String(month).padStart(2, "0")}`,
     [year, month]
   );
 
-  const total = useMemo(() => {
-    return rows.reduce((acc, r) => acc + (Number(r.amount) || 0), 0);
-  }, [rows]);
+  const total = useMemo(
+    () => rows.reduce((acc, r) => acc + (Number(r.amount) || 0), 0),
+    [rows]
+  );
 
   const totalsByCategory = useMemo(() => {
     const base: Record<CategoryKey, number> = {
@@ -75,12 +91,41 @@ export default function ExpenseCalendar({
     return base;
   }, [rows]);
 
+  const income = Number(settings?.monthly_income ?? 0);
+  const savingGoal = Number(settings?.monthly_saving_goal ?? 0);
+  const available = income > 0 ? income - total : 0;
+
+  function money(n: number) {
+    return (Number(n) || 0).toFixed(2);
+  }
+
   async function getUserId() {
     const { data: sessionRes, error } = await supabase.auth.getSession();
     if (error) throw error;
     const session = sessionRes.session;
     if (!session?.user) throw new Error("Auth session missing!");
     return session.user.id;
+  }
+
+  async function loadSettings(userId: string) {
+    setSettingsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("user_settings")
+        .select(
+          "user_id,monthly_income,monthly_saving_goal,budget_supervivencia,budget_opcional,budget_cultura,budget_extra"
+        )
+        .eq("user_id", userId)
+        .limit(1);
+
+      if (error) throw error;
+
+      setSettings(((data?.[0] as UserSettingsRow) ?? null) as UserSettingsRow | null);
+    } catch {
+      setSettings(null);
+    } finally {
+      setSettingsLoading(false);
+    }
   }
 
   async function getMonth(userId: string) {
@@ -119,9 +164,14 @@ export default function ExpenseCalendar({
     try {
       const userId = await getUserId();
 
+      // Settings (no bloquea si no existe)
+      loadSettings(userId);
+
+      // Mes
       const m = await getMonth(userId);
       setMonthRow(m);
 
+      // Si existe el mes, cargamos por month_id (lo correcto)
       if (m?.id) {
         const { data, error } = await supabase
           .from("expenses")
@@ -135,7 +185,7 @@ export default function ExpenseCalendar({
         return;
       }
 
-      // fallback por fecha para gastos antiguos
+      // Fallback por fecha (por si el mes no existe todavía)
       const fromDate = `${ym}-01`;
       const nextMonth = month === 12 ? 1 : month + 1;
       const nextYear = month === 12 ? year + 1 : year;
@@ -191,7 +241,6 @@ export default function ExpenseCalendar({
     try {
       const userId = await getUserId();
 
-      // asegura month
       let m = await getMonth(userId);
       if (!m) m = await createMonth(userId);
 
@@ -218,16 +267,74 @@ export default function ExpenseCalendar({
     }
   }
 
+  async function reopenMonth() {
+    setErr(null);
+    setClosing(true);
+
+    try {
+      const userId = await getUserId();
+
+      const m = await getMonth(userId);
+      if (!m) {
+        setErr("No existe registro de mes para reabrir.");
+        return;
+      }
+
+      if (m.status === "open") return;
+
+      const ok = window.confirm(
+        `Vas a REABRIR el mes ${ym}. Podrás volver a añadir gastos.\n\n¿Continuar?`
+      );
+      if (!ok) return;
+
+      const { error } = await supabase
+        .from("months")
+        .update({ status: "open", closed_at: null })
+        .eq("id", m.id)
+        .eq("user_id", userId);
+
+      if (error) throw error;
+
+      await load();
+    } catch (e: any) {
+      setErr(e?.message ?? "Error reabriendo mes");
+    } finally {
+      setClosing(false);
+    }
+  }
+
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ym]);
 
+  const isClosed = monthRow?.status === "closed";
   const monthStatusLabel = monthRow?.status
     ? `estado: ${monthRow.status}`
     : "sin registro de mes aún";
 
-  const isClosed = monthRow?.status === "closed";
+  function budgetFor(key: CategoryKey) {
+    if (!settings) return null;
+
+    const field =
+      key === "supervivencia"
+        ? settings.budget_supervivencia
+        : key === "opcional"
+        ? settings.budget_opcional
+        : key === "cultura"
+        ? settings.budget_cultura
+        : settings.budget_extra;
+
+    return field == null ? null : Number(field);
+  }
+
+  const chartCategories = useMemo(() => {
+    return (Object.keys(KAKEBO_CATEGORIES) as CategoryKey[]).map((key) => ({
+      key,
+      label: KAKEBO_CATEGORIES[key].label,
+      color: KAKEBO_CATEGORIES[key].color,
+    }));
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -238,7 +345,7 @@ export default function ExpenseCalendar({
               Mes: {ym} <span className="ml-2">({monthStatusLabel})</span>
             </div>
             <div className="text-sm text-black/60">Gastos del mes: {rows.length}</div>
-            <div className="text-sm text-black/60">Total del mes: {total.toFixed(2)} €</div>
+            <div className="text-sm text-black/60">Total del mes: {money(total)} €</div>
           </div>
 
           <div className="flex items-center gap-2">
@@ -249,22 +356,72 @@ export default function ExpenseCalendar({
               Recargar
             </button>
 
-            <button
-              onClick={closeMonth}
-              disabled={closing || isClosed}
-              className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white disabled:opacity-50"
-              title={isClosed ? "Mes cerrado" : "Cerrar mes"}
-            >
-              {isClosed ? "Mes cerrado" : closing ? "Cerrando…" : "Cerrar mes"}
-            </button>
+            {isClosed ? (
+              <button
+                onClick={reopenMonth}
+                disabled={closing}
+                className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white disabled:opacity-50"
+                title="Reabrir mes"
+              >
+                {closing ? "Reabriendo…" : "Reabrir mes"}
+              </button>
+            ) : (
+              <button
+                onClick={closeMonth}
+                disabled={closing}
+                className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white disabled:opacity-50"
+                title="Cerrar mes"
+              >
+                {closing ? "Cerrando…" : "Cerrar mes"}
+              </button>
+            )}
           </div>
         </div>
 
+        {/* Bloque “finanzas del mes” */}
+        <div className="border border-black/10 p-4 space-y-2">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-black/60">Ingreso mensual (settings)</span>
+            <span className="font-semibold">
+              {settingsLoading ? "…" : income > 0 ? `${money(income)} €` : "No configurado"}
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-black/60">Disponible (ingreso - gastos)</span>
+            <span className="font-semibold">
+              {income > 0 ? `${money(available)} €` : "—"}
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-black/60">Objetivo ahorro</span>
+            <span className="font-semibold">
+              {savingGoal > 0 ? `${money(savingGoal)} €` : "No configurado"}
+            </span>
+          </div>
+
+          {income <= 0 && (
+            <div className="text-xs text-black/60">
+              Configura ingreso/objetivo en{" "}
+              <Link href="/settings" className="underline">
+                Ajustes
+              </Link>{" "}
+              para ver el “Disponible” y el progreso de ahorro.
+            </div>
+          )}
+        </div>
+
+        {/* Resumen por categorías + presupuestos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {(Object.keys(KAKEBO_CATEGORIES) as CategoryKey[]).map((key) => {
             const cat = KAKEBO_CATEGORIES[key];
-            const value = totalsByCategory[key];
-            const pct = total > 0 ? (value / total) * 100 : 0;
+            const spent = totalsByCategory[key];
+            const pct = total > 0 ? (spent / total) * 100 : 0;
+
+            const budget = budgetFor(key);
+            const remaining = budget != null ? budget - spent : null;
+            const over = remaining != null ? remaining < 0 : false;
 
             return (
               <div
@@ -277,17 +434,36 @@ export default function ExpenseCalendar({
                     style={{ backgroundColor: cat.color }}
                     title={cat.label}
                   />
-                  <div className="text-sm font-medium">{cat.label}</div>
+                  <div>
+                    <div className="text-sm font-medium">{cat.label}</div>
+                    <div className="text-xs text-black/60">
+                      {pct.toFixed(0)}% del mes
+                      {budget != null ? ` · Presupuesto: ${money(budget)} €` : ""}
+                    </div>
+                    {budget != null && (
+                      <div className={`text-xs ${over ? "text-red-600" : "text-black/60"}`}>
+                        {over
+                          ? `Te pasas por ${money(Math.abs(remaining!))} €`
+                          : `Te quedan ${money(remaining!)} €`}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="text-right">
-                  <div className="text-sm font-semibold">{value.toFixed(2)} €</div>
-                  <div className="text-xs text-black/60">{pct.toFixed(0)}%</div>
+                  <div className="text-sm font-semibold">{money(spent)} €</div>
                 </div>
               </div>
             );
           })}
         </div>
+
+        {/* Gráfico (barras / queso) */}
+        <SpendingChart
+          title="Gasto por categoría"
+          totals={totalsByCategory}
+          categories={chartCategories}
+        />
       </div>
 
       {err && <div className="text-sm text-red-600">{err}</div>}
@@ -320,13 +496,12 @@ export default function ExpenseCalendar({
                       <span className="font-medium">{r.note ?? "(sin concepto)"}</span>
                       <span className="text-black/60">
                         {r.date} · {cat?.label ?? r.category}
-                        {r.month_id ? "" : " · (sin month_id)"}
                       </span>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <div className="font-semibold">{Number(r.amount).toFixed(2)} €</div>
+                    <div className="font-semibold">{money(Number(r.amount))} €</div>
 
                     <button
                       onClick={() => {
