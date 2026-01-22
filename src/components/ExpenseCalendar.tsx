@@ -45,6 +45,10 @@ type UserSettingsRow = {
   budget_extra: number | null;
 };
 
+function pad2(n: number) {
+  return String(n).padStart(2, "0");
+}
+
 export default function ExpenseCalendar({
   year,
   month,
@@ -65,10 +69,7 @@ export default function ExpenseCalendar({
   const [settings, setSettings] = useState<UserSettingsRow | null>(null);
   const [settingsLoading, setSettingsLoading] = useState(true);
 
-  const ym = useMemo(
-    () => `${year}-${String(month).padStart(2, "0")}`,
-    [year, month]
-  );
+  const ym = useMemo(() => `${year}-${pad2(month)}`, [year, month]);
 
   const total = useMemo(
     () => rows.reduce((acc, r) => acc + (Number(r.amount) || 0), 0),
@@ -93,6 +94,21 @@ export default function ExpenseCalendar({
 
   const income = Number(settings?.monthly_income ?? 0);
   const savingGoal = Number(settings?.monthly_saving_goal ?? 0);
+
+  const savedSoFar = income > 0 ? income - total : 0;
+
+  const savingProgress = useMemo(() => {
+    if (savingGoal <= 0) return 0;
+    const p = savedSoFar / savingGoal;
+    if (Number.isNaN(p) || !Number.isFinite(p)) return 0;
+    return Math.max(0, Math.min(1, p));
+  }, [savedSoFar, savingGoal]);
+
+  const savingPct = Math.round(savingProgress * 100);
+
+  const remainingToGoal =
+    savingGoal > 0 ? Math.max(0, savingGoal - Math.max(0, savedSoFar)) : 0;
+
   const available = income > 0 ? income - total : 0;
 
   function money(n: number) {
@@ -120,7 +136,9 @@ export default function ExpenseCalendar({
 
       if (error) throw error;
 
-      setSettings(((data?.[0] as UserSettingsRow) ?? null) as UserSettingsRow | null);
+      setSettings(
+        ((data?.[0] as UserSettingsRow) ?? null) as UserSettingsRow | null
+      );
     } catch {
       setSettings(null);
     } finally {
@@ -164,14 +182,11 @@ export default function ExpenseCalendar({
     try {
       const userId = await getUserId();
 
-      // Settings (no bloquea si no existe)
       loadSettings(userId);
 
-      // Mes
       const m = await getMonth(userId);
       setMonthRow(m);
 
-      // Si existe el mes, cargamos por month_id (lo correcto)
       if (m?.id) {
         const { data, error } = await supabase
           .from("expenses")
@@ -185,11 +200,10 @@ export default function ExpenseCalendar({
         return;
       }
 
-      // Fallback por fecha (por si el mes no existe todavía)
       const fromDate = `${ym}-01`;
       const nextMonth = month === 12 ? 1 : month + 1;
       const nextYear = month === 12 ? year + 1 : year;
-      const toDate = `${nextYear}-${String(nextMonth).padStart(2, "0")}-01`;
+      const toDate = `${nextYear}-${pad2(nextMonth)}-01`;
 
       const { data, error } = await supabase
         .from("expenses")
@@ -210,6 +224,11 @@ export default function ExpenseCalendar({
   }
 
   async function removeExpense(expenseId: string) {
+    if (monthRow?.status === "closed") {
+      setErr("Mes cerrado: no se pueden eliminar gastos.");
+      return;
+    }
+
     setErr(null);
     setDeletingId(expenseId);
 
@@ -247,7 +266,7 @@ export default function ExpenseCalendar({
       if (m.status === "closed") return;
 
       const ok = window.confirm(
-        `Vas a CERRAR el mes ${ym}. No podrás añadir gastos en este mes.\n\n¿Continuar?`
+        `Vas a CERRAR el mes ${ym}. No podrás añadir ni eliminar gastos en este mes.\n\n¿Continuar?`
       );
       if (!ok) return;
 
@@ -283,7 +302,7 @@ export default function ExpenseCalendar({
       if (m.status === "open") return;
 
       const ok = window.confirm(
-        `Vas a REABRIR el mes ${ym}. Podrás volver a añadir gastos.\n\n¿Continuar?`
+        `Vas a REABRIR el mes ${ym}. Podrás volver a añadir y eliminar gastos.\n\n¿Continuar?`
       );
       if (!ok) return;
 
@@ -344,6 +363,13 @@ export default function ExpenseCalendar({
             <div className="text-sm text-black/60">
               Mes: {ym} <span className="ml-2">({monthStatusLabel})</span>
             </div>
+
+            {isClosed && (
+              <div className="mt-1 text-xs text-red-600">
+                Mes cerrado: no se pueden añadir ni eliminar gastos.
+              </div>
+            )}
+
             <div className="text-sm text-black/60">Gastos del mes: {rows.length}</div>
             <div className="text-sm text-black/60">Total del mes: {money(total)} €</div>
           </div>
@@ -378,8 +404,8 @@ export default function ExpenseCalendar({
           </div>
         </div>
 
-        {/* Bloque “finanzas del mes” */}
-        <div className="border border-black/10 p-4 space-y-2">
+        {/* Finanzas del mes */}
+        <div className="border border-black/10 p-4 space-y-3 rounded-lg">
           <div className="flex items-center justify-between text-sm">
             <span className="text-black/60">Ingreso mensual (settings)</span>
             <span className="font-semibold">
@@ -401,13 +427,43 @@ export default function ExpenseCalendar({
             </span>
           </div>
 
-          {income <= 0 && (
+          {/* ✅ Barra de progreso de ahorro */}
+          {income > 0 && savingGoal > 0 ? (
+            <div className="pt-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-black/60">Progreso de ahorro</span>
+                <span className="font-semibold">{savingPct}%</span>
+              </div>
+
+              <div className="mt-2 h-3 w-full rounded-full bg-black/10 overflow-hidden">
+                <div
+                  className={`h-3 rounded-full transition-all ${
+                    savingProgress >= 1 ? "bg-green-600" : "bg-black"
+                  }`}
+                  style={{ width: `${savingPct}%` }}
+                />
+              </div>
+
+              <div className="mt-2 text-xs text-black/60">
+                Ahorrado: <span className="font-semibold">{money(Math.max(0, savedSoFar))} €</span>{" "}
+                / Objetivo: <span className="font-semibold">{money(savingGoal)} €</span>
+                {savingProgress >= 1 ? (
+                  <span className="ml-2 text-green-700 font-semibold">Objetivo conseguido</span>
+                ) : (
+                  <span className="ml-2">
+                    Te faltan{" "}
+                    <span className="font-semibold">{money(remainingToGoal)} €</span>
+                  </span>
+                )}
+              </div>
+            </div>
+          ) : (
             <div className="text-xs text-black/60">
-              Configura ingreso/objetivo en{" "}
+              Configura ingreso y objetivo en{" "}
               <Link href="/settings" className="underline">
                 Ajustes
               </Link>{" "}
-              para ver el “Disponible” y el progreso de ahorro.
+              para ver el progreso de ahorro.
             </div>
           )}
         </div>
@@ -458,7 +514,7 @@ export default function ExpenseCalendar({
           })}
         </div>
 
-        {/* Gráfico (barras / queso) */}
+        {/* Gráfico */}
         <SpendingChart
           title="Gasto por categoría"
           totals={totalsByCategory}
@@ -480,6 +536,7 @@ export default function ExpenseCalendar({
           <ul className="space-y-2">
             {rows.map((r) => {
               const cat = KAKEBO_CATEGORIES[r.category as CategoryKey] ?? null;
+              const disableDelete = isClosed || deletingId === r.id;
 
               return (
                 <li key={r.id} className="flex items-center justify-between gap-3 text-sm">
@@ -505,15 +562,21 @@ export default function ExpenseCalendar({
 
                     <button
                       onClick={() => {
+                        if (isClosed) return;
                         const ok = window.confirm(
                           "¿Eliminar este gasto? Esta acción no se puede deshacer."
                         );
                         if (ok) removeExpense(r.id);
                       }}
-                      disabled={deletingId === r.id}
-                      className="border border-black px-2 py-1 text-xs hover:bg-black hover:text-white disabled:opacity-50"
+                      disabled={disableDelete}
+                      className={`border px-2 py-1 text-xs disabled:opacity-50 ${
+                        isClosed
+                          ? "border-black/30 text-black/40 cursor-not-allowed"
+                          : "border-black hover:bg-black hover:text-white"
+                      }`}
+                      title={isClosed ? "Mes cerrado: no se puede eliminar" : "Eliminar gasto"}
                     >
-                      {deletingId === r.id ? "…" : "Eliminar"}
+                      {deletingId === r.id ? "…" : isClosed ? "Mes cerrado" : "Eliminar"}
                     </button>
                   </div>
                 </li>

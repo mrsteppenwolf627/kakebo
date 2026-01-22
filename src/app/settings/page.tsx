@@ -2,16 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
-import Link from "next/link";
-
-const KAKEBO_CATEGORIES = {
-  supervivencia: { label: "Supervivencia", color: "#dc2626" },
-  opcional: { label: "Opcional", color: "#2563eb" },
-  cultura: { label: "Cultura", color: "#16a34a" },
-  extra: { label: "Extra", color: "#9333ea" },
-} as const;
-
-type CategoryKey = keyof typeof KAKEBO_CATEGORIES;
 
 type UserSettingsRow = {
   user_id: string;
@@ -23,101 +13,114 @@ type UserSettingsRow = {
   budget_extra: number | null;
 };
 
+const DEFAULT: Omit<UserSettingsRow, "user_id"> = {
+  monthly_income: 0,
+  monthly_saving_goal: 0,
+  budget_supervivencia: 0,
+  budget_opcional: 0,
+  budget_cultura: 0,
+  budget_extra: 0,
+};
+
+function num(v: any) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
+}
+
 export default function SettingsPage() {
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const [okMsg, setOkMsg] = useState<string | null>(null);
+  const [ok, setOk] = useState<string | null>(null);
 
-  const [monthlyIncome, setMonthlyIncome] = useState<number>(0);
-  const [savingGoal, setSavingGoal] = useState<number>(0);
+  const [userId, setUserId] = useState<string | null>(null);
 
-  const [budgets, setBudgets] = useState<Record<CategoryKey, number>>({
-    supervivencia: 0,
-    opcional: 0,
-    cultura: 0,
-    extra: 0,
-  });
+  const [form, setForm] = useState<Omit<UserSettingsRow, "user_id">>(DEFAULT);
 
-  const totalBudget = useMemo(() => {
-    return (
-      (Number(budgets.supervivencia) || 0) +
-      (Number(budgets.opcional) || 0) +
-      (Number(budgets.cultura) || 0) +
-      (Number(budgets.extra) || 0)
-    );
-  }, [budgets]);
+  useEffect(() => {
+    let cancelled = false;
 
-  async function getUserId() {
-    const { data: sessionRes, error } = await supabase.auth.getSession();
-    if (error) throw error;
-    const session = sessionRes.session;
-    if (!session?.user) throw new Error("Auth session missing!");
-    return session.user.id;
-  }
+    async function load() {
+      setLoading(true);
+      setErr(null);
+      setOk(null);
 
-  async function load() {
-    setLoading(true);
-    setErr(null);
-    setOkMsg(null);
+      try {
+        const { data: sessionRes, error: sessionErr } =
+          await supabase.auth.getSession();
+        if (sessionErr) throw sessionErr;
 
-    try {
-      const userId = await getUserId();
+        const uid = sessionRes.session?.user?.id;
+        if (!uid) throw new Error("Auth session missing");
+        if (cancelled) return;
 
-      const { data, error } = await supabase
-        .from("user_settings")
-        .select(
-          "user_id,monthly_income,monthly_saving_goal,budget_supervivencia,budget_opcional,budget_cultura,budget_extra"
-        )
-        .eq("user_id", userId)
-        .limit(1);
+        setUserId(uid);
 
-      if (error) throw error;
+        const { data, error } = await supabase
+          .from("user_settings")
+          .select(
+            "user_id,monthly_income,monthly_saving_goal,budget_supervivencia,budget_opcional,budget_cultura,budget_extra"
+          )
+          .eq("user_id", uid)
+          .limit(1);
 
-      const row = (data?.[0] as UserSettingsRow | undefined) ?? null;
+        if (error) throw error;
 
-      setMonthlyIncome(Number(row?.monthly_income ?? 0));
-      setSavingGoal(Number(row?.monthly_saving_goal ?? 0));
+        const row = (data?.[0] as UserSettingsRow | undefined) ?? null;
 
-      setBudgets({
-        supervivencia: Number(row?.budget_supervivencia ?? 0),
-        opcional: Number(row?.budget_opcional ?? 0),
-        cultura: Number(row?.budget_cultura ?? 0),
-        extra: Number(row?.budget_extra ?? 0),
-      });
-    } catch (e: any) {
-      setErr(e?.message ?? "Error cargando ajustes");
-    } finally {
-      setLoading(false);
+        setForm({
+          monthly_income: num(row?.monthly_income ?? 0),
+          monthly_saving_goal: num(row?.monthly_saving_goal ?? 0),
+          budget_supervivencia: num(row?.budget_supervivencia ?? 0),
+          budget_opcional: num(row?.budget_opcional ?? 0),
+          budget_cultura: num(row?.budget_cultura ?? 0),
+          budget_extra: num(row?.budget_extra ?? 0),
+        });
+      } catch (e: any) {
+        setErr(e?.message ?? "Error cargando ajustes");
+      } finally {
+        setLoading(false);
+      }
     }
-  }
 
-  async function save() {
-    setSaving(true);
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [supabase]);
+
+  async function handleSave() {
     setErr(null);
-    setOkMsg(null);
+    setOk(null);
+
+    if (!userId) {
+      setErr("Auth session missing");
+      return;
+    }
+
+    setSaving(true);
 
     try {
-      const userId = await getUserId();
-
       const payload: UserSettingsRow = {
         user_id: userId,
-        monthly_income: Number(monthlyIncome) || 0,
-        monthly_saving_goal: Number(savingGoal) || 0,
-        budget_supervivencia: Number(budgets.supervivencia) || 0,
-        budget_opcional: Number(budgets.opcional) || 0,
-        budget_cultura: Number(budgets.cultura) || 0,
-        budget_extra: Number(budgets.extra) || 0,
+        monthly_income: num(form.monthly_income),
+        monthly_saving_goal: num(form.monthly_saving_goal),
+        budget_supervivencia: num(form.budget_supervivencia),
+        budget_opcional: num(form.budget_opcional),
+        budget_cultura: num(form.budget_cultura),
+        budget_extra: num(form.budget_extra),
       };
 
-      // upsert: crea si no existe, actualiza si existe
-      const { error } = await supabase.from("user_settings").upsert(payload);
+      const { error } = await supabase
+        .from("user_settings")
+        .upsert(payload, { onConflict: "user_id" });
 
       if (error) throw error;
 
-      setOkMsg("Ajustes guardados.");
+      setOk("Ajustes guardados.");
     } catch (e: any) {
       setErr(e?.message ?? "Error guardando ajustes");
     } finally {
@@ -125,94 +128,126 @@ export default function SettingsPage() {
     }
   }
 
-  useEffect(() => {
-    load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <main className="min-h-screen p-6 max-w-xl mx-auto space-y-6">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold">Ajustes</h1>
-          <p className="text-sm text-black/60">
-            Ingresos, objetivo de ahorro y presupuestos por categoría.
-          </p>
-        </div>
-
-        <Link
-          href="/"
-          className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white"
-        >
-          Volver
-        </Link>
-      </div>
+      <h1 className="text-2xl font-bold">Ajustes</h1>
 
       {err && <div className="text-sm text-red-600">{err}</div>}
-      {okMsg && <div className="text-sm text-green-700">{okMsg}</div>}
+      {ok && <div className="text-sm text-green-700">{ok}</div>}
       {loading && <div className="text-sm text-black/60">Cargando…</div>}
 
       {!loading && (
         <>
-          <div className="space-y-2">
-            <label className="block text-sm">Ingresos mensuales (€)</label>
-            <input
-              type="number"
-              className="w-full border rounded-lg p-2"
-              value={monthlyIncome}
-              onChange={(e) => setMonthlyIncome(Number(e.target.value))}
-            />
-          </div>
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <label className="block text-sm">Ingresos mensuales (€)</label>
+              <input
+                type="number"
+                className="w-full border border-black/20 rounded-lg p-2"
+                value={form.monthly_income}
+                onChange={(e) =>
+                  setForm({ ...form, monthly_income: Number(e.target.value) })
+                }
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm">Objetivo de ahorro (€)</label>
-            <input
-              type="number"
-              className="w-full border rounded-lg p-2"
-              value={savingGoal}
-              onChange={(e) => setSavingGoal(Number(e.target.value))}
-            />
-          </div>
+            <div className="space-y-2">
+              <label className="block text-sm">Objetivo de ahorro (€)</label>
+              <input
+                type="number"
+                className="w-full border border-black/20 rounded-lg p-2"
+                value={form.monthly_saving_goal}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    monthly_saving_goal: Number(e.target.value),
+                  })
+                }
+              />
+            </div>
 
-          <div className="border border-black/10 rounded-lg p-4 space-y-3">
-            <div>
-              <div className="text-sm font-semibold">Presupuestos por categoría</div>
-              <div className="text-xs text-black/60">
-                Total presupuestos: {totalBudget.toFixed(2)} €
+            <div className="border border-black/10 rounded-lg p-4 space-y-4">
+              <div className="font-semibold">Presupuestos por categoría</div>
+
+              <div className="space-y-2">
+                <label className="block text-sm">Supervivencia (€)</label>
+                <input
+                  type="number"
+                  className="w-full border border-black/20 rounded-lg p-2"
+                  value={form.budget_supervivencia}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      budget_supervivencia: Number(e.target.value),
+                    })
+                  }
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm">Opcional (€)</label>
+                <input
+                  type="number"
+                  className="w-full border border-black/20 rounded-lg p-2"
+                  value={form.budget_opcional}
+                  onChange={(e) =>
+                    setForm({ ...form, budget_opcional: Number(e.target.value) })
+                  }
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm">Cultura (€)</label>
+                <input
+                  type="number"
+                  className="w-full border border-black/20 rounded-lg p-2"
+                  value={form.budget_cultura}
+                  onChange={(e) =>
+                    setForm({ ...form, budget_cultura: Number(e.target.value) })
+                  }
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm">Extra (€)</label>
+                <input
+                  type="number"
+                  className="w-full border border-black/20 rounded-lg p-2"
+                  value={form.budget_extra}
+                  onChange={(e) =>
+                    setForm({ ...form, budget_extra: Number(e.target.value) })
+                  }
+                />
               </div>
             </div>
 
-            {(Object.keys(KAKEBO_CATEGORIES) as CategoryKey[]).map((key) => {
-              const cat = KAKEBO_CATEGORIES[key];
-              return (
-                <div key={key} className="space-y-1">
-                  <label className="block text-sm">
-                    <span
-                      className="inline-block h-2.5 w-2.5 rounded-full mr-2 align-middle"
-                      style={{ backgroundColor: cat.color }}
-                    />
-                    {cat.label} (€)
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full border rounded-lg p-2"
-                    value={budgets[key]}
-                    onChange={(e) =>
-                      setBudgets((b) => ({ ...b, [key]: Number(e.target.value) }))
-                    }
-                  />
-                </div>
-              );
-            })}
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="w-full bg-black text-white rounded-lg p-2 hover:opacity-90 disabled:opacity-50"
+            >
+              {saving ? "Guardando…" : "Guardar ajustes"}
+            </button>
+
+            <div className="text-xs text-black/60">
+              Estos ajustes se guardan en tu cuenta (Supabase), no en el navegador.
+            </div>
           </div>
 
-          <button
-            onClick={save}
-            disabled={saving}
-            className="w-full bg-black text-white rounded-lg p-2 hover:opacity-90 disabled:opacity-50"
-          >
-            {saving ? "Guardando…" : "Guardar ajustes"}
-          </button>
+          {/* ✅ BLOQUE SEO */}
+          <section className="mt-12 border-t border-black/10 pt-8 space-y-3 text-sm text-black/70">
+            <h2 className="text-lg font-semibold text-black">
+              Ajustes de presupuesto y objetivo de ahorro
+            </h2>
+            <p>
+              En esta sección puedes definir tu ingreso mensual, tu objetivo de ahorro
+              y los presupuestos máximos por categoría del método Kakebo. Esto te permite
+              controlar el gasto y medir la evolución de tus hábitos mes a mes.
+            </p>
+            <div className="text-xs text-black/50">
+              (Hueco SEO: texto sobre “presupuesto mensual”, “objetivo de ahorro”, “método kakebo”.)
+            </div>
+          </section>
         </>
       )}
     </main>
