@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import UserMenu from "@/components/UserMenu";
+import { usePathname, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 
 function isYm(s: string | null) {
@@ -16,39 +15,63 @@ function parseYm(ym: string) {
 }
 
 export default function TopNav() {
+  const supabase = useMemo(() => createClient(), []);
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const supabase = useMemo(() => createClient(), []);
 
   const ym = searchParams?.get("ym");
   const ymValid = isYm(ym);
 
-  const [isClosed, setIsClosed] = useState(false);
+  // Enlaces base
+  const dashboardHref = "/app";
+  const settingsHref = "/settings"; // todavía está en raíz (ya lo moveremos luego)
+  const newHref = ymValid && ym ? `/new?ym=${ym}` : "/new";
+
+  // Estado
+  const [email, setEmail] = useState<string | null>(null);
+  const [monthClosed, setMonthClosed] = useState(false);
   const [checking, setChecking] = useState(false);
 
-  // Queremos que el botón "Nuevo gasto" respete el mes seleccionado
-  const newHref = ymValid ? `/new?ym=${ym}` : "/new";
+  // Solo consideramos "en dashboard" cuando estamos en /app (y opcionalmente /app/* en el futuro)
+  const isOnDashboard = pathname === "/app";
 
   useEffect(() => {
     let cancelled = false;
 
-    async function checkClosed() {
-      // Solo comprobamos cierre si estamos en Dashboard con ym válido
-      if (pathname !== "/" || !ymValid || !ym) {
-        setIsClosed(false);
-        return;
-      }
+    async function loadSession() {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) return;
+
+      const userEmail = data.session?.user?.email ?? null;
+      if (!cancelled) setEmail(userEmail);
+    }
+
+    loadSession();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [supabase]);
+
+  // Si estamos en /app?ym=YYYY-MM, comprobamos si el mes está cerrado para bloquear "Nuevo gasto" (o avisar)
+  useEffect(() => {
+    let cancelled = false;
+
+    async function checkMonth() {
+      setMonthClosed(false);
+
+      // Solo comprobamos si estamos en dashboard y hay ym válido
+      if (!isOnDashboard || !ymValid || !ym) return;
 
       setChecking(true);
 
       try {
-        const { data: sessionRes } = await supabase.auth.getSession();
-        const userId = sessionRes.session?.user?.id;
+        const { data: sessionRes, error: sessionErr } =
+          await supabase.auth.getSession();
+        if (sessionErr) throw sessionErr;
 
-        if (!userId) {
-          setIsClosed(false);
-          return;
-        }
+        const userId = sessionRes.session?.user?.id;
+        if (!userId) return;
 
         const { year, month } = parseYm(ym);
 
@@ -62,66 +85,66 @@ export default function TopNav() {
 
         if (error) throw error;
 
-        const status = (data?.[0]?.status as "open" | "closed" | undefined) ?? "open";
-        if (!cancelled) setIsClosed(status === "closed");
+        const status =
+          (data?.[0]?.status as "open" | "closed" | undefined) ?? "open";
+
+        if (!cancelled) setMonthClosed(status === "closed");
       } catch {
-        if (!cancelled) setIsClosed(false);
+        // Si falla la comprobación, no bloqueamos por defecto (mejor UX).
+        if (!cancelled) setMonthClosed(false);
       } finally {
         if (!cancelled) setChecking(false);
       }
     }
 
-    checkClosed();
+    checkMonth();
 
     return () => {
       cancelled = true;
     };
-  }, [pathname, ymValid, ym, supabase]);
+  }, [supabase, isOnDashboard, ymValid, ym]);
 
   const items = [
-    { href: "/", label: "Dashboard" },
-    { href: "/settings", label: "Ajustes" },
+    { href: dashboardHref, label: "Dashboard" },
+    { href: settingsHref, label: "Ajustes" },
   ];
 
+  // Botón nuevo gasto: si mes cerrado en dashboard, lo deshabilitamos
+  const newDisabled = isOnDashboard && ymValid && !!ym && (monthClosed || checking);
+
   return (
-    <nav className="flex items-center gap-2">
-      {items.map((item) => {
-        const active = pathname === item.href;
-
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-              active ? "bg-gray-100 text-black" : "text-gray-500 hover:text-black hover:bg-gray-50"
-            }`}
-          >
-            {item.label}
-          </Link>
-        );
-      })}
-
-      {/* Botón principal: Nuevo Gasto, respetando mes */}
-      {pathname === "/" && ymValid && isClosed ? (
-        <button
-          type="button"
-          disabled
-          className="ml-2 px-4 py-2 bg-gray-200 text-gray-500 text-sm font-medium rounded-full cursor-not-allowed"
-          title="Mes cerrado: no se pueden añadir gastos"
+    <nav className="flex items-center gap-3">
+      {items.map((it) => (
+        <Link
+          key={it.href}
+          href={it.href}
+          className="px-3 py-1 text-sm border border-black/20 hover:border-black"
         >
-          Mes cerrado
-        </button>
+          {it.label}
+        </Link>
+      ))}
+
+      {newDisabled ? (
+        <span
+          className="px-3 py-1 text-sm border border-black/20 opacity-50 cursor-not-allowed"
+          title={checking ? "Comprobando mes…" : "Mes cerrado: no puedes añadir gastos"}
+        >
+          + Nuevo Gasto
+        </span>
       ) : (
         <Link
           href={newHref}
-          className="ml-2 px-4 py-2 bg-black text-white text-sm font-medium rounded-full hover:bg-gray-800 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-black/20"
-          title={pathname === "/" && ymValid ? `Añadir gasto en ${ym}` : "Añadir gasto"}
+          className="px-3 py-1 text-sm border border-black bg-black text-white hover:opacity-90"
         >
-          {checking && pathname === "/" && ymValid ? "…" : "+ Nuevo Gasto"}
+          + Nuevo Gasto
         </Link>
       )}
 
-      <UserMenu />
+      {email && (
+        <span className="ml-2 text-sm text-black/60 truncate max-w-[200px]">
+          {email}
+        </span>
+      )}
     </nav>
   );
 }

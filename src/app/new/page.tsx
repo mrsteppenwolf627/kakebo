@@ -88,7 +88,8 @@ export default function NewExpensePage() {
 
         if (error) throw error;
 
-        const status = (data?.[0]?.status as "open" | "closed" | undefined) ?? "open";
+        const status =
+          (data?.[0]?.status as "open" | "closed" | undefined) ?? "open";
         if (!cancelled) setMonthClosed(status === "closed");
       } catch (e: any) {
         if (!cancelled) setError(e?.message ?? "Error comprobando el mes");
@@ -123,7 +124,9 @@ export default function NewExpensePage() {
 
     if (error) throw error;
 
-    const existing = data?.[0] as { id: string; status: "open" | "closed" } | undefined;
+    const existing = data?.[0] as
+      | { id: string; status: "open" | "closed" }
+      | undefined;
     if (existing) return existing;
 
     const { data: created, error: cErr } = await supabase
@@ -157,13 +160,19 @@ export default function NewExpensePage() {
       const safeDate = clampDateToYm(date);
 
       // determinamos mes objetivo
-      const targetYear = ymValid && ym ? parseYm(ym).year : Number(safeDate.slice(0, 4));
-      const targetMonth = ymValid && ym ? parseYm(ym).month : Number(safeDate.slice(5, 7));
+      const targetYear =
+        ymValid && ym ? parseYm(ym).year : Number(safeDate.slice(0, 4));
+      const targetMonth =
+        ymValid && ym ? parseYm(ym).month : Number(safeDate.slice(5, 7));
 
       const m = await ensureMonth(session.user.id, targetYear, targetMonth);
 
       if (m.status === "closed") {
-        setError(`Mes cerrado (${targetYear}-${pad2(targetMonth)}): no se pueden añadir gastos.`);
+        setError(
+          `Mes cerrado (${targetYear}-${pad2(
+            targetMonth
+          )}): no se pueden añadir gastos.`
+        );
         return;
       }
 
@@ -181,8 +190,8 @@ export default function NewExpensePage() {
 
       if (error) throw error;
 
-      // volvemos al dashboard del mes correspondiente
-      router.push(`/?ym=${targetYear}-${pad2(targetMonth)}`);
+      // volvemos al dashboard del mes correspondiente (AHORA ES /app)
+      router.push(`/app?ym=${targetYear}-${pad2(targetMonth)}`);
       router.refresh?.();
     } catch (e: any) {
       setError(e?.message ?? "Error guardando gasto");
@@ -192,6 +201,9 @@ export default function NewExpensePage() {
   }
 
   const badge = ymValid && ym ? `Mes: ${ym}` : "Mes: actual";
+
+  // volver al dashboard (AHORA ES /app)
+  const backHref = ymValid && ym ? `/app?ym=${ym}` : "/app";
 
   return (
     <main className="min-h-screen px-6 py-10">
@@ -209,7 +221,7 @@ export default function NewExpensePage() {
 
           <button
             type="button"
-            onClick={() => router.push(ymValid && ym ? `/?ym=${ym}` : "/")}
+            onClick={() => router.push(backHref)}
             className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white"
           >
             Volver
