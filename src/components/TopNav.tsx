@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -24,7 +24,7 @@ export default function TopNav() {
 
   // Enlaces base
   const dashboardHref = "/app";
-  const settingsHref = "/settings"; // todavía está en raíz (ya lo moveremos luego)
+  const settingsHref = "/app/settings"; // todavÃ­a estÃ¡ en raÃ­z (ya lo moveremos luego)
   const newHref = ymValid && ym ? `/new?ym=${ym}` : "/new";
 
   // Estado
@@ -53,14 +53,14 @@ export default function TopNav() {
     };
   }, [supabase]);
 
-  // Si estamos en /app?ym=YYYY-MM, comprobamos si el mes está cerrado para bloquear "Nuevo gasto" (o avisar)
+  // Si estamos en /app?ym=YYYY-MM, comprobamos si el mes estÃ¡ cerrado para bloquear "Nuevo gasto" (o avisar)
   useEffect(() => {
     let cancelled = false;
 
     async function checkMonth() {
       setMonthClosed(false);
 
-      // Solo comprobamos si estamos en dashboard y hay ym válido
+      // Solo comprobamos si estamos en dashboard y hay ym vÃ¡lido
       if (!isOnDashboard || !ymValid || !ym) return;
 
       setChecking(true);
@@ -90,7 +90,7 @@ export default function TopNav() {
 
         if (!cancelled) setMonthClosed(status === "closed");
       } catch {
-        // Si falla la comprobación, no bloqueamos por defecto (mejor UX).
+        // Si falla la comprobaciÃ³n, no bloqueamos por defecto (mejor UX).
         if (!cancelled) setMonthClosed(false);
       } finally {
         if (!cancelled) setChecking(false);
@@ -109,7 +109,7 @@ export default function TopNav() {
     { href: settingsHref, label: "Ajustes" },
   ];
 
-  // Botón nuevo gasto: si mes cerrado en dashboard, lo deshabilitamos
+  // BotÃ³n nuevo gasto: si mes cerrado en dashboard, lo deshabilitamos
   const newDisabled = isOnDashboard && ymValid && !!ym && (monthClosed || checking);
 
   return (
@@ -127,7 +127,7 @@ export default function TopNav() {
       {newDisabled ? (
         <span
           className="px-3 py-1 text-sm border border-black/20 opacity-50 cursor-not-allowed"
-          title={checking ? "Comprobando mes…" : "Mes cerrado: no puedes añadir gastos"}
+          title={checking ? "Comprobando mesâ€¦" : "Mes cerrado: no puedes aÃ±adir gastos"}
         >
           + Nuevo Gasto
         </span>
@@ -148,3 +148,4 @@ export default function TopNav() {
     </nav>
   );
 }
+
