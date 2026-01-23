@@ -25,7 +25,7 @@ export default function TopNav() {
   // Enlaces base
   const dashboardHref = "/app";
   const settingsHref = "/app/settings"; // todavÃ­a estÃ¡ en raÃ­z (ya lo moveremos luego)
-  const newHref = ymValid && ym ? `/new?ym=${ym}` : "/new";
+  const newHref = ymValid && ym ? `/app/new?ym=${ym}` : "/app/new";
 
   // Estado
   const [email, setEmail] = useState<string | null>(null);
@@ -148,4 +148,5 @@ export default function TopNav() {
     </nav>
   );
 }
+
 
