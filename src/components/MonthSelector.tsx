@@ -31,7 +31,7 @@ export default function MonthSelector({
   function goTo(y: number, m: number) {
     const ym = toYm(y, m);
     console.log("[MonthSelector] goTo:", ym);
-    router.push(`/?ym=${ym}`);
+    router.push(`/app?ym=${ym}`);
   }
 
   function goPrev(e: React.MouseEvent<HTMLButtonElement>) {

@@ -49,13 +49,7 @@ function pad2(n: number) {
   return String(n).padStart(2, "0");
 }
 
-export default function ExpenseCalendar({
-  year,
-  month,
-}: {
-  year: number;
-  month: number;
-}) {
+export default function ExpenseCalendar({ year, month }: { year: number; month: number }) {
   const supabase = createClient();
 
   const [rows, setRows] = useState<ExpenseRow[]>([]);
@@ -68,6 +62,9 @@ export default function ExpenseCalendar({
 
   const [settings, setSettings] = useState<UserSettingsRow | null>(null);
   const [settingsLoading, setSettingsLoading] = useState(true);
+
+  // total gastos fijos aplicables al mes (ym)
+  const [fixedTotal, setFixedTotal] = useState(0);
 
   const ym = useMemo(() => `${year}-${pad2(month)}`, [year, month]);
 
@@ -95,7 +92,23 @@ export default function ExpenseCalendar({
   const income = Number(settings?.monthly_income ?? 0);
   const savingGoal = Number(settings?.monthly_saving_goal ?? 0);
 
-  const savedSoFar = income > 0 ? income - total : 0;
+  // ✅ disponible real para gastar este mes = ingreso - gastos fijos
+  const disposableIncome = useMemo(() => {
+    if (!Number.isFinite(income) || income <= 0) return 0;
+    return Math.max(0, income - (Number(fixedTotal) || 0));
+  }, [income, fixedTotal]);
+
+  // ✅ “Disponible (ingreso - fijos - gastos)”
+  const available = useMemo(() => {
+    if (disposableIncome <= 0) return 0;
+    return disposableIncome - total;
+  }, [disposableIncome, total]);
+
+  // ✅ ahorrado “de momento” frente a objetivo (lo que sobra del disponible para gastar)
+  const savedSoFar = useMemo(() => {
+    if (disposableIncome <= 0) return 0;
+    return disposableIncome - total;
+  }, [disposableIncome, total]);
 
   const savingProgress = useMemo(() => {
     if (savingGoal <= 0) return 0;
@@ -106,10 +119,10 @@ export default function ExpenseCalendar({
 
   const savingPct = Math.round(savingProgress * 100);
 
-  const remainingToGoal =
-    savingGoal > 0 ? Math.max(0, savingGoal - Math.max(0, savedSoFar)) : 0;
-
-  const available = income > 0 ? income - total : 0;
+  const remainingToGoal = useMemo(() => {
+    if (savingGoal <= 0) return 0;
+    return Math.max(0, savingGoal - Math.max(0, savedSoFar));
+  }, [savingGoal, savedSoFar]);
 
   function money(n: number) {
     return (Number(n) || 0).toFixed(2);
@@ -136,9 +149,7 @@ export default function ExpenseCalendar({
 
       if (error) throw error;
 
-      setSettings(
-        ((data?.[0] as UserSettingsRow) ?? null) as UserSettingsRow | null
-      );
+      setSettings(((data?.[0] as UserSettingsRow) ?? null) as UserSettingsRow | null);
     } catch {
       setSettings(null);
     } finally {
@@ -175,6 +186,25 @@ export default function ExpenseCalendar({
     return created as MonthRow;
   }
 
+  async function loadFixedTotal(userId: string) {
+    const { data: fixedData, error: fixedErr } = await supabase
+      .from("fixed_expenses")
+      .select("amount,start_ym,end_ym,active")
+      .eq("user_id", userId)
+      .eq("active", true);
+
+    if (fixedErr) throw fixedErr;
+
+    const fixedTotalForYm = (fixedData ?? []).reduce((acc, r: any) => {
+      // ym es YYYY-MM, comparación lexicográfica funciona
+      const startOk = typeof r.start_ym === "string" && r.start_ym <= ym;
+      const endOk = !r.end_ym || (typeof r.end_ym === "string" && r.end_ym >= ym);
+      return startOk && endOk ? acc + (Number(r.amount) || 0) : acc;
+    }, 0);
+
+    setFixedTotal(fixedTotalForYm);
+  }
+
   async function load() {
     setLoading(true);
     setErr(null);
@@ -182,7 +212,8 @@ export default function ExpenseCalendar({
     try {
       const userId = await getUserId();
 
-      loadSettings(userId);
+      // ✅ importante: esperamos settings y fijos antes del render “correcto”
+      await Promise.all([loadSettings(userId), loadFixedTotal(userId)]);
 
       const m = await getMonth(userId);
       setMonthRow(m);
@@ -328,9 +359,7 @@ export default function ExpenseCalendar({
   }, [ym]);
 
   const isClosed = monthRow?.status === "closed";
-  const monthStatusLabel = monthRow?.status
-    ? `estado: ${monthRow.status}`
-    : "sin registro de mes aún";
+  const monthStatusLabel = monthRow?.status ? `estado: ${monthRow.status}` : "sin registro de mes aún";
 
   function budgetFor(key: CategoryKey) {
     if (!settings) return null;
@@ -414,10 +443,13 @@ export default function ExpenseCalendar({
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <span className="text-black/60">Disponible (ingreso - gastos)</span>
-            <span className="font-semibold">
-              {income > 0 ? `${money(available)} €` : "—"}
-            </span>
+            <span className="text-black/60">Gastos fijos (mes)</span>
+            <span className="font-semibold">{income > 0 ? `${money(fixedTotal)} €` : "—"}</span>
+          </div>
+
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-black/60">Disponible (ingreso - fijos - gastos)</span>
+            <span className="font-semibold">{income > 0 ? `${money(available)} €` : "—"}</span>
           </div>
 
           <div className="flex items-center justify-between text-sm">
@@ -427,7 +459,6 @@ export default function ExpenseCalendar({
             </span>
           </div>
 
-          {/* ✅ Barra de progreso de ahorro */}
           {income > 0 && savingGoal > 0 ? (
             <div className="pt-2">
               <div className="flex items-center justify-between text-sm">
@@ -451,8 +482,7 @@ export default function ExpenseCalendar({
                   <span className="ml-2 text-green-700 font-semibold">Objetivo conseguido</span>
                 ) : (
                   <span className="ml-2">
-                    Te faltan{" "}
-                    <span className="font-semibold">{money(remainingToGoal)} €</span>
+                    Te faltan <span className="font-semibold">{money(remainingToGoal)} €</span>
                   </span>
                 )}
               </div>
@@ -460,7 +490,7 @@ export default function ExpenseCalendar({
           ) : (
             <div className="text-xs text-black/60">
               Configura ingreso y objetivo en{" "}
-              <Link href="/settings" className="underline">
+              <Link href="/app/settings" className="underline">
                 Ajustes
               </Link>{" "}
               para ver el progreso de ahorro.
@@ -468,7 +498,7 @@ export default function ExpenseCalendar({
           )}
         </div>
 
-        {/* Resumen por categorías + presupuestos */}
+        {/* Resumen por categorías + presupuestos + barras */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {(Object.keys(KAKEBO_CATEGORIES) as CategoryKey[]).map((key) => {
             const cat = KAKEBO_CATEGORIES[key];
@@ -479,47 +509,62 @@ export default function ExpenseCalendar({
             const remaining = budget != null ? budget - spent : null;
             const over = remaining != null ? remaining < 0 : false;
 
+            const barPct =
+              budget != null && budget > 0 ? Math.min(100, (spent / budget) * 100) : 0;
+
             return (
-              <div
-                key={key}
-                className="border border-black/10 p-3 flex items-center justify-between gap-3"
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    className="inline-block h-3 w-3 rounded-full"
-                    style={{ backgroundColor: cat.color }}
-                    title={cat.label}
-                  />
-                  <div>
-                    <div className="text-sm font-medium">{cat.label}</div>
-                    <div className="text-xs text-black/60">
-                      {pct.toFixed(0)}% del mes
-                      {budget != null ? ` · Presupuesto: ${money(budget)} €` : ""}
+              <div key={key} className="border border-black/10 p-3 flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="inline-block h-3 w-3 rounded-full"
+                      style={{ backgroundColor: cat.color }}
+                      title={cat.label}
+                    />
+                    <div>
+                      <div className="text-sm font-medium">{cat.label}</div>
+                      <div className="text-xs text-black/60">
+                        {pct.toFixed(0)}% del mes
+                        {budget != null ? ` · Presupuesto: ${money(budget)} €` : ""}
+                      </div>
+
+                      {budget != null && (
+                        <div className={`text-xs ${over ? "text-red-600" : "text-black/60"}`}>
+                          {over
+                            ? `Te pasas por ${money(Math.abs(remaining!))} €`
+                            : `Te quedan ${money(remaining!)} €`}
+                        </div>
+                      )}
                     </div>
+                  </div>
+
+                  <div className="text-right">
+                    <div className="text-sm font-semibold">{money(spent)} €</div>
                     {budget != null && (
-                      <div className={`text-xs ${over ? "text-red-600" : "text-black/60"}`}>
-                        {over
-                          ? `Te pasas por ${money(Math.abs(remaining!))} €`
-                          : `Te quedan ${money(remaining!)} €`}
+                      <div className="text-xs text-black/60">
+                        {money(Math.min(spent, budget))} / {money(budget)}
                       </div>
                     )}
                   </div>
                 </div>
 
-                <div className="text-right">
-                  <div className="text-sm font-semibold">{money(spent)} €</div>
-                </div>
+                {budget != null && budget > 0 && (
+                  <div className="h-2 w-full rounded-full bg-black/10 overflow-hidden">
+                    <div
+                      className={`h-2 rounded-full transition-all ${
+                        over ? "bg-red-600" : "bg-black"
+                      }`}
+                      style={{ width: `${barPct}%` }}
+                    />
+                  </div>
+                )}
               </div>
             );
           })}
         </div>
 
         {/* Gráfico */}
-        <SpendingChart
-          title="Gasto por categoría"
-          totals={totalsByCategory}
-          categories={chartCategories}
-        />
+        <SpendingChart title="Gasto por categoría" totals={totalsByCategory} categories={chartCategories} />
       </div>
 
       {err && <div className="text-sm text-red-600">{err}</div>}
@@ -528,9 +573,7 @@ export default function ExpenseCalendar({
       <div className="border border-black/10 p-4">
         <div className="font-semibold mb-2">Lista de gastos</div>
 
-        {rows.length === 0 && (
-          <div className="text-sm text-black/60">Aún no hay gastos en este mes.</div>
-        )}
+        {rows.length === 0 && <div className="text-sm text-black/60">Aún no hay gastos en este mes.</div>}
 
         {rows.length > 0 && (
           <ul className="space-y-2">
@@ -563,9 +606,7 @@ export default function ExpenseCalendar({
                     <button
                       onClick={() => {
                         if (isClosed) return;
-                        const ok = window.confirm(
-                          "¿Eliminar este gasto? Esta acción no se puede deshacer."
-                        );
+                        const ok = window.confirm("¿Eliminar este gasto? Esta acción no se puede deshacer.");
                         if (ok) removeExpense(r.id);
                       }}
                       disabled={disableDelete}

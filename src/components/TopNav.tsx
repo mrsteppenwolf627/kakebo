@@ -24,7 +24,7 @@ export default function TopNav() {
 
   // Enlaces base
   const dashboardHref = "/app";
-  const settingsHref = "/app/settings"; // todavÃ­a estÃ¡ en raÃ­z (ya lo moveremos luego)
+  const settingsHref = "/app/settings";
   const newHref = ymValid && ym ? `/app/new?ym=${ym}` : "/app/new";
 
   // Estado
@@ -32,7 +32,7 @@ export default function TopNav() {
   const [monthClosed, setMonthClosed] = useState(false);
   const [checking, setChecking] = useState(false);
 
-  // Solo consideramos "en dashboard" cuando estamos en /app (y opcionalmente /app/* en el futuro)
+  // Solo consideramos "en dashboard" cuando estamos en /app
   const isOnDashboard = pathname === "/app";
 
   useEffect(() => {
@@ -53,21 +53,20 @@ export default function TopNav() {
     };
   }, [supabase]);
 
-  // Si estamos en /app?ym=YYYY-MM, comprobamos si el mes estÃ¡ cerrado para bloquear "Nuevo gasto" (o avisar)
+  // Si estamos en /app?ym=YYYY-MM, comprobamos si el mes está cerrado
   useEffect(() => {
     let cancelled = false;
 
     async function checkMonth() {
       setMonthClosed(false);
 
-      // Solo comprobamos si estamos en dashboard y hay ym vÃ¡lido
+      // Solo comprobamos si estamos en dashboard y hay ym válido
       if (!isOnDashboard || !ymValid || !ym) return;
 
       setChecking(true);
 
       try {
-        const { data: sessionRes, error: sessionErr } =
-          await supabase.auth.getSession();
+        const { data: sessionRes, error: sessionErr } = await supabase.auth.getSession();
         if (sessionErr) throw sessionErr;
 
         const userId = sessionRes.session?.user?.id;
@@ -85,12 +84,10 @@ export default function TopNav() {
 
         if (error) throw error;
 
-        const status =
-          (data?.[0]?.status as "open" | "closed" | undefined) ?? "open";
-
+        const status = (data?.[0]?.status as "open" | "closed" | undefined) ?? "open";
         if (!cancelled) setMonthClosed(status === "closed");
       } catch {
-        // Si falla la comprobaciÃ³n, no bloqueamos por defecto (mejor UX).
+        // Si falla la comprobación, no bloqueamos por defecto (mejor UX).
         if (!cancelled) setMonthClosed(false);
       } finally {
         if (!cancelled) setChecking(false);
@@ -106,10 +103,11 @@ export default function TopNav() {
 
   const items = [
     { href: dashboardHref, label: "Dashboard" },
+    { href: "/app/fixed-expenses", label: "Gastos fijos" },
     { href: settingsHref, label: "Ajustes" },
   ];
 
-  // BotÃ³n nuevo gasto: si mes cerrado en dashboard, lo deshabilitamos
+  // Botón nuevo gasto: si mes cerrado en dashboard, lo deshabilitamos
   const newDisabled = isOnDashboard && ymValid && !!ym && (monthClosed || checking);
 
   return (
@@ -127,7 +125,7 @@ export default function TopNav() {
       {newDisabled ? (
         <span
           className="px-3 py-1 text-sm border border-black/20 opacity-50 cursor-not-allowed"
-          title={checking ? "Comprobando mesâ€¦" : "Mes cerrado: no puedes aÃ±adir gastos"}
+          title={checking ? "Comprobando mes…" : "Mes cerrado: no puedes añadir gastos"}
         >
           + Nuevo Gasto
         </span>
@@ -148,5 +146,3 @@ export default function TopNav() {
     </nav>
   );
 }
-
-
