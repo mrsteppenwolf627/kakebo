@@ -10,20 +10,22 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     (async () => {
-      // En OAuth, Supabase suele guardar la sesión automáticamente con el hash (#access_token...)
-      // Esto fuerza a refrescar y comprobar sesión antes de redirigir.
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (session) {
-        router.replace("/");
-      } else {
-        router.replace("/login");
+      const url = new URL(window.location.href);
+      const code = url.searchParams.get("code");
+  
+      if (code) {
+        await supabase.auth.exchangeCodeForSession(code);
       }
+  
+      const { data: { session } } = await supabase.auth.getSession();
+  
+      if (session) router.replace("/app");
+      else router.replace("/login");
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+  
 
   return (
     <main className="min-h-screen flex items-center justify-center">

@@ -12,9 +12,13 @@ export default function LoginPage() {
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Cuando el error sugiere “email no confirmado”, mostramos botón de reenvío
+  const [needsConfirm, setNeedsConfirm] = useState(false);
+
   async function loginGoogle() {
     setLoading(true);
     setMsg(null);
+    setNeedsConfirm(false);
 
     try {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -32,24 +36,75 @@ export default function LoginPage() {
     }
   }
 
-  async function authEmail() {
+  async function resendConfirmation() {
     setLoading(true);
     setMsg(null);
 
     try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) throw error;
+
+      setMsg("Email de confirmación reenviado. Revisa bandeja y spam.");
+    } catch (e: any) {
+      setMsg(e?.message ?? "Error desconocido");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function authEmail() {
+    setLoading(true);
+    setMsg(null);
+    setNeedsConfirm(false);
+
+    try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({ email, password });
-        if (error) throw error;
-        setMsg("Cuenta creada. Ahora inicia sesión.");
-        setMode("login");
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { error } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
+          },
         });
+
         if (error) throw error;
-        window.location.href = "/";
+
+        setNeedsConfirm(true);
+        setMsg(
+          "Te hemos enviado un email para confirmar tu cuenta. Revisa tu bandeja y spam."
+        );
+        setMode("login");
+        return;
       }
+
+      // LOGIN
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        const m = (error.message || "").toLowerCase();
+
+        // Mensajes típicos: “Email not confirmed”, “confirm your email”, etc.
+        if (m.includes("confirm") || m.includes("not confirmed")) {
+          setNeedsConfirm(true);
+          setMsg("Tu email aún no está confirmado. Revisa tu correo (y spam).");
+          return;
+        }
+
+        throw error;
+      }
+
+      // Si tu dashboard real es /app, vamos allí directamente
+      window.location.href = "/app";
     } catch (e: any) {
       setMsg(e?.message ?? "Error desconocido");
     } finally {
@@ -96,6 +151,17 @@ export default function LoginPage() {
 
           {msg && <p className="text-sm text-black/60">{msg}</p>}
 
+          {needsConfirm && (
+            <button
+              type="button"
+              onClick={resendConfirmation}
+              disabled={loading || !email}
+              className="w-full text-sm underline text-black/60 hover:text-black disabled:opacity-60"
+            >
+              Reenviar email de confirmación
+            </button>
+          )}
+
           <button
             onClick={authEmail}
             disabled={loading || !email || !password}
@@ -105,7 +171,12 @@ export default function LoginPage() {
           </button>
 
           <button
-            onClick={() => setMode(mode === "login" ? "signup" : "login")}
+            onClick={() => {
+              const next = mode === "login" ? "signup" : "login";
+              setMode(next);
+              setMsg(null);
+              setNeedsConfirm(false);
+            }}
             className="w-full text-sm text-black/60 hover:text-black"
           >
             {mode === "login" ? "Crear cuenta" : "Ya tengo cuenta"}

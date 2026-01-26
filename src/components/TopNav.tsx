@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 
 function isYm(s: string | null) {
@@ -18,7 +18,14 @@ export default function TopNav() {
   const supabase = useMemo(() => createClient(), []);
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const router = useRouter();
 
+  const onLogout = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+    router.push("/");
+  };
+  
   const ym = searchParams?.get("ym");
   const ymValid = isYm(ym);
 
@@ -137,6 +144,14 @@ export default function TopNav() {
           + Nuevo Gasto
         </Link>
       )}
+{email && (
+  <button
+    onClick={onLogout}
+    className="ml-auto px-3 py-1 text-sm border border-black/20 hover:border-black"
+  >
+    Cerrar sesión
+  </button>
+)}
 
       {email && (
         <span className="ml-2 text-sm text-black/60 truncate max-w-[200px]">
