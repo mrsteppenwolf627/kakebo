@@ -53,6 +53,9 @@ export default function NewExpensePage() {
   const [monthClosed, setMonthClosed] = useState(false);
   const [checking, setChecking] = useState(false);
 
+  // UI: deshabilitar inputs si el mes está cerrado (y venimos con ym válido)
+  const inputsDisabled = !!ymValid && !!ym && !!monthClosed;
+
   useEffect(() => {
     setDate(defaultDate);
   }, [defaultDate]);
@@ -90,6 +93,7 @@ export default function NewExpensePage() {
 
         const status =
           (data?.[0]?.status as "open" | "closed" | undefined) ?? "open";
+
         if (!cancelled) setMonthClosed(status === "closed");
       } catch (e: any) {
         if (!cancelled) setError(e?.message ?? "Error comprobando el mes");
@@ -144,7 +148,8 @@ export default function NewExpensePage() {
     setError(null);
 
     if (checking) return;
-    if (ymValid && ym && monthClosed) {
+
+    if (inputsDisabled) {
       setError(`Mes cerrado (${ym}): no se pueden añadir gastos.`);
       return;
     }
@@ -207,13 +212,14 @@ export default function NewExpensePage() {
 
   return (
     <main className="min-h-screen px-6 py-10">
-      <div className="max-w-xl mx-auto space-y-6">
+      <div className="mx-auto max-w-xl space-y-6">
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-3xl font-semibold">Nuevo gasto</h1>
             <div className="text-sm text-black/60">{badge}</div>
-            {ymValid && ym && monthClosed && (
-              <div className="text-xs text-red-600 mt-1">
+
+            {inputsDisabled && (
+              <div className="mt-1 text-xs text-red-600">
                 Este mes está cerrado. No se pueden añadir gastos.
               </div>
             )}
@@ -232,50 +238,47 @@ export default function NewExpensePage() {
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm mb-1">Fecha</label>
+            <label className="mb-1 block text-sm">Fecha</label>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(clampDateToYm(e.target.value))}
-              className="border border-black/20 px-3 py-2 w-full"
-              disabled={Boolean(ymValid && ym) && Boolean(monthClosed)}
-
+              className="w-full border border-black/20 px-3 py-2"
+              disabled={inputsDisabled}
             />
             {ymValid && ym && (
-              <div className="text-xs text-black/50 mt-1">
+              <div className="mt-1 text-xs text-black/50">
                 La fecha se mantiene dentro del mes seleccionado.
               </div>
             )}
           </div>
 
           <div>
-            <label className="block text-sm mb-1">Concepto</label>
+            <label className="mb-1 block text-sm">Concepto</label>
             <input
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              className="border border-black/20 px-3 py-2 w-full"
+              className="w-full border border-black/20 px-3 py-2"
               placeholder="Ej: mandarina"
-              disabled={!!ymValid && !!ym && !!monthClosed}
-
+              disabled={inputsDisabled}
             />
           </div>
 
           <div>
-            <label className="block text-sm mb-1">Importe (€)</label>
+            <label className="mb-1 block text-sm">Importe (€)</label>
             <input
               type="number"
               step="0.01"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="border border-black/20 px-3 py-2 w-full"
+              className="w-full border border-black/20 px-3 py-2"
               placeholder="Ej: 12.50"
-              disabled={!!ymValid && !!ym && !!monthClosed}
-
+              disabled={inputsDisabled}
             />
           </div>
 
           <div>
-            <label className="block text-sm mb-1">Categoría (Kakebo)</label>
+            <label className="mb-1 block text-sm">Categoría (Kakebo)</label>
             <div className="flex items-center gap-3">
               <span
                 className="inline-block h-3 w-3 rounded-full"
@@ -285,9 +288,8 @@ export default function NewExpensePage() {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as CategoryKey)}
-                className="border border-black/20 px-3 py-2 w-full"
-                disabled={!!ymValid && !!ym && !!monthClosed}
-
+                className="w-full border border-black/20 px-3 py-2"
+                disabled={inputsDisabled}
               >
                 {Object.entries(KAKEBO_CATEGORIES).map(([key, c]) => (
                   <option key={key} value={key}>
@@ -301,7 +303,7 @@ export default function NewExpensePage() {
           <button
             type="button"
             onClick={saveExpense}
-            disabled={saving || (ymValid && ym && monthClosed) || checking}
+            disabled={saving || inputsDisabled || checking}
             className="border border-black px-4 py-2 hover:bg-black hover:text-white disabled:opacity-50"
           >
             {checking ? "Comprobando…" : saving ? "Guardando…" : "Guardar gasto"}
