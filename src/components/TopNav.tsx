@@ -110,7 +110,8 @@ export default function TopNav() {
 
   const items = [
     { href: dashboardHref, label: "Dashboard" },
-    { href: "/app/fixed-expenses", label: "Gastos fijos" },
+    { href: "/app/fixed", label: "Gastos fijos" },
+
     { href: settingsHref, label: "Ajustes" },
   ];
 
