@@ -238,7 +238,8 @@ export default function NewExpensePage() {
               value={date}
               onChange={(e) => setDate(clampDateToYm(e.target.value))}
               className="border border-black/20 px-3 py-2 w-full"
-              disabled={ymValid && ym && monthClosed}
+              disabled={Boolean(ymValid && ym) && Boolean(monthClosed)}
+
             />
             {ymValid && ym && (
               <div className="text-xs text-black/50 mt-1">
