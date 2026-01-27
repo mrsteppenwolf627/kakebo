@@ -255,7 +255,8 @@ export default function NewExpensePage() {
               onChange={(e) => setNote(e.target.value)}
               className="border border-black/20 px-3 py-2 w-full"
               placeholder="Ej: mandarina"
-              disabled={ymValid && ym && monthClosed}
+              disabled={!!ymValid && !!ym && !!monthClosed}
+
             />
           </div>
 
@@ -268,7 +269,8 @@ export default function NewExpensePage() {
               onChange={(e) => setAmount(e.target.value)}
               className="border border-black/20 px-3 py-2 w-full"
               placeholder="Ej: 12.50"
-              disabled={ymValid && ym && monthClosed}
+              disabled={!!ymValid && !!ym && !!monthClosed}
+
             />
           </div>
 
@@ -284,7 +286,8 @@ export default function NewExpensePage() {
                 value={category}
                 onChange={(e) => setCategory(e.target.value as CategoryKey)}
                 className="border border-black/20 px-3 py-2 w-full"
-                disabled={ymValid && ym && monthClosed}
+                disabled={!!ymValid && !!ym && !!monthClosed}
+
               >
                 {Object.entries(KAKEBO_CATEGORIES).map(([key, c]) => (
                   <option key={key} value={key}>
