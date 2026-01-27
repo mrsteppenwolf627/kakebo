@@ -49,6 +49,14 @@ function currentYm() {
   return `${y}-${m}`;
 }
 
+// Helpers para inputs numéricos controlados con null
+function inputNumberValue(n: number | null | undefined) {
+  return n ?? "";
+}
+function parseNumberOrNull(v: string) {
+  return v === "" ? null : Number(v);
+}
+
 export default function SettingsPage() {
   const supabase = useMemo(() => createClient(), []);
 
@@ -94,7 +102,8 @@ export default function SettingsPage() {
       setFixedOk(null);
 
       try {
-        const { data: sessionRes, error: sessionErr } = await supabase.auth.getSession();
+        const { data: sessionRes, error: sessionErr } =
+          await supabase.auth.getSession();
         if (sessionErr) throw sessionErr;
 
         const uid = sessionRes.session?.user?.id;
@@ -116,6 +125,8 @@ export default function SettingsPage() {
 
         const row = (data?.[0] as UserSettingsRow | undefined) ?? null;
 
+        // Nota: aquí normalizamos a number (no null) para tu lógica actual,
+        // pero los inputs aguantan null si el usuario borra el campo.
         setForm({
           monthly_income: num(row?.monthly_income ?? 0),
           monthly_saving_goal: num(row?.monthly_saving_goal ?? 0),
@@ -172,7 +183,9 @@ export default function SettingsPage() {
         budget_extra: num(form.budget_extra),
       };
 
-      const { error } = await supabase.from("user_settings").upsert(payload, { onConflict: "user_id" });
+      const { error } = await supabase
+        .from("user_settings")
+        .upsert(payload, { onConflict: "user_id" });
       if (error) throw error;
 
       setOk("Ajustes guardados.");
@@ -284,7 +297,9 @@ export default function SettingsPage() {
 
     // optimista
     const prev = fixedRows;
-    setFixedRows((r) => r.map((x) => (x.id === id ? { ...x, active: nextActive } : x)));
+    setFixedRows((r) =>
+      r.map((x) => (x.id === id ? { ...x, active: nextActive } : x))
+    );
 
     try {
       const { error } = await supabase
@@ -324,8 +339,13 @@ export default function SettingsPage() {
               <input
                 type="number"
                 className="w-full border border-black/20 rounded-lg p-2"
-                value={form.monthly_income}
-                onChange={(e) => setForm({ ...form, monthly_income: Number(e.target.value) })}
+                value={inputNumberValue(form.monthly_income)}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    monthly_income: parseNumberOrNull(e.target.value),
+                  })
+                }
               />
             </div>
 
@@ -334,11 +354,11 @@ export default function SettingsPage() {
               <input
                 type="number"
                 className="w-full border border-black/20 rounded-lg p-2"
-                value={form.monthly_saving_goal}
+                value={inputNumberValue(form.monthly_saving_goal)}
                 onChange={(e) =>
                   setForm({
                     ...form,
-                    monthly_saving_goal: Number(e.target.value),
+                    monthly_saving_goal: parseNumberOrNull(e.target.value),
                   })
                 }
               />
@@ -352,11 +372,11 @@ export default function SettingsPage() {
                 <input
                   type="number"
                   className="w-full border border-black/20 rounded-lg p-2"
-                  value={form.budget_supervivencia}
+                  value={inputNumberValue(form.budget_supervivencia)}
                   onChange={(e) =>
                     setForm({
                       ...form,
-                      budget_supervivencia: Number(e.target.value),
+                      budget_supervivencia: parseNumberOrNull(e.target.value),
                     })
                   }
                 />
@@ -367,8 +387,13 @@ export default function SettingsPage() {
                 <input
                   type="number"
                   className="w-full border border-black/20 rounded-lg p-2"
-                  value={form.budget_opcional}
-                  onChange={(e) => setForm({ ...form, budget_opcional: Number(e.target.value) })}
+                  value={inputNumberValue(form.budget_opcional)}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      budget_opcional: parseNumberOrNull(e.target.value),
+                    })
+                  }
                 />
               </div>
 
@@ -377,8 +402,13 @@ export default function SettingsPage() {
                 <input
                   type="number"
                   className="w-full border border-black/20 rounded-lg p-2"
-                  value={form.budget_cultura}
-                  onChange={(e) => setForm({ ...form, budget_cultura: Number(e.target.value) })}
+                  value={inputNumberValue(form.budget_cultura)}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      budget_cultura: parseNumberOrNull(e.target.value),
+                    })
+                  }
                 />
               </div>
 
@@ -387,8 +417,13 @@ export default function SettingsPage() {
                 <input
                   type="number"
                   className="w-full border border-black/20 rounded-lg p-2"
-                  value={form.budget_extra}
-                  onChange={(e) => setForm({ ...form, budget_extra: Number(e.target.value) })}
+                  value={inputNumberValue(form.budget_extra)}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      budget_extra: parseNumberOrNull(e.target.value),
+                    })
+                  }
                 />
               </div>
             </div>
@@ -411,13 +446,22 @@ export default function SettingsPage() {
             <div className="flex items-baseline justify-between gap-3">
               <h2 className="text-lg font-semibold text-black">Gastos fijos</h2>
               <div className="text-sm text-black/60">
-                Total activos: <span className="font-semibold">{fixedActiveTotal.toFixed(2)} €</span>
+                Total activos:{" "}
+                <span className="font-semibold">
+                  {fixedActiveTotal.toFixed(2)} €
+                </span>
               </div>
             </div>
 
             {fixedErr && <div className="text-sm text-red-600">{fixedErr}</div>}
-            {fixedOk && <div className="text-sm text-green-700">{fixedOk}</div>}
-            {fixedLoading && <div className="text-sm text-black/60">Cargando gastos fijos…</div>}
+            {fixedOk && (
+              <div className="text-sm text-green-700">{fixedOk}</div>
+            )}
+            {fixedLoading && (
+              <div className="text-sm text-black/60">
+                Cargando gastos fijos…
+              </div>
+            )}
 
             {!fixedLoading && (
               <div className="border border-black/10 rounded-lg p-4 space-y-4">
@@ -429,7 +473,9 @@ export default function SettingsPage() {
                       className="w-full border border-black/20 rounded-lg p-2"
                       placeholder="Ej: Alquiler"
                       value={fixedForm.name}
-                      onChange={(e) => setFixedForm({ ...fixedForm, name: e.target.value })}
+                      onChange={(e) =>
+                        setFixedForm({ ...fixedForm, name: e.target.value })
+                      }
                     />
                   </div>
 
@@ -439,7 +485,12 @@ export default function SettingsPage() {
                       type="number"
                       className="w-full border border-black/20 rounded-lg p-2"
                       value={fixedForm.amount}
-                      onChange={(e) => setFixedForm({ ...fixedForm, amount: Number(e.target.value) })}
+                      onChange={(e) =>
+                        setFixedForm({
+                          ...fixedForm,
+                          amount: Number(e.target.value),
+                        })
+                      }
                     />
                   </div>
 
@@ -448,7 +499,12 @@ export default function SettingsPage() {
                     <select
                       className="w-full border border-black/20 rounded-lg p-2"
                       value={fixedForm.active ? "true" : "false"}
-                      onChange={(e) => setFixedForm({ ...fixedForm, active: e.target.value === "true" })}
+                      onChange={(e) =>
+                        setFixedForm({
+                          ...fixedForm,
+                          active: e.target.value === "true",
+                        })
+                      }
                     >
                       <option value="true">Sí</option>
                       <option value="false">No</option>
@@ -461,7 +517,12 @@ export default function SettingsPage() {
                       className="w-full border border-black/20 rounded-lg p-2"
                       placeholder="2026-01"
                       value={fixedForm.start_ym}
-                      onChange={(e) => setFixedForm({ ...fixedForm, start_ym: e.target.value })}
+                      onChange={(e) =>
+                        setFixedForm({
+                          ...fixedForm,
+                          start_ym: e.target.value,
+                        })
+                      }
                     />
                   </div>
 
@@ -471,7 +532,9 @@ export default function SettingsPage() {
                       className="w-full border border-black/20 rounded-lg p-2"
                       placeholder="2026-12"
                       value={fixedForm.end_ym}
-                      onChange={(e) => setFixedForm({ ...fixedForm, end_ym: e.target.value })}
+                      onChange={(e) =>
+                        setFixedForm({ ...fixedForm, end_ym: e.target.value })
+                      }
                     />
                   </div>
                 </div>
@@ -485,8 +548,10 @@ export default function SettingsPage() {
                 </button>
 
                 <div className="text-xs text-black/60">
-                  Los gastos fijos se aplican al mes si <span className="font-semibold">start_ym ≤ ym</span> y{" "}
-                  <span className="font-semibold">end_ym</span> está vacío o <span className="font-semibold">end_ym ≥ ym</span>.
+                  Los gastos fijos se aplican al mes si{" "}
+                  <span className="font-semibold">start_ym ≤ ym</span> y{" "}
+                  <span className="font-semibold">end_ym</span> está vacío o{" "}
+                  <span className="font-semibold">end_ym ≥ ym</span>.
                 </div>
 
                 {/* Lista */}
@@ -494,7 +559,9 @@ export default function SettingsPage() {
                   <div className="font-semibold text-sm">Tus gastos fijos</div>
 
                   {fixedRows.length === 0 && (
-                    <div className="text-sm text-black/60">Aún no tienes gastos fijos.</div>
+                    <div className="text-sm text-black/60">
+                      Aún no tienes gastos fijos.
+                    </div>
                   )}
 
                   {fixedRows.length > 0 && (
@@ -507,7 +574,11 @@ export default function SettingsPage() {
                           <div className="min-w-0">
                             <div className="text-sm font-medium truncate">
                               {r.name}{" "}
-                              {!r.active && <span className="text-xs text-black/50">(inactivo)</span>}
+                              {!r.active && (
+                                <span className="text-xs text-black/50">
+                                  (inactivo)
+                                </span>
+                              )}
                             </div>
                             <div className="text-xs text-black/60">
                               {r.start_ym}
@@ -516,7 +587,9 @@ export default function SettingsPage() {
                           </div>
 
                           <div className="flex items-center gap-3">
-                            <div className="text-sm font-semibold">{num(r.amount).toFixed(2)} €</div>
+                            <div className="text-sm font-semibold">
+                              {num(r.amount).toFixed(2)} €
+                            </div>
 
                             <button
                               onClick={() => toggleFixed(r.id, !r.active)}
@@ -554,12 +627,14 @@ export default function SettingsPage() {
               Ajustes de presupuesto y objetivo de ahorro
             </h2>
             <p>
-              En esta sección puedes definir tu ingreso mensual, tu objetivo de ahorro y los presupuestos máximos por
-              categoría del método Kakebo. Esto te permite controlar el gasto y medir la evolución de tus hábitos mes a
-              mes.
+              En esta sección puedes definir tu ingreso mensual, tu objetivo de
+              ahorro y los presupuestos máximos por categoría del método Kakebo.
+              Esto te permite controlar el gasto y medir la evolución de tus
+              hábitos mes a mes.
             </p>
             <div className="text-xs text-black/50">
-              (Hueco SEO: texto sobre “presupuesto mensual”, “objetivo de ahorro”, “método kakebo”.)
+              (Hueco SEO: texto sobre “presupuesto mensual”, “objetivo de ahorro”,
+              “método kakebo”.)
             </div>
           </section>
         </>
