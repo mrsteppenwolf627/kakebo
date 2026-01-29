@@ -1,7 +1,11 @@
 import AuthGate from "@/components/AuthGate";
 import ExpenseCalendar from "@/components/ExpenseCalendar";
 import MonthSelector from "@/components/MonthSelector";
+
 import CategoryGuideCard from "@/components/CategoryGuideCard";
+
+import DashboardMoneyPanel from "@/components/DashboardMoneyPanel";
+ 
 
 function parseYm(ym?: string) {
   if (!ym) return null;
@@ -14,6 +18,10 @@ function parseYm(ym?: string) {
   if (!year || month < 1 || month > 12) return null;
 
   return { year, month };
+}
+
+function pad2(n: number) {
+  return String(n).padStart(2, "0");
 }
 
 export default async function HomePage(props: {
@@ -31,6 +39,8 @@ export default async function HomePage(props: {
   const year = parsed?.year ?? fallback.year;
   const month = parsed?.month ?? fallback.month;
 
+  const ym = `${year}-${pad2(month)}`;
+
   return (
     <AuthGate>
       <main className="min-h-screen px-6 py-10">
@@ -41,6 +51,9 @@ export default async function HomePage(props: {
           </p>
 
           <MonthSelector year={year} month={month} />
+
+          {/* ✅ NUEVO: panel “realista” (saldo banco + reservas fijos/ahorro) */}
+          <DashboardMoneyPanel year={year} month={month} ym={ym} />
 
           <ExpenseCalendar year={year} month={month} />
 
