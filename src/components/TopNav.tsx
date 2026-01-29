@@ -2,46 +2,30 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
-
-function isYm(s: string | null) {
-  return !!s && /^\d{4}-\d{2}$/.test(s);
-}
-
-function parseYm(ym: string) {
-  const [y, m] = ym.split("-");
-  return { year: Number(y), month: Number(m) };
-}
 
 export default function TopNav() {
   const supabase = useMemo(() => createClient(), []);
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const router = useRouter();
+
+  // Estado
+  const [email, setEmail] = useState<string | null>(null);
 
   const onLogout = async () => {
     await supabase.auth.signOut();
     router.refresh();
     router.push("/");
   };
-  
-  const ym = searchParams?.get("ym");
-  const ymValid = isYm(ym);
 
   // Enlaces base
-  const dashboardHref = "/app";
-  const settingsHref = "/app/settings";
-  const newHref = ymValid && ym ? `/app/new?ym=${ym}` : "/app/new";
+  const items = [
+    { href: "/app", label: "Dashboard" },
+    { href: "/app/fixed", label: "Gastos fijos" },
+    { href: "/app/settings", label: "Ajustes" },
+  ];
 
-  // Estado
-  const [email, setEmail] = useState<string | null>(null);
-  const [monthClosed, setMonthClosed] = useState(false);
-  const [checking, setChecking] = useState(false);
-
-  // Solo consideramos "en dashboard" cuando estamos en /app
-  const isOnDashboard = pathname === "/app";
-
+  // Cargar sesión (solo para mostrar email y botón de logout)
   useEffect(() => {
     let cancelled = false;
 
@@ -60,64 +44,6 @@ export default function TopNav() {
     };
   }, [supabase]);
 
-  // Si estamos en /app?ym=YYYY-MM, comprobamos si el mes está cerrado
-  useEffect(() => {
-    let cancelled = false;
-
-    async function checkMonth() {
-      setMonthClosed(false);
-
-      // Solo comprobamos si estamos en dashboard y hay ym válido
-      if (!isOnDashboard || !ymValid || !ym) return;
-
-      setChecking(true);
-
-      try {
-        const { data: sessionRes, error: sessionErr } = await supabase.auth.getSession();
-        if (sessionErr) throw sessionErr;
-
-        const userId = sessionRes.session?.user?.id;
-        if (!userId) return;
-
-        const { year, month } = parseYm(ym);
-
-        const { data, error } = await supabase
-          .from("months")
-          .select("status")
-          .eq("user_id", userId)
-          .eq("year", year)
-          .eq("month", month)
-          .limit(1);
-
-        if (error) throw error;
-
-        const status = (data?.[0]?.status as "open" | "closed" | undefined) ?? "open";
-        if (!cancelled) setMonthClosed(status === "closed");
-      } catch {
-        // Si falla la comprobación, no bloqueamos por defecto (mejor UX).
-        if (!cancelled) setMonthClosed(false);
-      } finally {
-        if (!cancelled) setChecking(false);
-      }
-    }
-
-    checkMonth();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [supabase, isOnDashboard, ymValid, ym]);
-
-  const items = [
-    { href: dashboardHref, label: "Dashboard" },
-    { href: "/app/fixed", label: "Gastos fijos" },
-
-    { href: settingsHref, label: "Ajustes" },
-  ];
-
-  // Botón nuevo gasto: si mes cerrado en dashboard, lo deshabilitamos
-  const newDisabled = isOnDashboard && ymValid && !!ym && (monthClosed || checking);
-
   return (
     <nav className="flex items-center gap-3">
       {items.map((it) => (
@@ -130,34 +56,26 @@ export default function TopNav() {
         </Link>
       ))}
 
-      {newDisabled ? (
-        <span
-          className="px-3 py-1 text-sm border border-black/20 opacity-50 cursor-not-allowed"
-          title={checking ? "Comprobando mes…" : "Mes cerrado: no puedes añadir gastos"}
-        >
-          + Nuevo Gasto
-        </span>
-      ) : (
-        <Link
-          href={newHref}
-          className="px-3 py-1 text-sm border border-black bg-black text-white hover:opacity-90"
-        >
-          + Nuevo Gasto
-        </Link>
-      )}
-{email && (
-  <button
-    onClick={onLogout}
-    className="ml-auto px-3 py-1 text-sm border border-black/20 hover:border-black"
-  >
-    Cerrar sesión
-  </button>
-)}
+      <Link
+        href="/app/new"
+        className="px-3 py-1 text-sm border border-black bg-black text-white hover:opacity-90"
+      >
+        + Nuevo Gasto
+      </Link>
 
       {email && (
-        <span className="ml-2 text-sm text-black/60 truncate max-w-[200px]">
-          {email}
-        </span>
+        <>
+          <button
+            onClick={onLogout}
+            className="ml-auto px-3 py-1 text-sm border border-black/20 hover:border-black"
+          >
+            Cerrar sesión
+          </button>
+
+          <span className="ml-2 text-sm text-black/60 truncate max-w-[200px]">
+            {email}
+          </span>
+        </>
       )}
     </nav>
   );
