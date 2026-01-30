@@ -144,8 +144,8 @@ export default function DashboardMoneyPanel({ ym }: Props) {
         .from("expenses")
         .select("amount")
         .eq("user_id", userId)
-        .gte("expense_date", start)
-        .lte("expense_date", end);
+        .gte("date", start)
+        .lte("date", end);
 
       if (exErr) throw exErr;
 
