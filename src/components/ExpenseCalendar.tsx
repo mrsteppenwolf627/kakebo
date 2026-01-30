@@ -370,6 +370,7 @@ export default function ExpenseCalendar({
       setClosing(false);
     }
   }
+  window.dispatchEvent(new Event("kakebo:expenses-changed"));
 
   useEffect(() => {
     load();
