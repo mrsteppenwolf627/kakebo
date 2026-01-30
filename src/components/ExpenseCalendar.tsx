@@ -23,7 +23,7 @@ type ExpenseRow = {
   category: string;
   note: string | null;
   color: string | null;
-  created_at: string;
+  expense_date: string;
 };
 
 type MonthRow = {
@@ -239,7 +239,7 @@ export default function ExpenseCalendar({
       if (m?.id) {
         const { data, error } = await supabase
           .from("expenses")
-          .select("id,user_id,month_id,date,amount,category,note,color,created_at")
+          .select("id,user_id,month_id,date,amount,category,note,color,expense_date")
           .eq("user_id", userId)
           .eq("month_id", m.id)
           .order("date", { ascending: false });
@@ -256,7 +256,7 @@ export default function ExpenseCalendar({
 
       const { data, error } = await supabase
         .from("expenses")
-        .select("id,user_id,month_id,date,amount,category,note,color,created_at")
+        .select("id,user_id,month_id,date,amount,category,note,color,expense_date")
         .eq("user_id", userId)
         .gte("date", fromDate)
         .lt("date", toDate)
