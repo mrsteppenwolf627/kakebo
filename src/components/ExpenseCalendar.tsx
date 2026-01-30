@@ -23,7 +23,6 @@ type ExpenseRow = {
   category: string;
   note: string | null;
   color: string | null;
-  created_at: string;
 };
 
 type MonthRow = {
@@ -49,7 +48,13 @@ function pad2(n: number) {
   return String(n).padStart(2, "0");
 }
 
-export default function ExpenseCalendar({ year, month }: { year: number; month: number }) {
+export default function ExpenseCalendar({
+  year,
+  month,
+}: {
+  year: number;
+  month: number;
+}) {
   const supabase = createClient();
 
   const [rows, setRows] = useState<ExpenseRow[]>([]);
@@ -98,13 +103,22 @@ export default function ExpenseCalendar({ year, month }: { year: number; month: 
     return Math.max(0, income - (Number(fixedTotal) || 0));
   }, [income, fixedTotal]);
 
-  // ✅ “Disponible (ingreso - fijos - gastos)”
-  const available = useMemo(() => {
-    if (disposableIncome <= 0) return 0;
-    return disposableIncome - total;
-  }, [disposableIncome, total]);
+  // ✅ utilizable para categorías (plan del mes):
+  // ingreso - gastos fijos - objetivo de ahorro
+  // (puede ser negativo si el objetivo de ahorro es mayor que lo que queda tras fijos)
+  const availableForCategories = useMemo(() => {
+    if (!Number.isFinite(income) || income === 0) return 0;
+    return (
+      income - (Number(fixedTotal) || 0) - (Number(savingGoal) || 0)
+    );
+  }, [income, fixedTotal, savingGoal]);
 
-  // ✅ ahorrado “de momento” frente a objetivo (lo que sobra del disponible para gastar)
+  // ✅ disponible tras gastos variables del mes (puede ser negativo si has gastado de más)
+  const availableAfterExpenses = useMemo(() => {
+    return availableForCategories - total;
+  }, [availableForCategories, total]);
+
+  // ✅ ahorrado “de momento” frente a objetivo (lo que sobra tras fijos y gastos)
   const savedSoFar = useMemo(() => {
     if (disposableIncome <= 0) return 0;
     return disposableIncome - total;
@@ -149,7 +163,9 @@ export default function ExpenseCalendar({ year, month }: { year: number; month: 
 
       if (error) throw error;
 
-      setSettings(((data?.[0] as UserSettingsRow) ?? null) as UserSettingsRow | null);
+      setSettings(
+        ((data?.[0] as UserSettingsRow) ?? null) as UserSettingsRow | null
+      );
     } catch {
       setSettings(null);
     } finally {
@@ -198,7 +214,8 @@ export default function ExpenseCalendar({ year, month }: { year: number; month: 
     const fixedTotalForYm = (fixedData ?? []).reduce((acc, r: any) => {
       // ym es YYYY-MM, comparación lexicográfica funciona
       const startOk = typeof r.start_ym === "string" && r.start_ym <= ym;
-      const endOk = !r.end_ym || (typeof r.end_ym === "string" && r.end_ym >= ym);
+      const endOk =
+        !r.end_ym || (typeof r.end_ym === "string" && r.end_ym >= ym);
       return startOk && endOk ? acc + (Number(r.amount) || 0) : acc;
     }, 0);
 
@@ -221,7 +238,7 @@ export default function ExpenseCalendar({ year, month }: { year: number; month: 
       if (m?.id) {
         const { data, error } = await supabase
           .from("expenses")
-          .select("id,user_id,month_id,date,amount,category,note,color,created_at")
+          .select("id,user_id,month_id,date,amount,category,note,color")
           .eq("user_id", userId)
           .eq("month_id", m.id)
           .order("date", { ascending: false });
@@ -238,7 +255,7 @@ export default function ExpenseCalendar({ year, month }: { year: number; month: 
 
       const { data, error } = await supabase
         .from("expenses")
-        .select("id,user_id,month_id,date,amount,category,note,color,created_at")
+        .select("id,user_id,month_id,date,amount,category,note,color")
         .eq("user_id", userId)
         .gte("date", fromDate)
         .lt("date", toDate)
@@ -352,6 +369,7 @@ export default function ExpenseCalendar({ year, month }: { year: number; month: 
       setClosing(false);
     }
   }
+  window.dispatchEvent(new Event("kakebo:expenses-changed"));
 
   useEffect(() => {
     load();
@@ -359,7 +377,9 @@ export default function ExpenseCalendar({ year, month }: { year: number; month: 
   }, [ym]);
 
   const isClosed = monthRow?.status === "closed";
-  const monthStatusLabel = monthRow?.status ? `estado: ${monthRow.status}` : "sin registro de mes aún";
+  const monthStatusLabel = monthRow?.status
+    ? `estado: ${monthRow.status}`
+    : "sin registro de mes aún";
 
   function budgetFor(key: CategoryKey) {
     if (!settings) return null;
@@ -448,8 +468,27 @@ export default function ExpenseCalendar({ year, month }: { year: number; month: 
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <span className="text-black/60">Disponible (ingreso - fijos - gastos)</span>
-            <span className="font-semibold">{income > 0 ? `${money(available)} €` : "—"}</span>
+            <span className="text-black/60">
+              Utilizable para categorías (ingreso - fijos - ahorro)
+            </span>
+            <span
+              className={`font-semibold ${
+                income > 0 && availableForCategories < 0 ? "text-red-600" : ""
+              }`}
+            >
+              {income > 0 ? `${money(availableForCategories)} €` : "—"}
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-black/60">Disponible tras gastos (utilizable - gastos)</span>
+            <span
+              className={`font-semibold ${
+                income > 0 && availableAfterExpenses < 0 ? "text-red-600" : ""
+              }`}
+            >
+              {income > 0 ? `${money(availableAfterExpenses)} €` : "—"}
+            </span>
           </div>
 
           <div className="flex items-center justify-between text-sm">
@@ -519,84 +558,88 @@ export default function ExpenseCalendar({ year, month }: { year: number; month: 
                     <span
                       className="inline-block h-3 w-3 rounded-full"
                       style={{ backgroundColor: cat.color }}
-                      title={cat.label}
                     />
-                    <div>
-                      <div className="text-sm font-medium">{cat.label}</div>
-                      <div className="text-xs text-black/60">
-                        {pct.toFixed(0)}% del mes
-                        {budget != null ? ` · Presupuesto: ${money(budget)} €` : ""}
-                      </div>
-
-                      {budget != null && (
-                        <div className={`text-xs ${over ? "text-red-600" : "text-black/60"}`}>
-                          {over
-                            ? `Te pasas por ${money(Math.abs(remaining!))} €`
-                            : `Te quedan ${money(remaining!)} €`}
-                        </div>
-                      )}
-                    </div>
+                    <div className="font-semibold text-sm">{cat.label}</div>
                   </div>
-
-                  <div className="text-right">
-                    <div className="text-sm font-semibold">{money(spent)} €</div>
-                    {budget != null && (
-                      <div className="text-xs text-black/60">
-                        {money(Math.min(spent, budget))} / {money(budget)}
-                      </div>
-                    )}
-                  </div>
+                  <div className="text-sm font-semibold">{money(spent)} €</div>
                 </div>
 
-                {budget != null && budget > 0 && (
+                <div className="text-xs text-black/60 flex items-center justify-between">
+                  <span>Del total: {pct.toFixed(0)}%</span>
+                  {budget != null ? (
+                    <span className={over ? "text-red-600 font-semibold" : ""}>
+                      Presupuesto: {money(budget)} € {remaining != null ? `· Restan ${money(remaining)} €` : ""}
+                    </span>
+                  ) : (
+                    <span>Presupuesto: —</span>
+                  )}
+                </div>
+
+                {budget != null && budget > 0 ? (
                   <div className="h-2 w-full rounded-full bg-black/10 overflow-hidden">
                     <div
-                      className={`h-2 rounded-full transition-all ${
-                        over ? "bg-red-600" : "bg-black"
-                      }`}
+                      className={`h-2 rounded-full ${over ? "bg-red-600" : "bg-black"}`}
                       style={{ width: `${barPct}%` }}
                     />
                   </div>
+                ) : (
+                  <div className="h-2 w-full rounded-full bg-black/5" />
                 )}
               </div>
             );
           })}
         </div>
 
-        {/* Gráfico */}
-        <SpendingChart title="Gasto por categoría" totals={totalsByCategory} categories={chartCategories} />
-      </div>
+        {/* Chart */}
+        <div className="border border-black/10 p-4 rounded-lg">
+          <div className="font-semibold mb-2">Distribución por categorías</div>
+          <SpendingChart
+  title="Gasto por categoría"
+  categories={chartCategories}
+  totals={totalsByCategory}
+/>
 
-      {err && <div className="text-sm text-red-600">{err}</div>}
-      {loading && <div className="text-sm text-black/60">Cargando...</div>}
+        </div>
 
-      <div className="border border-black/10 p-4">
-        <div className="font-semibold mb-2">Lista de gastos</div>
+        {/* CTA */}
+        <div className="flex items-center justify-between">
+          <Link
+            href={`/app/new?ym=${ym}`}
+            className={`border border-black px-3 py-2 text-sm hover:bg-black hover:text-white ${
+              isClosed ? "pointer-events-none opacity-50" : ""
+            }`}
+            title={isClosed ? "Mes cerrado" : "Añadir gasto"}
+          >
+            + Nuevo gasto
+          </Link>
 
-        {rows.length === 0 && <div className="text-sm text-black/60">Aún no hay gastos en este mes.</div>}
+          <Link href={`/app/history/${ym}`} className="text-sm underline">
+            Ver histórico de este mes
+          </Link>
+        </div>
 
-        {rows.length > 0 && (
-          <ul className="space-y-2">
-            {rows.map((r) => {
-              const cat = KAKEBO_CATEGORIES[r.category as CategoryKey] ?? null;
-              const disableDelete = isClosed || deletingId === r.id;
+        {err && <div className="text-sm text-red-600">{err}</div>}
+        {loading && <div className="text-sm text-black/60">Cargando…</div>}
 
-              return (
-                <li key={r.id} className="flex items-center justify-between gap-3 text-sm">
-                  <div className="flex items-center gap-3">
-                    {cat && (
-                      <span
-                        className="inline-block h-3 w-3 rounded-full"
-                        style={{ backgroundColor: cat.color }}
-                        title={cat.label}
-                      />
-                    )}
+        {/* Lista */}
+        <div className="border border-black/10 p-4 rounded-lg">
+          <div className="font-semibold mb-2">Últimos gastos</div>
 
-                    <div className="flex flex-col">
-                      <span className="font-medium">{r.note ?? "(sin concepto)"}</span>
-                      <span className="text-black/60">
-                        {r.date} · {cat?.label ?? r.category}
-                      </span>
+          {rows.length === 0 && !loading && (
+            <div className="text-sm text-black/60">No hay gastos todavía.</div>
+          )}
+
+          {rows.length > 0 && (
+            <ul className="space-y-2">
+              {rows.map((r) => (
+                <li
+                  key={r.id}
+                  className="flex items-center justify-between gap-3 text-sm border-b border-black/10 pb-2"
+                >
+                  <div className="min-w-0">
+                    <div className="font-medium truncate">{r.note || "Sin concepto"}</div>
+                    <div className="text-xs text-black/60">
+                      {r.date} · {(KAKEBO_CATEGORIES as any)[r.category]?.label ?? r.category}
                     </div>
                   </div>
 
@@ -604,27 +647,32 @@ export default function ExpenseCalendar({ year, month }: { year: number; month: 
                     <div className="font-semibold">{money(Number(r.amount))} €</div>
 
                     <button
-                      onClick={() => {
-                        if (isClosed) return;
-                        const ok = window.confirm("¿Eliminar este gasto? Esta acción no se puede deshacer.");
-                        if (ok) removeExpense(r.id);
-                      }}
-                      disabled={disableDelete}
-                      className={`border px-2 py-1 text-xs disabled:opacity-50 ${
-                        isClosed
-                          ? "border-black/30 text-black/40 cursor-not-allowed"
-                          : "border-black hover:bg-black hover:text-white"
-                      }`}
-                      title={isClosed ? "Mes cerrado: no se puede eliminar" : "Eliminar gasto"}
+                      onClick={() => removeExpense(r.id)}
+                      disabled={isClosed || deletingId === r.id}
+                      className="border border-black px-2 py-1 text-xs hover:bg-black hover:text-white disabled:opacity-50"
+                      title={isClosed ? "Mes cerrado" : "Eliminar"}
                     >
-                      {deletingId === r.id ? "…" : isClosed ? "Mes cerrado" : "Eliminar"}
+                      {deletingId === r.id ? "Eliminando…" : "Eliminar"}
                     </button>
                   </div>
                 </li>
-              );
-            })}
-          </ul>
-        )}
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* ✅ BLOQUE SEO */}
+        <section className="mt-10 border-t border-black/10 pt-8 space-y-3 text-sm text-black/70">
+          <h2 className="text-lg font-semibold text-black">Control mensual con Kakebo</h2>
+          <p>
+            Este panel muestra tu resumen del mes con el método Kakebo: gasto total, desglose por
+            categorías, presupuestos y progreso hacia el objetivo de ahorro.
+          </p>
+          <div className="text-xs text-black/50">
+            (Hueco SEO: texto sobre “control de gastos mensual”, “kakebo”, “presupuesto por
+            categorías”, etc.)
+          </div>
+        </section>
       </div>
     </div>
   );
