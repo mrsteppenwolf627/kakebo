@@ -405,8 +405,8 @@ export default function ExpenseCalendar({
 
   return (
     <div className="space-y-4">
-      <div className="border border-black/10 p-4 space-y-3">
-        <div className="flex items-start justify-between gap-4">
+      <div className="border border-black/10 p-3 sm:p-4 space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
             <div className="text-sm text-black/60">
               Mes: {ym} <span className="ml-2">({monthStatusLabel})</span>
@@ -418,14 +418,13 @@ export default function ExpenseCalendar({
               </div>
             )}
 
-            <div className="text-sm text-black/60">Gastos del mes: {rows.length}</div>
-            <div className="text-sm text-black/60">Total del mes: {money(total)} €</div>
+            <div className="text-sm text-black/60">Gastos: {rows.length} · Total: {money(total)} €</div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={load}
-              className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white"
+              className="border border-black px-3 py-2 text-xs sm:text-sm hover:bg-black hover:text-white"
             >
               Recargar
             </button>
@@ -434,42 +433,40 @@ export default function ExpenseCalendar({
               <button
                 onClick={reopenMonth}
                 disabled={closing}
-                className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white disabled:opacity-50"
+                className="border border-black px-3 py-2 text-xs sm:text-sm hover:bg-black hover:text-white disabled:opacity-50"
                 title="Reabrir mes"
               >
-                {closing ? "Reabriendo…" : "Reabrir mes"}
+                {closing ? "…" : "Reabrir"}
               </button>
             ) : (
               <button
                 onClick={closeMonth}
                 disabled={closing}
-                className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white disabled:opacity-50"
+                className="border border-black px-3 py-2 text-xs sm:text-sm hover:bg-black hover:text-white disabled:opacity-50"
                 title="Cerrar mes"
               >
-                {closing ? "Cerrando…" : "Cerrar mes"}
+                {closing ? "…" : "Cerrar mes"}
               </button>
             )}
           </div>
         </div>
 
         {/* Finanzas del mes */}
-        <div className="border border-black/10 p-4 space-y-3 rounded-lg">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-black/60">Ingreso mensual (settings)</span>
+        <div className="border border-black/10 p-3 sm:p-4 space-y-2 sm:space-y-3 rounded-lg">
+          <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
+            <span className="text-black/60">Ingreso mensual</span>
             <span className="font-semibold">
-              {settingsLoading ? "…" : income > 0 ? `${money(income)} €` : "No configurado"}
+              {settingsLoading ? "…" : income > 0 ? `${money(income)} €` : "—"}
             </span>
           </div>
 
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-black/60">Gastos fijos (mes)</span>
+          <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
+            <span className="text-black/60">Gastos fijos</span>
             <span className="font-semibold">{income > 0 ? `${money(fixedTotal)} €` : "—"}</span>
           </div>
 
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-black/60">
-              Utilizable para categorías (ingreso - fijos - ahorro)
-            </span>
+          <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
+            <span className="text-black/60">Utilizable</span>
             <span
               className={`font-semibold ${
                 income > 0 && availableForCategories < 0 ? "text-red-600" : ""
@@ -479,8 +476,8 @@ export default function ExpenseCalendar({
             </span>
           </div>
 
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-black/60">Disponible tras gastos (utilizable - gastos)</span>
+          <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
+            <span className="text-black/60">Disponible</span>
             <span
               className={`font-semibold ${
                 income > 0 && availableAfterExpenses < 0 ? "text-red-600" : ""
@@ -490,10 +487,10 @@ export default function ExpenseCalendar({
             </span>
           </div>
 
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
             <span className="text-black/60">Objetivo ahorro</span>
             <span className="font-semibold">
-              {savingGoal > 0 ? `${money(savingGoal)} €` : "No configurado"}
+              {savingGoal > 0 ? `${money(savingGoal)} €` : "—"}
             </span>
           </div>
 
@@ -601,10 +598,10 @@ export default function ExpenseCalendar({
         </div>
 
         {/* CTA */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
           <Link
             href={`/app/new?ym=${ym}`}
-            className={`border border-black px-3 py-2 text-sm hover:bg-black hover:text-white ${
+            className={`border border-black px-3 py-2 text-sm text-center hover:bg-black hover:text-white ${
               isClosed ? "pointer-events-none opacity-50" : ""
             }`}
             title={isClosed ? "Mes cerrado" : "Añadir gasto"}
@@ -612,8 +609,8 @@ export default function ExpenseCalendar({
             + Nuevo gasto
           </Link>
 
-          <Link href={`/app/history/${ym}`} className="text-sm underline">
-            Ver histórico de este mes
+          <Link href={`/app/history/${ym}`} className="text-sm underline text-center sm:text-right">
+            Ver histórico
           </Link>
         </div>
 
@@ -621,8 +618,8 @@ export default function ExpenseCalendar({
         {loading && <div className="text-sm text-black/60">Cargando…</div>}
 
         {/* Lista */}
-        <div className="border border-black/10 p-4 rounded-lg">
-          <div className="font-semibold mb-2">Últimos gastos</div>
+        <div className="border border-black/10 p-3 sm:p-4 rounded-lg">
+          <div className="font-semibold mb-2 text-sm sm:text-base">Últimos gastos</div>
 
           {rows.length === 0 && !loading && (
             <div className="text-sm text-black/60">No hay gastos todavía.</div>
@@ -633,25 +630,25 @@ export default function ExpenseCalendar({
               {rows.map((r) => (
                 <li
                   key={r.id}
-                  className="flex items-center justify-between gap-3 text-sm border-b border-black/10 pb-2"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 text-sm border-b border-black/10 pb-2"
                 >
-                  <div className="min-w-0">
-                    <div className="font-medium truncate">{r.note || "Sin concepto"}</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-medium truncate text-sm">{r.note || "Sin concepto"}</div>
                     <div className="text-xs text-black/60">
                       {r.date} · {(KAKEBO_CATEGORIES as any)[r.category]?.label ?? r.category}
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <div className="font-semibold">{money(Number(r.amount))} €</div>
+                  <div className="flex items-center justify-between sm:justify-end gap-3">
+                    <div className="font-semibold text-sm">{money(Number(r.amount))} €</div>
 
                     <button
                       onClick={() => removeExpense(r.id)}
                       disabled={isClosed || deletingId === r.id}
-                      className="border border-black px-2 py-1 text-xs hover:bg-black hover:text-white disabled:opacity-50"
+                      className="border border-black px-2 py-1 text-xs hover:bg-black hover:text-white disabled:opacity-50 shrink-0"
                       title={isClosed ? "Mes cerrado" : "Eliminar"}
                     >
-                      {deletingId === r.id ? "Eliminando…" : "Eliminar"}
+                      {deletingId === r.id ? "…" : "✕"}
                     </button>
                   </div>
                 </li>

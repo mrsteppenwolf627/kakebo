@@ -43,12 +43,14 @@ export default async function HomePage(props: {
 
   return (
     <AuthGate>
-      <main className="min-h-screen px-6 py-10">
-        <div className="mx-auto max-w-5xl space-y-6">
-          <h1 className="text-4xl font-semibold">Kakebo Ahorro</h1>
-          <p className="text-black/60">
-            Registra tus gastos y visualízalos por mes con categorías Kakebo.
-          </p>
+      <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
+        <div className="mx-auto max-w-5xl space-y-4 sm:space-y-6">
+          <div>
+            <h1 className="text-2xl sm:text-4xl font-semibold">Kakebo Ahorro</h1>
+            <p className="text-black/60 text-sm sm:text-base mt-1">
+              Control de gastos mensual con método Kakebo.
+            </p>
+          </div>
 
           <MonthSelector year={year} month={month} />
 

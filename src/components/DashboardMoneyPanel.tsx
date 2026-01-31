@@ -294,42 +294,39 @@ export default function DashboardMoneyPanel({ ym }: Props) {
   }
 
   return (
-    <section className="border border-black/10 rounded-xl p-4 space-y-4">
-      <div className="flex items-start justify-between gap-4">
+    <section className="border border-black/10 rounded-xl p-3 sm:p-4 space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
         <div>
-          <div className="text-sm text-black/60">Resumen realista</div>
-          <div className="text-lg font-semibold">Mes: {ym}</div>
+          <div className="text-xs sm:text-sm text-black/60">Resumen realista</div>
+          <div className="text-base sm:text-lg font-semibold">Mes: {ym}</div>
         </div>
 
-        <div className="text-xs text-black/50 max-w-xs">
-          Esto separa “lo gastable” de “lo reservado” para que no muerdas fijos/ahorro
-          solo porque aún no han pasado por el banco.
+        <div className="text-xs text-black/50 sm:max-w-xs">
+          Separa "gastable" de "reservado" para no tocar fijos/ahorro.
         </div>
       </div>
 
       {err && <div className="text-sm text-red-600">{err}</div>}
       {okMsg && <div className="text-sm text-green-700">{okMsg}</div>}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <div className="border border-black/10 rounded-xl p-4">
-          <div className="text-xs text-black/60">Disponible para categorías (mes)</div>
-          <div className="text-2xl font-semibold">{money(availableForCategories)} €</div>
-          <div className="text-xs text-black/50 mt-2">Ingresos − fijos del mes − ahorro objetivo</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="border border-black/10 rounded-xl p-3 sm:p-4">
+          <div className="text-xs text-black/60">Disponible categorías</div>
+          <div className="text-xl sm:text-2xl font-semibold">{money(availableForCategories)} €</div>
+          <div className="text-xs text-black/50 mt-1 sm:mt-2">Ingresos − fijos − ahorro</div>
         </div>
 
-        <div className="border border-black/10 rounded-xl p-4">
-          <div className="text-xs text-black/60">Reservado para fijos pendientes</div>
-          <div className="text-2xl font-semibold">{money(pendingFixedTotal)} €</div>
-          <div className="text-xs text-black/50 mt-2">
-            En el mes actual usa el día de cobro (si existe). En meses futuros es conservador (todo pendiente).
-          </div>
+        <div className="border border-black/10 rounded-xl p-3 sm:p-4">
+          <div className="text-xs text-black/60">Reservado fijos</div>
+          <div className="text-xl sm:text-2xl font-semibold">{money(pendingFixedTotal)} €</div>
+          <div className="text-xs text-black/50 mt-1 sm:mt-2">Fijos pendientes del mes</div>
         </div>
 
-        <div className="border border-black/10 rounded-xl p-4 space-y-3">
+        <div className="border border-black/10 rounded-xl p-3 sm:p-4 space-y-3 sm:col-span-2 lg:col-span-1">
           <div>
-            <div className="text-xs text-black/60">Disponible real hoy (categorías)</div>
-            <div className="text-2xl font-semibold">{money(availableAfterExpenses)} €</div>
-            <div className="text-xs text-black/50 mt-2">Utilizable para categorías − gastos del mes</div>
+            <div className="text-xs text-black/60">Disponible real hoy</div>
+            <div className="text-xl sm:text-2xl font-semibold">{money(availableAfterExpenses)} €</div>
+            <div className="text-xs text-black/50 mt-1 sm:mt-2">Utilizable − gastos del mes</div>
           </div>
 
           <div className="border-t border-black/10 pt-3 space-y-2 text-sm">

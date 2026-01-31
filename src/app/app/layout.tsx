@@ -1,4 +1,5 @@
 import TopNav from "@/components/TopNav";
+import Link from "next/link";
 
 export const metadata = {
   robots: {
@@ -14,9 +15,11 @@ export default function AppLayout({
 }) {
   return (
     <>
-      <header className="border-b border-black/10">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="font-semibold">Kakebo Ahorro</div>
+      <header className="border-b border-black/10 sticky top-0 bg-white z-40 relative">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <Link href="/app" className="font-semibold text-sm sm:text-base">
+            Kakebo Ahorro
+          </Link>
           <TopNav />
         </div>
       </header>
