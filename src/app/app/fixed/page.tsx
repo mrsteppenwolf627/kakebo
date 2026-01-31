@@ -295,11 +295,11 @@ export default function FixedExpensesPage() {
   }, []);
 
   return (
-    <main className="min-h-screen px-6 py-10">
-      <div className="max-w-5xl mx-auto space-y-6">
-        <div className="flex items-start justify-between gap-4">
+    <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
+      <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-semibold">Gastos fijos</h1>
+            <h1 className="text-2xl sm:text-3xl font-semibold">Gastos fijos</h1>
             <p className="text-sm text-black/60">
               Total activo: <span className="font-semibold">{money(totalActive)} €</span>
             </p>
@@ -310,7 +310,7 @@ export default function FixedExpensesPage() {
               href="/app"
               className="border border-black px-3 py-2 text-sm rounded-lg hover:bg-black hover:text-white"
             >
-              Volver
+              ← Dashboard
             </Link>
             <button
               onClick={load}
@@ -325,10 +325,10 @@ export default function FixedExpensesPage() {
         {loading && <div className="text-sm text-black/60">Cargando…</div>}
 
         {/* Alta */}
-        <div className="border border-black/10 p-4 space-y-3 rounded-lg">
-          <div className="font-semibold">Añadir gasto fijo</div>
+        <div className="border border-black/10 p-3 sm:p-4 space-y-3 rounded-lg">
+          <div className="font-semibold text-sm sm:text-base">Añadir gasto fijo</div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             <input
               className="border border-black/20 rounded-lg px-3 py-2 text-sm"
               placeholder="Nombre (Ej: alquiler)"
@@ -345,14 +345,14 @@ export default function FixedExpensesPage() {
 
             <input
               className="border border-black/20 rounded-lg px-3 py-2 text-sm"
-              placeholder="Start YM (YYYY-MM)"
+              placeholder="Inicio (YYYY-MM)"
               value={startYm}
               onChange={(e) => setStartYm(e.target.value)}
             />
 
             <input
               className="border border-black/20 rounded-lg px-3 py-2 text-sm"
-              placeholder="End YM (opcional)"
+              placeholder="Fin (opcional)"
               value={endYm}
               onChange={(e) => setEndYm(e.target.value)}
             />

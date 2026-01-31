@@ -30,7 +30,7 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
-  const [agg, setAgg] = useState<Record<string, ExpenseAgg>>({}); // month_id -> totals
+  const [agg, setAgg] = useState<Record<string, ExpenseAgg>>({});
 
   async function getUserId() {
     const { data: sessionRes, error } = await supabase.auth.getSession();
@@ -59,8 +59,6 @@ export default function HistoryPage() {
       const ms = (data as MonthRow[]) ?? [];
       setMonths(ms);
 
-      // Agregamos gastos por mes con una query por mes (simple y fiable).
-      // Si algún día quieres optimizar, lo hacemos con una RPC o una vista.
       const map: Record<string, ExpenseAgg> = {};
       for (const m of ms) {
         const { data: exp, error: eErr } = await supabase
@@ -77,8 +75,9 @@ export default function HistoryPage() {
       }
 
       setAgg(map);
-    } catch (e: any) {
-      setErr(e?.message ?? "Error cargando histórico");
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "Error cargando histórico";
+      setErr(message);
     } finally {
       setLoading(false);
     }
@@ -95,21 +94,21 @@ export default function HistoryPage() {
   );
 
   return (
-    <main className="min-h-screen px-6 py-10">
-      <div className="max-w-5xl mx-auto space-y-6">
-        <div className="flex items-start justify-between gap-4">
+    <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
+      <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-semibold">Histórico</h1>
+            <h1 className="text-2xl sm:text-3xl font-semibold">Histórico</h1>
             <p className="text-black/60 text-sm">
-              Meses registrados: {months.length} · Cerrados: {closedCount}
+              Meses: {months.length} · Cerrados: {closedCount}
             </p>
           </div>
 
           <Link
-            href="/"
-            className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white"
+            href="/app"
+            className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white text-center"
           >
-            Volver
+            ← Dashboard
           </Link>
         </div>
 
@@ -123,12 +122,13 @@ export default function HistoryPage() {
         )}
 
         {!loading && months.length > 0 && (
-          <div className="border border-black/10">
-            <div className="grid grid-cols-12 border-b border-black/10 p-3 text-xs text-black/60">
+          <div className="border border-black/10 overflow-hidden">
+            {/* Desktop Header */}
+            <div className="hidden sm:grid sm:grid-cols-12 border-b border-black/10 p-3 text-xs text-black/60">
               <div className="col-span-3">Mes</div>
               <div className="col-span-2">Estado</div>
               <div className="col-span-3">Gastos</div>
-              <div className="col-span-2">Nº gastos</div>
+              <div className="col-span-2">Nº</div>
               <div className="col-span-2 text-right">Acción</div>
             </div>
 
@@ -137,19 +137,45 @@ export default function HistoryPage() {
               return (
                 <div
                   key={m.id}
-                  className="grid grid-cols-12 p-3 border-b border-black/10 text-sm items-center"
+                  className="p-3 border-b border-black/10 text-sm"
                 >
-                  <div className="col-span-3 font-medium">{ymLabel(m.year, m.month)}</div>
-                  <div className="col-span-2 text-black/60">{m.status}</div>
-                  <div className="col-span-3">{a.total.toFixed(2)} €</div>
-                  <div className="col-span-2 text-black/60">{a.count}</div>
-                  <div className="col-span-2 text-right">
-                    <Link
-                      href={`/history/${m.year}-${String(m.month).padStart(2, "0")}`}
-                      className="border border-black px-2 py-1 text-xs hover:bg-black hover:text-white"
-                    >
-                      Ver
-                    </Link>
+                  {/* Mobile Layout */}
+                  <div className="sm:hidden space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">{ymLabel(m.year, m.month)}</span>
+                      <span className={`text-xs px-2 py-0.5 rounded ${
+                        m.status === "closed"
+                          ? "bg-black/10 text-black/60"
+                          : "bg-green-100 text-green-700"
+                      }`}>
+                        {m.status === "closed" ? "Cerrado" : "Abierto"}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-black/60 text-xs">
+                      <span>{a.total.toFixed(2)} € · {a.count} gastos</span>
+                      <Link
+                        href={`/app/history/${m.year}-${String(m.month).padStart(2, "0")}`}
+                        className="border border-black px-2 py-1 text-xs hover:bg-black hover:text-white"
+                      >
+                        Ver
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Desktop Layout */}
+                  <div className="hidden sm:grid sm:grid-cols-12 items-center">
+                    <div className="col-span-3 font-medium">{ymLabel(m.year, m.month)}</div>
+                    <div className="col-span-2 text-black/60">{m.status}</div>
+                    <div className="col-span-3">{a.total.toFixed(2)} €</div>
+                    <div className="col-span-2 text-black/60">{a.count}</div>
+                    <div className="col-span-2 text-right">
+                      <Link
+                        href={`/app/history/${m.year}-${String(m.month).padStart(2, "0")}`}
+                        className="border border-black px-2 py-1 text-xs hover:bg-black hover:text-white"
+                      >
+                        Ver
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );

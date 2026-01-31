@@ -211,11 +211,11 @@ export default function NewExpensePage() {
   const backHref = ymValid && ym ? `/app?ym=${ym}` : "/app";
 
   return (
-    <main className="min-h-screen px-6 py-10">
-      <div className="mx-auto max-w-xl space-y-6">
-        <div className="flex items-start justify-between gap-4">
+    <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
+      <div className="mx-auto max-w-xl space-y-4 sm:space-y-6">
+        <div className="flex items-start justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-semibold">Nuevo gasto</h1>
+            <h1 className="text-2xl sm:text-3xl font-semibold">Nuevo gasto</h1>
             <div className="text-sm text-black/60">{badge}</div>
 
             {inputsDisabled && (
@@ -228,9 +228,9 @@ export default function NewExpensePage() {
           <button
             type="button"
             onClick={() => router.push(backHref)}
-            className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white"
+            className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white shrink-0"
           >
-            Volver
+            ← Volver
           </button>
         </div>
 

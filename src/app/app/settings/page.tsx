@@ -324,8 +324,8 @@ export default function SettingsPage() {
   }, [fixedRows]);
 
   return (
-    <main className="min-h-screen p-6 max-w-xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold">Ajustes</h1>
+    <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-xl mx-auto space-y-4 sm:space-y-6">
+      <h1 className="text-xl sm:text-2xl font-bold">Ajustes</h1>
 
       {err && <div className="text-sm text-red-600">{err}</div>}
       {ok && <div className="text-sm text-green-700">{ok}</div>}
