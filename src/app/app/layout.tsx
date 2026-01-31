@@ -15,8 +15,8 @@ export default function AppLayout({
 }) {
   return (
     <>
-      <header className="border-b border-black/10 sticky top-0 bg-white z-40 relative">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+      <header className="border-b border-black/10 sticky top-0 bg-white z-40 relative overflow-x-hidden">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-2">
           <Link href="/app" className="font-semibold text-sm sm:text-base">
             Kakebo Ahorro
           </Link>

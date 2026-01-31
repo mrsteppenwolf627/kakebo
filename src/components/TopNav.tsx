@@ -51,12 +51,12 @@ export default function TopNav() {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex items-center gap-2">
+      <nav className="hidden md:flex items-center gap-2 shrink-0">
         {items.map((it) => (
           <Link
             key={it.href}
             href={it.href}
-            className={`px-3 py-1.5 text-sm border hover:border-black transition-colors ${
+            className={`px-3 py-1.5 text-sm border hover:border-black transition-colors whitespace-nowrap ${
               pathname === it.href
                 ? "border-black bg-black text-white"
                 : "border-black/20"
@@ -68,19 +68,19 @@ export default function TopNav() {
 
         <Link
           href="/app/new"
-          className="px-3 py-1.5 text-sm border border-black bg-black text-white hover:opacity-90"
+          className="px-3 py-1.5 text-sm border border-black bg-black text-white hover:opacity-90 whitespace-nowrap"
         >
           + Nuevo
         </Link>
 
         {email && (
           <>
-            <span className="ml-2 text-xs text-black/50 truncate max-w-[150px]">
+            <span className="ml-2 text-xs text-black/50 truncate max-w-[120px]">
               {email}
             </span>
             <button
               onClick={onLogout}
-              className="px-3 py-1.5 text-sm border border-black/20 hover:border-black"
+              className="px-3 py-1.5 text-sm border border-black/20 hover:border-black whitespace-nowrap"
             >
               Salir
             </button>
@@ -108,7 +108,7 @@ export default function TopNav() {
 
       {/* Mobile Menu Dropdown */}
       {menuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-black/10 shadow-lg z-50">
+        <div className="md:hidden fixed top-[57px] left-0 w-full bg-white border-b border-black/10 shadow-lg z-50">
           <div className="max-w-5xl mx-auto px-4 py-3 space-y-2">
             {items.map((it) => (
               <Link

@@ -18,38 +18,39 @@ export const metadata: Metadata = {
 
 export default function PublicHomePage() {
   return (
-    <main className="min-h-screen bg-white text-black">
+    <main className="min-h-screen bg-white text-black overflow-x-hidden">
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-black/10 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full border border-black/20" />
-            <span className="text-sm font-semibold tracking-tight">
+      <header className="sticky top-0 z-10 border-b border-black/10 bg-white/90 backdrop-blur overflow-x-hidden">
+        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-3 gap-2">
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="h-8 w-8 rounded-full border border-black/20 shrink-0" />
+            <span className="text-sm font-semibold tracking-tight whitespace-nowrap">
               Kakebo Ahorro
             </span>
           </div>
 
-          <nav className="flex items-center gap-2">
+          <nav className="flex items-center gap-2 shrink-0">
             <Link
               href="/login"
-              className="rounded border border-black/20 px-3 py-1.5 text-sm hover:border-black"
+              className="hidden sm:inline-block rounded border border-black/20 px-3 py-1.5 text-sm hover:border-black whitespace-nowrap"
             >
               Entrar
             </Link>
             <Link
               href="/login"
-              className="rounded border border-black bg-black px-3 py-1.5 text-sm text-white hover:opacity-90"
+              className="rounded border border-black bg-black px-3 py-1.5 text-sm text-white hover:opacity-90 whitespace-nowrap"
             >
-              Crear cuenta
+              <span className="hidden sm:inline">Crear cuenta</span>
+              <span className="sm:hidden">Entrar</span>
             </Link>
           </nav>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="mx-auto w-full max-w-5xl px-4 py-16">
+      <section className="mx-auto w-full max-w-5xl px-4 py-10 sm:py-16">
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
+          <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight md:text-5xl">
             Controla tus gastos por mes, con claridad y sin humo.
           </h1>
 
