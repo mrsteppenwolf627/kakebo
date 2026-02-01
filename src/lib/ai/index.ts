@@ -2,3 +2,6 @@
 export * from "./client";
 export * from "./prompts";
 export * from "./classifier";
+export * from "./tools";
+export * from "./tool-executor";
+export * from "./assistant";

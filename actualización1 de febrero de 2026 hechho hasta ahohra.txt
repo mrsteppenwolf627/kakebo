@@ -455,10 +455,102 @@ CONFIGURACIÓN NECESARIA:
 
 
 ================================================================================
+     UPDATE - 1 de Febrero de 2026, ~20:00h (Sesión con Claude Opus 4.5)
+================================================================================
+
+FUNCTION CALLING IMPLEMENTADO - ASISTENTE CONVERSACIONAL
+---------------------------------------------------------
+
+Se implementó el sistema de function calling que permite a la IA ejecutar
+acciones reales (crear gastos, consultar saldos, etc).
+
+1. TOOLS / FUNCIONES (src/lib/ai/tools.ts)
+   Definiciones de las funciones que la IA puede llamar:
+
+   - create_expense: Crear un gasto nuevo
+   - list_expenses: Listar gastos (con filtros)
+   - get_monthly_summary: Resumen del mes con totales por categoría
+   - get_settings: Ver configuración del usuario
+   - update_settings: Modificar configuración
+   - classify_expense: Clasificar un texto de gasto
+
+2. EJECUTOR DE FUNCIONES (src/lib/ai/tool-executor.ts)
+   Puente entre la IA y la base de datos:
+   - Recibe la decisión de la IA
+   - Ejecuta la operación contra Supabase
+   - Devuelve el resultado
+
+3. ASISTENTE CONVERSACIONAL (src/lib/ai/assistant.ts)
+   El cerebro del chat:
+   - System prompt con personalidad "Kakebo AI"
+   - Procesa mensajes del usuario
+   - Decide qué funciones llamar
+   - Ejecuta las funciones
+   - Genera respuesta natural
+
+4. ENDPOINT (src/app/api/ai/assistant/route.ts)
+
+   POST /api/ai/assistant
+   Body: {
+     "message": "Añade 30€ de gasolina",
+     "history": []  // conversación previa (opcional)
+   }
+
+   Respuesta:
+   {
+     "success": true,
+     "data": {
+       "message": "He registrado 30€ en supervivencia (Gasolina)",
+       "toolsUsed": [{
+         "name": "create_expense",
+         "params": { "amount": 30, "category": "survival", "note": "Gasolina" },
+         "result": { "success": true, "data": {...} }
+       }],
+       "metrics": {
+         "model": "gpt-4o-mini",
+         "latencyMs": 1200,
+         "inputTokens": 850,
+         "outputTokens": 45,
+         "costUsd": 0.0002,
+         "toolCalls": 1
+       }
+     }
+   }
+
+EJEMPLOS DE USO:
+
+  "Añade 45€ de Mercadona"
+  → create_expense(amount=45, category=survival, note="Compra supermercado")
+
+  "¿Cuánto llevo gastado este mes?"
+  → get_monthly_summary(ym=2026-02)
+
+  "¿Cuál es mi presupuesto?"
+  → get_settings()
+
+  "Pon mi presupuesto de cultura en 200€"
+  → update_settings(budget_culture=200)
+
+ARCHIVOS AÑADIDOS:
+   src/lib/ai/
+   ├── tools.ts          → Definiciones de funciones
+   ├── tool-executor.ts  → Ejecutor de funciones
+   └── assistant.ts      → Asistente conversacional
+
+   src/app/api/ai/
+   └── assistant/
+       └── route.ts      → Endpoint POST /api/ai/assistant
+
+PENDIENTE FASE 2:
+   - [ ] Panel de evaluación del modelo
+   - [ ] Feedback loop (corrección de errores de IA)
+
+
+================================================================================
                               FIN
 ================================================================================
 
 Documento creado: 1 de Febrero de 2026
-Última actualización: 1 de Febrero de 2026, ~13:25h
+Última actualización: 1 de Febrero de 2026, ~20:00h
 Autor: Claude Opus 4.5 + Aitor
-Versión: 1.1 - Fase 1 Completa + Fase 2 Parcial (Clasificador IA)
+Versión: 1.2 - Fase 1 Completa + Fase 2 (Clasificador + Function Calling)
