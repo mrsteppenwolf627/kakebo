@@ -55,10 +55,10 @@ Transformar Kakebo (app personal de finanzas basada en mÃ©todo japonÃ©s) en 
 **Fase 2: IA Aplicada (Semanas 3-4)**
 - [x] Sistema de clasificaciÃ³n inteligente de gastos â†' POST /api/ai/classify
 - [x] Prompt engineering y versionado â†' v1, v2 con few-shot examples
-- [x] MÃ©tricas de IA (accuracy, latency, costos) â†' incluidas en cada response
+- [x] MÃ©tricas de IA (accuracy, latency, costos) â†' GET /api/ai/metrics + logging
 - [x] Function calling para herramientas â†' POST /api/ai/assistant
-- [ ] Panel de evaluaciÃ³n del modelo
-- [ ] Feedback loop para correcciÃ³n humana
+- [ ] Panel de evaluaciÃ³n del modelo (frontend)
+- [ ] Feedback loop para correcciÃ³n humana (UI)
 
 **Fase 3: RAG y Memoria (Semanas 5-6)**
 - [ ] ImplementaciÃ³n de vector database (Supabase Vector / Pinecone)
