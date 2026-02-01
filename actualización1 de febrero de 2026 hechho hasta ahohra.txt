@@ -1,0 +1,383 @@
+================================================================================
+           KAKEBO AI - DOCUMENTACIÓN PARA DUMMIES
+           Actualización: 1 de Febrero de 2026
+           Fase 1 Completada: Backend Profesional
+================================================================================
+
+¿QUÉ ES KAKEBO?
+---------------
+Kakebo es una aplicación de finanzas personales basada en el método japonés
+del mismo nombre. Te ayuda a controlar tus gastos organizándolos en 4 categorías:
+
+  • SURVIVAL (Supervivencia): Comida, transporte, salud - lo que NECESITAS
+  • OPTIONAL (Opcional): Ropa, restaurantes - lo que QUIERES pero no necesitas
+  • CULTURE (Cultura): Libros, cursos, cine - ocio y desarrollo personal
+  • EXTRA: Gastos inesperados y excepcionales
+
+La app te permite registrar gastos, ver cuánto llevas gastado cada mes,
+y establecer presupuestos para no pasarte.
+
+
+================================================================================
+                    ¿QUÉ HEMOS CONSTRUIDO? (Fase 1)
+================================================================================
+
+Imagina una app como un restaurante:
+- El FRONTEND es el comedor (lo que ves: menús, mesas, decoración)
+- El BACKEND es la cocina (donde se prepara todo, tú no lo ves pero es esencial)
+
+En la Fase 1 hemos construido toda la "cocina" profesional.
+
+
+--------------------------------------------------------------------------------
+1. API REST - El Menú del Restaurante
+--------------------------------------------------------------------------------
+
+¿Qué es?
+Una API es como el menú de un restaurante. Define qué "platos" (operaciones)
+puedes pedir y cómo pedirlos.
+
+REST es un estilo de organización. Es como decir "los entrantes van primero,
+luego los principales, luego los postres".
+
+¿Qué endpoints (platos) tenemos?
+
+  GASTOS VARIABLES (/api/expenses)
+  --------------------------------
+  GET    /api/expenses         → Ver todos tus gastos
+  GET    /api/expenses?ym=2026-01  → Ver gastos de enero 2026
+  POST   /api/expenses         → Crear un nuevo gasto
+  GET    /api/expenses/123     → Ver un gasto específico
+  PATCH  /api/expenses/123     → Modificar un gasto
+  DELETE /api/expenses/123     → Eliminar un gasto
+
+  GASTOS FIJOS (/api/fixed-expenses)
+  ----------------------------------
+  Son gastos que se repiten cada mes: alquiler, Netflix, gimnasio...
+
+  GET    /api/fixed-expenses   → Ver todos tus gastos fijos
+  POST   /api/fixed-expenses   → Crear un gasto fijo (ej: "Netflix, 15.99€/mes")
+  PATCH  /api/fixed-expenses/123 → Modificar (ej: subió a 17.99€)
+  DELETE /api/fixed-expenses/123 → Cancelar suscripción
+
+  MESES (/api/months)
+  -------------------
+  Cada mes es un "período contable". Puedes cerrarlo cuando acabe.
+
+  GET    /api/months           → Ver todos tus meses
+  POST   /api/months           → Crear/obtener un mes (ej: enero 2026)
+  PATCH  /api/months/123       → Cerrar un mes (ya no puedes añadir gastos)
+
+  CONFIGURACIÓN (/api/settings)
+  -----------------------------
+  Tu configuración personal: ingresos, presupuestos por categoría...
+
+  GET    /api/settings         → Ver tu configuración
+  PATCH  /api/settings         → Cambiar configuración
+
+  DOCUMENTACIÓN (/api/docs)
+  -------------------------
+  GET    /api/docs             → Ver la documentación técnica de la API
+
+
+--------------------------------------------------------------------------------
+2. VALIDACIÓN CON ZOD - El Control de Calidad
+--------------------------------------------------------------------------------
+
+¿Qué es?
+Zod es como un guardia de seguridad que revisa todo lo que entra.
+
+Ejemplo sin Zod (peligroso):
+  Usuario envía: { amount: "hola", date: "ayer" }
+  La app explota 💥
+
+Ejemplo con Zod (seguro):
+  Usuario envía: { amount: "hola", date: "ayer" }
+  Zod responde: "Error: amount debe ser un número, date debe ser YYYY-MM-DD"
+  La app sigue funcionando ✅
+
+¿Dónde está?
+  src/lib/schemas/common.ts      → Validaciones comunes (fechas, UUIDs, etc)
+  src/lib/schemas/expense.ts     → Validación de gastos
+  src/lib/schemas/month.ts       → Validación de meses
+  src/lib/schemas/settings.ts    → Validación de configuración
+  src/lib/schemas/fixed-expense.ts → Validación de gastos fijos
+
+
+--------------------------------------------------------------------------------
+3. AUTENTICACIÓN - El Portero del Club
+--------------------------------------------------------------------------------
+
+¿Qué es?
+Verifica que eres quien dices ser antes de dejarte hacer cualquier cosa.
+
+¿Cómo funciona?
+1. Te registras/logueas con Supabase Auth (email, Google, etc.)
+2. Recibes un "token" (como una pulsera de discoteca)
+3. Cada vez que pides algo, muestras tu pulsera
+4. Si no tienes pulsera válida → Error 401 "No autorizado"
+
+¿Dónde está?
+  src/lib/api/auth.ts → Función requireAuth() que verifica tu sesión
+
+Además, cada usuario SOLO ve sus propios datos. Si tú tienes gastos y yo
+tengo gastos, tú no puedes ver los míos ni yo los tuyos.
+
+
+--------------------------------------------------------------------------------
+4. MANEJO DE ERRORES - El Protocolo de Emergencias
+--------------------------------------------------------------------------------
+
+¿Qué es?
+Cuando algo sale mal, en vez de que la app explote, devuelve un mensaje
+claro explicando qué pasó.
+
+Tipos de errores que manejamos:
+
+  400 Bad Request      → "Lo que enviaste no tiene sentido"
+  401 Unauthorized     → "No has iniciado sesión"
+  403 Forbidden        → "No tienes permiso para esto"
+  404 Not Found        → "Eso que buscas no existe"
+  409 Conflict         → "No puedes hacer eso (ej: mes cerrado)"
+  422 Validation Error → "Los datos no son válidos"
+  500 Internal Error   → "Algo falló por nuestra parte"
+
+Ejemplo de respuesta de error:
+  {
+    "success": false,
+    "error": {
+      "code": "VALIDATION_ERROR",
+      "message": "Error de validación en 'amount': debe ser mayor que 0",
+      "details": { "amount": ["debe ser mayor que 0"] }
+    }
+  }
+
+¿Dónde está?
+  src/lib/api/errors.ts    → Clases de error y función handleApiError()
+  src/lib/api/responses.ts → Respuestas estandarizadas (ok, created, etc.)
+
+
+--------------------------------------------------------------------------------
+5. LOGGING - La Caja Negra del Avión
+--------------------------------------------------------------------------------
+
+¿Qué es?
+Registro de todo lo que pasa en la aplicación. Si algo falla, podemos
+ver el "historial" para entender qué pasó.
+
+¿Qué registramos?
+  • Cada petición que llega (quién, qué pidió, cuándo)
+  • Cada respuesta que sale (código de estado, cuánto tardó)
+  • Todos los errores (con detalle completo)
+
+Ejemplo de log:
+  [12:30:45] INFO: POST /api/expenses (user: abc123)
+  [12:30:45] INFO: POST /api/expenses -> 201 (45ms)
+
+¿Por qué es importante?
+  • En desarrollo: ver qué está pasando en tiempo real
+  • En producción: diagnosticar problemas sin acceso directo al servidor
+  • Métricas: detectar endpoints lentos, errores frecuentes, etc.
+
+¿Dónde está?
+  src/lib/logger.ts         → Configuración de pino (la librería de logging)
+  src/lib/api/withLogging.ts → Middleware que envuelve cada endpoint
+
+
+--------------------------------------------------------------------------------
+6. TESTS - El Control de Calidad Automático
+--------------------------------------------------------------------------------
+
+¿Qué son?
+Programas que verifican automáticamente que todo funciona bien.
+Es como tener un empleado que prueba cada función 1000 veces al día.
+
+¿Cuántos tests tenemos?
+  138 tests en total, distribuidos así:
+
+  Tests de Schemas (validación):
+    • expense.test.ts      → 13 tests
+    • fixed-expense.test.ts → 18 tests
+    • month.test.ts        → 20 tests
+    • settings.test.ts     → 10 tests
+
+  Tests de API (endpoints):
+    • expenses.test.ts     → 8 tests
+    • fixed-expenses.test.ts → 8 tests
+    • months.test.ts       → 6 tests
+    • settings.test.ts     → 6 tests
+
+  Tests de utilidades:
+    • errors.test.ts       → 23 tests
+    • responses.test.ts    → 17 tests
+    • logger.test.ts       → 9 tests
+
+¿Qué es el "coverage"?
+  Mide qué porcentaje del código está siendo probado.
+
+  Nuestros números:
+    • Statements: 91% (líneas de código ejecutadas)
+    • Branches: 84% (caminos if/else probados)
+    • Functions: 97% (funciones llamadas)
+    • Lines: 94% (similar a statements)
+
+  El estándar de industria es 80%. Nosotros lo superamos ✅
+
+¿Cómo ejecutar los tests?
+  npm test              → Ejecutar todos los tests
+  npm test -- --coverage → Ver el reporte de coverage
+
+¿Dónde están?
+  src/__tests__/           → Carpeta con todos los tests
+  vitest.config.ts         → Configuración del test runner
+
+
+--------------------------------------------------------------------------------
+7. DOCUMENTACIÓN OPENAPI - El Manual de Instrucciones
+--------------------------------------------------------------------------------
+
+¿Qué es?
+OpenAPI (antes Swagger) es un estándar para documentar APIs.
+Es como el manual de instrucciones de un electrodoméstico.
+
+¿Qué incluye nuestra documentación?
+  • Todos los endpoints disponibles
+  • Qué parámetros acepta cada uno
+  • Qué formato debe tener el body
+  • Qué respuestas puede devolver
+  • Ejemplos de uso
+
+¿Cómo acceder?
+  GET http://localhost:3000/api/docs
+
+  Devuelve un JSON que puedes importar en:
+    • Postman (para probar la API)
+    • Swagger UI (para ver documentación bonita)
+    • Insomnia (alternativa a Postman)
+
+¿Dónde está?
+  src/lib/api/openapi.ts   → La especificación completa
+  src/app/api/docs/route.ts → El endpoint que la sirve
+
+
+================================================================================
+                         ESTRUCTURA DE CARPETAS
+================================================================================
+
+kakebo/
+├── src/
+│   ├── app/
+│   │   └── api/                    ← Endpoints de la API
+│   │       ├── docs/               ← Documentación OpenAPI
+│   │       ├── expenses/           ← CRUD de gastos
+│   │       ├── fixed-expenses/     ← CRUD de gastos fijos
+│   │       ├── months/             ← CRUD de meses
+│   │       ├── settings/           ← Configuración usuario
+│   │       └── health/             ← Health check
+│   │
+│   ├── lib/
+│   │   ├── api/                    ← Utilidades de API
+│   │   │   ├── auth.ts             ← Autenticación
+│   │   │   ├── errors.ts           ← Manejo de errores
+│   │   │   ├── responses.ts        ← Respuestas estándar
+│   │   │   ├── withLogging.ts      ← Middleware de logging
+│   │   │   ├── openapi.ts          ← Documentación
+│   │   │   └── index.ts            ← Re-exportaciones
+│   │   │
+│   │   ├── schemas/                ← Validación con Zod
+│   │   │   ├── common.ts           ← Tipos comunes
+│   │   │   ├── expense.ts          ← Schema de gastos
+│   │   │   ├── fixed-expense.ts    ← Schema de gastos fijos
+│   │   │   ├── month.ts            ← Schema de meses
+│   │   │   ├── settings.ts         ← Schema de config
+│   │   │   └── index.ts            ← Re-exportaciones
+│   │   │
+│   │   ├── logger.ts               ← Configuración de logging
+│   │   └── supabase/               ← Cliente de Supabase
+│   │
+│   └── __tests__/                  ← Tests
+│       ├── setup.ts                ← Configuración global
+│       ├── api/                    ← Tests de endpoints
+│       ├── lib/                    ← Tests de utilidades
+│       └── schemas/                ← Tests de validación
+│
+├── vitest.config.ts                ← Configuración de tests
+└── package.json                    ← Dependencias del proyecto
+
+
+================================================================================
+                           TECNOLOGÍAS USADAS
+================================================================================
+
+FRAMEWORK
+  • Next.js 14 (App Router) - Framework de React para web apps
+  • TypeScript - JavaScript con tipos (menos errores)
+
+BASE DE DATOS
+  • Supabase - PostgreSQL en la nube + autenticación incluida
+
+VALIDACIÓN
+  • Zod - Validación de datos con inferencia de tipos
+
+TESTING
+  • Vitest - Test runner rápido (compatible con Jest)
+  • @testing-library - Utilidades para tests
+
+LOGGING
+  • Pino - Logger de alto rendimiento para Node.js
+  • pino-pretty - Formato legible para desarrollo
+
+DOCUMENTACIÓN
+  • OpenAPI 3.0 - Estándar de documentación de APIs
+
+
+================================================================================
+                         COMANDOS ÚTILES
+================================================================================
+
+# Instalar dependencias
+npm install
+
+# Ejecutar en desarrollo
+npm run dev
+
+# Ejecutar tests
+npm test
+
+# Ver coverage de tests
+npm test -- --coverage
+
+# Verificar tipos de TypeScript
+npx tsc --noEmit
+
+# Ver documentación de la API
+# (con el servidor corriendo)
+curl http://localhost:3000/api/docs
+
+
+================================================================================
+                         ¿QUÉ SIGUE? (Fase 2)
+================================================================================
+
+La Fase 2 es "IA Aplicada" e incluirá:
+
+  • Clasificación inteligente de gastos
+    → La IA sugiere automáticamente la categoría cuando escribes "Mercadona"
+
+  • Prompt engineering
+    → Diseño de instrucciones óptimas para la IA
+
+  • Function calling
+    → La IA puede ejecutar acciones (crear gastos, consultar saldos)
+
+  • Métricas de IA
+    → Medir accuracy, latencia y costos de las llamadas a IA
+
+
+================================================================================
+                              FIN
+================================================================================
+
+Documento creado: 1 de Febrero de 2026
+Autor: Claude Opus 4.5 + Aitor
+Versión: 1.0 - Fase 1 Completada
