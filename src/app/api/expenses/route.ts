@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/client";
-import { responses, handleApiError, requireAuth } from "@/lib/api";
+import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import {
   createExpenseSchema,
   expenseQuerySchema,
@@ -19,7 +19,7 @@ import {
  * - from_date: Filter from date (YYYY-MM-DD)
  * - to_date: Filter to date (YYYY-MM-DD)
  */
-export async function GET(request: NextRequest) {
+export const GET = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});
 
 /**
  * POST /api/expenses
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
  * - note: string (optional)
  * - month_id: UUID (optional, resolved from date if not provided)
  */
-export async function POST(request: NextRequest) {
+export const POST = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -162,4 +162,4 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});

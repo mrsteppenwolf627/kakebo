@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/client";
-import { responses, handleApiError, requireAuth } from "@/lib/api";
+import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { createMonthSchema, monthQuerySchema, parseYm } from "@/lib/schemas";
 
 /**
@@ -11,7 +11,7 @@ import { createMonthSchema, monthQuerySchema, parseYm } from "@/lib/schemas";
  * - status: Filter by status (open|closed)
  * - year: Filter by year
  */
-export async function GET(request: NextRequest) {
+export const GET = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});
 
 /**
  * POST /api/months
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
  *
  * Returns existing month if found, creates new one if not
  */
-export async function POST(request: NextRequest) {
+export const POST = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -105,4 +105,4 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});

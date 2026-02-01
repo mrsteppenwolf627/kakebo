@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/client";
-import { responses, handleApiError, requireAuth } from "@/lib/api";
+import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { updateExpenseSchema, uuidSchema } from "@/lib/schemas";
 
 type RouteParams = { params: Promise<{ id: string }> };
@@ -9,7 +9,7 @@ type RouteParams = { params: Promise<{ id: string }> };
  * GET /api/expenses/[id]
  * Get a single expense by ID
  */
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export const GET = withLogging(async (request: NextRequest, { params }: RouteParams) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});
 
 /**
  * PATCH /api/expenses/[id]
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
  * - category: survival|optional|culture|extra
  * - note: string
  */
-export async function PATCH(request: NextRequest, { params }: RouteParams) {
+export const PATCH = withLogging(async (request: NextRequest, { params }: RouteParams) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -102,13 +102,13 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});
 
 /**
  * DELETE /api/expenses/[id]
  * Delete an expense
  */
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export const DELETE = withLogging(async (request: NextRequest, { params }: RouteParams) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -157,4 +157,4 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});

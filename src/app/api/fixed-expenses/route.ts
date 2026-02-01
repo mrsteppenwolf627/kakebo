@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/client";
-import { responses, handleApiError, requireAuth } from "@/lib/api";
+import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { createFixedExpenseSchema, fixedExpenseQuerySchema } from "@/lib/schemas";
 
 /**
@@ -11,7 +11,7 @@ import { createFixedExpenseSchema, fixedExpenseQuerySchema } from "@/lib/schemas
  * - active: Filter by active status (true|false)
  * - category: Filter by category
  */
-export async function GET(request: NextRequest) {
+export const GET = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});
 
 /**
  * POST /api/fixed-expenses
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
  * - due_day: 1-31 (optional, default: 1)
  * - active: boolean (optional, default: true)
  */
-export async function POST(request: NextRequest) {
+export const POST = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -92,4 +92,4 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});

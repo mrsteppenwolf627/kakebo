@@ -1,13 +1,13 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/client";
-import { responses, handleApiError, requireAuth } from "@/lib/api";
+import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { updateSettingsSchema, DEFAULT_SETTINGS } from "@/lib/schemas";
 
 /**
  * GET /api/settings
  * Get user settings (creates default if not exists)
  */
-export async function GET() {
+export const GET = withLogging(async () => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -44,7 +44,7 @@ export async function GET() {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});
 
 /**
  * PATCH /api/settings
@@ -59,7 +59,7 @@ export async function GET() {
  * - budget_extra: number >= 0
  * - current_balance: number (can be negative)
  */
-export async function PATCH(request: NextRequest) {
+export const PATCH = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -108,4 +108,4 @@ export async function PATCH(request: NextRequest) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});

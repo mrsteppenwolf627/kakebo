@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/client";
-import { responses, handleApiError, requireAuth } from "@/lib/api";
+import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { updateFixedExpenseSchema, uuidSchema } from "@/lib/schemas";
 
 type RouteParams = { params: Promise<{ id: string }> };
@@ -9,7 +9,7 @@ type RouteParams = { params: Promise<{ id: string }> };
  * GET /api/fixed-expenses/[id]
  * Get a single fixed expense by ID
  */
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export const GET = withLogging(async (request: NextRequest, { params }: RouteParams) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});
 
 /**
  * PATCH /api/fixed-expenses/[id]
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
  * - due_day: 1-31
  * - active: boolean
  */
-export async function PATCH(request: NextRequest, { params }: RouteParams) {
+export const PATCH = withLogging(async (request: NextRequest, { params }: RouteParams) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -92,13 +92,13 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});
 
 /**
  * DELETE /api/fixed-expenses/[id]
  * Delete a fixed expense
  */
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export const DELETE = withLogging(async (request: NextRequest, { params }: RouteParams) => {
   try {
     const user = await requireAuth();
     const supabase = createClient();
@@ -134,4 +134,4 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     return handleApiError(error);
   }
-}
+});

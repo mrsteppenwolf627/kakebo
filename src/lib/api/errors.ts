@@ -1,6 +1,7 @@
 import { ZodError } from "zod";
 import { responses } from "./responses";
 import { NextResponse } from "next/server";
+import { apiLogger } from "@/lib/logger";
 
 /**
  * Custom API error class for controlled error throwing
@@ -62,14 +63,15 @@ export function formatZodError(error: ZodError): {
  * Use this in catch blocks of API routes
  */
 export function handleApiError(error: unknown): NextResponse {
-  // Log error for debugging (structured logging)
-  console.error("[API Error]", {
-    timestamp: new Date().toISOString(),
-    error:
-      error instanceof Error
-        ? { name: error.name, message: error.message, stack: error.stack }
-        : error,
-  });
+  // Structured logging with pino
+  if (error instanceof Error) {
+    apiLogger.error(
+      { err: error, errorName: error.name },
+      `API Error: ${error.message}`
+    );
+  } else {
+    apiLogger.error({ error }, "API Error: Unknown error type");
+  }
 
   // Handle Zod validation errors
   if (error instanceof ZodError) {
