@@ -1,0 +1,286 @@
+# CONTEXTO DEL PROYECTO KAKEBO AI
+
+**Ãšltima actualizaciÃ³n:** 2025-01-30
+**SesiÃ³n anterior con:** Claude Sonnet 4
+**PrÃ³xima sesiÃ³n probablemente con:** Claude / ChatGPT / Gemini
+
+---
+
+## ðŸŽ¯ OBJETIVO GENERAL
+
+Transformar Kakebo (app personal de finanzas basada en mÃ©todo japonÃ©s) en **plataforma profesional de AI Systems Engineering** para portfolio de nivel senior.
+
+- **Timeline:** 10 semanas (ajustable segÃºn velocidad de Aitor: 6-8x estimado)
+- **Objetivo profesional:** Portfolio tÃ©cnico sÃ³lido â†’ Empleo AI Solutions Engineer (50-65Kâ‚¬)
+- **Aprendizaje paralelo:** AWS SAA-C03 + ML Specialty
+
+---
+
+## ðŸ“Š ESTADO ACTUAL DEL PROYECTO
+
+### âœ… COMPLETADO
+
+- [x] Plan de estudios definido (6 fases, 10-11 semanas)
+- [x] AnÃ¡lisis de roadmaps (Consultor 6m, AI Architect 18-24m, Kakebo 11w)
+- [x] DecisiÃ³n: Kakebo roadmap es el Ã³ptimo para siguiente paso
+- [x] Sistema de gestiÃ³n de contexto multi-LLM diseÃ±ado
+- [x] Estructura de archivos `.ai/` definida
+- [x] Claude Project creado con instrucciones personalizadas
+- [x] ConfirmaciÃ³n: AWS certificaciones son MUST (SAA-C03 primero)
+
+### ðŸ”„ EN PROGRESO
+
+**FASE 0: Setup y PlanificaciÃ³n (Semana 0 - EN CURSO)**
+- [x] DefiniciÃ³n de arquitectura objetivo
+- [x] CreaciÃ³n de Claude Project
+- [x] GeneraciÃ³n de archivos base (.ai/)
+- [ ] **SIGUIENTE:** AnÃ¡lisis de cÃ³digo base actual de Kakebo
+- [ ] IdentificaciÃ³n de gaps tÃ©cnicos
+- [ ] PlanificaciÃ³n detallada Fase 1
+
+**Estado actual:** Preparando para empezar anÃ¡lisis de cÃ³digo.
+
+### ðŸ“‹ PENDIENTE (Por Fase)
+
+**Fase 1: Backend Profesional (Semanas 1-2)**
+- [x] DiseÃ±o de API REST (endpoints, schemas)
+- [x] ImplementaciÃ³n de endpoints CRUD
+- [x] ValidaciÃ³n de inputs (Zod)
+- [x] Middleware de autenticaciÃ³n (Supabase Auth)
+- [x] Error handling centralizado
+- [x] Logging estructurado
+- [x] Tests unitarios e integraciÃ³n (>80% coverage) â†' 91% statements, 84% branches
+- [x] DocumentaciÃ³n API (OpenAPI 3.0) â†' GET /api/docs
+
+**Fase 2: IA Aplicada (Semanas 3-4)**
+- [x] Sistema de clasificaciÃ³n inteligente de gastos â†' POST /api/ai/classify
+- [x] Prompt engineering y versionado â†' v1, v2 con few-shot examples
+- [x] MÃ©tricas de IA (accuracy, latency, costos) â†' incluidas en cada response
+- [ ] Function calling para herramientas
+- [ ] Panel de evaluaciÃ³n del modelo
+- [ ] Feedback loop para correcciÃ³n humana
+
+**Fase 3: RAG y Memoria (Semanas 5-6)**
+- [ ] ImplementaciÃ³n de vector database (Supabase Vector / Pinecone)
+- [ ] Chunking strategy para gastos histÃ³ricos
+- [ ] GeneraciÃ³n de embeddings
+- [ ] BÃºsqueda semÃ¡ntica en historial
+- [ ] Asistente financiero contextual
+- [ ] MÃ©tricas de calidad de retrieval
+
+**Fase 4: Agentes y OrquestaciÃ³n (Semanas 7-8)**
+- [ ] DiseÃ±o de arquitectura multi-agente
+- [ ] ImplementaciÃ³n con LangGraph
+- [ ] Agente de anÃ¡lisis financiero
+- [ ] Agente de recomendaciones
+- [ ] OrquestaciÃ³n de herramientas
+- [ ] Testing de agentes
+
+**Fase 5: ProducciÃ³n y Cloud AWS (Semanas 9-10)**
+- [ ] MigraciÃ³n a AWS (EC2 / App Runner)
+- [ ] CI/CD con GitHub Actions
+- [ ] Monitoring y observabilidad
+- [ ] Logging centralizado
+- [ ] Cost tracking
+- [ ] Performance optimization
+
+**Fase 6: Portfolio y PresentaciÃ³n (Semana 11)**
+- [ ] DocumentaciÃ³n tÃ©cnica completa
+- [ ] Diagrama de arquitectura profesional
+- [ ] README nivel enterprise
+- [ ] Video demo (10-15 min)
+- [ ] Caso de estudio con mÃ©tricas
+- [ ] LinkedIn post + blog post
+- [ ] PreparaciÃ³n para mostrar en entrevistas
+
+---
+
+## ðŸŽ“ APRENDIZAJE PARALELO
+
+### AWS Solutions Architect Associate (SAA-C03)
+
+- **Estado:** En progreso (curso Udemy adquirido)
+- **Progreso estimado:** ~10-15% (primeras secciones)
+- **DistribuciÃ³n:** 1-2h/dÃ­a segÃºn disponibilidad personal/profesional
+- **Objetivo examen:** Mes 2-3 (mediados marzo - abril 2025)
+- **Enfoque:** Fundamentos sÃ³lidos, no memorizaciÃ³n
+
+### AWS Machine Learning Specialty (Futuro)
+
+- **Estado:** Pendiente
+- **Inicio:** DespuÃ©s de obtener SAA-C03
+- **Timeline:** Mes 5-7
+- **Objetivo:** Reforzar credibilidad para roles AI
+
+---
+
+## ðŸ—ï¸ ARQUITECTURA OBJETIVO
+
+### Stack TecnolÃ³gico Confirmado
+
+**Frontend:**
+- Next.js 14 (App Router)
+- React 18 + TypeScript
+- Tailwind CSS + shadcn/ui
+- Manejo de estado: React Context / Zustand
+
+**Backend:**
+- **Inicial:** Next.js API Routes (TypeScript)
+- **EvaluaciÃ³n futura:** MigraciÃ³n a FastAPI si complejidad lo requiere
+- **ValidaciÃ³n:** Zod (TypeScript-first)
+- **Auth:** Supabase Auth (JWT, Row Level Security)
+
+**Databases:**
+- **Principal:** Supabase (PostgreSQL + Vector extension)
+- **Alternativa Vector DB:** Pinecone (si Supabase Vector no es suficiente)
+- **Cache (futuro):** Redis (solo si necesario para performance)
+
+**AI/ML:**
+- OpenAI API:
+  - GPT-4 / GPT-4-turbo (generaciÃ³n)
+  - text-embedding-3-small (embeddings)
+- LangChain / LangGraph (orquestaciÃ³n de agentes)
+- Tool calling para herramientas custom
+
+**Cloud & DevOps:**
+- **Hosting actual:** Vercel (frontend + API Routes)
+- **Hosting objetivo:** AWS (EC2, App Runner, Lambda)
+- **Storage:** AWS S3 (exports, documentos)
+- **Monitoring:** CloudWatch + logs estructurados
+- **CI/CD:** GitHub Actions
+- **IaC:** Terraform (bÃ¡sico)
+
+### Decisiones ArquitectÃ³nicas Clave
+
+1. **Next.js API Routes primero:**
+   - MÃ¡s simple para empezar
+   - Migrar a FastAPI solo si hay limitaciones claras
+   - Trade-off: Simplicidad vs Control total
+
+2. **Supabase como BaaS:**
+   - Auth + DB + Vector search en un solo lugar
+   - Trade-off: Vendor lock-in vs Velocidad de desarrollo
+
+3. **OpenAI API vs Open Source LLMs:**
+   - OpenAI para empezar (facilidad, calidad)
+   - Evaluar Llama 3 / Mixtral despuÃ©s para cost optimization
+   - Trade-off: Costo vs Control
+
+4. **Certificaciones AWS:**
+   - SAA-C03 es MUST para empleabilidad
+   - ML Specialty es diferenciador para roles AI
+
+---
+
+## ðŸ”— ARCHIVOS IMPORTANTES
+
+### DocumentaciÃ³n Principal
+- **Plan completo:** `Plan_Estudios_AI_Systems_Kakebo.pdf`
+- **Roadmap AI Architect:** `Roadmap_AI_Architect_100K.pdf`
+- **Fundamentos teÃ³ricos:** `Fundamentos_Teoricos__Sistemas_Distribuidos_y_AI.pdf`
+- **Multi-agent theory:** `multi_agent_systems_theory.md`
+
+### Contexto AI (Esta carpeta)
+- **Contexto global:** `.ai/CONTEXT.md` â† EstÃ¡s aquÃ­
+- **Tarea actual:** `.ai/CURRENT_TASK.md`
+- **Reglas Claude Project:** `.ai/prompts/claude_project_rules.md`
+
+### Logs de SesiÃ³n
+- **Ãšltima sesiÃ³n:** `docs/SESSION_LOGS/2025-01-30_session.md`
+- **Historial:** `docs/SESSION_LOGS/`
+
+### Decisiones TÃ©cnicas
+- **ADRs:** `docs/DECISIONS.md` (Architecture Decision Records)
+- **Estado detallado:** `docs/PROJECT_STATE.md`
+
+---
+
+## ðŸš¨ BLOQUEOS ACTUALES
+
+**Ninguno** - Proyecto en fase de setup inicial.
+
+---
+
+## ðŸ’¡ PRÃ“XIMAS ACCIONES INMEDIATAS
+
+### Esta sesiÃ³n (despuÃ©s de generar archivos):
+
+1. âœ… Crear Claude Project
+2. âœ… Generar archivos base (.ai/)
+3. **SIGUIENTE:** AnÃ¡lisis de cÃ³digo base actual de Kakebo
+   - Revisar estructura de carpetas
+   - Identificar quÃ© estÃ¡ implementado
+   - Detectar quÃ© falta para Fase 1
+   - Mapear gaps tÃ©cnicos
+
+### PrÃ³xima sesiÃ³n:
+
+1. DiseÃ±ar arquitectura de API REST
+2. Decidir: Â¿Next.js API Routes o FastAPI?
+3. Planificar implementaciÃ³n Fase 1 (semana a semana)
+4. Comenzar con primer endpoint
+
+---
+
+## ðŸ"ˆ MÃ‰TRICAS DE PROGRESO
+
+**Tiempo total del proyecto:**
+- Semanas completadas: 1/10
+- Fases completadas: 1/6
+- **Progreso global:** ~20% (Fase 1 completada)
+
+**PrÃ³ximo hito importante:**
+- Completar Fase 2 (IA Aplicada) â†' Semana 4
+
+**Objetivo mes 1:**
+- Fase 1 + Fase 2 completadas
+- AWS SAA-C03 al 40-50%
+
+---
+
+## ðŸŽ¯ OBJETIVOS PROFESIONALES
+
+### Corto plazo (3 meses):
+- âœ… Completar plataforma Kakebo AI (production-grade)
+- âœ… Obtener certificaciÃ³n AWS SAA-C03
+- âœ… Portfolio tÃ©cnico profesional
+- âœ… GitHub con 3 proyectos sÃ³lidos:
+  1. AutoDocTranslate (17K valor)
+  2. Research Agent system
+  3. Kakebo AI Platform
+
+### Medio plazo (6 meses):
+- Aplicar a 30-50 posiciones:
+  - AI Solutions Engineer
+  - AI Systems Engineer
+  - ML Engineer (junior-mid)
+- Conseguir empleo remoto 50-65Kâ‚¬
+- CertificaciÃ³n AWS ML Specialty
+- Blog tÃ©cnico activo (4-6 posts)
+
+### Largo plazo (12-24 meses):
+- Crecer a Senior AI Engineer / AI Architect
+- Salario objetivo: 70-100Kâ‚¬
+- Contribuciones open source
+- Thought leadership tÃ©cnico
+
+---
+
+## ðŸ§  CONTEXTO PERSONAL
+
+**Por quÃ© Aitor es mÃ¡s rÃ¡pido:**
+- CI 162 (capacidad analÃ­tica excepcional)
+- Aprende teorÃ­a primero â†’ implementaciÃ³n mÃ¡s rÃ¡pida
+- Ya tiene base sÃ³lida (Python, FastAPI, Next.js)
+- 6 horas diarias enfocadas
+- Perfil ENFJ-T (sistematizaciÃ³n natural)
+
+**Por quÃ© este roadmap vs otros:**
+- Roadmap Consultor 6m â†’ Ya superado con AutoDocTranslate
+- Roadmap AI Architect 18-24m â†’ Demasiado aspiracional ahora
+- Roadmap Kakebo 11w â†’ **Sweet spot realista** para siguiente nivel
+
+---
+
+**VersiÃ³n:** 1.0
+**Ãšltima actualizaciÃ³n:** 2025-01-30 16:30 CET

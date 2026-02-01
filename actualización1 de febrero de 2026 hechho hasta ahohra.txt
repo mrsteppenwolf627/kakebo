@@ -356,22 +356,102 @@ curl http://localhost:3000/api/docs
 
 
 ================================================================================
-                         ¿QUÉ SIGUE? (Fase 2)
+                         ¿QUÉ SIGUE? (Pendiente)
 ================================================================================
-
-La Fase 2 es "IA Aplicada" e incluirá:
-
-  • Clasificación inteligente de gastos
-    → La IA sugiere automáticamente la categoría cuando escribes "Mercadona"
-
-  • Prompt engineering
-    → Diseño de instrucciones óptimas para la IA
 
   • Function calling
     → La IA puede ejecutar acciones (crear gastos, consultar saldos)
 
-  • Métricas de IA
-    → Medir accuracy, latencia y costos de las llamadas a IA
+  • Panel de evaluación del modelo
+    → Dashboard para ver cómo está funcionando la IA
+
+  • Feedback loop
+    → Cuando el usuario corrige la IA, guardar esa corrección para mejorar
+
+
+================================================================================
+     UPDATE - 1 de Febrero de 2026, ~13:25h (Sesión con Claude Opus 4.5)
+================================================================================
+
+FASE 2 PARCIALMENTE COMPLETADA - IA APLICADA
+---------------------------------------------
+
+Se implementó el sistema de clasificación inteligente de gastos:
+
+1. CLIENTE OPENAI (src/lib/ai/client.ts)
+   ¿Qué es? Conexión con la API de OpenAI
+   - Usa el modelo GPT-4o-mini (barato y suficiente para clasificar)
+   - Costo estimado: ~$0.0001 por clasificación (prácticamente gratis)
+   - Calcula automáticamente el costo de cada llamada
+
+2. SISTEMA DE PROMPTS VERSIONADOS (src/lib/ai/prompts.ts)
+   ¿Qué es? Las "instrucciones" que le damos a la IA
+   - Versión v1: 10 ejemplos básicos
+   - Versión v2: 28 ejemplos más completos (ACTIVA)
+   - Permite cambiar entre versiones para comparar cuál funciona mejor
+   - Incluye descripción de las 4 categorías Kakebo en español
+
+3. CLASIFICADOR (src/lib/ai/classifier.ts)
+   ¿Qué es? La función que hace la magia
+   - Recibe: "Mercadona 45€"
+   - Devuelve: { category: "survival", note: "Compra supermercado", confidence: 0.95 }
+   - También devuelve métricas: latencia, tokens usados, costo
+
+4. ENDPOINT API (src/app/api/ai/classify/route.ts)
+   ¿Cómo usarlo?
+
+   POST /api/ai/classify
+   Body: { "text": "Netflix mensual" }
+
+   Respuesta:
+   {
+     "success": true,
+     "data": {
+       "category": "culture",
+       "note": "Suscripción streaming",
+       "confidence": 0.98,
+       "metrics": {
+         "model": "gpt-4o-mini",
+         "promptVersion": "v2",
+         "latencyMs": 450,
+         "inputTokens": 580,
+         "outputTokens": 28,
+         "costUsd": 0.0001
+       }
+     }
+   }
+
+   También soporta batch (varios a la vez):
+   Body: { "texts": ["Mercadona", "Netflix", "Gasolina"] }
+
+5. TESTS (src/__tests__/ai/)
+   - classifier.test.ts: 9 tests del clasificador
+   - prompts.test.ts: 12 tests del sistema de prompts
+   - Total proyecto: 159 tests pasando
+
+ESTRUCTURA DE CARPETAS AÑADIDA:
+   src/lib/ai/
+   ├── client.ts      → Conexión con OpenAI
+   ├── prompts.ts     → Prompts versionados (v1, v2)
+   ├── classifier.ts  → Función de clasificación
+   └── index.ts       → Re-exportaciones
+
+   src/app/api/ai/
+   └── classify/
+       └── route.ts   → Endpoint POST /api/ai/classify
+
+   src/__tests__/ai/
+   ├── classifier.test.ts
+   └── prompts.test.ts
+
+   src/lib/schemas/
+   └── ai.ts          → Validación Zod para inputs de IA
+
+CONFIGURACIÓN NECESARIA:
+   Añadir a .env.local:
+   OPENAI_API_KEY=sk-...
+
+   (Se obtiene en https://platform.openai.com/api-keys)
 
 
 ================================================================================
@@ -379,5 +459,6 @@ La Fase 2 es "IA Aplicada" e incluirá:
 ================================================================================
 
 Documento creado: 1 de Febrero de 2026
+Última actualización: 1 de Febrero de 2026, ~13:25h
 Autor: Claude Opus 4.5 + Aitor
-Versión: 1.0 - Fase 1 Completada
+Versión: 1.1 - Fase 1 Completa + Fase 2 Parcial (Clasificador IA)
