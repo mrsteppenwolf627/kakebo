@@ -116,6 +116,7 @@ export async function processMessage(
       const toolMessages: ChatCompletionToolMessageParam[] = [];
 
       for (const toolCall of responseMessage.tool_calls) {
+        if (!("function" in toolCall)) continue;
         const toolName = toolCall.function.name as ToolName;
         let params: unknown;
 
