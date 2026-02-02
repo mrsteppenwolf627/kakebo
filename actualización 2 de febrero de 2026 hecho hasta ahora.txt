@@ -1,7 +1,7 @@
 ================================================================================
            KAKEBO AI - DOCUMENTACIÓN PARA DUMMIES
            Actualización: 2 de Febrero de 2026
-           Fase 2 Completada: IA Aplicada
+           Fase 3 Completada: RAG y Memoria
 ================================================================================
 
 ¿QUÉ ES KAKEBO?
@@ -193,7 +193,7 @@ Programas que verifican automáticamente que todo funciona bien.
 Es como tener un empleado que prueba cada función 1000 veces al día.
 
 ¿Cuántos tests tenemos?
-  138 tests en total, distribuidos así:
+  138+ tests en total, distribuidos así:
 
   Tests de Schemas (validación):
     • expense.test.ts      → 13 tests
@@ -303,7 +303,7 @@ Ejemplos:
   "¿Cuánto llevo gastado?"       → Consulta y te responde
   "Pon mi presupuesto en 200€"   → Actualiza tu configuración
 
-Herramientas disponibles:
+Herramientas disponibles (Fase 2):
   • create_expense: Crear gasto
   • list_expenses: Listar gastos
   • get_monthly_summary: Resumen del mes
@@ -361,7 +361,7 @@ Archivos:
 
 
 --------------------------------------------------------------------------------
-4. PANEL DE MÉTRICAS IA (NUEVO - 2 Feb 2026)
+4. PANEL DE MÉTRICAS IA
 --------------------------------------------------------------------------------
 
 ¿Qué es?
@@ -394,7 +394,7 @@ Archivos:
 
 
 --------------------------------------------------------------------------------
-5. FEEDBACK LOOP - CORRECCIÓN DE CLASIFICACIONES (NUEVO - 2 Feb 2026)
+5. FEEDBACK LOOP - CORRECCIÓN DE CLASIFICACIONES
 --------------------------------------------------------------------------------
 
 ¿Qué es?
@@ -436,6 +436,301 @@ Archivos:
 
 
 ================================================================================
+                    ¿QUÉ HEMOS CONSTRUIDO? (Fase 3) - COMPLETADA ✅
+================================================================================
+
+En la Fase 3 hemos añadido "memoria" a la IA con RAG (Retrieval-Augmented
+Generation), lo que permite al asistente buscar en tu historial de gastos.
+
+
+--------------------------------------------------------------------------------
+1. VECTOR DATABASE - La Biblioteca Inteligente
+--------------------------------------------------------------------------------
+
+¿Qué es?
+Imagina una biblioteca donde en vez de buscar libros por título, buscas por
+"significado". Si buscas "comida rápida", encuentra también "McDonald's",
+"Burger King", "KFC"... aunque no contengan las palabras exactas.
+
+¿Cómo funciona?
+1. Cada gasto se convierte en un "embedding" (un vector de 1536 números)
+2. Los embeddings similares están "cerca" en el espacio vectorial
+3. Cuando buscas, se encuentra lo que significa lo mismo, no solo lo que
+   se escribe igual
+
+Infraestructura implementada:
+  • Extensión pgvector habilitada en Supabase PostgreSQL
+  • Tabla expense_embeddings con columna embedding[1536]
+  • Índice HNSW para búsqueda ultrarrápida (Hierarchical Navigable Small World)
+  • Función SQL match_expenses() para similitud de coseno
+
+Tabla expense_embeddings:
+  • id: UUID único
+  • expense_id: Referencia al gasto
+  • user_id: Dueño del gasto
+  • embedding: Vector de 1536 dimensiones
+  • text_content: Texto original concatenado
+  • created_at: Fecha de creación
+
+Función SQL match_expenses():
+  → Recibe: embedding de búsqueda, threshold, límite, user_id
+  → Devuelve: Gastos ordenados por similitud de coseno
+  → Solo busca en los gastos del usuario autenticado
+
+
+--------------------------------------------------------------------------------
+2. SISTEMA DE EMBEDDINGS - La Máquina Traductora
+--------------------------------------------------------------------------------
+
+¿Qué es?
+Un sistema que convierte texto en vectores numéricos que capturan el
+"significado" del texto. Textos con significado similar tienen vectores
+similares.
+
+Modelo usado:
+  • OpenAI text-embedding-3-small
+  • Dimensiones: 1536
+  • Costo: $0.00002 por 1000 tokens
+  • Velocidad: ~200ms por embedding
+
+¿Qué texto se embeddea?
+  Para cada gasto, se concatena:
+    - Concepto (ej: "Netflix mensual")
+    - Categoría (ej: "culture")
+    - Notas (si existen)
+    - Fecha en formato legible
+
+  Ejemplo: "Netflix mensual culture 2026-01"
+
+Funciones implementadas en src/lib/ai/embeddings.ts:
+
+  generateEmbedding(text: string)
+    → Genera un embedding para un texto
+    → Usa OpenAI text-embedding-3-small
+    → Devuelve: number[] (1536 dimensiones)
+
+  generateEmbeddings(texts: string[])
+    → Genera múltiples embeddings en un solo batch
+    → Más eficiente que llamadas individuales
+    → Máximo recomendado: 100 textos por batch
+
+  storeExpenseEmbedding(expenseId, userId, embedding, textContent)
+    → Guarda un embedding en la tabla expense_embeddings
+    → Hace upsert (crea o actualiza si ya existe)
+
+  searchSimilarExpenses(userId, queryEmbedding, options)
+    → Busca gastos similares por vector
+    → Opciones: limit (cuántos), threshold (similitud mínima 0-1)
+    → Usa match_expenses() de PostgreSQL
+
+  searchExpensesByText(userId, queryText, options)
+    → Busca gastos similares por texto libre
+    → Genera embedding del texto → busca por vector
+    → Conveniente para búsquedas desde el frontend
+
+  deleteExpenseEmbedding(expenseId)
+    → Elimina el embedding de un gasto
+    → Se usa cuando se borra un gasto
+
+
+--------------------------------------------------------------------------------
+3. ENDPOINTS DE RAG
+--------------------------------------------------------------------------------
+
+POST /api/ai/search - Búsqueda Semántica
+-----------------------------------------
+
+¿Qué hace?
+Busca gastos similares a una consulta de texto.
+
+Request:
+  POST /api/ai/search
+  Body: {
+    "query": "comida delivery",
+    "limit": 5,           // Opcional, default: 10
+    "threshold": 0.4      // Opcional, default: 0.3 (0-1)
+  }
+
+Response:
+  {
+    "success": true,
+    "data": {
+      "results": [
+        {
+          "expense_id": "uuid-123",
+          "concept": "Uber Eats - Sushi",
+          "amount": 25.50,
+          "category": "optional",
+          "date": "2026-01-28",
+          "similarity": 0.87,
+          "text_content": "Uber Eats - Sushi optional 2026-01"
+        },
+        ...
+      ],
+      "searchCost": 0.000002  // Costo en USD del embedding
+    }
+  }
+
+¿Cuándo usarlo?
+  • Buscar gastos parecidos antes de crear uno nuevo
+  • Explorar patrones de gasto similares
+  • Encontrar gastos relacionados
+
+Archivos:
+  src/app/api/ai/search/route.ts
+
+
+GET/POST /api/ai/migrate-embeddings - Migración de Embeddings
+--------------------------------------------------------------
+
+¿Qué hace?
+Procesa gastos existentes que no tienen embeddings y se los genera.
+
+GET /api/ai/migrate-embeddings
+  → Ver estado de la migración
+  → Response: {
+      totalExpenses: 150,
+      withEmbeddings: 120,
+      withoutEmbeddings: 30,
+      progress: 80
+    }
+
+POST /api/ai/migrate-embeddings
+  → Procesa un batch de 50 gastos sin embeddings
+  → Genera embeddings y los guarda
+  → Response: {
+      processed: 50,
+      successful: 48,
+      failed: 2,
+      totalCost: 0.00012,
+      remaining: 0
+    }
+
+¿Cuándo usarlo?
+  • Primera vez que activas RAG (procesar gastos históricos)
+  • Después de importar gastos masivamente
+  • Si hubo errores y quedaron gastos sin embeddings
+
+Costo estimado:
+  • 1000 gastos ≈ $0.02 USD
+  • 10000 gastos ≈ $0.20 USD
+
+Archivos:
+  src/app/api/ai/migrate-embeddings/route.ts
+
+
+--------------------------------------------------------------------------------
+4. INTEGRACIÓN CON ASISTENTE - El Asistente con Memoria
+--------------------------------------------------------------------------------
+
+¿Qué cambió?
+El asistente conversacional ahora tiene una nueva herramienta:
+
+search_similar_expenses
+  → Descripción: "Buscar gastos similares en el historial del usuario"
+  → Parámetros:
+    - query (string): Texto de búsqueda
+    - limit (number, opcional): Máximo de resultados
+    - threshold (number, opcional): Similitud mínima 0-1
+  → Devuelve: Lista de gastos similares con scores
+
+Ejemplos de uso:
+
+  Usuario: "¿Cuánto he gastado en deliverys?"
+  Asistente:
+    1. Usa search_similar_expenses con query="delivery comida"
+    2. Encuentra todos los Uber Eats, Glovo, Just Eat...
+    3. Suma los montos y responde
+
+  Usuario: "Muéstrame gastos parecidos al último de Netflix"
+  Asistente:
+    1. Usa list_expenses para ver el último gasto
+    2. Usa search_similar_expenses con query="Netflix streaming"
+    3. Encuentra HBO, Disney+, Prime Video...
+    4. Los muestra al usuario
+
+  Usuario: "¿He comprado algo así antes?"
+  (Después de registrar "Auriculares Bluetooth 45€")
+  Asistente:
+    1. Usa search_similar_expenses con query="auriculares bluetooth tecnología"
+    2. Encuentra compras similares de electrónica
+    3. Responde con historial
+
+Archivos modificados:
+  src/lib/ai/tools.ts          → Definición del tool search_similar_expenses
+  src/lib/ai/tool-executor.ts  → Implementación de la ejecución
+  src/lib/ai/assistant.ts      → Asistente usa el nuevo tool
+
+
+--------------------------------------------------------------------------------
+5. AUTO-GENERACIÓN DE EMBEDDINGS
+--------------------------------------------------------------------------------
+
+¿Qué es?
+Los embeddings se generan automáticamente cuando creas gastos. No tienes
+que hacer nada manualmente.
+
+¿Cómo funciona?
+
+1. Creas un gasto vía POST /api/expenses:
+   {
+     "concept": "Uber Eats - Pizza",
+     "amount": 18.50,
+     "category": "optional",
+     "date": "2026-02-02"
+   }
+
+2. El endpoint:
+   a) Guarda el gasto en la tabla expenses
+   b) Genera el embedding automáticamente
+   c) Lo guarda en expense_embeddings
+   d) Todo en paralelo (no añade latencia perceptible)
+
+3. Si hay error al generar embedding:
+   - El gasto SE GUARDA de todas formas
+   - El error se loggea pero no afecta al usuario
+   - Luego puedes usar migrate-embeddings para reintentarlo
+
+¿Por qué es importante?
+  • No necesitas migración continua
+  • Los gastos nuevos son buscables inmediatamente
+  • El sistema escala bien con el uso
+
+Archivos:
+  src/app/api/expenses/route.ts → POST con auto-embedding
+
+
+--------------------------------------------------------------------------------
+6. UI DE MIGRACIÓN EN DASHBOARD
+--------------------------------------------------------------------------------
+
+¿Qué es?
+Una interfaz visual en /app/ai-metrics para migrar embeddings de gastos
+históricos con un solo click.
+
+Características:
+  • Muestra progreso: "X de Y gastos con embeddings (Z%)"
+  • Botón "Migrar Embeddings" que:
+    - Se deshabilita mientras procesa
+    - Muestra spinner durante procesamiento
+    - Actualiza el progreso en tiempo real
+    - Muestra mensajes de éxito/error
+  • Estimación de costo: "$0.XX USD para migrar N gastos"
+  • Se procesa en batches de 50 (no satura el servidor)
+
+¿Cómo usarlo?
+  1. Ve a /app/ai-metrics
+  2. Baja a la sección "Embeddings"
+  3. Si ves "X gastos sin embeddings", click en "Migrar Embeddings"
+  4. Espera a que termine (batches de 50)
+  5. Repite hasta que todos estén migrados
+
+Archivos:
+  src/app/app/ai-metrics/AIMetricsClient.tsx → UI de migración
+  src/components/EmbeddingMigration.tsx      → Componente de migración (si existe)
+
+
+================================================================================
                          ESTRUCTURA DE CARPETAS ACTUALIZADA
 ================================================================================
 
@@ -443,30 +738,32 @@ kakebo/
 ├── src/
 │   ├── app/
 │   │   ├── api/
-│   │   │   ├── ai/                    ← ENDPOINTS DE IA (Fase 2)
+│   │   │   ├── ai/                    ← ENDPOINTS DE IA (Fases 2 + 3)
 │   │   │   │   ├── classify/          ← POST - Clasificar gasto
-│   │   │   │   ├── assistant/         ← POST - Chat con IA
-│   │   │   │   ├── feedback/          ← POST - Registrar corrección (NUEVO)
-│   │   │   │   └── metrics/           ← GET - Métricas agregadas
+│   │   │   │   ├── assistant/         ← POST - Chat con IA + RAG ✅
+│   │   │   │   ├── feedback/          ← POST - Registrar corrección
+│   │   │   │   ├── metrics/           ← GET - Métricas agregadas
+│   │   │   │   ├── search/            ← POST - Búsqueda semántica ✅ NUEVO
+│   │   │   │   └── migrate-embeddings/ ← GET/POST - Migración ✅ NUEVO
 │   │   │   ├── docs/                  ← Documentación OpenAPI
-│   │   │   ├── expenses/              ← CRUD de gastos
+│   │   │   ├── expenses/              ← CRUD (con auto-embedding) ✅
 │   │   │   ├── fixed-expenses/        ← CRUD de gastos fijos
 │   │   │   ├── months/                ← CRUD de meses
 │   │   │   ├── settings/              ← Configuración usuario
 │   │   │   └── health/                ← Health check
 │   │   │
 │   │   └── app/
-│   │       ├── ai-metrics/            ← DASHBOARD IA (NUEVO)
+│   │       ├── ai-metrics/            ← DASHBOARD IA + Migración UI ✅
 │   │       │   ├── page.tsx           ← Página con Suspense
-│   │       │   └── AIMetricsClient.tsx ← Cliente con gráficos
+│   │       │   └── AIMetricsClient.tsx ← Cliente con gráficos + migración
 │   │       ├── new/
-│   │       │   └── NewExpenseClient.tsx ← Con sugerencia IA (MODIFICADO)
+│   │       │   └── NewExpenseClient.tsx ← Con sugerencia IA
 │   │       └── ...
 │   │
 │   ├── components/
-│   │   ├── AIMetricsChart.tsx         ← Gráficos bar/pie (NUEVO)
-│   │   ├── AILogsList.tsx             ← Lista de logs (NUEVO)
-│   │   ├── TopNav.tsx                 ← Con enlace a IA (MODIFICADO)
+│   │   ├── AIMetricsChart.tsx         ← Gráficos bar/pie
+│   │   ├── AILogsList.tsx             ← Lista de logs
+│   │   ├── TopNav.tsx                 ← Con enlace a IA
 │   │   └── ...
 │   │
 │   ├── lib/
@@ -474,20 +771,21 @@ kakebo/
 │   │   │   ├── client.ts              ← Cliente OpenAI
 │   │   │   ├── prompts.ts             ← Prompts versionados
 │   │   │   ├── classifier.ts          ← Clasificador
-│   │   │   ├── assistant.ts           ← Asistente conversacional
-│   │   │   ├── tools.ts               ← Definiciones de funciones
-│   │   │   ├── tool-executor.ts       ← Ejecutor de funciones
+│   │   │   ├── assistant.ts           ← Asistente conversacional + RAG ✅
+│   │   │   ├── tools.ts               ← Definiciones (+ search tool) ✅
+│   │   │   ├── tool-executor.ts       ← Ejecutor (+ search execution) ✅
 │   │   │   ├── metrics.ts             ← Logging y métricas
+│   │   │   ├── embeddings.ts          ← SISTEMA RAG COMPLETO ✅ NUEVO
 │   │   │   └── index.ts               ← Re-exportaciones
 │   │   │
 │   │   ├── api/                       ← Utilidades de API
 │   │   │   └── ...
 │   │   │
 │   │   └── schemas/                   ← Validación con Zod
-│   │       ├── ai.ts                  ← Schemas de IA (MODIFICADO)
+│   │       ├── ai.ts                  ← Schemas de IA (+ search schema) ✅
 │   │       └── ...
 │   │
-│   └── __tests__/                     ← Tests
+│   └── __tests__/                     ← Tests (91% coverage)
 │       └── ...
 │
 └── .ai/                               ← Contexto del proyecto
@@ -500,12 +798,15 @@ kakebo/
 ================================================================================
 
 FRAMEWORK
-  • Next.js 14 (App Router) - Framework de React para web apps
+  • Next.js 16 (App Router) - Framework de React para web apps
+  • React 19 - Librería de UI
   • TypeScript - JavaScript con tipos (menos errores)
 
 BASE DE DATOS
   • Supabase - PostgreSQL en la nube + autenticación incluida
+  • pgvector - Extensión para búsqueda vectorial ✅ NUEVO
   • Tabla ai_logs - Para métricas de IA
+  • Tabla expense_embeddings - Para búsqueda semántica ✅ NUEVO
 
 VALIDACIÓN
   • Zod - Validación de datos con inferencia de tipos
@@ -524,9 +825,17 @@ DOCUMENTACIÓN
 IA / MACHINE LEARNING
   • OpenAI API - GPT-4o-mini para clasificación y chat
   • Function Calling - Para que la IA ejecute acciones
+  • text-embedding-3-small - Para embeddings (RAG) ✅ NUEVO
+  • Vector Search - Búsqueda semántica con pgvector ✅ NUEVO
 
 GRÁFICOS
   • Recharts - Librería de gráficos para React
+
+ESTILOS
+  • Tailwind CSS 4 - Framework de CSS utility-first
+
+HOSTING
+  • Vercel - Hosting automático desde GitHub
 
 
 ================================================================================
@@ -560,32 +869,262 @@ curl http://localhost:3000/api/docs
                          ENDPOINTS DE IA DISPONIBLES
 ================================================================================
 
-| Método | Ruta                | Descripción                          |
-|--------|---------------------|--------------------------------------|
-| POST   | /api/ai/classify    | Clasificar gasto (devuelve logId)    |
-| POST   | /api/ai/assistant   | Chat con IA (function calling)       |
-| POST   | /api/ai/feedback    | Registrar corrección de clasificación|
-| GET    | /api/ai/metrics     | Métricas agregadas + logs opcionales |
+| Método | Ruta                      | Descripción                            |
+|--------|---------------------------|----------------------------------------|
+| POST   | /api/ai/classify          | Clasificar gasto (devuelve logId)      |
+| POST   | /api/ai/assistant         | Chat con IA (function calling + RAG) ✅|
+| POST   | /api/ai/feedback          | Registrar corrección de clasificación  |
+| GET    | /api/ai/metrics           | Métricas agregadas + logs opcionales   |
+| POST   | /api/ai/search            | Búsqueda semántica de gastos ✅ NUEVO  |
+| GET    | /api/ai/migrate-embeddings| Ver estado de migración ✅ NUEVO       |
+| POST   | /api/ai/migrate-embeddings| Procesar batch de embeddings ✅ NUEVO  |
 
 
 ================================================================================
-                         ¿QUÉ SIGUE? (Fase 3 - RAG y Memoria)
+                   ¿QUÉ SIGUE? (Fase 4 - Agentes y Orquestación)
 ================================================================================
 
-  • Vector Database
-    → Habilitar pgvector en Supabase para búsqueda semántica
+OBJETIVO: Implementar arquitectura de agentes multi-rol con LangGraph
 
-  • Embeddings
-    → Generar embeddings de gastos con text-embedding-3-small
+1. LANGGRAPH - Orquestador de Agentes
+   → Framework para gestionar múltiples agentes
+   → Gestión de estado complejo
+   → Flujos de decisión con grafos
+   → Persistencia de conversaciones multi-turno
 
-  • Búsqueda Semántica
-    → Encontrar gastos similares en el historial
+2. AGENTE DE ANÁLISIS FINANCIERO
+   → Analizar patrones de gasto por período
+   → Comparar gastos actuales vs presupuestos
+   → Detectar anomalías (gastos inusuales)
+   → Identificar tendencias de gasto
+   → Proyección de gasto mensual
 
-  • Asistente Contextual
-    → El chat "recuerda" tus gastos anteriores para dar mejor contexto
+3. AGENTE DE RECOMENDACIONES
+   → Sugerir categorías basadas en historial
+   → Alertar sobre presupuestos cercanos a límite
+   → Recomendar optimizaciones de gasto
+   → Sugerencias personalizadas de ahorro
 
-  • Métricas RAG
-    → Medir calidad del retrieval
+4. NUEVAS HERRAMIENTAS (TOOLS) PLANIFICADAS
+   • analyze_spending_pattern      → Análisis de patrones
+   • get_budget_status             → Estado de presupuesto
+   • detect_anomalies              → Detectar gastos inusuales
+   • predict_monthly_spending      → Proyección de gasto
+   • get_optimization_suggestions  → Sugerencias de ahorro
+   • get_spending_trends           → Tendencias temporales
+
+5. ORQUESTACIÓN COMPLEJA
+   → Coordinar múltiples agentes en paralelo
+   → Manejo de dependencias entre agentes
+   → Error recovery robusto
+   → Logs de flujos multi-agente
+
+6. TESTING DE AGENTES
+   → Tests de flujos multi-agente
+   → Evaluación de calidad de respuestas
+   → Métricas de efectividad de agentes
+
+
+================================================================================
+                              ROADMAP COMPLETO
+================================================================================
+
+| Fase | Nombre                    | Estado       | Semana | Completado |
+|------|---------------------------|--------------|--------|------------|
+| 0    | Setup y Planificación     | ✅ COMPLETA  | 0      | 100%       |
+| 1    | Backend Profesional       | ✅ COMPLETA  | 1      | 100%       |
+| 2    | IA Aplicada               | ✅ COMPLETA  | 2      | 100%       |
+| 3    | RAG y Memoria             | ✅ COMPLETA  | 3      | 100%       |
+| 4    | Agentes y Orquestación    | 🔄 EN CURSO  | 4-5    | 10%        |
+| 5    | Producción AWS            | ⬜ PENDIENTE | 6-7    | 0%         |
+| 6    | Portfolio                 | ⬜ PENDIENTE | 8      | 0%         |
+
+
+FASE 5 - PRODUCCIÓN AWS (Semanas 6-7):
+  • Migración de Supabase a AWS RDS (PostgreSQL)
+  • Deploy en AWS App Runner o EC2
+  • CI/CD con GitHub Actions
+  • Monitoring con CloudWatch
+  • Costos: ~$20-30/mes
+
+FASE 6 - PORTFOLIO (Semana 8):
+  • Documentación técnica completa
+  • Video demo de 5 minutos
+  • Caso de estudio detallado
+  • README profesional para GitHub
+  • LinkedIn post con arquitectura
+
+
+================================================================================
+                        OBJETIVO FINAL DEL PROYECTO
+================================================================================
+
+PORTFOLIO PROFESIONAL para conseguir empleo como:
+  • AI Solutions Engineer (50-65K€)
+  • ML Engineer / AI Engineer
+  • Backend Engineer con especialización en IA
+
+DEMUESTRA:
+  ✅ Integración de LLMs en producción (GPT-4o-mini)
+  ✅ Function calling y tool use
+  ✅ Sistema RAG con pgvector y embeddings
+  ✅ Métricas y monitoring de IA (costos, latencia, accuracy)
+  ✅ Testing profesional (>90% coverage)
+  ✅ API REST con autenticación y validación
+  ⬜ Arquitectura de agentes multi-rol (Fase 4)
+  ⬜ Deploy escalable en AWS (Fase 5)
+
+HABILIDADES CLAVE:
+  • TypeScript/Node.js production-grade
+  • Next.js 16 con App Router
+  • OpenAI API (GPT-4, embeddings)
+  • PostgreSQL + pgvector
+  • Testing (Vitest, >91% coverage)
+  • Git workflow profesional
+  • Arquitectura limpia y escalable
+
+
+================================================================================
+                    ¿QUÉ HEMOS CONSTRUIDO? (Fase 4 - DÍA 1) - EN CURSO 🔄
+================================================================================
+
+INICIADA: 2 de Febrero de 2026
+OBJETIVO: Implementar arquitectura multi-agente con LangGraph
+
+En la Fase 4 estamos construyendo un sistema de agentes especializados que
+trabajarán en conjunto para análisis financiero avanzado y recomendaciones.
+
+
+--------------------------------------------------------------------------------
+1. SETUP DE LANGGRAPH (COMPLETADO)
+--------------------------------------------------------------------------------
+
+¿Qué es LangGraph?
+Un framework de LangChain para crear flujos de agentes con grafos. Permite
+orquestar múltiples agentes que se comunican entre sí.
+
+Instalado:
+  • @langchain/langgraph - Framework principal
+  • @langchain/core - Componentes core
+  • @langchain/openai - Integración con OpenAI
+
+Estructura creada:
+  src/lib/agents/
+  └── tools/
+      ├── index.ts
+      ├── spending-analysis.ts
+      └── budget-status.ts
+
+
+--------------------------------------------------------------------------------
+2. HERRAMIENTAS DE ANÁLISIS IMPLEMENTADAS
+--------------------------------------------------------------------------------
+
+### analyze_spending_pattern
+
+¿Qué hace?
+Analiza patrones de gasto por categoría y período temporal.
+
+Parámetros:
+  • category: "survival" | "optional" | "culture" | "extra" | "all"
+  • period: "current_month" | "last_month" | "last_3_months" | "last_6_months"
+  • groupBy: "day" | "week" | "month"
+
+Devuelve:
+  • totalAmount: Total gastado
+  • averagePerPeriod: Promedio por período
+  • trend: "increasing" | "decreasing" | "stable"
+  • trendPercentage: % de cambio
+  • topExpenses: Top 5 gastos más grandes
+  • insights: Array de insights generados automáticamente
+
+Ejemplo de insight generado:
+  "Tus gastos en optional están aumentando un 15.3% en este período"
+
+Algoritmo de tendencia:
+  - Usa regresión lineal simple sobre gastos agrupados por día
+  - Si cambio < 5% → "stable"
+  - Si cambio > 5% positivo → "increasing"
+  - Si cambio > 5% negativo → "decreasing"
+
+
+### get_budget_status
+
+¿Qué hace?
+Calcula el estado actual de presupuestos vs gastos reales.
+
+Parámetros:
+  • month: "YYYY-MM" (opcional, default: mes actual)
+  • category: Categoría específica (opcional)
+
+Devuelve por cada categoría:
+  • budget: Presupuesto asignado
+  • spent: Cantidad gastada
+  • remaining: Cantidad restante
+  • percentage: % del presupuesto usado
+  • status: "safe" | "warning" | "exceeded"
+  • daysRemaining: Días restantes en el mes
+  • projectedSpending: Proyección de gasto total del mes
+
+Lógica de status:
+  • safe: < 70% del presupuesto usado
+  • warning: 70-100% usado
+  • exceeded: > 100% usado
+
+Proyección de gasto:
+  proyectedSpending = (gastadoHastaAhora / díasTranscurridos) * díasTotales
+
+
+--------------------------------------------------------------------------------
+3. TESTING PROFESIONAL
+--------------------------------------------------------------------------------
+
+Tests implementados: 15 tests (TODOS PASANDO ✅)
+
+spending-analysis.test.ts (7 tests):
+  ✅ Analizar gasto para mes actual
+  ✅ Identificar tendencia creciente
+  ✅ Identificar tendencia decreciente
+  ✅ Manejar filtro por categoría
+  ✅ Generar insights relevantes
+  ✅ Manejar gastos vacíos
+  ✅ Manejar errores de base de datos
+
+budget-status.test.ts (8 tests):
+  ✅ Calcular estado de presupuesto correctamente
+  ✅ Identificar status "safe" cuando < 70%
+  ✅ Identificar status "warning" cuando 70-100%
+  ✅ Identificar status "exceeded" cuando > 100%
+  ✅ Proyectar gasto correctamente
+  ✅ Manejar parámetro de mes específico
+  ✅ Manejar settings faltantes
+  ✅ Manejar errores de base de datos
+
+Coverage esperado: >85% (mediremos al final de Fase 4)
+
+
+--------------------------------------------------------------------------------
+4. PRÓXIMOS PASOS (DÍA 2)
+--------------------------------------------------------------------------------
+
+Herramientas a implementar:
+  • detect_anomalies - Detectar gastos inusuales
+  • predict_monthly_spending - Proyección avanzada de gasto
+  • get_spending_trends - Tendencias temporales con gráficos
+
+
+================================================================================
+                         COMMITS RECIENTES (2 Feb 2026)
+================================================================================
+
+[PRÓXIMO COMMIT]
+feat(agents): implement Day 1 - LangGraph setup and basic analysis tools
+
+c5cd5e5 docs: mark Phase 3 (RAG) as completed
+132c1c9 feat: add embedding migration UI to AI metrics dashboard
+26fad0b fix: use server-side Supabase client in all API routes
+53bcde2 docs: comprehensive update of AI context documentation
+4c670f3 fix: use server-side Supabase client for API auth
 
 
 ================================================================================
@@ -594,5 +1133,6 @@ curl http://localhost:3000/api/docs
 
 Documento creado: 1 de Febrero de 2026
 Última actualización: 2 de Febrero de 2026
-Autor: Claude Opus 4.5 + Aitor
-Versión: 2.0 - Fase 1 + Fase 2 COMPLETADAS
+Autor: Claude Sonnet 4.5 + Aitor
+Versión: 3.1 - Fases 1, 2, 3 COMPLETADAS ✅ | Fase 4 Día 1 COMPLETADO ✅
+Próximo: Fase 4 Día 2 - Tools de Análisis Avanzado
