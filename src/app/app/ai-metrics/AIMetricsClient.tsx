@@ -50,7 +50,7 @@ export default function AIMetricsClient() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Error al cargar métricas");
+        throw new Error(data.error?.message || "Error al cargar métricas");
       }
 
       setMetrics(data.data.metrics);
