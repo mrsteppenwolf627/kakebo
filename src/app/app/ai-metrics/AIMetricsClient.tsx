@@ -8,6 +8,14 @@ import { AIMetrics, AILogEntry } from "@/lib/ai/metrics";
 
 type DateRange = "7d" | "30d" | "90d" | "all";
 
+interface EmbeddingStatus {
+  totalExpenses: number;
+  withEmbeddings: number;
+  withoutEmbeddings: number;
+  percentage: number;
+  status: "complete" | "in_progress" | "not_started";
+}
+
 const DATE_RANGE_LABELS: Record<DateRange, string> = {
   "7d": "7 días",
   "30d": "30 días",
@@ -31,6 +39,11 @@ export default function AIMetricsClient() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dateRange, setDateRange] = useState<DateRange>("30d");
+
+  // Embedding migration state
+  const [embeddingStatus, setEmbeddingStatus] = useState<EmbeddingStatus | null>(null);
+  const [migrating, setMigrating] = useState(false);
+  const [migrationResult, setMigrationResult] = useState<string | null>(null);
 
   const fetchMetrics = useCallback(async () => {
     setLoading(true);
@@ -66,6 +79,47 @@ export default function AIMetricsClient() {
   useEffect(() => {
     fetchMetrics();
   }, [fetchMetrics]);
+
+  // Fetch embedding migration status
+  const fetchEmbeddingStatus = useCallback(async () => {
+    try {
+      const response = await fetch("/api/ai/migrate-embeddings");
+      const data = await response.json();
+      if (response.ok) {
+        setEmbeddingStatus(data.data);
+      }
+    } catch {
+      // Silent fail - non-critical feature
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchEmbeddingStatus();
+  }, [fetchEmbeddingStatus]);
+
+  // Run embedding migration
+  const runMigration = async () => {
+    setMigrating(true);
+    setMigrationResult(null);
+
+    try {
+      const response = await fetch("/api/ai/migrate-embeddings?limit=50", {
+        method: "POST",
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setMigrationResult(data.data.message);
+        fetchEmbeddingStatus();
+      } else {
+        setMigrationResult(data.error?.message || "Error en migración");
+      }
+    } catch (err) {
+      setMigrationResult("Error de conexión");
+    } finally {
+      setMigrating(false);
+    }
+  };
 
   // Prepare chart data for type distribution
   const typeChartData = useMemo(() => {
@@ -218,6 +272,62 @@ export default function AIMetricsClient() {
           data={modelChartData}
         />
       </div>
+
+      {/* Embeddings Migration */}
+      {embeddingStatus && (
+        <div className="border border-black/10 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <div className="font-semibold">Embeddings RAG</div>
+              <div className="text-xs text-black/60">
+                Vectores para búsqueda semántica de gastos
+              </div>
+            </div>
+            {embeddingStatus.status !== "complete" && (
+              <button
+                onClick={runMigration}
+                disabled={migrating}
+                className="border border-black px-3 py-1.5 text-sm hover:bg-black hover:text-white disabled:opacity-50"
+              >
+                {migrating ? "Procesando..." : "Generar embeddings"}
+              </button>
+            )}
+          </div>
+
+          <div className="grid grid-cols-3 gap-4 text-sm mb-3">
+            <div>
+              <div className="text-black/60">Total gastos</div>
+              <div className="font-medium">{embeddingStatus.totalExpenses}</div>
+            </div>
+            <div>
+              <div className="text-black/60">Con embedding</div>
+              <div className="font-medium text-green-600">{embeddingStatus.withEmbeddings}</div>
+            </div>
+            <div>
+              <div className="text-black/60">Sin embedding</div>
+              <div className="font-medium text-amber-600">{embeddingStatus.withoutEmbeddings}</div>
+            </div>
+          </div>
+
+          {/* Progress bar */}
+          <div className="h-2 bg-black/10 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-green-500 transition-all duration-300"
+              style={{ width: `${embeddingStatus.percentage}%` }}
+            />
+          </div>
+          <div className="text-xs text-black/60 mt-1">
+            {embeddingStatus.percentage}% completado
+            {embeddingStatus.status === "complete" && " ✓"}
+          </div>
+
+          {migrationResult && (
+            <div className="mt-3 text-sm text-black/70 bg-black/5 p-2">
+              {migrationResult}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Logs list */}
       <AILogsList logs={logs} />
