@@ -2,301 +2,326 @@
 
 **Última actualización:** 2025-02-02
 **Sesión anterior con:** Claude Opus 4.5
-**Fase actual:** 3 - RAG y Memoria (EN PROGRESO)
+**Fase actual:** 3 - RAG y Memoria (90% completado)
 
 ---
 
-## 🎯 OBJETIVO GENERAL
+## 🎯 QUÉ ES KAKEBO AI
 
-Transformar Kakebo (app personal de finanzas basada en método japonés) en **plataforma profesional de AI Systems Engineering** para portfolio de nivel senior.
+**Kakebo AI** es una aplicación de finanzas personales basada en el método japonés Kakebo, potenciada con inteligencia artificial:
 
-- **Timeline:** 10 semanas (ajustable según velocidad de Aitor: 6-8x estimado)
-- **Objetivo profesional:** Portfolio técnico sólido → Empleo AI Solutions Engineer (50-65K€)
-- **Aprendizaje paralelo:** AWS SAA-C03 + ML Specialty
+- **Clasificación automática de gastos** usando GPT-4o-mini
+- **Asistente conversacional** con function calling para gestionar finanzas
+- **Búsqueda semántica (RAG)** para encontrar gastos similares en el historial
+- **Panel de métricas** para evaluar el rendimiento del modelo
+
+**Objetivo del proyecto:** Crear un portfolio profesional de AI Systems Engineering para conseguir empleo como AI Solutions Engineer (50-65K€).
 
 ---
 
-## 📊 ESTADO ACTUAL DEL PROYECTO
+## 🏗️ STACK TECNOLÓGICO
 
-### ✅ COMPLETADO
+| Capa | Tecnología | Propósito |
+|------|------------|-----------|
+| **Frontend** | Next.js 16 + React 18 + TypeScript | UI y routing |
+| **Estilos** | Tailwind CSS | Diseño responsive |
+| **Backend** | Next.js API Routes | Endpoints REST |
+| **Validación** | Zod | Schemas TypeScript-first |
+| **Auth** | Supabase Auth | OAuth (Google) + JWT |
+| **Database** | Supabase PostgreSQL | Datos + pgvector |
+| **AI** | OpenAI API | GPT-4o-mini + embeddings |
+| **Hosting** | Vercel | Deploy automático desde GitHub |
+| **Gráficos** | Recharts | Visualización de métricas |
 
-- [x] Plan de estudios definido (6 fases, 10-11 semanas)
-- [x] Análisis de roadmaps (Consultor 6m, AI Architect 18-24m, Kakebo 11w)
-- [x] Decisión: Kakebo roadmap es el óptimo para siguiente paso
-- [x] Sistema de gestión de contexto multi-LLM diseñado
-- [x] Estructura de archivos `.ai/` definida
-- [x] Claude Project creado con instrucciones personalizadas
-- [x] Confirmación: AWS certificaciones son MUST (SAA-C03 primero)
+---
 
-### 🔄 EN PROGRESO
+## 📁 ESTRUCTURA DEL PROYECTO
 
-**FASE 0: Setup y Planificación (Semana 0 - COMPLETADA)**
-- [x] Definición de arquitectura objetivo
-- [x] Creación de Claude Project
-- [x] Generación de archivos base (.ai/)
-- [x] Análisis de código base actual de Kakebo
-- [x] Identificación de gaps técnicos
-- [x] Planificación detallada Fase 1
+```
+kakebo/
+├── .ai/                          # Documentación para LLMs
+│   ├── CONTEXT.md               # ← Este archivo
+│   ├── CURRENT_TASK.md          # Tarea actual detallada
+│   └── prompts/                 # Prompts del Claude Project
+│
+├── src/
+│   ├── app/                     # Next.js App Router
+│   │   ├── api/                 # API Routes
+│   │   │   ├── ai/              # Endpoints de IA
+│   │   │   │   ├── classify/    # POST - Clasificar gasto
+│   │   │   │   ├── assistant/   # POST - Chat con asistente
+│   │   │   │   ├── feedback/    # POST - Registrar corrección
+│   │   │   │   ├── search/      # POST - Búsqueda semántica
+│   │   │   │   └── metrics/     # GET - Métricas agregadas
+│   │   │   ├── expenses/        # CRUD gastos
+│   │   │   ├── months/          # CRUD meses
+│   │   │   ├── settings/        # GET/PATCH configuración
+│   │   │   └── fixed-expenses/  # CRUD gastos fijos
+│   │   │
+│   │   ├── app/                 # Páginas protegidas
+│   │   │   ├── page.tsx         # Dashboard principal
+│   │   │   ├── new/             # Crear nuevo gasto
+│   │   │   ├── ai-metrics/      # Panel de métricas IA
+│   │   │   ├── history/         # Historial de gastos
+│   │   │   ├── settings/        # Configuración
+│   │   │   └── fixed-expenses/  # Gastos fijos
+│   │   │
+│   │   ├── auth/callback/       # OAuth callback (Google)
+│   │   └── login/               # Página de login
+│   │
+│   ├── components/              # Componentes React
+│   │   ├── AuthGate.tsx         # Protección de rutas
+│   │   ├── TopNav.tsx           # Navegación superior
+│   │   ├── ExpenseCalendar.tsx  # Calendario de gastos
+│   │   ├── AIMetricsChart.tsx   # Gráficos de métricas IA
+│   │   ├── AILogsList.tsx       # Lista de logs IA
+│   │   └── ...
+│   │
+│   └── lib/                     # Lógica de negocio
+│       ├── ai/                  # Sistema de IA (ver detalle abajo)
+│       ├── api/                 # Utilidades API
+│       ├── supabase/            # Clientes Supabase
+│       ├── schemas/             # Schemas Zod
+│       └── logger.ts            # Logging con Pino
+│
+├── docs/                        # Documentación adicional
+└── public/                      # Assets estáticos
+```
 
-**FASE 1: Backend Profesional (Semana 1 - COMPLETADA)**
-- [x] Decisión: Next.js API Routes (confirmado)
-- [x] Decisión: Zod para validación
-- [x] Implementación de estructura API
-- [x] Schemas Zod
-- [x] Endpoints CRUD
-- [x] Error handling centralizado
-- [x] Logging estructurado
+---
 
-**FASE 2: IA Aplicada (Semana 2 - COMPLETADA)**
-- [x] Sistema de clasificación inteligente de gastos (OpenAI GPT-4o-mini)
-- [x] Prompt engineering y versionado
-- [x] Function calling para herramientas
-- [x] Métricas de IA (accuracy, latency, costos)
-- [x] Panel de evaluación del modelo (/app/ai-metrics)
-- [x] Feedback loop para corrección humana
+## 🤖 SISTEMA DE IA - DETALLE
 
-**Estado actual:** Fase 2 completada. Listo para Fase 3 (RAG y Memoria).
+### Archivos en `src/lib/ai/`
 
-### 📋 PENDIENTE (Por Fase)
+| Archivo | Descripción | Funciones principales |
+|---------|-------------|----------------------|
+| `client.ts` | Cliente OpenAI configurado | `openai`, `calculateCost()` |
+| `classifier.ts` | Clasificador de gastos | `classifyExpense(text)` |
+| `assistant.ts` | Asistente conversacional | `processMessage()` |
+| `tools.ts` | Definiciones de tools | `ASSISTANT_TOOLS`, tipos |
+| `tool-executor.ts` | Ejecutor de tools | `executeTool()` |
+| `embeddings.ts` | Sistema RAG | `generateEmbedding()`, `searchExpensesByText()` |
+| `metrics.ts` | Logging y métricas | `logAIInteraction()`, `getAIMetrics()` |
+| `prompts.ts` | Prompts versionados | `CLASSIFICATION_PROMPT` |
 
-**Fase 1: Backend Profesional (Semanas 1-2) - ✅ COMPLETADA**
-- [x] Diseño de API REST (endpoints, schemas)
-- [x] Implementación de endpoints CRUD
-- [x] Validación de inputs (Zod)
-- [x] Middleware de autenticación (Supabase Auth)
-- [x] Error handling centralizado
-- [x] Logging estructurado (pino)
-- [ ] Tests unitarios e integración (>80% coverage) - Pendiente
-- [ ] Documentación API (Swagger/OpenAPI) - Pendiente
+### Flujo de Clasificación
 
-**Fase 2: IA Aplicada (Semanas 3-4) - ✅ COMPLETADA**
-- [x] Sistema de clasificación inteligente de gastos (GPT-4o-mini)
-- [x] Prompt engineering y versionado (v1 few-shot)
-- [x] Function calling para herramientas (categorías, búsqueda)
-- [x] Métricas de IA (accuracy, latency, costos) - tabla ai_logs
-- [x] Panel de evaluación del modelo (/app/ai-metrics)
-- [x] Feedback loop para corrección humana (/api/ai/feedback)
+```
+Usuario escribe "Netflix mensual"
+         │
+         ▼
+POST /api/ai/classify
+         │
+         ▼
+classifyExpense() en classifier.ts
+         │
+         ├─► Construye prompt con few-shot examples
+         ├─► Llama a GPT-4o-mini
+         ├─► Parsea JSON response
+         └─► Guarda log en ai_logs
+         │
+         ▼
+{ category: "culture", note: "Netflix mensual", confidence: 0.95, logId: "..." }
+```
 
-**Fase 3: RAG y Memoria (Semanas 5-6)**
-- [ ] Implementación de vector database (Supabase Vector / Pinecone)
-- [ ] Chunking strategy para gastos históricos
-- [ ] Generación de embeddings
-- [ ] Búsqueda semántica en historial
-- [ ] Asistente financiero contextual
+### Flujo del Asistente
+
+```
+Usuario: "¿Cuánto llevo gastado en cultura?"
+         │
+         ▼
+POST /api/ai/assistant
+         │
+         ▼
+processMessage() en assistant.ts
+         │
+         ├─► Construye mensajes con historial
+         ├─► Llama a GPT-4o-mini con tools
+         │
+         ▼
+Modelo decide: tool_call → get_monthly_summary
+         │
+         ▼
+executeTool() en tool-executor.ts
+         │
+         ├─► Consulta Supabase
+         └─► Retorna datos al modelo
+         │
+         ▼
+Modelo genera respuesta final con datos
+         │
+         ▼
+"Este mes llevas 45.99€ en cultura (Netflix, Spotify...)"
+```
+
+### Flujo de Búsqueda Semántica (RAG)
+
+```
+Usuario: "Busca gastos de comida"
+         │
+         ▼
+Asistente usa tool: search_similar_expenses
+         │
+         ▼
+searchExpensesByText() en embeddings.ts
+         │
+         ├─► generateEmbedding("comida") → vector 1536D
+         └─► searchSimilarExpenses() → RPC match_expenses
+         │
+         ▼
+Supabase calcula similitud de coseno
+         │
+         ▼
+Resultados: [{ note: "Glovo pizza", similarity: 0.87 }, ...]
+```
+
+---
+
+## 📡 ENDPOINTS API
+
+### Endpoints de IA
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| POST | `/api/ai/classify` | Clasificar texto → categoría |
+| POST | `/api/ai/assistant` | Chat con function calling |
+| POST | `/api/ai/feedback` | Registrar corrección |
+| POST | `/api/ai/search` | Búsqueda semántica |
+| GET | `/api/ai/metrics` | Métricas + logs |
+
+### Endpoints CRUD
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET/POST | `/api/expenses` | Listar/Crear gastos |
+| GET/PATCH/DELETE | `/api/expenses/[id]` | Gasto individual |
+| GET/POST | `/api/months` | Listar/Crear meses |
+| GET/PATCH | `/api/settings` | Configuración usuario |
+| GET/POST | `/api/fixed-expenses` | Gastos fijos |
+
+---
+
+## 🗄️ BASE DE DATOS (Supabase)
+
+### Tablas principales
+
+| Tabla | Descripción |
+|-------|-------------|
+| `expenses` | Gastos del usuario |
+| `months` | Meses con estado (open/closed) |
+| `user_settings` | Presupuestos por categoría |
+| `fixed_expenses` | Gastos fijos mensuales |
+| `ai_logs` | Registro de interacciones IA |
+| `expense_embeddings` | Vectores para RAG (pgvector) |
+
+### Categorías Kakebo
+
+| Código | Español | Descripción |
+|--------|---------|-------------|
+| `survival` | Supervivencia | Comida, transporte, salud |
+| `optional` | Opcional | Restaurantes, ropa, caprichos |
+| `culture` | Cultura | Netflix, libros, cursos |
+| `extra` | Extra | Imprevistos, emergencias |
+
+---
+
+## 📊 PROGRESO DEL PROYECTO
+
+### Fases completadas
+
+| Fase | Nombre | Estado | Semana |
+|------|--------|--------|--------|
+| 0 | Setup y Planificación | ✅ 100% | 0 |
+| 1 | Backend Profesional | ✅ 100% | 1 |
+| 2 | IA Aplicada | ✅ 100% | 2 |
+| 3 | RAG y Memoria | 🟡 90% | 3 |
+| 4 | Agentes y Orquestación | ⬜ 0% | 4-5 |
+| 5 | Producción AWS | ⬜ 0% | 6-7 |
+| 6 | Portfolio | ⬜ 0% | 8 |
+
+### Fase 3 - Detalle
+
+**Completado:**
+- ✅ pgvector habilitado en Supabase
+- ✅ Tabla `expense_embeddings` con índice HNSW
+- ✅ Función SQL `match_expenses`
+- ✅ `embeddings.ts` completo
+- ✅ Endpoint `/api/ai/search`
+- ✅ Tool `search_similar_expenses`
+- ✅ Panel de métricas funcionando
+- ✅ Login Google OAuth arreglado
+
+**Pendiente:**
+- [ ] Probar clasificación IA en UI
+- [ ] Script de migración para gastos existentes
 - [ ] Métricas de calidad de retrieval
 
-**Fase 4: Agentes y Orquestación (Semanas 7-8)**
-- [ ] Diseño de arquitectura multi-agente
-- [ ] Implementación con LangGraph
-- [ ] Agente de análisis financiero
-- [ ] Agente de recomendaciones
-- [ ] Orquestación de herramientas
-- [ ] Testing de agentes
+---
 
-**Fase 5: Producción y Cloud AWS (Semanas 9-10)**
-- [ ] Migración a AWS (EC2 / App Runner)
-- [ ] CI/CD con GitHub Actions
-- [ ] Monitoring y observabilidad
-- [ ] Logging centralizado
-- [ ] Cost tracking
-- [ ] Performance optimization
+## 🔧 CONFIGURACIÓN
 
-**Fase 6: Portfolio y Presentación (Semana 11)**
-- [ ] Documentación técnica completa
-- [ ] Diagrama de arquitectura profesional
-- [ ] README nivel enterprise
-- [ ] Video demo (10-15 min)
-- [ ] Caso de estudio con métricas
-- [ ] LinkedIn post + blog post
-- [ ] Preparación para mostrar en entrevistas
+### Variables de entorno requeridas
+
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+
+# OpenAI
+OPENAI_API_KEY=sk-...
+
+# Site URL (para OAuth)
+NEXT_PUBLIC_SITE_URL=https://kakebo-neon.vercel.app
+```
+
+### Supabase Dashboard
+
+- **Proyecto:** kakebo
+- **URL:** Configurado en Vercel
+- **Auth providers:** Google OAuth habilitado
+- **Extensiones:** pgvector habilitado
 
 ---
 
-## 🎓 APRENDIZAJE PARALELO
+## 🚀 PRÓXIMOS PASOS
 
-### AWS Solutions Architect Associate (SAA-C03)
+1. **Completar Fase 3:**
+   - Probar clasificación IA en `/app/new`
+   - Crear embeddings para gastos existentes
 
-- **Estado:** En progreso (curso Udemy adquirido)
-- **Progreso estimado:** ~10-15% (primeras secciones)
-- **Distribución:** 1-2h/día según disponibilidad personal/profesional
-- **Objetivo examen:** Mes 2-3 (mediados marzo - abril 2025)
-- **Enfoque:** Fundamentos sólidos, no memorización
+2. **Fase 4 - Agentes:**
+   - Implementar LangGraph
+   - Agente de análisis financiero
+   - Agente de recomendaciones
 
-### AWS Machine Learning Specialty (Futuro)
-
-- **Estado:** Pendiente
-- **Inicio:** Después de obtener SAA-C03
-- **Timeline:** Mes 5-7
-- **Objetivo:** Reforzar credibilidad para roles AI
-
----
-
-## 🏗️ ARQUITECTURA OBJETIVO
-
-### Stack Tecnológico Confirmado
-
-**Frontend:**
-- Next.js 14 (App Router)
-- React 18 + TypeScript
-- Tailwind CSS + shadcn/ui
-- Manejo de estado: React Context / Zustand
-
-**Backend:**
-- **Inicial:** Next.js API Routes (TypeScript)
-- **Evaluación futura:** Migración a FastAPI si complejidad lo requiere
-- **Validación:** Zod (TypeScript-first)
-- **Auth:** Supabase Auth (JWT, Row Level Security)
-
-**Databases:**
-- **Principal:** Supabase (PostgreSQL + Vector extension)
-- **Alternativa Vector DB:** Pinecone (si Supabase Vector no es suficiente)
-- **Cache (futuro):** Redis (solo si necesario para performance)
-
-**AI/ML:**
-- OpenAI API:
-  - GPT-4 / GPT-4-turbo (generación)
-  - text-embedding-3-small (embeddings)
-- LangChain / LangGraph (orquestación de agentes)
-- Tool calling para herramientas custom
-
-**Cloud & DevOps:**
-- **Hosting actual:** Vercel (frontend + API Routes)
-- **Hosting objetivo:** AWS (EC2, App Runner, Lambda)
-- **Storage:** AWS S3 (exports, documentos)
-- **Monitoring:** CloudWatch + logs estructurados
-- **CI/CD:** GitHub Actions
-- **IaC:** Terraform (básico)
-
-### Decisiones Arquitectónicas Clave
-
-1. **Next.js API Routes primero:**
-   - Más simple para empezar
-   - Migrar a FastAPI solo si hay limitaciones claras
-   - Trade-off: Simplicidad vs Control total
-
-2. **Supabase como BaaS:**
-   - Auth + DB + Vector search en un solo lugar
-   - Trade-off: Vendor lock-in vs Velocidad de desarrollo
-
-3. **OpenAI API vs Open Source LLMs:**
-   - OpenAI para empezar (facilidad, calidad)
-   - Evaluar Llama 3 / Mixtral después para cost optimization
-   - Trade-off: Costo vs Control
-
-4. **Certificaciones AWS:**
-   - SAA-C03 es MUST para empleabilidad
-   - ML Specialty es diferenciador para roles AI
+3. **Fase 5 - AWS:**
+   - Migrar a EC2/App Runner
+   - CI/CD con GitHub Actions
+   - CloudWatch para monitoring
 
 ---
 
-## 🔗 ARCHIVOS IMPORTANTES
+## 📝 NOTAS PARA LLMs
 
-### Documentación Principal
-- **Plan completo:** `Plan_Estudios_AI_Systems_Kakebo.pdf`
-- **Roadmap AI Architect:** `Roadmap_AI_Architect_100K.pdf`
-- **Fundamentos teóricos:** `Fundamentos_Teoricos__Sistemas_Distribuidos_y_AI.pdf`
-- **Multi-agent theory:** `multi_agent_systems_theory.md`
+### Al leer este proyecto:
 
-### Contexto AI (Esta carpeta)
-- **Contexto global:** `.ai/CONTEXT.md` ← Estás aquí
-- **Tarea actual:** `.ai/CURRENT_TASK.md`
-- **Reglas Claude Project:** `.ai/prompts/claude_project_rules.md`
+1. **Sistema de IA** está en `src/lib/ai/` - revisa `CURRENT_TASK.md` para detalles de cada función
+2. **Autenticación** usa Supabase Auth con OAuth de Google
+3. **API Routes** siguen patrón REST con respuestas `{ success, data/error }`
+4. **Validación** con Zod en `src/lib/schemas/`
+5. **RAG** usa pgvector con embeddings de OpenAI
 
-### Logs de Sesión
-- **Última sesión:** `docs/SESSION_LOGS/2025-01-30_session.md`
-- **Historial:** `docs/SESSION_LOGS/`
+### Comandos útiles:
 
-### Decisiones Técnicas
-- **ADRs:** `docs/DECISIONS.md` (Architecture Decision Records)
-- **Estado detallado:** `docs/PROJECT_STATE.md`
+```bash
+npm run dev      # Desarrollo local
+npm run build    # Build de producción
+npm run lint     # Linter
+git push         # Deploy automático a Vercel
+```
 
 ---
 
-## 🚨 BLOQUEOS ACTUALES
-
-**Ninguno** - Proyecto en fase de setup inicial.
-
----
-
-## 💡 PRÓXIMAS ACCIONES INMEDIATAS
-
-### Completado:
-
-1. ✅ Crear Claude Project
-2. ✅ Generar archivos base (.ai/)
-3. ✅ Análisis de código base actual de Kakebo
-4. ✅ Fase 1: Backend Profesional (API REST, Zod, Error handling)
-5. ✅ Fase 2: IA Aplicada (Clasificador, Function calling, Métricas, Feedback loop)
-
-### Próxima sesión (Fase 3 - RAG y Memoria):
-
-1. Implementar vector database (Supabase pgvector)
-2. Diseñar chunking strategy para gastos históricos
-3. Generar embeddings con text-embedding-3-small
-4. Implementar búsqueda semántica en historial
-5. Crear asistente financiero contextual
-
----
-
-## 📈 MÉTRICAS DE PROGRESO
-
-**Tiempo total del proyecto:**
-- Semanas completadas: 2/10
-- Fases completadas: 2/6
-- **Progreso global:** ~35% (Fase 1 + Fase 2 completadas)
-
-**Próximo hito importante:**
-- Completar Fase 3 (RAG y Memoria) → Semana 4
-
-**Objetivo mes 1:**
-- ✅ Fase 1 + Fase 2 completadas
-- AWS SAA-C03 al 40-50%
-
----
-
-## 🎯 OBJETIVOS PROFESIONALES
-
-### Corto plazo (3 meses):
-- ✅ Completar plataforma Kakebo AI (production-grade)
-- ✅ Obtener certificación AWS SAA-C03
-- ✅ Portfolio técnico profesional
-- ✅ GitHub con 3 proyectos sólidos:
-  1. AutoDocTranslate (17K valor)
-  2. Research Agent system
-  3. Kakebo AI Platform
-
-### Medio plazo (6 meses):
-- Aplicar a 30-50 posiciones:
-  - AI Solutions Engineer
-  - AI Systems Engineer
-  - ML Engineer (junior-mid)
-- Conseguir empleo remoto 50-65K€
-- Certificación AWS ML Specialty
-- Blog técnico activo (4-6 posts)
-
-### Largo plazo (12-24 meses):
-- Crecer a Senior AI Engineer / AI Architect
-- Salario objetivo: 70-100K€
-- Contribuciones open source
-- Thought leadership técnico
-
----
-
-## 🧠 CONTEXTO PERSONAL
-
-**Por qué Aitor es más rápido:**
-- CI 162 (capacidad analítica excepcional)
-- Aprende teoría primero → implementación más rápida
-- Ya tiene base sólida (Python, FastAPI, Next.js)
-- 6 horas diarias enfocadas
-- Perfil ENFJ-T (sistematización natural)
-
-**Por qué este roadmap vs otros:**
-- Roadmap Consultor 6m → Ya superado con AutoDocTranslate
-- Roadmap AI Architect 18-24m → Demasiado aspiracional ahora
-- Roadmap Kakebo 11w → **Sweet spot realista** para siguiente nivel
-
----
-
-**Versión:** 2.0
+**Versión:** 3.0
 **Última actualización:** 2025-02-02 CET
