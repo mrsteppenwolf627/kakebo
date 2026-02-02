@@ -4,7 +4,7 @@
 **Objetivo:** Iniciar Fase 3 - RAG y Memoria
 **Fase:** 3 - RAG y Memoria
 **Semana:** 3/10
-**Estado:** 🟡 PENDIENTE - Listo para comenzar
+**Estado:** 🟢 EN PROGRESO - Código implementado, pendiente SQL en Supabase
 
 ---
 
@@ -46,23 +46,23 @@ Implementar sistema RAG (Retrieval-Augmented Generation) para:
 ## 📋 CHECKLIST FASE 3
 
 ### 1. Vector Database Setup
-- [ ] Habilitar extensión pgvector en Supabase
-- [ ] Crear tabla `expense_embeddings`
-- [ ] Crear función de búsqueda por similitud
+- [ ] Habilitar extensión pgvector en Supabase ⚠️ PENDIENTE
+- [ ] Crear tabla `expense_embeddings` ⚠️ PENDIENTE (SQL listo)
+- [ ] Crear función de búsqueda por similitud ⚠️ PENDIENTE (SQL listo)
 
 ### 2. Embeddings
-- [ ] Integrar OpenAI text-embedding-3-small
-- [ ] Función para generar embedding de gasto
+- [x] Integrar OpenAI text-embedding-3-small ✅
+- [x] Función para generar embedding de gasto ✅
 - [ ] Migración para embeddings de gastos existentes
 
 ### 3. Retrieval
-- [ ] Endpoint de búsqueda semántica
-- [ ] Chunking strategy (por gasto individual)
-- [ ] Top-K retrieval con threshold de similitud
+- [x] Endpoint de búsqueda semántica (POST /api/ai/search) ✅
+- [x] Chunking strategy (por gasto individual) ✅
+- [x] Top-K retrieval con threshold de similitud ✅
 
 ### 4. Asistente Contextual
-- [ ] Integrar retrieval en el asistente
-- [ ] Prompt con contexto de gastos similares
+- [x] Integrar retrieval en el asistente (search_similar_expenses tool) ✅
+- [x] Prompt con contexto de gastos similares ✅
 - [ ] Mejorar clasificaciones con ejemplos del usuario
 
 ### 5. Métricas RAG
@@ -130,12 +130,20 @@ Ninguno actualmente.
 
 ## 💡 PRÓXIMA ACCIÓN
 
-1. **Verificar Supabase pgvector** - ¿Está disponible en el plan actual?
-2. **Diseñar schema de embeddings** - Decidir qué campos indexar
-3. **Crear tabla expense_embeddings** - Con índice HNSW o IVFFlat
-4. **Implementar generación de embeddings** - En creación de gastos
+**IMPORTANTE: Ejecutar el SQL en Supabase para habilitar la búsqueda semántica**
+
+El código está listo pero necesitas crear la tabla en Supabase:
+
+1. Ir a Supabase Dashboard → SQL Editor
+2. Ejecutar el SQL que está en `src/lib/ai/embeddings.ts` (constante EXPENSE_EMBEDDINGS_SQL)
+3. Esto habilitará pgvector y creará la tabla con índices
+
+Una vez creada la tabla:
+- Los nuevos gastos generarán embeddings automáticamente
+- El asistente podrá buscar gastos similares
+- POST /api/ai/search funcionará
 
 ---
 
-**Versión:** 4.0
-**Última actualización:** 2025-02-02 CET
+**Versión:** 5.0
+**Última actualización:** 2025-02-02 CET (Fase 3 código implementado)
