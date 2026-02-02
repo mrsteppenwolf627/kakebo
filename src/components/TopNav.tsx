@@ -22,6 +22,7 @@ export default function TopNav() {
   const items = [
     { href: "/app", label: "Dashboard" },
     { href: "/app/fixed", label: "Fijos" },
+    { href: "/app/ai-metrics", label: "IA" },
     { href: "/app/settings", label: "Ajustes" },
   ];
 

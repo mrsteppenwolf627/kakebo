@@ -1,7 +1,8 @@
 import { NextRequest } from "next/server";
+import { createClient } from "@/lib/supabase/client";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { classifyExpenseSchema, classifyExpensesBatchSchema } from "@/lib/schemas";
-import { classifyExpense, classifyExpenses } from "@/lib/ai";
+import { classifyExpense, classifyExpenses, logAIInteraction } from "@/lib/ai";
 
 /**
  * POST /api/ai/classify
@@ -23,9 +24,9 @@ import { classifyExpense, classifyExpenses } from "@/lib/ai";
  */
 export const POST = withLogging(async (request: NextRequest) => {
   try {
-    // Auth is optional for classification (could be used before creating expense)
-    // But we still check to track usage per user
-    await requireAuth();
+    // Auth is required for classification to track usage per user
+    const user = await requireAuth();
+    const supabase = createClient();
 
     const body = await request.json();
 
@@ -60,7 +61,30 @@ export const POST = withLogging(async (request: NextRequest) => {
       promptVersion: input.promptVersion,
     });
 
-    return responses.ok(result);
+    // Log the AI interaction and get the logId
+    const { data: logData } = await supabase
+      .from("ai_logs")
+      .insert({
+        user_id: user.id,
+        type: "classification",
+        input: input.text,
+        output: { category: result.category, note: result.note, confidence: result.confidence },
+        model: result.metrics.model,
+        prompt_version: result.metrics.promptVersion,
+        input_tokens: result.metrics.inputTokens,
+        output_tokens: result.metrics.outputTokens,
+        cost_usd: result.metrics.costUsd,
+        latency_ms: result.metrics.latencyMs,
+        success: result.confidence > 0,
+        error_message: result.confidence === 0 ? "Classification failed" : null,
+      })
+      .select("id")
+      .single();
+
+    return responses.ok({
+      ...result,
+      logId: logData?.id || null,
+    });
   } catch (error) {
     return handleApiError(error);
   }

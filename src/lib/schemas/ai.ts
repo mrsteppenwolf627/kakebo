@@ -58,3 +58,17 @@ export const classificationResultSchema = z.object({
 });
 
 export type ClassificationResult = z.infer<typeof classificationResultSchema>;
+
+/**
+ * Schema for feedback request (classification correction)
+ */
+export const feedbackRequestSchema = z.object({
+  /** The AI log ID to correct */
+  logId: z.string().uuid({ message: "ID de log inválido" }),
+  /** The corrected category (in Spanish as used in frontend) */
+  correctedCategory: z.enum(["supervivencia", "opcional", "cultura", "extra"], {
+    error: "Categoría inválida. Usa: supervivencia, opcional, cultura, extra",
+  }),
+});
+
+export type FeedbackRequestInput = z.infer<typeof feedbackRequestSchema>;
