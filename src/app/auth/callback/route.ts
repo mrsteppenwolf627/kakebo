@@ -1,17 +1,15 @@
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
   const error = requestUrl.searchParams.get("error");
   const errorDescription = requestUrl.searchParams.get("error_description");
 
   // Determine the correct origin for redirects
-  let origin = requestUrl.origin;
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    origin = process.env.NEXT_PUBLIC_SITE_URL;
-  }
+  const origin = process.env.NEXT_PUBLIC_SITE_URL || requestUrl.origin;
 
   // Handle OAuth errors from provider
   if (error) {
@@ -21,38 +19,36 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  if (!code) {
-    return NextResponse.redirect(`${origin}/login`);
-  }
+  if (code) {
+    const cookieStore = await cookies();
 
-  // Create response object to attach cookies to
-  const response = NextResponse.redirect(`${origin}/app`);
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options);
+            });
+          },
         },
-        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            response.cookies.set(name, value, options);
-          });
-        },
-      },
-    }
-  );
-
-  const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-
-  if (exchangeError) {
-    console.error("[Auth Callback] Exchange error:", exchangeError.message);
-    return NextResponse.redirect(
-      `${origin}/login?error=${encodeURIComponent(exchangeError.message)}`
+      }
     );
+
+    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (exchangeError) {
+      console.error("[Auth Callback] Exchange error:", exchangeError.message);
+      return NextResponse.redirect(
+        `${origin}/login?error=${encodeURIComponent(exchangeError.message)}`
+      );
+    }
   }
 
-  return response;
+  // Redirect to app after successful auth
+  return NextResponse.redirect(`${origin}/app`);
 }
