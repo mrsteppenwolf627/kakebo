@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { updateExpenseSchema, uuidSchema } from "@/lib/schemas";
 import {
@@ -18,7 +18,7 @@ type RouteParams = { params: Promise<{ id: string }> };
 export const GET = withLogging(async (request: NextRequest, { params }: RouteParams) => {
   try {
     const user = await requireAuth();
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { id } = await params;
     const expenseId = uuidSchema.parse(id);
@@ -56,7 +56,7 @@ export const GET = withLogging(async (request: NextRequest, { params }: RoutePar
 export const PATCH = withLogging(async (request: NextRequest, { params }: RouteParams) => {
   try {
     const user = await requireAuth();
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { id } = await params;
     const expenseId = uuidSchema.parse(id);
@@ -135,7 +135,7 @@ export const PATCH = withLogging(async (request: NextRequest, { params }: RouteP
 export const DELETE = withLogging(async (request: NextRequest, { params }: RouteParams) => {
   try {
     const user = await requireAuth();
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { id } = await params;
     const expenseId = uuidSchema.parse(id);

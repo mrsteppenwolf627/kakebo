@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { getAIMetrics, getRecentLogs } from "@/lib/ai";
 import { z } from "zod";
@@ -53,7 +53,7 @@ const metricsQuerySchema = z.object({
 export const GET = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Parse query params
     const { searchParams } = new URL(request.url);

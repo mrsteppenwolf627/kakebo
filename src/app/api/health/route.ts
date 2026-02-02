@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 
 /**
  * GET /api/health
@@ -11,7 +11,7 @@ export async function GET() {
   // Check Supabase connection
   let dbStatus = "ok";
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error } = await supabase.from("user_settings").select("id").limit(1);
     if (error) {
       dbStatus = "error";

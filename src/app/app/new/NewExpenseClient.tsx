@@ -163,7 +163,7 @@ export default function NewExpensePage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Error al clasificar");
+        throw new Error(data.error?.message || data.error || "Error al clasificar");
       }
 
       const aiCategory = data.data.category as string;

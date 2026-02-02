@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { updateSettingsSchema, DEFAULT_SETTINGS } from "@/lib/schemas";
 
@@ -10,7 +10,7 @@ import { updateSettingsSchema, DEFAULT_SETTINGS } from "@/lib/schemas";
 export const GET = withLogging(async () => {
   try {
     const user = await requireAuth();
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Try to get existing settings
     const { data: existing, error: fetchError } = await supabase
@@ -62,7 +62,7 @@ export const GET = withLogging(async () => {
 export const PATCH = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Parse and validate body
     const body = await request.json();

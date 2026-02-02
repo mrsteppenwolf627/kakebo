@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { processMessage, Message } from "@/lib/ai";
 import { z } from "zod";
@@ -55,7 +55,7 @@ const assistantRequestSchema = z.object({
 export const POST = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const body = await request.json();
     const input = assistantRequestSchema.parse(body);

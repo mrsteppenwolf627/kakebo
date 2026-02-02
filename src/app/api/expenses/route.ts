@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import {
   createExpenseSchema,
@@ -27,7 +27,7 @@ import {
 export const GET = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Parse query params
     const searchParams = request.nextUrl.searchParams;
@@ -97,7 +97,7 @@ export const GET = withLogging(async (request: NextRequest) => {
 export const POST = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Parse and validate body
     const body = await request.json();
