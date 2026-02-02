@@ -72,3 +72,20 @@ export const feedbackRequestSchema = z.object({
 });
 
 export type FeedbackRequestInput = z.infer<typeof feedbackRequestSchema>;
+
+/**
+ * Schema for semantic search request
+ */
+export const semanticSearchSchema = z.object({
+  /** The search query */
+  query: z
+    .string()
+    .min(1, { message: "La búsqueda no puede estar vacía" })
+    .max(500, { message: "La búsqueda no puede exceder 500 caracteres" }),
+  /** Maximum number of results */
+  limit: z.coerce.number().int().min(1).max(20).optional().default(5),
+  /** Minimum similarity threshold (0-1) */
+  threshold: z.coerce.number().min(0).max(1).optional().default(0.5),
+});
+
+export type SemanticSearchInput = z.infer<typeof semanticSearchSchema>;

@@ -7,6 +7,11 @@ import {
   parseYm,
   formatYm,
 } from "@/lib/schemas";
+import {
+  generateEmbedding,
+  createExpenseText,
+  storeExpenseEmbedding,
+} from "@/lib/ai";
 
 /**
  * GET /api/expenses
@@ -157,6 +162,24 @@ export const POST = withLogging(async (request: NextRequest) => {
       .single();
 
     if (error) throw error;
+
+    // Generate and store embedding (async, don't block response)
+    if (data && input.note) {
+      const textContent = createExpenseText({
+        note: input.note,
+        amount: input.amount,
+        category: input.category,
+        date: input.date,
+      });
+
+      generateEmbedding(textContent)
+        .then(({ embedding }) => {
+          storeExpenseEmbedding(supabase, data.id, user.id, textContent, embedding);
+        })
+        .catch(() => {
+          // Silent fail - embedding generation shouldn't block expense creation
+        });
+    }
 
     return responses.created(data);
   } catch (error) {

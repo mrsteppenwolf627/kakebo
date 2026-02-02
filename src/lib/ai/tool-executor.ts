@@ -1,6 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { ToolName, ToolParams } from "./tools";
 import { classifyExpense } from "./classifier";
+import { searchExpensesByText } from "./embeddings";
 import { apiLogger } from "@/lib/logger";
 
 /**
@@ -61,6 +62,13 @@ export async function executeTool(
       case "classify_expense":
         return await executeClassifyExpense(
           params as ToolParams["classify_expense"]
+        );
+
+      case "search_similar_expenses":
+        return await executeSearchSimilarExpenses(
+          params as ToolParams["search_similar_expenses"],
+          supabase,
+          userId
         );
 
       default:
@@ -388,6 +396,66 @@ async function executeClassifyExpense(
       confidence: result.confidence,
     },
   };
+}
+
+/**
+ * Search for similar expenses using semantic search
+ */
+async function executeSearchSimilarExpenses(
+  params: ToolParams["search_similar_expenses"],
+  supabase: SupabaseClient,
+  userId: string
+): Promise<ToolResult> {
+  const limit = Math.min(params.limit || 5, 10);
+
+  try {
+    const { results, queryTokens, queryCostUsd } = await searchExpensesByText(
+      supabase,
+      userId,
+      params.query,
+      { limit, threshold: 0.4 }
+    );
+
+    if (results.length === 0) {
+      return {
+        success: true,
+        data: {
+          message: `No encontré gastos similares a "${params.query}". Es posible que aún no haya suficientes datos indexados.`,
+          results: [],
+          query: params.query,
+        },
+      };
+    }
+
+    // Format results for the AI
+    const formattedResults = results.map((r) => ({
+      note: r.note,
+      amount: r.amount,
+      category: r.category,
+      date: r.date,
+      similarity: Math.round(r.similarity * 100),
+    }));
+
+    return {
+      success: true,
+      data: {
+        message: `Encontré ${results.length} gasto(s) similares a "${params.query}"`,
+        results: formattedResults,
+        query: params.query,
+        searchCost: queryCostUsd,
+      },
+    };
+  } catch (error) {
+    // If embeddings table doesn't exist yet, return a helpful message
+    return {
+      success: true,
+      data: {
+        message: `La búsqueda semántica no está disponible aún. Necesitas configurar la tabla de embeddings en Supabase.`,
+        results: [],
+        query: params.query,
+      },
+    };
+  }
 }
 
 // Helper functions

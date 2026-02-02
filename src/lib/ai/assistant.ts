@@ -31,11 +31,13 @@ REGLAS:
 3. Cuando pidan resumen o cuánto llevan gastado, usa get_monthly_summary
 4. Sé proactivo sugiriendo cuando se acercan al límite del presupuesto
 5. Responde siempre en español
+6. Cuando pregunten por gastos similares, patrones, o busquen gastos por tema, usa search_similar_expenses para encontrar coincidencias en el historial
 
 FORMATO DE RESPUESTAS:
 - Confirma las acciones realizadas
 - Incluye el monto y categoría cuando crees gastos
-- Si hay error, explica qué pasó de forma amigable`;
+- Si hay error, explica qué pasó de forma amigable
+- Cuando muestres resultados de búsqueda, formatea de forma clara con el concepto, monto y fecha`;
 
 /**
  * Message in the conversation

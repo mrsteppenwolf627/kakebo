@@ -6,3 +6,4 @@ export * from "./tools";
 export * from "./tool-executor";
 export * from "./assistant";
 export * from "./metrics";
+export * from "./embeddings";

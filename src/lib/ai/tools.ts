@@ -157,6 +157,28 @@ export const ASSISTANT_TOOLS: ChatCompletionTool[] = [
       },
     },
   },
+  {
+    type: "function",
+    function: {
+      name: "search_similar_expenses",
+      description:
+        "Buscar gastos similares en el historial usando búsqueda semántica. Usa esto cuando el usuario pregunta por gastos parecidos, patrones de gasto, o quiere encontrar gastos relacionados con un tema.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "Texto de búsqueda (ej: 'supermercado', 'comida', 'transporte')",
+          },
+          limit: {
+            type: "number",
+            description: "Número máximo de resultados (default: 5, max: 10)",
+          },
+        },
+        required: ["query"],
+      },
+    },
+  },
 ];
 
 /**
@@ -168,7 +190,8 @@ export type ToolName =
   | "get_monthly_summary"
   | "get_settings"
   | "update_settings"
-  | "classify_expense";
+  | "classify_expense"
+  | "search_similar_expenses";
 
 /**
  * Parameters for each tool
@@ -199,5 +222,9 @@ export interface ToolParams {
   };
   classify_expense: {
     text: string;
+  };
+  search_similar_expenses: {
+    query: string;
+    limit?: number;
   };
 }
