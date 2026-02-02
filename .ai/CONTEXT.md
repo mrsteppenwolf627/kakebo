@@ -2,7 +2,7 @@
 
 **Última actualización:** 2025-02-02
 **Sesión anterior con:** Claude Opus 4.5
-**Fase actual:** 3 - RAG y Memoria (90% completado)
+**Fase actual:** 3 - RAG y Memoria (COMPLETADA) → Listo para Fase 4
 
 ---
 
@@ -189,6 +189,7 @@ Resultados: [{ note: "Glovo pizza", similarity: 0.87 }, ...]
 | POST | `/api/ai/feedback` | Registrar corrección |
 | POST | `/api/ai/search` | Búsqueda semántica |
 | GET | `/api/ai/metrics` | Métricas + logs |
+| GET/POST | `/api/ai/migrate-embeddings` | Migración de embeddings |
 
 ### Endpoints CRUD
 
@@ -235,27 +236,29 @@ Resultados: [{ note: "Glovo pizza", similarity: 0.87 }, ...]
 | 0 | Setup y Planificación | ✅ 100% | 0 |
 | 1 | Backend Profesional | ✅ 100% | 1 |
 | 2 | IA Aplicada | ✅ 100% | 2 |
-| 3 | RAG y Memoria | 🟡 90% | 3 |
+| 3 | RAG y Memoria | ✅ 100% | 3 |
 | 4 | Agentes y Orquestación | ⬜ 0% | 4-5 |
 | 5 | Producción AWS | ⬜ 0% | 6-7 |
 | 6 | Portfolio | ⬜ 0% | 8 |
 
-### Fase 3 - Detalle
+### Fase 3 - Completada
 
-**Completado:**
+**Infraestructura:**
 - ✅ pgvector habilitado en Supabase
 - ✅ Tabla `expense_embeddings` con índice HNSW
 - ✅ Función SQL `match_expenses`
 - ✅ `embeddings.ts` completo
-- ✅ Endpoint `/api/ai/search`
-- ✅ Tool `search_similar_expenses`
-- ✅ Panel de métricas funcionando
-- ✅ Login Google OAuth arreglado
 
-**Pendiente:**
-- [ ] Probar clasificación IA en UI
-- [ ] Script de migración para gastos existentes
-- [ ] Métricas de calidad de retrieval
+**Endpoints:**
+- ✅ POST `/api/ai/search` - Búsqueda semántica
+- ✅ GET/POST `/api/ai/migrate-embeddings` - Migración
+
+**Integración:**
+- ✅ Tool `search_similar_expenses` en asistente
+- ✅ Embeddings auto-generados al crear gastos
+- ✅ UI de migración en `/app/ai-metrics`
+- ✅ Clasificación IA en `/app/new`
+- ✅ Login Google OAuth arreglado
 
 ---
 

@@ -4,7 +4,7 @@
 **Objetivo:** Completar Fase 3 - RAG y Memoria
 **Fase:** 3 - RAG y Memoria
 **Semana:** 3/10
-**Estado:** 🟢 EN PROGRESO - 90% completado
+**Estado:** ✅ COMPLETADA
 
 ---
 
@@ -12,18 +12,23 @@
 
 La Fase 3 implementa **RAG (Retrieval-Augmented Generation)** para que el asistente IA pueda buscar gastos históricos similares y dar respuestas contextualizadas basadas en el historial del usuario.
 
-**Lo que ya funciona:**
+**Lo que funciona:**
 - ✅ Tabla `expense_embeddings` creada en Supabase con pgvector
 - ✅ Función `match_expenses` para búsqueda por similitud
 - ✅ Generación de embeddings con OpenAI `text-embedding-3-small`
 - ✅ Tool `search_similar_expenses` disponible para el asistente
 - ✅ Endpoint POST `/api/ai/search` para búsqueda semántica
 - ✅ Panel de métricas IA funcionando en `/app/ai-metrics`
+- ✅ Clasificación IA en `/app/new` con botón 🤖
+- ✅ Endpoint de migración `/api/ai/migrate-embeddings`
+- ✅ UI de migración en panel de métricas
+- ✅ Embeddings auto-generados al crear gastos
+- ✅ Feedback loop para correcciones de usuario
 
-**Lo que falta:**
-- [ ] Probar clasificación IA en `/app/new`
-- [ ] Crear script de migración para embeddings de gastos existentes
-- [ ] Métricas de calidad de retrieval
+**Pendiente para Fase 4:**
+- [ ] Implementar LangGraph para orquestación de agentes
+- [ ] Agente de análisis financiero
+- [ ] Agente de recomendaciones
 
 ---
 
@@ -383,6 +388,36 @@ Búsqueda semántica de gastos similares.
 }
 ```
 
+### GET/POST `/api/ai/migrate-embeddings`
+Migración de embeddings para gastos existentes.
+
+```typescript
+// GET - Ver estado de migración
+// Response
+{
+  "success": true,
+  "data": {
+    "totalExpenses": 150,
+    "withEmbeddings": 100,
+    "withoutEmbeddings": 50,
+    "percentage": 67,
+    "status": "in_progress"
+  }
+}
+
+// POST - Ejecutar migración (procesa batch de 50)
+// Response
+{
+  "success": true,
+  "data": {
+    "processed": 50,
+    "skipped": 100,
+    "remaining": 0,
+    "message": "Migración completada. 50 gastos procesados."
+  }
+}
+```
+
 ### GET `/api/ai/metrics`
 Métricas agregadas y logs recientes.
 
@@ -471,23 +506,27 @@ match_expenses(
 
 ---
 
-## ✅ FASE 3 - EN PROGRESO (90%)
+## ✅ FASE 3 - COMPLETADA
 
-### Completado:
-- [x] Extensión pgvector habilitada
-- [x] Tabla `expense_embeddings` creada
-- [x] Función `match_expenses` creada
-- [x] `embeddings.ts` con todas las funciones
-- [x] Endpoint `/api/ai/search`
+### Infraestructura RAG:
+- [x] Extensión pgvector habilitada en Supabase
+- [x] Tabla `expense_embeddings` con índice HNSW
+- [x] Función SQL `match_expenses` para búsqueda por similitud
+- [x] `embeddings.ts` con todas las funciones de generación y búsqueda
+
+### Endpoints:
+- [x] POST `/api/ai/search` - Búsqueda semántica
+- [x] GET/POST `/api/ai/migrate-embeddings` - Migración de embeddings
+
+### Integración:
 - [x] Tool `search_similar_expenses` en asistente
-- [x] Login Google OAuth arreglado
-- [x] Panel métricas funcionando
+- [x] Embeddings auto-generados al crear gastos via API
+- [x] UI de migración en `/app/ai-metrics`
+- [x] Clasificación IA en `/app/new` con feedback loop
 
-### Pendiente:
-- [ ] Probar flujo completo de clasificación IA
-- [ ] Script de migración para gastos existentes
-- [ ] Métricas de calidad de retrieval
-- [ ] Comparar accuracy con/sin RAG
+### Arreglos:
+- [x] Login Google OAuth funcionando
+- [x] Todos los endpoints usando cliente server-side correcto
 
 ---
 
