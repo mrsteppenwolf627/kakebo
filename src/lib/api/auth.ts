@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import { ApiError } from "./errors";
 
 /**
@@ -26,7 +26,7 @@ export type AuthUser = {
  * ```
  */
 export async function requireAuth(): Promise<AuthUser> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },
@@ -48,7 +48,7 @@ export async function requireAuth(): Promise<AuthUser> {
  * Does not throw errors
  */
 export async function getOptionalAuth(): Promise<AuthUser | null> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },
