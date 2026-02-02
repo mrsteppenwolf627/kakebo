@@ -1,8 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
   const error = requestUrl.searchParams.get("error");
@@ -20,7 +19,9 @@ export async function GET(request: Request) {
   }
 
   if (code) {
-    const cookieStore = await cookies();
+    // Create the redirect response first - cookies will be attached to this
+    const redirectUrl = `${origin}/app`;
+    const response = NextResponse.redirect(redirectUrl);
 
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -28,11 +29,13 @@ export async function GET(request: Request) {
       {
         cookies: {
           getAll() {
-            return cookieStore.getAll();
+            // Read from request cookies (includes PKCE code_verifier)
+            return request.cookies.getAll();
           },
           setAll(cookiesToSet) {
+            // Write to response cookies (session tokens)
             cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options);
+              response.cookies.set(name, value, options);
             });
           },
         },
@@ -47,8 +50,11 @@ export async function GET(request: Request) {
         `${origin}/login?error=${encodeURIComponent(exchangeError.message)}`
       );
     }
+
+    // Return the response with session cookies attached
+    return response;
   }
 
-  // Redirect to app after successful auth
-  return NextResponse.redirect(`${origin}/app`);
+  // No code provided - redirect to login
+  return NextResponse.redirect(`${origin}/login`);
 }
