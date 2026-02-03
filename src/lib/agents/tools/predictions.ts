@@ -1,0 +1,274 @@
+import { SupabaseClient } from "@supabase/supabase-js";
+import { apiLogger } from "@/lib/logger";
+
+/**
+ * Parameters for spending prediction
+ */
+export interface PredictMonthlySpendingParams {
+  month?: string; // YYYY-MM format
+  category?: "survival" | "optional" | "culture" | "extra";
+}
+
+/**
+ * Category prediction
+ */
+export interface CategoryPrediction {
+  category: string;
+  spentSoFar: number;
+  projectedTotal: number;
+  budget: number;
+  projectedOverage: number;
+  confidence: "high" | "medium" | "low";
+}
+
+/**
+ * Monthly spending prediction result
+ */
+export interface MonthlyPredictionResult {
+  month: string;
+  currentDate: string;
+  daysElapsed: number;
+  daysRemaining: number;
+  spentSoFar: number;
+  projectedTotal: number;
+  budget: number;
+  projectedOverage: number;
+  confidence: "high" | "medium" | "low";
+  byCategory: CategoryPrediction[];
+}
+
+/**
+ * Get current month in YYYY-MM format
+ */
+function getCurrentMonth(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  return `${year}-${month}`;
+}
+
+/**
+ * Calculate days in month
+ */
+function getDaysInMonth(year: number, month: number): number {
+  return new Date(year, month, 0).getDate();
+}
+
+/**
+ * Calculate days elapsed in month
+ */
+function getDaysElapsed(year: number, month: number): number {
+  const now = new Date();
+  if (now.getFullYear() === year && now.getMonth() + 1 === month) {
+    return now.getDate();
+  }
+  // If month is in the past, all days elapsed
+  return getDaysInMonth(year, month);
+}
+
+/**
+ * Project spending using weighted average
+ * Gives more weight to recent spending
+ */
+function projectSpending(
+  expenses: Array<{ date: string; amount: number }>,
+  daysElapsed: number,
+  daysInMonth: number
+): { projection: number; confidence: "high" | "medium" | "low" } {
+  if (expenses.length === 0 || daysElapsed === 0) {
+    return { projection: 0, confidence: "low" };
+  }
+
+  // Simple method: linear projection
+  const totalSoFar = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+  const simpleProjection = (totalSoFar / daysElapsed) * daysInMonth;
+
+  // Weighted method: give 60% weight to last 7 days, 40% to rest
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const sevenDaysAgoStr = sevenDaysAgo.toISOString().split("T")[0];
+
+  const recentExpenses = expenses.filter(
+    (exp) => exp.date >= sevenDaysAgoStr
+  );
+  const olderExpenses = expenses.filter(
+    (exp) => exp.date < sevenDaysAgoStr
+  );
+
+  const recentTotal = recentExpenses.reduce(
+    (sum, exp) => sum + exp.amount,
+    0
+  );
+  const olderTotal = olderExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+
+  const recentDays = Math.min(7, daysElapsed);
+  const olderDays = Math.max(0, daysElapsed - 7);
+
+  let weightedProjection = simpleProjection;
+  if (recentDays > 0 && olderDays > 0) {
+    const recentDaily = recentTotal / recentDays;
+    const olderDaily = olderTotal / olderDays;
+    const weightedDaily = 0.6 * recentDaily + 0.4 * olderDaily;
+    weightedProjection = weightedDaily * daysInMonth;
+  }
+
+  // Determine confidence
+  let confidence: "high" | "medium" | "low";
+  if (daysElapsed >= 20) {
+    confidence = "high"; // More than 2/3 of month
+  } else if (daysElapsed >= 10) {
+    confidence = "medium"; // About 1/3 of month
+  } else {
+    confidence = "low"; // Less than 1/3 of month
+  }
+
+  // Use weighted projection if we have enough data, otherwise simple
+  const projection =
+    daysElapsed >= 7 ? weightedProjection : simpleProjection;
+
+  return {
+    projection: Math.round(projection * 100) / 100,
+    confidence,
+  };
+}
+
+/**
+ * Predict monthly spending
+ */
+export async function predictMonthlySpending(
+  supabase: SupabaseClient,
+  userId: string,
+  params: PredictMonthlySpendingParams
+): Promise<MonthlyPredictionResult> {
+  const month = params.month || getCurrentMonth();
+  const [year, monthNum] = month.split("-").map(Number);
+  const daysInMonth = getDaysInMonth(year, monthNum);
+  const daysElapsed = getDaysElapsed(year, monthNum);
+  const daysRemaining = daysInMonth - daysElapsed;
+
+  const now = new Date();
+  const currentDate = now.toISOString().split("T")[0];
+
+  try {
+    // Get user settings for budgets
+    const { data: settings, error: settingsError } = await supabase
+      .from("user_settings")
+      .select("*")
+      .eq("user_id", userId)
+      .single();
+
+    if (settingsError) {
+      apiLogger.error(
+        { error: settingsError },
+        "Error fetching user settings"
+      );
+      throw settingsError;
+    }
+
+    if (!settings) {
+      throw new Error("User settings not found");
+    }
+
+    // Get expenses for the month
+    const { data: expenses, error: expensesError } = await supabase
+      .from("expenses")
+      .select("category, amount, date")
+      .eq("user_id", userId)
+      .like("date", `${month}%`)
+      .order("date", { ascending: true });
+
+    if (expensesError) {
+      apiLogger.error({ error: expensesError }, "Error fetching expenses");
+      throw expensesError;
+    }
+
+    // Calculate by category
+    const categories: Array<"survival" | "optional" | "culture" | "extra"> = [
+      "survival",
+      "optional",
+      "culture",
+      "extra",
+    ];
+
+    const categoryPredictions: CategoryPrediction[] = [];
+
+    for (const category of categories) {
+      // Skip if user requested specific category
+      if (params.category && category !== params.category) {
+        continue;
+      }
+
+      const categoryExpenses = (expenses || [])
+        .filter((exp) => exp.category === category)
+        .map((exp) => ({
+          date: exp.date || "",
+          amount: exp.amount || 0,
+        }));
+
+      const spentSoFar = categoryExpenses.reduce(
+        (sum, exp) => sum + exp.amount,
+        0
+      );
+
+      const { projection, confidence } = projectSpending(
+        categoryExpenses,
+        daysElapsed,
+        daysInMonth
+      );
+
+      const budgetKey = `budget_${category}` as keyof typeof settings;
+      const budget = (settings[budgetKey] as number) || 0;
+      const projectedOverage = Math.max(0, projection - budget);
+
+      categoryPredictions.push({
+        category,
+        spentSoFar: Math.round(spentSoFar * 100) / 100,
+        projectedTotal: projection,
+        budget,
+        projectedOverage: Math.round(projectedOverage * 100) / 100,
+        confidence,
+      });
+    }
+
+    // Calculate totals
+    const spentSoFar = categoryPredictions.reduce(
+      (sum, cat) => sum + cat.spentSoFar,
+      0
+    );
+    const projectedTotal = categoryPredictions.reduce(
+      (sum, cat) => sum + cat.projectedTotal,
+      0
+    );
+    const budget = categoryPredictions.reduce(
+      (sum, cat) => sum + cat.budget,
+      0
+    );
+    const projectedOverage = Math.max(0, projectedTotal - budget);
+
+    // Overall confidence is the minimum of category confidences
+    const confidenceLevels = { high: 3, medium: 2, low: 1 };
+    const minConfidenceLevel = Math.min(
+      ...categoryPredictions.map((cat) => confidenceLevels[cat.confidence])
+    );
+    const confidence =
+      (Object.entries(confidenceLevels).find(
+        ([, level]) => level === minConfidenceLevel
+      )?.[0] as "high" | "medium" | "low") || "low";
+
+    return {
+      month,
+      currentDate,
+      daysElapsed,
+      daysRemaining,
+      spentSoFar: Math.round(spentSoFar * 100) / 100,
+      projectedTotal: Math.round(projectedTotal * 100) / 100,
+      budget,
+      projectedOverage: Math.round(projectedOverage * 100) / 100,
+      confidence,
+      byCategory: categoryPredictions,
+    };
+  } catch (error) {
+    apiLogger.error({ error, params }, "Error predicting monthly spending");
+    throw error;
+  }
+}
