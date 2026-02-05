@@ -21,8 +21,9 @@ export default function TopNav() {
 
   const items = [
     { href: "/app", label: "Dashboard" },
+    { href: "/app/agent", label: "Agente" },
     { href: "/app/fixed", label: "Fijos" },
-    { href: "/app/ai-metrics", label: "IA" },
+    { href: "/app/ai-metrics", label: "IA Metrics" },
     { href: "/app/settings", label: "Ajustes" },
   ];
 
@@ -57,11 +58,10 @@ export default function TopNav() {
           <Link
             key={it.href}
             href={it.href}
-            className={`px-3 py-1.5 text-sm border hover:border-black transition-colors whitespace-nowrap ${
-              pathname === it.href
+            className={`px-3 py-1.5 text-sm border hover:border-black transition-colors whitespace-nowrap ${pathname === it.href
                 ? "border-black bg-black text-white"
                 : "border-black/20"
-            }`}
+              }`}
           >
             {it.label}
           </Link>
@@ -115,11 +115,10 @@ export default function TopNav() {
               <Link
                 key={it.href}
                 href={it.href}
-                className={`block px-4 py-2 text-sm border hover:border-black ${
-                  pathname === it.href
+                className={`block px-4 py-2 text-sm border hover:border-black ${pathname === it.href
                     ? "border-black bg-black text-white"
                     : "border-black/20"
-                }`}
+                  }`}
               >
                 {it.label}
               </Link>
