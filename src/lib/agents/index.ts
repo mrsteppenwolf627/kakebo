@@ -53,6 +53,10 @@ export async function processAgentMessage(
       "Processing agent message"
     );
 
+    // DEBUG: Verificar API key
+    console.log("🔑 OpenAI API Key present:", !!process.env.OPENAI_API_KEY);
+    console.log("📝 User message:", userMessage);
+
     // Convert conversation history to LangChain messages
     const messages: BaseMessage[] = conversationHistory.map((msg) =>
       msg.role === "user" ? new HumanMessage(msg.content) : new AIMessage(msg.content)
