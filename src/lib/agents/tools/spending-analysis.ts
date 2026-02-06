@@ -159,8 +159,24 @@ export async function analyzeSpendingPattern(
       .gte("date", start)
       .lte("date", end);
 
+    /**
+     * Get Spanish category name for database query
+     */
+    function getSpanishCategoryName(category: string): string {
+      const mapping: Record<string, string> = {
+        survival: "supervivencia",
+        optional: "opcional",
+        culture: "cultura",
+        extra: "extra",
+      };
+      return mapping[category] || category;
+    }
+
+    // ... inside analyzeSpendingPattern
     if (category !== "all") {
-      query = query.eq("category", category);
+      // Map English category (from agent) to Spanish (db)
+      const dbCategory = getSpanishCategoryName(category);
+      query = query.eq("category", dbCategory);
     }
 
     query = query.order("amount", { ascending: false });
