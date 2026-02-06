@@ -67,6 +67,29 @@ function getDaysElapsed(year: number, month: number): number {
 }
 
 /**
+ * Get next month in YYYY-MM-01 format
+ */
+function getNextMonth(month: string): string {
+  const [year, monthNum] = month.split("-").map(Number);
+  const nextMonth = monthNum === 12 ? 1 : monthNum + 1;
+  const nextYear = monthNum === 12 ? year + 1 : year;
+  return `${nextYear}-${String(nextMonth).padStart(2, "0")}-01`;
+}
+
+/**
+ * Map category name to database column name (Spanish)
+ */
+function getCategoryBudgetColumn(category: string): string {
+  const mapping: Record<string, string> = {
+    survival: "budget_supervivencia",
+    optional: "budget_opcional",
+    culture: "budget_cultura",
+    extra: "budget_extra",
+  };
+  return mapping[category] || `budget_${category}`;
+}
+
+/**
  * Project spending using weighted average
  * Gives more weight to recent spending
  */
@@ -174,7 +197,8 @@ export async function predictMonthlySpending(
       .from("expenses")
       .select("category, amount, date")
       .eq("user_id", userId)
-      .like("date", `${month}%`)
+      .gte("date", `${month}-01`)
+      .lt("date", getNextMonth(month))
       .order("date", { ascending: true });
 
     if (expensesError) {
@@ -216,8 +240,9 @@ export async function predictMonthlySpending(
         daysInMonth
       );
 
-      const budgetKey = `budget_${category}` as keyof typeof settings;
-      const budget = (settings[budgetKey] as number) || 0;
+      // Use Spanish column names from database
+      const budgetColumn = getCategoryBudgetColumn(category);
+      const budget = (settings[budgetColumn as keyof typeof settings] as number) || 0;
       const projectedOverage = Math.max(0, projection - budget);
 
       categoryPredictions.push({

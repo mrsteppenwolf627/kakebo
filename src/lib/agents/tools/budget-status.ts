@@ -51,6 +51,42 @@ function getCurrentMonth(): string {
 }
 
 /**
+ * Get next month in YYYY-MM-01 format
+ */
+function getNextMonth(month: string): string {
+  const [year, monthNum] = month.split("-").map(Number);
+  const nextMonth = monthNum === 12 ? 1 : monthNum + 1;
+  const nextYear = monthNum === 12 ? year + 1 : year;
+  return `${nextYear}-${String(nextMonth).padStart(2, "0")}-01`;
+}
+
+/**
+ * Map category name to database column name (Spanish)
+ */
+function getCategoryBudgetColumn(category: string): string {
+  const mapping: Record<string, string> = {
+    survival: "budget_supervivencia",
+    optional: "budget_opcional",
+    culture: "budget_cultura",
+    extra: "budget_extra",
+  };
+  return mapping[category] || `budget_${category}`;
+}
+
+/**
+ * Map English category name to Spanish (as stored in expenses table)
+ */
+function getSpanishCategoryName(category: string): string {
+  const mapping: Record<string, string> = {
+    survival: "supervivencia",
+    optional: "opcional",
+    culture: "cultura",
+    extra: "extra",
+  };
+  return mapping[category] || category;
+}
+
+/**
  * Calculate days remaining in month
  */
 function getDaysRemainingInMonth(month: string): number {
@@ -137,19 +173,35 @@ export async function getBudgetStatus(
       throw new Error("User settings not found");
     }
 
+    // Debug: Log ALL settings keys to see actual column names
+    console.log("📊 Budget values from DB:", {
+      supervivencia: settings.budget_supervivencia,
+      opcional: settings.budget_opcional,
+      cultura: settings.budget_cultura,
+      extra: settings.budget_extra,
+    });
+
     // Get expenses for the month
     const { data: expenses, error: expensesError } = await supabase
       .from("expenses")
       .select("category, amount")
       .eq("user_id", userId)
-      .like("date", `${month}%`);
+      .gte("date", `${month}-01`)
+      .lt("date", getNextMonth(month));
 
     if (expensesError) {
       apiLogger.error({ error: expensesError }, "Error fetching expenses");
       throw expensesError;
     }
 
-    // Calculate spending by category
+    // Debug: Log expenses to see category names
+    console.log("💰 Expenses from DB:", {
+      count: expenses?.length || 0,
+      categories: [...new Set(expenses?.map(e => e.category))],
+      totalAmount: expenses?.reduce((sum, e) => sum + (e.amount || 0), 0) || 0
+    });
+
+    // Calculate spending by category (expenses use Spanish category names)
     const spendingByCategory = (expenses || []).reduce(
       (acc, exp) => {
         const cat = exp.category || "extra";
@@ -158,6 +210,8 @@ export async function getBudgetStatus(
       },
       {} as Record<string, number>
     );
+
+    console.log("📊 Spending by category:", spendingByCategory);
 
     // Calculate days
     const daysElapsed = getDaysElapsedInMonth(month);
@@ -176,9 +230,12 @@ export async function getBudgetStatus(
         continue;
       }
 
-      const budgetKey = `budget_${category}` as keyof typeof settings;
-      const budget = (settings[budgetKey] as number) || 0;
-      const spent = spendingByCategory[category] || 0;
+      // Use Spanish column names from database
+      const budgetColumn = getCategoryBudgetColumn(category);
+      const budget = (settings[budgetColumn as keyof typeof settings] as number) || 0;
+      // Get spending using Spanish category name (expenses use Spanish categories)
+      const spanishCategory = getSpanishCategoryName(category);
+      const spent = spendingByCategory[spanishCategory] || 0;
       const remaining = budget - spent;
       const percentage = budget > 0 ? (spent / budget) * 100 : 0;
       const status = getStatusLevel(percentage);

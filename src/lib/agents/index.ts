@@ -85,10 +85,22 @@ export async function processAgentMessage(
     };
 
     apiLogger.debug("Invoking agent graph");
+    console.log("🚀 About to invoke agent graph with state:", {
+      userMessage: initialState.userMessage,
+      userId: initialState.userId,
+      messagesCount: initialState.messages.length
+    });
 
     // Invoke the graph
     const result = await (graph as any).invoke(initialState, {
       recursionLimit: 25,
+    });
+
+    console.log("✅ Graph invocation completed. Result:", {
+      intent: result.intent,
+      toolsToCall: result.toolsToCall,
+      finalResponse: result.finalResponse,
+      hasToolResults: Object.keys(result.toolResults || {}).length > 0
     });
 
     // Calculate latency
@@ -123,6 +135,13 @@ export async function processAgentMessage(
         toolCalls,
       },
     };
+
+    console.log("📦 Final agent response:", {
+      messageLength: agentResponse.message.length,
+      messagePreview: agentResponse.message.substring(0, 100),
+      intent: agentResponse.intent,
+      toolsUsed: agentResponse.toolsUsed
+    });
 
     apiLogger.debug(
       {

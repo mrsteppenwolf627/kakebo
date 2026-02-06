@@ -164,6 +164,11 @@ export async function routerNode(
 ): Promise<Partial<AgentState>> {
   apiLogger.debug({ message: state.userMessage }, "Router node processing");
 
+  console.log("🔍 Router received state:", {
+    userMessage: state.userMessage,
+    messagesCount: state.messages.length
+  });
+
   try {
     // Classify intent
     const classification = await classifyIntent(

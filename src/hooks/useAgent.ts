@@ -61,6 +61,7 @@ export function useAgent(): UseAgentReturn {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', // Ensure cookies are sent for authentication
                 body: JSON.stringify({
                     message: content,
                     history: historyPayload,

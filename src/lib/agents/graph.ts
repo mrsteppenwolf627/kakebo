@@ -22,37 +22,37 @@ export function createAgentGraph(supabase: SupabaseClient) {
     channels: {
       // Messages: accumulate all messages in conversation
       messages: {
-        value: (x: any) => x,
+        value: (x: any, y: any) => y ?? x,
         default: () => [],
       },
       // Tool results: merge results from each tool call
       toolResults: {
-        value: (x: any) => x,
+        value: (x: any, y: any) => y ?? x,
         default: () => ({}),
       },
-      // Other fields: replace with latest value
+      // Other fields: keep previous value if new value is undefined
       userMessage: {
-        value: (x: any) => x,
+        value: (x: any, y: any) => y ?? x,
         default: () => "",
       },
       userId: {
-        value: (x: any) => x,
+        value: (x: any, y: any) => y ?? x,
         default: () => "",
       },
       intent: {
-        value: (x: any) => x,
+        value: (x: any, y: any) => y ?? x,
         default: () => null,
       },
       toolsToCall: {
-        value: (x: any) => x,
+        value: (x: any, y: any) => y ?? x,
         default: () => [],
       },
       finalResponse: {
-        value: (x: any) => x,
+        value: (x: any, y: any) => y ?? x,
         default: () => null,
       },
       metrics: {
-        value: (x: any) => x,
+        value: (x: any, y: any) => y ?? x,
         default: () => ({
           model: "gpt-4o-mini",
           latencyMs: 0,

@@ -34,7 +34,7 @@ export function getParameterExtractionPrompt(
   const toolParamSchemas: Record<string, string> = {
     analyzeSpendingPattern: `{
   "category": "survival" | "optional" | "culture" | "extra" | "all",
-  "period": "current_month" | "last_month" | "last_3_months" | "last_6_months",
+  "period": "current_month" | "last_month" | "last_3_months" | "last_6_months" | "current_week",
   "groupBy": "day" | "week" | "month"
 }`,
     getBudgetStatus: `{
@@ -56,17 +56,33 @@ export function getParameterExtractionPrompt(
 
   const schema = toolParamSchemas[toolName] || "{}";
 
-  return `Extract parameters for the "${toolName}" tool from this user message:
-"${userMessage}"
+  return `Eres un asistente inteligente que extrae parámetros de mensajes en español para una app de finanzas (método Kakebo).
 
-Return ONLY a JSON object with the parameters. Use sensible defaults if not specified.
-Expected schema: ${schema}
+MENSAJE: "${userMessage}"
 
-Example response:
-{
-  "category": "all",
-  "period": "current_month"
-}`;
+CATEGORÍAS (usa inteligencia semántica para mapear):
+- "survival": comida, alimentación, supermercado, alimentos, necesidades básicas, vivienda, transporte esencial
+- "optional": ocio, entretenimiento, diversión, salidas, restaurantes, caprichos, compras no esenciales, cine
+- "culture": educación, libros, cursos, museos, teatro, actividades culturales
+- "extra": gastos extraordinarios, imprevistos, regalos, otros
+- "all": cuando NO especifica categoría o pide resumen general/total
+
+PERÍODOS:
+- "current_month": este mes, mes actual, febrero
+- "last_month": mes pasado, enero
+- "last_3_months": últimos 3 meses, trimestre
+- "last_6_months": últimos 6 meses, semestre
+- "current_week": esta semana, semana actual
+
+USA INTELIGENCIA SEMÁNTICA. Ejemplos:
+- "comida" → "survival"
+- "cine" → "optional"
+- "libros" → "culture"
+- "presupuesto" (sin categoría) → "all"
+
+Schema: ${schema}
+
+Devuelve SOLO JSON válido.`;
 }
 
 /**
