@@ -4,6 +4,7 @@ import { DEFAULT_MODEL, calculateCost } from "@/lib/ai/client";
 import { apiLogger } from "@/lib/logger";
 import { createAgentGraph } from "./graph";
 import { AgentState, ExecutionMetrics, IntentType } from "./state";
+import { processFunctionCalling } from "@/lib/agents-v2/function-caller";
 
 /**
  * Conversation message in history
@@ -24,14 +25,20 @@ export interface AgentResponse {
 }
 
 /**
- * Process a user message through the agent graph
+ * Process a user message through the agent system
  *
- * Orchestrates the full workflow:
- * 1. Initialize state
- * 2. Create graph
- * 3. Invoke graph
- * 4. Calculate metrics
- * 5. Return response
+ * This function supports TWO architectures via feature flag:
+ *
+ * **V2 (OpenAI Function Calling)** - When USE_FUNCTION_CALLING_AGENT=true:
+ * - Native GPT function calling
+ * - 1-2 LLM calls instead of 3
+ * - Parallel tool execution
+ * - Better semantic understanding
+ *
+ * **V1 (LangGraph)** - Default when flag is false/unset:
+ * - LangGraph 3-node pipeline (Router → Tools → Synthesizer)
+ * - Sequential tool execution
+ * - Intent classification
  *
  * @param userMessage The user's query
  * @param conversationHistory Previous messages for context
@@ -48,9 +55,41 @@ export async function processAgentMessage(
   const startTime = Date.now();
 
   try {
+    // FEATURE FLAG: Use OpenAI Function Calling (v2) if enabled
+    const useFunctionCalling =
+      process.env.USE_FUNCTION_CALLING_AGENT === "true";
+
+    if (useFunctionCalling) {
+      apiLogger.info({ userId }, "Using OpenAI Function Calling (v2)");
+
+      // Call v2 architecture
+      const v2Response = await processFunctionCalling(
+        userMessage,
+        conversationHistory,
+        supabase,
+        userId
+      );
+
+      // Adapt v2 response to v1 format (add intent field for compatibility)
+      return {
+        message: v2Response.message,
+        intent: null, // v2 doesn't use intent classification
+        toolsUsed: v2Response.toolsUsed,
+        metrics: {
+          model: v2Response.metrics.model,
+          latencyMs: v2Response.metrics.latencyMs,
+          inputTokens: v2Response.metrics.inputTokens,
+          outputTokens: v2Response.metrics.outputTokens,
+          costUsd: v2Response.metrics.costUsd,
+          toolCalls: v2Response.metrics.toolCalls,
+        },
+      };
+    }
+
+    // Otherwise, use v1 (LangGraph) architecture
     apiLogger.debug(
       { userId, messageLength: userMessage.length },
-      "Processing agent message"
+      "Processing agent message (v1 LangGraph)"
     );
 
     // DEBUG: Verificar API key
