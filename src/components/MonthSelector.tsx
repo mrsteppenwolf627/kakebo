@@ -57,18 +57,20 @@ export default function MonthSelector({
   }, [year, month]);
 
   return (
-    <div className="border border-black/10 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-      <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-        <div className="text-xs sm:text-sm text-black/60">Mes:</div>
-        <div className="font-semibold capitalize text-sm sm:text-base">{label}</div>
-        <div className="text-xs text-black/50">({currentYm})</div>
+    <div className="border border-stone-200 rounded-none p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white">
+      <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+        <div className="text-xs sm:text-sm text-stone-500 font-light">月</div>
+        <div className="font-serif font-normal capitalize text-base sm:text-lg text-stone-900">
+          {label}
+        </div>
+        <div className="text-xs text-stone-400 font-mono">({currentYm})</div>
       </div>
 
-      <div className="flex items-center gap-1 sm:gap-2">
+      <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={goPrev}
-          className="border border-black px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm hover:bg-black hover:text-white"
+          className="border border-stone-300 px-3 sm:px-4 py-2 text-xs sm:text-sm text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-colors"
           title="Mes anterior"
         >
           ←
@@ -77,16 +79,16 @@ export default function MonthSelector({
         <button
           type="button"
           onClick={goToday}
-          className="border border-black px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm hover:bg-black hover:text-white"
+          className="border border-stone-300 px-3 sm:px-4 py-2 text-xs sm:text-sm text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-colors"
           title="Ir al mes actual"
         >
-          Hoy
+          今月
         </button>
 
         <button
           type="button"
           onClick={goNext}
-          className="border border-black px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm hover:bg-black hover:text-white"
+          className="border border-stone-300 px-3 sm:px-4 py-2 text-xs sm:text-sm text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-colors"
           title="Mes siguiente"
         >
           →

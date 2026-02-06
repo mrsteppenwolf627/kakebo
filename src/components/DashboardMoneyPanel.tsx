@@ -287,114 +287,124 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
   if (loading) {
     return (
-      <section className="border border-black/10 rounded-xl p-4">
-        <div className="text-sm text-black/60">Cargando resumen real…</div>
+      <section className="border border-stone-200 rounded-none p-6 bg-white">
+        <div className="text-sm text-stone-500 font-light">読み込み中…</div>
       </section>
     );
   }
 
   return (
-    <section className="border border-black/10 rounded-xl p-3 sm:p-4 space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+    <section className="border border-stone-200 rounded-none p-6 sm:p-8 space-y-6 bg-white">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 border-b border-stone-200 pb-4">
         <div>
-          <div className="text-xs sm:text-sm text-black/60">Resumen realista</div>
-          <div className="text-base sm:text-lg font-semibold">Mes: {ym}</div>
+          <div className="text-xs sm:text-sm text-stone-500 font-light mb-1">残高</div>
+          <div className="text-lg sm:text-xl font-serif text-stone-900">{ym}</div>
         </div>
 
-        <div className="text-xs text-black/50 sm:max-w-xs">
-          Separa "gastable" de "reservado" para no tocar fijos/ahorro.
+        <div className="text-xs text-stone-400 sm:max-w-xs leading-relaxed">
+          Separa lo gastable de lo reservado para no tocar fijos ni ahorro.
         </div>
       </div>
 
-      {err && <div className="text-sm text-red-600">{err}</div>}
-      {okMsg && <div className="text-sm text-green-700">{okMsg}</div>}
+      {err && <div className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-none p-3">{err}</div>}
+      {okMsg && <div className="text-sm text-stone-700 bg-stone-50 border border-stone-200 rounded-none p-3">{okMsg}</div>}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        <div className="border border-black/10 rounded-xl p-3 sm:p-4">
-          <div className="text-xs text-black/60">Disponible categorías</div>
-          <div className="text-xl sm:text-2xl font-semibold">{money(availableForCategories)} €</div>
-          <div className="text-xs text-black/50 mt-1 sm:mt-2">Ingresos − fijos − ahorro</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        {/* Card 1: Disponible categorías */}
+        <div className="border border-stone-200 rounded-none p-5 sm:p-6 bg-white">
+          <div className="text-xs text-stone-500 font-light mb-3">利用可能</div>
+          <div className="text-2xl sm:text-3xl font-serif text-stone-900 mb-2">{money(availableForCategories)} €</div>
+          <div className="text-xs text-stone-400 leading-relaxed">Disponible para categorías</div>
+          <div className="text-xs text-stone-400 mt-1">Ingresos − fijos − ahorro</div>
         </div>
 
-        <div className="border border-black/10 rounded-xl p-3 sm:p-4">
-          <div className="text-xs text-black/60">Reservado fijos</div>
-          <div className="text-xl sm:text-2xl font-semibold">{money(pendingFixedTotal)} €</div>
-          <div className="text-xs text-black/50 mt-1 sm:mt-2">Fijos pendientes del mes</div>
+        {/* Card 2: Reservado fijos */}
+        <div className="border border-stone-200 rounded-none p-5 sm:p-6 bg-white">
+          <div className="text-xs text-stone-500 font-light mb-3">予約済み</div>
+          <div className="text-2xl sm:text-3xl font-serif text-stone-900 mb-2">{money(pendingFixedTotal)} €</div>
+          <div className="text-xs text-stone-400 leading-relaxed">Reservado para fijos</div>
+          <div className="text-xs text-stone-400 mt-1">Fijos pendientes del mes</div>
         </div>
 
-        <div className="border border-black/10 rounded-xl p-3 sm:p-4 space-y-3 sm:col-span-2 lg:col-span-1">
+        {/* Card 3: Disponible real hoy - MÁS GRANDE */}
+        <div className="border border-stone-300 rounded-none p-5 sm:p-6 space-y-4 sm:col-span-2 lg:col-span-1 bg-stone-50">
           <div>
-            <div className="text-xs text-black/60">Disponible real hoy</div>
-            <div className="text-xl sm:text-2xl font-semibold">{money(availableAfterExpenses)} €</div>
-            <div className="text-xs text-black/50 mt-1 sm:mt-2">Utilizable − gastos del mes</div>
+            <div className="text-xs text-stone-500 font-light mb-3">今日</div>
+            <div className="text-2xl sm:text-3xl font-serif text-stone-900 mb-2">{money(availableAfterExpenses)} €</div>
+            <div className="text-xs text-stone-400 leading-relaxed">Disponible real hoy</div>
+            <div className="text-xs text-stone-400 mt-1">Utilizable − gastos del mes</div>
           </div>
 
-          <div className="border-t border-black/10 pt-3 space-y-2 text-sm">
+          <div className="border-t border-stone-200 pt-4 space-y-3 text-sm">
             <div className="flex items-center justify-between">
-              <span className="text-black/60">Banco − reservas:</span>
-              <span className="font-semibold">{money(bankMinusReserves)} €</span>
+              <span className="text-stone-600 font-light">Banco − reservas:</span>
+              <span className="font-mono text-stone-900">{money(bankMinusReserves)} €</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-black/60">Gastos del mes (Kakebo):</span>
-              <span className="font-semibold">{money(monthSpent)} €</span>
+              <span className="text-stone-600 font-light">Gastos del mes:</span>
+              <span className="font-mono text-stone-900">{money(monthSpent)} €</span>
             </div>
-            <div className="text-xs text-black/50">
-              (El “banco − reservas” sigue siendo útil para no comerte fijos/ahorro aunque aún no hayan saltado.)
+            <div className="text-xs text-stone-400 leading-relaxed">
+              El banco menos reservas te ayuda a no gastar fijos/ahorro aunque no hayan saltado.
             </div>
           </div>
 
-          <div className="border-t border-black/10 pt-3 space-y-2">
-            <label className="text-xs text-black/60 block">Saldo actual del banco (€)</label>
+          <div className="border-t border-stone-200 pt-4 space-y-3">
+            <label className="text-xs text-stone-500 font-light block">銀行残高 (Saldo del banco en €)</label>
             <div className="flex items-center gap-2">
               <input
                 value={balanceInput}
                 onChange={(e) => setBalanceInput(e.target.value)}
-                className="border border-black/20 rounded-lg px-3 py-2 text-sm w-full"
-                placeholder="Ej: 1243.50"
+                className="border border-stone-300 rounded-none px-3 py-2 text-sm w-full font-mono bg-white focus:border-stone-900 focus:outline-none transition-colors"
+                placeholder="1243.50"
                 inputMode="decimal"
               />
               <button
                 onClick={saveCurrentBalance}
                 disabled={savingBalance}
-                className="border border-black px-3 py-2 text-sm rounded-lg hover:bg-black hover:text-white disabled:opacity-50"
+                className="border border-stone-900 rounded-none px-4 py-2 text-sm text-stone-900 hover:bg-stone-900 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {savingBalance ? "…" : "Guardar"}
+                {savingBalance ? "…" : "保存"}
               </button>
             </div>
 
-            <label className="flex items-center gap-2 text-sm">
+            <label className="flex items-center gap-2 text-sm text-stone-700">
               <input
                 type="checkbox"
                 checked={savingsDone}
                 onChange={(e) => toggleSavingsDone(e.target.checked)}
                 disabled={savingSavingsDone}
+                className="accent-stone-900"
               />
               <span>Ahorro transferido este mes</span>
-              {savingSavingsDone && <span className="text-xs text-black/50">(guardando…)</span>}
+              {savingSavingsDone && <span className="text-xs text-stone-400">(guardando…)</span>}
             </label>
-            <div className="text-xs text-black/50">
-              Ahorro pendiente ahora: <span className="font-semibold">{money(savingsPending)} €</span>
+            <div className="text-xs text-stone-500">
+              Ahorro pendiente: <span className="font-mono text-stone-900">{money(savingsPending)} €</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="space-y-2">
-        <div className="text-sm font-semibold">Distribución: gastable vs reservado</div>
-        <div className="h-3 w-full rounded-full overflow-hidden border border-black/10 flex">
-          <div style={{ width: `${bar.pctCategories}%` }} className="h-full bg-black/80" />
-          <div style={{ width: `${bar.pctReserves}%` }} className="h-full bg-black/20" />
+      <div className="space-y-3 border-t border-stone-200 pt-6">
+        <div className="text-sm font-serif text-stone-900">分配 (Distribución)</div>
+        <div className="h-2 w-full rounded-none overflow-hidden border border-stone-300 flex bg-stone-100">
+          <div style={{ width: `${bar.pctCategories}%` }} className="h-full bg-stone-900" />
+          <div style={{ width: `${bar.pctReserves}%` }} className="h-full bg-stone-400" />
         </div>
 
-        <div className="flex items-center justify-between text-xs text-black/60">
-          <div>
-            Categorías: <span className="font-semibold">{money(bar.categories)} €</span>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-stone-600">
+          <div className="flex items-center justify-between sm:justify-start gap-2">
+            <span className="font-light">Categorías:</span>
+            <span className="font-mono text-stone-900">{money(bar.categories)} €</span>
           </div>
-          <div>
-            Reservas: <span className="font-semibold">{money(bar.reserves)} €</span>
+          <div className="flex items-center justify-between sm:justify-center gap-2">
+            <span className="font-light">Reservas:</span>
+            <span className="font-mono text-stone-900">{money(bar.reserves)} €</span>
           </div>
-          <div>
-            Total mostrado: <span className="font-semibold">{money(bar.total)} €</span>
+          <div className="flex items-center justify-between sm:justify-end gap-2">
+            <span className="font-light">Total:</span>
+            <span className="font-mono text-stone-900">{money(bar.total)} €</span>
           </div>
         </div>
       </div>

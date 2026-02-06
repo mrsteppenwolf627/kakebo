@@ -404,92 +404,97 @@ export default function ExpenseCalendar({
   }, []);
 
   return (
-    <div className="space-y-4">
-      <div className="border border-black/10 p-3 sm:p-4 space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+    <div className="space-y-6">
+      <div className="border border-stone-200 rounded-none p-6 sm:p-8 space-y-6 bg-white">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-stone-200 pb-4">
           <div>
-            <div className="text-sm text-black/60">
-              Mes: {ym} <span className="ml-2">({monthStatusLabel})</span>
+            <div className="text-sm text-stone-500 font-light mb-2">
+              <span className="font-mono">{ym}</span>
+              <span className="ml-3 text-xs">({monthStatusLabel})</span>
             </div>
 
             {isClosed && (
-              <div className="mt-1 text-xs text-red-600">
-                Mes cerrado: no se pueden añadir ni eliminar gastos.
+              <div className="mt-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded-none p-2">
+                月閉鎖済み · Mes cerrado: no se pueden añadir ni eliminar gastos.
               </div>
             )}
 
-            <div className="text-sm text-black/60">Gastos: {rows.length} · Total: {money(total)} €</div>
+            <div className="text-sm text-stone-600 font-light mt-2">
+              Gastos: <span className="font-mono text-stone-900">{rows.length}</span>
+              <span className="mx-2 text-stone-300">·</span>
+              Total: <span className="font-mono text-stone-900">{money(total)} €</span>
+            </div>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={load}
-              className="border border-black px-3 py-2 text-xs sm:text-sm hover:bg-black hover:text-white"
+              className="border border-stone-300 rounded-none px-4 py-2 text-xs sm:text-sm text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-colors"
             >
-              Recargar
+              更新
             </button>
 
             {isClosed ? (
               <button
                 onClick={reopenMonth}
                 disabled={closing}
-                className="border border-black px-3 py-2 text-xs sm:text-sm hover:bg-black hover:text-white disabled:opacity-50"
+                className="border border-stone-300 rounded-none px-4 py-2 text-xs sm:text-sm text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 title="Reabrir mes"
               >
-                {closing ? "…" : "Reabrir"}
+                {closing ? "…" : "再開"}
               </button>
             ) : (
               <button
                 onClick={closeMonth}
                 disabled={closing}
-                className="border border-black px-3 py-2 text-xs sm:text-sm hover:bg-black hover:text-white disabled:opacity-50"
+                className="border border-stone-900 rounded-none px-4 py-2 text-xs sm:text-sm text-stone-900 hover:bg-stone-900 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 title="Cerrar mes"
               >
-                {closing ? "…" : "Cerrar mes"}
+                {closing ? "…" : "閉鎖"}
               </button>
             )}
           </div>
         </div>
 
         {/* Finanzas del mes */}
-        <div className="border border-black/10 p-3 sm:p-4 space-y-2 sm:space-y-3 rounded-lg">
-          <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
-            <span className="text-black/60">Ingreso mensual</span>
-            <span className="font-semibold">
+        <div className="border border-stone-200 rounded-none p-5 sm:p-6 space-y-3 bg-stone-50">
+          <div className="flex items-center justify-between text-sm gap-2">
+            <span className="text-stone-600 font-light">収入 (Ingreso mensual)</span>
+            <span className="font-mono text-stone-900">
               {settingsLoading ? "…" : income > 0 ? `${money(income)} €` : "—"}
             </span>
           </div>
 
-          <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
-            <span className="text-black/60">Gastos fijos</span>
-            <span className="font-semibold">{income > 0 ? `${money(fixedTotal)} €` : "—"}</span>
+          <div className="flex items-center justify-between text-sm gap-2">
+            <span className="text-stone-600 font-light">固定費 (Gastos fijos)</span>
+            <span className="font-mono text-stone-900">{income > 0 ? `${money(fixedTotal)} €` : "—"}</span>
           </div>
 
-          <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
-            <span className="text-black/60">Utilizable</span>
+          <div className="flex items-center justify-between text-sm gap-2">
+            <span className="text-stone-600 font-light">利用可能 (Utilizable)</span>
             <span
-              className={`font-semibold ${
-                income > 0 && availableForCategories < 0 ? "text-red-600" : ""
+              className={`font-mono ${
+                income > 0 && availableForCategories < 0 ? "text-red-700" : "text-stone-900"
               }`}
             >
               {income > 0 ? `${money(availableForCategories)} €` : "—"}
             </span>
           </div>
 
-          <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
-            <span className="text-black/60">Disponible</span>
+          <div className="flex items-center justify-between text-sm gap-2">
+            <span className="text-stone-600 font-light">残高 (Disponible)</span>
             <span
-              className={`font-semibold ${
-                income > 0 && availableAfterExpenses < 0 ? "text-red-600" : ""
+              className={`font-mono ${
+                income > 0 && availableAfterExpenses < 0 ? "text-red-700" : "text-stone-900"
               }`}
             >
               {income > 0 ? `${money(availableAfterExpenses)} €` : "—"}
             </span>
           </div>
 
-          <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
-            <span className="text-black/60">Objetivo ahorro</span>
-            <span className="font-semibold">
+          <div className="flex items-center justify-between text-sm gap-2 border-t border-stone-200 pt-3">
+            <span className="text-stone-600 font-light">貯蓄目標 (Objetivo ahorro)</span>
+            <span className="font-mono text-stone-900">
               {savingGoal > 0 ? `${money(savingGoal)} €` : "—"}
             </span>
           </div>

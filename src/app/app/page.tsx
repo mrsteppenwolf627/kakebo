@@ -43,55 +43,53 @@ export default async function HomePage(props: {
 
   return (
     <AuthGate>
-      <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
-        <div className="mx-auto max-w-5xl space-y-4 sm:space-y-6">
-          <div>
-            <h1 className="text-2xl sm:text-4xl font-semibold">Kakebo Ahorro</h1>
-            <p className="text-black/60 text-sm sm:text-base mt-1">
-              Control de gastos mensual con método Kakebo.
+      <main className="min-h-screen px-4 sm:px-8 py-8 sm:py-12">
+        <div className="mx-auto max-w-6xl space-y-8 sm:space-y-12">
+          {/* HEADER - Estilo Wabi-Sabi: Simple, espacio en blanco, serif para título */}
+          <header className="border-b border-stone-200 pb-6">
+            <h1 className="text-3xl sm:text-5xl font-serif font-normal text-stone-900 tracking-tight">
+              家計簿
+            </h1>
+            <p className="text-stone-600 text-sm sm:text-base mt-2 font-light">
+              Control de gastos mensual
             </p>
-          </div>
+          </header>
 
           <MonthSelector year={year} month={month} />
 
-          {/* ✅ NUEVO: panel “realista” (saldo banco + reservas fijos/ahorro) */}
+          {/* Panel de dinero */}
           <DashboardMoneyPanel year={year} month={month} ym={ym} />
 
           <ExpenseCalendar year={year} month={month} />
 
-          <div className="mt-4">
+          <div className="mt-8">
             <CategoryGuideCard />
           </div>
 
-          {/* ✅ BLOQUE SEO (texto real, indexable) */}
-          <section className="mt-14 space-y-4 border-t border-black/10 pt-10 text-sm text-black/70">
-            <h2 className="text-xl font-semibold text-black">
+          {/* SEO BLOCK - Estilo sobrio */}
+          <section className="mt-16 space-y-6 border-t border-stone-200 pt-12 text-sm text-stone-600">
+            <h2 className="text-xl font-serif font-normal text-stone-900">
               Control de gastos mensual con método Kakebo
             </h2>
 
-            <p>
-              <strong>Kakebo Ahorro</strong> es una herramienta para organizar tu
+            <p className="leading-relaxed">
+              <strong className="text-stone-900">Kakebo Ahorro</strong> es una herramienta para organizar tu
               economía personal con un enfoque mensual: registras gastos, los
               clasificas por categorías y revisas el progreso hacia tu objetivo de
               ahorro.
             </p>
 
-            <p>
+            <p className="leading-relaxed">
               El método <em>Kakebo</em> se basa en la consciencia de gasto: saber en
               qué se va el dinero (Supervivencia, Opcional, Cultura y Extra) y
               ajustar hábitos con presupuestos realistas.
             </p>
 
-            <p>
+            <p className="leading-relaxed">
               En el dashboard puedes ver el total gastado del mes, el desglose por
-              categorías, un gráfico (barras o “queso”) y el progreso hacia el
+              categorías, un gráfico (barras o "queso") y el progreso hacia el
               objetivo de ahorro configurado en Ajustes.
             </p>
-
-            <div className="text-xs text-black/50">
-              (Aquí puedes ampliar con textos SEO específicos: “kakebo ahorro”, “app
-              de presupuesto mensual”, “control de gastos por categorías”, etc.)
-            </div>
           </section>
         </div>
       </main>

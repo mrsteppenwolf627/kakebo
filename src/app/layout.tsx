@@ -35,7 +35,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className="overflow-x-hidden">
-      <body className="overflow-x-hidden max-w-[100vw]">{children}</body>
+      <body className="overflow-x-hidden max-w-[100vw] bg-stone-50 text-stone-900">
+        {children}
+      </body>
     </html>
   );
 }
