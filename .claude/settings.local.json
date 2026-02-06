@@ -8,5 +8,27 @@
       "Bash(npm run build:*)",
       "Bash(npm test:*)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{\n  \"postToolUseHooks\": [\n    {\n      \"matcher\": \"edit\",       // Se activa cuando Claude usa la herramienta \"edit\"\n      \"command\": \"tsc --no-emit\" // El comando de consola que quieres ejecutar\n    }\n  ]\n}"
+          }
+        ]
+      },
+      {
+        "matcher": "npx tsc --noEmit.",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx tsc --noEmit"
+          }
+        ]
+      }
+    ]
   }
 }
