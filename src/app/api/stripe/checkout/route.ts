@@ -62,7 +62,8 @@ export async function POST(req: Request) {
             subscription_data: {
                 metadata: {
                     supabaseUserId: user.id,
-                }
+                },
+                trial_period_days: 15, // Obliga a 15 días gratis antes del primer cobro
             }
         });
 

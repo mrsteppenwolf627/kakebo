@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
+import Link from "next/link";
 
 export default function LoginPage() {
   const supabase = createClient();
@@ -11,8 +12,6 @@ export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  // Cuando el error sugiere “email no confirmado”, mostramos botón de reenvío
   const [needsConfirm, setNeedsConfirm] = useState(false);
 
   async function loginGoogle() {
@@ -25,7 +24,7 @@ export default function LoginPage() {
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
-          queryParams: { prompt: "select_account" }, // fuerza selector de cuenta
+          queryParams: { prompt: "select_account" },
         },
       });
 
@@ -93,7 +92,6 @@ export default function LoginPage() {
       if (error) {
         const m = (error.message || "").toLowerCase();
 
-        // Mensajes típicos: “Email not confirmed”, “confirm your email”, etc.
         if (m.includes("confirm") || m.includes("not confirmed")) {
           setNeedsConfirm(true);
           setMsg("Tu email aún no está confirmado. Revisa tu correo (y spam).");
@@ -103,7 +101,6 @@ export default function LoginPage() {
         throw error;
       }
 
-      // Si tu dashboard real es /app, vamos allí directamente
       window.location.href = "/app";
     } catch (e: any) {
       setMsg(e?.message ?? "Error desconocido");
@@ -113,74 +110,234 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-6">
-      <div className="w-full max-w-sm border border-black/10 p-6 space-y-4">
-        <h1 className="text-2xl font-semibold tracking-tight">Acceso</h1>
-        <p className="text-sm text-black/60">
-          Entra para ver tu calendario y tus gastos.
-        </p>
-
-        <button
-          onClick={loginGoogle}
-          disabled={loading}
-          className="w-full border border-black px-4 py-2 text-sm hover:bg-black hover:text-white disabled:opacity-60"
-        >
-          {loading ? "Abriendo Google..." : "Entrar con Google"}
-        </button>
-
-        <div className="border-t border-black/10 pt-4 space-y-3">
-          <div className="space-y-2">
-            <label className="text-xs text-black/60">Email</label>
-            <input
-              className="w-full border border-black/15 px-3 py-2 outline-none focus:border-black"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-            />
+    <main className="min-h-screen flex">
+      {/* LEFT PANEL - Información */}
+      <div className="hidden lg:flex lg:w-1/2 bg-stone-900 items-center justify-center p-12">
+        <div className="max-w-md text-white space-y-8">
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center border border-white bg-white">
+              <span className="text-xl font-serif text-stone-900">K</span>
+            </div>
+            <span className="text-2xl font-serif">Kakebo</span>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs text-black/60">Contraseña</label>
-            <input
-              className="w-full border border-black/15 px-3 py-2 outline-none focus:border-black"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-            />
+          {/* Heading */}
+          <div className="space-y-4">
+            <h1 className="text-4xl font-serif font-normal leading-tight">
+              Control de gastos<br />con método japonés
+            </h1>
+            <p className="text-stone-300 font-light leading-relaxed">
+              Registra, clasifica y revisa tus gastos mensuales con claridad.
+              Sin complicaciones, sin humo.
+            </p>
           </div>
 
-          {msg && <p className="text-sm text-black/60">{msg}</p>}
+          {/* Features */}
+          <div className="space-y-4 border-t border-stone-700 pt-8">
+            <div className="flex items-start gap-3">
+              <svg
+                className="h-5 w-5 flex-shrink-0 text-white mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span className="text-sm text-stone-300 font-light">
+                Gratis para siempre (Plan Manual)
+              </span>
+            </div>
+            <div className="flex items-start gap-3">
+              <svg
+                className="h-5 w-5 flex-shrink-0 text-white mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span className="text-sm text-stone-300 font-light">
+                Agente IA opcional (15 días de prueba)
+              </span>
+            </div>
+            <div className="flex items-start gap-3">
+              <svg
+                className="h-5 w-5 flex-shrink-0 text-white mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span className="text-sm text-stone-300 font-light">
+                Tus datos siempre privados y seguros
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          {needsConfirm && (
+      {/* RIGHT PANEL - Form */}
+      <div className="w-full lg:w-1/2 bg-stone-50 flex items-center justify-center p-8 sm:p-12">
+        <div className="w-full max-w-md space-y-8">
+          {/* Back to home - mobile */}
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm text-stone-600 font-light hover:text-stone-900 transition-colors lg:hidden"
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Volver al inicio
+          </Link>
+
+          {/* Header */}
+          <div className="space-y-2">
+            <h2 className="text-3xl font-serif text-stone-900">
+              {mode === "login" ? "Acceso" : "Crear cuenta"}
+            </h2>
+            <p className="text-sm text-stone-600 font-light">
+              {mode === "login"
+                ? "Entra para ver tu calendario y gastos"
+                : "Regístrate y empieza con el Plan Manual (gratis)"}
+            </p>
+          </div>
+
+          {/* Google Auth */}
+          <button
+            onClick={loginGoogle}
+            disabled={loading}
+            className="w-full border border-stone-300 bg-white px-6 py-3 text-sm font-light text-stone-900 hover:border-stone-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-3"
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="currentColor"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="currentColor"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="currentColor"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
+            </svg>
+            {loading ? "..." : "Continuar con Google"}
+          </button>
+
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-stone-200"></div>
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-stone-50 px-4 text-stone-500 font-light">O con email</span>
+            </div>
+          </div>
+
+          {/* Email Form */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-xs text-stone-600 font-light">Email</label>
+              <input
+                className="w-full border border-stone-300 bg-white px-4 py-3 text-sm outline-none focus:border-stone-900 transition-colors font-mono"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                placeholder="tu@email.com"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs text-stone-600 font-light">Contraseña</label>
+              <input
+                className="w-full border border-stone-300 bg-white px-4 py-3 text-sm outline-none focus:border-stone-900 transition-colors font-mono"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                placeholder="••••••••"
+              />
+            </div>
+
+            {msg && (
+              <div className="border border-stone-300 bg-white p-3">
+                <p className="text-xs text-stone-700 font-light">{msg}</p>
+              </div>
+            )}
+
+            {needsConfirm && (
+              <button
+                type="button"
+                onClick={resendConfirmation}
+                disabled={loading || !email}
+                className="w-full text-sm text-stone-600 font-light hover:text-stone-900 disabled:opacity-50 disabled:cursor-not-allowed underline"
+              >
+                Reenviar email de confirmación
+              </button>
+            )}
+
             <button
-              type="button"
-              onClick={resendConfirmation}
-              disabled={loading || !email}
-              className="w-full text-sm underline text-black/60 hover:text-black disabled:opacity-60"
+              onClick={authEmail}
+              disabled={loading || !email || !password}
+              className="w-full border border-stone-900 bg-stone-900 text-white py-3 text-sm font-light hover:bg-stone-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              Reenviar email de confirmación
+              {mode === "login" ? "Entrar" : "Crear cuenta"}
             </button>
-          )}
 
-          <button
-            onClick={authEmail}
-            disabled={loading || !email || !password}
-            className="w-full bg-black text-white py-2 text-sm hover:opacity-90 disabled:opacity-60"
-          >
-            {mode === "login" ? "Entrar con email" : "Crear cuenta"}
-          </button>
+            <button
+              onClick={() => {
+                const next = mode === "login" ? "signup" : "login";
+                setMode(next);
+                setMsg(null);
+                setNeedsConfirm(false);
+              }}
+              className="w-full text-sm text-stone-600 font-light hover:text-stone-900 transition-colors"
+            >
+              {mode === "login" ? "¿No tienes cuenta? Créala aquí" : "¿Ya tienes cuenta? Entra aquí"}
+            </button>
+          </div>
 
-          <button
-            onClick={() => {
-              const next = mode === "login" ? "signup" : "login";
-              setMode(next);
-              setMsg(null);
-              setNeedsConfirm(false);
-            }}
-            className="w-full text-sm text-black/60 hover:text-black"
+          {/* Back to home - desktop */}
+          <Link
+            href="/"
+            className="hidden lg:inline-flex items-center gap-2 text-sm text-stone-600 font-light hover:text-stone-900 transition-colors"
           >
-            {mode === "login" ? "Crear cuenta" : "Ya tengo cuenta"}
-          </button>
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Volver al inicio
+          </Link>
         </div>
       </div>
     </main>
