@@ -13,27 +13,23 @@ Este documento define cuándo es mejor trabajar con **Claude Code (Cursor)** o c
 
 ## Cuándo Usar CLAUDE CODE (Cursor)
 
-### ✅ **Ideal para:**
+### ✅ **Ideal para: VISUAL POLISH & UI FINE-TUNING**
 
-1. **Ediciones puntuales y rápidas** (1-3 archivos)
-   - Ejemplo: "Arregla este bug en esta función específica"
-   - Razón: El inline editing de Cursor es más rápido y fluido para cambios pequeños
+1.  **"Magic" Styling**
+    -   Ejemplo: "Haz que este componente tenga un efecto glassmorphism y bordes suaves"
+    -   Razón: Excelente sugiriendo clases de Tailwind y estilos modernos.
 
-2. **Refactorización de código existente**
-   - Ejemplo: "Renombra esta variable en todo el archivo", "Extrae esta lógica a una función"
-   - Razón: Cursor ve el contexto del archivo completo y puede sugerir cambios en tiempo real
+2.  **Micro-interacciones**
+    -   Ejemplo: "Que el botón pulse suavemente al hacer hover"
+    -   Razón: Itera rápido en animaciones y feeling.
 
-3. **Cuando YA sabes qué archivo modificar**
-   - Ejemplo: Estás mirando `AIChat.tsx` y necesitas añadir una feature pequeña
-   - Razón: No necesitas búsqueda global; Cursor es más directo
+3.  **Refinamiento de Contenido (Copy)**
+    -   Ejemplo: "Reescribe este párrafo para que sea más zen y corto"
+    -   Razón: Buen sentido del tono y lenguaje.
 
-4. **Debugging interactivo**
-   - Ejemplo: Tienes un error de TypeScript y necesitas iterar rápido
-   - Razón: Puedes ver los errores en el editor mientras Code sugiere fixes
-
-5. **Autocomplete y snippets**
-   - Ejemplo: Escribir componentes React nuevos siguiendo patrones existentes
-   - Razón: El autocomplete de Cursor aprende de tu código
+4.  **Arreglos Rápidos (Hotfixes)**
+    -   Ejemplo: "El margen en móvil está roto, arréglalo"
+    -   Razón: Perfecto para ediciones de archivo único.
 
 ### Casos prácticos:
 - Añadir validación a un campo en un formulario
@@ -46,35 +42,26 @@ Este documento define cuándo es mejor trabajar con **Claude Code (Cursor)** o c
 
 ## Cuándo Usar ANTIGRAVITY
 
-### ✅ **Ideal para:**
+### ✅ **Ideal para: ARQUITECTURA, LOGICA COMPLEJA & HEAVY LIFTING**
 
-1. **Tareas multi-archivo** (4+ archivos)
-   - Ejemplo: "Implementa un sistema de autenticación completo" (hooks, componentes, API, tipos)
-   - Razón: Puede crear/editar múltiples archivos en paralelo y mantener coherencia
+1.  **Implementación SaaS & Backend**
+    -   Ejemplo: "Configura Stripe, los Webhooks y la base de datos"
+    -   Razón: Maneja múltiples archivos (API, Libs, DB) simultáneamente sin perder el hilo.
 
-2. **Planificación y arquitectura**
-   - Ejemplo: "Diseña la estructura de datos para un sistema de notificaciones"
-   - Razón: Tiene modo PLANNING dedicado que genera artifacts antes de escribir código
+2.  **Creación de Estructuras Nuevas**
+    -   Ejemplo: "Crea la página de Pricing, Legal y el panel de Admin desde cero"
+    -   Razón: Genera el esqueleto robusto y funcional sobre el que luego se diseña.
 
-3. **Tareas que requieren investigación**
-   - Ejemplo: "Analiza el código existente y dime cómo integrar X librería"
-   - Razón: Puede usar `grep_search`, `view_file_outline`, leer docs, etc.
+3.  **Lógica de Negocio Crucial**
+    -   Ejemplo: "Implementa el sistema de control de acceso y trials"
+    -   Razón: Menos propenso a errores lógicos en flujos complejos que cruzan frontend y backend.
 
-4. **Automatización completa** (build, test, deploy)
-   - Ejemplo: "Implementa esta feature y asegúrate de que el build pase"
-   - Razón: Ejecuta `npm run build`, ve errores, corrige, y lo valida automáticamente
+4.  **Planificación y Estrategia**
+    -   Ejemplo: "Diseña el roadmap para la fase móvil"
+    -   Razón: Mantiene el contexto global del proyecto (documentos, tareas, objetivos).
 
-5. **Cuando NO sabes dónde está el código relevante**
-   - Ejemplo: "Hay un bug en la autenticación, encuéntralo"
-   - Razón: Puede buscar en todo el proyecto y explorar la estructura
-
-6. **Documentación y handoffs**
-   - Ejemplo: Generar reportes de contexto, actualizar README, crear documentación técnica
-   - Razón: Genera artifacts, actualiza docs, mantiene historia
-
-7. **Features end-to-end**
-   - Ejemplo: "Implementa el chat completo desde cero"
-   - Razón: Coordina frontend + backend + navegación + tests + docs
+5.  **Tareas Multi-archivo**
+    -   Cualquier cosa que toque >3 archivos a la vez.
 
 ### Casos prácticos:
 - Implementar un sistema completo de agentes IA

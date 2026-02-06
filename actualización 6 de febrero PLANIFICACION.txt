@@ -1,0 +1,65 @@
+================================================================================
+             KAKEBO AI - ACTUALIZACIÓN Y HOJA DE RUTA
+             Fecha: 6 de Febrero de 2026
+             Fase Actual: PLANIFICACIÓN COMPLETADA -> PREPARANDO EJECUCIÓN
+================================================================================
+
+OBJETIVO GLOBAL:
+Transformar Kakebo de un "proyecto personal" a un "SaaS Producto Mínimo Viable (MVP)"
+con calidad de portfolio premium.
+
+NUEVA HOJA DE RUTA APROBADA (FASE 2.5 - 2.7):
+
+1. INFRAESTRUCTURA DE NEGOCIO (SaaS / Stripe) - [PRIORIDAD 1]
+   - Integración Stripe completa (Checkout, Webhooks, Portal).
+   - Logic de "Tiers": Free (Manual) vs Pro (AI).
+   - Trial System: 15 días gratis de AI, luego Paywall.
+   - Panel de Admin: Para dar accesos VIP manuales (familia/amigos).
+
+2. EXPERIENCIA DE USUARIO (UX Zen) - [PRIORIDAD 2]
+   - Landing Page Rediseñada: Estilo "Mindful", menos texto, más impacto visual.
+   - Página de Pricing: Comparativa clara Free vs Pro.
+   - Auth Dividido: Login más bonito (Split screen).
+   - PWA: Hacer la web instalable como app nativa.
+
+3. LEGITIMIDAD Y SOPORTE - [PRIORIDAD 3]
+   - Páginas Legales: Privacidad y Términos (Requisito Stripe).
+   - Feedback Widget: Para reportar bugs.
+   - Onboarding: Guía de bienvenida para nuevos usuarios.
+
+4. SEO TÉCNICO - [PRIORIDAD 4]
+   - Arquitectura JSON-LD y Metatags desde el principio.
+
+--------------------------------------------------------------------------------
+
+DEFINICIÓN DE ROLES: ANTIGRAVITY (GEMINI) vs CLAUDE CODE
+
+Para lograr este "Win-Win", nos dividiremos el trabajo así:
+
+🤖 ANTIGRAVITY (GEMINI - YO): "El Arquitecto & Backend"
+-------------------------------------------------------
+Mi fortaleza es la visión global multi-archivo y la lógica compleja.
+Yo me encargaré de:
+1.  **Stripe & DB:** Crear toda la fontanería de pagos, webhooks y base de datos.
+2.  **Seguridad:** Implementar `SubscriptionGuard` y lógica de permisos.
+3.  **Estructura:** Crear los archivos base de las nuevas páginas (`/pricing`, `/legal`, `/admin`) y sus rutas.
+4.  **SEO Técnico:** Configurar los metadatos y schemas.
+5.  **PWA:** Configurar el `manifest.ts`.
+
+🧠 CLAUDE CODE (CURSOR): "El Diseñador & Frontend Polish"
+---------------------------------------------------------
+Su fortaleza es la edición en línea rápida y el sentido estético.
+Tú (o él bajo tus órdenes) se encargará de:
+1.  **Visual "Wow":** Coger mis componentes estructurales y aplicarles gradientes, sombras suaves y "magia" CSS.
+2.  **Micro-interacciones:** Animaciones al hacer hover, transiciones de página suaves.
+3.  **Copywriting Fino:** Ajustar los textos de la Landing para que suenen perfectos.
+4.  **Ajustes de UI:** Si un margen no convence o un color falla, él lo arregla rápido.
+
+--------------------------------------------------------------------------------
+
+ESTADO ACTUAL:
+- Planificación: ✅ APROBADA
+- Tareas: ✅ DEFINIDAS en task.md
+- Siguiente paso inmediato: Instalar Stripe y configurar DB.
+
+================================================================================
