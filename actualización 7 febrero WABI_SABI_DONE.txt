@@ -1,47 +1,47 @@
 ================================================================================
-             KAKEBO AI - ESTADO ACTUAL PIVOTE DISEÑO
-             Fecha: 7 de Febrero de 2026
-             Estado: WABI-SABI + NAVEGACIÓN COMPLETADA
+             KAKEBO AI - ESTADO ACTUAL & HANDOFF FINAL
+             Fecha: 7 de Febrero de 2026 (Cierre de Sesión)
+             Estado: WABI-SABI + PWA (Parcial) + LEGAL DONE
 ================================================================================
 
-✅ LO QUE SE HA COMPLETADO (GEMINI & CLAUDE):
+✅ COMPLETADO HOY:
 
 1.  **Backend SaaS (Antigravity):**
-    -   Stripe Checkout (Card Upfront Logic).
-    -   Stripe Portal Routing.
-    -   Webhooks & DB Triggers.
+    -   Stripe Checkout (Card Upfront) & Portal Integrados.
+    -   Webhooks & DB Triggers operativos.
 
-2.  **Rediseño Visual (Claude Code):**
-    -   **Landing Page:** Estilo Mindful/Zen.
-    -   **Dashboard:** Cards Wabi-Sabi (Stone palette).
-    -   **Login:** Split screen.
+2.  **Frontend Wabi-Sabi (Claude Code):**
+    -   Rediseño total de Dashboard, Landing y Login con estética Zen.
+    -   Paleta Stone, bordes rectos, tipografía Serif.
 
-3.  **Navegación & UX (Antigravity):**
-    -   **TopNav:** Rediseñado con fuente Serif y paleta Stone.
-    -   **UserMenu:**
-        -   Se ha movido aquí toda la lógica de sesión.
-        -   **Nuevo Link "Suscripción / Pagos":** Llama a `/api/stripe/portal`.
-        -   **Logout:** Botón explícito y funcional.
-    -   **Estética:** Coherencia total con el estilo "Papel de arroz" del resto de la app.
+3.  **Navegación & UX:**
+    -   TopNav & UserMenu integrados con Billing Portal y Logout.
+    -   Logout funcional.
+
+4.  **Legal & Compliance (Antigravity):**
+    -   Creado `/privacy` (Política de Privacidad).
+    -   Creado `/terms` (Términos de Servicio).
+    -   Requisito de Stripe cumplido.
+
+5.  **PWA (Progressive Web App):**
+    -   `manifest.ts` creado y enlazado en `layout.tsx`.
+    -   La app es "instalable" técnicamente.
+    -   ⚠️ **PENDIENTE:** `icon.png` (Falló generación por quota de API). Se usa un placeholder o falta añadirlo manualmente.
 
 --------------------------------------------------------------------------------
 
-PENDIENTE (PRÓXIMOS PASOS):
+PRÓXIMOS PASOS (FASE 3 - CLOUD/SEO):
 
-1.  **Página Pricing Dedicada (`/pricing`):**
-    -   Actualmente se usa la sección de la Landing.
-    -   Crear página específica si se necesita más detalle SEO.
-
-2.  **Páginas Legales (`/privacy`, `/terms`):**
-    -   Requerimiento de Stripe para pasar a Producción.
-
-3.  **App Experience:**
-    -   PWA (Manifest).
-    -   Feedback Widget.
+1.  **Icono PWA:** Generar y colocar `public/icon.png` (512x512).
+2.  **Feedback Widget:** Implementar botón flotante.
+3.  **AWS Deployment:** Preparar Docker/EC2 o Vercel.
+4.  **SEO Content:** Rellenar blog/artículos.
 
 --------------------------------------------------------------------------------
 
 NOTAS TÉCNICAS:
--   El build pasa correctamente (`npm run build`).
--   La navegación es 100% responsiva.
--   El Auth state se maneja limpiamente en UserMenu.
+-   Repo actualizado: `git push` realizado.
+-   Build status: ✅ Passing.
+-   Stripe status: ✅ Ready for Production (tras activar en dashboard).
+
+¡Buen trabajo! La app tiene una base sólida, legal y estética.
