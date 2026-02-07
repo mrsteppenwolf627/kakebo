@@ -49,7 +49,7 @@ export default function PublicHomePage() {
         <section className="relative py-16">
           <div className="absolute inset-0 bg-white" />
           <div className="relative z-10 mx-auto w-full max-w-5xl px-4">
-            <div className="rounded-3xl border border-gray-200/50 bg-white/60 backdrop-blur-sm p-8 shadow-lg">
+            <div className="rounded-sm border border-stone-200 bg-white p-8 shadow-sm">
               <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-4">
                 Qué es Kakebo y para qué sirve
               </h2>
@@ -71,7 +71,7 @@ export default function PublicHomePage() {
         </section>
 
         {/* SEO Content - Categories */}
-        <section className="relative py-16 bg-gradient-to-b from-white to-violet-50/30">
+        <section className="relative py-16 bg-stone-50">
           <div className="mx-auto w-full max-w-5xl px-4">
             <div className="rounded-3xl border border-gray-200/50 bg-white/60 backdrop-blur-sm p-8 shadow-lg">
               <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-6">
@@ -112,9 +112,9 @@ export default function PublicHomePage() {
 
 function CategoryCard({ title, desc }: { title: string; desc: string }) {
   return (
-    <div className="rounded-xl border border-violet-200/50 bg-gradient-to-br from-white to-violet-50/50 p-5">
-      <h3 className="text-base font-bold text-gray-900">{title}</h3>
-      <p className="mt-2 text-sm text-gray-600">{desc}</p>
+    <div className="rounded-sm border border-stone-200 bg-white p-5 transition-colors hover:border-stone-900">
+      <h3 className="text-base font-bold text-stone-900">{title}</h3>
+      <p className="mt-2 text-sm text-stone-600">{desc}</p>
     </div>
   );
 }

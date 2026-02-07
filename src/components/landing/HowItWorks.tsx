@@ -2,7 +2,7 @@ export function HowItWorks() {
   return (
     <section className="relative py-24">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-violet-50/30 via-white to-indigo-50/30" />
+      <div className="absolute inset-0 bg-stone-50" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4">
         {/* Section Header */}
@@ -18,7 +18,7 @@ export function HowItWorks() {
         {/* Steps */}
         <div className="relative">
           {/* Connecting Line (hidden on mobile) */}
-          <div className="absolute left-1/2 top-0 hidden h-full w-0.5 -translate-x-1/2 bg-gradient-to-b from-violet-300 via-indigo-300 to-purple-300 lg:block" />
+          <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-stone-300 lg:block" />
 
           <div className="space-y-12">
             <Step
@@ -92,24 +92,24 @@ export function HowItWorks() {
         </div>
 
         {/* Example Card */}
-        <div className="mx-auto mt-16 max-w-3xl rounded-3xl border-2 border-violet-200 bg-gradient-to-br from-violet-50/80 to-indigo-50/80 backdrop-blur-sm p-8 shadow-xl">
+        <div className="mx-auto mt-16 max-w-3xl rounded-sm border-2 border-stone-200 bg-stone-50 p-8 shadow-sm">
           <h3 className="mb-4 text-xl font-bold text-gray-900">Ejemplo práctico</h3>
           <div className="space-y-3 text-gray-700">
-            <div className="flex justify-between border-b border-violet-200 pb-2">
+            <div className="flex justify-between border-b border-stone-200 pb-2">
               <span className="font-medium">Ingresos del mes:</span>
               <span className="font-bold text-green-600">1.800€</span>
             </div>
-            <div className="flex justify-between border-b border-violet-200 pb-2">
+            <div className="flex justify-between border-b border-stone-200 pb-2">
               <span className="font-medium">Gastos fijos activos:</span>
               <span className="font-bold text-red-600">-950€</span>
             </div>
-            <div className="flex justify-between border-b border-violet-200 pb-2">
+            <div className="flex justify-between border-b border-stone-200 pb-2">
               <span className="font-medium">Gastos variables:</span>
               <span className="font-bold text-red-600">-620€</span>
             </div>
             <div className="flex justify-between pt-2">
               <span className="text-lg font-bold">Te quedan:</span>
-              <span className="text-lg font-bold text-violet-600">230€</span>
+              <span className="text-lg font-bold text-stone-900">230€</span>
             </div>
           </div>
           <p className="mt-4 text-sm text-gray-600">
@@ -133,21 +133,18 @@ interface StepProps {
 function Step({ number, title, description, icon, side }: StepProps) {
   return (
     <div
-      className={`relative flex items-center gap-8 ${
-        side === "left" ? "lg:flex-row" : "lg:flex-row-reverse"
-      }`}
+      className={`relative flex items-center gap-8 ${side === "left" ? "lg:flex-row" : "lg:flex-row-reverse"
+        }`}
     >
       {/* Content */}
       <div className="flex-1 lg:w-1/2">
         <div
-          className={`rounded-2xl border border-gray-200/50 bg-white/60 backdrop-blur-sm p-6 shadow-lg transition-all duration-300 hover:shadow-xl ${
-            side === "left" ? "lg:text-right" : "lg:text-left"
-          }`}
+          className={`rounded-sm border border-stone-200 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md ${side === "left" ? "lg:text-right" : "lg:text-left"
+            }`}
         >
           <div
-            className={`mb-2 text-sm font-bold text-violet-600 ${
-              side === "left" ? "lg:justify-end" : "lg:justify-start"
-            } flex justify-start`}
+            className={`mb-2 text-sm font-serif text-stone-500 ${side === "left" ? "lg:justify-end" : "lg:justify-start"
+              } flex justify-start`}
           >
             PASO {number}
           </div>
@@ -158,7 +155,7 @@ function Step({ number, title, description, icon, side }: StepProps) {
 
       {/* Center Icon (hidden on mobile) */}
       <div className="absolute left-1/2 hidden -translate-x-1/2 lg:flex">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-gradient-to-br from-violet-500 to-indigo-500 text-white shadow-xl">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-stone-900 text-white shadow-lg">
           {icon}
         </div>
       </div>
