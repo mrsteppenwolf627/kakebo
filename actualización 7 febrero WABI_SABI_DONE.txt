@@ -1,43 +1,47 @@
 ================================================================================
-             KAKEBO AI - ACTUALIZACIÓN 7 DE FEBRERO 2026
-             Estado: DISEÑO WABI-SABI COMPLETADO
-             Responsable: Claude Code (Sonnet 4.5)
+             KAKEBO AI - ESTADO ACTUAL PIVOTE DISEÑO
+             Fecha: 7 de Febrero de 2026
+             Estado: WABI-SABI + NAVEGACIÓN COMPLETADA
 ================================================================================
 
-✅ COMPLETADO (7 Feb 2026):
---------------------------
+✅ LO QUE SE HA COMPLETADO (GEMINI & CLAUDE):
 
-FASE 2.6 - FRONTEND WABI-SABI: 100% COMPLETADA
+1.  **Backend SaaS (Antigravity):**
+    -   Stripe Checkout (Card Upfront Logic).
+    -   Stripe Portal Routing.
+    -   Webhooks & DB Triggers.
 
-1. Dashboard (/app): Rediseñado completo
-2. Landing Page (/): Rediseñado completo
-3. Login/Auth (/login): Rediseñado completo con split screen
-4. Estilos globales: Paleta stone aplicada
+2.  **Rediseño Visual (Claude Code):**
+    -   **Landing Page:** Estilo Mindful/Zen.
+    -   **Dashboard:** Cards Wabi-Sabi (Stone palette).
+    -   **Login:** Split screen.
 
-DISEÑO APLICADO:
-- Paleta: stone-50 a stone-900
-- Geometría: Bordes rectos (rounded-none)
-- Tipografía: Serif (títulos), Mono (datos)
-- Acento: red-700 (solo warnings)
-- Espaciado: Generoso (Ma - 間)
-- Idioma: 100% español
+3.  **Navegación & UX (Antigravity):**
+    -   **TopNav:** Rediseñado con fuente Serif y paleta Stone.
+    -   **UserMenu:**
+        -   Se ha movido aquí toda la lógica de sesión.
+        -   **Nuevo Link "Suscripción / Pagos":** Llama a `/api/stripe/portal`.
+        -   **Logout:** Botón explícito y funcional.
+    -   **Estética:** Coherencia total con el estilo "Papel de arroz" del resto de la app.
 
-BUILD: ✅ Pasando
-COMMITS: ca2c694, c24fbf5, e1d9a07
+--------------------------------------------------------------------------------
 
-================================================================================
+PENDIENTE (PRÓXIMOS PASOS):
 
-⏳ PENDIENTE PARA GEMINI:
-------------------------
+1.  **Página Pricing Dedicada (`/pricing`):**
+    -   Actualmente se usa la sección de la Landing.
+    -   Crear página específica si se necesita más detalle SEO.
 
-FASE 2.6.3 - UX NAVIGATION:
+2.  **Páginas Legales (`/privacy`, `/terms`):**
+    -   Requerimiento de Stripe para pasar a Producción.
 
-1. TopNav.tsx → Rediseño Wabi-Sabi + Logout + Billing Portal
-2. UserMenu.tsx → Dropdown sobrio con opciones
-3. Breadcrumbs → Navegación clara
-4. (Opcional) Pricing Page dedicada (/pricing)
+3.  **App Experience:**
+    -   PWA (Manifest).
+    -   Feedback Widget.
 
-BACKEND SAAS: ✅ Funcional (NO TOCAR)
-ARCHIVOS: Ver HANDOFF_PARA_GEMINI_7_FEB.txt
+--------------------------------------------------------------------------------
 
-================================================================================
+NOTAS TÉCNICAS:
+-   El build pasa correctamente (`npm run build`).
+-   La navegación es 100% responsiva.
+-   El Auth state se maneja limpiamente en UserMenu.

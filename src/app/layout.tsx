@@ -3,30 +3,28 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Kakebo Ahorro | Control de gastos por mes y categorías",
-    template: "%s | Kakebo Ahorro",
+    default: "Kakebo AI: Finanzas Zen",
+    template: "%s | Kakebo AI",
   },
   description:
-    "Kakebo Ahorro es una app para registrar gastos por mes, controlar presupuestos por categorías Kakebo y seguir tu objetivo de ahorro con gráficos y progreso.",
-  applicationName: "Kakebo Ahorro",
-  metadataBase: new URL("https://example.com"), // cámbialo cuando despliegues
+    "Gestión financiera minimalista con Inteligencia Artificial. Registra gastos, controla presupuestos y ahorra mes a mes.",
+  manifest: "/manifest.webmanifest", // Next.js genera esto desde manifest.ts
+  themeColor: "#fafaf9",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Kakebo AI",
+  },
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   openGraph: {
-    title: "Kakebo Ahorro",
-    description:
-      "Registra gastos, controla presupuestos por categorías Kakebo y sigue tu objetivo de ahorro mes a mes.",
+    title: "Kakebo AI",
+    description: "Finanzas Zen con Inteligencia Artificial.",
     type: "website",
     locale: "es_ES",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-snippet": -1,
-      "max-image-preview": "large",
-      "max-video-preview": -1,
-    },
   },
 };
 

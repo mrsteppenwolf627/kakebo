@@ -13,6 +13,18 @@ export default function UserMenu() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // Billing Portal Logic
+  async function handleBilling() {
+    try {
+      const res = await fetch('/api/stripe/portal', { method: 'POST' });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch (e) {
+      console.error("Billing error:", e);
+      alert("Error cargando el portal de facturación.");
+    }
+  }
+
   useEffect(() => {
     let mounted = true;
 
@@ -48,53 +60,71 @@ export default function UserMenu() {
   }
 
   if (loading) {
-    return <div className="text-sm text-gray-500 px-2">...</div>;
+    return <div className="text-sm text-stone-500 px-2 font-mono">...</div>;
   }
 
   if (!user) {
     return (
       <button
         onClick={goLogin}
-        className="ml-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors text-gray-500 hover:text-black hover:bg-gray-50"
+        className="ml-4 px-4 py-2 text-sm border border-stone-300 hover:border-stone-900 transition-colors text-stone-600 hover:text-stone-900"
       >
-        Entrar / Crear cuenta
+        Entrar
       </button>
     );
   }
 
-  const label = user.email ?? "Cuenta";
+  const label = user.email ? user.email.split('@')[0] : "Cuenta";
 
   return (
-    <div className="relative ml-2">
+    <div className="relative ml-4">
       <button
         onClick={() => setOpen(!open)}
-        className="px-3 py-2 text-sm font-medium rounded-lg transition-colors text-gray-500 hover:text-black hover:bg-gray-50"
+        className={`flex items-center gap-2 px-3 py-1.5 text-sm border transition-colors ${open ? "border-stone-900 text-stone-900" : "border-stone-200 text-stone-600 hover:border-stone-400"
+          }`}
       >
-        {label}
+        <div className="w-5 h-5 bg-stone-200 flex items-center justify-center text-xs font-serif text-stone-600">
+          {label[0].toUpperCase()}
+        </div>
+        <span className="hidden sm:inline-block">{label}</span>
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-64 border border-black/10 bg-white shadow-sm rounded-lg overflow-hidden z-50">
-          <div className="px-3 py-2 text-xs text-black/60 border-b border-black/10">
-            Sesión iniciada como
-            <div className="text-sm text-black break-all">{label}</div>
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <div className="absolute right-0 mt-2 w-56 border border-stone-200 bg-stone-50 z-50 p-1 animate-in fade-in zoom-in-95 duration-100">
+
+            <div className="px-3 py-2 text-xs text-stone-500 border-b border-stone-200 mb-1 font-mono">
+              {user.email}
+            </div>
+
+            <button
+              onClick={() => router.push('/app/settings')}
+              className="w-full text-left px-3 py-2 text-sm text-stone-700 hover:bg-stone-200 transition-colors"
+            >
+              Ajustes
+            </button>
+
+            <button
+              onClick={handleBilling}
+              className="w-full text-left px-3 py-2 text-sm text-stone-700 hover:bg-stone-200 transition-colors flex justify-between items-center group"
+            >
+              <span>Suscripción / Pagos</span>
+              <span className="text-[10px] text-stone-400 group-hover:text-stone-600">Stripe ↗</span>
+            </button>
+
+            <div className="h-px bg-stone-200 my-1" />
+
+            <button
+              onClick={logout}
+              className="w-full text-left px-3 py-2 text-sm text-red-700 hover:bg-red-50 transition-colors"
+            >
+              Cerrar sesión
+            </button>
           </div>
-
-          <button
-            onClick={logout}
-            className="w-full text-left px-3 py-2 text-sm hover:bg-black hover:text-white"
-          >
-            Cerrar sesión
-          </button>
-
-          <button
-            onClick={goLogin}
-            className="w-full text-left px-3 py-2 text-sm hover:bg-black hover:text-white"
-          >
-            Cambiar de cuenta
-          </button>
-        </div>
+        </>
       )}
     </div>
   );
 }
+
