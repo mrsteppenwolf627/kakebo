@@ -1,0 +1,271 @@
+================================================================================
+             KAKEBO AI - HANDOFF PARA GEMINI
+             Fecha: 7 de Febrero de 2026 (Madrugada)
+             De: Claude Code (Sonnet 4.5)
+             Para: Gemini
+             Estado: DISEÑO WABI-SABI APLICADO A TODA LA APP
+================================================================================
+
+RESUMEN EJECUTIVO:
+------------------
+Claude Code completó el rediseño COMPLETO de la app con estética japonesa
+minimalista Wabi-Sabi. Se eliminaron todos los gradientes coloridos y se
+aplicó una paleta stone neutral con bordes rectos y tipografía elegante.
+
+Backend SaaS está 100% funcional (no tocar). Tu trabajo es continuar con
+mejoras de UX/navegación.
+
+================================================================================
+
+✅ LO QUE ESTÁ HECHO - NO MODIFICAR ESTRUCTURA:
+----------------------------------------------
+
+1. BACKEND SAAS (Antigravity) - FUNCIONAL 100%:
+   - Stripe integrado (`/api/stripe/checkout`, `/api/stripe/portal`, `/api/webhooks/stripe`)
+   - Base de datos con `profiles` (tier, trial_ends_at, stripe_id)
+   - Control de acceso: `src/lib/auth/access-control.ts` → canUseAI(user)
+   - Guards: `src/components/saas/SubscriptionGuard.tsx`, `TrialBanner.tsx`
+   - Modelo "Card Upfront": Registro gratis, trial requiere tarjeta (0€ por 15 días)
+
+2. DISEÑO WABI-SABI (Claude Code) - APLICADO 100%:
+
+   A) DASHBOARD (/app):
+      - `src/app/app/page.tsx`: Header con título serif, espaciado generoso
+      - `src/components/MonthSelector.tsx`: Bordes stone-200, botones rectangulares
+      - `src/components/DashboardMoneyPanel.tsx`: Cards stone-50/white, labels bilingües
+      - `src/components/ExpenseCalendar.tsx`: Diseño sobrio con stone palette
+      - Paleta: stone-50 (fondo), stone-900 (texto), stone-200 (bordes)
+
+   B) LANDING PAGE (/):
+      - `src/components/landing/Hero.tsx`: Hero minimalista con stats card
+      - `src/components/landing/Navbar.tsx`: Logo "K", nav limpia
+      - `src/components/landing/PricingSection.tsx`: **Card Upfront warning CLARO**
+      - `src/components/landing/Features.tsx`: Cards rectangulares
+      - `src/components/landing/FAQ.tsx`: Acordeón limpio
+      - `src/components/landing/Footer.tsx`: 4 columnas estructuradas
+      - TODO EN ESPAÑOL (sin japonés como pidió el usuario)
+
+   C) LOGIN/AUTH (/login):
+      - `src/app/login/page.tsx`: **Split screen elegante**
+      - Panel izquierdo (desktop): stone-900 con info de marca
+      - Panel derecho: stone-50 con formulario
+      - Google OAuth + Email/Password
+      - Totalmente responsive
+
+   D) ESTILOS GLOBALES:
+      - `src/app/globals.css`: Paleta stone actualizada en CSS variables
+      - `src/app/layout.tsx`: Body con bg-stone-50, text-stone-900
+
+================================================================================
+
+PRINCIPIOS DE DISEÑO WABI-SABI APLICADOS:
+-----------------------------------------
+
+📐 GEOMETRÍA:
+   - Bordes rectos o sutiles (rounded-none, rounded-sm)
+   - NO rounded-xl ni rounded-2xl
+   - Pensar en "papel de arroz", "madera cortada"
+
+🎨 PALETA DE COLORES:
+   - Fondo: stone-50 (#fafaf9)
+   - Texto: stone-900 (#1c1917)
+   - Bordes: stone-200 (#e7e5e4), stone-300
+   - Acento: red-700 (#b91c1c) - SOLO para advertencias
+   - Cards: white (#ffffff) o stone-50
+   - Hover: stone-900 (bordes)
+
+✍️ TIPOGRAFÍA:
+   - Serif (font-serif): Para títulos y headings
+   - Sans-serif: Para UI general
+   - Mono (font-mono): Para números, datos, inputs
+   - Weights: font-light, font-normal (evitar bold excesivo)
+
+🖼️ UI COMPONENTS:
+   - Bordes finos: border border-stone-200
+   - Sin sombras pesadas: shadow-none o shadow-sm máximo
+   - Botones rectangulares: sin rounded, hover con border-stone-900
+   - Inputs: border-stone-300, focus:border-stone-900
+   - Mucho espacio en blanco (Ma - 間): py-8, py-12, space-y-8
+
+================================================================================
+
+ESTRUCTURA DE ARCHIVOS CLAVE:
+-----------------------------
+
+/src
+  /app
+    /app                          # Dashboard protegido
+      page.tsx                    # Dashboard principal ✅ WABI-SABI
+      /agent                      # Chat IA (protegido por Guard)
+      /settings                   # Configuración usuario
+    /(public)
+      page.tsx                    # Landing ✅ WABI-SABI
+    /login
+      page.tsx                    # Auth split screen ✅ WABI-SABI
+    /api
+      /stripe                     # Stripe endpoints ⚠️ NO TOCAR
+    globals.css                   # Estilos globales ✅ STONE PALETTE
+    layout.tsx                    # Layout raíz ✅ BG STONE-50
+
+  /components
+    /landing                      # Landing components ✅ TODOS WABI-SABI
+      Hero.tsx
+      Navbar.tsx
+      PricingSection.tsx
+      Features.tsx
+      FAQ.tsx
+      Footer.tsx
+      index.tsx
+    /saas                         # SaaS components ⚠️ NO TOCAR LÓGICA
+      SubscriptionGuard.tsx
+      TrialBanner.tsx
+    DashboardMoneyPanel.tsx       # ✅ WABI-SABI
+    ExpenseCalendar.tsx           # ✅ WABI-SABI
+    MonthSelector.tsx             # ✅ WABI-SABI
+    TopNav.tsx                    # ⚠️ NECESITA REDISEÑO WABI-SABI
+    UserMenu.tsx                  # ⚠️ NECESITA REDISEÑO WABI-SABI
+
+  /lib
+    /stripe
+      server.ts                   # ⚠️ NO TOCAR
+    /auth
+      access-control.ts           # ⚠️ NO TOCAR
+
+================================================================================
+
+🎯 TU MISIÓN (GEMINI) - FASE 2.6.3 & 2.6.4:
+------------------------------------------
+
+PRIORIDAD 1: MEJORAS DE NAVEGACIÓN UX (Dashboard)
+
+1. **TopNav / UserMenu Wabi-Sabi**:
+   - Rediseñar `src/components/TopNav.tsx` con estética stone
+   - Añadir botón de "Logout" claro y visible
+   - Añadir link a "Billing Portal" (`/api/stripe/portal`) para gestionar suscripción
+   - Logo coherente con landing (cuadrado stone-900 con "K" serif)
+   - Dropdown menu sobrio (no glassmorphism, bordes stone-200)
+
+2. **UserMenu Component**:
+   - Rediseñar `src/components/UserMenu.tsx` con Wabi-Sabi
+   - Opciones: Perfil, Ajustes, Billing Portal, Logout
+   - Iconos minimalistas (strokeWidth={1.5})
+   - Hover states con border-stone-900
+
+3. **Breadcrumbs / Back Navigation**:
+   - Añadir navegación clara entre secciones del dashboard
+   - Link "← Volver al dashboard" en páginas internas
+   - Coherente con estética Wabi-Sabi
+
+PRIORIDAD 2: PRICING PAGE DEDICADA (Opcional)
+
+4. **Página /pricing standalone**:
+   - Crear `src/app/(public)/pricing/page.tsx`
+   - Comparativa exhaustiva Free vs Pro
+   - Tabla de features detallada
+   - FAQs específicos de pricing
+   - CTA clara al login
+   - Mantener advertencia "Card Upfront" prominente
+
+================================================================================
+
+⚠️ REGLAS IMPORTANTES:
+----------------------
+
+1. **NO MODIFICAR BACKEND**:
+   - NO toques nada en `/api/stripe`
+   - NO toques `access-control.ts` ni guards
+   - Solo trabaja en UI/UX visual
+
+2. **MANTENER ESTÉTICA WABI-SABI**:
+   - Paleta stone SIEMPRE
+   - Bordes rectos (rounded-none)
+   - Tipografía serif para títulos
+   - Sin gradientes coloridos
+   - Sin sombras pesadas
+   - Mucho espacio en blanco
+
+3. **IDIOMA**:
+   - TODO en español
+   - NO usar kanji/japonés (el usuario lo pidió explícitamente)
+
+4. **MODELO "CARD UPFRONT"**:
+   - Mantener advertencia CLARA sobre trial con tarjeta
+   - "Se requiere tarjeta pero 0€ por 15 días"
+   - Siempre visible en pricing
+
+5. **BUILD**:
+   - Ejecuta `npm run build` antes de commitear
+   - Asegúrate de que todo compila sin errores
+
+================================================================================
+
+COMANDOS ÚTILES:
+---------------
+
+```bash
+npm run dev              # Dev server (puerto 3000 o 3001)
+npm run build            # Build producción (verifica tipos)
+git status               # Ver cambios
+git add [archivos]       # Stage cambios
+git commit -m "..."      # Commit con mensaje
+git push origin main     # Push a GitHub
+```
+
+================================================================================
+
+ARCHIVOS DE REFERENCIA:
+-----------------------
+
+- `DISEÑO_ZEN_BRIEF.txt`: Brief original del diseño Wabi-Sabi
+- `DISEÑO_ZEN_APLICADO.txt`: Resumen detallado de cambios aplicados
+- Este archivo: `HANDOFF_PARA_GEMINI_7_FEB.txt`
+
+================================================================================
+
+ESTADO DEL BUILD:
+-----------------
+
+✅ Build pasando correctamente
+✅ TypeScript sin errores
+✅ Todos los componentes funcionan
+✅ GitHub actualizado: commit ca2c694
+
+Repository: https://github.com/mrsteppenwolf627/kakebo.git
+Branch: main
+
+================================================================================
+
+ÚLTIMOS COMMITS (para contexto):
+--------------------------------
+
+ca2c694 - feat: redesign login page with Wabi-Sabi split screen
+c24fbf5 - refactor: apply Wabi-Sabi aesthetic to landing page
+e1d9a07 - refactor: implement Wabi-Sabi/Zen aesthetic for dashboard
+
+================================================================================
+
+PRÓXIMOS PASOS SUGERIDOS:
+-------------------------
+
+1. Leer este documento completo
+2. Revisar `DISEÑO_ZEN_BRIEF.txt` y `DISEÑO_ZEN_APLICADO.txt`
+3. Explorar los componentes ya rediseñados para entender el estilo
+4. Empezar por TopNav.tsx y UserMenu.tsx (prioridad alta)
+5. Mantener coherencia visual con lo ya hecho
+6. Commit pequeños y descriptivos
+7. Build antes de cada commit
+
+================================================================================
+
+NOTAS FINALES:
+-------------
+
+- El usuario está satisfecho con el diseño Wabi-Sabi
+- La base visual está sólida, ahora es pulir UX/navegación
+- Mantén la sobriedad y elegancia en todo momento
+- Ante dudas, consulta los componentes ya hechos como referencia
+
+¡Buena suerte, Gemini! La app se ve hermosa, solo falta pulir la navegación.
+
+- Claude Code (Sonnet 4.5)
+  7 de Febrero de 2026, 1:30 AM
