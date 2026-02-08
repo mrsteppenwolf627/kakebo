@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import {
   BarChart,
   Bar,
@@ -43,10 +44,26 @@ export default function SpendingChart({
     }));
   }, [totals, categories]);
 
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = mounted && (theme === "dark" || resolvedTheme === "dark");
+  const axisColor = isDark ? "#a8a29e" : "#57534e";
+  const gridColor = isDark ? "#44403c" : "#e7e5e4";
+  const tooltipBg = isDark ? "#292524" : "#ffffff";
+  const tooltipBorder = isDark ? "#44403c" : "#e7e5e4";
+  const tooltipText = isDark ? "#fafaf9" : "#1c1917";
+
   const total = useMemo(
     () => data.reduce((acc, x) => acc + (Number(x.value) || 0), 0),
     [data]
   );
+
+  if (!mounted) return <div className="h-64 w-full bg-muted/20 animate-pulse rounded-lg" />;
 
   return (
     <div className="space-y-4">
@@ -85,25 +102,27 @@ export default function SpendingChart({
               layout="vertical"
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
             >
-              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e7e5e4" />
+              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke={gridColor} />
               <XAxis type="number" hide />
               <YAxis
                 dataKey="name"
                 type="category"
-                tick={{ fontSize: 12, fill: "#57534e" }}
+                tick={{ fontSize: 12, fill: axisColor }}
                 width={100}
                 axisLine={false}
                 tickLine={false}
               />
               <Tooltip
-                cursor={{ fill: "#f5f5f4" }}
+                cursor={{ fill: isDark ? "#44403c" : "#f5f5f4" }}
                 contentStyle={{
-                  backgroundColor: "#ffffff",
-                  borderColor: "#e7e5e4",
+                  backgroundColor: tooltipBg,
+                  borderColor: tooltipBorder,
+                  color: tooltipText,
                   borderRadius: "6px",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                   fontSize: "12px",
                 }}
+                itemStyle={{ color: tooltipText }}
                 formatter={(value: any) => [`${Number(value).toFixed(2)} €`, "Gasto"]}
               />
               <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={20}>
@@ -118,12 +137,14 @@ export default function SpendingChart({
             <PieChart>
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#ffffff",
-                  borderColor: "#e7e5e4",
+                  backgroundColor: tooltipBg,
+                  borderColor: tooltipBorder,
+                  color: tooltipText,
                   borderRadius: "6px",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                   fontSize: "12px",
                 }}
+                itemStyle={{ color: tooltipText }}
                 formatter={(value: any) => [`${Number(value).toFixed(2)} €`, "Gasto"]}
               />
               <Pie
@@ -144,7 +165,7 @@ export default function SpendingChart({
                 labelLine={false}
               >
                 {data.map((entry) => (
-                  <Cell key={entry.key} fill={entry.color} strokeWidth={0} />
+                  <Cell key={entry.key} fill={entry.color} strokeWidth={1} stroke={tooltipBg} />
                 ))}
               </Pie>
               <Legend
@@ -152,7 +173,7 @@ export default function SpendingChart({
                 height={36}
                 iconType="circle"
                 iconSize={8}
-                formatter={(value) => <span className="text-xs text-stone-600 ml-1">{value}</span>}
+                formatter={(value) => <span style={{ color: axisColor }} className="text-xs ml-1">{value}</span>}
               />
             </PieChart>
           </ResponsiveContainer>

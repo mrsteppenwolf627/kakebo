@@ -11,8 +11,8 @@ export default function AgentPage() {
             <div className="space-y-6">
                 <TrialBanner />
                 <header>
-                    <h1 className="text-2xl font-bold text-gray-800">Agente Financiero</h1>
-                    <p className="text-gray-500">
+                    <h1 className="text-3xl font-serif font-medium text-foreground tracking-tight">Agente Financiero</h1>
+                    <p className="text-muted-foreground mt-2 font-light">
                         Conversa con tu asistente personal para analizar gastos y gestionar tu presupuesto.
                     </p>
                 </header>

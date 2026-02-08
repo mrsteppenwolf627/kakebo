@@ -1,13 +1,13 @@
 export function Features() {
   return (
-    <section id="features" className="relative py-24 bg-stone-50">
+    <section id="features" className="relative py-24 bg-muted/30">
       <div className="relative z-10 mx-auto max-w-7xl px-4">
         {/* Section Header */}
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-4xl font-serif font-normal tracking-tight text-stone-900 sm:text-5xl">
+          <h2 className="mb-4 text-4xl font-serif font-normal tracking-tight text-foreground sm:text-5xl">
             Características
           </h2>
-          <p className="mx-auto max-w-2xl text-base text-stone-600 font-light">
+          <p className="mx-auto max-w-2xl text-base text-muted-foreground font-light">
             Control financiero minimalista. Sin complicaciones innecesarias.
           </p>
         </div>
@@ -58,19 +58,19 @@ interface FeatureCardProps {
 
 function FeatureCard({ title, description, isPro }: FeatureCardProps) {
   return (
-    <div className="border border-stone-200 bg-white p-6 sm:p-8 transition-colors hover:border-stone-900">
+    <div className="border border-border bg-card p-6 sm:p-8 transition-colors hover:border-primary/50">
       {/* Pro Badge */}
       {isPro && (
-        <span className="inline-block mb-4 border border-stone-900 bg-stone-900 px-3 py-1 text-xs font-light text-white tracking-wide">
+        <span className="inline-block mb-4 border border-primary bg-primary px-3 py-1 text-xs font-light text-primary-foreground tracking-wide">
           PRO
         </span>
       )}
 
       {/* Title */}
-      <h3 className="mb-3 text-lg font-serif text-stone-900">{title}</h3>
+      <h3 className="mb-3 text-lg font-serif text-foreground">{title}</h3>
 
       {/* Description */}
-      <p className="text-stone-600 font-light leading-relaxed text-sm">{description}</p>
+      <p className="text-muted-foreground font-light leading-relaxed text-sm">{description}</p>
     </div>
   );
 }

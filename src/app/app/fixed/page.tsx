@@ -270,13 +270,13 @@ export default function FixedExpensesPage() {
         prev.map((r) =>
           r.id === id
             ? {
-                ...r,
-                name: v.data.name,
-                amount: v.data.amount,
-                start_ym: v.data.start_ym,
-                end_ym: v.data.end_ym,
-                due_day: v.data.due_day,
-              }
+              ...r,
+              name: v.data.name,
+              amount: v.data.amount,
+              start_ym: v.data.start_ym,
+              end_ym: v.data.end_ym,
+              due_day: v.data.due_day,
+            }
             : r
         )
       );
@@ -295,70 +295,70 @@ export default function FixedExpensesPage() {
   }, []);
 
   return (
-    <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
-      <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
+    <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 space-y-6">
+      <div className="max-w-5xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-semibold">Gastos fijos</h1>
-            <p className="text-sm text-black/60">
-              Total activo: <span className="font-semibold">{money(totalActive)} €</span>
+            <h1 className="text-2xl sm:text-3xl font-serif font-medium text-foreground">Gastos fijos</h1>
+            <p className="text-sm text-muted-foreground mt-1">
+              Total activo: <span className="font-semibold text-foreground">{money(totalActive)} €</span>
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <Link
               href="/app"
-              className="border border-black px-3 py-2 text-sm rounded-lg hover:bg-black hover:text-white"
+              className="border border-border bg-card hover:bg-muted text-foreground px-3 py-2 text-sm rounded-lg transition-colors"
             >
               ← Dashboard
             </Link>
             <button
               onClick={load}
-              className="border border-black px-3 py-2 text-sm rounded-lg hover:bg-black hover:text-white"
+              className="border border-border bg-card hover:bg-muted text-foreground px-3 py-2 text-sm rounded-lg transition-colors"
             >
               Recargar
             </button>
           </div>
         </div>
 
-        {err && <div className="text-sm text-red-600">{err}</div>}
-        {loading && <div className="text-sm text-black/60">Cargando…</div>}
+        {err && <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-lg border border-destructive/20">{err}</div>}
+        {loading && <div className="text-sm text-muted-foreground animate-pulse">Cargando…</div>}
 
         {/* Alta */}
-        <div className="border border-black/10 p-3 sm:p-4 space-y-3 rounded-lg">
-          <div className="font-semibold text-sm sm:text-base">Añadir gasto fijo</div>
+        <div className="border border-border bg-card p-4 sm:p-5 space-y-4 rounded-xl shadow-sm transition-colors">
+          <div className="font-medium text-foreground text-sm sm:text-base">Añadir gasto fijo</div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             <input
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm"
+              className="border border-border bg-muted/50 text-foreground rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-shadow"
               placeholder="Nombre (Ej: alquiler)"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
 
             <input
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm"
+              className="border border-border bg-muted/50 text-foreground rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-shadow"
               placeholder="Importe (Ej: 750)"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
 
             <input
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm"
+              className="border border-border bg-muted/50 text-foreground rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-shadow"
               placeholder="Inicio (YYYY-MM)"
               value={startYm}
               onChange={(e) => setStartYm(e.target.value)}
             />
 
             <input
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm"
+              className="border border-border bg-muted/50 text-foreground rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-shadow"
               placeholder="Fin (opcional)"
               value={endYm}
               onChange={(e) => setEndYm(e.target.value)}
             />
 
             <input
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm"
+              className="border border-border bg-muted/50 text-foreground rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-shadow"
               placeholder="Día cobro (1–31)"
               inputMode="numeric"
               value={dueDay}
@@ -370,23 +370,23 @@ export default function FixedExpensesPage() {
           <button
             onClick={addFixed}
             disabled={saving}
-            className="border border-black px-3 py-2 text-sm rounded-lg hover:bg-black hover:text-white disabled:opacity-50"
+            className="bg-stone-900 dark:bg-stone-100 text-stone-50 dark:text-stone-900 px-4 py-2 text-sm font-medium rounded-lg hover:opacity-90 disabled:opacity-50 transition-colors shadow-sm"
           >
             {saving ? "Guardando…" : "Añadir"}
           </button>
 
-          <div className="text-xs text-black/60">
-            El <span className="font-semibold">Día de cobro</span> es opcional. Si lo pones, luego lo usaremos para
+          <div className="text-xs text-muted-foreground">
+            El <span className="font-medium text-foreground">Día de cobro</span> es opcional. Si lo pones, luego lo usaremos para
             calcular “pendiente” según el día del mes.
           </div>
         </div>
 
         {/* Lista */}
-        <div className="border border-black/10 p-4 rounded-lg">
-          <div className="font-semibold mb-2">Lista</div>
+        <div className="border border-border bg-card p-4 sm:p-5 rounded-xl shadow-sm transition-colors">
+          <div className="font-medium text-foreground mb-4">Lista de gastos</div>
 
           {rows.length === 0 && !loading && (
-            <div className="text-sm text-black/60">No hay gastos fijos todavía.</div>
+            <div className="text-sm text-muted-foreground italic">No hay gastos fijos todavía.</div>
           )}
 
           {rows.length > 0 && (
@@ -396,19 +396,19 @@ export default function FixedExpensesPage() {
                 return (
                   <li
                     key={r.id}
-                    className="border border-black/10 rounded-lg p-3 flex flex-col gap-3"
+                    className="border border-border bg-muted/30 rounded-lg p-3 flex flex-col gap-3 transition-colors hover:border-border/80"
                   >
                     {/* Vista normal */}
                     {!isEditing && (
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
-                          <div className="text-sm font-medium truncate">
+                          <div className="text-sm font-medium text-foreground truncate">
                             {r.name}{" "}
                             {!r.active && (
-                              <span className="text-xs text-black/50">(inactivo)</span>
+                              <span className="text-xs text-muted-foreground ml-2">(inactivo)</span>
                             )}
                           </div>
-                          <div className="text-xs text-black/60">
+                          <div className="text-xs text-muted-foreground mt-0.5">
                             {r.start_ym}
                             {r.end_ym ? ` → ${r.end_ym}` : " → (sin fin)"}
                             {" · "}
@@ -417,11 +417,11 @@ export default function FixedExpensesPage() {
                         </div>
 
                         <div className="flex items-center gap-2 flex-wrap justify-end">
-                          <div className="text-sm font-semibold">{money(Number(r.amount))} €</div>
+                          <div className="text-sm font-semibold font-mono text-foreground">{money(Number(r.amount))} €</div>
 
                           <button
                             onClick={() => startEdit(r)}
-                            className="border border-black bg-yellow-400 text-black px-3 py-2 text-xs rounded-lg hover:brightness-95"
+                            className="text-xs bg-amber-100 text-amber-900 dark:bg-amber-900/30 dark:text-amber-200 border border-amber-200 dark:border-amber-800 px-2 py-1.5 rounded hover:opacity-80 transition-colors"
                             title="Editar"
                           >
                             Editar
@@ -429,11 +429,10 @@ export default function FixedExpensesPage() {
 
                           <button
                             onClick={() => toggleActive(r.id, !r.active)}
-                            className={`border border-black px-3 py-2 text-xs rounded-lg ${
-                              r.active
-                                ? "hover:bg-black hover:text-white"
-                                : "border-black/30 text-black/70 hover:border-black hover:text-black"
-                            }`}
+                            className={`text-xs px-2 py-1.5 rounded border transition-colors ${r.active
+                                ? "bg-muted text-muted-foreground border-border hover:bg-muted/80"
+                                : "bg-primary/10 text-primary border-primary/20 hover:bg-primary/20"
+                              }`}
                             title={r.active ? "Desactivar" : "Activar"}
                           >
                             {r.active ? "Desactivar" : "Activar"}
@@ -441,7 +440,7 @@ export default function FixedExpensesPage() {
 
                           <button
                             onClick={() => removeRow(r.id)}
-                            className="border border-black bg-red-600 text-white px-3 py-2 text-xs rounded-lg hover:brightness-95"
+                            className="text-xs bg-destructive/10 text-destructive border border-destructive/20 px-2 py-1.5 rounded hover:bg-destructive/20 transition-colors"
                             title="Eliminar"
                           >
                             Eliminar
@@ -453,11 +452,11 @@ export default function FixedExpensesPage() {
                     {/* Modo edición */}
                     {isEditing && editForm && (
                       <div className="space-y-3">
-                        <div className="text-sm font-semibold">Editando</div>
+                        <div className="text-sm font-semibold text-foreground">Editando</div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
                           <input
-                            className="border border-black/20 rounded-lg px-3 py-2 text-sm"
+                            className="border border-border bg-card text-foreground rounded-lg px-3 py-2 text-sm"
                             value={editForm.name}
                             onChange={(e) =>
                               setEditForm({ ...editForm, name: e.target.value })
@@ -466,7 +465,7 @@ export default function FixedExpensesPage() {
                           />
 
                           <input
-                            className="border border-black/20 rounded-lg px-3 py-2 text-sm"
+                            className="border border-border bg-card text-foreground rounded-lg px-3 py-2 text-sm"
                             value={editForm.amount}
                             onChange={(e) =>
                               setEditForm({ ...editForm, amount: e.target.value })
@@ -476,7 +475,7 @@ export default function FixedExpensesPage() {
                           />
 
                           <input
-                            className="border border-black/20 rounded-lg px-3 py-2 text-sm"
+                            className="border border-border bg-card text-foreground rounded-lg px-3 py-2 text-sm"
                             value={editForm.start_ym}
                             onChange={(e) =>
                               setEditForm({ ...editForm, start_ym: e.target.value })
@@ -485,7 +484,7 @@ export default function FixedExpensesPage() {
                           />
 
                           <input
-                            className="border border-black/20 rounded-lg px-3 py-2 text-sm"
+                            className="border border-border bg-card text-foreground rounded-lg px-3 py-2 text-sm"
                             value={editForm.end_ym}
                             onChange={(e) =>
                               setEditForm({ ...editForm, end_ym: e.target.value })
@@ -494,7 +493,7 @@ export default function FixedExpensesPage() {
                           />
 
                           <input
-                            className="border border-black/20 rounded-lg px-3 py-2 text-sm"
+                            className="border border-border bg-card text-foreground rounded-lg px-3 py-2 text-sm"
                             value={editForm.due_day}
                             onChange={(e) =>
                               setEditForm({ ...editForm, due_day: e.target.value })
@@ -508,7 +507,7 @@ export default function FixedExpensesPage() {
                           <button
                             onClick={() => saveEdit(r.id)}
                             disabled={editSaving}
-                            className="border border-black bg-yellow-400 text-black px-3 py-2 text-xs rounded-lg hover:brightness-95 disabled:opacity-50"
+                            className="bg-primary text-primary-foreground px-3 py-1.5 text-xs rounded-lg hover:opacity-90 disabled:opacity-50"
                           >
                             {editSaving ? "Guardando…" : "Guardar"}
                           </button>
@@ -516,35 +515,10 @@ export default function FixedExpensesPage() {
                           <button
                             onClick={cancelEdit}
                             disabled={editSaving}
-                            className="border border-black px-3 py-2 text-xs rounded-lg hover:bg-black hover:text-white disabled:opacity-50"
+                            className="bg-muted text-muted-foreground border border-border px-3 py-1.5 text-xs rounded-lg hover:bg-muted/80 disabled:opacity-50"
                           >
                             Cancelar
                           </button>
-
-                          <button
-                            onClick={() => toggleActive(r.id, !r.active)}
-                            disabled={editSaving}
-                            className={`border border-black px-3 py-2 text-xs rounded-lg disabled:opacity-50 ${
-                              r.active
-                                ? "hover:bg-black hover:text-white"
-                                : "border-black/30 text-black/70 hover:border-black hover:text-black"
-                            }`}
-                          >
-                            {r.active ? "Desactivar" : "Activar"}
-                          </button>
-
-                          <button
-                            onClick={() => removeRow(r.id)}
-                            disabled={editSaving}
-                            className="border border-black bg-red-600 text-white px-3 py-2 text-xs rounded-lg hover:brightness-95 disabled:opacity-50"
-                          >
-                            Eliminar
-                          </button>
-                        </div>
-
-                        <div className="text-xs text-black/60">
-                          Consejo: deja <span className="font-semibold">End YM</span> vacío si no termina nunca. Deja{" "}
-                          <span className="font-semibold">Día</span> vacío si no tienes un día fijo.
                         </div>
                       </div>
                     )}

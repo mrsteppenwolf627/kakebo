@@ -281,64 +281,64 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
   if (loading) {
     return (
-      <section className="border border-stone-200 rounded-none p-6 bg-white animate-pulse">
-        <div className="h-4 w-32 bg-stone-200 mb-4"></div>
+      <section className="border border-border rounded-lg p-6 bg-card animate-pulse">
+        <div className="h-4 w-32 bg-muted mb-4"></div>
         <div className="grid grid-cols-3 gap-4">
-          <div className="h-24 bg-stone-100"></div>
-          <div className="h-24 bg-stone-100"></div>
-          <div className="h-24 bg-stone-100"></div>
+          <div className="h-24 bg-muted/50"></div>
+          <div className="h-24 bg-muted/50"></div>
+          <div className="h-24 bg-muted/50"></div>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="border border-stone-200 rounded-none p-6 sm:p-8 space-y-6 bg-white">
+    <section className="border border-border rounded-lg p-6 sm:p-8 space-y-6 bg-card">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 border-b border-stone-200 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 border-b border-border pb-4">
         <div>
-          <div className="text-xs sm:text-sm text-stone-500 font-light mb-1 uppercase tracking-wider">Balance Mensual</div>
-          <div className="text-lg sm:text-xl font-serif text-stone-900">{ym}</div>
+          <div className="text-xs sm:text-sm text-muted-foreground font-light mb-1 uppercase tracking-wider">Balance Mensual</div>
+          <div className="text-lg sm:text-xl font-serif text-foreground">{ym}</div>
         </div>
 
-        <div className="text-xs text-stone-400 sm:max-w-xs leading-relaxed text-right">
+        <div className="text-xs text-muted-foreground/70 sm:max-w-xs leading-relaxed text-right">
           Control financiero simplificado.
         </div>
       </div>
 
-      {err && <div className="text-sm text-red-700 bg-red-50 border border-red-200 p-3">{err}</div>}
-      {okMsg && <div className="text-sm text-stone-700 bg-stone-50 border border-stone-200 p-3">{okMsg}</div>}
+      {err && <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 p-3 rounded-md">{err}</div>}
+      {okMsg && <div className="text-sm text-foreground bg-muted border border-border p-3 rounded-md">{okMsg}</div>}
 
       {/* Main Stats - 3 Cards Simplified Model */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
 
         {/* Card 1: Budget */}
-        <div className="border border-stone-100 bg-stone-50/50 p-5">
-          <div className="text-xs text-stone-500 font-medium mb-1 uppercase tracking-wide">Presupuesto</div>
-          <div className="text-2xl font-serif text-stone-900 mb-1">{money(availableForCategories)} €</div>
-          <div className="text-[10px] text-stone-400">
+        <div className="border border-border bg-muted/20 p-5 rounded-md">
+          <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide">Presupuesto</div>
+          <div className="text-2xl font-serif text-foreground mb-1">{money(availableForCategories)} €</div>
+          <div className="text-[10px] text-muted-foreground">
             (Ingresos − Fijos − Ahorro)
           </div>
         </div>
 
         {/* Card 2: Spent */}
-        <div className="border border-stone-100 bg-stone-50/50 p-5">
-          <div className="text-xs text-stone-500 font-medium mb-1 uppercase tracking-wide">Gastado</div>
-          <div className="text-2xl font-serif text-stone-700 mb-1">{money(monthSpent)} €</div>
-          <div className="text-[10px] text-stone-400">
+        <div className="border border-border bg-muted/20 p-5 rounded-md">
+          <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide">Gastado</div>
+          <div className="text-2xl font-serif text-foreground mb-1">{money(monthSpent)} €</div>
+          <div className="text-[10px] text-muted-foreground">
             Suma de gastos registrados
           </div>
         </div>
 
         {/* Card 3: Remaining (Highlighted) */}
-        <div className="border border-stone-200 bg-white shadow-sm p-5 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-16 h-16 bg-stone-50 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+        <div className="border border-border bg-card shadow-sm p-5 relative overflow-hidden group rounded-md">
+          <div className="absolute top-0 right-0 w-16 h-16 bg-muted/30 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
           <div className="relative z-10">
-            <div className="text-xs text-stone-900 font-bold mb-1 uppercase tracking-wide">Disponible Real</div>
-            <div className={`text-3xl font-serif mb-1 ${availableAfterExpenses >= 0 ? "text-stone-900" : "text-red-700"}`}>
+            <div className="text-xs text-foreground font-bold mb-1 uppercase tracking-wide">Disponible Real</div>
+            <div className={`text-3xl font-serif mb-1 ${availableAfterExpenses >= 0 ? "text-foreground" : "text-destructive"}`}>
               {money(availableAfterExpenses)} €
             </div>
-            <div className="text-[10px] text-stone-500">
+            <div className="text-[10px] text-muted-foreground">
               Lo que te queda para terminar el mes
             </div>
           </div>
@@ -346,30 +346,30 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       </div>
 
       {/* Input de Banco y Ahorro */}
-      <div className="bg-stone-50 border border-stone-200 p-4 sm:p-5 mt-6">
+      <div className="bg-muted/10 border border-border p-4 sm:p-5 mt-6 rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
 
           {/* Liquidez / Banco */}
           <div className="space-y-3">
-            <label className="text-xs text-stone-500 font-medium block">💰 Saldo actual en Banco (€)</label>
+            <label className="text-xs text-muted-foreground font-medium block">💰 Saldo actual en Banco (€)</label>
             <div className="flex items-center gap-2">
               <input
                 value={balanceInput}
                 onChange={(e) => setBalanceInput(e.target.value)}
-                className="border border-stone-300 px-3 py-2 text-sm w-32 font-mono bg-white focus:border-stone-900 focus:outline-none"
+                className="border border-border px-3 py-2 text-sm w-32 font-mono bg-background focus:border-primary focus:outline-none rounded-md text-foreground"
                 placeholder="0.00"
                 inputMode="decimal"
               />
               <button
                 onClick={saveCurrentBalance}
                 disabled={savingBalance}
-                className="bg-stone-900 text-white px-4 py-2 text-xs font-medium hover:bg-stone-700 disabled:opacity-50 transition-colors"
+                className="bg-primary text-primary-foreground px-4 py-2 text-xs font-medium hover:opacity-90 disabled:opacity-50 transition-colors rounded-md"
               >
                 {savingBalance ? "..." : "OK"}
               </button>
             </div>
-            <div className="text-[10px] text-stone-400 leading-tight">
-              Liquidez real (Banco − Reservas): <span className="font-mono text-stone-600 font-medium">{money(liquidity)} €</span>
+            <div className="text-[10px] text-muted-foreground leading-tight">
+              Liquidez real (Banco − Reservas): <span className="font-mono text-foreground font-medium">{money(liquidity)} €</span>
               <br />
               <span className="opacity-70">Esto es tu "colchón" real descontando lo que ya está comprometido.</span>
             </div>
@@ -384,18 +384,18 @@ export default function DashboardMoneyPanel({ ym }: Props) {
                 checked={savingsDone}
                 onChange={(e) => toggleSavingsDone(e.target.checked)}
                 disabled={savingSavingsDone}
-                className="w-4 h-4 accent-stone-900 cursor-pointer"
+                className="w-4 h-4 accent-primary cursor-pointer rounded-sm"
               />
-              <label htmlFor="savingsCheck" className="text-sm text-stone-700 cursor-pointer select-none">
+              <label htmlFor="savingsCheck" className="text-sm text-foreground cursor-pointer select-none">
                 Ya he transferido el ahorro ({money(savingGoal)} €)
               </label>
             </div>
-            <div className="text-[10px] text-stone-400 pl-7">
+            <div className="text-[10px] text-muted-foreground pl-7">
               Marca esto cuando muevas el dinero a tu cuenta de ahorro.
-              {savingSavingsDone && <span className="ml-2 text-stone-500">(Guardando...)</span>}
+              {savingSavingsDone && <span className="ml-2 opacity-70">(Guardando...)</span>}
             </div>
             {savingsPending > 0 && (
-              <div className="text-[10px] text-amber-700/80 bg-amber-50 px-2 py-1 inline-block rounded-sm ml-7 border border-amber-100">
+              <div className="text-[10px] text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 inline-block rounded-sm ml-7 border border-amber-200 dark:border-amber-800">
                 Pendiente de transferir: {money(savingsPending)} €
               </div>
             )}

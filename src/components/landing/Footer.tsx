@@ -2,31 +2,31 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-stone-200 bg-white">
+    <footer className="relative border-t border-border bg-background">
       <div className="mx-auto max-w-7xl px-4 py-12">
         {/* Main Footer Content */}
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div>
             <div className="mb-6 flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center border border-stone-900 bg-stone-900">
-                <span className="text-lg font-serif text-white">K</span>
+              <div className="flex h-10 w-10 items-center justify-center border border-foreground bg-foreground">
+                <span className="text-lg font-serif text-background">K</span>
               </div>
-              <span className="text-lg font-serif text-stone-900">Kakebo</span>
+              <span className="text-lg font-serif text-foreground">Kakebo</span>
             </div>
-            <p className="text-sm text-stone-600 font-light leading-relaxed">
+            <p className="text-sm text-muted-foreground font-light leading-relaxed">
               Control de gastos minimalista basado en el método japonés Kakebo.
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <h3 className="mb-4 text-sm font-serif text-stone-900">Producto</h3>
+            <h3 className="mb-4 text-sm font-serif text-foreground">Producto</h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="#pricing"
-                  className="text-sm text-stone-600 font-light transition-colors hover:text-stone-900"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
                   Precios
                 </Link>
@@ -34,7 +34,7 @@ export function Footer() {
               <li>
                 <Link
                   href="#features"
-                  className="text-sm text-stone-600 font-light transition-colors hover:text-stone-900"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
                   Características
                 </Link>
@@ -42,7 +42,7 @@ export function Footer() {
               <li>
                 <Link
                   href="#how-it-works"
-                  className="text-sm text-stone-600 font-light transition-colors hover:text-stone-900"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
                   Cómo funciona
                 </Link>
@@ -50,7 +50,7 @@ export function Footer() {
               <li>
                 <Link
                   href="#faq"
-                  className="text-sm text-stone-600 font-light transition-colors hover:text-stone-900"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
                   FAQ
                 </Link>
@@ -60,12 +60,12 @@ export function Footer() {
 
           {/* Account */}
           <div>
-            <h3 className="mb-4 text-sm font-serif text-stone-900">Cuenta</h3>
+            <h3 className="mb-4 text-sm font-serif text-foreground">Cuenta</h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/login"
-                  className="text-sm text-stone-600 font-light transition-colors hover:text-stone-900"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
                   Entrar
                 </Link>
@@ -73,7 +73,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/login"
-                  className="text-sm text-stone-600 font-light transition-colors hover:text-stone-900"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
                   Crear cuenta
                 </Link>
@@ -81,7 +81,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/app"
-                  className="text-sm text-stone-600 font-light transition-colors hover:text-stone-900"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
                   Dashboard
                 </Link>
@@ -91,29 +91,29 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="mb-4 text-sm font-serif text-stone-900">Legal</h3>
+            <h3 className="mb-4 text-sm font-serif text-foreground">Legal</h3>
             <ul className="space-y-3">
               <li>
-                <span className="text-sm text-stone-600 font-light">Privacidad</span>
+                <span className="text-sm text-muted-foreground font-light">Privacidad</span>
               </li>
               <li>
-                <span className="text-sm text-stone-600 font-light">Términos</span>
+                <span className="text-sm text-muted-foreground font-light">Términos</span>
               </li>
               <li>
-                <span className="text-sm text-stone-600 font-light">Cookies</span>
+                <span className="text-sm text-muted-foreground font-light">Cookies</span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 border-t border-stone-200 pt-8">
+        <div className="mt-12 border-t border-border pt-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <p className="text-sm text-stone-500 font-light">
+            <p className="text-sm text-muted-foreground font-light">
               © {new Date().getFullYear()} Kakebo Ahorro
             </p>
 
-            <div className="flex items-center gap-6 text-xs text-stone-500 font-light">
+            <div className="flex items-center gap-6 text-xs text-muted-foreground font-light">
               <span className="flex items-center gap-1">
                 Stripe
               </span>

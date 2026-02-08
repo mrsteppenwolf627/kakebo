@@ -405,31 +405,31 @@ export default function ExpenseCalendar({
 
   return (
     <div className="space-y-6">
-      <div className="border border-stone-200 rounded-lg p-6 sm:p-8 space-y-6 bg-white/90 backdrop-blur-sm shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-stone-100 pb-4">
+      <div className="border border-border rounded-lg p-6 sm:p-8 space-y-6 bg-card/90 backdrop-blur-sm shadow-sm transition-colors">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-border pb-4">
           <div>
-            <div className="text-sm text-stone-500 font-light mb-2">
-              <span className="font-mono text-base">{ym}</span>
+            <div className="text-sm text-muted-foreground font-light mb-2">
+              <span className="font-mono text-base text-foreground">{ym}</span>
               <span className="ml-3 text-xs opacity-70">({monthStatusLabel})</span>
             </div>
 
             {isClosed && (
-              <div className="mt-2 text-xs text-stone-600 bg-stone-100 border border-stone-200 rounded-md p-2 inline-block">
+              <div className="mt-2 text-xs text-muted-foreground bg-muted border border-border rounded-md p-2 inline-block">
                 Mes cerrado · No se pueden añadir ni eliminar gastos.
               </div>
             )}
 
-            <div className="text-sm text-stone-600 font-light mt-2">
-              Gastos: <span className="font-mono text-stone-900 font-medium">{rows.length}</span>
-              <span className="mx-2 text-stone-300">·</span>
-              Total: <span className="font-mono text-stone-900 font-medium">{money(total)} €</span>
+            <div className="text-sm text-muted-foreground font-light mt-2">
+              Gastos: <span className="font-mono text-foreground font-medium">{rows.length}</span>
+              <span className="mx-2 text-border">·</span>
+              Total: <span className="font-mono text-foreground font-medium">{money(total)} €</span>
             </div>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={load}
-              className="border border-stone-200 bg-white rounded-md px-4 py-2 text-xs sm:text-sm text-stone-600 hover:text-stone-900 hover:border-stone-400 transition-colors"
+              className="border border-border bg-card rounded-md px-4 py-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
             >
               Actualizar
             </button>
@@ -438,7 +438,7 @@ export default function ExpenseCalendar({
               <button
                 onClick={reopenMonth}
                 disabled={closing}
-                className="border border-stone-200 bg-white rounded-md px-4 py-2 text-xs sm:text-sm text-stone-600 hover:text-stone-900 hover:border-stone-400 disabled:opacity-50 transition-colors"
+                className="border border-border bg-card rounded-md px-4 py-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground hover:border-primary/50 disabled:opacity-50 transition-colors"
                 title="Reabrir mes"
               >
                 {closing ? "…" : "Reabrir"}
@@ -447,7 +447,7 @@ export default function ExpenseCalendar({
               <button
                 onClick={closeMonth}
                 disabled={closing}
-                className="border border-stone-900 bg-stone-900 text-stone-50 rounded-md px-4 py-2 text-xs sm:text-sm hover:bg-stone-700 disabled:opacity-50 transition-colors shadow-sm"
+                className="border border-stone-800 bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 rounded-md px-4 py-2 text-xs sm:text-sm hover:opacity-90 disabled:opacity-50 transition-colors shadow-sm"
                 title="Cerrar mes"
               >
                 {closing ? "…" : "Cerrar Mes"}
@@ -457,23 +457,23 @@ export default function ExpenseCalendar({
         </div>
 
         {/* Finanzas del mes */}
-        <div className="border border-stone-200 rounded-lg p-5 sm:p-6 space-y-3 bg-stone-50/50">
+        <div className="border border-border rounded-lg p-5 sm:p-6 space-y-3 bg-muted/30">
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-stone-600 font-light">Ingreso mensual</span>
-            <span className="font-mono text-stone-900">
+            <span className="text-muted-foreground font-light">Ingreso mensual</span>
+            <span className="font-mono text-foreground">
               {settingsLoading ? "…" : income > 0 ? `${money(income)} €` : "—"}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-stone-600 font-light">Gastos fijos</span>
-            <span className="font-mono text-stone-900">{income > 0 ? `${money(fixedTotal)} €` : "—"}</span>
+            <span className="text-muted-foreground font-light">Gastos fijos</span>
+            <span className="font-mono text-foreground">{income > 0 ? `${money(fixedTotal)} €` : "—"}</span>
           </div>
 
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-stone-600 font-light">Utilizable</span>
+            <span className="text-muted-foreground font-light">Utilizable</span>
             <span
-              className={`font-mono ${income > 0 && availableForCategories < 0 ? "text-red-700" : "text-stone-900"
+              className={`font-mono ${income > 0 && availableForCategories < 0 ? "text-destructive" : "text-foreground"
                 }`}
             >
               {income > 0 ? `${money(availableForCategories)} €` : "—"}
@@ -481,18 +481,18 @@ export default function ExpenseCalendar({
           </div>
 
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-stone-600 font-light">Disponible</span>
+            <span className="text-muted-foreground font-light">Disponible</span>
             <span
-              className={`font-mono ${income > 0 && availableAfterExpenses < 0 ? "text-red-700" : "text-stone-900"
+              className={`font-mono ${income > 0 && availableAfterExpenses < 0 ? "text-destructive" : "text-foreground"
                 }`}
             >
               {income > 0 ? `${money(availableAfterExpenses)} €` : "—"}
             </span>
           </div>
 
-          <div className="flex items-center justify-between text-sm gap-2 border-t border-stone-200 pt-3">
-            <span className="text-stone-600 font-light">Objetivo ahorro</span>
-            <span className="font-mono text-stone-900">
+          <div className="flex items-center justify-between text-sm gap-2 border-t border-border pt-3">
+            <span className="text-muted-foreground font-light">Objetivo ahorro</span>
+            <span className="font-mono text-foreground">
               {savingGoal > 0 ? `${money(savingGoal)} €` : "—"}
             </span>
           </div>
@@ -500,34 +500,34 @@ export default function ExpenseCalendar({
           {income > 0 && savingGoal > 0 ? (
             <div className="pt-2">
               <div className="flex items-center justify-between text-sm mb-1">
-                <span className="text-stone-500 text-xs">Progreso ahorro</span>
-                <span className="font-medium text-stone-700 text-xs">{savingPct}%</span>
+                <span className="text-muted-foreground text-xs">Progreso ahorro</span>
+                <span className="font-medium text-foreground text-xs">{savingPct}%</span>
               </div>
 
-              <div className="mt-1 h-2.5 w-full rounded-full bg-stone-200/50 overflow-hidden">
+              <div className="mt-1 h-2.5 w-full rounded-full bg-muted overflow-hidden">
                 <div
-                  className={`h-full rounded-full transition-all duration-500 ease-out ${savingProgress >= 1 ? "bg-green-500" : "bg-stone-800"
+                  className={`h-full rounded-full transition-all duration-500 ease-out ${savingProgress >= 1 ? "bg-green-500" : "bg-stone-800 dark:bg-stone-500"
                     }`}
                   style={{ width: `${savingPct}%` }}
                 />
               </div>
 
-              <div className="mt-2 text-xs text-stone-500">
-                Ahorrado: <span className="font-medium text-stone-700">{money(Math.max(0, savedSoFar))} €</span>{" "}
-                / Objetivo: <span className="font-medium text-stone-700">{money(savingGoal)} €</span>
+              <div className="mt-2 text-xs text-muted-foreground">
+                Ahorrado: <span className="font-medium text-foreground">{money(Math.max(0, savedSoFar))} €</span>{" "}
+                / Objetivo: <span className="font-medium text-foreground">{money(savingGoal)} €</span>
                 {savingProgress >= 1 ? (
-                  <span className="ml-2 text-green-600 font-medium">¡Objetivo conseguido!</span>
+                  <span className="ml-2 text-green-600 dark:text-green-400 font-medium">¡Objetivo conseguido!</span>
                 ) : (
                   <span className="ml-2">
-                    Faltan <span className="font-medium text-stone-700">{money(remainingToGoal)} €</span>
+                    Faltan <span className="font-medium text-foreground">{money(remainingToGoal)} €</span>
                   </span>
                 )}
               </div>
             </div>
           ) : (
-            <div className="text-xs text-stone-500 pt-2">
+            <div className="text-xs text-muted-foreground pt-2">
               Configura ingreso y objetivo en{" "}
-              <Link href="/app/settings" className="underline hover:text-stone-800">
+              <Link href="/app/settings" className="underline hover:text-foreground">
                 Ajustes
               </Link>{" "}
               para ver el progreso de ahorro.
@@ -550,22 +550,22 @@ export default function ExpenseCalendar({
               budget != null && budget > 0 ? Math.min(100, (spent / budget) * 100) : 0;
 
             return (
-              <div key={key} className="border border-stone-100 bg-white p-4 rounded-lg shadow-sm flex flex-col gap-3">
+              <div key={key} className="border border-border bg-card p-4 rounded-lg shadow-sm flex flex-col gap-3 transition-colors">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
                     <span
-                      className="inline-block h-2.5 w-2.5 rounded-full ring-1 ring-inset ring-black/5"
+                      className="inline-block h-2.5 w-2.5 rounded-full ring-1 ring-inset ring-black/5 dark:ring-white/10"
                       style={{ backgroundColor: cat.color }}
                     />
-                    <div className="font-medium text-stone-800 text-sm">{cat.label}</div>
+                    <div className="font-medium text-foreground text-sm">{cat.label}</div>
                   </div>
-                  <div className="text-sm font-semibold font-mono text-stone-900">{money(spent)} €</div>
+                  <div className="text-sm font-semibold font-mono text-foreground">{money(spent)} €</div>
                 </div>
 
-                <div className="text-xs text-stone-500 flex items-center justify-between">
+                <div className="text-xs text-muted-foreground flex items-center justify-between">
                   <span>{pct.toFixed(0)}% del total</span>
                   {budget != null ? (
-                    <span className={over ? "text-red-600 font-medium" : ""}>
+                    <span className={over ? "text-destructive font-medium" : ""}>
                       Presup.: {money(budget)} € {remaining != null ? `· Restan ${money(remaining)} €` : ""}
                     </span>
                   ) : (
@@ -574,14 +574,14 @@ export default function ExpenseCalendar({
                 </div>
 
                 {budget != null && budget > 0 ? (
-                  <div className="h-1.5 w-full rounded-full bg-stone-100 overflow-hidden">
+                  <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
                     <div
-                      className={`h-full rounded-full ${over ? "bg-red-500" : "bg-stone-800"}`}
+                      className={`h-full rounded-full ${over ? "bg-destructive" : "bg-stone-800 dark:bg-stone-500"}`}
                       style={{ width: `${barPct}%`, backgroundColor: over ? undefined : cat.color }}
                     />
                   </div>
                 ) : (
-                  <div className="h-1.5 w-full rounded-full bg-stone-50" />
+                  <div className="h-1.5 w-full rounded-full bg-muted" />
                 )}
               </div>
             );
@@ -589,8 +589,8 @@ export default function ExpenseCalendar({
         </div>
 
         {/* Chart */}
-        <div className="border border-stone-200 p-6 rounded-lg bg-white shadow-sm">
-          <div className="font-medium text-stone-900 mb-4">Distribución por categorías</div>
+        <div className="border border-border p-6 rounded-lg bg-card shadow-sm">
+          <div className="font-medium text-foreground mb-4">Distribución por categorías</div>
           <SpendingChart
             title="Gasto por categoría"
             categories={chartCategories}
@@ -602,50 +602,50 @@ export default function ExpenseCalendar({
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <Link
             href={`/app/new?ym=${ym}`}
-            className={`border border-stone-900 bg-stone-900 text-stone-50 px-5 py-2.5 text-sm font-medium text-center rounded-md hover:bg-stone-700 transition-colors shadow-sm ${isClosed ? "pointer-events-none opacity-50" : ""
+            className={`border border-stone-900 bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 px-5 py-2.5 text-sm font-medium text-center rounded-md hover:opacity-90 transition-colors shadow-sm ${isClosed ? "pointer-events-none opacity-50" : ""
               }`}
             title={isClosed ? "Mes cerrado" : "Añadir gasto"}
           >
             + Nuevo gasto
           </Link>
 
-          <Link href={`/app/history/${ym}`} className="text-sm text-stone-500 hover:text-stone-900 underline underline-offset-4 text-center sm:text-right decoration-stone-300 transition-colors">
+          <Link href={`/app/history/${ym}`} className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 text-center sm:text-right decoration-border transition-colors">
             Ver histórico completo
           </Link>
         </div>
 
-        {err && <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md border border-red-100">{err}</div>}
-        {loading && <div className="text-sm text-stone-500 animate-pulse">Cargando datos del mes...</div>}
+        {err && <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md border border-destructive/20">{err}</div>}
+        {loading && <div className="text-sm text-muted-foreground animate-pulse">Cargando datos del mes...</div>}
 
         {/* Lista */}
-        <div className="border border-stone-200 p-4 sm:p-6 rounded-lg bg-white shadow-sm">
-          <div className="font-medium text-stone-900 mb-4 text-sm sm:text-base">Últimos movimientos</div>
+        <div className="border border-border p-4 sm:p-6 rounded-lg bg-card shadow-sm">
+          <div className="font-medium text-foreground mb-4 text-sm sm:text-base">Últimos movimientos</div>
 
           {rows.length === 0 && !loading && (
-            <div className="text-sm text-stone-500 italic py-4 text-center">No hay gastos registrados este mes.</div>
+            <div className="text-sm text-muted-foreground italic py-4 text-center">No hay gastos registrados este mes.</div>
           )}
 
           {rows.length > 0 && (
-            <ul className="divide-y divide-stone-100">
+            <ul className="divide-y divide-border">
               {rows.map((r) => (
                 <li
                   key={r.id}
                   className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 text-sm py-3 first:pt-0 last:pb-0"
                 >
                   <div className="min-w-0 flex-1">
-                    <div className="font-medium text-stone-800 truncate">{r.note || "Sin concepto"}</div>
-                    <div className="text-xs text-stone-500 mt-0.5">
+                    <div className="font-medium text-foreground truncate">{r.note || "Sin concepto"}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
                       {r.date} · <span style={{ color: (KAKEBO_CATEGORIES as any)[r.category]?.color }}>{(KAKEBO_CATEGORIES as any)[r.category]?.label ?? r.category}</span>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between sm:justify-end gap-4">
-                    <div className="font-semibold text-stone-900 font-mono">{money(Number(r.amount))} €</div>
+                    <div className="font-semibold text-foreground font-mono">{money(Number(r.amount))} €</div>
 
                     <button
                       onClick={() => removeExpense(r.id)}
                       disabled={isClosed || deletingId === r.id}
-                      className="text-stone-400 hover:text-red-600 disabled:opacity-30 transition-colors p-1"
+                      className="text-muted-foreground hover:text-destructive disabled:opacity-30 transition-colors p-1"
                       title={isClosed ? "Mes cerrado" : "Eliminar"}
                     >
                       {deletingId === r.id ? "…" : "✕"}
@@ -658,13 +658,13 @@ export default function ExpenseCalendar({
         </div>
 
         {/* ✅ BLOQUE SEO */}
-        <section className="mt-12 border-t border-stone-100 pt-8 space-y-3 text-sm text-stone-500">
-          <h2 className="text-base font-semibold text-stone-800">Control mensual con Kakebo</h2>
+        <section className="mt-12 border-t border-border pt-8 space-y-3 text-sm text-muted-foreground">
+          <h2 className="text-base font-semibold text-foreground">Control mensual con Kakebo</h2>
           <p>
             Este panel muestra tu resumen del mes con el método Kakebo: gasto total, desglose por
             categorías, presupuestos y progreso hacia el objetivo de ahorro.
           </p>
-          <div className="text-xs text-stone-400">
+          <div className="text-xs opacity-50">
             (Hueco SEO: texto sobre “control de gastos mensual”, “kakebo”, “presupuesto por
             categorías”, etc.)
           </div>

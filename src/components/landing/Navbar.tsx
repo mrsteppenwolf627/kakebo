@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { useRouter } from "next/navigation";
@@ -43,14 +44,14 @@ export function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-stone-50/80 backdrop-blur-sm border-b border-stone-200">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border transition-colors">
       <div className="max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-70 group">
-          <div className="flex h-9 w-9 items-center justify-center border border-stone-900 bg-stone-900 group-hover:bg-stone-800 transition-colors">
-            <span className="text-lg font-serif text-white">K</span>
+          <div className="flex h-9 w-9 items-center justify-center border border-foreground bg-foreground group-hover:bg-foreground/90 transition-colors">
+            <span className="text-lg font-serif text-background">K</span>
           </div>
-          <span className="text-xl font-serif font-medium tracking-tight text-stone-900">
+          <span className="text-xl font-serif font-medium tracking-tight text-foreground">
             Kakebo
           </span>
         </Link>
@@ -59,33 +60,34 @@ export function Navbar() {
         <nav className="hidden md:flex items-center gap-6">
           <Link
             href="#pricing"
-            className="text-sm font-medium text-stone-500 transition-colors hover:text-stone-900"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             Precios
           </Link>
           <Link
             href="#features"
-            className="text-sm font-medium text-stone-500 transition-colors hover:text-stone-900"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             Características
           </Link>
           <Link
             href="#how-it-works"
-            className="text-sm font-medium text-stone-500 transition-colors hover:text-stone-900"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             Cómo funciona
           </Link>
         </nav>
 
         {/* CTA Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-4">
+          <ThemeToggle />
           {loading ? (
-            <div className="w-24 h-8 bg-stone-100 animate-pulse rounded-sm" />
+            <div className="w-24 h-8 bg-muted animate-pulse rounded-sm" />
           ) : session ? (
             <Link
               href="/app"
               onClick={handleDashboardClick}
-              className="inline-flex items-center px-4 py-1.5 text-sm bg-stone-900 text-stone-50 hover:bg-stone-800 transition-colors shadow-sm font-medium"
+              className="inline-flex items-center px-4 py-1.5 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm font-medium"
             >
               Ir al Dashboard
             </Link>
@@ -93,13 +95,13 @@ export function Navbar() {
             <>
               <Link
                 href="/login"
-                className="hidden sm:inline-flex items-center px-4 py-1.5 text-sm text-stone-600 hover:text-stone-900 font-medium transition-colors"
+                className="hidden sm:inline-flex items-center px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground font-medium transition-colors"
               >
                 Entrar
               </Link>
               <Link
                 href="/login"
-                className="inline-flex items-center px-4 py-1.5 text-sm bg-stone-900 text-stone-50 hover:bg-stone-800 transition-colors shadow-sm font-medium"
+                className="inline-flex items-center px-4 py-1.5 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm font-medium"
               >
                 Empezar
               </Link>

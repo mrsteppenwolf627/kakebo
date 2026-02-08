@@ -183,6 +183,19 @@ export default function NewExpensePage() {
     }
   }
 
+  // Effect to handle auto-acceptance or notification after suggestion is set
+  useEffect(() => {
+    if (aiSuggestion && !suggestionAccepted) {
+      if (aiSuggestion.confidence > 0.8) {
+        // Auto-accept
+        setCategory(aiSuggestion.category);
+        setSuggestionAccepted(true);
+        // Optional: toast or minimal UI indication could go here, 
+        // but for now the UI below will show "Sugerencia de IA aceptada"
+      }
+    }
+  }, [aiSuggestion, suggestionAccepted]);
+
   function acceptSuggestion() {
     if (aiSuggestion) {
       setCategory(aiSuggestion.category);
@@ -436,9 +449,9 @@ export default function NewExpensePage() {
             </div>
           )}
 
-          {suggestionAccepted && (
-            <div className="text-xs text-green-600">
-              Sugerencia de IA aceptada
+          {suggestionAccepted && aiSuggestion && (
+            <div className="text-xs text-green-600 border border-green-200 bg-green-50 p-2 rounded">
+              ✨ Categoría detectada: <span className="font-medium">{KAKEBO_CATEGORIES[aiSuggestion.category].label}</span> ({(aiSuggestion.confidence * 100).toFixed(0)}%)
             </div>
           )}
 

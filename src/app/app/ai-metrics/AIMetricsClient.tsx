@@ -192,16 +192,15 @@ export default function AIMetricsClient() {
     <div className="space-y-6">
       {/* Date range filter */}
       <div className="flex items-center gap-2">
-        <span className="text-sm text-black/60">Período:</span>
+        <span className="text-sm text-muted-foreground">Período:</span>
         {(Object.keys(DATE_RANGE_LABELS) as DateRange[]).map((range) => (
           <button
             key={range}
             onClick={() => setDateRange(range)}
-            className={`px-3 py-1.5 text-sm border hover:bg-black hover:text-white ${
-              dateRange === range
-                ? "bg-black text-white border-black"
-                : "border-black/20"
-            }`}
+            className={`px-3 py-1.5 text-sm border rounded-md transition-colors ${dateRange === range
+                ? "bg-foreground text-background border-foreground font-medium"
+                : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/50"
+              }`}
           >
             {DATE_RANGE_LABELS[range]}
           </button>
@@ -236,26 +235,26 @@ export default function AIMetricsClient() {
       </div>
 
       {/* Token usage */}
-      <div className="border border-black/10 p-4">
-        <div className="font-semibold mb-2">Uso de tokens</div>
+      <div className="border border-border bg-card p-4 rounded-xl shadow-sm">
+        <div className="font-medium text-foreground mb-3">Uso de tokens</div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           <div>
-            <div className="text-black/60">Tokens entrada</div>
-            <div className="font-medium">{metrics.totalInputTokens.toLocaleString()}</div>
+            <div className="text-muted-foreground text-xs">Tokens entrada</div>
+            <div className="font-mono font-medium text-foreground">{metrics.totalInputTokens.toLocaleString()}</div>
           </div>
           <div>
-            <div className="text-black/60">Tokens salida</div>
-            <div className="font-medium">{metrics.totalOutputTokens.toLocaleString()}</div>
+            <div className="text-muted-foreground text-xs">Tokens salida</div>
+            <div className="font-mono font-medium text-foreground">{metrics.totalOutputTokens.toLocaleString()}</div>
           </div>
           <div>
-            <div className="text-black/60">Total tokens</div>
-            <div className="font-medium">
+            <div className="text-muted-foreground text-xs">Total tokens</div>
+            <div className="font-mono font-medium text-foreground">
               {(metrics.totalInputTokens + metrics.totalOutputTokens).toLocaleString()}
             </div>
           </div>
           <div>
-            <div className="text-black/60">Costo por petición</div>
-            <div className="font-medium">${metrics.avgCostPerRequest.toFixed(6)}</div>
+            <div className="text-muted-foreground text-xs">Costo por petición</div>
+            <div className="font-mono font-medium text-foreground">${metrics.avgCostPerRequest.toFixed(6)}</div>
           </div>
         </div>
       </div>
@@ -275,11 +274,11 @@ export default function AIMetricsClient() {
 
       {/* Embeddings Migration */}
       {embeddingStatus && (
-        <div className="border border-black/10 p-4">
+        <div className="border border-border bg-card p-4 rounded-xl shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <div className="font-semibold">Embeddings RAG</div>
-              <div className="text-xs text-black/60">
+              <div className="font-medium text-foreground">Embeddings RAG</div>
+              <div className="text-xs text-muted-foreground">
                 Vectores para búsqueda semántica de gastos
               </div>
             </div>
@@ -287,7 +286,7 @@ export default function AIMetricsClient() {
               <button
                 onClick={runMigration}
                 disabled={migrating}
-                className="border border-black px-3 py-1.5 text-sm hover:bg-black hover:text-white disabled:opacity-50"
+                className="border border-border bg-muted/50 text-foreground px-3 py-1.5 text-sm rounded-lg hover:bg-muted transition-colors disabled:opacity-50"
               >
                 {migrating ? "Procesando..." : "Generar embeddings"}
               </button>
@@ -296,33 +295,33 @@ export default function AIMetricsClient() {
 
           <div className="grid grid-cols-3 gap-4 text-sm mb-3">
             <div>
-              <div className="text-black/60">Total gastos</div>
-              <div className="font-medium">{embeddingStatus.totalExpenses}</div>
+              <div className="text-muted-foreground text-xs">Total gastos</div>
+              <div className="font-mono font-medium text-foreground">{embeddingStatus.totalExpenses}</div>
             </div>
             <div>
-              <div className="text-black/60">Con embedding</div>
-              <div className="font-medium text-green-600">{embeddingStatus.withEmbeddings}</div>
+              <div className="text-muted-foreground text-xs">Con embedding</div>
+              <div className="font-mono font-medium text-green-600 dark:text-green-400">{embeddingStatus.withEmbeddings}</div>
             </div>
             <div>
-              <div className="text-black/60">Sin embedding</div>
-              <div className="font-medium text-amber-600">{embeddingStatus.withoutEmbeddings}</div>
+              <div className="text-muted-foreground text-xs">Sin embedding</div>
+              <div className="font-mono font-medium text-amber-600 dark:text-amber-400">{embeddingStatus.withoutEmbeddings}</div>
             </div>
           </div>
 
           {/* Progress bar */}
-          <div className="h-2 bg-black/10 rounded-full overflow-hidden">
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
             <div
               className="h-full bg-green-500 transition-all duration-300"
               style={{ width: `${embeddingStatus.percentage}%` }}
             />
           </div>
-          <div className="text-xs text-black/60 mt-1">
+          <div className="text-xs text-muted-foreground mt-1">
             {embeddingStatus.percentage}% completado
             {embeddingStatus.status === "complete" && " ✓"}
           </div>
 
           {migrationResult && (
-            <div className="mt-3 text-sm text-black/70 bg-black/5 p-2">
+            <div className="mt-3 text-sm text-foreground bg-muted/50 p-2 rounded border border-border">
               {migrationResult}
             </div>
           )}
@@ -348,18 +347,18 @@ function MetricCard({
 }) {
   const highlightClass =
     highlight === "green"
-      ? "border-green-300 bg-green-50"
+      ? "border-green-200 bg-green-50/50 text-green-900 dark:bg-green-900/20 dark:border-green-800 dark:text-green-100"
       : highlight === "yellow"
-      ? "border-amber-300 bg-amber-50"
-      : highlight === "red"
-      ? "border-red-300 bg-red-50"
-      : "border-black/10";
+        ? "border-amber-200 bg-amber-50/50 text-amber-900 dark:bg-amber-900/20 dark:border-amber-800 dark:text-amber-100"
+        : highlight === "red"
+          ? "border-red-200 bg-red-50/50 text-red-900 dark:bg-red-900/20 dark:border-red-800 dark:text-red-100"
+          : "border-border bg-card text-foreground";
 
   return (
-    <div className={`border p-4 ${highlightClass}`}>
-      <div className="text-xs text-black/60">{label}</div>
-      <div className="text-2xl font-semibold">{value}</div>
-      {subtitle && <div className="text-xs text-black/50 mt-1">{subtitle}</div>}
+    <div className={`border p-4 rounded-xl shadow-sm transition-colors ${highlightClass}`}>
+      <div className="text-xs opacity-70 mb-1">{label}</div>
+      <div className="text-2xl font-semibold tracking-tight">{value}</div>
+      {subtitle && <div className="text-xs opacity-60 mt-1">{subtitle}</div>}
     </div>
   );
 }

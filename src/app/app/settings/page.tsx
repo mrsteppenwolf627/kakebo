@@ -325,20 +325,20 @@ export default function SettingsPage() {
 
   return (
     <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-xl mx-auto space-y-4 sm:space-y-6">
-      <h1 className="text-xl sm:text-2xl font-bold">Ajustes</h1>
+      <h1 className="text-xl sm:text-2xl font-bold font-serif text-foreground">Ajustes</h1>
 
-      {err && <div className="text-sm text-red-600">{err}</div>}
-      {ok && <div className="text-sm text-green-700">{ok}</div>}
-      {loading && <div className="text-sm text-black/60">Cargando…</div>}
+      {err && <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md border border-destructive/20">{err}</div>}
+      {ok && <div className="text-sm text-primary bg-primary/10 p-3 rounded-md border border-primary/20">{ok}</div>}
+      {loading && <div className="text-sm text-muted-foreground">Cargando…</div>}
 
       {!loading && (
         <>
           <div className="space-y-5">
             <div className="space-y-2">
-              <label className="block text-sm">Ingresos mensuales (€)</label>
+              <label className="block text-sm font-medium text-foreground">Ingresos mensuales (€)</label>
               <input
                 type="number"
-                className="w-full border border-black/20 rounded-lg p-2"
+                className="w-full border border-input rounded-md px-3 py-2 bg-background text-foreground focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                 value={inputNumberValue(form.monthly_income)}
                 onChange={(e) =>
                   setForm({
@@ -350,10 +350,10 @@ export default function SettingsPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm">Objetivo de ahorro (€)</label>
+              <label className="block text-sm font-medium text-foreground">Objetivo de ahorro (€)</label>
               <input
                 type="number"
-                className="w-full border border-black/20 rounded-lg p-2"
+                className="w-full border border-input rounded-md px-3 py-2 bg-background text-foreground focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                 value={inputNumberValue(form.monthly_saving_goal)}
                 onChange={(e) =>
                   setForm({
@@ -364,14 +364,14 @@ export default function SettingsPage() {
               />
             </div>
 
-            <div className="border border-black/10 rounded-lg p-4 space-y-4">
-              <div className="font-semibold">Presupuestos por categoría</div>
+            <div className="border border-border rounded-lg p-5 space-y-4 bg-card">
+              <div className="font-semibold text-foreground">Presupuestos por categoría</div>
 
               <div className="space-y-2">
-                <label className="block text-sm">Supervivencia (€)</label>
+                <label className="block text-sm font-medium text-foreground">Supervivencia (€)</label>
                 <input
                   type="number"
-                  className="w-full border border-black/20 rounded-lg p-2"
+                  className="w-full border border-input rounded-md px-3 py-2 bg-background text-foreground focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                   value={inputNumberValue(form.budget_supervivencia)}
                   onChange={(e) =>
                     setForm({
@@ -383,10 +383,10 @@ export default function SettingsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm">Opcional (€)</label>
+                <label className="block text-sm font-medium text-foreground">Opcional (€)</label>
                 <input
                   type="number"
-                  className="w-full border border-black/20 rounded-lg p-2"
+                  className="w-full border border-input rounded-md px-3 py-2 bg-background text-foreground focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                   value={inputNumberValue(form.budget_opcional)}
                   onChange={(e) =>
                     setForm({
@@ -398,10 +398,10 @@ export default function SettingsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm">Cultura (€)</label>
+                <label className="block text-sm font-medium text-foreground">Cultura (€)</label>
                 <input
                   type="number"
-                  className="w-full border border-black/20 rounded-lg p-2"
+                  className="w-full border border-input rounded-md px-3 py-2 bg-background text-foreground focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                   value={inputNumberValue(form.budget_cultura)}
                   onChange={(e) =>
                     setForm({
@@ -413,10 +413,10 @@ export default function SettingsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm">Extra (€)</label>
+                <label className="block text-sm font-medium text-foreground">Extra (€)</label>
                 <input
                   type="number"
-                  className="w-full border border-black/20 rounded-lg p-2"
+                  className="w-full border border-input rounded-md px-3 py-2 bg-background text-foreground focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                   value={inputNumberValue(form.budget_extra)}
                   onChange={(e) =>
                     setForm({
@@ -431,46 +431,46 @@ export default function SettingsPage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="w-full bg-black text-white rounded-lg p-2 hover:opacity-90 disabled:opacity-50"
+              className="w-full bg-primary text-primary-foreground rounded-md px-4 py-2 hover:opacity-90 disabled:opacity-50 font-medium transition-colors"
             >
               {saving ? "Guardando…" : "Guardar ajustes"}
             </button>
 
-            <div className="text-xs text-black/60">
+            <div className="text-xs text-muted-foreground">
               Estos ajustes se guardan en tu cuenta (Supabase), no en el navegador.
             </div>
           </div>
 
           {/* ✅ GASTOS FIJOS */}
-          <section className="mt-10 border-t border-black/10 pt-8 space-y-4">
+          <section className="mt-10 border-t border-border pt-8 space-y-4">
             <div className="flex items-baseline justify-between gap-3">
-              <h2 className="text-lg font-semibold text-black">Gastos fijos</h2>
-              <div className="text-sm text-black/60">
+              <h2 className="text-lg font-semibold text-foreground">Gastos fijos</h2>
+              <div className="text-sm text-muted-foreground">
                 Total activos:{" "}
-                <span className="font-semibold">
+                <span className="font-semibold text-foreground">
                   {fixedActiveTotal.toFixed(2)} €
                 </span>
               </div>
             </div>
 
-            {fixedErr && <div className="text-sm text-red-600">{fixedErr}</div>}
+            {fixedErr && <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md border border-destructive/20">{fixedErr}</div>}
             {fixedOk && (
-              <div className="text-sm text-green-700">{fixedOk}</div>
+              <div className="text-sm text-primary bg-primary/10 p-3 rounded-md border border-primary/20">{fixedOk}</div>
             )}
             {fixedLoading && (
-              <div className="text-sm text-black/60">
+              <div className="text-sm text-muted-foreground">
                 Cargando gastos fijos…
               </div>
             )}
 
             {!fixedLoading && (
-              <div className="border border-black/10 rounded-lg p-4 space-y-4">
+              <div className="border border-border rounded-lg p-5 space-y-4 bg-card">
                 {/* Form alta */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="sm:col-span-2 space-y-1">
-                    <label className="block text-sm">Nombre</label>
+                    <label className="block text-sm font-medium text-foreground">Nombre</label>
                     <input
-                      className="w-full border border-black/20 rounded-lg p-2"
+                      className="w-full border border-input rounded-md px-3 py-2 bg-background text-foreground focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                       placeholder="Ej: Alquiler"
                       value={fixedForm.name}
                       onChange={(e) =>
@@ -480,10 +480,10 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-sm">Importe (€)</label>
+                    <label className="block text-sm font-medium text-foreground">Importe (€)</label>
                     <input
                       type="number"
-                      className="w-full border border-black/20 rounded-lg p-2"
+                      className="w-full border border-input rounded-md px-3 py-2 bg-background text-foreground focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                       value={fixedForm.amount}
                       onChange={(e) =>
                         setFixedForm({
@@ -495,9 +495,9 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-sm">Activo</label>
+                    <label className="block text-sm font-medium text-foreground">Activo</label>
                     <select
-                      className="w-full border border-black/20 rounded-lg p-2"
+                      className="w-full border border-input rounded-md px-3 py-2 bg-background text-foreground focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                       value={fixedForm.active ? "true" : "false"}
                       onChange={(e) =>
                         setFixedForm({
@@ -512,9 +512,9 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-sm">Desde (YYYY-MM)</label>
+                    <label className="block text-sm font-medium text-foreground">Desde (YYYY-MM)</label>
                     <input
-                      className="w-full border border-black/20 rounded-lg p-2"
+                      className="w-full border border-input rounded-md px-3 py-2 bg-background text-foreground focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                       placeholder="2026-01"
                       value={fixedForm.start_ym}
                       onChange={(e) =>
@@ -527,9 +527,9 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-sm">Hasta (opcional, YYYY-MM)</label>
+                    <label className="block text-sm font-medium text-foreground">Hasta (opcional, YYYY-MM)</label>
                     <input
-                      className="w-full border border-black/20 rounded-lg p-2"
+                      className="w-full border border-input rounded-md px-3 py-2 bg-background text-foreground focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors"
                       placeholder="2026-12"
                       value={fixedForm.end_ym}
                       onChange={(e) =>
@@ -542,24 +542,24 @@ export default function SettingsPage() {
                 <button
                   onClick={addFixed}
                   disabled={fixedSaving}
-                  className="w-full bg-black text-white rounded-lg p-2 hover:opacity-90 disabled:opacity-50"
+                  className="w-full bg-primary text-primary-foreground rounded-md px-4 py-2 hover:opacity-90 disabled:opacity-50 font-medium transition-colors"
                 >
                   {fixedSaving ? "Guardando…" : "Añadir gasto fijo"}
                 </button>
 
-                <div className="text-xs text-black/60">
+                <div className="text-xs text-muted-foreground">
                   Los gastos fijos se aplican al mes si{" "}
-                  <span className="font-semibold">start_ym ≤ ym</span> y{" "}
-                  <span className="font-semibold">end_ym</span> está vacío o{" "}
-                  <span className="font-semibold">end_ym ≥ ym</span>.
+                  <span className="font-semibold text-foreground">start_ym ≤ ym</span> y{" "}
+                  <span className="font-semibold text-foreground">end_ym</span> está vacío o{" "}
+                  <span className="font-semibold text-foreground">end_ym ≥ ym</span>.
                 </div>
 
                 {/* Lista */}
-                <div className="border-t border-black/10 pt-4 space-y-2">
-                  <div className="font-semibold text-sm">Tus gastos fijos</div>
+                <div className="border-t border-border pt-4 space-y-2">
+                  <div className="font-semibold text-sm text-foreground">Tus gastos fijos</div>
 
                   {fixedRows.length === 0 && (
-                    <div className="text-sm text-black/60">
+                    <div className="text-sm text-muted-foreground">
                       Aún no tienes gastos fijos.
                     </div>
                   )}
@@ -569,35 +569,34 @@ export default function SettingsPage() {
                       {fixedRows.map((r) => (
                         <li
                           key={r.id}
-                          className="border border-black/10 rounded-lg p-3 flex items-center justify-between gap-3"
+                          className="border border-border rounded-lg p-3 flex items-center justify-between gap-3 bg-card hover:border-primary/30 transition-colors"
                         >
                           <div className="min-w-0">
-                            <div className="text-sm font-medium truncate">
+                            <div className="text-sm font-medium truncate text-foreground">
                               {r.name}{" "}
                               {!r.active && (
-                                <span className="text-xs text-black/50">
+                                <span className="text-xs text-muted-foreground">
                                   (inactivo)
                                 </span>
                               )}
                             </div>
-                            <div className="text-xs text-black/60">
+                            <div className="text-xs text-muted-foreground">
                               {r.start_ym}
                               {r.end_ym ? ` → ${r.end_ym}` : " → (sin fin)"}
                             </div>
                           </div>
 
                           <div className="flex items-center gap-3">
-                            <div className="text-sm font-semibold">
+                            <div className="text-sm font-semibold text-foreground">
                               {num(r.amount).toFixed(2)} €
                             </div>
 
                             <button
                               onClick={() => toggleFixed(r.id, !r.active)}
-                              className={`border px-3 py-2 text-xs rounded-lg ${
-                                r.active
-                                  ? "border-black hover:bg-black hover:text-white"
-                                  : "border-black/30 text-black/60 hover:border-black hover:text-black"
-                              }`}
+                              className={`border px-3 py-2 text-xs rounded-md font-medium transition-colors ${r.active
+                                ? "border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                                : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
+                                }`}
                               title={r.active ? "Desactivar" : "Activar"}
                             >
                               {r.active ? "Desactivar" : "Activar"}
@@ -611,7 +610,7 @@ export default function SettingsPage() {
                   <div className="pt-2">
                     <button
                       onClick={reloadFixed}
-                      className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white rounded-lg"
+                      className="border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-foreground rounded-md transition-colors"
                     >
                       Recargar gastos fijos
                     </button>
@@ -622,8 +621,8 @@ export default function SettingsPage() {
           </section>
 
           {/* ✅ BLOQUE SEO */}
-          <section className="mt-12 border-t border-black/10 pt-8 space-y-3 text-sm text-black/70">
-            <h2 className="text-lg font-semibold text-black">
+          <section className="mt-12 border-t border-border pt-8 space-y-3 text-sm text-muted-foreground">
+            <h2 className="text-lg font-semibold text-foreground">
               Ajustes de presupuesto y objetivo de ahorro
             </h2>
             <p>
@@ -632,7 +631,7 @@ export default function SettingsPage() {
               Esto te permite controlar el gasto y medir la evolución de tus
               hábitos mes a mes.
             </p>
-            <div className="text-xs text-black/50">
+            <div className="text-xs opacity-50">
               (Hueco SEO: texto sobre “presupuesto mensual”, “objetivo de ahorro”,
               “método kakebo”.)
             </div>

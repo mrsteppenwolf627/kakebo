@@ -76,38 +76,61 @@ body {
 }
 
 .dark {
-  --background: oklch(0.147 0.004 49.25);
-  --foreground: oklch(0.985 0.001 106.423);
-  --card: oklch(0.216 0.006 56.043);
-  --card-foreground: oklch(0.985 0.001 106.423);
-  --popover: oklch(0.216 0.006 56.043);
-  --popover-foreground: oklch(0.985 0.001 106.423);
-  --primary: oklch(0.65 0.15 20.0);
-  /* Approx Match for Terracota in dark */
-  --primary-foreground: oklch(0.985 0.001 106.423);
-  --secondary: oklch(0.268 0.007 34.298);
-  --secondary-foreground: oklch(0.985 0.001 106.423);
-  --muted: oklch(0.268 0.007 34.298);
-  --muted-foreground: oklch(0.709 0.01 56.259);
-  --accent: oklch(0.268 0.007 34.298);
-  --accent-foreground: oklch(0.985 0.001 106.423);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.553 0.013 58.071);
-  --chart-1: oklch(0.65 0.15 20.0);
-  --chart-2: oklch(0.60 0.12 280.0);
-  --chart-3: oklch(0.75 0.15 130.0);
-  --chart-4: oklch(0.70 0.15 310.0);
-  --chart-5: oklch(0.80 0.12 80.0);
-  --sidebar: oklch(0.216 0.006 56.043);
-  --sidebar-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-accent: oklch(0.268 0.007 34.298);
-  --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.553 0.013 58.071);
+  /* DARK ZEN PALETTE */
+  /* Background: Piedra oscuro (Cueva Zen) */
+  --background: #1c1917;
+  /* Text: Blanco roto (Luz de luna) */
+  --foreground: #fafaf9;
+
+  /* Cards: Piedra volcánica suave */
+  --card: #292524;
+  --card-foreground: #fafaf9;
+
+  --popover: #292524;
+  --popover-foreground: #fafaf9;
+
+  /* Primary: Terracota luminoso (Brasa) */
+  --primary: #f87171;
+  --primary-foreground: #1c1917;
+
+  /* Secondary: Gris plomo */
+  --secondary: #57534e;
+  --secondary-foreground: #fafaf9;
+
+  --muted: #44403c;
+  --muted-foreground: #a8a29e;
+
+  /* Accent: Índigo profundo */
+  --accent: #6366f1;
+  --accent-foreground: #fafaf9;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #fafaf9;
+
+  --border: #44403c;
+  --input: #44403c;
+  --ring: #f87171;
+
+  /* Chart Colors (Dark Zen) */
+  --chart-1: #f87171;
+  /* Terracota Brasa */
+  --chart-2: #818cf8;
+  /* Índigo */
+  --chart-3: #a3e635;
+  /* Matcha Luminoso */
+  --chart-4: #c084fc;
+  /* Wisteria */
+  --chart-5: #fbbf24;
+  /* Ámbar */
+
+  --sidebar: #1c1917;
+  --sidebar-foreground: #fafaf9;
+  --sidebar-primary: #f87171;
+  --sidebar-primary-foreground: #1c1917;
+  --sidebar-accent: #292524;
+  --sidebar-accent-foreground: #fafaf9;
+  --sidebar-border: #44403c;
+  --sidebar-ring: #f87171;
 }
 
 @theme inline {
@@ -152,9 +175,14 @@ body {
 /* SAKURA BACKGROUND PATTERN */
 .bg-sakura {
   background-color: var(--background);
-  /* Capa de blanco roto al 85% sobre la imagen para asegurar legibilidad perfecta */
-  background-image: linear-gradient(rgba(250, 250, 249, 0.85), rgba(250, 250, 249, 0.85)), url("/bg-sakura.png");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  /* Light mode: Overlay blanco cálido (85%) */
+  background-image: linear-gradient(rgba(250, 250, 249, 0.85), rgba(250, 250, 249, 0.85)), url("/bg-sakura.png");
+}
+
+.dark .bg-sakura {
+  /* Dark mode: Overlay piedra oscuro (92%) para que la imagen sea muy sutil */
+  background-image: linear-gradient(rgba(28, 25, 23, 0.92), rgba(28, 25, 23, 0.92)), url("/bg-sakura.png");
 }

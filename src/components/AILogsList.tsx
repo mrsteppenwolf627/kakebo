@@ -19,16 +19,16 @@ interface AILogsListProps {
 export default function AILogsList({ logs }: AILogsListProps) {
   if (logs.length === 0) {
     return (
-      <div className="border border-black/10 p-4">
-        <div className="font-semibold mb-2">Logs recientes</div>
-        <div className="text-sm text-black/50">No hay logs disponibles</div>
+      <div className="border border-border bg-card p-4 rounded-xl shadow-sm">
+        <div className="font-medium text-foreground mb-2">Logs recientes</div>
+        <div className="text-sm text-muted-foreground">No hay logs disponibles</div>
       </div>
     );
   }
 
   return (
-    <div className="border border-black/10 p-4">
-      <div className="font-semibold mb-3">Logs recientes</div>
+    <div className="border border-border bg-card p-4 rounded-xl shadow-sm">
+      <div className="font-medium text-foreground mb-3">Logs recientes</div>
       <div className="space-y-2 max-h-96 overflow-y-auto">
         {logs.map((log) => {
           const output = log.output as { category?: string; note?: string; confidence?: number } | null;
@@ -38,20 +38,19 @@ export default function AILogsList({ logs }: AILogsListProps) {
           return (
             <div
               key={log.id}
-              className={`border p-3 text-sm ${
-                log.was_corrected
-                  ? "border-amber-300 bg-amber-50"
+              className={`border p-3 text-sm rounded-lg transition-colors ${log.was_corrected
+                  ? "border-amber-200 bg-amber-50/50 dark:bg-amber-900/10 dark:border-amber-800"
                   : log.success
-                  ? "border-black/10"
-                  : "border-red-300 bg-red-50"
-              }`}
+                    ? "border-border bg-muted/20"
+                    : "border-red-200 bg-red-50/50 dark:bg-red-900/10 dark:border-red-800"
+                }`}
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium truncate" title={log.input}>
+                  <div className="font-medium text-foreground truncate" title={log.input}>
                     {log.input}
                   </div>
-                  <div className="text-xs text-black/60 mt-1 flex flex-wrap gap-2">
+                  <div className="text-xs text-muted-foreground mt-1 flex flex-wrap gap-2">
                     <span className="inline-flex items-center gap-1">
                       <span className="font-medium">Tipo:</span>
                       {log.type === "classification" ? "Clasificación" : "Asistente"}
@@ -73,19 +72,19 @@ export default function AILogsList({ logs }: AILogsListProps) {
 
                 <div className="text-right shrink-0">
                   {log.success ? (
-                    <span className="text-green-600 text-xs">OK</span>
+                    <span className="text-green-600 dark:text-green-400 text-xs font-medium">OK</span>
                   ) : (
-                    <span className="text-red-600 text-xs">Error</span>
+                    <span className="text-red-600 dark:text-red-400 text-xs font-medium">Error</span>
                   )}
                 </div>
               </div>
 
               {log.type === "classification" && category && (
-                <div className="mt-2 text-xs">
-                  <span className="font-medium">Categoría IA:</span>{" "}
+                <div className="mt-2 text-xs text-foreground">
+                  <span className="font-medium text-muted-foreground">Categoría IA:</span>{" "}
                   {CATEGORY_LABELS[category] || category}
                   {confidence !== undefined && (
-                    <span className="ml-2 text-black/50">
+                    <span className="ml-2 text-muted-foreground/70">
                       ({(confidence * 100).toFixed(0)}% confianza)
                     </span>
                   )}
@@ -93,19 +92,19 @@ export default function AILogsList({ logs }: AILogsListProps) {
               )}
 
               {log.was_corrected && (
-                <div className="mt-1 text-xs text-amber-700">
+                <div className="mt-1 text-xs text-amber-700 dark:text-amber-400">
                   <span className="font-medium">Corregido a:</span>{" "}
                   {CATEGORY_LABELS[log.corrected_category || ""] || log.corrected_category}
                 </div>
               )}
 
               {log.error_message && (
-                <div className="mt-1 text-xs text-red-600">
+                <div className="mt-1 text-xs text-destructive">
                   Error: {log.error_message}
                 </div>
               )}
 
-              <div className="mt-2 text-xs text-black/40">
+              <div className="mt-2 text-xs text-muted-foreground/50">
                 {log.created_at
                   ? new Date(log.created_at).toLocaleString("es-ES")
                   : "Fecha desconocida"}

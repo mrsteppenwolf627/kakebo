@@ -40,6 +40,10 @@ const DEFAULT_COLORS = [
   "#06b6d4", // Cyan
 ];
 
+import { useTheme } from "next-themes";
+
+// ... (imports remain)
+
 export default function AIMetricsChart({
   title,
   subtitle,
@@ -47,6 +51,18 @@ export default function AIMetricsChart({
   valueFormatter = (v) => v.toString(),
 }: AIMetricsChartProps) {
   const [mode, setMode] = useState<ChartMode>("bar");
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
+  const chartColors = useMemo(() => {
+    return {
+      text: isDark ? "#faaf9f" : "#1c1917", // text-foreground
+      muted: isDark ? "#a8a29e" : "#78716c", // text-muted-foreground
+      grid: isDark ? "#44403c" : "#e7e5e4", // border-border (approx)
+      tooltipBg: isDark ? "#292524" : "#ffffff", // bg-card
+      tooltipBorder: isDark ? "#44403c" : "#e7e5e4", // border-border
+    };
+  }, [isDark]);
 
   const chartData = useMemo(() => {
     return data.map((item, index) => ({
@@ -62,26 +78,26 @@ export default function AIMetricsChart({
 
   if (chartData.length === 0) {
     return (
-      <div className="border border-stone-200 bg-white p-4 rounded-lg shadow-sm">
-        <div className="font-medium text-stone-900">{title}</div>
-        {subtitle && <div className="text-xs text-stone-500">{subtitle}</div>}
-        <div className="mt-4 text-sm text-stone-400 italic">No hay datos disponibles</div>
+      <div className="border border-border bg-card p-4 rounded-xl shadow-sm">
+        <div className="font-medium text-foreground">{title}</div>
+        {subtitle && <div className="text-xs text-muted-foreground">{subtitle}</div>}
+        <div className="mt-4 text-sm text-muted-foreground italic">No hay datos disponibles</div>
       </div>
     );
   }
 
   return (
-    <div className="border border-stone-200 bg-white p-4 space-y-4 rounded-lg shadow-sm">
+    <div className="border border-border bg-card p-4 space-y-4 rounded-xl shadow-sm transition-colors">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="font-medium text-stone-900">{title}</div>
-          {subtitle && <div className="text-xs text-stone-500">{subtitle}</div>}
+          <div className="font-medium text-foreground">{title}</div>
+          {subtitle && <div className="text-xs text-muted-foreground">{subtitle}</div>}
         </div>
 
-        <div className="flex items-center gap-1 bg-stone-100 p-0.5 rounded-md">
+        <div className="flex items-center gap-1 bg-muted p-0.5 rounded-md">
           <button
             onClick={() => setMode("bar")}
-            className={`px-3 py-1 text-xs rounded-sm transition-all ${mode === "bar" ? "bg-white text-stone-900 shadow-sm font-medium" : "text-stone-500 hover:text-stone-700"
+            className={`px-3 py-1 text-xs rounded-sm transition-all ${mode === "bar" ? "bg-card text-foreground shadow-sm font-medium" : "text-muted-foreground hover:text-foreground"
               }`}
             title="Ver barras"
           >
@@ -89,7 +105,7 @@ export default function AIMetricsChart({
           </button>
           <button
             onClick={() => setMode("pie")}
-            className={`px-3 py-1 text-xs rounded-sm transition-all ${mode === "pie" ? "bg-white text-stone-900 shadow-sm font-medium" : "text-stone-500 hover:text-stone-700"
+            className={`px-3 py-1 text-xs rounded-sm transition-all ${mode === "pie" ? "bg-card text-foreground shadow-sm font-medium" : "text-muted-foreground hover:text-foreground"
               }`}
             title="Ver gráfico circular"
           >
@@ -106,24 +122,25 @@ export default function AIMetricsChart({
               layout="vertical"
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
             >
-              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e7e5e4" />
+              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke={chartColors.grid} />
               <XAxis type="number" hide />
               <YAxis
                 dataKey="name"
                 type="category"
-                tick={{ fontSize: 12, fill: "#57534e" }}
+                tick={{ fontSize: 12, fill: chartColors.muted }}
                 width={100}
                 axisLine={false}
                 tickLine={false}
               />
               <Tooltip
-                cursor={{ fill: "#f5f5f4" }}
+                cursor={{ fill: isDark ? "#44403c" : "#f5f5f4" }}
                 contentStyle={{
-                  backgroundColor: "#ffffff",
-                  borderColor: "#e7e5e4",
+                  backgroundColor: chartColors.tooltipBg,
+                  borderColor: chartColors.tooltipBorder,
                   borderRadius: "6px",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                   fontSize: "12px",
+                  color: chartColors.text,
                 }}
                 formatter={(value) => [valueFormatter(Number(value)), "Valor"]}
               />
@@ -139,11 +156,12 @@ export default function AIMetricsChart({
             <PieChart>
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#ffffff",
-                  borderColor: "#e7e5e4",
+                  backgroundColor: chartColors.tooltipBg,
+                  borderColor: chartColors.tooltipBorder,
                   borderRadius: "6px",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                   fontSize: "12px",
+                  color: chartColors.text,
                 }}
                 formatter={(value) => [valueFormatter(Number(value)), "Valor"]}
               />
@@ -171,7 +189,7 @@ export default function AIMetricsChart({
                 height={36}
                 iconType="circle"
                 iconSize={8}
-                formatter={(value) => <span className="text-xs text-stone-600 ml-1">{value}</span>}
+                formatter={(value) => <span className="text-xs ml-1" style={{ color: chartColors.muted }}>{value}</span>}
               />
             </PieChart>
           </ResponsiveContainer>

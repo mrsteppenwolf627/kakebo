@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -33,8 +34,15 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className="overflow-x-hidden">
-      <body className="overflow-x-hidden max-w-[100vw] bg-sakura text-stone-900">
-        {children}
+      <body className="overflow-x-hidden max-w-[100vw] bg-sakura text-stone-900 dark:bg-stone-950 dark:text-stone-100 transition-colors duration-300">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

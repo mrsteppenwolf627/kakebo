@@ -9,14 +9,14 @@ interface FaqItemProps {
 
 export function FAQ() {
   return (
-    <section id="faq" className="relative py-24 bg-white">
+    <section id="faq" className="relative py-24 bg-background">
       <div className="relative z-10 mx-auto max-w-4xl px-4">
         {/* Section Header */}
-        <div className="mb-12 text-center border-b border-stone-200 pb-8">
-          <h2 className="mb-4 text-4xl font-serif font-normal tracking-tight text-stone-900 sm:text-5xl">
+        <div className="mb-12 text-center border-b border-border pb-8">
+          <h2 className="mb-4 text-4xl font-serif font-normal tracking-tight text-foreground sm:text-5xl">
             Preguntas frecuentes
           </h2>
-          <p className="text-base text-stone-600 font-light">
+          <p className="text-base text-muted-foreground font-light">
             Respuestas directas a las dudas más comunes
           </p>
         </div>
@@ -57,16 +57,15 @@ function FaqItem({ question, answer }: FaqItemProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border border-stone-200 bg-white transition-colors hover:border-stone-900">
+    <div className="border border-border bg-card transition-colors hover:border-foreground/50">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between p-6 text-left transition-colors"
       >
-        <span className="text-base font-serif text-stone-900 pr-4">{question}</span>
+        <span className="text-base font-serif text-foreground pr-4">{question}</span>
         <svg
-          className={`h-5 w-5 flex-shrink-0 text-stone-900 transition-transform duration-300 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`h-5 w-5 flex-shrink-0 text-foreground transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+            }`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -76,12 +75,11 @@ function FaqItem({ question, answer }: FaqItemProps) {
       </button>
 
       <div
-        className={`overflow-hidden transition-all duration-300 ${
-          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
-        <div className="border-t border-stone-200 p-6 pt-4">
-          <p className="text-stone-700 font-light leading-relaxed">{answer}</p>
+        <div className="border-t border-border p-6 pt-4">
+          <p className="text-muted-foreground font-light leading-relaxed">{answer}</p>
         </div>
       </div>
     </div>

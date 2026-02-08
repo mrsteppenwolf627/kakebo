@@ -2,15 +2,15 @@ export function HowItWorks() {
   return (
     <section className="relative py-24">
       {/* Background */}
-      <div className="absolute inset-0 bg-stone-50" />
+      <div className="absolute inset-0 bg-muted/30" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4">
         {/* Section Header */}
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             El método Kakebo
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-gray-600">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             Un sistema japonés simple pero efectivo para controlar tus finanzas
           </p>
         </div>
@@ -18,7 +18,7 @@ export function HowItWorks() {
         {/* Steps */}
         <div className="relative">
           {/* Connecting Line (hidden on mobile) */}
-          <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-stone-300 lg:block" />
+          <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-border lg:block" />
 
           <div className="space-y-12">
             <Step
@@ -26,7 +26,7 @@ export function HowItWorks() {
               title="Define tu objetivo"
               description="Establece una meta de ahorro mensual realista. No ciencia ficción, algo que puedas cumplir."
               icon={
-                <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-8 w-8 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -43,7 +43,7 @@ export function HowItWorks() {
               title="Anota tus gastos"
               description='Registra cada gasto cuando ocurre. No lo dejes para "mañana". La consistencia es la clave.'
               icon={
-                <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-8 w-8 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -60,7 +60,7 @@ export function HowItWorks() {
               title="Clasifica por categorías"
               description="Separa tus gastos: supervivencia, fijos, ocio, cultura. Detecta dónde se te va el dinero."
               icon={
-                <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-8 w-8 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -77,7 +77,7 @@ export function HowItWorks() {
               title="Revisa y ajusta"
               description="Al final del mes, revisa qué funcionó y qué no. Decide 1-2 cambios concretos para el próximo mes."
               icon={
-                <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-8 w-8 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -92,27 +92,27 @@ export function HowItWorks() {
         </div>
 
         {/* Example Card */}
-        <div className="mx-auto mt-16 max-w-3xl rounded-sm border-2 border-stone-200 bg-stone-50 p-8 shadow-sm">
-          <h3 className="mb-4 text-xl font-bold text-gray-900">Ejemplo práctico</h3>
-          <div className="space-y-3 text-gray-700">
-            <div className="flex justify-between border-b border-stone-200 pb-2">
+        <div className="mx-auto mt-16 max-w-3xl rounded-sm border-2 border-primary/20 bg-muted/20 p-8 shadow-sm">
+          <h3 className="mb-4 text-xl font-bold text-foreground">Ejemplo práctico</h3>
+          <div className="space-y-3 text-muted-foreground">
+            <div className="flex justify-between border-b border-border pb-2">
               <span className="font-medium">Ingresos del mes:</span>
-              <span className="font-bold text-green-600">1.800€</span>
+              <span className="font-bold text-green-600 dark:text-green-400">1.800€</span>
             </div>
-            <div className="flex justify-between border-b border-stone-200 pb-2">
+            <div className="flex justify-between border-b border-border pb-2">
               <span className="font-medium">Gastos fijos activos:</span>
-              <span className="font-bold text-red-600">-950€</span>
+              <span className="font-bold text-red-600 dark:text-red-400">-950€</span>
             </div>
-            <div className="flex justify-between border-b border-stone-200 pb-2">
+            <div className="flex justify-between border-b border-border pb-2">
               <span className="font-medium">Gastos variables:</span>
-              <span className="font-bold text-red-600">-620€</span>
+              <span className="font-bold text-red-600 dark:text-red-400">-620€</span>
             </div>
             <div className="flex justify-between pt-2">
               <span className="text-lg font-bold">Te quedan:</span>
-              <span className="text-lg font-bold text-stone-900">230€</span>
+              <span className="text-lg font-bold text-foreground">230€</span>
             </div>
           </div>
-          <p className="mt-4 text-sm text-gray-600">
+          <p className="mt-4 text-sm text-muted-foreground/80">
             Si tu objetivo era ahorrar 200€, vas bien. Si no, miras qué categoría se te fue de
             madre y ajustas el siguiente mes. Simple.
           </p>
@@ -139,23 +139,23 @@ function Step({ number, title, description, icon, side }: StepProps) {
       {/* Content */}
       <div className="flex-1 lg:w-1/2">
         <div
-          className={`rounded-sm border border-stone-200 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md ${side === "left" ? "lg:text-right" : "lg:text-left"
+          className={`rounded-sm border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:shadow-md ${side === "left" ? "lg:text-right" : "lg:text-left"
             }`}
         >
           <div
-            className={`mb-2 text-sm font-serif text-stone-500 ${side === "left" ? "lg:justify-end" : "lg:justify-start"
+            className={`mb-2 text-sm font-serif text-muted-foreground ${side === "left" ? "lg:justify-end" : "lg:justify-start"
               } flex justify-start`}
           >
             PASO {number}
           </div>
-          <h3 className="mb-2 text-2xl font-bold text-gray-900">{title}</h3>
-          <p className="text-gray-600 leading-relaxed">{description}</p>
+          <h3 className="mb-2 text-2xl font-bold text-foreground">{title}</h3>
+          <p className="text-muted-foreground leading-relaxed">{description}</p>
         </div>
       </div>
 
       {/* Center Icon (hidden on mobile) */}
       <div className="absolute left-1/2 hidden -translate-x-1/2 lg:flex">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-stone-900 text-white shadow-lg">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-card bg-foreground text-card shadow-lg">
           {icon}
         </div>
       </div>
