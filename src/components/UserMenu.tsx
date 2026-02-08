@@ -77,7 +77,7 @@ export default function UserMenu() {
   const label = user.email ? user.email.split('@')[0] : "Cuenta";
 
   return (
-    <div className="relative ml-4">
+    <div className="relative ml-2 md:ml-4">
       <button
         onClick={() => setOpen(!open)}
         className={`flex items-center gap-2 px-3 py-1.5 text-sm border transition-colors ${open ? "border-stone-900 text-stone-900" : "border-stone-200 text-stone-600 hover:border-stone-400"
@@ -92,24 +92,24 @@ export default function UserMenu() {
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 mt-2 w-56 border border-stone-200 bg-stone-50 z-50 p-1 animate-in fade-in zoom-in-95 duration-100">
+          <div className="absolute right-0 mt-2 w-64 border border-stone-200 bg-stone-50 z-50 p-1 animate-in fade-in zoom-in-95 duration-100 shadow-md">
 
-            <div className="px-3 py-2 text-xs text-stone-500 border-b border-stone-200 mb-1 font-mono">
+            <div className="px-3 py-2 text-xs text-stone-500 border-b border-stone-200 mb-1 font-mono break-all">
               {user.email}
             </div>
 
             <button
-              onClick={() => router.push('/app/settings')}
+              onClick={() => router.push('/app/settings')} // Assuming a profile/settings page
               className="w-full text-left px-3 py-2 text-sm text-stone-700 hover:bg-stone-200 transition-colors"
             >
-              Ajustes
+              Configuración de Cuenta
             </button>
 
             <button
               onClick={handleBilling}
               className="w-full text-left px-3 py-2 text-sm text-stone-700 hover:bg-stone-200 transition-colors flex justify-between items-center group"
             >
-              <span>Suscripción / Pagos</span>
+              <span>Suscripción</span>
               <span className="text-[10px] text-stone-400 group-hover:text-stone-600">Stripe ↗</span>
             </button>
 
