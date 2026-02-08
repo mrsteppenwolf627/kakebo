@@ -6,10 +6,10 @@ import Link from "next/link";
 import SpendingChart from "@/components/SpendingChart";
 
 const KAKEBO_CATEGORIES = {
-  supervivencia: { label: "Supervivencia", color: "#dc2626" },
-  opcional: { label: "Opcional", color: "#2563eb" },
-  cultura: { label: "Cultura", color: "#16a34a" },
-  extra: { label: "Extra", color: "#9333ea" },
+  supervivencia: { label: "Supervivencia", color: "#cf5c5c" }, // Terracota
+  opcional: { label: "Opcional", color: "#818cf8" },      // Índigo
+  cultura: { label: "Cultura", color: "#84cc16" },        // Matcha
+  extra: { label: "Extra", color: "#c084fc" },            // Wisteria
 } as const;
 
 type CategoryKey = keyof typeof KAKEBO_CATEGORIES;
@@ -377,7 +377,7 @@ export default function ExpenseCalendar({
 
   const isClosed = monthRow?.status === "closed";
   const monthStatusLabel = monthRow?.status
-    ? `estado: ${monthRow.status}`
+    ? `estado: ${monthRow.status === "closed" ? "cerrado" : "abierto"}`
     : "sin registro de mes aún";
 
   function budgetFor(key: CategoryKey) {
@@ -387,10 +387,10 @@ export default function ExpenseCalendar({
       key === "supervivencia"
         ? settings.budget_supervivencia
         : key === "opcional"
-        ? settings.budget_opcional
-        : key === "cultura"
-        ? settings.budget_cultura
-        : settings.budget_extra;
+          ? settings.budget_opcional
+          : key === "cultura"
+            ? settings.budget_cultura
+            : settings.budget_extra;
 
     return field == null ? null : Number(field);
   }
@@ -405,95 +405,93 @@ export default function ExpenseCalendar({
 
   return (
     <div className="space-y-6">
-      <div className="border border-stone-200 rounded-none p-6 sm:p-8 space-y-6 bg-white">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-stone-200 pb-4">
+      <div className="border border-stone-200 rounded-lg p-6 sm:p-8 space-y-6 bg-white/90 backdrop-blur-sm shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-stone-100 pb-4">
           <div>
             <div className="text-sm text-stone-500 font-light mb-2">
-              <span className="font-mono">{ym}</span>
-              <span className="ml-3 text-xs">({monthStatusLabel})</span>
+              <span className="font-mono text-base">{ym}</span>
+              <span className="ml-3 text-xs opacity-70">({monthStatusLabel})</span>
             </div>
 
             {isClosed && (
-              <div className="mt-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded-none p-2">
-                月閉鎖済み · Mes cerrado: no se pueden añadir ni eliminar gastos.
+              <div className="mt-2 text-xs text-stone-600 bg-stone-100 border border-stone-200 rounded-md p-2 inline-block">
+                Mes cerrado · No se pueden añadir ni eliminar gastos.
               </div>
             )}
 
             <div className="text-sm text-stone-600 font-light mt-2">
-              Gastos: <span className="font-mono text-stone-900">{rows.length}</span>
+              Gastos: <span className="font-mono text-stone-900 font-medium">{rows.length}</span>
               <span className="mx-2 text-stone-300">·</span>
-              Total: <span className="font-mono text-stone-900">{money(total)} €</span>
+              Total: <span className="font-mono text-stone-900 font-medium">{money(total)} €</span>
             </div>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={load}
-              className="border border-stone-300 rounded-none px-4 py-2 text-xs sm:text-sm text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-colors"
+              className="border border-stone-200 bg-white rounded-md px-4 py-2 text-xs sm:text-sm text-stone-600 hover:text-stone-900 hover:border-stone-400 transition-colors"
             >
-              更新
+              Actualizar
             </button>
 
             {isClosed ? (
               <button
                 onClick={reopenMonth}
                 disabled={closing}
-                className="border border-stone-300 rounded-none px-4 py-2 text-xs sm:text-sm text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="border border-stone-200 bg-white rounded-md px-4 py-2 text-xs sm:text-sm text-stone-600 hover:text-stone-900 hover:border-stone-400 disabled:opacity-50 transition-colors"
                 title="Reabrir mes"
               >
-                {closing ? "…" : "再開"}
+                {closing ? "…" : "Reabrir"}
               </button>
             ) : (
               <button
                 onClick={closeMonth}
                 disabled={closing}
-                className="border border-stone-900 rounded-none px-4 py-2 text-xs sm:text-sm text-stone-900 hover:bg-stone-900 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="border border-stone-900 bg-stone-900 text-stone-50 rounded-md px-4 py-2 text-xs sm:text-sm hover:bg-stone-700 disabled:opacity-50 transition-colors shadow-sm"
                 title="Cerrar mes"
               >
-                {closing ? "…" : "閉鎖"}
+                {closing ? "…" : "Cerrar Mes"}
               </button>
             )}
           </div>
         </div>
 
         {/* Finanzas del mes */}
-        <div className="border border-stone-200 rounded-none p-5 sm:p-6 space-y-3 bg-stone-50">
+        <div className="border border-stone-200 rounded-lg p-5 sm:p-6 space-y-3 bg-stone-50/50">
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-stone-600 font-light">収入 (Ingreso mensual)</span>
+            <span className="text-stone-600 font-light">Ingreso mensual</span>
             <span className="font-mono text-stone-900">
               {settingsLoading ? "…" : income > 0 ? `${money(income)} €` : "—"}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-stone-600 font-light">固定費 (Gastos fijos)</span>
+            <span className="text-stone-600 font-light">Gastos fijos</span>
             <span className="font-mono text-stone-900">{income > 0 ? `${money(fixedTotal)} €` : "—"}</span>
           </div>
 
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-stone-600 font-light">利用可能 (Utilizable)</span>
+            <span className="text-stone-600 font-light">Utilizable</span>
             <span
-              className={`font-mono ${
-                income > 0 && availableForCategories < 0 ? "text-red-700" : "text-stone-900"
-              }`}
+              className={`font-mono ${income > 0 && availableForCategories < 0 ? "text-red-700" : "text-stone-900"
+                }`}
             >
               {income > 0 ? `${money(availableForCategories)} €` : "—"}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-stone-600 font-light">残高 (Disponible)</span>
+            <span className="text-stone-600 font-light">Disponible</span>
             <span
-              className={`font-mono ${
-                income > 0 && availableAfterExpenses < 0 ? "text-red-700" : "text-stone-900"
-              }`}
+              className={`font-mono ${income > 0 && availableAfterExpenses < 0 ? "text-red-700" : "text-stone-900"
+                }`}
             >
               {income > 0 ? `${money(availableAfterExpenses)} €` : "—"}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm gap-2 border-t border-stone-200 pt-3">
-            <span className="text-stone-600 font-light">貯蓄目標 (Objetivo ahorro)</span>
+            <span className="text-stone-600 font-light">Objetivo ahorro</span>
             <span className="font-mono text-stone-900">
               {savingGoal > 0 ? `${money(savingGoal)} €` : "—"}
             </span>
@@ -501,36 +499,35 @@ export default function ExpenseCalendar({
 
           {income > 0 && savingGoal > 0 ? (
             <div className="pt-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-black/60">Progreso de ahorro</span>
-                <span className="font-semibold">{savingPct}%</span>
+              <div className="flex items-center justify-between text-sm mb-1">
+                <span className="text-stone-500 text-xs">Progreso ahorro</span>
+                <span className="font-medium text-stone-700 text-xs">{savingPct}%</span>
               </div>
 
-              <div className="mt-2 h-3 w-full rounded-full bg-black/10 overflow-hidden">
+              <div className="mt-1 h-2.5 w-full rounded-full bg-stone-200/50 overflow-hidden">
                 <div
-                  className={`h-3 rounded-full transition-all ${
-                    savingProgress >= 1 ? "bg-green-600" : "bg-black"
-                  }`}
+                  className={`h-full rounded-full transition-all duration-500 ease-out ${savingProgress >= 1 ? "bg-green-500" : "bg-stone-800"
+                    }`}
                   style={{ width: `${savingPct}%` }}
                 />
               </div>
 
-              <div className="mt-2 text-xs text-black/60">
-                Ahorrado: <span className="font-semibold">{money(Math.max(0, savedSoFar))} €</span>{" "}
-                / Objetivo: <span className="font-semibold">{money(savingGoal)} €</span>
+              <div className="mt-2 text-xs text-stone-500">
+                Ahorrado: <span className="font-medium text-stone-700">{money(Math.max(0, savedSoFar))} €</span>{" "}
+                / Objetivo: <span className="font-medium text-stone-700">{money(savingGoal)} €</span>
                 {savingProgress >= 1 ? (
-                  <span className="ml-2 text-green-700 font-semibold">Objetivo conseguido</span>
+                  <span className="ml-2 text-green-600 font-medium">¡Objetivo conseguido!</span>
                 ) : (
                   <span className="ml-2">
-                    Te faltan <span className="font-semibold">{money(remainingToGoal)} €</span>
+                    Faltan <span className="font-medium text-stone-700">{money(remainingToGoal)} €</span>
                   </span>
                 )}
               </div>
             </div>
           ) : (
-            <div className="text-xs text-black/60">
+            <div className="text-xs text-stone-500 pt-2">
               Configura ingreso y objetivo en{" "}
-              <Link href="/app/settings" className="underline">
+              <Link href="/app/settings" className="underline hover:text-stone-800">
                 Ajustes
               </Link>{" "}
               para ver el progreso de ahorro.
@@ -539,7 +536,7 @@ export default function ExpenseCalendar({
         </div>
 
         {/* Resumen por categorías + presupuestos + barras */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {(Object.keys(KAKEBO_CATEGORIES) as CategoryKey[]).map((key) => {
             const cat = KAKEBO_CATEGORIES[key];
             const spent = totalsByCategory[key];
@@ -553,38 +550,38 @@ export default function ExpenseCalendar({
               budget != null && budget > 0 ? Math.min(100, (spent / budget) * 100) : 0;
 
             return (
-              <div key={key} className="border border-black/10 p-3 flex flex-col gap-2">
+              <div key={key} className="border border-stone-100 bg-white p-4 rounded-lg shadow-sm flex flex-col gap-3">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
                     <span
-                      className="inline-block h-3 w-3 rounded-full"
+                      className="inline-block h-2.5 w-2.5 rounded-full ring-1 ring-inset ring-black/5"
                       style={{ backgroundColor: cat.color }}
                     />
-                    <div className="font-semibold text-sm">{cat.label}</div>
+                    <div className="font-medium text-stone-800 text-sm">{cat.label}</div>
                   </div>
-                  <div className="text-sm font-semibold">{money(spent)} €</div>
+                  <div className="text-sm font-semibold font-mono text-stone-900">{money(spent)} €</div>
                 </div>
 
-                <div className="text-xs text-black/60 flex items-center justify-between">
-                  <span>Del total: {pct.toFixed(0)}%</span>
+                <div className="text-xs text-stone-500 flex items-center justify-between">
+                  <span>{pct.toFixed(0)}% del total</span>
                   {budget != null ? (
-                    <span className={over ? "text-red-600 font-semibold" : ""}>
-                      Presupuesto: {money(budget)} € {remaining != null ? `· Restan ${money(remaining)} €` : ""}
+                    <span className={over ? "text-red-600 font-medium" : ""}>
+                      Presup.: {money(budget)} € {remaining != null ? `· Restan ${money(remaining)} €` : ""}
                     </span>
                   ) : (
-                    <span>Presupuesto: —</span>
+                    <span>Sin presupuesto</span>
                   )}
                 </div>
 
                 {budget != null && budget > 0 ? (
-                  <div className="h-2 w-full rounded-full bg-black/10 overflow-hidden">
+                  <div className="h-1.5 w-full rounded-full bg-stone-100 overflow-hidden">
                     <div
-                      className={`h-2 rounded-full ${over ? "bg-red-600" : "bg-black"}`}
-                      style={{ width: `${barPct}%` }}
+                      className={`h-full rounded-full ${over ? "bg-red-500" : "bg-stone-800"}`}
+                      style={{ width: `${barPct}%`, backgroundColor: over ? undefined : cat.color }}
                     />
                   </div>
                 ) : (
-                  <div className="h-2 w-full rounded-full bg-black/5" />
+                  <div className="h-1.5 w-full rounded-full bg-stone-50" />
                 )}
               </div>
             );
@@ -592,65 +589,63 @@ export default function ExpenseCalendar({
         </div>
 
         {/* Chart */}
-        <div className="border border-black/10 p-4 rounded-lg">
-          <div className="font-semibold mb-2">Distribución por categorías</div>
+        <div className="border border-stone-200 p-6 rounded-lg bg-white shadow-sm">
+          <div className="font-medium text-stone-900 mb-4">Distribución por categorías</div>
           <SpendingChart
-  title="Gasto por categoría"
-  categories={chartCategories}
-  totals={totalsByCategory}
-/>
-
+            title="Gasto por categoría"
+            categories={chartCategories}
+            totals={totalsByCategory}
+          />
         </div>
 
         {/* CTA */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <Link
             href={`/app/new?ym=${ym}`}
-            className={`border border-black px-3 py-2 text-sm text-center hover:bg-black hover:text-white ${
-              isClosed ? "pointer-events-none opacity-50" : ""
-            }`}
+            className={`border border-stone-900 bg-stone-900 text-stone-50 px-5 py-2.5 text-sm font-medium text-center rounded-md hover:bg-stone-700 transition-colors shadow-sm ${isClosed ? "pointer-events-none opacity-50" : ""
+              }`}
             title={isClosed ? "Mes cerrado" : "Añadir gasto"}
           >
             + Nuevo gasto
           </Link>
 
-          <Link href={`/app/history/${ym}`} className="text-sm underline text-center sm:text-right">
-            Ver histórico
+          <Link href={`/app/history/${ym}`} className="text-sm text-stone-500 hover:text-stone-900 underline underline-offset-4 text-center sm:text-right decoration-stone-300 transition-colors">
+            Ver histórico completo
           </Link>
         </div>
 
-        {err && <div className="text-sm text-red-600">{err}</div>}
-        {loading && <div className="text-sm text-black/60">Cargando…</div>}
+        {err && <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md border border-red-100">{err}</div>}
+        {loading && <div className="text-sm text-stone-500 animate-pulse">Cargando datos del mes...</div>}
 
         {/* Lista */}
-        <div className="border border-black/10 p-3 sm:p-4 rounded-lg">
-          <div className="font-semibold mb-2 text-sm sm:text-base">Últimos gastos</div>
+        <div className="border border-stone-200 p-4 sm:p-6 rounded-lg bg-white shadow-sm">
+          <div className="font-medium text-stone-900 mb-4 text-sm sm:text-base">Últimos movimientos</div>
 
           {rows.length === 0 && !loading && (
-            <div className="text-sm text-black/60">No hay gastos todavía.</div>
+            <div className="text-sm text-stone-500 italic py-4 text-center">No hay gastos registrados este mes.</div>
           )}
 
           {rows.length > 0 && (
-            <ul className="space-y-2">
+            <ul className="divide-y divide-stone-100">
               {rows.map((r) => (
                 <li
                   key={r.id}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 text-sm border-b border-black/10 pb-2"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 text-sm py-3 first:pt-0 last:pb-0"
                 >
                   <div className="min-w-0 flex-1">
-                    <div className="font-medium truncate text-sm">{r.note || "Sin concepto"}</div>
-                    <div className="text-xs text-black/60">
-                      {r.date} · {(KAKEBO_CATEGORIES as any)[r.category]?.label ?? r.category}
+                    <div className="font-medium text-stone-800 truncate">{r.note || "Sin concepto"}</div>
+                    <div className="text-xs text-stone-500 mt-0.5">
+                      {r.date} · <span style={{ color: (KAKEBO_CATEGORIES as any)[r.category]?.color }}>{(KAKEBO_CATEGORIES as any)[r.category]?.label ?? r.category}</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between sm:justify-end gap-3">
-                    <div className="font-semibold text-sm">{money(Number(r.amount))} €</div>
+                  <div className="flex items-center justify-between sm:justify-end gap-4">
+                    <div className="font-semibold text-stone-900 font-mono">{money(Number(r.amount))} €</div>
 
                     <button
                       onClick={() => removeExpense(r.id)}
                       disabled={isClosed || deletingId === r.id}
-                      className="border border-black px-2 py-1 text-xs hover:bg-black hover:text-white disabled:opacity-50 shrink-0"
+                      className="text-stone-400 hover:text-red-600 disabled:opacity-30 transition-colors p-1"
                       title={isClosed ? "Mes cerrado" : "Eliminar"}
                     >
                       {deletingId === r.id ? "…" : "✕"}
@@ -663,13 +658,13 @@ export default function ExpenseCalendar({
         </div>
 
         {/* ✅ BLOQUE SEO */}
-        <section className="mt-10 border-t border-black/10 pt-8 space-y-3 text-sm text-black/70">
-          <h2 className="text-lg font-semibold text-black">Control mensual con Kakebo</h2>
+        <section className="mt-12 border-t border-stone-100 pt-8 space-y-3 text-sm text-stone-500">
+          <h2 className="text-base font-semibold text-stone-800">Control mensual con Kakebo</h2>
           <p>
             Este panel muestra tu resumen del mes con el método Kakebo: gasto total, desglose por
             categorías, presupuestos y progreso hacia el objetivo de ahorro.
           </p>
-          <div className="text-xs text-black/50">
+          <div className="text-xs text-stone-400">
             (Hueco SEO: texto sobre “control de gastos mensual”, “kakebo”, “presupuesto por
             categorías”, etc.)
           </div>

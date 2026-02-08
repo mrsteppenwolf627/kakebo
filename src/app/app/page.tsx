@@ -5,7 +5,7 @@ import MonthSelector from "@/components/MonthSelector";
 import CategoryGuideCard from "@/components/CategoryGuideCard";
 
 import DashboardMoneyPanel from "@/components/DashboardMoneyPanel";
- 
+
 
 function parseYm(ym?: string) {
   if (!ym) return null;
@@ -48,7 +48,7 @@ export default async function HomePage(props: {
           {/* HEADER - Estilo Wabi-Sabi: Simple, espacio en blanco, serif para título */}
           <header className="border-b border-stone-200 pb-6">
             <h1 className="text-3xl sm:text-5xl font-serif font-normal text-stone-900 tracking-tight">
-              家計簿
+              Mi Kakebo
             </h1>
             <p className="text-stone-600 text-sm sm:text-base mt-2 font-light">
               Control de gastos mensual

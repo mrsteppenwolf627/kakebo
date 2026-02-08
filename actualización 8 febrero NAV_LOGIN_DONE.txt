@@ -1,0 +1,33 @@
+================================================================================
+             KAKEBO AI - ESTADO ACTUAL
+             Fecha: 8 de Febrero de 2026
+             Estado: NAV_UNIFIED + LOGIN_FIXED
+================================================================================
+
+✅ COMPLETADO (Sesión de Mañana):
+
+1.  **Navegación Unificada:**
+    -   `TopNav` (App) y `Navbar` (Landing) ahora comparten diseño idéntico.
+    -   Añadido botón "Inicio" en la App.
+    -   Arreglado layout "doble" en la App.
+
+2.  **Flujo de Login:**
+    -   Landing Page detecta sesión activa.
+    -   Muestra "Ir al Dashboard" si ya estás logueado (evita loop de login).
+
+3.  **Dashboard Lógica:**
+    -   Simplificado a modelo: Presupuesto - Gastado = Disponible.
+    -   Traducción completa del panel superior al Español.
+
+--------------------------------------------------------------------------------
+
+PRÓXIMOS PASOS (SOLICITADO POR USUARIO):
+
+1.  **"Japonización" Visual del Dashboard (Gráficos):**
+    -   Cambiar gráficos de barras verticales a horizontales (diseño concepto japonés).
+    -   Paleta de colores "pacífica" (Zen) para categorías en toda la web.
+    -   Fondo con cerezos en flor (Sakura) sutil.
+    -   Traducir textos restantes en la zona de gráficos.
+
+2.  **Refactorización de Estilos:**
+    -   Eliminar colores estridentes.
