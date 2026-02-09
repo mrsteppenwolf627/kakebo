@@ -40,6 +40,7 @@ export interface ToolCallLog {
   arguments: Record<string, unknown>;
   result: unknown;
   error?: string;
+  errorType?: string; // Added in v2: classifies error for better handling
   executionTimeMs: number;
 }
 

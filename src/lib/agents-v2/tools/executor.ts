@@ -3,6 +3,11 @@
  *
  * Executes tools in PARALLEL using Promise.all() for better performance.
  * Handles errors gracefully and returns results in OpenAI format.
+ *
+ * VERSION: 2.0 - ENHANCED ERROR HANDLING
+ * - Classifies errors by type for better UX
+ * - Provides user-friendly error messages
+ * - Forces LLM to acknowledge errors explicitly
  */
 
 import { SupabaseClient } from "@supabase/supabase-js";
@@ -34,6 +39,92 @@ import {
   getSpendingTrends,
   type GetSpendingTrendsParams,
 } from "@/lib/agents/tools/trends";
+import { validateToolOutput, enhanceToolResult } from "./validator";
+
+/**
+ * Error classification for better handling
+ */
+enum ErrorType {
+  DATABASE = "database",
+  VALIDATION = "validation",
+  NOT_FOUND = "not_found",
+  PERMISSION = "permission",
+  UNKNOWN = "unknown",
+}
+
+/**
+ * Classify error by type for appropriate user messaging
+ */
+function classifyError(error: Error): ErrorType {
+  const message = error.message.toLowerCase();
+
+  if (
+    message.includes("database") ||
+    message.includes("connection") ||
+    message.includes("timeout") ||
+    message.includes("supabase")
+  ) {
+    return ErrorType.DATABASE;
+  }
+
+  if (
+    message.includes("validation") ||
+    message.includes("invalid") ||
+    message.includes("required")
+  ) {
+    return ErrorType.VALIDATION;
+  }
+
+  if (
+    message.includes("not found") ||
+    message.includes("no data") ||
+    message.includes("empty")
+  ) {
+    return ErrorType.NOT_FOUND;
+  }
+
+  if (
+    message.includes("permission") ||
+    message.includes("unauthorized") ||
+    message.includes("forbidden")
+  ) {
+    return ErrorType.PERMISSION;
+  }
+
+  return ErrorType.UNKNOWN;
+}
+
+/**
+ * Generate user-friendly error message based on type
+ */
+function getUserFriendlyError(toolName: string, errorType: ErrorType): string {
+  const toolNameSpanish: Record<string, string> = {
+    analyzeSpendingPattern: "análisis de gastos",
+    getBudgetStatus: "estado de presupuesto",
+    detectAnomalies: "detección de anomalías",
+    predictMonthlySpending: "proyección de gastos",
+    getSpendingTrends: "tendencias de gasto",
+  };
+
+  const friendlyName = toolNameSpanish[toolName] || toolName;
+
+  switch (errorType) {
+    case ErrorType.DATABASE:
+      return `No pude acceder a tu información de ${friendlyName} en este momento. Por favor, inténtalo de nuevo en unos momentos.`;
+
+    case ErrorType.VALIDATION:
+      return `Los datos para ${friendlyName} no se pudieron procesar correctamente. Esto puede indicar un problema técnico.`;
+
+    case ErrorType.NOT_FOUND:
+      return `No encontré datos para ${friendlyName}. Esto puede ser normal si no has registrado gastos aún.`;
+
+    case ErrorType.PERMISSION:
+      return `No tengo permiso para acceder a los datos de ${friendlyName}. Verifica tu sesión.`;
+
+    case ErrorType.UNKNOWN:
+      return `Ocurrió un error al ejecutar ${friendlyName}. Por favor, inténtalo de nuevo.`;
+  }
+}
 
 /**
  * Result of executing a single tool
@@ -120,19 +211,42 @@ async function executeSingleTool(
         throw new Error(`Unknown tool: ${toolName}`);
     }
 
+    // ========== VALIDATE TOOL OUTPUT ==========
+    const validation = validateToolOutput(toolName, result);
+
+    if (!validation.valid) {
+      apiLogger.error(
+        {
+          toolName,
+          validationErrors: validation.errors,
+          result,
+        },
+        "Tool output validation failed"
+      );
+
+      // Throw error to trigger error handling
+      throw new Error(
+        `Data validation failed: ${validation.errors.join(", ")}`
+      );
+    }
+
+    // Enhance result with validation metadata (warnings, etc.)
+    const enhancedResult = enhanceToolResult(toolName, result, validation);
+    // ==========================================
+
     const executionTimeMs = Date.now() - startTime;
 
     // Success: return result as JSON string
     const toolMessage: OpenAIToolMessage = {
       role: "tool",
       tool_call_id: toolCall.id,
-      content: JSON.stringify(result),
+      content: JSON.stringify(enhancedResult), // Use enhanced result
     };
 
     const log: ToolCallLog = {
       toolName,
       arguments: args,
-      result,
+      result: enhancedResult, // Log enhanced result
       executionTimeMs,
     };
 
@@ -141,6 +255,7 @@ async function executeSingleTool(
         toolName,
         toolCallId: toolCall.id,
         executionTimeMs,
+        hasWarnings: validation.warnings.length > 0,
       },
       "Tool executed successfully"
     );
@@ -151,31 +266,43 @@ async function executeSingleTool(
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
 
+    // ========== ENHANCED: CLASSIFY AND PROVIDE USER-FRIENDLY ERROR ==========
+    const errorType = classifyError(error as Error);
+    const userMessage = getUserFriendlyError(toolName, errorType);
+
     apiLogger.error(
       {
         toolName,
         toolCallId: toolCall.id,
         error: errorMessage,
+        errorType,
         executionTimeMs,
       },
       "Tool execution failed"
     );
 
-    // Error: return error message in tool response
+    // Return CLEAR error structure that LLM MUST acknowledge
+    // The _error flag and _instruction force the LLM to inform the user
     const toolMessage: OpenAIToolMessage = {
       role: "tool",
       tool_call_id: toolCall.id,
       content: JSON.stringify({
-        error: errorMessage,
-        message: `Error al ejecutar ${toolName}: ${errorMessage}`,
+        _error: true,
+        _errorType: errorType,
+        _userMessage: userMessage,
+        _technicalDetails: errorMessage,
+        _instruction:
+          "CRITICAL: You MUST inform the user about this error using the _userMessage. DO NOT make up data. DO NOT proceed as if the tool worked.",
       }),
     };
+    // ========================================================================
 
     const log: ToolCallLog = {
       toolName,
       arguments: {},
       result: null,
       error: errorMessage,
+      errorType, // Include error type for monitoring
       executionTimeMs,
     };
 
