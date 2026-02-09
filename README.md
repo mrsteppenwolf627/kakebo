@@ -75,6 +75,7 @@ USE_FUNCTION_CALLING_AGENT=true  # Enable KakeBot v2
 - **[Architecture Guide](docs/KAKEBOT_V2_ARCHITECTURE.md)** - Complete system architecture, data flow, and hardening layers
 - **[Deployment Guide](docs/DEPLOYMENT_GUIDE.md)** - Step-by-step deployment, monitoring, and troubleshooting
 - **[API Documentation](docs/API_DOCUMENTATION.md)** - API reference, request/response formats, and examples
+- **[Manual Testing Guide](docs/MANUAL_TESTING_GUIDE.md)** - Comprehensive manual testing checklist (60-90 min)
 - **[Changelog](CHANGELOG.md)** - Version history and migration guides
 
 ### Implementation Logs
