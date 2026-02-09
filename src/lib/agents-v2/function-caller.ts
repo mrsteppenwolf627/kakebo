@@ -7,7 +7,29 @@
  * - Better semantic understanding (GPT-native)
  * - Parallel tool execution
  * - Simpler code
+ *
+ * VERSION: 2.1 - Added user context awareness and tool calling limits
  */
+
+/**
+ * Tool calling constraints to prevent abuse and control costs
+ */
+const TOOL_CALLING_LIMITS = {
+  // Maximum tools per request (prevents GPT from calling everything)
+  maxToolsPerCall: 3,
+
+  // Forbidden combinations (tools that shouldn't be called together)
+  forbiddenCombinations: [
+    // Don't predict AND analyze trends simultaneously (redundant)
+    ["predictMonthlySpending", "getSpendingTrends"],
+  ],
+
+  // Required companions (if tool A is called, tool B should also be called for context)
+  requiredCompanions: {
+    // If predicting spending, also show current budget status for context
+    predictMonthlySpending: "getBudgetStatus",
+  },
+} as const;
 
 import { SupabaseClient } from "@supabase/supabase-js";
 import { apiLogger } from "@/lib/logger";
@@ -20,6 +42,10 @@ import type {
 import { KAKEBO_SYSTEM_PROMPT } from "./prompts";
 import { KAKEBO_TOOLS } from "./tools/definitions";
 import { executeTools, getToolNames } from "./tools/executor";
+import {
+  getUserContextCached,
+  generateContextDisclaimer,
+} from "./context-analyzer";
 import type {
   ConversationMessage,
   AgentResponse,
@@ -28,15 +54,107 @@ import type {
 } from "./types";
 
 /**
+ * Validate tool calls against constraints
+ *
+ * Checks:
+ * 1. Not exceeding max tools per call
+ * 2. No forbidden combinations
+ * 3. Required companions are present
+ *
+ * @param toolCalls - Tool calls from GPT
+ * @returns Validation result with filtered calls if needed
+ */
+function validateToolCalls(toolCalls: OpenAIToolCall[]): {
+  valid: boolean;
+  reason?: string;
+  filteredCalls?: OpenAIToolCall[];
+  warnings?: string[];
+} {
+  const warnings: string[] = [];
+
+  // 1. Check max limit
+  if (toolCalls.length > TOOL_CALLING_LIMITS.maxToolsPerCall) {
+    apiLogger.warn(
+      {
+        toolCount: toolCalls.length,
+        maxAllowed: TOOL_CALLING_LIMITS.maxToolsPerCall,
+        tools: toolCalls.map((tc) => tc.function.name),
+      },
+      "Too many tools requested - limiting to first 3"
+    );
+
+    // Take first N tools (GPT orders by priority)
+    return {
+      valid: true,
+      reason: `Limited to ${TOOL_CALLING_LIMITS.maxToolsPerCall} tools for performance`,
+      filteredCalls: toolCalls.slice(0, TOOL_CALLING_LIMITS.maxToolsPerCall),
+      warnings: [
+        `Reduced from ${toolCalls.length} to ${TOOL_CALLING_LIMITS.maxToolsPerCall} tools`,
+      ],
+    };
+  }
+
+  // 2. Check forbidden combinations
+  const toolNames = toolCalls.map((tc) => tc.function.name);
+
+  for (const forbidden of TOOL_CALLING_LIMITS.forbiddenCombinations) {
+    const hasBoth = forbidden.every((tool) => toolNames.includes(tool));
+
+    if (hasBoth) {
+      apiLogger.warn(
+        {
+          forbiddenPair: forbidden,
+          requestedTools: toolNames,
+        },
+        "Forbidden tool combination detected - removing redundant tool"
+      );
+
+      // Keep first tool, remove second (it's redundant)
+      const filtered = toolCalls.filter(
+        (tc) => tc.function.name !== forbidden[1]
+      );
+
+      return {
+        valid: true,
+        reason: `Removed redundant tool: ${forbidden[1]}`,
+        filteredCalls: filtered,
+        warnings: [
+          `${forbidden[0]} and ${forbidden[1]} are redundant - removed ${forbidden[1]}`,
+        ],
+      };
+    }
+  }
+
+  // 3. Check for required companions
+  for (const [mainTool, companionTool] of Object.entries(
+    TOOL_CALLING_LIMITS.requiredCompanions
+  )) {
+    if (toolNames.includes(mainTool) && !toolNames.includes(companionTool)) {
+      warnings.push(
+        `${mainTool} called without companion ${companionTool} - context may be incomplete`
+      );
+    }
+  }
+
+  // All checks passed
+  return {
+    valid: true,
+    warnings: warnings.length > 0 ? warnings : undefined,
+  };
+}
+
+/**
  * Process a user message using OpenAI Function Calling
  *
  * Flow:
- * 1. Build messages array (system prompt + history + user message)
+ * 0. Analyze user context (data quality, experience level)
+ * 1. Build messages array (system prompt + context + history + user message)
  * 2. First LLM call with tools available
  * 3. If no tool calls → return direct response (DONE)
- * 4. If tool calls → execute tools in parallel
- * 5. Second LLM call with tool results
- * 6. Return final response with metrics
+ * 4. If tool calls → validate and filter tool calls
+ * 5. Execute tools in parallel
+ * 6. Second LLM call with tool results
+ * 7. Return final response with metrics
  *
  * @param userMessage - Current user message
  * @param conversationHistory - Previous messages in conversation
@@ -65,6 +183,23 @@ export async function processFunctionCalling(
   );
 
   try {
+    // ========== STEP 0: ANALYZE USER CONTEXT ==========
+    // Get user's data quality to adjust bot behavior appropriately
+    const userContext = await getUserContextCached(supabase, userId);
+    const contextDisclaimer = generateContextDisclaimer(userContext);
+
+    apiLogger.debug(
+      {
+        userId,
+        dataQuality: userContext.dataQuality,
+        isNewUser: userContext.isNewUser,
+        daysSinceFirst: userContext.daysSinceFirstExpense,
+        totalTransactions: userContext.totalTransactions,
+      },
+      "User context analyzed"
+    );
+    // =================================================
+
     // Step 1: Build messages array for OpenAI
     const messages: ChatCompletionMessageParam[] = [
       // System prompt defines role, capabilities, and semantic mapping
@@ -72,6 +207,14 @@ export async function processFunctionCalling(
         role: "system",
         content: KAKEBO_SYSTEM_PROMPT,
       },
+
+      // ========== INJECT USER CONTEXT ==========
+      // Dynamic system message that adjusts behavior based on data quality
+      {
+        role: "system",
+        content: contextDisclaimer,
+      },
+      // ========================================
 
       // Conversation history (for multi-turn context)
       ...conversationHistory.map(
@@ -146,21 +289,50 @@ export async function processFunctionCalling(
       };
     }
 
-    // Step 4: Tools requested - execute them in parallel
+    // Step 4: Tools requested - validate and execute them
     toolCallsCount = firstMessage.tool_calls.length;
-    const toolNames = getToolNames(firstMessage.tool_calls);
+
+    // ========== VALIDATE TOOL CALLS ==========
+    const validation = validateToolCalls(firstMessage.tool_calls);
+
+    // Use filtered calls if validation adjusted them
+    const toolCallsToExecute =
+      validation.filteredCalls || firstMessage.tool_calls;
+
+    // Log if validation made changes
+    if (validation.reason) {
+      apiLogger.info(
+        {
+          userId,
+          originalCount: firstMessage.tool_calls.length,
+          filteredCount: toolCallsToExecute.length,
+          reason: validation.reason,
+        },
+        "Tool calls filtered by validation"
+      );
+    }
+
+    // Log warnings if any
+    if (validation.warnings) {
+      for (const warning of validation.warnings) {
+        apiLogger.warn({ userId, warning }, "Tool calling validation warning");
+      }
+    }
+    // ========================================
+
+    const toolNames = getToolNames(toolCallsToExecute);
 
     apiLogger.info(
       {
         userId,
         toolsRequested: toolNames,
-        toolCount: toolCallsCount,
+        toolCount: toolCallsToExecute.length,
       },
-      "Tools requested - executing in parallel"
+      "Tools validated - executing in parallel"
     );
 
     const { toolMessages, logs } = await executeTools(
-      firstMessage.tool_calls,
+      toolCallsToExecute,
       supabase,
       userId
     );
