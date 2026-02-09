@@ -104,7 +104,6 @@ export default function PublicHomePage() {
           <FAQ />
         </div>
 
-        <Footer />
       </div>
     </main>
   );

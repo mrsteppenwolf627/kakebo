@@ -17,3 +17,8 @@
 -   **Colors**:
     -   Softened category colors to pastel tones for a less strident look.
     -   Updated `ExpenseCalendar` and charts to reflect these new colors.
+-   **Persistent Footer**:
+    -   Moved Footer to Root Layout (`layout.tsx`) to ensure it appears on all pages (Landing, Login, Dashboard).
+    -   Removed duplicate Footer from Landing Page.
+-   **Dashboard Legibility**:
+    -   Improved text contrast for the bottom SEO/Help blocks in the Dashboard for better readability in dark mode.

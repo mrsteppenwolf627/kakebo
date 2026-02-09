@@ -68,8 +68,8 @@ export default async function HomePage(props: {
           </div>
 
           {/* SEO BLOCK - Estilo sobrio */}
-          <section className="mt-16 space-y-6 border-t border-stone-200 pt-12 text-sm text-stone-600">
-            <h2 className="text-xl font-serif font-normal text-stone-900">
+          <section className="mt-16 space-y-6 border-t border-border pt-12 text-sm text-stone-600 dark:text-stone-400">
+            <h2 className="text-xl font-serif font-normal text-foreground">
               Control de gastos mensual con método Kakebo
             </h2>
 
