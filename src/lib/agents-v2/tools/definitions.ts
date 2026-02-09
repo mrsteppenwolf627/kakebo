@@ -6,6 +6,8 @@
  */
 
 import type { ChatCompletionTool } from "openai/resources/chat/completions";
+import { searchExpensesTool } from "./search-expenses-definition";
+import { submitFeedbackTool } from "./submit-feedback-definition";
 
 /**
  * Tool 1: Analyze Spending Patterns
@@ -67,13 +69,15 @@ Por defecto: "all"`,
             "last_3_months",
             "last_6_months",
             "current_week",
+            "last_week",
           ],
           description: `Período de tiempo a analizar. Mapea expresiones naturales:
 - "este mes", "en el mes actual" → "current_month"
 - "el mes pasado", "mes anterior" → "last_month"
 - "últimos 3 meses", "trimestre" → "last_3_months"
 - "últimos 6 meses", "semestre" → "last_6_months"
-- "esta semana", "en la semana" → "current_week"
+- "esta semana", "semana actual" → "current_week"
+- "semana pasada", "la semana pasada" → "last_week"
 
 Por defecto: "current_month"`,
         },
@@ -86,6 +90,40 @@ Por defecto: "current_month"`,
 - "month": Por meses (para períodos largos)
 
 Por defecto: "day"`,
+        },
+        limit: {
+          type: "number",
+          description: `Número máximo de gastos a devolver.
+- Por defecto: 5
+- Máximo: 50
+
+**USA limit=50 cuando usuario pida:**
+- "todos los gastos"
+- "muéstrame todo"
+- "lista completa"
+
+Usa default (5) para preguntas generales.`,
+        },
+        semanticFilter: {
+          type: "string",
+          description: `Filtro semántico para subcategorías dentro de una categoría principal.
+
+**USA ESTO cuando el usuario pida algo MÁS ESPECÍFICO que las 4 categorías Kakebo:**
+
+Ejemplos de cuándo USAR semanticFilter:
+- "gastos de comida" → category="survival", semanticFilter="comida"
+- "gastos de restaurantes" → category="optional", semanticFilter="restaurantes"
+- "gastos de salud" → category="survival", semanticFilter="salud"
+- "gastos de transporte" → category="survival", semanticFilter="transporte"
+- "suscripciones" → category="optional", semanticFilter="suscripciones"
+
+Ejemplos de cuándo NO usar semanticFilter:
+- "gastos de supervivencia" → category="survival" (sin filtro)
+- "gastos opcionales" → category="optional" (sin filtro)
+
+**IMPORTANTE:** El filtro usa embeddings semánticos para entender contexto humano.
+Por ejemplo, si piden "comida", excluirá automáticamente "psicólogo" o "medicamentos" 
+aunque estén en la misma categoría "supervivencia".`,
         },
       },
       required: [], // Todos los parámetros son opcionales con defaults sensibles
@@ -350,6 +388,8 @@ export const KAKEBO_TOOLS: ChatCompletionTool[] = [
   detectAnomaliesTool,
   predictMonthlySpendingTool,
   getSpendingTrendsTool,
+  searchExpensesTool,
+  submitFeedbackTool,
 ];
 
 /**
@@ -361,4 +401,6 @@ export const TOOLS_BY_NAME: Record<string, ChatCompletionTool> = {
   detectAnomalies: detectAnomaliesTool,
   predictMonthlySpending: predictMonthlySpendingTool,
   getSpendingTrends: getSpendingTrendsTool,
+  searchExpenses: searchExpensesTool,
+  submitFeedback: submitFeedbackTool,
 };

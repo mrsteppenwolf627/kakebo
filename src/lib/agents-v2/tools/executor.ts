@@ -39,6 +39,14 @@ import {
   getSpendingTrends,
   type GetSpendingTrendsParams,
 } from "@/lib/agents/tools/trends";
+import {
+  searchExpenses,
+  type SearchExpensesParams,
+} from "@/lib/agents/tools/search-expenses";
+import {
+  submitSearchFeedback,
+  type SubmitFeedbackParams,
+} from "@/lib/agents/tools/feedback";
 import { validateToolOutput, enhanceToolResult } from "./validator";
 
 /**
@@ -204,6 +212,22 @@ async function executeSingleTool(
           supabase,
           userId,
           args as GetSpendingTrendsParams
+        );
+        break;
+
+      case "searchExpenses":
+        result = await searchExpenses(
+          supabase,
+          userId,
+          args as SearchExpensesParams
+        );
+        break;
+
+      case "submitFeedback":
+        result = await submitSearchFeedback(
+          supabase,
+          userId,
+          args as SubmitFeedbackParams
         );
         break;
 

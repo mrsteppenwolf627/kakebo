@@ -70,6 +70,7 @@ Respuesta al usuario
 
 Function Calling es una característica nativa de OpenAI donde GPT decide automáticamente qué funciones llamar y con qué parámetros, todo en una sola conversación inteligente.
 
+
 ### Arquitectura Propuesta
 
 ```

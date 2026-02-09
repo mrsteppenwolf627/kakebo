@@ -131,6 +131,9 @@ function getStatusLevel(percentage: number): BudgetStatusLevel {
 
 /**
  * Project spending for rest of month
+ * 
+ * Uses weighted average to avoid panic-inducing projections from early large expenses
+ * (e.g., rent paid on day 1 shouldn't project to 24k/month)
  */
 function projectSpending(
   spent: number,
@@ -138,6 +141,16 @@ function projectSpending(
   daysInMonth: number
 ): number {
   if (daysElapsed === 0) return spent;
+
+  // If very early in month (< 5 days), use more conservative projection
+  if (daysElapsed < 5) {
+    // Weight recent spending less heavily
+    const dailyAverage = spent / daysElapsed;
+    const conservativeFactor = 0.7; // Assume spending will slow down
+    return spent + (dailyAverage * conservativeFactor * (daysInMonth - daysElapsed));
+  }
+
+  // Standard linear projection for mid/late month
   const dailyAverage = spent / daysElapsed;
   return dailyAverage * daysInMonth;
 }
@@ -179,6 +192,14 @@ export async function getBudgetStatus(
       opcional: settings.budget_opcional,
       cultura: settings.budget_cultura,
       extra: settings.budget_extra,
+    });
+
+    // Debug: Log query parameters
+    console.log("🔍 Budget query params:", {
+      month,
+      startDate: `${month}-01`,
+      endDate: getNextMonth(month),
+      userId
     });
 
     // Get expenses for the month
@@ -265,7 +286,7 @@ export async function getBudgetStatus(
       totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
     const overallStatus = getStatusLevel(overallPercentage);
 
-    return {
+    const result = {
       month,
       categories,
       totalBudget,
@@ -273,6 +294,10 @@ export async function getBudgetStatus(
       totalRemaining,
       overallStatus,
     };
+
+    console.log("✅ Budget status result:", JSON.stringify(result, null, 2));
+
+    return result;
   } catch (error) {
     apiLogger.error({ error, params }, "Error getting budget status");
     throw error;

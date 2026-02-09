@@ -6,8 +6,10 @@ import { apiLogger } from "@/lib/logger";
  */
 export interface AnalyzeSpendingPatternParams {
   category?: "survival" | "optional" | "culture" | "extra" | "all";
-  period?: "current_month" | "last_month" | "last_3_months" | "last_6_months";
+  period?: "current_month" | "last_month" | "last_3_months" | "last_6_months" | "current_week" | "last_week";
   groupBy?: "day" | "week" | "month";
+  limit?: number; // Max expenses to return (default 5, max 50)
+  semanticFilter?: string; // Natural language filter (e.g., "comida", "restaurantes", "salud")
 }
 
 /**
@@ -33,29 +35,57 @@ export interface SpendingPatternResult {
  */
 function getPeriodDates(period: string): { start: string; end: string } {
   const now = new Date();
-  const end = now.toISOString().split("T")[0];
   let start: Date;
+  let end: Date;
 
   switch (period) {
     case "current_month":
       start = new Date(now.getFullYear(), now.getMonth(), 1);
+      end = now;
       break;
     case "last_month":
       start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      end = new Date(now.getFullYear(), now.getMonth(), 0); // Last day of previous month
       break;
     case "last_3_months":
       start = new Date(now.getFullYear(), now.getMonth() - 3, 1);
+      end = now;
       break;
     case "last_6_months":
       start = new Date(now.getFullYear(), now.getMonth() - 6, 1);
+      end = now;
+      break;
+    case "current_week":
+      // Start of current week (Monday)
+      const currentDay = now.getDay();
+      const daysFromMonday = currentDay === 0 ? 6 : currentDay - 1; // Sunday = 0, adjust to Monday = 0
+      start = new Date(now);
+      start.setDate(now.getDate() - daysFromMonday);
+      start.setHours(0, 0, 0, 0);
+      end = now;
+      break;
+    case "last_week":
+      // Last week (Monday to Sunday)
+      const lastWeekEnd = new Date(now);
+      const currentDayLW = now.getDay();
+      const daysFromMondayLW = currentDayLW === 0 ? 6 : currentDayLW - 1;
+      lastWeekEnd.setDate(now.getDate() - daysFromMondayLW - 1); // Sunday of last week
+      lastWeekEnd.setHours(23, 59, 59, 999);
+
+      start = new Date(lastWeekEnd);
+      start.setDate(lastWeekEnd.getDate() - 6); // Monday of last week
+      start.setHours(0, 0, 0, 0);
+
+      end = lastWeekEnd;
       break;
     default:
       start = new Date(now.getFullYear(), now.getMonth(), 1);
+      end = now;
   }
 
   return {
     start: start.toISOString().split("T")[0],
-    end,
+    end: end.toISOString().split("T")[0],
   };
 }
 
@@ -154,7 +184,7 @@ export async function analyzeSpendingPattern(
     // Query expenses
     let query = supabase
       .from("expenses")
-      .select("note, amount, date")
+      .select("id, note, amount, date")
       .eq("user_id", userId)
       .gte("date", start)
       .lte("date", end);
@@ -188,7 +218,43 @@ export async function analyzeSpendingPattern(
       throw error;
     }
 
-    if (!expenses || expenses.length === 0) {
+    // Apply semantic filtering if requested
+    let filteredExpenses = expenses || [];
+
+    if (params.semanticFilter && filteredExpenses.length > 0) {
+      try {
+        // Import embeddings module
+        const { searchExpensesByText } = await import("@/lib/ai/embeddings");
+
+        // Search for semantically similar expenses
+        const { results } = await searchExpensesByText(
+          supabase,
+          userId,
+          params.semanticFilter,
+          {
+            limit: 100, // Get more results for filtering
+            threshold: 0.3, // Lower threshold for broader matching
+          }
+        );
+
+        // Filter original expenses to only include semantically similar ones
+        const similarExpenseIds = new Set(results.map(r => r.expense_id));
+        filteredExpenses = filteredExpenses.filter(exp =>
+          similarExpenseIds.has(exp.id)
+        );
+
+        apiLogger.info({
+          originalCount: expenses?.length || 0,
+          filteredCount: filteredExpenses.length,
+          semanticFilter: params.semanticFilter
+        }, "Applied semantic filtering");
+      } catch (embeddingError) {
+        apiLogger.warn({ error: embeddingError }, "Semantic filtering failed, using all expenses");
+        // Fall back to showing all expenses if semantic search fails
+      }
+    }
+
+    if (!filteredExpenses || filteredExpenses.length === 0) {
       return {
         category,
         period,
@@ -202,21 +268,25 @@ export async function analyzeSpendingPattern(
     }
 
     // Calculate metrics
-    const totalAmount = expenses.reduce(
+    const totalAmount = filteredExpenses.reduce(
       (sum, exp) => sum + (exp.amount || 0),
       0
     );
-    const averagePerPeriod = totalAmount / expenses.length;
+    const averagePerPeriod = totalAmount / filteredExpenses.length;
 
-    // Get top expenses
-    const topExpenses = expenses.slice(0, 5).map((exp) => ({
+    // Get expenses (limited by params.limit, default 5, max 50)
+    const limit = Math.min(params.limit || 5, 50);
+    const topExpenses = filteredExpenses.slice(0, limit).map((exp) => ({
       concept: exp.note || "Sin concepto",
       amount: exp.amount || 0,
       date: exp.date || "",
     }));
 
+    // Add transparency note if there are more expenses than shown
+    const hasMoreExpenses = filteredExpenses.length > limit;
+
     // Calculate trend (group by day and analyze)
-    const expensesByDay = expenses.reduce(
+    const expensesByDay = filteredExpenses.reduce(
       (acc, exp) => {
         const date = exp.date || "";
         if (!acc[date]) {
@@ -240,6 +310,13 @@ export async function analyzeSpendingPattern(
       topExpenses,
       category
     );
+
+    // Add transparency about data completeness
+    if (hasMoreExpenses) {
+      insights.unshift(`Mostrando los ${limit} gastos más altos de ${filteredExpenses.length} transacciones totales`);
+    } else if (limit >= filteredExpenses.length && filteredExpenses.length > 5) {
+      insights.unshift(`Mostrando todas las ${filteredExpenses.length} transacciones`);
+    }
 
     return {
       category,
