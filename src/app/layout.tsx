@@ -5,12 +5,15 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Kakebo AI: Finanzas Zen",
+    default: "Kakebo AI: Finanzas Zen y Control de Gastos",
     template: "%s | Kakebo AI",
   },
   description:
-    "Gestión financiera minimalista con Inteligencia Artificial. Registra gastos, controla presupuestos y ahorra mes a mes.",
-  manifest: "/manifest.webmanifest", // Next.js genera esto desde manifest.ts
+    "La App de Kakebo definitiva. Gestión financiera minimalista con Inteligencia Artificial. Registra gastos, controla presupuestos y ahorra mes a mes en euros.",
+  keywords: ["kakebo", "ahorro", "finanzas personales", "control gastos", "app gastos", "método kakebo", "ahorrar dinero españa"],
+  authors: [{ name: "Kakebo AI Team" }],
+  creator: "Kakebo AI",
+  manifest: "/manifest.webmanifest",
   themeColor: "#fafaf9",
   appleWebApp: {
     capable: true,
@@ -21,12 +24,32 @@ export const metadata: Metadata = {
     icon: "/icon.png",
     apple: "/icon.png",
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://kakebo.ai"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Kakebo AI",
-    description: "Finanzas Zen con Inteligencia Artificial.",
+    title: "Kakebo AI: Finanzas Zen",
+    description: "Domina tus finanzas con el método japonés Kakebo potenciado por IA.",
     type: "website",
     locale: "es_ES",
+    url: "/",
+    siteName: "Kakebo AI",
+    images: [
+      {
+        url: "/og-image.jpg", // Ensure this exists or use a placeholder
+        width: 1200,
+        height: 630,
+        alt: "Kakebo AI Dashboard",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kakebo AI: Finanzas Zen",
+    description: "Gestión financiera minimalista con Inteligencia Artificial.",
+    creator: "@kakebo_ai",
+    images: ["/og-image.jpg"],
   },
 };
 

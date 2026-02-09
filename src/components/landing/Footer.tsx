@@ -94,13 +94,28 @@ export function Footer() {
             <h3 className="mb-4 text-sm font-serif text-foreground">Legal</h3>
             <ul className="space-y-3">
               <li>
-                <span className="text-sm text-muted-foreground font-light">Privacidad</span>
+                <Link
+                  href="/privacy"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
+                >
+                  Privacidad
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-muted-foreground font-light">Términos</span>
+                <Link
+                  href="/terms"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
+                >
+                  Términos
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-muted-foreground font-light">Cookies</span>
+                <Link
+                  href="/cookies"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
+                >
+                  Cookies
+                </Link>
               </li>
             </ul>
           </div>

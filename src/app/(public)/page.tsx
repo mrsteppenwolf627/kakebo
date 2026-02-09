@@ -7,6 +7,7 @@ import {
   HowItWorks,
   FAQ,
   Footer,
+  SeoContent,
 } from "@/components/landing";
 
 export const metadata: Metadata = {
@@ -104,6 +105,58 @@ export default function PublicHomePage() {
           <FAQ />
         </div>
 
+        <SeoContent />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "SoftwareApplication",
+                  "name": "Kakebo AI",
+                  "applicationCategory": "FinanceApplication",
+                  "operatingSystem": "Web",
+                  "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "EUR"
+                  },
+                  "description": "Aplicación de control de gastos basada en el método japonés Kakebo."
+                },
+                {
+                  "@type": "Organization",
+                  "name": "Kakebo AI",
+                  "url": "https://kakebo.ai",
+                  "logo": "https://kakebo.ai/icon.png",
+                  "sameAs": []
+                },
+                {
+                  "@type": "FAQPage",
+                  "mainEntity": [
+                    {
+                      "@type": "Question",
+                      "name": "¿Es gratis usar Kakebo AI?",
+                      "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Sí, Kakebo AI tiene un plan gratuito para siempre que te permite gestionar tus gastos mensuales sin coste."
+                      }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "¿Cómo funciona el método Kakebo?",
+                      "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Se basa en registrar gastos manualmente, categorizarlos en 4 grupos (Supervivencia, Ocio, Cultura, Extra) y reflexionar sobre ellos a final de mes."
+                      }
+                    }
+                  ]
+                }
+              ]
+            })
+          }}
+        />
       </div>
     </main>
   );

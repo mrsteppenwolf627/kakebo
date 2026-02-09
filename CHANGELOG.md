@@ -22,3 +22,6 @@
     -   Removed duplicate Footer from Landing Page.
 -   **Dashboard Legibility**:
     -   Improved text contrast for the bottom SEO/Help blocks in the Dashboard for better readability in dark mode.
+-   **Legal Compliance**:
+    -   Added `Terms`, `Privacy`, and `Cookies` pages with Stripe-ready clauses.
+    -   Linked legal pages in the Footer.
