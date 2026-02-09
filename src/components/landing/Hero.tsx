@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HeroCTA } from "./HeroCTA";
 
 export function Hero() {
   return (
@@ -26,12 +27,7 @@ export function Hero() {
 
         {/* CTA Buttons - Rectangulares, sobrios */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-          <Link
-            href="/login"
-            className="inline-flex items-center justify-center border border-stone-900 bg-stone-900 dark:bg-stone-100 dark:text-stone-900 dark:border-stone-100 px-8 py-4 text-base font-normal text-white transition-opacity hover:opacity-90"
-          >
-            Empezar
-          </Link>
+          <HeroCTA />
 
           <Link
             href="#pricing"

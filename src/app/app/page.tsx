@@ -46,11 +46,12 @@ export default async function HomePage(props: {
       <main className="min-h-screen px-4 sm:px-8 py-8 sm:py-12">
         <div className="mx-auto max-w-6xl space-y-8 sm:space-y-12">
           {/* HEADER - Estilo Wabi-Sabi: Simple, espacio en blanco, serif para título */}
-          <header className="border-b border-stone-200 pb-6">
-            <h1 className="text-3xl sm:text-5xl font-serif font-normal text-stone-900 tracking-tight">
+          {/* HEADER - Estilo Wabi-Sabi: Simple, espacio en blanco, serif para título */}
+          <header className="border-b border-border pb-6">
+            <h1 className="text-3xl sm:text-5xl font-serif font-normal text-foreground tracking-tight">
               Mi Kakebo
             </h1>
-            <p className="text-stone-600 text-sm sm:text-base mt-2 font-light">
+            <p className="text-muted-foreground text-sm sm:text-base mt-2 font-light">
               Control de gastos mensual
             </p>
           </header>

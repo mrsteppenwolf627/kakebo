@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
@@ -57,41 +58,45 @@ export default function MonthSelector({
   }, [year, month]);
 
   return (
-    <div className="border border-stone-200 rounded-none p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white">
+    <div className="border border-border rounded-lg p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-card shadow-sm transition-colors">
       <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-        <div className="text-xs sm:text-sm text-stone-500 font-light">月</div>
-        <div className="font-serif font-normal capitalize text-base sm:text-lg text-stone-900">
-          {label}
+        <div className="h-10 w-10 flex items-center justify-center rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400">
+          <Calendar className="w-5 h-5" />
         </div>
-        <div className="text-xs text-stone-400 font-mono">({currentYm})</div>
+        <div>
+          <div className="font-serif font-normal capitalize text-lg sm:text-xl text-foreground">
+            {label}
+          </div>
+          <div className="text-xs text-muted-foreground font-mono">{currentYm}</div>
+        </div>
       </div>
 
       <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={goPrev}
-          className="border border-stone-300 px-3 sm:px-4 py-2 text-xs sm:text-sm text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-colors"
+          className="border border-border rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted hover:border-foreground/20 transition-all"
           title="Mes anterior"
         >
-          ←
+          <ChevronLeft className="w-5 h-5" />
         </button>
 
         <button
           type="button"
           onClick={goToday}
-          className="border border-stone-300 px-3 sm:px-4 py-2 text-xs sm:text-sm text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-colors"
+          className="border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900 px-4 py-2 text-xs sm:text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors rounded-md"
           title="Ir al mes actual"
         >
-          今月
+          Ir a hoy
         </button>
 
         <button
           type="button"
           onClick={goNext}
-          className="border border-stone-300 px-3 sm:px-4 py-2 text-xs sm:text-sm text-stone-700 hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-colors"
+          className="border border-border rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted hover:border-foreground/20 transition-all"
           title="Mes siguiente"
         >
-          →
+          <ChevronRight className="w-5 h-5" />
         </button>
       </div>
     </div>

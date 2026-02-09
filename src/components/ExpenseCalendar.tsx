@@ -6,10 +6,10 @@ import Link from "next/link";
 import SpendingChart from "@/components/SpendingChart";
 
 const KAKEBO_CATEGORIES = {
-  supervivencia: { label: "Supervivencia", color: "#cf5c5c" }, // Terracota
-  opcional: { label: "Opcional", color: "#818cf8" },      // Índigo
-  cultura: { label: "Cultura", color: "#84cc16" },        // Matcha
-  extra: { label: "Extra", color: "#c084fc" },            // Wisteria
+  supervivencia: { label: "Supervivencia", color: "#fca5a5" }, // Red-300 (Pastel)
+  opcional: { label: "Opcional", color: "#93c5fd" },      // Blue-300 (Pastel)
+  cultura: { label: "Cultura", color: "#86efac" },        // Green-300 (Pastel)
+  extra: { label: "Extra", color: "#d8b4fe" },            // Purple-300 (Pastel)
 } as const;
 
 type CategoryKey = keyof typeof KAKEBO_CATEGORIES;

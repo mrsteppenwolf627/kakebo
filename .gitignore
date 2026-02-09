@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+nul
+
+build_log.txt
+estrategia frontend.txt
+test-agent-endpoint.ps1
+test-openai.mjs
+test_agent.ps1

@@ -5,10 +5,12 @@
 @custom-variant dark (&:is(.dark *));
 
 /* Prevent horizontal scroll on mobile */
+/* Prevent horizontal scroll on mobile */
 html,
 body {
   overflow-x: hidden;
   max-width: 100vw;
+  scroll-behavior: smooth;
 }
 
 * {
