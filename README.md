@@ -1,318 +1,549 @@
-# Kakebo - Personal Finance Management
+<div align="center">
 
-**Version:** 2.0.0
-**Status:** ✅ Production Ready (Staging)
-**Last Updated:** 2026-02-09
+<img src="https://img.shields.io/badge/Kakebo-AI-FF6B6B?style=for-the-badge&logo=openai&logoColor=white" alt="Kakebo AI" />
+
+# 🏮 Kakebo AI
+
+### *Tu asistente financiero personal con IA que aprende de ti*
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js" alt="Next.js" />
+  <img src="https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?style=flat-square&logo=openai" alt="OpenAI" />
+  <img src="https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=flat-square&logo=supabase" alt="Supabase" />
+  <img src="https://img.shields.io/badge/License-Proprietary-red?style=flat-square" alt="License" />
+</p>
+
+<p align="center">
+  <a href="#-características"><strong>Características</strong></a> ·
+  <a href="#-demo"><strong>Demo</strong></a> ·
+  <a href="#-quick-start"><strong>Quick Start</strong></a> ·
+  <a href="#-documentación"><strong>Docs</strong></a> ·
+  <a href="#-freemium-model"><strong>Pricing</strong></a>
+</p>
+
+</div>
 
 ---
 
-## Overview
+## 🌸 ¿Qué es Kakebo?
 
-Kakebo is a modern personal finance management application powered by AI. It helps users track expenses, manage budgets, and gain insights into their spending patterns through conversational AI.
+**Kakebo** es una aplicación moderna de gestión financiera inspirada en el método japonés tradicional, pero potenciada con **Inteligencia Artificial de última generación**.
 
-**Key Features:**
-- 💬 **Conversational AI Assistant** - Ask questions about your spending in natural language (Spanish)
-- 📊 **Smart Analytics** - Automatic spending pattern detection and trend analysis
-- 💰 **Budget Tracking** - Set and monitor budgets across 4 categories
-- 🔍 **Anomaly Detection** - Identifies unusual spending automatically
-- 📈 **Predictive Insights** - Projects end-of-month spending
-- 🎯 **User-Adaptive** - Adjusts behavior based on your data quality
+A diferencia de otras apps financieras, Kakebo AI:
+
+- 🧠 **Aprende de ti**: Se vuelve más inteligente con cada interacción
+- 💬 **Habla tu idioma**: Consultas en lenguaje natural, sin jerga técnica
+- 🎯 **Se adapta**: Ajusta su comportamiento según la calidad de tus datos
+- 🌍 **Aprende globalmente**: Se beneficia del conocimiento compartido de todos los usuarios (respetando tu privacidad)
 
 ---
 
-## Quick Start
+## ✨ Características
 
-### Prerequisites
+### 🤖 Agente IA Premium
 
-- **Node.js** v18.0.0 or higher
-- **npm** v9.0.0 or higher
-- **OpenAI API Key**
-- **Supabase Account**
+<details>
+<summary><b>Chat conversacional ilimitado</b></summary>
 
-### Installation
+Pregunta cualquier cosa sobre tus finanzas en **lenguaje natural**:
+
+```
+👤 "Busca vicios del mes pasado"
+🤖 "He encontrado 12 gastos relacionados con vicios (€127.50)..."
+
+👤 "¿Cuánto he gastado en restaurantes caros?"
+🤖 "Has gastado €245 en restaurantes este mes. Es un 30% más que el mes anterior..."
+
+👤 "La insulina NO es un vicio"
+🤖 "Entendido. He aprendido que 'insulina' no debe considerarse vicio. ✓"
+```
+
+**Powered by GPT-4o-mini con Function Calling**
+
+</details>
+
+<details>
+<summary><b>Sistema de aprendizaje (Personal + Global)</b></summary>
+
+Kakebo AI **aprende permanentemente**:
+
+1. **Feedback Personal**: Corrige cualquier resultado y el AI lo recuerda para siempre
+2. **Consenso Global**: Si 3+ usuarios corrigen lo mismo, todos se benefician
+3. **Búsqueda Semántica**: Encuentra conceptos relacionados aunque uses palabras diferentes
+
+**Ejemplo de aprendizaje colectivo:**
+```
+7 usuarios: "insulina" = NO es vicio
+3 usuarios: "insulina" = Sí es vicio
+→ 70% consenso → Marcado globalmente como NO vicio
+```
+
+**Privacidad garantizada**: Solo se comparte el patrón (ej: "X NO es Y"), nunca tus datos personales.
+
+</details>
+
+<details>
+<summary><b>Análisis avanzado</b></summary>
+
+- 📊 **Patrones de gasto**: Identifica tendencias por categoría
+- 🔮 **Predicciones**: Proyecta cuánto gastarás al final del mes
+- ⚠️ **Detección de anomalías**: Te avisa de gastos inusuales
+- 📈 **Trends históricos**: Compara con meses anteriores
+
+</details>
+
+### 💰 Gestión Financiera
+
+- ✅ **Categorías Kakebo** auténticas: Supervivencia, Opcional, Cultura, Extra
+- 📅 **Vista calendario** con control mensual
+- 💳 **Tracking de gastos** rápido y visual
+- 🎯 **Presupuestos por categoría**
+
+### 📄 Reportes Premium
+
+- 📑 **PDF profesionales** con gráficos
+- 📊 **Análisis detallado** por periodo
+- 💾 **Exportación** de datos
+
+### 🎨 Diseño Wabi-Sabi
+
+- 🌸 Estética zen inspirada en Japón
+- 🌓 **Modo oscuro** perfecto
+- 📱 **Responsive** (móvil, tablet, desktop)
+- ⚡ **Rápido** y fluido
+
+---
+
+## 🎬 Demo
+
+> 🚧 **Screenshots en desarrollo**  
+> Muy pronto añadiremos capturas del dashboard, chat AI, y reportes.
+
+**Live Demo**: [kakebo-app.vercel.app](https://kakebo-app.vercel.app) *(pending)*
+
+---
+
+## 🚀 Quick Start
+
+### Prerrequisitos
 
 ```bash
-# Clone repository
-git clone https://github.com/your-org/kakebo.git
+Node.js ≥ 18.0.0
+npm ≥ 9.0.0
+```
+
+### Instalación en 3 pasos
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/mrsteppenwolf627/kakebo.git
 cd kakebo
 
-# Install dependencies
+# 2. Instalar dependencias
 npm install
 
-# Configure environment
+# 3. Configurar variables de entorno
 cp .env.example .env.local
-# Edit .env.local with your credentials
+# Edita .env.local con tus keys (ver abajo)
 
-# Run development server
+# 4. Ejecutar en desarrollo
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the application.
+Abre [http://localhost:3000](http://localhost:3000) 🎉
 
-### Environment Setup
+### ⚙️ Variables de Entorno
 
-Create `.env.local` with:
+Crea `.env.local` con:
 
-```bash
-# OpenAI
-OPENAI_API_KEY=sk-...
+```env
+# Supabase (Database + Auth)
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_anon_key
+SUPABASE_SERVICE_ROLE_KEY=tu_service_role_key
 
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://...
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-SUPABASE_SERVICE_ROLE_KEY=...
+# OpenAI (AI Agent)
+OPENAI_API_KEY=sk-proj-...
 
-# Feature Flags (optional)
-USE_FUNCTION_CALLING_AGENT=true  # Enable KakeBot v2
+# Stripe (Pagos)
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_PRICE_ID_PRO=price_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+NEXT_PUBLIC_PRICE_DISPLAY=3.99€
+
+# Admin
+NEXT_PUBLIC_ADMIN_EMAILS=tu-email@ejemplo.com
+
+# App
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+USE_FUNCTION_CALLING_AGENT=true
 ```
 
----
-
-## Documentation
-
-### Core Documentation
-
-- **[Architecture Guide](docs/KAKEBOT_V2_ARCHITECTURE.md)** - Complete system architecture, data flow, and hardening layers
-- **[Deployment Guide](docs/DEPLOYMENT_GUIDE.md)** - Step-by-step deployment, monitoring, and troubleshooting
-- **[API Documentation](docs/API_DOCUMENTATION.md)** - API reference, request/response formats, and examples
-- **[Manual Testing Guide](docs/MANUAL_TESTING_GUIDE.md)** - Comprehensive manual testing checklist (60-90 min)
-- **[Changelog](CHANGELOG.md)** - Version history and migration guides
-
-### Implementation Logs
-
-- **[Sprint 1 Implementation](SPRINT1_IMPLEMENTATION.md)** - Hardening features (transparency, validation, errors)
-- **[Sprint 2 Implementation](SPRINT2_IMPLEMENTATION.md)** - Adaptive features (context, tool limits)
+**Guías**:
+- [Configurar Supabase](#-supabase-setup)
+- [Configurar Stripe](#-stripe-setup)
+- [Obtener OpenAI API Key](https://platform.openai.com/api-keys)
 
 ---
 
-## KakeBot v2 (AI Assistant)
+## 💎 Freemium Model
 
-### What's New in v2
+### 🆓 Tier Gratis
 
-KakeBot v2 is a complete rewrite of the AI agent with production-grade hardening:
+**Para siempre gratis**, incluye:
 
-**Architecture:**
-- ✅ Migrated from LangGraph → OpenAI Function Calling
-- ✅ 40-60% faster response times (1-2 LLM calls instead of 3)
-- ✅ Parallel tool execution
-- ✅ 40% cost reduction
+- ✅ Tracking de gastos ilimitado
+- ✅ Dashboard con gráficos
+- ✅ Vista calendario
+- ✅ Presupuestos por categoría
+- ✅ Categorización manual
 
-**Hardening:**
-- ✅ **Transparency**: Always mentions period + transaction count
-- ✅ **Validation**: Pre-LLM numerical consistency checks
-- ✅ **Error Handling**: Honest acknowledgment, no invented data
-- ✅ **User Adaptation**: Behavior adjusts based on data quality
-- ✅ **Cost Control**: Max 3 tools per query, redundancy elimination
+### ⭐ Tier Premium — **€3.99/mes**
 
-**Quality:**
-- ✅ 40 passing tests (100% core coverage)
-- ✅ 9/10 production readiness score
-- ✅ 3,133 lines of production code
+Desbloquea:
 
-### Using the API
+- 🤖 **Chat AI ilimitado** con el agente inteligente
+- ✨ **Clasificación automática** de gastos con IA
+- 📄 **Reportes PDF** profesionales
+- 🔮 **Análisis predictivo** avanzado
+- 🎯 **Detección de anomalías**
+- 🌍 **Aprendizaje global** de la comunidad
 
-```typescript
-// POST /api/ai/agent-v2
-const response = await fetch('/api/ai/agent-v2', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${sessionToken}`,
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    message: '¿Cuánto he gastado en comida este mes?',
-    history: [], // Optional conversation history
-  }),
-});
+**💝 Trial de 15 días** al suscribirte via Stripe
 
-const data = await response.json();
-/*
-{
-  message: "Has gastado €180 en supervivencia este mes...",
-  toolsUsed: ["analyzeSpendingPattern"],
-  metrics: {
-    latencyMs: 1850,
-    costUsd: 0.00032,
-    ...
-  }
-}
-*/
-```
+### 🎁 VIP Access
 
-See [API Documentation](docs/API_DOCUMENTATION.md) for complete details.
+Acceso premium manual para:
+- 👥 Beta testers
+- ❤️ Amigos y familia
+- 🛠️ Contributors
+
+*Contacta al admin para solicitar acceso VIP*
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-**Frontend:**
-- Next.js 14 (App Router)
-- React
-- TypeScript
-- Tailwind CSS
+<table>
+<tr>
+<td valign="top" width="50%">
 
-**Backend:**
-- Next.js API Routes
-- Supabase (PostgreSQL)
-- OpenAI API (gpt-4o-mini)
+### Frontend
 
-**AI:**
-- OpenAI Function Calling
-- Custom hardening layers
-- User context adaptation
+- ⚡ **Next.js 14** (App Router)
+- ⚛️ **React 18**
+- 🔷 **TypeScript**
+- 🎨 **Tailwind CSS**
+- 📊 **Recharts**
+- 📄 **React-PDF Renderer**
 
-**Testing:**
-- Vitest
-- 40 integration tests
+</td>
+<td valign="top" width="50%">
 
----
+### Backend
 
-## Available Scripts
+- 🟢 **Next.js API Routes**
+- 🐘 **PostgreSQL** (Supabase)
+- 🔐 **Supabase Auth**
+- 💳 **Stripe** (pagos)
+- 🧠 **OpenAI API** (GPT-4o-mini)
+- 🔍 **pgvector** (embeddings)
 
-```bash
-# Development
-npm run dev          # Start dev server (port 3000)
-npm run build        # Build for production
-npm run start        # Start production server
+</td>
+</tr>
+</table>
 
-# Testing
-npm test             # Run all tests
-npm test -- agents-v2 --run  # Run v2 tests only
+### 🤖 AI Architecture
 
-# Linting
-npm run lint         # Check code quality
-```
+- **Model**: GPT-4o-mini con Function Calling
+- **Embeddings**: text-embedding-3-small (1536 dims)
+- **Vector Store**: PostgreSQL + pgvector
+- **Learning**: Feedback híbrido (personal + global consensus)
 
 ---
 
-## Project Structure
+## 📖 Documentación
+
+### 📚 Guías Principales
+
+- [📘 Arquitectura del Sistema](CONTEXT.md) - Overview completo
+- [🚀 Deployment Guide](docs/DEPLOYMENT_GUIDE.md) - Deploy a producción
+- [🧪 Testing Guide](docs/MANUAL_TESTING_GUIDE.md) - Testing manual
+
+### 🤖 KakeBot AI
+
+- [🧠 AI Agent Architecture](docs/KAKEBOT_V2_ARCHITECTURE.md) - Cómo funciona el agente
+- [📡 API Documentation](docs/API_DOCUMENTATION.md) - Endpoints y ejemplos
+- [🔄 Learning System](CONTEXT.md#learning-system-architecture) - Sistema de aprendizaje
+
+### 💰 SaaS & Freemium
+
+- [💎 Freemium Setup](#-freemium-model) - Configuración de tiers
+- [💳 Stripe Integration](stripe_setup_guide.md) - Configurar pagos
+- [👑 Admin Panel](#-admin-panel) - Gestión de VIPs
+
+---
+
+## 🏗️ Estructura del Proyecto
 
 ```
 kakebo/
 ├── src/
-│   ├── app/                    # Next.js app router
-│   │   ├── api/ai/
-│   │   │   ├── agent-v2/       # KakeBot v2 endpoint
-│   │   │   └── agent/          # Legacy v1 endpoint
-│   │   └── ...
+│   ├── app/                      # Next.js App Router
+│   │   ├── (landing)/            # Landing page
+│   │   ├── app/                  # App dashboard
+│   │   │   ├── admin/            # Admin panel (VIP grants)
+│   │   │   ├── agent/            # AI Chat page
+│   │   │   └── new/              # Create expense
+│   │   └── api/
+│   │       ├── ai/               # AI endpoints
+│   │       ├── admin/            # Admin APIs
+│   │       ├── stripe/           # Stripe integration
+│   │       └── webhooks/         # Stripe webhooks
 │   ├── lib/
-│   │   ├── agents-v2/          # KakeBot v2 implementation
-│   │   │   ├── function-caller.ts       # Main orchestrator
-│   │   │   ├── context-analyzer.ts      # User adaptation
-│   │   │   ├── prompts.ts               # Hardened system prompt
+│   │   ├── agents-v2/            # AI Agent (v2 - current)
+│   │   │   ├── function-caller.ts     # Orchestrator
+│   │   │   ├── prompts.ts             # System prompts
+│   │   │   └── tools/                 # Tool definitions + executor
+│   │   ├── agents/               # Tool implementations
 │   │   │   └── tools/
-│   │   │       ├── definitions.ts       # OpenAI schemas
-│   │   │       ├── executor.ts          # Tool execution
-│   │   │       └── validator.ts         # Output validation
-│   │   └── ...
-│   └── __tests__/
-│       └── agents-v2/          # Test suites (40 tests)
-├── docs/                       # Documentation
-│   ├── KAKEBOT_V2_ARCHITECTURE.md
-│   ├── DEPLOYMENT_GUIDE.md
-│   └── API_DOCUMENTATION.md
-├── CHANGELOG.md                # Version history
-└── README.md                   # This file
+│   │   │       ├── search-expenses.ts      # Semantic search
+│   │   │       ├── feedback.ts             # Learning system
+│   │   │       ├── spending-analysis.ts
+│   │   │       ├── predictions.ts
+│   │   │       └── trends.ts
+│   │   ├── ai/                   # AI utilities
+│   │   │   └── embeddings.ts     # OpenAI embeddings
+│   │   ├── auth/                 # Auth & Access Control
+│   │   │   └── access-control.ts # Premium access logic
+│   │   └── supabase/             # Supabase clients
+│   │       ├── client.ts         # Browser client
+│   │       ├── server.ts         # Server client
+│   │       └── admin.ts          # Admin client (service role)
+│   ├── components/               # React components
+│   │   ├── saas/                 # Freemium components
+│   │   │   ├── SubscriptionGuard.tsx
+│   │   │   └── PremiumPrompt.tsx
+│   │   └── reports/              # PDF reports
+│   │       ├── ReportDialog.tsx
+│   │       └── ReportPDF.tsx
+│   └── __tests__/                # Tests
+│       └── agents-v2/            # 40+ tests
+├── supabase/                     # Database migrations
+│   └── migrations/
+├── docs/                         # Documentation
+└── .env.local                    # Environment variables (not in git)
 ```
 
 ---
 
-## Deployment
-
-### Staging
+## 📊 Scripts Disponibles
 
 ```bash
-# Deploy to staging
-git checkout staging
-git merge main
-git push origin staging
+# Desarrollo
+npm run dev              # Dev server (port 3000)
+npm run build            # Build producción
+npm run start            # Start production server
+
+# Testing
+npm test                 # Run tests
+npm test -- agents-v2 --run   # Test AI agent
+
+# Linting
+npm run lint             # Check code quality
+
+# Database
+npm run db:push          # Push schema changes to Supabase
+npm run db:migrate       # Run migrations
 ```
-
-Staging URL: `https://staging.kakebo.app`
-
-### Production
-
-See [Deployment Guide](docs/DEPLOYMENT_GUIDE.md) for complete rollout strategy:
-1. Canary (10% traffic)
-2. Ramp (50% traffic)
-3. Full rollout (100%)
-4. Cleanup (remove v1)
 
 ---
 
-## Testing
+## 🔐 Configuración de Servicios
+
+### 🗄️ Supabase Setup
+
+1. Crea proyecto en [supabase.com](https://supabase.com)
+2. Ejecuta las migraciones SQL:
+   - `supabase_migration_saas.sql` (profiles + SaaS)
+   - `search_feedback_migration.sql` (learning system)
+   - `update_trigger_to_free.sql` (free tier por defecto)
+3. Habilita extensión `pgvector` en SQL Editor:
+   ```sql
+   CREATE EXTENSION IF NOT EXISTS vector;
+   ```
+4. Copia las keys de Settings → API
+
+### 💳 Stripe Setup
+
+1. Crea cuenta en [stripe.com](https://stripe.com)
+2. Crea producto "Kakebo Premium": €3.99/mes con trial de 15 días
+3. Configura webhook endpoint: `/api/webhooks/stripe`
+   - Eventos: `checkout.session.completed`, `customer.subscription.deleted`
+4. Copia Price ID y keys
+
+**Ver guía detallada**: [stripe_setup_guide.md](stripe_setup_guide.md)
+
+### 🤖 OpenAI Setup
+
+1. Obtén API key en [platform.openai.com](https://platform.openai.com/api-keys)
+2. Añade a `.env.local`
+3. **Costo estimado**: ~$0.002-0.005 por conversación
+
+---
+
+## 👑 Admin Panel
+
+Accede a `/app/admin` para:
+
+- ✅ Otorgar acceso VIP manual
+- ❌ Revocar acceso VIP
+- 📋 Ver lista de usuarios VIP
+
+**Configuración**:
+```env
+NEXT_PUBLIC_ADMIN_EMAILS=tu-email@ejemplo.com,otro@ejemplo.com
+```
+
+Requiere `SUPABASE_SERVICE_ROLE_KEY` para funcionar.
+
+---
+
+## 🧪 Testing
 
 ```bash
 # Run all tests
 npm test -- agents-v2 --run
 
-# Expected output: 40/40 tests passing
-# ✓ function-caller.test.ts (15 tests)
-# ✓ hardening-integration.test.ts (10 tests)
-# ✓ sprint2-integration.test.ts (15 tests)
+# Expected: 40/40 tests passing ✓
 ```
 
----
-
-## Contributing
-
-This is a private project. For team members:
-
-1. Create feature branch from `main`
-2. Implement changes with tests
-3. Ensure all tests pass (`npm test`)
-4. Create PR to `main`
-5. After approval, merge and deploy to staging
-6. Monitor metrics before production rollout
+**Coverage:**
+- ✅ Function caller (15 tests)
+- ✅ Hardening integration (10 tests)
+- ✅ Sprint 2 features (15 tests)
 
 ---
 
-## Monitoring
+## 📈 Performance
 
-**Key Metrics:**
-- Latency p95: < 2.5s
-- Error rate: < 1%
-- User corrections: < 2%
-- Cost per 1K queries: < $5
-
-See [Deployment Guide](docs/DEPLOYMENT_GUIDE.md#monitoring) for alerting thresholds.
-
----
-
-## Support
-
-**Technical Issues:** support@kakebo.app
-**API Questions:** api@kakebo.app
-**Documentation:** https://docs.kakebo.app
+| Metric | Value |
+|--------|-------|
+| **AI Response Time** | < 2.5s (p95) |
+| **Cost per 1K queries** | < $5 |
+| **Error Rate** | < 1% |
+| **LLM Calls per query** | 1-2 (40-60% faster than v1) |
 
 ---
 
-## License
+## 🌍 Roadmap
 
-Proprietary - All rights reserved
+### ✅ Completado
+
+- [x] Modelo freemium con Stripe
+- [x] AI Agent v2 con Function Calling
+- [x] Sistema de aprendizaje (personal + global)
+- [x] Admin panel para VIP grants
+- [x] Reportes PDF
+- [x] Búsqueda semántica
+- [x] Modo oscuro Wabi-Sabi
+
+### 🚧 En progreso
+
+- [ ] Stripe webhooks en producción
+- [ ] Screenshots para README
+- [ ] Tests E2E completos
+
+### 🔮 Futuro
+
+- [ ] App móvil (React Native)
+- [ ] Integraciones bancarias (Plaid)
+- [ ] Multi-idioma (EN, JP)
+- [ ] Consenso regional (país/cultura)
+- [ ] Confidence scores en feedback
+- [ ] Analytics dashboard para admin
 
 ---
 
-## Changelog
+## 🤝 Contribuir
 
-See [CHANGELOG.md](CHANGELOG.md) for version history.
+Este es un proyecto privado. Para miembros del equipo:
 
-### Latest Release: v2.0.0 (2026-02-09)
+1. Fork el repo
+2. Crea una rama feature (`git checkout -b feature/amazing-feature`)
+3. Commit tus cambios (`git commit -m 'Add amazing feature'`)
+4. Push a la rama (`git push origin feature/amazing-feature`)
+5. Abre un Pull Request
 
-**Major Changes:**
-- Complete AI agent rewrite (LangGraph → OpenAI Function Calling)
-- Production hardening (transparency, validation, error handling)
-- User adaptation (data quality-based behavior)
-- Cost control (tool calling limits)
-- 40 passing tests, 9/10 production readiness
-
-**Performance:**
-- 40-60% faster responses
-- 40% cost reduction
-- Parallel tool execution
+**Guidelines:**
+- ✅ Tests para nuevas features
+- ✅ Seguir estructura del proyecto
+- ✅ Comentarios en código complejo
+- ✅ Actualizar documentación
 
 ---
 
-**Maintained by:** AI Team @ Kakebo
-**Last Updated:** 2026-02-09
-**Status:** ✅ Production Ready (Staging)
+## 📝 Changelog
+
+### v2.1.0 (2026-02-10) - Freemium Model ✨
+
+**Nuevo:**
+- 💎 Modelo freemium completo (free + premium €3.99)
+- 👑 Admin panel para VIP grants
+- 🔐 Service role key para operaciones admin
+- 💳 Integración Stripe (80% completa)
+- 🎨 Dark mode fixes en prompts premium
+
+### v2.0.0 (2026-02-09) - AI Agent v2 🤖
+
+**Nuevo:**
+- 🧠 AI Agent v2 con OpenAI Function Calling
+- 📚 Sistema de aprendizaje (feedback + consenso global)
+- 🔍 Búsqueda semántica con embeddings
+- 🎯 Adaptación según calidad de datos
+- ⚡ 40-60% más rápido que v1
+
+**Ver changelog completo**: [CHANGELOG.md](CHANGELOG.md)
+
+---
+
+## 📞 Soporte
+
+- 💬 **Issues**: [GitHub Issues](https://github.com/mrsteppenwolf627/kakebo/issues)
+- 📧 **Email**: support@kakebo.app *(pending)*
+- 📖 **Docs**: [CONTEXT.md](CONTEXT.md)
+
+---
+
+## 📜 Licencia
+
+**Proprietary** - Todos los derechos reservados
+
+© 2026 Kakebo AI. Este software es propiedad privada y no puede ser distribuido, modificado o usado sin permiso explícito.
+
+---
+
+## 🙏 Agradecimientos
+
+**Inspirado en:**
+- 📘 Método Kakebo tradicional japonés
+- 🎨 Filosofía Wabi-Sabi
+- ☸️ Principios Zen de simplicidad
+
+**Powered by:**
+- [OpenAI](https://openai.com) - GPT-4o-mini
+- [Supabase](https://supabase.com) - PostgreSQL + Auth
+- [Vercel](https://vercel.com) - Deployment
+- [Stripe](https://stripe.com) - Payments
+
+---
+
+<div align="center">
+
+**Hecho con ❤️ y 🤖 AI**
+
+[⬆ Volver arriba](#-kakebo-ai)
+
+</div>
