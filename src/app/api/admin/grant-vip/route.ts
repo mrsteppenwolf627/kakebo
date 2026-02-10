@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 export async function POST(req: Request) {
     try {
@@ -22,20 +23,22 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
         }
 
-        // Find user by email from auth.users
-        const { data: users, error: usersError } = await supabase.auth.admin.listUsers();
+        // Use admin client to list users
+        const adminClient = createAdminClient();
+        const { data: { users }, error: usersError } = await adminClient.auth.admin.listUsers();
+
         if (usersError) {
             console.error('Error listing users:', usersError);
             return NextResponse.json({ error: 'Error buscando usuario' }, { status: 500 });
         }
 
-        const targetUser = users?.users.find((u) => u.email?.toLowerCase() === email.toLowerCase());
+        const targetUser = users?.find((u) => u.email?.toLowerCase() === email.toLowerCase());
         if (!targetUser) {
             return NextResponse.json({ error: `Usuario no encontrado: ${email}` }, { status: 404 });
         }
 
-        // Update profile
-        const { error: updateError } = await supabase
+        // Update profile using admin client
+        const { error: updateError } = await adminClient
             .from('profiles')
             .update({ manual_override: grant })
             .eq('id', targetUser.id);
