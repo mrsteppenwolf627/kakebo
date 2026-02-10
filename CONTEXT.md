@@ -143,11 +143,13 @@ Users get premium access via:
 - Grant/revoke VIP access by email
 - View all VIP users
 - Access controlled by `NEXT_PUBLIC_ADMIN_EMAILS` env variable
+- **Requires**: `SUPABASE_SERVICE_ROLE_KEY` for admin operations
 
 ### Implementation
 - `canUsePremium(profile)` - Check premium access
 - `manual_override` field - VIP users bypass payment
 - Premium prompts shown to free users with upgrade CTA
+- Admin client with service role key for user management
 
 ---
 

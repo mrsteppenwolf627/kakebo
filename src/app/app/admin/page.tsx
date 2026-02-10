@@ -48,27 +48,9 @@ export default function AdminPage() {
     async function loadVIPUsers() {
         setLoadingUsers(true);
         try {
-            const { data, error } = await supabase
-                .from('profiles')
-                .select('id, email:id, tier, manual_override, created_at')
-                .eq('manual_override', true)
-                .order('created_at', { ascending: false });
-
-            if (error) throw error;
-
-            // Fetch user emails from auth.users
-            const userIds = data?.map((p) => p.id) || [];
-            const { data: users } = await supabase.auth.admin.listUsers();
-
-            const usersWithEmail = data?.map((profile) => {
-                const authUser = users?.users.find((u) => u.id === profile.id);
-                return {
-                    ...profile,
-                    email: authUser?.email || 'Unknown',
-                };
-            }) || [];
-
-            setVipUsers(usersWithEmail as VIPUser[]);
+            const res = await fetch('/api/admin/list-vip-users');
+            const { users } = await res.json();
+            setVipUsers(users || []);
         } catch (err) {
             console.error(err);
         } finally {
@@ -201,8 +183,8 @@ export default function AdminPage() {
                     {message && (
                         <div
                             className={`p-3 rounded-md text-sm ${message.type === 'success'
-                                    ? 'bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400'
-                                    : 'bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400'
+                                ? 'bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400'
+                                : 'bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400'
                                 }`}
                         >
                             {message.text}
