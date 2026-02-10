@@ -66,7 +66,7 @@ export default function PremiumPrompt({ feature, onUpgrade }: PremiumPromptProps
                     onClick={handleUpgrade}
                     className="w-full bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 py-3 rounded-md font-medium hover:opacity-90 transition-opacity shadow-sm"
                 >
-                    Desbloquear Premium por {process.env.NEXT_PUBLIC_PRICE_DISPLAY || "9.99€"}/mes
+                    Desbloquear Premium por {process.env.NEXT_PUBLIC_PRICE_DISPLAY || "3.99€"}/mes
                 </button>
 
                 <p className="text-xs text-muted-foreground">

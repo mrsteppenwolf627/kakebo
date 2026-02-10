@@ -47,7 +47,7 @@ export default function SubscriptionGuard({ children }: { children: React.ReactN
     }
 
     if (loading) {
-        return <div className="p-8 text-center text-sm text-black/40">Verificando suscripción...</div>;
+        return <div className="p-8 text-center text-sm text-muted-foreground">Verificando suscripción...</div>;
     }
 
     if (hasAccess) {
@@ -58,12 +58,13 @@ export default function SubscriptionGuard({ children }: { children: React.ReactN
     return (
         <div className="flex flex-col items-center justify-center min-h-[60vh] p-6 text-center space-y-6">
             <div className="max-w-md space-y-4">
-                <h2 className="text-2xl font-bold">Kakebo AI Premium</h2>
-                <p className="text-black/60">
+                <h2 className="text-2xl font-serif font-medium text-foreground">Kakebo AI Premium</h2>
+                <p className="text-muted-foreground">
                     Tu periodo de prueba ha finalizado. Para continuar chateando con tu asistente financiero impulsado por IA, actualiza a Pro.
                 </p>
 
-                <div className="bg-black/5 p-4 rounded-xl text-left text-sm space-y-2">
+                <div className="bg-muted/50 p-4 rounded-xl text-left text-sm space-y-2 border border-border">
+                    <div className="font-medium text-foreground mb-2">✨ Kakebo Premium incluye:</div>
                     <div>✅ Chat ilimitado con el Agente</div>
                     <div>✅ Análisis de tendencias</div>
                     <div>✅ Previsiones a futuro</div>
@@ -72,12 +73,12 @@ export default function SubscriptionGuard({ children }: { children: React.ReactN
 
                 <button
                     onClick={handleUpgrade}
-                    className="w-full bg-black text-white py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity"
+                    className="w-full bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 py-3 rounded-md font-medium hover:opacity-90 transition-opacity shadow-sm"
                 >
-                    Desbloquear por {process.env.NEXT_PUBLIC_PRICE_DISPLAY || "9.99€"}/mes
+                    Desbloquear por {process.env.NEXT_PUBLIC_PRICE_DISPLAY || "3.99€"}/mes
                 </button>
 
-                <p className="text-xs text-black/40">
+                <p className="text-xs text-muted-foreground">
                     Cancela cuando quieras. Gestionado de forma segura por Stripe.
                 </p>
             </div>
