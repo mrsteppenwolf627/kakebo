@@ -57,7 +57,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className="overflow-x-hidden">
+    <html lang="es" className="overflow-x-hidden" suppressHydrationWarning>
       <body className="overflow-x-hidden max-w-[100vw] bg-sakura text-stone-900 dark:bg-stone-950 dark:text-stone-100 transition-colors duration-300">
         <ThemeProvider
           attribute="class"

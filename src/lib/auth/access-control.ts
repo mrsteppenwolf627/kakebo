@@ -14,14 +14,14 @@ export interface Profile {
 }
 
 /**
- * Determina si un usuario tiene acceso a las funcionalidades de IA (Pro).
+ * Determina si un usuario tiene acceso a las funcionalidades Premium.
  * Orden de prioridad:
  * 1. Admin (siempre sí)
  * 2. Manual Override (siempre sí, regalo de owner)
  * 3. Tier 'pro' (pagado)
  * 4. Trial activo (si trial_ends_at > ahora)
  */
-export function canUseAI(profile: Profile | null): boolean {
+export function canUsePremium(profile: Profile | null): boolean {
     if (!profile) return false;
 
     // 1. Admin
@@ -44,6 +44,12 @@ export function canUseAI(profile: Profile | null): boolean {
     // Si no cumple nada, es Free user sin trial.
     return false;
 }
+
+/**
+ * Alias legacy para compatibilidad con código existente.
+ * @deprecated Use canUsePremium instead
+ */
+export const canUseAI = canUsePremium;
 
 /**
  * Calcula cuántos días de prueba le quedan.

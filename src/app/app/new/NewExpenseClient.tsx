@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
+import { canUsePremium, Profile } from "@/lib/auth/access-control";
 
 const KAKEBO_CATEGORIES = {
   supervivencia: { label: "Supervivencia", color: "#dc2626" },
@@ -20,16 +21,6 @@ const AI_TO_FRONTEND_CATEGORY: Record<string, CategoryKey> = {
   survival: "supervivencia",
   optional: "opcional",
   culture: "cultura",
-  extra: "extra",
-};
-
-/**
- * Map frontend categories (Spanish) to AI categories (English)
- */
-const FRONTEND_TO_AI_CATEGORY: Record<CategoryKey, string> = {
-  supervivencia: "survival",
-  opcional: "optional",
-  cultura: "culture",
   extra: "extra",
 };
 
@@ -86,12 +77,35 @@ export default function NewExpensePage() {
   const [monthClosed, setMonthClosed] = useState(false);
   const [checking, setChecking] = useState(false);
 
+  // Premium access check
+  const [hasPremiumAccess, setHasPremiumAccess] = useState<boolean>(false);
+
   // UI: deshabilitar inputs si el mes está cerrado (y venimos con ym válido)
   const inputsDisabled = !!ymValid && !!ym && !!monthClosed;
 
   useEffect(() => {
     setDate(defaultDate);
   }, [defaultDate]);
+
+  // Check premium access on mount
+  useEffect(() => {
+    async function checkPremiumAccess() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setHasPremiumAccess(false);
+        return;
+      }
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+      setHasPremiumAccess(canUsePremium(data as Profile));
+    }
+    checkPremiumAccess();
+  }, [supabase]);
 
   useEffect(() => {
     let cancelled = false;
@@ -190,8 +204,6 @@ export default function NewExpensePage() {
         // Auto-accept
         setCategory(aiSuggestion.category);
         setSuggestionAccepted(true);
-        // Optional: toast or minimal UI indication could go here, 
-        // but for now the UI below will show "Sugerencia de IA aceptada"
       }
     }
   }, [aiSuggestion, suggestionAccepted]);
@@ -209,13 +221,11 @@ export default function NewExpensePage() {
   }
 
   async function recordCorrectionIfNeeded(selectedCategory: CategoryKey) {
-    // Only record if we had a suggestion and the user chose differently
     if (!aiSuggestion || !aiSuggestion.logId) return;
 
     const aiCategoryInFrontend = aiSuggestion.category;
     if (selectedCategory === aiCategoryInFrontend) return;
 
-    // Record the correction
     try {
       await fetch("/api/ai/feedback", {
         method: "POST",
@@ -226,19 +236,17 @@ export default function NewExpensePage() {
         }),
       });
     } catch {
-      // Silent fail - don't block the expense save
+      // Silent fail
     }
   }
 
   function clampDateToYm(d: string) {
-    // si hay ym, obligamos a que la fecha se mantenga dentro del mes seleccionado
     if (!ymValid || !ym) return d;
     if (d.startsWith(`${ym}-`)) return d;
     return `${ym}-01`;
   }
 
   async function ensureMonth(userId: string, year: number, month: number) {
-    // buscamos mes, si no existe lo creamos open
     const { data, error } = await supabase
       .from("months")
       .select("id,status")
@@ -282,10 +290,8 @@ export default function NewExpensePage() {
       const session = sessionRes.session;
       if (!session?.user) throw new Error("Auth session missing");
 
-      // si venimos con ym, forzamos la fecha dentro de ese mes
       const safeDate = clampDateToYm(date);
 
-      // determinamos mes objetivo
       const targetYear =
         ymValid && ym ? parseYm(ym).year : Number(safeDate.slice(0, 4));
       const targetMonth =
@@ -310,16 +316,14 @@ export default function NewExpensePage() {
         date: safeDate,
         note,
         amount: Number(amount),
-        category, // clave kakebo
+        category,
         color: cat.color,
       });
 
       if (error) throw error;
 
-      // Record correction if user changed the AI suggestion
       await recordCorrectionIfNeeded(category);
 
-      // volvemos al dashboard del mes correspondiente (AHORA ES /app)
       router.push(`/app?ym=${targetYear}-${pad2(targetMonth)}`);
       router.refresh?.();
     } catch (e: any) {
@@ -330,175 +334,202 @@ export default function NewExpensePage() {
   }
 
   const badge = ymValid && ym ? `Mes: ${ym}` : "Mes: actual";
-
-  // volver al dashboard (AHORA ES /app)
   const backHref = ymValid && ym ? `/app?ym=${ym}` : "/app";
 
   return (
-    <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
-      <div className="mx-auto max-w-xl space-y-4 sm:space-y-6">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-semibold">Nuevo gasto</h1>
-            <div className="text-sm text-black/60">{badge}</div>
+    <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 flex items-center justify-center">
+      <div className="w-full max-w-2xl mx-auto space-y-6">
 
-            {inputsDisabled && (
-              <div className="mt-1 text-xs text-red-600">
-                Este mes está cerrado. No se pueden añadir gastos.
-              </div>
-            )}
-          </div>
-
+        {/* Header with Back Button */}
+        <div className="flex items-center justify-between">
           <button
             type="button"
             onClick={() => router.push(backHref)}
-            className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white shrink-0"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
           >
             ← Volver
           </button>
+          <div className="text-xs uppercase tracking-wide font-medium text-muted-foreground bg-muted px-2 py-1 rounded-sm">
+            {badge}
+          </div>
         </div>
 
-        {error && <div className="text-sm text-red-600">{error}</div>}
-
-        <div className="space-y-4">
-          <div>
-            <label className="mb-1 block text-sm">Fecha</label>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(clampDateToYm(e.target.value))}
-              className="w-full border border-black/20 px-3 py-2"
-              disabled={inputsDisabled}
-            />
-            {ymValid && ym && (
-              <div className="mt-1 text-xs text-black/50">
-                La fecha se mantiene dentro del mes seleccionado.
-              </div>
-            )}
+        {/* Main Card */}
+        <div className="bg-card border border-border rounded-xl shadow-sm p-6 sm:p-8">
+          <div className="mb-8">
+            <h1 className="text-2xl sm:text-3xl font-serif text-foreground font-medium mb-2">Nuevo gasto</h1>
+            <p className="text-sm text-muted-foreground">Registra un nuevo movimiento en tu Kakebo.</p>
           </div>
 
-          <div>
-            <label className="mb-1 block text-sm">Concepto</label>
-            <div className="flex gap-2">
+          {inputsDisabled && (
+            <div className="mb-6 p-3 bg-destructive/10 border border-destructive/20 text-destructive text-sm rounded-md flex items-start gap-2">
+              <span className="text-lg">🔒</span>
+              <div>
+                <strong>Mes cerrado.</strong>
+                <p className="opacity-90">No se pueden añadir gastos a este periodo.</p>
+              </div>
+            </div>
+          )}
+
+          {error && (
+            <div className="mb-6 p-3 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm rounded-md">
+              {error}
+            </div>
+          )}
+
+          <div className="space-y-6">
+            {/* Date Input */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">Fecha</label>
               <input
-                value={note}
-                onChange={(e) => {
-                  setNote(e.target.value);
-                  // Clear suggestion when note changes
-                  if (aiSuggestion) {
-                    setAiSuggestion(null);
-                    setSuggestionAccepted(false);
-                  }
-                }}
-                className="flex-1 border border-black/20 px-3 py-2"
-                placeholder="Ej: mandarina"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(clampDateToYm(e.target.value))}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={inputsDisabled}
               />
+              {ymValid && ym && (
+                <p className="text-xs text-muted-foreground">
+                  La fecha se mantiene dentro del mes seleccionado.
+                </p>
+              )}
+            </div>
+
+            {/* Concept + AI */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">Concepto</label>
+              <div className="flex gap-2">
+                <input
+                  value={note}
+                  onChange={(e) => {
+                    setNote(e.target.value);
+                    if (aiSuggestion) {
+                      setAiSuggestion(null);
+                      setSuggestionAccepted(false);
+                    }
+                  }}
+                  className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  placeholder="Ej: compra supermercado"
+                  disabled={inputsDisabled}
+                  autoFocus
+                />
+                {hasPremiumAccess && (
+                  <button
+                    type="button"
+                    onClick={requestAISuggestion}
+                    disabled={inputsDisabled || aiLoading || !note.trim()}
+                    className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium ring-offset-background hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 transition-colors shadow-sm"
+                    title="Sugerir categoría con IA"
+                  >
+                    {aiLoading ? (
+                      <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      "🤖 IA"
+                    )}
+                  </button>
+                )}
+              </div>
+              {aiError && (
+                <p className="text-xs text-destructive">{aiError}</p>
+              )}
+            </div>
+
+            {/* AI Suggestion Box */}
+            {aiSuggestion && !suggestionAccepted && (
+              <div className="rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-4 animate-in fade-in slide-in-from-top-2">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                      Sugerencia IA
+                    </p>
+                    <div className="text-sm text-blue-700 dark:text-blue-300">
+                      Categoría:{" "}
+                      <span className="font-semibold" style={{ color: KAKEBO_CATEGORIES[aiSuggestion.category].color }}>
+                        {KAKEBO_CATEGORIES[aiSuggestion.category].label}
+                      </span>
+                      {" "}• {(aiSuggestion.confidence * 100).toFixed(0)}% confianza
+                    </div>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <button
+                      type="button"
+                      onClick={acceptSuggestion}
+                      className="inline-flex h-8 items-center justify-center rounded-md bg-blue-600 px-3 text-xs font-medium text-white shadow hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    >
+                      Aceptar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={dismissSuggestion}
+                      className="inline-flex h-8 items-center justify-center rounded-md border border-blue-200 dark:border-blue-700 bg-transparent px-3 text-xs font-medium text-blue-900 dark:text-blue-100 shadow-sm hover:bg-blue-100 dark:hover:bg-blue-900/40"
+                    >
+                      Ignorar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {suggestionAccepted && aiSuggestion && (
+              <div className="flex items-center gap-2 text-xs text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900 p-2 rounded-md">
+                <span>✨</span>
+                <span>Categoría detectada: <strong>{KAKEBO_CATEGORIES[aiSuggestion.category].label}</strong></span>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Amount */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Importe (€)</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-2.5 text-muted-foreground text-sm">€</span>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    className="w-full rounded-md border border-input bg-background pl-7 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="0.00"
+                    disabled={inputsDisabled}
+                  />
+                </div>
+              </div>
+
+              {/* Category */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Categoría</label>
+                <div className="relative">
+                  <div
+                    className="absolute left-3 top-3 h-3 w-3 rounded-full ring-1 ring-black/5 dark:ring-white/10"
+                    style={{ backgroundColor: KAKEBO_CATEGORIES[category].color }}
+                  />
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value as CategoryKey)}
+                    className="w-full rounded-md border border-input bg-background pl-9 pr-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    disabled={inputsDisabled}
+                  >
+                    {Object.entries(KAKEBO_CATEGORIES).map(([key, c]) => (
+                      <option key={key} value={key}>
+                        {c.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-4">
               <button
                 type="button"
-                onClick={requestAISuggestion}
-                disabled={inputsDisabled || aiLoading || !note.trim()}
-                className="border border-black/20 px-3 py-2 text-sm hover:border-black hover:bg-black hover:text-white disabled:opacity-50 shrink-0"
-                title="Sugerir categoría con IA"
+                onClick={saveExpense}
+                disabled={saving || inputsDisabled || checking}
+                className="w-full inline-flex items-center justify-center rounded-md bg-stone-900 dark:bg-stone-50 px-8 py-3 text-sm font-medium text-stone-50 dark:text-stone-900 shadow transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
               >
-                {aiLoading ? "…" : "🤖 IA"}
+                {checking ? "Comprobando..." : saving ? "Guardando..." : "Guardar Gasto"}
               </button>
             </div>
-            {aiError && (
-              <div className="mt-1 text-xs text-red-600">{aiError}</div>
-            )}
           </div>
-
-          {/* AI Suggestion */}
-          {aiSuggestion && !suggestionAccepted && (
-            <div className="border border-blue-300 bg-blue-50 p-3 space-y-2">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <div className="text-sm font-medium">Sugerencia IA</div>
-                  <div className="text-xs text-black/60 mt-1">
-                    Categoría:{" "}
-                    <span className="font-medium">
-                      {KAKEBO_CATEGORIES[aiSuggestion.category].label}
-                    </span>
-                    <span
-                      className="inline-block ml-1 h-2 w-2 rounded-full"
-                      style={{ backgroundColor: KAKEBO_CATEGORIES[aiSuggestion.category].color }}
-                    />
-                  </div>
-                  <div className="text-xs text-black/60">
-                    Confianza: {(aiSuggestion.confidence * 100).toFixed(0)}%
-                  </div>
-                </div>
-                <div className="flex gap-2 shrink-0">
-                  <button
-                    type="button"
-                    onClick={acceptSuggestion}
-                    className="border border-green-600 text-green-700 px-3 py-1 text-xs hover:bg-green-600 hover:text-white"
-                  >
-                    Aceptar
-                  </button>
-                  <button
-                    type="button"
-                    onClick={dismissSuggestion}
-                    className="border border-black/20 px-3 py-1 text-xs hover:border-black"
-                  >
-                    Ignorar
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {suggestionAccepted && aiSuggestion && (
-            <div className="text-xs text-green-600 border border-green-200 bg-green-50 p-2 rounded">
-              ✨ Categoría detectada: <span className="font-medium">{KAKEBO_CATEGORIES[aiSuggestion.category].label}</span> ({(aiSuggestion.confidence * 100).toFixed(0)}%)
-            </div>
-          )}
-
-          <div>
-            <label className="mb-1 block text-sm">Importe (€)</label>
-            <input
-              type="number"
-              step="0.01"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="w-full border border-black/20 px-3 py-2"
-              placeholder="Ej: 12.50"
-              disabled={inputsDisabled}
-            />
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm">Categoría (Kakebo)</label>
-            <div className="flex items-center gap-3">
-              <span
-                className="inline-block h-3 w-3 rounded-full"
-                style={{ backgroundColor: KAKEBO_CATEGORIES[category].color }}
-                title={KAKEBO_CATEGORIES[category].label}
-              />
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value as CategoryKey)}
-                className="w-full border border-black/20 px-3 py-2"
-                disabled={inputsDisabled}
-              >
-                {Object.entries(KAKEBO_CATEGORIES).map(([key, c]) => (
-                  <option key={key} value={key}>
-                    {c.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={saveExpense}
-            disabled={saving || inputsDisabled || checking}
-            className="border border-black px-4 py-2 hover:bg-black hover:text-white disabled:opacity-50"
-          >
-            {checking ? "Comprobando…" : saving ? "Guardando…" : "Guardar gasto"}
-          </button>
         </div>
       </div>
     </main>

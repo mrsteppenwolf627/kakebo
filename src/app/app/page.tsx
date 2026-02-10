@@ -1,8 +1,11 @@
 import AuthGate from "@/components/AuthGate";
+import Link from "next/link";
 import ExpenseCalendar from "@/components/ExpenseCalendar";
 import MonthSelector from "@/components/MonthSelector";
 
 import CategoryGuideCard from "@/components/CategoryGuideCard";
+import FloatingAddButton from "@/components/FloatingAddButton";
+import ReportButton from "@/components/reports/ReportButton";
 
 import DashboardMoneyPanel from "@/components/DashboardMoneyPanel";
 
@@ -56,6 +59,19 @@ export default async function HomePage(props: {
             </p>
           </header>
 
+          {/* Quick Actions - Mobile/Desktop Prominent Button */}
+          <div className="flex flex-col sm:flex-row justify-center sm:justify-start gap-4">
+            <Link
+              href="/app/new"
+              className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 bg-primary text-primary-foreground text-sm font-medium rounded-md shadow-sm hover:opacity-90 transition-all active:scale-95"
+            >
+              <span className="text-lg">💸</span>
+              <span>Añadir Nuevo Gasto</span>
+            </Link>
+
+            <ReportButton />
+          </div>
+
           <MonthSelector year={year} month={month} />
 
           {/* Panel de dinero */}
@@ -93,6 +109,7 @@ export default async function HomePage(props: {
             </p>
           </section>
         </div>
+        <FloatingAddButton />
       </main>
     </AuthGate>
   );

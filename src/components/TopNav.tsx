@@ -52,7 +52,7 @@ export default function TopNav() {
         <div className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/app/new"
-            className="hidden md:inline-flex items-center px-4 py-1.5 text-sm bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 hover:opacity-90 transition-colors whitespace-nowrap rounded-md"
+            className="inline-flex items-center px-3 py-1.5 text-xs sm:text-sm bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 hover:opacity-90 transition-colors whitespace-nowrap rounded-md shadow-sm"
           >
             + Gasto
           </Link>
