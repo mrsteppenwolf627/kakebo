@@ -509,10 +509,13 @@ Este es un proyecto privado. Para miembros del equipo:
 
 ---
 
-## 📞 Soporte
+## 📞 Soporte & Contacto
+
+**Autor**: Aitor Alarcón Muñoz
 
 - 💬 **Issues**: [GitHub Issues](https://github.com/mrsteppenwolf627/kakebo/issues)
-- 📧 **Email**: support@kakebo.app *(pending)*
+- 📧 **Email**: [aitoralmu21@gmail.com](mailto:aitoralmu21@gmail.com)
+- 📞 **Teléfono**: Disponible para consultas
 - 📖 **Docs**: [CONTEXT.md](CONTEXT.md)
 
 ---
@@ -543,6 +546,8 @@ Este es un proyecto privado. Para miembros del equipo:
 <div align="center">
 
 **Hecho con ❤️ y 🤖 AI**
+
+**Desarrollado por**: [Aitor Alarcón Muñoz](mailto:aitoralmu21@gmail.com)
 
 [⬆ Volver arriba](#-kakebo-ai)
 
