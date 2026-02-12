@@ -91,7 +91,7 @@ Usa "all" para buscar en TODO el histórico.`,
                     description: `Número máximo de resultados (default: 20, max: 50)`,
                 },
             },
-            required: ["query"],
+            required: [], // query is optional, defaults to "último" if not provided
         },
     },
 };

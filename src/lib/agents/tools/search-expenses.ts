@@ -6,7 +6,7 @@ import { searchExpensesByText } from "@/lib/ai/embeddings";
  * Parameters for free-form expense search
  */
 export interface SearchExpensesParams {
-    query: string; // Natural language query (e.g., "vicios", "restaurantes caros", "gimnasio")
+    query?: string; // Natural language query (e.g., "vicios", "restaurantes caros", "gimnasio"). Defaults to "último" if not provided.
     period?: "current_month" | "last_month" | "last_3_months" | "last_6_months" | "current_week" | "last_week" | "all";
     minAmount?: number; // Minimum amount filter
     maxAmount?: number; // Maximum amount filter
@@ -108,6 +108,17 @@ export async function searchExpenses(
 ): Promise<SearchExpensesResult> {
     const period = params.period || "current_month";
     const limit = Math.min(params.limit || 20, 50);
+
+    // ========== VALIDATION: query is required ==========
+    if (!params.query || params.query.trim().length === 0) {
+        // If no query provided, default to "last" (most recent expenses)
+        params.query = "último";
+        apiLogger.info(
+            { userId, originalParams: params },
+            "No query provided, defaulting to 'último' for last expenses"
+        );
+    }
+    // ===================================================
 
     try {
         // ========== FAST PATH: Simple queries without embeddings ==========
