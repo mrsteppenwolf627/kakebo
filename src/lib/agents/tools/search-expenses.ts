@@ -113,6 +113,8 @@ export async function searchExpenses(
         // ========== FAST PATH: Simple queries without embeddings ==========
         // For queries like "último", "last", "recent", use direct SQL
         const queryLower = params.query.toLowerCase().trim();
+
+        // Check for "last expense" type queries
         const isSimpleLastQuery =
             queryLower === "último" ||
             queryLower === "ultimo" ||
@@ -120,7 +122,16 @@ export async function searchExpenses(
             queryLower === "reciente" ||
             queryLower === "recent" ||
             queryLower === "más reciente" ||
-            queryLower === "mas reciente";
+            queryLower === "mas reciente" ||
+            // Include variations with "gasto", "expense", etc.
+            queryLower.includes("último gasto") ||
+            queryLower.includes("ultimo gasto") ||
+            queryLower.includes("last expense") ||
+            queryLower.includes("última compra") ||
+            queryLower.includes("ultima compra") ||
+            queryLower.includes("gasto reciente") ||
+            queryLower.includes("compra reciente") ||
+            queryLower.includes("recent expense");
 
         if (isSimpleLastQuery) {
             apiLogger.info({ query: params.query, period }, "Using fast path for 'last expense' query");
