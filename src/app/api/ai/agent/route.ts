@@ -76,9 +76,19 @@ export const POST = withLogging(async (request: NextRequest) => {
     // Require authentication
     const user = await requireAuth();
 
+    // ========== DIAGNOSTIC LOGGING ==========
+    console.log("🔍 [route.ts] Authenticated user ID:", user.id);
+    console.log("🔍 [route.ts] User object:", user);
+    // ========================================
+
     // Parse and validate request
     const body = await request.json();
     const input = agentRequestSchema.parse(body);
+
+    // ========== DIAGNOSTIC LOGGING ==========
+    console.log("🔍 [route.ts] Message:", input.message);
+    console.log("🔍 [route.ts] About to call processAgentMessage with userId:", user.id);
+    // ========================================
 
     // Get Supabase client
     const supabase = await createClient();
@@ -90,6 +100,11 @@ export const POST = withLogging(async (request: NextRequest) => {
       supabase,
       user.id
     );
+
+    // ========== DIAGNOSTIC LOGGING ==========
+    console.log("🔍 [route.ts] processAgentMessage completed");
+    console.log("🔍 [route.ts] Tools used:", result.toolsUsed);
+    // ========================================
 
     // Return successful response
     return responses.ok(result);

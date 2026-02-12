@@ -173,6 +173,11 @@ export async function processFunctionCalling(
   let outputTokens = 0;
   let toolCallsCount = 0;
 
+  // ========== DIAGNOSTIC LOGGING ==========
+  console.log("🔍 [function-caller] processFunctionCalling called with userId:", userId);
+  console.log("🔍 [function-caller] Message:", userMessage);
+  // ========================================
+
   apiLogger.info(
     {
       userId,
@@ -330,6 +335,11 @@ export async function processFunctionCalling(
       },
       "Tools validated - executing in parallel"
     );
+
+    // ========== DIAGNOSTIC LOGGING ==========
+    console.log("🔍 [function-caller] About to call executeTools with userId:", userId);
+    console.log("🔍 [function-caller] Tools to execute:", toolNames);
+    // ========================================
 
     const { toolMessages, logs } = await executeTools(
       toolCallsToExecute,

@@ -59,6 +59,15 @@ export async function createTransaction(
   params: CreateTransactionParams
 ): Promise<CreateTransactionResult> {
   try {
+    // ========== DIAGNOSTIC LOGGING ==========
+    console.log("🔍 [createTransaction] Called with userId:", userId);
+    console.log("🔍 [createTransaction] Params:", params);
+    apiLogger.info(
+      { userId, params },
+      "createTransaction called - DIAGNOSTIC"
+    );
+    // ========================================
+
     // Validate amount
     if (params.amount <= 0) {
       throw new Error("El importe debe ser mayor que 0");
@@ -77,15 +86,26 @@ export async function createTransaction(
     const tableName = params.type === "expense" ? "expenses" : "incomes";
 
     // Insert transaction
+    const insertPayload = {
+      user_id: userId,
+      amount: params.amount,
+      note: params.concept,
+      category: dbCategory,
+      date: date,
+    };
+
+    // ========== DIAGNOSTIC LOGGING ==========
+    console.log("🔍 [createTransaction] About to insert into", tableName);
+    console.log("🔍 [createTransaction] Insert payload:", insertPayload);
+    apiLogger.info(
+      { tableName, insertPayload },
+      "createTransaction about to insert - DIAGNOSTIC"
+    );
+    // ========================================
+
     const { data, error } = await supabase
       .from(tableName)
-      .insert({
-        user_id: userId,
-        amount: params.amount,
-        note: params.concept,
-        category: dbCategory,
-        date: date,
-      })
+      .insert(insertPayload)
       .select()
       .single();
 
@@ -93,6 +113,25 @@ export async function createTransaction(
       apiLogger.error({ error, params }, `Error creating ${params.type}`);
       throw error;
     }
+
+    // ========== DIAGNOSTIC LOGGING ==========
+    console.log("🔍 [createTransaction] Insert successful. Returned data:", data);
+    console.log("🔍 [createTransaction] Inserted user_id:", data?.user_id);
+    console.log("🔍 [createTransaction] Expected user_id:", userId);
+    console.log(
+      "🔍 [createTransaction] User IDs match:",
+      data?.user_id === userId
+    );
+    apiLogger.info(
+      {
+        insertedData: data,
+        expectedUserId: userId,
+        actualUserId: data?.user_id,
+        match: data?.user_id === userId,
+      },
+      "createTransaction insert completed - DIAGNOSTIC"
+    );
+    // ========================================
 
     const message = params.type === "expense"
       ? `✅ Gasto de ${params.amount}€ registrado en ${params.category}: "${params.concept}"`
