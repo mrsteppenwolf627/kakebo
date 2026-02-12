@@ -48,6 +48,15 @@ export async function updateTransaction(
   params: UpdateTransactionParams
 ): Promise<UpdateTransactionResult> {
   try {
+    // ========== DIAGNOSTIC LOGGING ==========
+    console.log("🔍 [updateTransaction] Called with params:", params);
+    console.log("🔍 [updateTransaction] userId:", userId);
+    apiLogger.info(
+      { userId, params },
+      "updateTransaction called - DIAGNOSTIC"
+    );
+    // ========================================
+
     // Validate that at least one field is being updated
     if (
       params.amount === undefined &&
