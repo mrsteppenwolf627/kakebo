@@ -90,10 +90,10 @@ const SEMANTIC_KEYWORDS: Record<string, string[]> = {
  * @param semanticFilter - Subcategory to filter by (e.g., "comida", "transporte")
  * @returns Filtered expenses that match the keywords
  */
-function filterByKeywords(
-  expenses: Array<{ note?: string | null; [key: string]: unknown }>,
+function filterByKeywords<T extends { note?: string | null }>(
+  expenses: T[],
   semanticFilter: string
-): typeof expenses {
+): T[] {
   const keywords = SEMANTIC_KEYWORDS[semanticFilter.toLowerCase()];
 
   if (!keywords) {
