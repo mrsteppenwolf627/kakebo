@@ -41,3 +41,34 @@ export {
   type TrendDataPoint,
   type ExtremePoint,
 } from "./trends";
+
+// NEW: Copilot CRUD tools (v3 - post-migration)
+export {
+  createTransaction,
+  type CreateTransactionParams,
+  type CreateTransactionResult,
+} from "./create-transaction";
+
+export {
+  updateTransaction,
+  type UpdateTransactionParams,
+  type UpdateTransactionResult,
+} from "./update-transaction";
+
+export {
+  calculateWhatIf,
+  type CalculateWhatIfParams,
+  type CalculateWhatIfResult,
+} from "./calculate-whatif";
+
+export {
+  setBudget,
+  type SetBudgetParams,
+  type SetBudgetResult,
+} from "./set-budget";
+
+export {
+  getCurrentCycle,
+  type GetCurrentCycleParams,
+  type GetCurrentCycleResult,
+} from "./get-current-cycle";

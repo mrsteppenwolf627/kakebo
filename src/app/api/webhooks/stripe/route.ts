@@ -75,7 +75,13 @@ export async function POST(req: Request) {
                 // Usually for recurring payments, but also fires on first payment (if immediately paid)
                 // For trials, the first invoice might be $0 but still 'paid'
 
-                const subscriptionId = invoice.subscription as string;
+                // Handle subscription ID - invoice may have subscription as string or object
+                // TypeScript types may be incomplete, so we use type assertion
+                const invoiceWithSub = invoice as any;
+                const subscriptionId = typeof invoiceWithSub.subscription === 'string'
+                    ? invoiceWithSub.subscription
+                    : invoiceWithSub.subscription?.id || null;
+
                 if (!subscriptionId) break;
 
                 // We need to find the user by subscription ID or customer ID

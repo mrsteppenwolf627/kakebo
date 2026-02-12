@@ -47,6 +47,26 @@ import {
   submitSearchFeedback,
   type SubmitFeedbackParams,
 } from "@/lib/agents/tools/feedback";
+import {
+  createTransaction,
+  type CreateTransactionParams,
+} from "@/lib/agents/tools/create-transaction";
+import {
+  updateTransaction,
+  type UpdateTransactionParams,
+} from "@/lib/agents/tools/update-transaction";
+import {
+  calculateWhatIf,
+  type CalculateWhatIfParams,
+} from "@/lib/agents/tools/calculate-whatif";
+import {
+  setBudget,
+  type SetBudgetParams,
+} from "@/lib/agents/tools/set-budget";
+import {
+  getCurrentCycle,
+  type GetCurrentCycleParams,
+} from "@/lib/agents/tools/get-current-cycle";
 import { validateToolOutput, enhanceToolResult } from "./validator";
 
 /**
@@ -112,6 +132,11 @@ function getUserFriendlyError(toolName: string, errorType: ErrorType): string {
     detectAnomalies: "detección de anomalías",
     predictMonthlySpending: "proyección de gastos",
     getSpendingTrends: "tendencias de gasto",
+    createTransaction: "creación de transacción",
+    updateTransaction: "actualización de transacción",
+    calculateWhatIf: "cálculo de escenario",
+    setBudget: "configuración de presupuesto",
+    getCurrentCycle: "información de ciclo",
   };
 
   const friendlyName = toolNameSpanish[toolName] || toolName;
@@ -228,6 +253,47 @@ async function executeSingleTool(
           supabase,
           userId,
           args as SubmitFeedbackParams
+        );
+        break;
+
+      // NEW: Copilot CRUD tools (v3)
+      case "createTransaction":
+        result = await createTransaction(
+          supabase,
+          userId,
+          args as CreateTransactionParams
+        );
+        break;
+
+      case "updateTransaction":
+        result = await updateTransaction(
+          supabase,
+          userId,
+          args as UpdateTransactionParams
+        );
+        break;
+
+      case "calculateWhatIf":
+        result = await calculateWhatIf(
+          supabase,
+          userId,
+          args as CalculateWhatIfParams
+        );
+        break;
+
+      case "setBudget":
+        result = await setBudget(
+          supabase,
+          userId,
+          args as SetBudgetParams
+        );
+        break;
+
+      case "getCurrentCycle":
+        result = await getCurrentCycle(
+          supabase,
+          userId,
+          args as GetCurrentCycleParams
         );
         break;
 

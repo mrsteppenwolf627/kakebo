@@ -380,6 +380,294 @@ Por defecto: undefined (todas las categorías)`,
 };
 
 /**
+ * Tool 6: Create Transaction
+ *
+ * Creates a new expense or income when user requests it naturally.
+ */
+const createTransactionTool: ChatCompletionTool = {
+  type: "function",
+  function: {
+    name: "createTransaction",
+    description: `Crea un nuevo gasto o ingreso en nombre del usuario.
+
+**Úsala cuando el usuario pida:**
+- Registrar un gasto (ej: "registra 50€ de comida", "apunta un gasto de 30€ en ocio")
+- Añadir un ingreso (ej: "añade un ingreso de 1500€", "registra mi nómina")
+- Crear una transacción (ej: "crea un gasto de 25€ en transporte")
+
+**IMPORTANTE - Confirmación del usuario:**
+- SIEMPRE confirma los detalles ANTES de llamar a esta herramienta
+- Pregunta concepto, importe, categoría si no están claros
+- Solo llama a la herramienta después de tener confirmación explícita
+
+**Mapeo de categorías (igual que analyzeSpendingPattern):**
+- "comida", "supermercado", "transporte" → "survival"
+- "ocio", "restaurantes", "cine", "ropa" → "optional"
+- "libros", "cursos", "educación" → "culture"
+- "imprevistos", "regalos" → "extra"`,
+
+    parameters: {
+      type: "object",
+      properties: {
+        type: {
+          type: "string",
+          enum: ["expense", "income"],
+          description: `Tipo de transacción:
+- "expense": Gasto (lo más común)
+- "income": Ingreso
+
+Por defecto: "expense"`,
+        },
+        amount: {
+          type: "number",
+          description: "Importe de la transacción en EUR. Debe ser mayor que 0.",
+        },
+        concept: {
+          type: "string",
+          description: `Concepto o descripción de la transacción.
+Ejemplos: "Compra en Mercadona", "Cena con amigos", "Netflix", "Transporte público"`,
+        },
+        category: {
+          type: "string",
+          enum: ["survival", "optional", "culture", "extra"],
+          description: `Categoría Kakebo. Usar mismo mapeo semántico que analyzeSpendingPattern:
+- "survival": comida, vivienda, transporte, salud
+- "optional": ocio, restaurantes, ropa, viajes
+- "culture": educación, libros, museos
+- "extra": imprevistos, regalos`,
+        },
+        date: {
+          type: "string",
+          description: `Fecha de la transacción en formato YYYY-MM-DD.
+Si no se especifica, usa la fecha actual.
+Ejemplos: "2024-02-15", "2024-01-30"`,
+        },
+        notes: {
+          type: "string",
+          description: "Notas adicionales opcionales sobre la transacción",
+        },
+      },
+      required: ["type", "amount", "concept", "category"],
+    },
+  },
+};
+
+/**
+ * Tool 7: Update Transaction
+ *
+ * Updates an existing expense or income when user wants to correct something.
+ */
+const updateTransactionTool: ChatCompletionTool = {
+  type: "function",
+  function: {
+    name: "updateTransaction",
+    description: `Modifica un gasto o ingreso existente.
+
+**Úsala cuando el usuario pida:**
+- Cambiar un importe (ej: "cambia el último gasto a 45€")
+- Reclasificar (ej: "mueve ese gasto a opcional")
+- Corregir concepto (ej: "cambia el concepto a 'Cena con Ana'")
+- Modificar fecha (ej: "ese gasto fue ayer, no hoy")
+
+**IMPORTANTE:**
+- Necesitas el ID de la transacción (usa searchExpenses primero si no lo tienes)
+- Al menos uno de: amount, concept, category, date debe ser proporcionado`,
+
+    parameters: {
+      type: "object",
+      properties: {
+        transactionId: {
+          type: "string",
+          description: `UUID del gasto/ingreso a modificar.
+IMPORTANTE: Usa searchExpenses primero para obtener el ID si el usuario dice "el último gasto" o similar.`,
+        },
+        type: {
+          type: "string",
+          enum: ["expense", "income"],
+          description: `Tipo de transacción a modificar:
+- "expense": Gasto (por defecto)
+- "income": Ingreso
+
+Por defecto: "expense"`,
+        },
+        amount: {
+          type: "number",
+          description: "Nuevo importe (opcional). Debe ser mayor que 0.",
+        },
+        concept: {
+          type: "string",
+          description: "Nuevo concepto/descripción (opcional)",
+        },
+        category: {
+          type: "string",
+          enum: ["survival", "optional", "culture", "extra"],
+          description: `Nueva categoría (opcional). Usar mismo mapeo semántico.`,
+        },
+        date: {
+          type: "string",
+          description: "Nueva fecha en formato YYYY-MM-DD (opcional)",
+        },
+      },
+      required: ["transactionId"],
+    },
+  },
+};
+
+/**
+ * Tool 8: Calculate What-If Scenario
+ *
+ * Creates a financial scenario for "what-if" planning.
+ */
+const calculateWhatIfTool: ChatCompletionTool = {
+  type: "function",
+  function: {
+    name: "calculateWhatIf",
+    description: `Crea un escenario financiero "what-if" para planificar gastos futuros.
+
+**Úsala cuando el usuario pregunte:**
+- Planificar algo futuro (ej: "quiero ahorrar para vacaciones en agosto", "cuánto tengo que ahorrar para un curso de 500€")
+- Calcular ahorro mensual (ej: "si quiero comprar un portátil de 800€ en 6 meses, ¿cuánto debo ahorrar?")
+- Crear objetivo financiero (ej: "quiero ahorrar 2000€ para diciembre")
+
+**Características:**
+- Calcula automáticamente el ahorro mensual necesario
+- Guarda el escenario para seguimiento
+- Proporciona consejos sobre viabilidad
+
+**Ejemplos:**
+- "Quiero irme de vacaciones en agosto, costarán 1200€" → name: "Vacaciones Agosto", estimatedCost: 1200, targetDate: "2024-08-01"
+- "Necesito ahorrar 500€ para un curso" → name: "Curso formación", estimatedCost: 500`,
+
+    parameters: {
+      type: "object",
+      properties: {
+        name: {
+          type: "string",
+          description: `Nombre descriptivo del escenario.
+Ejemplos: "Vacaciones Agosto 2024", "Nuevo laptop", "Curso React", "Arreglo coche"`,
+        },
+        estimatedCost: {
+          type: "number",
+          description: "Coste estimado del escenario en EUR. Debe ser mayor que 0.",
+        },
+        category: {
+          type: "string",
+          enum: ["survival", "optional", "culture", "extra"],
+          description: `Categoría del gasto futuro:
+- "survival": necesidades básicas
+- "optional": ocio, viajes
+- "culture": educación, formación
+- "extra": imprevistos`,
+        },
+        targetDate: {
+          type: "string",
+          description: `Fecha objetivo en formato YYYY-MM-DD.
+Si se proporciona, calcula automáticamente el ahorro mensual necesario.
+Ejemplos: "2024-08-01", "2024-12-31"`,
+        },
+        description: {
+          type: "string",
+          description: "Descripción adicional opcional del escenario",
+        },
+      },
+      required: ["name", "estimatedCost", "category"],
+    },
+  },
+};
+
+/**
+ * Tool 9: Set Budget
+ *
+ * Sets or updates budget for a category and cycle.
+ */
+const setBudgetTool: ChatCompletionTool = {
+  type: "function",
+  function: {
+    name: "setBudget",
+    description: `Establece o actualiza el presupuesto de una categoría para el ciclo actual.
+
+**Úsala cuando el usuario pida:**
+- Configurar presupuesto (ej: "establece el presupuesto de supervivencia en 500€")
+- Cambiar presupuesto (ej: "pon el presupuesto de ocio en 200€")
+- Ajustar límites (ej: "aumenta mi presupuesto de cultura a 150€")
+
+**IMPORTANTE:**
+- Por defecto modifica el ciclo ACTUAL del usuario
+- El usuario puede tener ciclos personalizados (nómina a nómina) no solo meses calendario
+- Puedes establecer category="all" para poner todas las categorías al mismo importe`,
+
+    parameters: {
+      type: "object",
+      properties: {
+        category: {
+          type: "string",
+          enum: ["survival", "optional", "culture", "extra", "all"],
+          description: `Categoría a configurar:
+- "survival", "optional", "culture", "extra": Categorías individuales
+- "all": Todas las categorías (las pone al mismo importe)
+
+Usar mismo mapeo semántico que otras herramientas.`,
+        },
+        amount: {
+          type: "number",
+          description: `Importe del presupuesto en EUR.
+Puede ser 0 si el usuario quiere "desactivar" una categoría.
+Debe ser >= 0.`,
+        },
+        cycleStart: {
+          type: "string",
+          description: `Fecha de inicio del ciclo en formato YYYY-MM-DD (OPCIONAL).
+Si no se especifica, usa el ciclo actual del usuario.
+Generalmente NO necesitas especificar esto.`,
+        },
+        cycleEnd: {
+          type: "string",
+          description: `Fecha de fin del ciclo en formato YYYY-MM-DD (OPCIONAL).
+Si no se especifica, usa el ciclo actual del usuario.
+Generalmente NO necesitas especificar esto.`,
+        },
+      },
+      required: ["category", "amount"],
+    },
+  },
+};
+
+/**
+ * Tool 10: Get Current Cycle
+ *
+ * Gets information about the user's current payment cycle.
+ */
+const getCurrentCycleTool: ChatCompletionTool = {
+  type: "function",
+  function: {
+    name: "getCurrentCycle",
+    description: `Obtiene información sobre el ciclo de pago actual del usuario.
+
+**Úsala cuando el usuario pregunte:**
+- Sobre su ciclo (ej: "¿cuál es mi ciclo actual?", "¿cuándo termina mi ciclo?")
+- Días restantes (ej: "¿cuántos días me quedan?", "¿cuándo cobra?")
+- Progreso del ciclo (ej: "¿en qué punto del ciclo estoy?")
+
+**Información que proporciona:**
+- Fechas de inicio y fin del ciclo
+- Días transcurridos y restantes
+- Tipo de ciclo (calendario o nómina)
+- Día de nómina (si aplica)
+- Porcentaje de progreso
+
+**Importante:**
+- Los usuarios pueden tener ciclos personalizados (nómina-a-nómina)
+- NO todos los usuarios usan meses calendario estándar`,
+
+    parameters: {
+      type: "object",
+      properties: {},
+      required: [],
+    },
+  },
+};
+
+/**
  * Array of all available tools for OpenAI function calling
  */
 export const KAKEBO_TOOLS: ChatCompletionTool[] = [
@@ -390,6 +678,12 @@ export const KAKEBO_TOOLS: ChatCompletionTool[] = [
   getSpendingTrendsTool,
   searchExpensesTool,
   submitFeedbackTool,
+  // NEW: Copilot CRUD tools (v3)
+  createTransactionTool,
+  updateTransactionTool,
+  calculateWhatIfTool,
+  setBudgetTool,
+  getCurrentCycleTool,
 ];
 
 /**
@@ -403,4 +697,10 @@ export const TOOLS_BY_NAME: Record<string, ChatCompletionTool> = {
   getSpendingTrends: getSpendingTrendsTool,
   searchExpenses: searchExpensesTool,
   submitFeedback: submitFeedbackTool,
+  // NEW: Copilot CRUD tools (v3)
+  createTransaction: createTransactionTool,
+  updateTransaction: updateTransactionTool,
+  calculateWhatIf: calculateWhatIfTool,
+  setBudget: setBudgetTool,
+  getCurrentCycle: getCurrentCycleTool,
 };
