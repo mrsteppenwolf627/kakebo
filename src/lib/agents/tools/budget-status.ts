@@ -38,6 +38,14 @@ export interface BudgetStatusResult {
   totalSpent: number;
   totalRemaining: number;
   overallStatus: BudgetStatusLevel;
+  // Financial overview (for real disponible calculation)
+  monthlyIncome?: number;
+  fixedExpenses?: number;
+  savingGoal?: number;
+  utilizable?: number; // Income - Fixed - Saving
+  disponibleReal?: number; // Utilizable - Spent
+  currentBalance?: number;
+  liquidezReal?: number; // Balance - Committed
 }
 
 /**
@@ -286,6 +294,56 @@ export async function getBudgetStatus(
       totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
     const overallStatus = getStatusLevel(overallPercentage);
 
+    // ========== FINANCIAL OVERVIEW (NEW) ==========
+    // Get fixed expenses for the month
+    const { data: fixedExpenses, error: fixedError } = await supabase
+      .from("fixed_expenses")
+      .select("amount")
+      .eq("user_id", userId)
+      .eq("active", true)
+      .lte("start_ym", month)
+      .or(`end_ym.is.null,end_ym.gte.${month}`);
+
+    if (fixedError) {
+      apiLogger.warn(
+        { error: fixedError },
+        "Error fetching fixed expenses, continuing without them"
+      );
+    }
+
+    const totalFixedExpenses =
+      fixedExpenses?.reduce((sum, exp) => sum + (exp.amount || 0), 0) || 0;
+
+    // Extract financial overview fields from settings
+    const monthlyIncome = (settings.monthly_income as number) || 0;
+    const savingGoal = (settings.monthly_saving_goal as number) || 0;
+    const currentBalance = (settings.current_balance as number) || 0;
+
+    // Calculate utilizable and disponible real
+    const utilizable = monthlyIncome - totalFixedExpenses - savingGoal;
+    const disponibleReal = utilizable - totalSpent;
+
+    // Liquidez real = Balance - Committed amounts
+    // Committed = What you still need to spend (remaining budget that's planned)
+    // For simplicity, we use: Balance - (Fixed expenses not yet paid this month)
+    // This is a simplified calculation, could be enhanced
+    const liquidezReal = currentBalance - totalFixedExpenses;
+
+    apiLogger.info(
+      {
+        monthlyIncome,
+        fixedExpenses: totalFixedExpenses,
+        savingGoal,
+        utilizable,
+        totalSpent,
+        disponibleReal,
+        currentBalance,
+        liquidezReal,
+      },
+      "Financial overview calculated"
+    );
+    // ==============================================
+
     const result = {
       month,
       categories,
@@ -293,6 +351,14 @@ export async function getBudgetStatus(
       totalSpent,
       totalRemaining,
       overallStatus,
+      // Financial overview
+      monthlyIncome,
+      fixedExpenses: totalFixedExpenses,
+      savingGoal,
+      utilizable,
+      disponibleReal,
+      currentBalance,
+      liquidezReal,
     };
 
     console.log("✅ Budget status result:", JSON.stringify(result, null, 2));
