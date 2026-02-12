@@ -48,6 +48,70 @@ function getCurrentDate(): string {
 }
 
 /**
+ * Get category color (same as used in manual expense creation)
+ */
+function getCategoryColor(category: string): string {
+  const colors: Record<string, string> = {
+    supervivencia: "#fca5a5", // Red-300
+    opcional: "#93c5fd",      // Blue-300
+    cultura: "#86efac",        // Green-300
+    extra: "#d8b4fe",          // Purple-300
+  };
+  return colors[category] || "#d1d5db"; // Gray-300 fallback
+}
+
+/**
+ * Get or create month record for given date
+ * This ensures expenses are properly linked to months (same as manual creation)
+ */
+async function getOrCreateMonth(
+  supabase: SupabaseClient,
+  userId: string,
+  date: string
+): Promise<string> {
+  // Extract year and month from date (YYYY-MM-DD → year, month)
+  const [yearStr, monthStr] = date.split("-");
+  const year = parseInt(yearStr, 10);
+  const month = parseInt(monthStr, 10);
+
+  // Check if month record exists
+  const { data: existing, error: fetchError } = await supabase
+    .from("months")
+    .select("id,status")
+    .eq("user_id", userId)
+    .eq("year", year)
+    .eq("month", month)
+    .limit(1);
+
+  if (fetchError) {
+    throw new Error(`Error fetching month: ${fetchError.message}`);
+  }
+
+  // If exists, return its ID
+  if (existing && existing.length > 0) {
+    return existing[0].id;
+  }
+
+  // Create new month record
+  const { data: created, error: createError } = await supabase
+    .from("months")
+    .insert({
+      user_id: userId,
+      year,
+      month,
+      status: "open",
+    })
+    .select("id")
+    .single();
+
+  if (createError) {
+    throw new Error(`Error creating month: ${createError.message}`);
+  }
+
+  return created.id;
+}
+
+/**
  * Create a new transaction (expense or income)
  *
  * This tool allows the agent to create transactions on behalf of the user
@@ -85,14 +149,43 @@ export async function createTransaction(
     // Determine which table to insert into
     const tableName = params.type === "expense" ? "expenses" : "incomes";
 
-    // Insert transaction
-    const insertPayload = {
+    // ========== GET/CREATE MONTH RECORD ==========
+    // This ensures expenses are linked to months (same as manual creation)
+    // so they appear in the dashboard properly
+    let monthId: string | null = null;
+
+    if (params.type === "expense") {
+      try {
+        monthId = await getOrCreateMonth(supabase, userId, date);
+        apiLogger.debug(
+          { userId, date, monthId },
+          "Month record obtained for expense"
+        );
+      } catch (monthError) {
+        apiLogger.warn(
+          { error: monthError, userId, date },
+          "Failed to get/create month record - proceeding without month_id"
+        );
+        // Continue without month_id rather than failing the entire operation
+        // The expense will still be created, just won't show in month-filtered views
+      }
+    }
+    // ===========================================
+
+    // Build insert payload
+    const insertPayload: Record<string, unknown> = {
       user_id: userId,
       amount: params.amount,
       note: params.concept,
       category: dbCategory,
       date: date,
     };
+
+    // Add month_id and color for expenses (required for dashboard display)
+    if (params.type === "expense" && monthId) {
+      insertPayload.month_id = monthId;
+      insertPayload.color = getCategoryColor(dbCategory);
+    }
 
     // ========== DIAGNOSTIC LOGGING ==========
     console.log("🔍 [createTransaction] About to insert into", tableName);
