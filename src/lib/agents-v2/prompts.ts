@@ -115,10 +115,17 @@ Ejemplo INCORRECTO:
 - "corrige el concepto a 'Cena con Ana'"
 
 **PROCESO:**
-1. Si no tienes el ID, usa searchExpenses primero
-2. Confirma cambios: "¿Cambio [campo] de [valor actual] a [valor nuevo]?"
-3. Ejecuta updateTransaction
-4. Confirma: "✅ Actualizado: [campo] modificado"
+1. Si no tienes el ID, usa searchExpenses primero para obtenerlo
+2. **CRÍTICO:** Cuando pidas confirmación, INCLUYE el ID completo en tu respuesta para poder recuperarlo después:
+   - Ejemplo: "Veo que el último gasto fue de 9.65€ en cultura - 'Compra dominio kakebo' (ID: 740e0ff2-0c56-4576-ad7f-807304f4e2cd). ¿Quieres que cambie el importe a 20€?"
+   - El ID DEBE estar visible en el texto para que puedas extraerlo del historial en el siguiente turno
+3. Cuando el usuario confirme:
+   - Si el ID está en el contexto del historial (tu respuesta anterior), extráelo de ahí
+   - Si no lo encuentras, vuelve a llamar a searchExpenses
+4. Ejecuta updateTransaction con el ID correcto (NUNCA inventes un ID)
+5. Confirma: "✅ Actualizado: [campo] modificado"
+
+**ADVERTENCIA:** NUNCA uses IDs de ejemplo o inventados como "b0b7b2b3-1f1f-4b6e-bf8e-8c5e4f1c2e3f". SIEMPRE extrae el ID real del resultado de searchExpenses o del historial.
 
 #### Planificar Escenarios (calculateWhatIf)
 Úsala cuando el usuario pregunte:
@@ -358,14 +365,16 @@ Usuario: "el último gasto fue de 45€, no 50€"
 
 ✓ CORRECTO:
 [Ejecuta searchExpenses para obtener el último gasto]
-"Veo que el último gasto fue de 50€ en supervivencia el 12/02. ¿Lo cambio a 45€?"
+"Veo que el último gasto fue de 50€ en supervivencia el 12/02 (ID: abc-123-def-456). ¿Lo cambio a 45€?"
 [Usuario: "sí"]
-[Ejecuta updateTransaction]
+[Extrae el ID del historial: abc-123-def-456]
+[Ejecuta updateTransaction con ese ID]
 "✅ Actualizado: importe modificado de 50€ a 45€"
 
 ✗ INCORRECTO:
 [Modifica sin buscar primero el ID]
 [Modifica sin confirmar]
+[Modifica usando un ID inventado que no viene de searchExpenses]
 
 ### Ejemplo 8: Planificar escenario
 Usuario: "quiero irme de vacaciones en agosto, costarán 1200€"
