@@ -527,10 +527,11 @@ npm test -- get-current-cycle
 
 ### 🚧 En progreso
 
-- [ ] Testing en producción (v3 Copilot)
+- [x] Testing en producción (v3 Copilot) - **3 bugs críticos resueltos**
 - [ ] Stripe webhooks en producción
 - [ ] Screenshots para README
 - [ ] Tests E2E completos
+- [ ] Validación completa de las 5 herramientas CRUD
 
 ### 🔮 Futuro
 
@@ -566,6 +567,27 @@ Este es un proyecto privado. Para miembros del equipo:
 
 ## 📝 Changelog
 
+### v3.0.1 (2026-02-12) - Hotfix Critical Bugs 🔥
+
+**🐛 Production Bug Fixes:**
+- **CRITICAL**: Gastos creados por agente no aparecían en dashboard
+  - Root cause: Dashboard filtra por `month_id`, pero agente no lo asignaba
+  - Fix: `createTransaction` ahora obtiene/crea registro en `months` y asigna `month_id` + `color`
+  - Impact: Gastos del agente ahora visibles en dashboard (igual que los manuales)
+- **Date parsing**: LLM interpreta correctamente "de ayer", "hace 3 días", etc.
+  - Enhanced tool definition con ejemplos concretos de fechas calculadas
+- **Diagnostic logging**: Logging completo del flujo de `userId` para debugging en producción
+  - Confirmado: user_id se pasa correctamente en toda la cadena
+
+**Commits:**
+- `c6175e1` - fix: assign month_id and color to agent-created expenses
+- `ce00e25` - fix: improve date interpretation in createTransaction tool
+- `bd0152c` - debug: add comprehensive userId tracing for createTransaction bug
+
+**Testing:** Validado en producción por usuario real ✅
+
+---
+
 ### v3.0.0 (2026-02-12) - Kakebo Copilot 🤖✨
 
 **🚀 MAJOR UPGRADE - De Analyst a Copilot Proactivo**
@@ -600,12 +622,16 @@ Este es un proyecto privado. Para miembros del equipo:
 - 🐛 Stripe webhook type error (invoice.subscription)
 - 🐛 setBudget type error (cycleStart/cycleEnd)
 - 🐛 Validación de update-transaction
+- 🐛 **CRITICAL**: Dashboard no mostraba gastos creados por agente (faltaba month_id + color)
+- 🐛 Interpretación incorrecta de fechas relativas ("de ayer" → fecha correcta)
+- 🐛 Logging diagnóstico para depuración de user_id en producción
 
 **Estadísticas:**
-- 📊 25 archivos modificados/creados
-- 📝 5,347 líneas añadidas
+- 📊 28 archivos modificados/creados (incluye hotfixes)
+- 📝 5,500+ líneas añadidas
 - 🧪 59 tests nuevos
 - 🗃️ 24+ funciones SQL nuevas
+- 🐛 3 bugs críticos resueltos en producción
 
 ### v2.1.0 (2026-02-10) - Freemium Model ✨
 
