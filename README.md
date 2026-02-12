@@ -41,25 +41,34 @@ A diferencia de otras apps financieras, Kakebo AI:
 
 ## ✨ Características
 
-### 🤖 Agente IA Premium
+### 🤖 Kakebo Copilot - Tu Asistente Financiero Proactivo
 
 <details>
-<summary><b>Chat conversacional ilimitado</b></summary>
+<summary><b>Chat conversacional + Acciones automáticas</b></summary>
 
-Pregunta cualquier cosa sobre tus finanzas en **lenguaje natural**:
+**El Copilot no solo responde, ¡ACTÚA!** Gestiona tus finanzas conversacionalmente:
 
 ```
-👤 "Busca vicios del mes pasado"
-🤖 "He encontrado 12 gastos relacionados con vicios (€127.50)..."
+👤 "Registra 50€ de comida"
+🤖 "¿Quieres que registre un gasto de 50€ en supervivencia con concepto 'comida'?"
+👤 "Sí"
+🤖 "✅ Registrado: Gasto de 50€ en supervivencia - 'comida'"
 
-👤 "¿Cuánto he gastado en restaurantes caros?"
-🤖 "Has gastado €245 en restaurantes este mes. Es un 30% más que el mes anterior..."
+👤 "Cambia el último gasto a 45€"
+🤖 "¿Cambio el importe de 50€ a 45€?"
+👤 "Sí"
+🤖 "✅ Actualizado: importe modificado"
 
-👤 "La insulina NO es un vicio"
-🤖 "Entendido. He aprendido que 'insulina' no debe considerarse vicio. ✓"
+👤 "Quiero ahorrar 1200€ para vacaciones en agosto"
+🤖 "¿Confirmas escenario 'Vacaciones Agosto' (1200€, categoría opcional)?"
+👤 "Sí"
+🤖 "✅ Escenario creado. Necesitas ahorrar 200€/mes durante 6 meses"
+
+👤 "Establece el presupuesto de ocio en 300€"
+🤖 "✅ Presupuesto actualizado: opcional = 300€"
 ```
 
-**Powered by GPT-4o-mini con Function Calling**
+**Powered by GPT-4o-mini con Function Calling + 12 herramientas especializadas**
 
 </details>
 
@@ -84,22 +93,34 @@ Kakebo AI **aprende permanentemente**:
 </details>
 
 <details>
-<summary><b>Análisis avanzado</b></summary>
+<summary><b>Análisis avanzado + Gestión proactiva</b></summary>
 
+**Lectura (Análisis):**
 - 📊 **Patrones de gasto**: Identifica tendencias por categoría
 - 🔮 **Predicciones**: Proyecta cuánto gastarás al final del mes
 - ⚠️ **Detección de anomalías**: Te avisa de gastos inusuales
 - 📈 **Trends históricos**: Compara con meses anteriores
+- 🔍 **Búsqueda semántica**: Encuentra gastos por concepto
+
+**Escritura (Acciones):**
+- ✏️ **Crear transacciones**: Registra gastos/ingresos por chat
+- 🔄 **Modificar transacciones**: Corrige importes, categorías, conceptos
+- 🎯 **Planificar escenarios**: Calcula ahorro necesario para objetivos futuros
+- 💰 **Configurar presupuestos**: Ajusta límites conversacionalmente
+- 📅 **Ciclos personalizados**: Soporte para nómina-a-nómina (no solo meses calendario)
 
 </details>
 
-### 💰 Gestión Financiera
+### 💰 Gestión Financiera Avanzada
 
 - ✅ **Categorías Kakebo** auténticas: Supervivencia, Opcional, Cultura, Extra
-- 📅 **Vista calendario** con control mensual
-- 💳 **Tracking de gastos** rápido y visual
-- 🎯 **Presupuestos por categoría**
+- 📅 **Ciclos de pago personalizados**: Nómina-a-nómina o calendario estándar
+- 💳 **Tracking de gastos** rápido y visual + Registro por chat
+- 🎯 **Presupuestos por ciclo**: Histórico de presupuestos con tracking evolutivo
 - 💸 **Gestión de Múltiples Ingresos**: Registro detallado de nóminas, extras y regalos
+- 🔔 **Alertas configurables**: Umbrales personalizables por categoría (warning/critical)
+- 📝 **Reflexiones Kakebo**: Sistema de reflexión mensual con action items
+- 🎲 **Escenarios What-If**: Planifica gastos futuros con cálculo automático de ahorro
 
 ### 📄 Reportes Premium
 
@@ -256,12 +277,17 @@ Acceso premium manual para:
 </tr>
 </table>
 
-### 🤖 AI Architecture
+### 🤖 AI Architecture (v3 - Copilot)
 
 - **Model**: GPT-4o-mini con Function Calling
+- **Agent Type**: Proactive Copilot (no solo analista)
+- **Herramientas**: 12 tools (7 read + 5 write)
+  - Read: analyzeSpending, budgetStatus, anomalies, predictions, trends, search, feedback
+  - Write: createTransaction, updateTransaction, calculateWhatIf, setBudget, getCurrentCycle
 - **Embeddings**: text-embedding-3-small (1536 dims)
 - **Vector Store**: PostgreSQL + pgvector
 - **Learning**: Feedback híbrido (personal + global consensus)
+- **Confirmación**: Todas las acciones de escritura requieren confirmación explícita del usuario
 
 ---
 
@@ -273,8 +299,10 @@ Acceso premium manual para:
 - [🚀 Deployment Guide](docs/DEPLOYMENT_GUIDE.md) - Deploy a producción
 - [🧪 Testing Guide](docs/MANUAL_TESTING_GUIDE.md) - Testing manual
 
-### 🤖 KakeBot AI
+### 🤖 Kakebo Copilot (v3)
 
+- [🏮 Guía de Migración](KAKEBO_COPILOT_MIGRATION_GUIDE.md) - Migraciones de base de datos
+- [🛠️ Guía de Implementación](KAKEBO_COPILOT_IMPLEMENTATION.md) - Arquitectura Copilot
 - [🧠 AI Agent Architecture](docs/KAKEBOT_V2_ARCHITECTURE.md) - Cómo funciona el agente
 - [📡 API Documentation](docs/API_DOCUMENTATION.md) - Endpoints y ejemplos
 - [🔄 Learning System](CONTEXT.md#learning-system-architecture) - Sistema de aprendizaje
@@ -312,9 +340,14 @@ kakebo/
 │   │   │   └── tools/
 │   │   │       ├── search-expenses.ts      # Semantic search
 │   │   │       ├── feedback.ts             # Learning system
-│   │   │       ├── spending-analysis.ts
-│   │   │       ├── predictions.ts
-│   │   │       └── trends.ts
+│   │   │       ├── spending-analysis.ts    # Análisis de gastos
+│   │   │       ├── predictions.ts          # Predicciones
+│   │   │       ├── trends.ts               # Tendencias
+│   │   │       ├── create-transaction.ts   # Crear gastos/ingresos (v3)
+│   │   │       ├── update-transaction.ts   # Modificar transacciones (v3)
+│   │   │       ├── calculate-whatif.ts     # Escenarios financieros (v3)
+│   │   │       ├── set-budget.ts           # Configurar presupuestos (v3)
+│   │   │       └── get-current-cycle.ts    # Info de ciclo actual (v3)
 │   │   ├── ai/                   # AI utilities
 │   │   │   └── embeddings.ts     # OpenAI embeddings
 │   │   ├── auth/                 # Auth & Access Control
@@ -330,8 +363,9 @@ kakebo/
 │   │   └── reports/              # PDF reports
 │   │       ├── ReportDialog.tsx
 │   │       └── ReportPDF.tsx
-│   └── __tests__/                # Tests
-│       └── agents-v2/            # 40+ tests
+│   └── __tests__/                # Tests (99 tests totales)
+│       ├── agents-v2/            # 40 tests (agent core)
+│       └── agents/tools/         # 59 tests (CRUD tools v3)
 ├── supabase/                     # Database migrations
 │   └── migrations/
 ├── docs/                         # Documentation
@@ -367,15 +401,29 @@ npm run db:migrate       # Run migrations
 ### 🗄️ Supabase Setup
 
 1. Crea proyecto en [supabase.com](https://supabase.com)
-2. Ejecuta las migraciones SQL:
-   - `supabase_migration_saas.sql` (profiles + SaaS)
-   - `search_feedback_migration.sql` (learning system)
-   - `update_trigger_to_free.sql` (free tier por defecto)
-3. Habilita extensión `pgvector` en SQL Editor:
+2. Habilita extensión `pgvector` en SQL Editor:
    ```sql
    CREATE EXTENSION IF NOT EXISTS vector;
    ```
-4. Copia las keys de Settings → API
+3. Ejecuta las migraciones SQL **EN ORDEN**:
+
+   **Base (SaaS):**
+   - `supabase_migration_saas.sql` (profiles + SaaS)
+   - `search_feedback_migration.sql` (learning system)
+   - `update_trigger_to_free.sql` (free tier por defecto)
+
+   **Copilot (v3 - NUEVO):**
+   - `supabase_migration_payment_cycles.sql` (ciclos personalizados)
+   - `supabase_migration_cycle_budgets.sql` (presupuestos por ciclo)
+   - `supabase_migration_alert_settings.sql` (alertas configurables)
+   - `supabase_migration_kakebo_reflections.sql` (reflexiones Kakebo)
+   - `supabase_migration_financial_scenarios.sql` (planificación what-if)
+   - `supabase_migration_deprecate_user_settings.sql` (deprecación)
+
+4. Verifica con: `verify_migrations.sql`
+5. Copia las keys de Settings → API
+
+**Ver guía completa**: [KAKEBO_COPILOT_MIGRATION_GUIDE.md](KAKEBO_COPILOT_MIGRATION_GUIDE.md)
 
 ### 💳 Stripe Setup
 
@@ -416,15 +464,30 @@ Requiere `SUPABASE_SERVICE_ROLE_KEY` para funcionar.
 
 ```bash
 # Run all tests
-npm test -- agents-v2 --run
+npm test
 
-# Expected: 40/40 tests passing ✓
+# Run specific test suites
+npm test -- agents-v2           # Agent core tests
+npm test -- create-transaction  # CRUD tools tests
+npm test -- update-transaction
+npm test -- calculate-whatif
+npm test -- set-budget
+npm test -- get-current-cycle
+
+# Expected: 99/99 tests passing ✓
 ```
 
 **Coverage:**
-- ✅ Function caller (15 tests)
-- ✅ Hardening integration (10 tests)
-- ✅ Sprint 2 features (15 tests)
+- ✅ Agent v2 core (40 tests)
+  - Function caller (15 tests)
+  - Hardening integration (10 tests)
+  - Sprint 2 features (15 tests)
+- ✅ CRUD Tools (59 tests) **NUEVO**
+  - create-transaction (10 tests)
+  - update-transaction (14 tests)
+  - calculate-whatif (12 tests)
+  - set-budget (12 tests)
+  - get-current-cycle (11 tests)
 
 ---
 
@@ -443,6 +506,17 @@ npm test -- agents-v2 --run
 
 ### ✅ Completado
 
+**v3.0 - Kakebo Copilot:**
+- [x] Transformación de Analyst a Copilot proactivo
+- [x] 5 herramientas CRUD (crear, modificar, planificar, configurar)
+- [x] 6 migraciones de base de datos
+- [x] Ciclos de pago personalizados (nómina-a-nómina)
+- [x] Presupuestos por ciclo con histórico
+- [x] Sistema de reflexiones Kakebo
+- [x] Planificación de escenarios what-if
+- [x] 99 tests unitarios con 100% cobertura
+
+**v2.x - Base AI:**
 - [x] Modelo freemium con Stripe
 - [x] AI Agent v2 con Function Calling
 - [x] Sistema de aprendizaje (personal + global)
@@ -453,12 +527,16 @@ npm test -- agents-v2 --run
 
 ### 🚧 En progreso
 
+- [ ] Testing en producción (v3 Copilot)
 - [ ] Stripe webhooks en producción
 - [ ] Screenshots para README
 - [ ] Tests E2E completos
 
 ### 🔮 Futuro
 
+- [ ] Interfaz web para reflexiones Kakebo
+- [ ] Dashboard de escenarios what-if
+- [ ] Configuración de ciclos desde UI
 - [ ] App móvil (React Native)
 - [ ] Integraciones bancarias (Plaid)
 - [ ] Multi-idioma (EN, JP)
@@ -487,6 +565,47 @@ Este es un proyecto privado. Para miembros del equipo:
 ---
 
 ## 📝 Changelog
+
+### v3.0.0 (2026-02-12) - Kakebo Copilot 🤖✨
+
+**🚀 MAJOR UPGRADE - De Analyst a Copilot Proactivo**
+
+**Nuevas Capacidades CRUD (5 herramientas):**
+- ✏️ **createTransaction** - Registra gastos/ingresos por chat
+- 🔄 **updateTransaction** - Modifica transacciones existentes
+- 🎯 **calculateWhatIf** - Planifica escenarios futuros con ahorro automático
+- 💰 **setBudget** - Configura presupuestos conversacionalmente
+- 📅 **getCurrentCycle** - Obtiene info del ciclo de pago actual
+
+**Base de Datos (6 migraciones):**
+- 📅 **payment_cycles** - Ciclos personalizados nómina-a-nómina
+- 💰 **cycle_budgets** - Presupuestos por ciclo con histórico
+- 🔔 **alert_settings** - Alertas configurables por categoría
+- 📝 **kakebo_reflections** - Reflexiones Kakebo con action items
+- 🎲 **financial_scenarios** - Planificación what-if
+- ♻️ Deprecación de columnas antiguas en user_settings
+
+**Testing (59 tests nuevos):**
+- ✅ 99 tests totales (40 agent + 59 CRUD tools)
+- ✅ 100% cobertura de nuevas herramientas
+- ✅ Validación completa de casos edge
+
+**Prompt & UX:**
+- 🤖 Transformación de "Analyst" a "Copilot"
+- 🎯 Proactividad con confirmación explícita
+- ✅ Feedback claro después de acciones
+- 📚 Documentación completa (2 guías MD)
+
+**Bug Fixes:**
+- 🐛 Stripe webhook type error (invoice.subscription)
+- 🐛 setBudget type error (cycleStart/cycleEnd)
+- 🐛 Validación de update-transaction
+
+**Estadísticas:**
+- 📊 25 archivos modificados/creados
+- 📝 5,347 líneas añadidas
+- 🧪 59 tests nuevos
+- 🗃️ 24+ funciones SQL nuevas
 
 ### v2.1.0 (2026-02-10) - Freemium Model ✨
 
