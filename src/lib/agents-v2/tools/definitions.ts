@@ -439,8 +439,23 @@ Ejemplos: "Compra en Mercadona", "Cena con amigos", "Netflix", "Transporte públ
         date: {
           type: "string",
           description: `Fecha de la transacción en formato YYYY-MM-DD.
-Si no se especifica, usa la fecha actual.
-Ejemplos: "2024-02-15", "2024-01-30"`,
+
+**IMPORTANTE - Interpretación de fechas relativas:**
+Debes calcular la fecha correcta cuando el usuario use expresiones temporales:
+- "hoy", "ahora" → fecha actual (YYYY-MM-DD)
+- "ayer", "de ayer" → fecha de ayer (calcula: fecha actual - 1 día)
+- "anteayer", "antes de ayer" → fecha de anteayer (calcula: fecha actual - 2 días)
+- "hace 3 días" → fecha hace 3 días (calcula: fecha actual - 3 días)
+- "la semana pasada" → calcula el día específico de la semana pasada
+
+**Fecha actual de referencia:** ${new Date().toISOString().split("T")[0]} (YYYY-MM-DD)
+
+Si no se especifica fecha, usa la fecha actual.
+
+Ejemplos:
+- Usuario: "registra un gasto de ayer" → date: "${new Date(Date.now() - 86400000).toISOString().split("T")[0]}"
+- Usuario: "añade un gasto de hoy" → date: "${new Date().toISOString().split("T")[0]}"
+- Usuario: "apunta 50€ de hace 2 días" → date: "${new Date(Date.now() - 172800000).toISOString().split("T")[0]}"`,
         },
         notes: {
           type: "string",
