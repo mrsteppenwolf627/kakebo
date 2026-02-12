@@ -233,7 +233,7 @@ export async function analyzeSpendingPattern(
           params.semanticFilter,
           {
             limit: 100, // Get more results for filtering
-            threshold: 0.3, // Lower threshold for broader matching
+            threshold: 0.2, // Lower threshold for broader matching (0.3 was too restrictive)
           }
         );
 
