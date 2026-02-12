@@ -22,6 +22,7 @@ export interface SearchExpensesResult {
     totalAmount: number;
     count: number;
     expenses: Array<{
+        id?: string; // Expense ID (for updateTransaction)
         concept: string;
         amount: number;
         date: string;
@@ -109,6 +110,100 @@ export async function searchExpenses(
     const limit = Math.min(params.limit || 20, 50);
 
     try {
+        // ========== FAST PATH: Simple queries without embeddings ==========
+        // For queries like "último", "last", "recent", use direct SQL
+        const queryLower = params.query.toLowerCase().trim();
+        const isSimpleLastQuery =
+            queryLower === "último" ||
+            queryLower === "ultimo" ||
+            queryLower === "last" ||
+            queryLower === "reciente" ||
+            queryLower === "recent" ||
+            queryLower === "más reciente" ||
+            queryLower === "mas reciente";
+
+        if (isSimpleLastQuery) {
+            apiLogger.info({ query: params.query, period }, "Using fast path for 'last expense' query");
+
+            // Get period dates
+            const periodDates = getPeriodDates(period);
+
+            // Build query
+            let query = supabase
+                .from("expenses")
+                .select("id,date,amount,note,category")
+                .eq("user_id", userId)
+                .order("date", { ascending: false })
+                .order("created_at", { ascending: false })
+                .limit(limit);
+
+            // Apply period filter if specified
+            if (periodDates) {
+                query = query
+                    .gte("date", periodDates.start)
+                    .lte("date", periodDates.end);
+            }
+
+            // Apply amount filters
+            if (params.minAmount !== undefined) {
+                query = query.gte("amount", params.minAmount);
+            }
+            if (params.maxAmount !== undefined) {
+                query = query.lte("amount", params.maxAmount);
+            }
+
+            const { data: expenses, error } = await query;
+
+            if (error) {
+                throw error;
+            }
+
+            if (!expenses || expenses.length === 0) {
+                return {
+                    query: params.query,
+                    period,
+                    totalAmount: 0,
+                    count: 0,
+                    expenses: [],
+                    insights: [`No encontré gastos en el período "${period}"`],
+                };
+            }
+
+            // Calculate total
+            const totalAmount = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+
+            // Map category names
+            const categoryMap: Record<string, string> = {
+                supervivencia: "Supervivencia",
+                opcional: "Opcional",
+                cultura: "Cultura",
+                extra: "Extra",
+            };
+
+            // Format results
+            const formattedExpenses = expenses.map(exp => ({
+                id: exp.id, // ← IMPORTANT: Include ID for updateTransaction
+                concept: exp.note || "Sin concepto",
+                amount: exp.amount,
+                date: exp.date,
+                category: categoryMap[exp.category] || exp.category,
+                similarity: 1.0, // Perfect match for direct query
+            }));
+
+            return {
+                query: params.query,
+                period,
+                totalAmount: Math.round(totalAmount * 100) / 100,
+                count: formattedExpenses.length,
+                expenses: formattedExpenses,
+                insights: [
+                    `Encontré ${formattedExpenses.length} gasto(s) reciente(s)`,
+                    `Total: €${totalAmount.toFixed(2)}`,
+                ],
+            };
+        }
+        // ================================================================
+
         apiLogger.info({ query: params.query, period }, "Searching expenses with embeddings");
 
         // Search using semantic embeddings
@@ -183,6 +278,7 @@ export async function searchExpenses(
 
         // Format expenses
         const expenses = topResults.map(exp => ({
+            id: exp.id, // ← IMPORTANT: Include ID for updateTransaction
             concept: exp.note,
             amount: exp.amount,
             date: exp.date,

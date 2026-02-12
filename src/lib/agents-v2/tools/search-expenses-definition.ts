@@ -18,9 +18,13 @@ const searchExpensesTool: ChatCompletionTool = {
         description: `Busca gastos usando lenguaje natural LIBRE, sin restricciones de categorías.
 
 **USA ESTA HERRAMIENTA cuando el usuario pida:**
-- Conceptos específicos: "vicios", "gimnasio", "suscripciones", "comida", "restaurantes"
-- Búsquedas con condiciones: "restaurantes caros", "gastos pequeños", "compras grandes"
-- Cualquier cosa que NO sea una de las 4 categorías Kakebo base
+- **Último(s) gasto(s)**: "último gasto", "gastos recientes", "mis últimas compras"
+- **Conceptos específicos**: "vicios", "gimnasio", "suscripciones", "comida", "restaurantes"
+- **Búsquedas con condiciones**: "restaurantes caros", "gastos pequeños", "compras grandes"
+- **Cualquier cosa que NO sea una de las 4 categorías Kakebo base**
+
+**MUY IMPORTANTE para updateTransaction:**
+Esta herramienta retorna el ID de cada gasto encontrado. SIEMPRE úsala ANTES de updateTransaction para obtener el transactionId.
 
 **NO uses esta herramienta para:**
 - Categorías Kakebo base: "supervivencia", "opcional", "cultura", "extra" (usa analyzeSpendingPattern)
@@ -40,6 +44,12 @@ Aprende de TODOS los usuarios, así que mejora con el tiempo.`,
                 query: {
                     type: "string",
                     description: `Consulta en lenguaje natural. Ejemplos:
+
+**Para encontrar último gasto (COMÚN para updateTransaction):**
+- "último" o "last" → Encuentra el gasto más reciente
+- "reciente" → Gastos recientes
+
+**Para buscar por concepto:**
 - "vicios"
 - "restaurantes"
 - "gimnasio"
