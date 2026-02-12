@@ -99,6 +99,7 @@ Kakebo AI **aprende permanentemente**:
 - 📅 **Vista calendario** con control mensual
 - 💳 **Tracking de gastos** rápido y visual
 - 🎯 **Presupuestos por categoría**
+- 💸 **Gestión de Múltiples Ingresos**: Registro detallado de nóminas, extras y regalos
 
 ### 📄 Reportes Premium
 

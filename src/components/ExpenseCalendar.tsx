@@ -70,6 +70,7 @@ export default function ExpenseCalendar({
 
   // total gastos fijos aplicables al mes (ym)
   const [fixedTotal, setFixedTotal] = useState(0);
+  const [fetchedIncome, setFetchedIncome] = useState(0);
 
   const ym = useMemo(() => `${year}-${pad2(month)}`, [year, month]);
 
@@ -94,7 +95,10 @@ export default function ExpenseCalendar({
     return base;
   }, [rows]);
 
-  const income = Number(settings?.monthly_income ?? 0);
+  // Use fetched income if available (new system), otherwise fallback to settings (legacy)
+  const settingsIncome = Number(settings?.monthly_income ?? 0);
+  const income = fetchedIncome > 0 ? fetchedIncome : settingsIncome;
+
   const savingGoal = Number(settings?.monthly_saving_goal ?? 0);
 
   // ✅ disponible real para gastar este mes = ingreso - gastos fijos
@@ -222,6 +226,29 @@ export default function ExpenseCalendar({
     setFixedTotal(fixedTotalForYm);
   }
 
+  async function loadIncomes(userId: string) {
+    // Calculamos rango de fechas para el mes actual (ym)
+    const [y, m] = ym.split("-").map(Number);
+    const startDate = `${ym}-01`;
+    // Mes siguiente para limite superior
+    const nextYm = m === 12
+      ? `${y + 1}-01`
+      : `${y}-${String(m + 1).padStart(2, "0")}`;
+    const endDate = `${nextYm}-01`;
+
+    const { data: incomeData, error: incomeErr } = await supabase
+      .from("incomes")
+      .select("amount")
+      .eq("user_id", userId)
+      .gte("date", startDate)
+      .lt("date", endDate);
+
+    if (incomeErr) throw incomeErr;
+
+    const totalInc = (incomeData || []).reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
+    setFetchedIncome(totalInc);
+  }
+
   async function load() {
     setLoading(true);
     setErr(null);
@@ -230,7 +257,11 @@ export default function ExpenseCalendar({
       const userId = await getUserId();
 
       // ✅ importante: esperamos settings y fijos antes del render “correcto”
-      await Promise.all([loadSettings(userId), loadFixedTotal(userId)]);
+      await Promise.all([
+        loadSettings(userId),
+        loadFixedTotal(userId),
+        loadIncomes(userId)
+      ]);
 
       const m = await getMonth(userId);
       setMonthRow(m);
@@ -374,6 +405,17 @@ export default function ExpenseCalendar({
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ym]);
+
+  useEffect(() => {
+    const handler = () => load();
+    window.addEventListener("kakebo:incomes-changed", handler);
+    // Also listen to expenses-changed just in case we missed it earlier
+    window.addEventListener("kakebo:expenses-changed", handler);
+    return () => {
+      window.removeEventListener("kakebo:incomes-changed", handler);
+      window.removeEventListener("kakebo:expenses-changed", handler);
+    };
+  }, [ym]); // Re-bind if ym changes, though load uses current ym
 
   const isClosed = monthRow?.status === "closed";
   const monthStatusLabel = monthRow?.status
@@ -600,14 +642,24 @@ export default function ExpenseCalendar({
 
         {/* CTA */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-          <Link
-            href={`/app/new?ym=${ym}`}
-            className={`border border-stone-900 bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 px-5 py-2.5 text-sm font-medium text-center rounded-md hover:opacity-90 transition-colors shadow-sm ${isClosed ? "pointer-events-none opacity-50" : ""
-              }`}
-            title={isClosed ? "Mes cerrado" : "Añadir gasto"}
-          >
-            + Nuevo gasto
-          </Link>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <Link
+              href={`/app/new?ym=${ym}`}
+              className={`flex-1 sm:flex-none border border-stone-900 bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 px-5 py-2.5 text-sm font-medium text-center rounded-md hover:opacity-90 transition-colors shadow-sm ${isClosed ? "pointer-events-none opacity-50" : ""
+                }`}
+              title={isClosed ? "Mes cerrado" : "Añadir gasto"}
+            >
+              + Nuevo gasto
+            </Link>
+            <Link
+              href={`/app/new-income?ym=${ym}`}
+              className={`flex-1 sm:flex-none border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 text-foreground px-5 py-2.5 text-sm font-medium text-center rounded-md hover:bg-muted transition-colors shadow-sm ${isClosed ? "pointer-events-none opacity-50" : ""
+                }`}
+              title={isClosed ? "Mes cerrado" : "Añadir ingreso"}
+            >
+              💰 + Nuevo ingreso
+            </Link>
+          </div>
 
           <Link href={`/app/history/${ym}`} className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 text-center sm:text-right decoration-border transition-colors">
             Ver histórico completo

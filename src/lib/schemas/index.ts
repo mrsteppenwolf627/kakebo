@@ -4,4 +4,5 @@ export * from "./expense";
 export * from "./month";
 export * from "./settings";
 export * from "./fixed-expense";
+export * from "./income";
 export * from "./ai";

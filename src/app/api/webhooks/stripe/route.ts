@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe/server';
-import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import Stripe from 'stripe';
 
 export async function POST(req: Request) {
@@ -10,6 +10,7 @@ export async function POST(req: Request) {
 
     let event: Stripe.Event;
 
+    // 1. Validate signature
     try {
         if (!process.env.STRIPE_WEBHOOK_SECRET) {
             throw new Error("Missing STRIPE_WEBHOOK_SECRET");
@@ -19,49 +20,94 @@ export async function POST(req: Request) {
             signature,
             process.env.STRIPE_WEBHOOK_SECRET
         );
+        console.log(`✅ Webhook verified: ${event.type}`);
     } catch (error: any) {
-        console.error(`Webhook Error: ${error.message}`);
+        console.error(`❌ Webhook Signature Error: ${error.message}`);
         return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
     }
 
-    const supabase = await createClient();
+    // Use Admin Client to bypass RLS
+    const supabase = createAdminClient();
 
     try {
         switch (event.type) {
             case 'checkout.session.completed': {
                 const session = event.data.object as Stripe.Checkout.Session;
-                // Retrieve the subscription details from Stripe.
-                const subscription = await stripe.subscriptions.retrieve(
-                    session.subscription as string
-                );
+                console.log(`Processing checkout.session.completed for session: ${session.id}`);
 
-                // We stored supabaseUserId in metadata during checkout creation
-                // If not there, checking customer metadata is a fallback
-                const userId = session.metadata?.supabaseUserId ||
-                    subscription.metadata?.supabaseUserId;
+                // Try to get userId from session metadata first (most reliable)
+                let userId = session.metadata?.supabaseUserId;
+
+                // Fallback: Check subscription metadata if not in session
+                if (!userId && session.subscription) {
+                    console.log('Fetching subscription for metadata fallback...');
+                    const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+                    userId = subscription.metadata?.supabaseUserId;
+                }
+
+                console.log(`Found User ID: ${userId}`);
 
                 if (userId) {
-                    await supabase
+                    const { error } = await supabase
                         .from('profiles')
                         .update({
                             tier: 'pro',
                             stripe_customer_id: session.customer as string,
-                            stripe_subscription_id: subscription.id,
-                            // Clean up trial related info or update it appropriately if needed
+                            stripe_subscription_id: session.subscription as string,
                         })
                         .eq('id', userId);
+
+                    if (error) {
+                        console.error('❌ Failed to update profile in Supabase:', error);
+                    } else {
+                        console.log('✅ User profile updated to PRO');
+                    }
+                } else {
+                    console.error('❌ No supabaseUserId found in session or subscription metadata');
+                }
+                break;
+            }
+
+            case 'invoice.payment_succeeded': {
+                const invoice = event.data.object as Stripe.Invoice;
+                console.log(`Processing invoice.payment_succeeded for invoice: ${invoice.id}`);
+
+                // Usually for recurring payments, but also fires on first payment (if immediately paid)
+                // For trials, the first invoice might be $0 but still 'paid'
+
+                const subscriptionId = invoice.subscription as string;
+                if (!subscriptionId) break;
+
+                // We need to find the user by subscription ID or customer ID
+                // Since we don't know the user ID here easily unless we query stripe or DB
+
+                // Option 1: Trust that checkout.session.completed handled the initial setup
+                // Option 2: If we have the subscription, we can check metadata
+
+                const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+                const userId = subscription.metadata?.supabaseUserId;
+
+                if (userId) {
+                    await supabase.from('profiles').update({ tier: 'pro', stripe_subscription_id: subscriptionId }).eq('id', userId);
+                    console.log(`✅ Refreshed PRO status for user ${userId} via invoice`);
                 }
                 break;
             }
 
             case 'customer.subscription.deleted': {
                 const subscription = event.data.object as Stripe.Subscription;
-                // Logic to reverse access
-                // Ideally we find user by stripe_subscription_id or customer_id
-                await supabase
+                console.log(`Processing subscription deleted: ${subscription.id}`);
+
+                const { error } = await supabase
                     .from('profiles')
                     .update({ tier: 'free', stripe_subscription_id: null })
                     .eq('stripe_subscription_id', subscription.id);
+
+                if (error) {
+                    console.error('❌ Failed to revert user to FREE:', error);
+                } else {
+                    console.log('✅ User reverted to FREE');
+                }
                 break;
             }
 
@@ -69,7 +115,7 @@ export async function POST(req: Request) {
                 console.log(`Unhandled event type ${event.type}`);
         }
     } catch (error: any) {
-        console.error('Error processing webhook logic:', error);
+        console.error('❌ Error processing webhook logic:', error);
         return new NextResponse('Webhook handler failed', { status: 500 });
     }
 

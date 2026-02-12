@@ -35,8 +35,13 @@ export default function TrialBanner() {
         return null;
     }
 
-    // Si no tiene trial_ends_at, asumimos que no ha empezado o es free legacy (no mostramos banner por ahora)
-    if (!daysLeft && daysLeft !== 0) return null;
+    // Si no tiene trial_ends_at, es un usuario Free que nunca activó el trial.
+    // No mostramos banner de "expirado", el SubscriptionGuard se encargará de bloquear el acceso.
+    if (!profile.trial_ends_at) return null;
+
+    // Si tiene trial_ends_at, calculamos días restantes
+    // getTrialDaysLeft devuelve 0 si ya pasó la fecha.
+
 
     async function handleUpgrade() {
         try {

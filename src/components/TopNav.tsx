@@ -56,6 +56,12 @@ export default function TopNav() {
           >
             + Gasto
           </Link>
+          <Link
+            href="/app/new-income"
+            className="inline-flex items-center px-3 py-1.5 text-xs sm:text-sm border border-stone-200 dark:border-stone-800 bg-background hover:bg-muted transition-colors whitespace-nowrap rounded-md shadow-sm"
+          >
+            + Ingreso
+          </Link>
 
           <ThemeToggle />
           {/* Delegamos Auth a UserMenu */}
@@ -94,6 +100,12 @@ export default function TopNav() {
               className="block text-center w-full py-3 bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 font-medium rounded-md"
             >
               + Nuevo Gasto
+            </Link>
+            <Link
+              href="/app/new-income"
+              className="block text-center w-full py-3 border border-stone-200 dark:border-stone-800 bg-background font-medium rounded-md"
+            >
+              + Nuevo Ingreso
             </Link>
           </div>
         </div>

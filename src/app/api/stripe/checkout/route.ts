@@ -44,8 +44,13 @@ export async function POST(req: Request) {
         // 2. Create Checkout Session
         const priceId = process.env.STRIPE_PRICE_ID_PRO;
         if (!priceId) {
+            console.error('❌ Missing STRIPE_PRICE_ID_PRO');
             throw new Error('STRIPE_PRICE_ID_PRO definition is missing in .env');
         }
+
+        console.log(`Creating Checkout Session for Customer: ${customerId} with Price: ${priceId}`);
+
+        const origin = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
         const checkoutSession = await stripe.checkout.sessions.create({
             customer: customerId,
@@ -57,19 +62,24 @@ export async function POST(req: Request) {
                     quantity: 1,
                 },
             ],
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/app?success=true`,
-            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing?canceled=true`,
+            success_url: `${origin}/app?success=true`,
+            cancel_url: `${origin}/pricing?canceled=true`,
+            metadata: {
+                supabaseUserId: user.id,
+            },
             subscription_data: {
                 metadata: {
                     supabaseUserId: user.id,
                 },
-                trial_period_days: 15, // Obliga a 15 días gratis antes del primer cobro
+                trial_period_days: 15,
             }
         });
 
+        console.log('✅ Checkout Session Created:', checkoutSession.id);
         return NextResponse.json({ url: checkoutSession.url });
     } catch (err: any) {
-        console.error('Stripe Checkout Error:', err);
-        return new NextResponse('Internal Error', { status: 500 });
+        console.error('❌ Stripe Checkout Error:', err.message);
+        console.error('Full Error Object:', JSON.stringify(err, null, 2));
+        return new NextResponse(`Internal Error: ${err.message}`, { status: 500 });
     }
 }

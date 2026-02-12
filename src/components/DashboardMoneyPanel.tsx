@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
+import ManageIncomesModal from "./ManageIncomesModal";
 
 type Props = {
   year: number;
@@ -80,6 +81,9 @@ export default function DashboardMoneyPanel({ ym }: Props) {
   const [savingSavingsDone, setSavingSavingsDone] = useState(false);
   const [okMsg, setOkMsg] = useState<string | null>(null);
 
+  // Modal State
+  const [showIncomeModal, setShowIncomeModal] = useState(false);
+
   const load = useCallback(async () => {
     setLoading(true);
     setErr(null);
@@ -96,7 +100,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
       const { y, m, start, end } = monthRangeFromYm(ym);
 
-      // 1) settings
+      // 1) settings (legacy income + saving goal)
       const { data: us, error: usErr } = await supabase
         .from("user_settings")
         .select("monthly_income,monthly_saving_goal,current_balance")
@@ -107,14 +111,34 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
       const row = (us?.[0] as UserSettingsRow | undefined) ?? null;
 
-      const mi = num(row?.monthly_income ?? 0);
+      const legacyMi = num(row?.monthly_income ?? 0);
       const sg = num(row?.monthly_saving_goal ?? 0);
       const cb = row?.current_balance ?? null;
 
-      setIncome(mi);
       setSavingGoal(sg);
       setCurrentBalance(cb);
       setBalanceInput(cb === null ? "" : String(cb));
+
+      // 1.5) Fetch Incomes (New System)
+      const { data: incomeRows, error: incomeErr } = await supabase
+        .from("incomes")
+        .select("amount")
+        .eq("user_id", userId)
+        .gte("date", start)
+        .lt("date", end);
+
+      if (incomeErr) throw incomeErr;
+
+      const newIncomeTotal = (incomeRows || []).reduce((acc, curr) => acc + Number(curr.amount), 0);
+
+      // Use new income if available, otherwise fallback to legacy setting for now
+      // This ensures smooth transition: if user hasn't added "incomes" yet, they see their setting.
+      // Once they add an income, that total takes precedence (assumes they are moving to new system).
+      // Actually, better logic: If newIncomeTotal > 0, use it. If 0, use legacy.
+      // But if legal income IS 0, this might be confusing.
+      // Let's rely on new system mostly.
+      setIncome(newIncomeTotal > 0 ? newIncomeTotal : legacyMi);
+
 
       // 2) fixed expenses (need due_day)
       const { data: fx, error: fxErr } = await supabase
@@ -163,11 +187,15 @@ export default function DashboardMoneyPanel({ ym }: Props) {
     load();
   }, [load]);
 
-  // recargar automáticamente cuando cambian gastos
+  // recargar automáticamente cuando cambian gastos o ingresos
   useEffect(() => {
     const handler = () => load();
     window.addEventListener("kakebo:expenses-changed", handler);
-    return () => window.removeEventListener("kakebo:expenses-changed", handler);
+    window.addEventListener("kakebo:incomes-changed", handler);
+    return () => {
+      window.removeEventListener("kakebo:expenses-changed", handler);
+      window.removeEventListener("kakebo:incomes-changed", handler);
+    }
   }, [load]);
 
   const fixedMonthRows = useMemo(() => {
@@ -314,10 +342,18 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
         {/* Card 1: Budget */}
         <div className="border border-border bg-muted/20 p-5 rounded-md">
-          <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide">Presupuesto</div>
+          <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide flex justify-between items-center">
+            <span>Presupuesto</span>
+            <button
+              onClick={() => setShowIncomeModal(true)}
+              className="text-primary hover:underline text-[10px]"
+            >
+              Gestionar Ingresos
+            </button>
+          </div>
           <div className="text-2xl font-serif text-foreground mb-1">{money(availableForCategories)} €</div>
           <div className="text-[10px] text-muted-foreground">
-            (Ingresos − Fijos − Ahorro)
+            (Ingresos {money(income)} € − Fijos − Ahorro)
           </div>
         </div>
 
@@ -403,6 +439,16 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
         </div>
       </div>
+
+      {/* Modals */}
+      {showIncomeModal && (
+        <ManageIncomesModal
+          isOpen={showIncomeModal}
+          onClose={() => setShowIncomeModal(false)}
+          ym={ym}
+          onUpdate={load}
+        />
+      )}
     </section>
   );
 }
