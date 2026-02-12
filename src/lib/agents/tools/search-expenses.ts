@@ -278,7 +278,7 @@ export async function searchExpenses(
 
         // Format expenses
         const expenses = topResults.map(exp => ({
-            id: exp.id, // ← IMPORTANT: Include ID for updateTransaction
+            id: exp.expense_id, // ← IMPORTANT: Include ID for updateTransaction
             concept: exp.note,
             amount: exp.amount,
             date: exp.date,
