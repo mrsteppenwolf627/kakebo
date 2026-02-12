@@ -102,6 +102,49 @@ export async function updateTransaction(
     // Determine which table to update
     const tableName = params.type === "income" ? "incomes" : "expenses";
 
+    // ========== DIAGNOSTIC: Check if transaction exists BEFORE update ==========
+    const { data: existing, error: checkError } = await supabase
+      .from(tableName)
+      .select("id,user_id,amount,note,category")
+      .eq("id", params.transactionId)
+      .maybeSingle();
+
+    console.log("🔍 [updateTransaction] Checking if transaction exists...");
+    console.log("🔍 [updateTransaction] Table:", tableName);
+    console.log("🔍 [updateTransaction] Transaction ID:", params.transactionId);
+    console.log("🔍 [updateTransaction] Existing transaction:", existing);
+    console.log("🔍 [updateTransaction] Check error:", checkError);
+
+    if (checkError) {
+      apiLogger.error(
+        { error: checkError, table: tableName, transactionId: params.transactionId },
+        "Error checking transaction existence"
+      );
+    }
+
+    if (!existing) {
+      apiLogger.warn(
+        { table: tableName, transactionId: params.transactionId, userId },
+        "Transaction not found in table"
+      );
+      throw new Error(
+        `No se encontró la transacción con ID ${params.transactionId} en la tabla ${tableName}`
+      );
+    }
+
+    if (existing.user_id !== userId) {
+      apiLogger.error(
+        {
+          transactionId: params.transactionId,
+          expectedUserId: userId,
+          actualUserId: existing.user_id
+        },
+        "User ID mismatch - security violation"
+      );
+      throw new Error("No tienes permiso para modificar esta transacción");
+    }
+    // ===========================================================================
+
     // Update transaction
     const { data, error } = await supabase
       .from(tableName)
