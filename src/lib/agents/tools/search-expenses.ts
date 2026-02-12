@@ -190,16 +190,26 @@ export async function searchExpenses(
                 similarity: 1.0, // Perfect match for direct query
             }));
 
+            // Generate insights with explicit ID mention for first expense
+            const insights = [`Encontré ${formattedExpenses.length} gasto(s) reciente(s)`];
+
+            if (formattedExpenses.length > 0 && formattedExpenses[0].id) {
+                const first = formattedExpenses[0];
+                insights.push(
+                    `Más reciente: "${first.concept}" (${first.amount}€) el ${first.date}`,
+                    `ID de este gasto: ${first.id}` // ← EXPLICIT ID for LLM
+                );
+            }
+
+            insights.push(`Total: €${totalAmount.toFixed(2)}`);
+
             return {
                 query: params.query,
                 period,
                 totalAmount: Math.round(totalAmount * 100) / 100,
                 count: formattedExpenses.length,
                 expenses: formattedExpenses,
-                insights: [
-                    `Encontré ${formattedExpenses.length} gasto(s) reciente(s)`,
-                    `Total: €${totalAmount.toFixed(2)}`,
-                ],
+                insights,
             };
         }
         // ================================================================

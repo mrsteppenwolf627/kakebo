@@ -493,8 +493,16 @@ const updateTransactionTool: ChatCompletionTool = {
       properties: {
         transactionId: {
           type: "string",
-          description: `UUID del gasto/ingreso a modificar.
-IMPORTANTE: Usa searchExpenses primero para obtener el ID si el usuario dice "el último gasto" o similar.`,
+          description: `UUID del gasto/ingreso a modificar (formato: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).
+
+IMPORTANTE:
+1. Usa searchExpenses primero para obtener el ID si el usuario dice "el último gasto"
+2. Extrae el campo "id" del primer elemento del array "expenses" del resultado
+3. El ID es un UUID completo, NO un número como "1" o "2"
+
+Ejemplo de extracción correcta:
+- searchExpenses retorna: { expenses: [{ id: "abc-123-def", concept: "...", amount: 50 }] }
+- Debes usar: transactionId: "abc-123-def"`,
         },
         type: {
           type: "string",
