@@ -176,6 +176,27 @@ export async function searchExpenses(
 
             const { data: expenses, error } = await query;
 
+            // ========== DIAGNOSTIC: Log raw query results ==========
+            console.log("🔍 [searchExpenses FAST PATH] Raw query results:");
+            console.log("🔍 [searchExpenses] Error:", error);
+            console.log("🔍 [searchExpenses] Number of expenses:", expenses?.length ?? 0);
+            if (expenses && expenses.length > 0) {
+                console.log("🔍 [searchExpenses] First expense raw data:", JSON.stringify(expenses[0], null, 2));
+                console.log("🔍 [searchExpenses] First expense ID:", expenses[0].id);
+                console.log("🔍 [searchExpenses] First expense ID type:", typeof expenses[0].id);
+            }
+            apiLogger.info(
+                {
+                    userId,
+                    query: params.query,
+                    period,
+                    resultsCount: expenses?.length ?? 0,
+                    firstExpenseId: expenses?.[0]?.id,
+                },
+                "searchExpenses fast path executed - DIAGNOSTIC"
+            );
+            // =======================================================
+
             if (error) {
                 throw error;
             }
