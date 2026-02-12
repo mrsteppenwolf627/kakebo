@@ -655,6 +655,80 @@ Este es un proyecto privado. Para miembros del equipo:
 
 ---
 
+## 🧪 Estado de Testing de Herramientas (2026-02-12)
+
+### Metodología de Testing
+Testing sistemático de las **12 herramientas del Kakebo Copilot** en producción con usuarios reales. Cada herramienta se valida exhaustivamente antes de continuar con la siguiente.
+
+**Objetivo**: Garantizar 100% de funcionalidad antes del lanzamiento oficial.
+
+---
+
+### ✅ Herramientas Validadas (1/12)
+
+#### 1. **analyzeSpendingPattern** ✅ VALIDATED
+**Funcionalidad**: Analiza gastos por categoría y período con filtrado semántico.
+
+**Test Cases Ejecutados**:
+- ✅ "¿Cuánto he gastado en comida este mes?" → €82.65 (2 transacciones)
+- ✅ Mapeo semántico correcto: "comida" → `category: "survival"`
+- ✅ Filtrado por keywords: Detecta supermercados, restaurantes, delivery
+- ✅ Exclusión correcta: NO incluye psicólogo, metro, medicinas
+
+**Issues Encontrados y Resueltos**:
+1. **Embeddings unreliable** (OpenAI 500 errors 2/3 intentos)
+   - **Fix**: Hybrid approach - Keywords para subcategorías + Embeddings para búsquedas avanzadas
+2. **Threshold demasiado permisivo** ("alquiler" matched "comida" at 0.2)
+   - **Fix**: Keyword matching con 40+ palabras clave para "comida"
+
+**Arquitectura Final**:
+- `analyzeSpendingPattern` → **Keyword matching** (rápido, confiable)
+- `searchExpenses` → **Embeddings** (queries avanzadas, portfolio value)
+
+**Performance**:
+- Latencia: ~8s (vs 40s+ con embeddings fallando)
+- Precisión: 100% en test cases
+- Confiabilidad: Sin dependencia de OpenAI API
+
+**Commit**: `794a60f` - Hybrid keyword+embeddings approach
+
+---
+
+### ⏳ Herramientas Pendientes de Validación (11/12)
+
+#### V2 Tools (Analysis - 4 pendientes)
+2. ⏳ `getBudgetStatus` - "¿Cómo va mi presupuesto?"
+3. ⏳ `detectAnomalies` - "¿Hay gastos raros?"
+4. ⏳ `predictMonthlySpending` - "¿Cuánto voy a gastar este mes?"
+5. ⏳ `getSpendingTrends` - "¿Cuál es la tendencia de mis gastos?"
+
+#### V2.5 Tools (Search & Feedback - 1 pendiente)
+6. ✅ `searchExpenses` - Probado indirectamente (usado por updateTransaction)
+7. ⏳ `submitFeedback` - "Este gasto NO es ocio" (learning system)
+
+#### V3 Tools (Copilot CRUD - 4 pendientes)
+8. ⏳ `createTransaction` - "Registra 50€ de comida"
+9. ✅ `updateTransaction` - "Cambia el último gasto a 10€" **VALIDATED**
+10. ⏳ `calculateWhatIf` - "Quiero ahorrar 800€ para vacaciones"
+11. ⏳ `setBudget` - "Pon el presupuesto de ocio en 300€"
+12. ⏳ `getCurrentCycle` - "¿Cuándo termina mi ciclo?"
+
+---
+
+### 🎯 Próximos Steps
+
+**En progreso**:
+- Tool #2: `getBudgetStatus` testing
+
+**Planificado**:
+- Completar validación de las 11 herramientas restantes
+- Documentar edge cases y limitaciones
+- Crear suite de regression tests automatizados
+
+**Timeline estimado**: 2-3 días de testing exhaustivo
+
+---
+
 ## 📞 Soporte & Contacto
 
 **Autor**: Aitor Alarcón Muñoz
