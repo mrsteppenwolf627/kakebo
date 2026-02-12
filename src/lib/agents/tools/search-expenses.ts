@@ -150,10 +150,15 @@ export async function searchExpenses(
             // Get period dates
             const periodDates = getPeriodDates(period);
 
+            // ========== CRITICAL DIAGNOSTIC ==========
+            console.log("🚨 [searchExpenses] BUILDING QUERY WITH userId:", userId);
+            console.log("🚨 [searchExpenses] Period dates:", periodDates);
+            // ==========================================
+
             // Build query
             let query = supabase
                 .from("expenses")
-                .select("id,date,amount,note,category")
+                .select("id,date,amount,note,category,user_id") // ← INCLUDE user_id to verify
                 .eq("user_id", userId)
                 .order("date", { ascending: false })
                 .order("created_at", { ascending: false })
