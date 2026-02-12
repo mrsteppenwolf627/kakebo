@@ -2,6 +2,132 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { apiLogger } from "@/lib/logger";
 
 /**
+ * Keyword mapping for common semantic filters
+ *
+ * This provides fast, reliable filtering for common subcategories
+ * without depending on OpenAI embeddings API.
+ *
+ * Use case: User asks "gastos de comida" → matches expenses with keywords
+ */
+const SEMANTIC_KEYWORDS: Record<string, string[]> = {
+  // Food and dining
+  comida: [
+    "supermercado", "mercadona", "aldi", "lidl", "carrefour", "dia", "consum",
+    "restaurante", "bar", "cafetería", "café", "bocata", "bocadillo",
+    "cena", "comida", "almuerzo", "desayuno", "merienda", "tapas",
+    "food", "eat", "lunch", "dinner", "breakfast",
+    "pizza", "burger", "kebab", "sushi", "paella",
+    "glovo", "uber eats", "just eat", "deliveroo", "delivery"
+  ],
+
+  // Transportation
+  transporte: [
+    "metro", "autobús", "bus", "taxi", "uber", "cabify", "bolt",
+    "gasolina", "combustible", "diesel", "carburante",
+    "parking", "aparcamiento", "peaje", "autopista",
+    "bici", "patinete", "moto", "coche", "tren", "renfe", "ave",
+    "billete", "ticket", "transport", "mobilitat", "tmb"
+  ],
+
+  // Health and wellness
+  salud: [
+    "farmacia", "médico", "doctor", "doctora", "hospital", "clínica",
+    "psicólogo", "psicóloga", "terapeuta", "terapia", "fisio", "fisioterapeuta",
+    "dentista", "odontólogo", "óptica", "oftalmólogo",
+    "seguro médico", "seguro salud", "medicina", "medicamento",
+    "consulta", "cita médica", "analítica", "análisis"
+  ],
+
+  // Housing and utilities
+  vivienda: [
+    "alquiler", "renta", "arrendamiento", "hipoteca",
+    "luz", "electricidad", "agua", "gas", "internet", "wifi", "fibra",
+    "comunidad", "comunidad de propietarios", "basura",
+    "seguro hogar", "reparación casa", "fontanero", "electricista"
+  ],
+
+  // Entertainment and leisure
+  ocio: [
+    "cine", "teatro", "concierto", "festival", "fiesta", "discoteca",
+    "bar", "pub", "copas", "museo", "exposición", "parque temático",
+    "videojuegos", "playstation", "xbox", "nintendo", "steam",
+    "spotify", "netflix", "hbo", "disney", "prime video",
+    "deporte", "gimnasio", "gym", "piscina", "paddle", "tenis"
+  ],
+
+  // Education and personal development
+  educacion: [
+    "libro", "libros", "ebook", "audiolibro", "librería",
+    "curso", "clase", "clases", "formación", "master", "máster",
+    "academia", "universidad", "matrícula", "mensualidad",
+    "udemy", "coursera", "platzi", "domestika"
+  ],
+
+  // Subscriptions and services
+  suscripciones: [
+    "suscripción", "subscripción", "mensualidad", "cuota",
+    "spotify", "netflix", "hbo", "disney", "amazon prime",
+    "youtube premium", "apple music", "google one",
+    "gym", "gimnasio", "club", "asociación"
+  ],
+
+  // Vices and indulgences
+  vicios: [
+    "tabaco", "cigarros", "cigarrillos", "vaper", "vape",
+    "alcohol", "cerveza", "vino", "whisky", "ron", "gin",
+    "lotería", "euromillones", "primitiva", "apuestas", "casino",
+    "marihuana", "cannabis"
+  ],
+};
+
+/**
+ * Match expenses using keyword-based semantic filtering
+ *
+ * Fast, reliable alternative to embeddings for common subcategories.
+ * Case-insensitive matching against expense notes.
+ *
+ * @param expenses - List of expenses to filter
+ * @param semanticFilter - Subcategory to filter by (e.g., "comida", "transporte")
+ * @returns Filtered expenses that match the keywords
+ */
+function filterByKeywords(
+  expenses: Array<{ note?: string | null; [key: string]: unknown }>,
+  semanticFilter: string
+): typeof expenses {
+  const keywords = SEMANTIC_KEYWORDS[semanticFilter.toLowerCase()];
+
+  if (!keywords) {
+    // No keywords defined for this filter - return all expenses
+    apiLogger.warn(
+      { semanticFilter },
+      "No keywords defined for semantic filter, returning all expenses"
+    );
+    return expenses;
+  }
+
+  const filtered = expenses.filter((expense) => {
+    if (!expense.note) return false;
+
+    const noteLower = expense.note.toLowerCase();
+
+    // Check if any keyword appears in the expense note
+    return keywords.some((keyword) => noteLower.includes(keyword));
+  });
+
+  apiLogger.info(
+    {
+      semanticFilter,
+      originalCount: expenses.length,
+      filteredCount: filtered.length,
+      keywordCount: keywords.length,
+    },
+    "Applied keyword-based semantic filtering"
+  );
+
+  return filtered;
+}
+
+/**
  * Parameters for spending pattern analysis
  */
 export interface AnalyzeSpendingPatternParams {
@@ -222,36 +348,8 @@ export async function analyzeSpendingPattern(
     let filteredExpenses = expenses || [];
 
     if (params.semanticFilter && filteredExpenses.length > 0) {
-      try {
-        // Import embeddings module
-        const { searchExpensesByText } = await import("@/lib/ai/embeddings");
-
-        // Search for semantically similar expenses
-        const { results } = await searchExpensesByText(
-          supabase,
-          userId,
-          params.semanticFilter,
-          {
-            limit: 100, // Get more results for filtering
-            threshold: 0.2, // Lower threshold for broader matching (0.3 was too restrictive)
-          }
-        );
-
-        // Filter original expenses to only include semantically similar ones
-        const similarExpenseIds = new Set(results.map(r => r.expense_id));
-        filteredExpenses = filteredExpenses.filter(exp =>
-          similarExpenseIds.has(exp.id)
-        );
-
-        apiLogger.info({
-          originalCount: expenses?.length || 0,
-          filteredCount: filteredExpenses.length,
-          semanticFilter: params.semanticFilter
-        }, "Applied semantic filtering");
-      } catch (embeddingError) {
-        apiLogger.warn({ error: embeddingError }, "Semantic filtering failed, using all expenses");
-        // Fall back to showing all expenses if semantic search fails
-      }
+      // Use keyword-based filtering (fast, reliable, no API dependency)
+      filteredExpenses = filterByKeywords(filteredExpenses, params.semanticFilter);
     }
 
     if (!filteredExpenses || filteredExpenses.length === 0) {
