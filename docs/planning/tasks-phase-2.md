@@ -1,0 +1,52 @@
+# Task List
+
+## Phase 1: MVP & Reverse Trial (Completed)
+- [x] Analyze Requirements <!-- id: 0 -->
+- [x] Design Database Schema <!-- id: 1 -->
+- [x] Create Implementation Plan <!-- id: 2 -->
+- [x] Implement database changes (if any) <!-- id: 4 -->
+- [x] Implement API changes <!-- id: 5 -->
+- [x] Implement Frontend changes <!-- id: 6 -->
+- [x] Verify changes <!-- id: 7 -->
+- [x] Add Income UI Entry Points (TopNav, Dashboard, Floating) <!-- id: 8 -->
+- [x] Fix Mobile Scroll Issue on New Expense/Income <!-- id: 9 -->
+- [x] Implement Full Screen Agent Page <!-- id: 10 -->
+- [x] Implement Floating Agent Chat for Dashboard <!-- id: 11 -->
+- [x] Update Typography for Agent <!-- id: 12 -->
+- [x] Update README.md with Frontend Improvements <!-- id: 13 -->
+- [x] Git Push Changes <!-- id: 14 -->
+- [x] Fix Desktop Agent Page Scroll Issue <!-- id: 15 -->
+- [x] Configure SEO Metadata (Base URL, Canonical, Geo) <!-- id: 16 -->
+- [x] Add JSON-LD Structured Data <!-- id: 17 -->
+- [x] Verify Sitemap and Robots.txt <!-- id: 18 -->
+- [x] Google Search Console Verification <!-- id: 19 -->
+- [x] Analyze Landing Page Content for Keywords <!-- id: 20 -->
+- [x] Optimize Headers (H1, H2) with Target Keywords <!-- id: 21 -->
+- [x] Add FAQ Section with Schema Markup <!-- id: 22 -->
+- [x] Improve Internal Linking and CTAs <!-- id: 23 -->
+- [x] Update Documentation with SEO Changes <!-- id: 24 -->
+- [x] Implement Blog Infrastructure (MDX) <!-- id: 25 -->
+- [x] Create Blog Listing Page (/blog) <!-- id: 26 -->
+- [x] Create Blog Post Layout (/blog/[slug]) <!-- id: 27 -->
+- [x] Write First SEO Article (Kakebo Guide) <!-- id: 28 -->
+- [x] Add Blog to Sitemap <!-- id: 29 -->
+- [x] Add Blog Link to Navbar and Footer <!-- id: 30 -->
+- [x] Implement Savings Calculator (Link Magnet) <!-- id: 31 -->
+- [x] Update Sitemap with Calculator <!-- id: 32 -->
+- [x] Update README with Growth Tools and Push <!-- id: 33 -->
+- [x] Database: Reactivate 14-day trial trigger (Manual SQL) <!-- id: 34 -->
+- [x] Dashboard: Add Reverse Trial Banner (Countdown) <!-- id: 35 -->
+- [x] Dashboard: Restrict Historical Data if Trial Expired <!-- id: 36 -->
+- [x] Landing: Update Pricing Section (Reverse Trial Messaging) <!-- id: 37 -->
+- [x] Landing: Update Hero Section (Call to Action) <!-- id: 38 -->
+- [x] Git Push Reverse Trial Changes <!-- id: 39 -->
+
+## Phase 2: SEO & Growth (Aggressive)
+- [ ] **Technical**: Audit Core Web Vitals (Lighthouse) <!-- id: 40 -->
+- [ ] **Technical**: Optimize Images (next/image) & Fonts <!-- id: 41 -->
+- [ ] **Tool**: Create "Calculadora 50/30/20" (Budget Rule) <!-- id: 42 -->
+- [ ] **Tool**: Create "Calculadora Inflación España" <!-- id: 43 -->
+- [ ] **Social**: Implement Dynamic Open Graph Images (@vercel/og) <!-- id: 44 -->
+- [ ] **Tracking**: Implement Custom Analytics Events (Tool Usage) <!-- id: 45 -->
+- [ ] **Verification**: Validate Rich Snippets & Performance Score <!-- id: 46 -->
+- [ ] **Git Push**: Push Phase 2 Changes <!-- id: 47 -->
