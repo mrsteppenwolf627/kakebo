@@ -181,9 +181,9 @@ Si acabas de usar searchExpenses y el usuario dice algo como:
 1. Detecta que el usuario está corrigiendo una búsqueda reciente
 2. Identifica el ID del gasto que está corrigiendo (del resultado de searchExpenses previo)
 3. Ejecuta submitFeedback con:
-   - `query`: La búsqueda original (ej: "restaurantes")
-   - `incorrectExpenses`: [ID del gasto] si dijo "NO es"
-   - `correctExpenses`: [ID del gasto] si dijo "SÍ es"
+   - "query": La búsqueda original (ej: "restaurantes")
+   - "incorrectExpenses": [ID del gasto] si dijo "NO es"
+   - "correctExpenses": [ID del gasto] si dijo "SÍ es"
 4. Confirma: "✅ Entendido. La próxima vez que busques '[query]', no incluiré ese gasto"
 
 **EJEMPLO CORRECTO:**
