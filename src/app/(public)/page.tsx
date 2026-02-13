@@ -13,12 +13,12 @@ import {
 export const metadata: Metadata = {
   title: "Kakebo Ahorro | Control de gastos mensual simple",
   description:
-    "Kakebo Ahorro te ayuda a registrar gastos por mes, separar gastos fijos y entender tu presupuesto con claridad. Minimalista, rápido y sin humo.",
+    "La App de Kakebo definitiva para España. Registra gastos gratis, usa el método japonés de ahorro y olvídate de los excels complicados. Privacidad total.",
   alternates: { canonical: "/" },
   openGraph: {
     title: "Kakebo Ahorro | Control de gastos mensual simple",
     description:
-      "Registra gastos por mes, separa gastos fijos y entiende tu presupuesto con claridad.",
+      "La App de Kakebo definitiva para España. Registra gastos gratis, usa el método japonés de ahorro y olvídate de los excels complicados.",
     type: "website",
     url: "/",
   },
@@ -112,46 +112,31 @@ export default function PublicHomePage() {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@graph": [
+              "@type": "FAQPage",
+              "mainEntity": [
                 {
-                  "@type": "SoftwareApplication",
-                  "name": "Kakebo AI",
-                  "applicationCategory": "FinanceApplication",
-                  "operatingSystem": "Web",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "EUR"
-                  },
-                  "description": "Aplicación de control de gastos basada en el método japonés Kakebo."
+                  "@type": "Question",
+                  "name": "¿Es gratis usar Kakebo AI?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Sí, Kakebo AI tiene un plan gratuito para siempre que te permite gestionar tus gastos mensuales sin coste. Ideal para empezar con el método Kakebo."
+                  }
                 },
                 {
-                  "@type": "Organization",
-                  "name": "Kakebo AI",
-                  "url": "https://kakebo.ai",
-                  "logo": "https://kakebo.ai/icon.png",
-                  "sameAs": []
+                  "@type": "Question",
+                  "name": "¿Cómo funciona el método Kakebo?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Se basa en registrar gastos manualmente, categorizarlos en 4 grupos (Supervivencia, Ocio, Cultura, Extra) y reflexionar sobre ellos a final de mes. Es más consciente que una app bancaria automática."
+                  }
                 },
                 {
-                  "@type": "FAQPage",
-                  "mainEntity": [
-                    {
-                      "@type": "Question",
-                      "name": "¿Es gratis usar Kakebo AI?",
-                      "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Sí, Kakebo AI tiene un plan gratuito para siempre que te permite gestionar tus gastos mensuales sin coste."
-                      }
-                    },
-                    {
-                      "@type": "Question",
-                      "name": "¿Cómo funciona el método Kakebo?",
-                      "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Se basa en registrar gastos manualmente, categorizarlos en 4 grupos (Supervivencia, Ocio, Cultura, Extra) y reflexionar sobre ellos a final de mes."
-                      }
-                    }
-                  ]
+                  "@type": "Question",
+                  "name": "¿Es mejor que un Excel de gastos?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Kakebo AI te da lo bueno del Excel (privacidad, control) pero con una interfaz móvil rápida, análisis automático y categorías inteligentes predefinidas."
+                  }
                 }
               ]
             })

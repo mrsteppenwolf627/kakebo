@@ -8,7 +8,7 @@ export function SeoContent() {
                     Controla tus finanzas en España con Kakebo AI
                 </h3>
 
-                <div className="grid gap-8 md:grid-cols-2">
+                <div className="grid gap-8 md:grid-cols-2 mb-12">
                     <article>
                         <h4 className="text-sm font-semibold text-foreground mb-2">¿Qué es el método Kakebo?</h4>
                         <p className="text-sm font-light leading-relaxed">
@@ -31,11 +31,54 @@ export function SeoContent() {
                     </article>
                 </div>
 
+                {/* Comparison Table for SEO */}
+                <div className="mb-12 overflow-x-auto">
+                    <h4 className="text-sm font-semibold text-foreground mb-4">¿Por qué usar Kakebo AI vs Excel?</h4>
+                    <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr className="border-b border-border">
+                                <th className="py-2 font-medium text-foreground">Característica</th>
+                                <th className="py-2 font-medium text-primary">Kakebo AI</th>
+                                <th className="py-2 font-medium text-muted-foreground">Excel / Hojas de cálculo</th>
+                                <th className="py-2 font-medium text-muted-foreground">Apps de Bancos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="border-b border-border/50">
+                                <td className="py-2 text-foreground">Automatización</td>
+                                <td className="py-2">✅ Agente IA Inteligente</td>
+                                <td className="py-2">❌ Manual y tedioso</td>
+                                <td className="py-2">⚠️ Solo sus propias cuentas</td>
+                            </tr>
+                            <tr className="border-b border-border/50">
+                                <td className="py-2 text-foreground">Método de Ahorro</td>
+                                <td className="py-2">✅ Filosofía Kakebo integrada</td>
+                                <td className="py-2">❌ Solo números, sin método</td>
+                                <td className="py-2">❌ Solo historial de transacciones</td>
+                            </tr>
+                            <tr className="border-b border-border/50">
+                                <td className="py-2 text-foreground">Privacidad</td>
+                                <td className="py-2">✅ 100% Privado (Tú controlas los datos)</td>
+                                <td className="py-2">✅ Privado (Local)</td>
+                                <td className="py-2">❌ Venden perfiles comerciales</td>
+                            </tr>
+                            <tr>
+                                <td className="py-2 text-foreground">Soporte Móvil</td>
+                                <td className="py-2">✅ Web App Optimizada (PWA)</td>
+                                <td className="py-2">❌ Incómodo en pantallas pequeñas</td>
+                                <td className="py-2">✅ Buena App Nativa</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
                 <div className="mt-6 flex flex-wrap gap-4 text-xs opacity-60">
                     <span>Kakebo App España</span> •
                     <span>Control de gastos mensual</span> •
                     <span>Ahorro doméstico</span> •
-                    <span>Finanzas personales</span>
+                    <span>Finanzas personales</span> •
+                    <span>Alternativa a Fintonic</span> •
+                    <span>Plantilla Kakebo Excel</span>
                 </div>
             </div>
         </section>

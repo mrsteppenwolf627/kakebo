@@ -15,15 +15,16 @@ export function Hero() {
         <h1 className="mb-8 text-5xl font-serif font-normal tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl">
           Kakebo
           <br />
-          <span className="text-muted-foreground">Ahorro</span>
+          <span className="text-muted-foreground">AI</span>
         </h1>
 
         {/* Subtitle */}
-        <p className="mx-auto mb-12 max-w-3xl text-base text-muted-foreground sm:text-lg md:text-xl font-light leading-relaxed">
-          Control de gastos mensual con método japonés.
+        {/* Subtitle */}
+        <h2 className="mx-auto mb-12 max-w-3xl text-base text-muted-foreground sm:text-lg md:text-xl font-light leading-relaxed">
+          La <strong>App de Kakebo</strong> definitiva para el control de gastos.
           <br className="hidden sm:block" />
-          Minimalista, directo, sin trucos de "gurú financiero".
-        </p>
+          Método japonés simplificado: sin excels complejos ni trucos de gurú.
+        </h2>
 
         {/* CTA Buttons - Rectangulares, sobrios */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
