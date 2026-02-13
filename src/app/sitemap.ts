@@ -45,6 +45,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.5,
         },
+        // Tools
+        {
+            url: `${baseUrl}/herramientas/calculadora-ahorro`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
         // Although /app is protected, having it in sitemap can help discovery of the entry point
         {
             url: `${baseUrl}/app`,

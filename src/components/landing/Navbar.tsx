@@ -59,6 +59,12 @@ export function Navbar() {
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           <Link
+            href="/blog"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Blog
+          </Link>
+          <Link
             href="#pricing"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >

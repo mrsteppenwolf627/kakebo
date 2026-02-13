@@ -41,6 +41,22 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/blog"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/herramientas/calculadora-ahorro"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
+                >
+                  Calculadora Kakebo
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="#how-it-works"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
