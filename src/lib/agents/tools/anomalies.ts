@@ -177,6 +177,26 @@ export async function detectAnomalies(
       };
     }
 
+    // Check if we have enough historical data for reliable anomaly detection
+    const totalHistoricalExpenses = (historicalExpenses || []).length;
+    const MINIMUM_HISTORICAL_DATA = 20; // Need at least 20 historical expenses
+
+    if (totalHistoricalExpenses < MINIMUM_HISTORICAL_DATA) {
+      apiLogger.info(
+        {
+          userId,
+          totalHistorical: totalHistoricalExpenses,
+          minimumRequired: MINIMUM_HISTORICAL_DATA,
+        },
+        "Insufficient historical data for anomaly detection"
+      );
+
+      return {
+        anomalies: [],
+        summary: `Necesitas más histórico para detectar anomalías fiables. Actualmente tienes ${totalHistoricalExpenses} gastos de los últimos 3 meses. Se recomienda al menos ${MINIMUM_HISTORICAL_DATA} gastos históricos (aproximadamente 2-3 meses de uso regular).`,
+      };
+    }
+
     // Calculate statistics by category
     // NOTE: Database stores categories in Spanish
     const statsByCategory: Record<string, CategoryStats> = {};
