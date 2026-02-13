@@ -655,77 +655,66 @@ Este es un proyecto privado. Para miembros del equipo:
 
 ---
 
-## 🧪 Estado de Testing de Herramientas (2026-02-12)
+## 🧪 Estado de Testing de Herramientas (2026-02-13)
 
 ### Metodología de Testing
 Testing sistemático de las **12 herramientas del Kakebo Copilot** en producción con usuarios reales. Cada herramienta se valida exhaustivamente antes de continuar con la siguiente.
 
 **Objetivo**: Garantizar 100% de funcionalidad antes del lanzamiento oficial.
 
----
+**Progreso:** **9/12 validadas (75%)** | **13 bugs encontrados y corregidos** ✅
 
-### ✅ Herramientas Validadas (1/12)
-
-#### 1. **analyzeSpendingPattern** ✅ VALIDATED
-**Funcionalidad**: Analiza gastos por categoría y período con filtrado semántico.
-
-**Test Cases Ejecutados**:
-- ✅ "¿Cuánto he gastado en comida este mes?" → €82.65 (2 transacciones)
-- ✅ Mapeo semántico correcto: "comida" → `category: "survival"`
-- ✅ Filtrado por keywords: Detecta supermercados, restaurantes, delivery
-- ✅ Exclusión correcta: NO incluye psicólogo, metro, medicinas
-
-**Issues Encontrados y Resueltos**:
-1. **Embeddings unreliable** (OpenAI 500 errors 2/3 intentos)
-   - **Fix**: Hybrid approach - Keywords para subcategorías + Embeddings para búsquedas avanzadas
-2. **Threshold demasiado permisivo** ("alquiler" matched "comida" at 0.2)
-   - **Fix**: Keyword matching con 40+ palabras clave para "comida"
-
-**Arquitectura Final**:
-- `analyzeSpendingPattern` → **Keyword matching** (rápido, confiable)
-- `searchExpenses` → **Embeddings** (queries avanzadas, portfolio value)
-
-**Performance**:
-- Latencia: ~8s (vs 40s+ con embeddings fallando)
-- Precisión: 100% en test cases
-- Confiabilidad: Sin dependencia de OpenAI API
-
-**Commit**: `794a60f` - Hybrid keyword+embeddings approach
+📄 **[Ver informe completo de validación →](2026-02-13-validacion-tools-produccion.md)**
 
 ---
 
-### ⏳ Herramientas Pendientes de Validación (11/12)
+### ✅ Herramientas Validadas (9/12)
 
-#### V2 Tools (Analysis - 4 pendientes)
-2. ⏳ `getBudgetStatus` - "¿Cómo va mi presupuesto?"
-3. ⏳ `detectAnomalies` - "¿Hay gastos raros?"
-4. ⏳ `predictMonthlySpending` - "¿Cuánto voy a gastar este mes?"
-5. ⏳ `getSpendingTrends` - "¿Cuál es la tendencia de mis gastos?"
+| # | Herramienta | Estado | Bugs Corregidos | Descripción |
+|---|-------------|--------|-----------------|-------------|
+| 1 | `analyzeSpendingPattern` | ✅ | 2 fixes | Análisis de gastos por categoría/período |
+| 2 | `getBudgetStatus` | ✅ | 0 | Estado del presupuesto actual |
+| 3 | `detectAnomalies` | ✅ | 1 fix | Detección de gastos inusuales |
+| 4 | `predictMonthlySpending` | ✅ | 1 fix | Proyección de gastos fin de mes |
+| 5 | `getSpendingTrends` | ✅ | 2 fixes | Tendencias históricas de gasto |
+| 6 | `searchExpenses` | ✅ | 4 fixes | Búsqueda semántica avanzada |
+| 7 | `submitFeedback` | ✅ | 3 fixes | Sistema de aprendizaje continuo |
+| 8 | `createTransaction` | ✅ | 0 | Crear gastos/ingresos por chat |
+| 9 | `updateTransaction` | ✅ | 0 | Modificar transacciones existentes |
 
-#### V2.5 Tools (Search & Feedback - 1 pendiente)
-6. ✅ `searchExpenses` - Probado indirectamente (usado por updateTransaction)
-7. ⏳ `submitFeedback` - "Este gasto NO es ocio" (learning system)
+**Bugs críticos corregidos:**
+- 🐛 Proyección mensual incorrecta (weighted → linear)
+- 🐛 Tendencias confusas (meses incompletos sin proyectar)
+- 🐛 Búsqueda con falsos positivos (threshold demasiado bajo)
+- 🐛 FK constraint violation en submitFeedback (fixed expenses)
+- 🐛 LLM inventando IDs falsos (faltaba incluir IDs en respuestas)
 
-#### V3 Tools (Copilot CRUD - 4 pendientes)
-8. ⏳ `createTransaction` - "Registra 50€ de comida"
-9. ✅ `updateTransaction` - "Cambia el último gasto a 10€" **VALIDATED**
-10. ⏳ `calculateWhatIf` - "Quiero ahorrar 800€ para vacaciones"
-11. ⏳ `setBudget` - "Pon el presupuesto de ocio en 300€"
-12. ⏳ `getCurrentCycle` - "¿Cuándo termina mi ciclo?"
+---
+
+### ⏳ Herramientas Pendientes de Validación (3/12)
+
+| # | Herramienta | Descripción |
+|---|-------------|-------------|
+| 10 | `calculateWhatIf` | Planificación de escenarios futuros |
+| 11 | `setBudget` | Configurar presupuestos por chat |
+| 12 | `getCurrentCycle` | Info del ciclo de pago actual |
 
 ---
 
 ### 🎯 Próximos Steps
 
-**En progreso**:
-- Tool #2: `getBudgetStatus` testing
+**Inmediato (Hoy/Mañana)**:
+- ⏳ Tool #10: `calculateWhatIf` testing
+- ⏳ Tool #11: `setBudget` testing
+- ⏳ Tool #12: `getCurrentCycle` testing
 
-**Planificado**:
-- Completar validación de las 11 herramientas restantes
-- Documentar edge cases y limitaciones
-- Crear suite de regression tests automatizados
+**Esta Semana**:
+- Completar 100% de validación (12/12 tools)
+- Crear regression test suite automatizada
+- Documentar casos de uso completos
+- Optimizar latencia (objetivo < 2s p95)
 
-**Timeline estimado**: 2-3 días de testing exhaustivo
+**Timeline estimado**: 1-2 días para completar las 3 herramientas restantes
 
 ---
 
