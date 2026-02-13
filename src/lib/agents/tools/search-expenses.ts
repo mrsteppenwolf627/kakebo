@@ -33,6 +33,89 @@ export interface SearchExpensesResult {
 }
 
 /**
+ * Keyword mapping for common search categories
+ * These keywords are matched case-insensitively in expense notes
+ */
+const CATEGORY_KEYWORDS: Record<string, string[]> = {
+    salud: [
+        "medicamento", "medicina", "farmacia", "doctor", "médico", "medico",
+        "psicólogo", "psicologo", "terapeuta", "terapia", "consulta", "clínica", "clinica",
+        "hospital", "seguro", "mutua", "dentista", "análisis", "analisis",
+        "insulina", "pastilla", "antibiótico", "antibiotico", "receta"
+    ],
+    restaurantes: [
+        "restaurante", "cena", "comida", "almuerzo", "desayuno", "bar",
+        "cafetería", "cafeteria", "café", "cafe", "pizzería", "pizzeria",
+        "hamburguesería", "hamburgueseria", "tapas", "menú", "menu",
+        "comida fuera", "comer fuera", "delivery", "domicilio"
+    ],
+    transporte: [
+        "metro", "bus", "autobús", "autobus", "taxi", "uber", "cabify",
+        "gasolina", "combustible", "parking", "aparcamiento", "peaje",
+        "tren", "renfe", "ave", "cercanías", "cercanias", "bici", "patinete"
+    ],
+    ocio: [
+        "cine", "teatro", "concierto", "museo", "parque", "entrada",
+        "espectáculo", "espectaculo", "fiesta", "discoteca", "pub",
+        "videojuego", "netflix", "spotify", "streaming", "suscripción", "suscripcion"
+    ],
+    vicios: [
+        "tabaco", "cigarro", "cigarrillo", "vaper", "vape", "alcohol",
+        "cerveza", "vino", "licor", "bebida", "apuesta", "lotería", "loteria"
+    ],
+    gimnasio: [
+        "gimnasio", "gym", "fitness", "deporte", "entrenamiento", "piscina",
+        "clase", "yoga", "pilates", "crossfit", "running", "natación", "natacion"
+    ],
+    supermercado: [
+        "mercadona", "carrefour", "lidl", "aldi", "día", "dia", "alcampo",
+        "eroski", "supermercado", "compra", "súper", "super"
+    ],
+};
+
+/**
+ * Detect if query matches a known category and return keywords
+ */
+function getCategoryKeywords(query: string): string[] | null {
+    const queryLower = query.toLowerCase().trim();
+
+    // Exact match
+    if (CATEGORY_KEYWORDS[queryLower]) {
+        return CATEGORY_KEYWORDS[queryLower];
+    }
+
+    // Partial match (e.g., "gasto en salud" → "salud")
+    for (const [category, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
+        if (queryLower.includes(category)) {
+            return keywords;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Determine optimal similarity threshold based on query type
+ */
+function getOptimalThreshold(query: string): number {
+    const queryLower = query.toLowerCase().trim();
+
+    // Specific brands/services (use strict threshold)
+    const specificBrands = ["netflix", "spotify", "amazon", "youtube", "uber", "cabify"];
+    if (specificBrands.some(brand => queryLower.includes(brand))) {
+        return 0.6; // Strict
+    }
+
+    // Category keywords (use permissive threshold)
+    if (getCategoryKeywords(query)) {
+        return 0.3; // Permissive for broad categories
+    }
+
+    // Default: balanced threshold
+    return 0.4;
+}
+
+/**
  * Get period dates for filtering
  */
 function getPeriodDates(period: string): { start: string; end: string } | null {
@@ -282,6 +365,64 @@ export async function searchExpenses(
             fixedExpensesFound: fixedExpenses?.length ?? 0,
         }, "Fixed expenses search completed");
 
+        // ========== KEYWORD MATCHING FOR COMMON CATEGORIES ==========
+        const categoryKeywords = getCategoryKeywords(params.query);
+        let keywordResults: Array<{
+            expense_id: string;
+            note: string;
+            amount: number;
+            date: string;
+            category: string;
+            similarity: number;
+        }> = [];
+
+        if (categoryKeywords && categoryKeywords.length > 0) {
+            apiLogger.info({
+                query: params.query,
+                keywordCount: categoryKeywords.length,
+            }, "Using keyword matching for known category");
+
+            // Build OR condition for keyword matching
+            const keywordPattern = categoryKeywords.map(k => `%${k}%`).join("|");
+
+            // Query expenses matching any keyword
+            const { data: keywordExpenses } = await supabase
+                .from("expenses")
+                .select("id, note, amount, date, category")
+                .eq("user_id", userId);
+
+            // Filter by keyword matching (case-insensitive)
+            if (keywordExpenses) {
+                keywordResults = keywordExpenses
+                    .filter(exp => {
+                        const noteLower = (exp.note || "").toLowerCase();
+                        return categoryKeywords.some(keyword =>
+                            noteLower.includes(keyword.toLowerCase())
+                        );
+                    })
+                    .map(exp => ({
+                        expense_id: exp.id,
+                        note: exp.note || "Sin concepto",
+                        amount: exp.amount,
+                        date: exp.date,
+                        category: exp.category,
+                        similarity: 0.95, // High similarity for keyword matches
+                    }));
+
+                apiLogger.info({
+                    query: params.query,
+                    keywordMatches: keywordResults.length,
+                }, "Keyword matching completed");
+            }
+        }
+
+        // ========== SEMANTIC SEARCH WITH DYNAMIC THRESHOLD ==========
+        const optimalThreshold = getOptimalThreshold(params.query);
+        apiLogger.info({
+            query: params.query,
+            threshold: optimalThreshold,
+        }, "Using dynamic threshold for semantic search");
+
         // Search using semantic embeddings (manual expenses only)
         const { results } = await searchExpensesByText(
             supabase,
@@ -289,7 +430,7 @@ export async function searchExpenses(
             params.query,
             {
                 limit: 100, // Get more results for filtering
-                threshold: 0.5, // Stricter threshold to reduce false positives (was 0.2)
+                threshold: optimalThreshold, // Dynamic threshold based on query type
             }
         );
 
@@ -338,7 +479,15 @@ export async function searchExpenses(
             excludedCount: feedback.incorrectExpenseIds.size,
         }, "Applied hybrid feedback (personal + global) to search results");
 
-        // ========== MERGE FIXED EXPENSES WITH MANUAL EXPENSES ==========
+        // ========== MERGE ALL RESULTS (KEYWORDS + EMBEDDINGS + FIXED) ==========
+        // Apply period filter to keyword results
+        let filteredKeywordResults = keywordResults;
+        if (periodDates) {
+            filteredKeywordResults = keywordResults.filter(exp =>
+                exp.date >= periodDates.start && exp.date <= periodDates.end
+            );
+        }
+
         // Convert fixed expenses to same format as manual expenses
         const fixedExpensesFormatted = (fixedExpenses || [])
             .filter(fe => {
@@ -356,8 +505,44 @@ export async function searchExpenses(
                 similarity: 1.0, // Perfect match for text search
             }));
 
-        // Combine and sort by similarity
-        const combinedResults = [...filteredResults, ...fixedExpensesFormatted];
+        // Merge all sources: keyword matches + semantic search + fixed expenses
+        // Remove duplicates (prefer keyword matches over semantic)
+        const seenIds = new Set<string>();
+        const combinedResults: typeof filteredResults = [];
+
+        // 1. Add keyword matches first (highest priority)
+        for (const result of filteredKeywordResults) {
+            if (!seenIds.has(result.expense_id)) {
+                combinedResults.push(result);
+                seenIds.add(result.expense_id);
+            }
+        }
+
+        // 2. Add semantic search results (medium priority)
+        for (const result of filteredResults) {
+            if (!seenIds.has(result.expense_id)) {
+                combinedResults.push(result);
+                seenIds.add(result.expense_id);
+            }
+        }
+
+        // 3. Add fixed expenses (low priority, but still included)
+        for (const result of fixedExpensesFormatted) {
+            if (!seenIds.has(result.expense_id)) {
+                combinedResults.push(result);
+                seenIds.add(result.expense_id);
+            }
+        }
+
+        apiLogger.info({
+            query: params.query,
+            keywordMatches: filteredKeywordResults.length,
+            semanticMatches: filteredResults.length,
+            fixedMatches: fixedExpensesFormatted.length,
+            totalCombined: combinedResults.length,
+        }, "Merged all search results");
+
+        // Sort by similarity and limit
         combinedResults.sort((a, b) => b.similarity - a.similarity);
         const topResults = combinedResults.slice(0, limit);
 
