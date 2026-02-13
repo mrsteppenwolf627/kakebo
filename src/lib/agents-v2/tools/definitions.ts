@@ -156,20 +156,29 @@ const getBudgetStatusTool: ChatCompletionTool = {
 - Estado: safe (seguro), warning (advertencia), exceeded (superado)
 
 **Ejemplos:**
-- "¿Cómo va mi presupuesto?" → month: current, category: undefined (todas)
-- "¿He superado el presupuesto de ocio?" → month: current, category: "optional"
-- "Presupuesto del mes pasado" → month: "2024-01"`,
+- "¿Cómo va mi presupuesto?" → NO pasar month (usa mes actual automáticamente)
+- "¿He superado el presupuesto de ocio?" → NO pasar month, category: "optional"
+- "Presupuesto del mes pasado" → month: "2026-01" (si hoy es febrero 2026)
+
+**IMPORTANTE:** La fecha actual es 2026-02-13. Usa siempre el año correcto (2026).`,
 
     parameters: {
       type: "object",
       properties: {
         month: {
           type: "string",
-          description: `Mes a consultar en formato YYYY-MM (ej: "2024-02").
-Si el usuario dice "este mes" o no especifica, usar el mes actual.
-Si dice "mes pasado", calcular el mes anterior.
+          description: `Mes a consultar en formato YYYY-MM.
 
-Por defecto: mes actual`,
+**FECHA ACTUAL: 2026-02-13**
+
+Ejemplos:
+- Usuario dice "este mes" o "cómo va mi presupuesto": NO pasar este parámetro (usará 2026-02 automáticamente)
+- Usuario dice "mes pasado" o "enero": month: "2026-01"
+- Usuario dice "febrero": month: "2026-02"
+
+**NUNCA uses años antiguos como 2024 o 2025. Estamos en 2026.**
+
+Por defecto: mes actual (2026-02)`,
         },
         category: {
           type: "string",
