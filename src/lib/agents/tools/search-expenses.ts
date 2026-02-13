@@ -417,22 +417,33 @@ export async function searchExpenses(
         }
 
         // ========== SEMANTIC SEARCH WITH DYNAMIC THRESHOLD ==========
-        const optimalThreshold = getOptimalThreshold(params.query);
-        apiLogger.info({
-            query: params.query,
-            threshold: optimalThreshold,
-        }, "Using dynamic threshold for semantic search");
+        // Skip semantic search if we're using keywords (to avoid false positives)
+        let results: Awaited<ReturnType<typeof searchExpensesByText>>['results'] = [];
 
-        // Search using semantic embeddings (manual expenses only)
-        const { results } = await searchExpensesByText(
-            supabase,
-            userId,
-            params.query,
-            {
-                limit: 100, // Get more results for filtering
-                threshold: optimalThreshold, // Dynamic threshold based on query type
-            }
-        );
+        if (!categoryKeywords || categoryKeywords.length === 0) {
+            // Only use semantic search for non-category queries
+            const optimalThreshold = getOptimalThreshold(params.query);
+            apiLogger.info({
+                query: params.query,
+                threshold: optimalThreshold,
+            }, "Using semantic search (no category keywords matched)");
+
+            const searchResults = await searchExpensesByText(
+                supabase,
+                userId,
+                params.query,
+                {
+                    limit: 100, // Get more results for filtering
+                    threshold: optimalThreshold, // Dynamic threshold based on query type
+                }
+            );
+            results = searchResults.results;
+        } else {
+            apiLogger.info({
+                query: params.query,
+                keywordCount: categoryKeywords.length,
+            }, "Skipping semantic search (using keyword matching only for known category)");
+        }
 
         // Check if we have any results at all (manual or fixed)
         if (results.length === 0 && (!fixedExpenses || fixedExpenses.length === 0)) {

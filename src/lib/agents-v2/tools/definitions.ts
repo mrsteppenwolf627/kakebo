@@ -22,10 +22,14 @@ const analyzeSpendingPatternTool: ChatCompletionTool = {
     description: `Analiza patrones de gasto del usuario por categoría y período de tiempo.
 
 **Úsala cuando el usuario pregunte sobre:**
-- Cuánto ha gastado (ej: "¿cuánto gasté en comida?", "¿cuánto llevo gastado?")
-- Gastos por categoría (ej: "gastos de supervivencia", "gastos de ocio")
-- Análisis de patrones (ej: "¿estoy gastando más?", "tendencia de gastos")
-- Gastos recientes (ej: "esta semana", "este mes")
+- Cuánto ha gastado EN UNA CATEGORÍA KAKEBO COMPLETA (ej: "gastos de supervivencia", "gastos opcionales", "gastos de cultura")
+- Análisis de patrones POR CATEGORÍA AMPLIA (ej: "¿estoy gastando más en opcional?", "tendencia de supervivencia")
+- Resumen de gastos por categoría (ej: "este mes", "esta semana") SIN subcategorías específicas
+
+**NO la uses para búsquedas específicas como:**
+- "restaurantes", "salud", "transporte", "comida" → USA searchExpenses en su lugar
+- "gimnasio", "suscripciones", "medicinas" → USA searchExpenses en su lugar
+- Cualquier cosa MÁS ESPECÍFICA que las 4 categorías Kakebo → USA searchExpenses
 
 **MAPEO SEMÁNTICO CRÍTICO - Categorías:**
 Debes interpretar inteligentemente el lenguaje natural del usuario:
@@ -106,24 +110,12 @@ Usa default (5) para preguntas generales.`,
         },
         semanticFilter: {
           type: "string",
-          description: `Filtro semántico para subcategorías dentro de una categoría principal.
+          description: `⚠️ DEPRECADO - NO USES ESTE PARÁMETRO.
 
-**USA ESTO cuando el usuario pida algo MÁS ESPECÍFICO que las 4 categorías Kakebo:**
+Para búsquedas específicas como "restaurantes", "salud", "comida", "transporte", etc.,
+USA LA HERRAMIENTA searchExpenses EN SU LUGAR.
 
-Ejemplos de cuándo USAR semanticFilter:
-- "gastos de comida" → category="survival", semanticFilter="comida"
-- "gastos de restaurantes" → category="optional", semanticFilter="restaurantes"
-- "gastos de salud" → category="survival", semanticFilter="salud"
-- "gastos de transporte" → category="survival", semanticFilter="transporte"
-- "suscripciones" → category="optional", semanticFilter="suscripciones"
-
-Ejemplos de cuándo NO usar semanticFilter:
-- "gastos de supervivencia" → category="survival" (sin filtro)
-- "gastos opcionales" → category="optional" (sin filtro)
-
-**IMPORTANTE:** El filtro usa embeddings semánticos para entender contexto humano.
-Por ejemplo, si piden "comida", excluirá automáticamente "psicólogo" o "medicamentos" 
-aunque estén en la misma categoría "supervivencia".`,
+Este parámetro existe solo por compatibilidad pero NO funciona correctamente.`,
         },
       },
       required: [], // Todos los parámetros son opcionales con defaults sensibles
