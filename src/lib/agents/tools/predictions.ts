@@ -90,6 +90,19 @@ function getCategoryBudgetColumn(category: string): string {
 }
 
 /**
+ * Map English category name to Spanish (as stored in expenses table)
+ */
+function getSpanishCategoryName(category: string): string {
+  const mapping: Record<string, string> = {
+    survival: "supervivencia",
+    optional: "opcional",
+    culture: "cultura",
+    extra: "extra",
+  };
+  return mapping[category] || category;
+}
+
+/**
  * Project spending using weighted average
  * Gives more weight to recent spending
  */
@@ -206,6 +219,22 @@ export async function predictMonthlySpending(
       throw expensesError;
     }
 
+    // Debug: Log query results
+    console.log("📊 Prediction query params:", {
+      month,
+      startDate: `${month}-01`,
+      endDate: getNextMonth(month),
+      userId,
+      daysElapsed,
+      daysRemaining,
+    });
+
+    console.log("💰 Expenses found:", {
+      count: expenses?.length || 0,
+      categories: [...new Set(expenses?.map(e => e.category))],
+      totalAmount: expenses?.reduce((sum, e) => sum + (e.amount || 0), 0) || 0,
+    });
+
     // Calculate by category
     const categories: Array<"survival" | "optional" | "culture" | "extra"> = [
       "survival",
@@ -222,8 +251,10 @@ export async function predictMonthlySpending(
         continue;
       }
 
+      // Map English category (from agent) to Spanish (db)
+      const spanishCategory = getSpanishCategoryName(category);
       const categoryExpenses = (expenses || [])
-        .filter((exp) => exp.category === category)
+        .filter((exp) => exp.category === spanishCategory)
         .map((exp) => ({
           date: exp.date || "",
           amount: exp.amount || 0,
