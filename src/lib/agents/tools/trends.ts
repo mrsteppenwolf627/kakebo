@@ -17,6 +17,7 @@ export interface TrendDataPoint {
   date: string; // Week start or month (YYYY-MM)
   amount: number;
   count: number; // Number of expenses in this period
+  isProjected?: boolean; // True if this is a projection (incomplete month)
 }
 
 /**
@@ -89,6 +90,50 @@ function getMonthString(date: Date): string {
 }
 
 /**
+ * Check if a month period is incomplete (current month)
+ */
+function isCurrentMonth(monthStr: string): boolean {
+  const now = new Date();
+  const currentMonth = getMonthString(now);
+  return monthStr === currentMonth;
+}
+
+/**
+ * Get days in a specific month
+ */
+function getDaysInSpecificMonth(monthStr: string): number {
+  const [year, month] = monthStr.split("-").map(Number);
+  return new Date(year, month, 0).getDate();
+}
+
+/**
+ * Get days elapsed in a specific month
+ */
+function getDaysElapsedInMonth(monthStr: string): number {
+  if (!isCurrentMonth(monthStr)) {
+    return getDaysInSpecificMonth(monthStr);
+  }
+
+  const now = new Date();
+  return now.getDate();
+}
+
+/**
+ * Project incomplete month to full month amount
+ */
+function projectMonthAmount(amount: number, monthStr: string): number {
+  const daysElapsed = getDaysElapsedInMonth(monthStr);
+  const daysInMonth = getDaysInSpecificMonth(monthStr);
+
+  if (daysElapsed === 0 || daysElapsed === daysInMonth) {
+    return amount;
+  }
+
+  // Linear projection: (amount / days elapsed) × total days
+  return (amount / daysElapsed) * daysInMonth;
+}
+
+/**
  * Group expenses by period
  */
 function groupExpenses(
@@ -115,6 +160,7 @@ function groupExpenses(
 
 /**
  * Calculate trend from data points
+ * Uses simple percentage change between first and last period
  */
 function calculateTrend(dataPoints: TrendDataPoint[]): {
   trend: "increasing" | "decreasing" | "stable";
@@ -124,29 +170,25 @@ function calculateTrend(dataPoints: TrendDataPoint[]): {
     return { trend: "stable", percentage: 0 };
   }
 
-  const amounts = dataPoints.map((dp) => dp.amount);
+  // Simple and intuitive: compare first vs last period
+  const firstAmount = dataPoints[0].amount;
+  const lastAmount = dataPoints[dataPoints.length - 1].amount;
 
-  // Simple linear regression
-  const n = amounts.length;
-  const indices = Array.from({ length: n }, (_, i) => i);
-  const sumX = indices.reduce((a, b) => a + b, 0);
-  const sumY = amounts.reduce((a, b) => a + b, 0);
-  const sumXY = indices.reduce((sum, x, i) => sum + x * amounts[i], 0);
-  const sumX2 = indices.reduce((sum, x) => sum + x * x, 0);
+  if (firstAmount === 0) {
+    return { trend: "stable", percentage: 0 };
+  }
 
-  const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-  const average = sumY / n;
+  // Calculate percentage change: ((last - first) / first) × 100
+  const percentageChange = ((lastAmount - firstAmount) / firstAmount) * 100;
 
-  // Calculate percentage change
-  const percentage = average !== 0 ? (slope / average) * 100 : 0;
-
-  if (Math.abs(percentage) < 5) {
+  // Consider stable if change is less than 5%
+  if (Math.abs(percentageChange) < 5) {
     return { trend: "stable", percentage: 0 };
   }
 
   return {
-    trend: slope > 0 ? "increasing" : "decreasing",
-    percentage: Math.abs(percentage),
+    trend: percentageChange > 0 ? "increasing" : "decreasing",
+    percentage: Math.abs(percentageChange),
   };
 }
 
@@ -206,13 +248,22 @@ export async function getSpendingTrends(
       groupBy
     );
 
-    // Convert to data points
+    // Convert to data points with projection for incomplete months
     const dataPoints: TrendDataPoint[] = Object.entries(grouped)
-      .map(([date, data]) => ({
-        date,
-        amount: Math.round(data.amount * 100) / 100,
-        count: data.count,
-      }))
+      .map(([date, data]) => {
+        const amount = data.amount;
+        const isIncomplete = groupBy === "month" && isCurrentMonth(date);
+        const projectedAmount = isIncomplete
+          ? projectMonthAmount(amount, date)
+          : amount;
+
+        return {
+          date,
+          amount: Math.round(projectedAmount * 100) / 100,
+          count: data.count,
+          isProjected: isIncomplete,
+        };
+      })
       .sort((a, b) => a.date.localeCompare(b.date));
 
     // Calculate statistics
