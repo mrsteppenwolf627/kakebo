@@ -1,7 +1,17 @@
 import { MetadataRoute } from 'next'
+import { getBlogPosts } from '@/lib/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.metodokakebo.com';
+
+    const posts = getBlogPosts();
+
+    const blogEntries: MetadataRoute.Sitemap = posts.map((post) => ({
+        url: `${baseUrl}/blog/${post.slug}`,
+        lastModified: new Date(post.frontmatter.date),
+        changeFrequency: 'monthly',
+        priority: 0.7,
+    }));
 
     return [
         {
@@ -9,6 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 1,
+        },
+        {
+            url: `${baseUrl}/blog`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.8,
         },
         {
             url: `${baseUrl}/login`,
@@ -36,5 +52,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'daily',
             priority: 0.9,
         },
+        ...blogEntries,
     ]
 }
