@@ -166,8 +166,8 @@ Ejemplo INCORRECTO:
 - "Eso está mal" (refiriéndose a resultados de búsqueda)
 
 **IMPORTANTE - DIFERENCIA CON updateTransaction:**
-- `submitFeedback`: Aprende para FUTURAS búsquedas (no modifica el gasto)
-- `updateTransaction`: Modifica el gasto ACTUAL (cambia concepto/categoría/importe)
+- submitFeedback: Aprende para FUTURAS búsquedas (no modifica el gasto)
+- updateTransaction: Modifica el gasto ACTUAL (cambia concepto/categoría/importe)
 
 **DETECCIÓN DE CORRECCIONES:**
 Si acabas de usar searchExpenses y el usuario dice algo como:
