@@ -4,15 +4,22 @@ import { Footer } from "@/components/landing/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.metodokakebo.com"),
   title: {
     default: "Kakebo AI: Finanzas Zen y Control de Gastos",
     template: "%s | Kakebo AI",
   },
   description:
     "La App de Kakebo definitiva. Gestión financiera minimalista con Inteligencia Artificial. Registra gastos, controla presupuestos y ahorra mes a mes en euros.",
-  keywords: ["kakebo", "ahorro", "finanzas personales", "control gastos", "app gastos", "método kakebo", "ahorrar dinero españa"],
+  keywords: ["kakebo", "ahorro", "finanzas personales", "control gastos", "app gastos", "método kakebo", "ahorrar dinero españa", "kakebo excel", "plantilla kakebo"],
   authors: [{ name: "Kakebo AI Team" }],
   creator: "Kakebo AI",
+  publisher: "Kakebo AI",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   manifest: "/manifest.webmanifest",
   themeColor: "#fafaf9",
   appleWebApp: {
@@ -24,7 +31,6 @@ export const metadata: Metadata = {
     icon: "/icon.png",
     apple: "/icon.png",
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://kakebo.ai"),
   alternates: {
     canonical: "/",
   },
@@ -37,7 +43,7 @@ export const metadata: Metadata = {
     siteName: "Kakebo AI",
     images: [
       {
-        url: "/og-image.jpg", // Ensure this exists or use a placeholder
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Kakebo AI Dashboard",
@@ -51,11 +57,33 @@ export const metadata: Metadata = {
     creator: "@kakebo_ai",
     images: ["/og-image.jpg"],
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  other: {
+    "geo.region": "ES",
+    "geo.placename": "España",
+    "geo.position": "40.4637; -3.7492", // Madrid coordinates approx
+    "ICBM": "40.4637, -3.7492",
+  },
+  verification: {
+    google: "Vd8Y8MWGuiMRtCf6QzbzPT83CGcBeLJ3ME3lxeqdN-g",
+  },
 };
 
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
+
+import SoftwareAppJsonLd from "@/components/seo/SoftwareAppJsonLd";
 
 export default function RootLayout({
   children,
@@ -63,6 +91,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="overflow-x-hidden" suppressHydrationWarning>
       <body className={`${inter.className} overflow-x-hidden max-w-[100vw] bg-sakura text-stone-900 dark:bg-stone-950 dark:text-stone-100 transition-colors duration-300 antialiased`}>
+        <SoftwareAppJsonLd />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
