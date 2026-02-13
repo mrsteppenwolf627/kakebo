@@ -7,11 +7,17 @@ import { ChatMessage } from './ChatMessage';
 export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full" | "widget"; onClose?: () => void }) {
     const { messages, isLoading, error, sendMessage, clearHistory } = useAgent();
     const [inputValue, setInputValue] = useState('');
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const messagesContainerRef = useRef<HTMLDivElement>(null);
 
     // Auto-scroll al fondo cuando llegan nuevos mensajes
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (messagesContainerRef.current) {
+            const container = messagesContainerRef.current;
+            container.scrollTo({
+                top: container.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
     }, [messages, isLoading]);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -79,7 +85,7 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
             </div>
 
             {/* Área de mensajes */}
-            <div className={`flex-1 overflow-y-auto p-4 ${mode === 'widget' ? 'space-y-3' : 'sm:p-6 space-y-4'} bg-muted/20 scroll-smooth`}>
+            <div ref={messagesContainerRef} className={`flex-1 overflow-y-auto p-4 ${mode === 'widget' ? 'space-y-3' : 'sm:p-6 space-y-4'} bg-muted/20 scroll-smooth`}>
                 {messages.length === 0 && (
                     <div className="flex flex-col h-full items-center justify-center text-muted-foreground space-y-4 p-8 mx-auto max-w-2xl opacity-70">
                         <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
@@ -131,7 +137,7 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                     </div>
                 )}
 
-                <div ref={messagesEndRef} />
+
             </div>
 
             {/* Input área */}
