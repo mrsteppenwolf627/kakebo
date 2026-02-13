@@ -243,11 +243,16 @@ export function validatePrediction(data: any): ValidationResult {
   const warnings: string[] = [];
 
   // 1. Required fields
-  if (typeof data.predictedTotal !== "number" && typeof data.projectedSpending !== "number") {
+  if (
+    typeof data.predictedTotal !== "number" &&
+    typeof data.projectedSpending !== "number" &&
+    typeof data.projectedTotal !== "number"
+  ) {
     errors.push("Missing predicted/projected spending amount");
   }
 
-  const predictedAmount = data.predictedTotal || data.projectedSpending || 0;
+  const predictedAmount =
+    data.predictedTotal || data.projectedSpending || data.projectedTotal || 0;
 
   // 2. Numerical consistency
   if (predictedAmount < 0) {
