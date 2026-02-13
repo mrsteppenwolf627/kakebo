@@ -589,6 +589,11 @@ Este es un proyecto privado. Para miembros del equipo:
 - 🗺️ **Sitemap Completo**: Inclusión de páginas legales y configuración de `robots.txt` para indexación óptima.
 - ✅ **Google Verified**: Dominio verificado en Search Console.
 
+**Growth & Link Magnets:**
+- 🧮 **Calculadora Kakebo**: Herramienta interactiva (`/herramientas/calculadora-ahorro`) para atraer tráfico viral.
+- 📝 **Blog Técnico**: Infraestructura MDX implementada con primer artículo SEO ("Método Kakebo Guía Definitiva").
+- 🔗 **Enlazado Interno**: Navegación mejorada con enlaces a herramientas y blog en Navbar/Footer.
+
 ---
 
 ### v3.0.1 (2026-02-12) - Hotfix Critical Bugs 🔥
