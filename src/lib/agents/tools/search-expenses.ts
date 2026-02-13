@@ -445,8 +445,13 @@ export async function searchExpenses(
             }, "Skipping semantic search (using keyword matching only for known category)");
         }
 
-        // Check if we have any results at all (manual or fixed)
-        if (results.length === 0 && (!fixedExpenses || fixedExpenses.length === 0)) {
+        // Check if we have any results at all (keywords + semantic + fixed)
+        const hasResults =
+            keywordResults.length > 0 ||
+            results.length > 0 ||
+            (fixedExpenses && fixedExpenses.length > 0);
+
+        if (!hasResults) {
             return {
                 query: params.query,
                 period,
