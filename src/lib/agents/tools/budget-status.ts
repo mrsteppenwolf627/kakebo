@@ -43,9 +43,8 @@ export interface BudgetStatusResult {
   fixedExpenses?: number;
   savingGoal?: number;
   utilizable?: number; // Income - Fixed - Saving
-  disponibleReal?: number; // Utilizable - Spent
+  disponibleReal?: number; // Utilizable - Spent (THIS is what user can really spend)
   currentBalance?: number;
-  liquidezReal?: number; // Balance - Committed
 }
 
 /**
@@ -323,12 +322,6 @@ export async function getBudgetStatus(
     const utilizable = monthlyIncome - totalFixedExpenses - savingGoal;
     const disponibleReal = utilizable - totalSpent;
 
-    // Liquidez real = Balance - Committed amounts
-    // Committed = What you still need to spend (remaining budget that's planned)
-    // For simplicity, we use: Balance - (Fixed expenses not yet paid this month)
-    // This is a simplified calculation, could be enhanced
-    const liquidezReal = currentBalance - totalFixedExpenses;
-
     apiLogger.info(
       {
         monthlyIncome,
@@ -338,7 +331,6 @@ export async function getBudgetStatus(
         totalSpent,
         disponibleReal,
         currentBalance,
-        liquidezReal,
       },
       "Financial overview calculated"
     );
@@ -356,9 +348,8 @@ export async function getBudgetStatus(
       fixedExpenses: totalFixedExpenses,
       savingGoal,
       utilizable,
-      disponibleReal,
+      disponibleReal, // THIS is what user can really spend
       currentBalance,
-      liquidezReal,
     };
 
     console.log("✅ Budget status result:", JSON.stringify(result, null, 2));
