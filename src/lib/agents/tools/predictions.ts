@@ -103,8 +103,8 @@ function getSpanishCategoryName(category: string): string {
 }
 
 /**
- * Project spending using weighted average
- * Gives more weight to recent spending
+ * Project spending using simple linear projection
+ * Formula: (total spent / days elapsed) × days in month
  */
 function projectSpending(
   expenses: Array<{ date: string; amount: number }>,
@@ -115,40 +115,11 @@ function projectSpending(
     return { projection: 0, confidence: "low" };
   }
 
-  // Simple method: linear projection
+  // Linear projection: (total / days elapsed) × total days
   const totalSoFar = expenses.reduce((sum, exp) => sum + exp.amount, 0);
-  const simpleProjection = (totalSoFar / daysElapsed) * daysInMonth;
+  const projection = (totalSoFar / daysElapsed) * daysInMonth;
 
-  // Weighted method: give 60% weight to last 7 days, 40% to rest
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  const sevenDaysAgoStr = sevenDaysAgo.toISOString().split("T")[0];
-
-  const recentExpenses = expenses.filter(
-    (exp) => exp.date >= sevenDaysAgoStr
-  );
-  const olderExpenses = expenses.filter(
-    (exp) => exp.date < sevenDaysAgoStr
-  );
-
-  const recentTotal = recentExpenses.reduce(
-    (sum, exp) => sum + exp.amount,
-    0
-  );
-  const olderTotal = olderExpenses.reduce((sum, exp) => sum + exp.amount, 0);
-
-  const recentDays = Math.min(7, daysElapsed);
-  const olderDays = Math.max(0, daysElapsed - 7);
-
-  let weightedProjection = simpleProjection;
-  if (recentDays > 0 && olderDays > 0) {
-    const recentDaily = recentTotal / recentDays;
-    const olderDaily = olderTotal / olderDays;
-    const weightedDaily = 0.6 * recentDaily + 0.4 * olderDaily;
-    weightedProjection = weightedDaily * daysInMonth;
-  }
-
-  // Determine confidence
+  // Determine confidence based on data available
   let confidence: "high" | "medium" | "low";
   if (daysElapsed >= 20) {
     confidence = "high"; // More than 2/3 of month
@@ -157,10 +128,6 @@ function projectSpending(
   } else {
     confidence = "low"; // Less than 1/3 of month
   }
-
-  // Use weighted projection if we have enough data, otherwise simple
-  const projection =
-    daysElapsed >= 7 ? weightedProjection : simpleProjection;
 
   return {
     projection: Math.round(projection * 100) / 100,
