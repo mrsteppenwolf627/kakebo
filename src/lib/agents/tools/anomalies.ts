@@ -178,8 +178,9 @@ export async function detectAnomalies(
     }
 
     // Calculate statistics by category
+    // NOTE: Database stores categories in Spanish
     const statsByCategory: Record<string, CategoryStats> = {};
-    const categories = ["survival", "optional", "culture", "extra"];
+    const categories = ["supervivencia", "opcional", "cultura", "extra"];
 
     for (const category of categories) {
       const amounts = (historicalExpenses || [])
@@ -197,6 +198,15 @@ export async function detectAnomalies(
       const category = expense.category || "extra";
       const stats = statsByCategory[category];
       const amount = expense.amount || 0;
+
+      // Skip if no stats available (shouldn't happen, but defensive programming)
+      if (!stats) {
+        apiLogger.warn(
+          { category, expenseId: expense.id },
+          "No stats found for category"
+        );
+        continue;
+      }
 
       // Check for unusually high amount
       if (stats.count > 5 && stats.stdDev > 0) {
