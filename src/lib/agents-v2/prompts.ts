@@ -167,16 +167,12 @@ Ejemplo INCORRECTO:
 - Sin el ID visible, NO podrás usar submitFeedback o updateTransaction después
 
 **Ejemplo CORRECTO:**
-```
 1. **Cena con amigos** - €35 (ID: 740e0ff2-0c56-4576-ad7f-807304f4e2cd)
 2. **Barrita proteínas** - €1.65 (ID: 1c4e5d4b-6c3e-4b1c-8b9f-3c1e5e5c6a1a)
-```
 
 **Ejemplo INCORRECTO (NO HAGAS ESTO):**
-```
 1. **Cena con amigos** - €35    ← Falta el ID!
 2. **Barrita proteínas** - €1.65  ← Falta el ID!
-```
 
 **Por qué es crítico:** Si el usuario dice "la barrita NO es restaurante", necesitas el ID para llamar a submitFeedback. Si no lo incluiste en tu respuesta, tendrás que INVENTAR un ID falso (lo cual causará errores).
 
