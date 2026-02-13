@@ -580,6 +580,17 @@ Este es un proyecto privado. Para miembros del equipo:
 
 ---
 
+### v3.1.1 (2026-02-13) - SEO & Growth Update 🚀
+
+**Search Engine Optimization:**
+- 🔍 **Landing Optimizada**: H1/H2 mejorados con keywords de alta intención ("App", "España", "Gratis").
+- 🆚 **Tabla Comparativa**: Nueva sección "Kakebo vs Excel vs Bancos" para captar tráfico de comparación.
+- ⚡ **Performance**: Metadatos dedicados para `/login` y estructura JSON-LD limpia.
+- 🗺️ **Sitemap Completo**: Inclusión de páginas legales y configuración de `robots.txt` para indexación óptima.
+- ✅ **Google Verified**: Dominio verificado en Search Console.
+
+---
+
 ### v3.0.1 (2026-02-12) - Hotfix Critical Bugs 🔥
 
 **🐛 Production Bug Fixes:**
