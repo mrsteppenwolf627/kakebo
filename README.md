@@ -567,6 +567,19 @@ Este es un proyecto privado. Para miembros del equipo:
 
 ## 📝 Changelog
 
+### v3.1.0 (2026-02-13) - Frontend Polish & UX Improvements 🎨
+
+**Nuevas Interfaces:**
+- 🖼️ **Full Screen Agent**: Página de agente rediseñada para experiencia inmersiva (`/app/agent`).
+- 💬 **Floating Agent Chat**: Nuevo widget flotante en el dashboard para acceso rápido al asistente.
+- 🔤 **Tipografía Inter**: Integración de fuente `Inter` para mejor legibilidad y soporte de caracteres.
+
+**UX Improvements:**
+- 📱 **Mobile Scroll Fix**: Solucionado el problema de scroll automático al abrir teclado en pantallas de "Nuevo Gasto/Ingreso".
+- ⚡ **Animations**: Transiciones suaves añadidas con `framer-motion` para el chat flotante.
+
+---
+
 ### v3.0.1 (2026-02-12) - Hotfix Critical Bugs 🔥
 
 **🐛 Production Bug Fixes:**

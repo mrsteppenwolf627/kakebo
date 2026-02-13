@@ -337,7 +337,7 @@ export default function NewExpensePage() {
   const backHref = ymValid && ym ? `/app?ym=${ym}` : "/app";
 
   return (
-    <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 flex items-center justify-center">
+    <main className="min-h-screen px-4 sm:px-6 pt-6 sm:pt-10 flex items-start justify-center">
       <div className="w-full max-w-2xl mx-auto space-y-6">
 
         {/* Header with Back Button */}

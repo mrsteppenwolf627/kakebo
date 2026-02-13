@@ -53,12 +53,16 @@ export const metadata: Metadata = {
   },
 };
 
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className="overflow-x-hidden" suppressHydrationWarning>
-      <body className="overflow-x-hidden max-w-[100vw] bg-sakura text-stone-900 dark:bg-stone-950 dark:text-stone-100 transition-colors duration-300">
+      <body className={`${inter.className} overflow-x-hidden max-w-[100vw] bg-sakura text-stone-900 dark:bg-stone-950 dark:text-stone-100 transition-colors duration-300 antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
