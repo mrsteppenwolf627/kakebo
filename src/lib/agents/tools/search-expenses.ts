@@ -264,18 +264,37 @@ export async function searchExpenses(
 
         apiLogger.info({ query: params.query, period }, "Searching expenses with embeddings");
 
-        // Search using semantic embeddings
+        // ========== SEARCH IN FIXED EXPENSES (text matching) ==========
+        // Fixed expenses don't have embeddings, so use simple text search
+        const { data: fixedExpenses, error: fixedError } = await supabase
+            .from("fixed_expenses")
+            .select("id, name, amount, expense_date, is_active")
+            .eq("user_id", userId)
+            .eq("is_active", true)
+            .ilike("name", `%${params.query}%`); // Case-insensitive pattern match
+
+        if (fixedError) {
+            apiLogger.warn({ error: fixedError }, "Error searching fixed expenses");
+        }
+
+        apiLogger.info({
+            query: params.query,
+            fixedExpensesFound: fixedExpenses?.length ?? 0,
+        }, "Fixed expenses search completed");
+
+        // Search using semantic embeddings (manual expenses only)
         const { results } = await searchExpensesByText(
             supabase,
             userId,
             params.query,
             {
                 limit: 100, // Get more results for filtering
-                threshold: 0.2, // Lower threshold for broader matching
+                threshold: 0.5, // Stricter threshold to reduce false positives (was 0.2)
             }
         );
 
-        if (results.length === 0) {
+        // Check if we have any results at all (manual or fixed)
+        if (results.length === 0 && (!fixedExpenses || fixedExpenses.length === 0)) {
             return {
                 query: params.query,
                 period,
@@ -319,9 +338,28 @@ export async function searchExpenses(
             excludedCount: feedback.incorrectExpenseIds.size,
         }, "Applied hybrid feedback (personal + global) to search results");
 
-        // Sort by similarity and limit
-        filteredResults.sort((a, b) => b.similarity - a.similarity);
-        const topResults = filteredResults.slice(0, limit);
+        // ========== MERGE FIXED EXPENSES WITH MANUAL EXPENSES ==========
+        // Convert fixed expenses to same format as manual expenses
+        const fixedExpensesFormatted = (fixedExpenses || [])
+            .filter(fe => {
+                // Apply period filter
+                if (!periodDates) return true;
+                const expenseDate = fe.expense_date || new Date().toISOString().split("T")[0];
+                return expenseDate >= periodDates.start && expenseDate <= periodDates.end;
+            })
+            .map(fe => ({
+                expense_id: `fixed-${fe.id}`, // Prefix to distinguish from manual expenses
+                note: `${fe.name} (Gasto fijo)`, // Mark as fixed expense
+                amount: fe.amount,
+                date: fe.expense_date || new Date().toISOString().split("T")[0],
+                category: "extra", // Fixed expenses don't have category, default to "extra"
+                similarity: 1.0, // Perfect match for text search
+            }));
+
+        // Combine and sort by similarity
+        const combinedResults = [...filteredResults, ...fixedExpensesFormatted];
+        combinedResults.sort((a, b) => b.similarity - a.similarity);
+        const topResults = combinedResults.slice(0, limit);
 
         // Calculate metrics
         const totalAmount = topResults.reduce((sum, exp) => sum + exp.amount, 0);
