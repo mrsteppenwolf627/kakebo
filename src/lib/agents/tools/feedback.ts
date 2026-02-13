@@ -38,24 +38,48 @@ export async function submitSearchFeedback(
     try {
         const { query, correctExpenses = [], incorrectExpenses = [] } = params;
 
+        // ========== FILTER OUT FIXED EXPENSES ==========
+        // Fixed expenses have IDs like "fixed-xxxxx" - they can't be saved in search_feedback
+        // because search_feedback has a foreign key to the expenses table
+        const filterFixedExpenses = (ids: string[]) =>
+            ids.filter(id => !id.startsWith("fixed-"));
+
+        const validCorrectExpenses = filterFixedExpenses(correctExpenses);
+        const validIncorrectExpenses = filterFixedExpenses(incorrectExpenses);
+
+        const fixedExpensesSkipped =
+            (correctExpenses.length - validCorrectExpenses.length) +
+            (incorrectExpenses.length - validIncorrectExpenses.length);
+
+        if (fixedExpensesSkipped > 0) {
+            apiLogger.warn(
+                {
+                    query,
+                    fixedExpensesSkipped,
+                },
+                "Skipped feedback for fixed expenses (not yet supported)"
+            );
+        }
+        // ================================================
+
         apiLogger.info(
             {
                 query,
-                correctCount: correctExpenses.length,
-                incorrectCount: incorrectExpenses.length,
+                correctCount: validCorrectExpenses.length,
+                incorrectCount: validIncorrectExpenses.length,
             },
             "Submitting search feedback"
         );
 
-        // Prepare feedback records
+        // Prepare feedback records (only for valid expense IDs)
         const feedbackRecords = [
-            ...correctExpenses.map((expenseId) => ({
+            ...validCorrectExpenses.map((expenseId) => ({
                 user_id: userId,
                 query: query.toLowerCase().trim(),
                 expense_id: expenseId,
                 feedback_type: "correct" as FeedbackType,
             })),
-            ...incorrectExpenses.map((expenseId) => ({
+            ...validIncorrectExpenses.map((expenseId) => ({
                 user_id: userId,
                 query: query.toLowerCase().trim(),
                 expense_id: expenseId,
@@ -64,6 +88,14 @@ export async function submitSearchFeedback(
         ];
 
         if (feedbackRecords.length === 0) {
+            // If all expenses were fixed expenses, return special message
+            if (fixedExpensesSkipped > 0) {
+                return {
+                    success: false,
+                    message: "No se puede guardar feedback para gastos fijos en este momento",
+                };
+            }
+
             return {
                 success: false,
                 message: "No feedback provided",
@@ -86,13 +118,20 @@ export async function submitSearchFeedback(
             {
                 query,
                 recordsSubmitted: feedbackRecords.length,
+                fixedExpensesSkipped,
             },
             "Search feedback submitted successfully"
         );
 
+        // Build success message
+        let message = `Aprendido: ${validCorrectExpenses.length} correctos, ${validIncorrectExpenses.length} incorrectos para "${query}"`;
+        if (fixedExpensesSkipped > 0) {
+            message += ` (${fixedExpensesSkipped} gastos fijos omitidos)`;
+        }
+
         return {
             success: true,
-            message: `Aprendido: ${correctExpenses.length} correctos, ${incorrectExpenses.length} incorrectos para "${query}"`,
+            message,
         };
     } catch (error) {
         apiLogger.error({ error, params }, "Error submitting search feedback");
