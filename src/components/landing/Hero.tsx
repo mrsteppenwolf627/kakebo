@@ -34,7 +34,7 @@ export function Hero() {
             href="#pricing"
             className="inline-flex items-center justify-center border border-border bg-card px-8 py-4 text-base font-normal text-foreground transition-colors hover:border-foreground"
           >
-            Ver planes
+            Más información
           </Link>
         </div>
 
@@ -47,16 +47,16 @@ export function Hero() {
         <div className="mx-auto mt-20 max-w-4xl border border-border bg-card p-8 sm:p-12 shadow-sm">
           <div className="grid gap-8 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border">
             <div className="pt-4 sm:pt-0 text-center">
-              <div className="mb-2 text-4xl font-serif text-foreground">100%</div>
-              <div className="text-sm text-muted-foreground font-light">Gratis para empezar</div>
-            </div>
-            <div className="pt-4 sm:pt-0 text-center">
-              <div className="mb-2 text-4xl font-serif text-foreground">15 días</div>
-              <div className="text-sm text-muted-foreground font-light">Trial con IA gratis</div>
+              <div className="mb-2 text-4xl font-serif text-foreground">14 días</div>
+              <div className="text-sm text-muted-foreground font-light">Prueba Premium Gratis</div>
             </div>
             <div className="pt-4 sm:pt-0 text-center">
               <div className="mb-2 text-4xl font-serif text-foreground">0€</div>
-              <div className="text-sm text-muted-foreground font-light">Hasta que decidas</div>
+              <div className="text-sm text-muted-foreground font-light">Sin tarjeta requerida</div>
+            </div>
+            <div className="pt-4 sm:pt-0 text-center">
+              <div className="mb-2 text-4xl font-serif text-foreground">100%</div>
+              <div className="text-sm text-muted-foreground font-light">Privacidad Total</div>
             </div>
           </div>
         </div>

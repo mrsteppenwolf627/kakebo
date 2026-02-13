@@ -210,30 +210,23 @@ USE_FUNCTION_CALLING_AGENT=true
 
 ---
 
-## 💎 Freemium Model
+## 💎 Reverse Trial Model
 
-### 🆓 Tier Gratis
+### 🎁 14 Días Premium Gratis
+**Todo incluido al registrarte. Sin tarjeta de crédito.**
 
-**Para siempre gratis**, incluye:
+Disfruta de la experiencia completa de Kakebo AI durante 14 días:
+- 🤖 **Kakebo Copilot**: Tu asistente financiero personal
+- 📊 **Análisis Avanzado**: Insights y predicciones
+- 💾 **Historial completo**: Acceso ilimitado a tus datos
+- 📄 **Reportes Premium**: Exportación en PDF
 
-- ✅ Tracking de gastos ilimitado
-- ✅ Dashboard con gráficos
-- ✅ Vista calendario
-- ✅ Presupuestos por categoría
-- ✅ Categorización manual
+### 🔒 Después del Trial — **€3.99/mes**
+Si decides continuar con la ayuda de la IA:
+- Mantén acceso a todas las funcionalidades Premium
+- Cancela cuando quieras
 
-### ⭐ Tier Premium — **€3.99/mes**
-
-Desbloquea:
-
-- 🤖 **Chat AI ilimitado** con el agente inteligente
-- ✨ **Clasificación automática** de gastos con IA
-- 📄 **Reportes PDF** profesionales
-- 🔮 **Análisis predictivo** avanzado
-- 🎯 **Detección de anomalías**
-- 🌍 **Aprendizaje global** de la comunidad
-
-**💝 Trial de 15 días** al suscribirte via Stripe
+*Si no te suscribes, tu cuenta pasará a modo restringido (solo registro manual limitado, sin acceso a histórico antiguo ni IA).*
 
 ### 🎁 VIP Access
 

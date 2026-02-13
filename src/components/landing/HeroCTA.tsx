@@ -65,7 +65,7 @@ export function HeroCTA() {
             href="/login"
             className="inline-flex items-center justify-center border border-stone-900 bg-stone-900 dark:bg-stone-100 dark:text-stone-900 dark:border-stone-100 px-8 py-4 text-base font-normal text-white transition-opacity hover:opacity-90"
         >
-            Empezar
+            Prueba 14 días gratis
         </Link>
     );
 }

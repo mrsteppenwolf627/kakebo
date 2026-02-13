@@ -41,8 +41,8 @@ BEGIN
   INSERT INTO public.profiles (id, tier, trial_ends_at)
   VALUES (
     new.id, 
-    'pro', -- Give 15 days trial by default to new users
-    (now() + interval '15 days')
+    'free', -- Keep tier as free, so access control checks trial_ends_at
+    (now() + interval '14 days') -- 14 days trial
   );
   RETURN new;
 END;

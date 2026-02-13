@@ -2,19 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
-import { getTrialDaysLeft, Profile } from "@/lib/auth/access-control";
+import { canUsePremium, Profile, getTrialDaysLeft } from "@/lib/auth/access-control";
+import Link from "next/link";
 
 export default function TrialBanner() {
-    const [daysLeft, setDaysLeft] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState<Profile | null>(null);
 
-    const supabase = createClient();
-
     useEffect(() => {
         async function load() {
+            const supabase = createClient();
             const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
+            if (!user) {
+                setLoading(false);
+                return;
+            }
 
             const { data } = await supabase
                 .from("profiles")
@@ -22,61 +24,51 @@ export default function TrialBanner() {
                 .eq("id", user.id)
                 .single();
 
-            setProfile(data);
-            if (data) {
-                setDaysLeft(getTrialDaysLeft(data));
-            }
+            setProfile(data as Profile);
             setLoading(false);
         }
         load();
     }, []);
 
-    if (loading || !profile || profile.tier === 'pro' || profile.manual_override || profile.is_admin) {
+    if (loading || !profile) return null;
+
+    // Si ya es PRO pagado o Admin, no mostramos nada
+    if (profile.tier === 'pro' || profile.is_admin || profile.manual_override) {
         return null;
     }
 
-    // Si no tiene trial_ends_at, es un usuario Free que nunca activó el trial.
-    // No mostramos banner de "expirado", el SubscriptionGuard se encargará de bloquear el acceso.
-    if (!profile.trial_ends_at) return null;
+    // Si tiene trial activo
+    const daysLeft = getTrialDaysLeft(profile);
+    const isTrialActive = canUsePremium(profile);
 
-    // Si tiene trial_ends_at, calculamos días restantes
-    // getTrialDaysLeft devuelve 0 si ya pasó la fecha.
-
-
-    async function handleUpgrade() {
-        try {
-            const res = await fetch('/api/stripe/checkout', { method: 'POST' });
-            const data = await res.json();
-            if (data.url) window.location.href = data.url;
-        } catch (e) {
-            console.error(e);
-            alert("Error al iniciar pago");
-        }
-    }
-
-    if (daysLeft === 0) {
-        // Expired
+    if (isTrialActive) {
         return (
-            <div className="bg-red-600 text-white text-xs sm:text-sm p-3 text-center flex items-center justify-center gap-4">
-                <span>Tu periodo de prueba de IA ha finalizado.</span>
-                <button onClick={handleUpgrade} className="underline font-bold hover:text-red-100">
+            <div className="bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 px-4 py-3 text-sm flex items-center justify-center gap-4 text-center">
+                <span className="font-medium">
+                    🎁 Tienes <strong>{daysLeft} días</strong> de prueba Premium restantes.
+                </span>
+                <Link
+                    href="/pricing" // O un modal de suscripción
+                    className="underline hover:opacity-80 font-bold"
+                >
                     Suscribirse ahora
-                </button>
+                </Link>
             </div>
         );
     }
 
-    if (daysLeft! <= 3) {
-        // Warning
-        return (
-            <div className="bg-orange-500 text-white text-xs sm:text-sm p-2 text-center">
-                Quedan {daysLeft} días de tu prueba gratuita de Kakebo AI.{' '}
-                <button onClick={handleUpgrade} className="underline hover:text-orange-100 ml-2">
-                    Asegurar acceso
-                </button>
-            </div>
-        );
-    }
-
-    return null;
+    // Si el trial ha expirado
+    return (
+        <div className="bg-red-600 text-white px-4 py-3 text-sm flex items-center justify-center gap-4 text-center">
+            <span className="font-medium">
+                ⚠️ Tu periodo de prueba ha finalizado. La IA y los reportes están desactivados.
+            </span>
+            <Link
+                href="/pricing" // O trigger de Stripe
+                className="bg-white text-red-600 px-3 py-1 rounded font-bold hover:bg-stone-100 transition-colors"
+            >
+                Activar Premium
+            </Link>
+        </div>
+    );
 }
