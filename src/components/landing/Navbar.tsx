@@ -65,6 +65,12 @@ export function Navbar() {
             Blog
           </Link>
           <Link
+            href="/#tools"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Herramientas
+          </Link>
+          <Link
             href="#pricing"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >

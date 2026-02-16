@@ -87,7 +87,13 @@ A diferencia de un Excel o una app bancaria, Kakebo:
 
 - 🌸 Interfaz minimalista que reduce la ansiedad financiera.
 - 🌓 **Modo Oscuro** automático y cuidado.
+- 🌓 **Modo Oscuro** automático y cuidado.
 - 📱 **Totalmente Responsive** (PWA-ready).
+
+### 🛠️ Herramientas Gratuitas (SEO Magnets)
+- 📉 **Calculadora de Inflación**: Visualiza la pérdida de poder adquisitivo de tus ahorros.
+- 🍰 **Regla 50/30/20**: Distribuye tu sueldo idealmente entre necesidades, caprichos y ahorro.
+- 🕵️ **Analytics Privado**: Sistema de tracking propio sin cookies invasivas.
 
 ---
 
@@ -232,7 +238,15 @@ Si decides continuar con la ayuda de la IA:
 - 🏷️ **Rebranding**: Unificación de marca a **"Kakebo"**. Despliegue de nueva identidad en Landing y App.
 - 💰 **Corrección Financiera**: Fix crítico en cálculo de ingresos (Base + Extras) y visualización de déficit.
 - 🔗 **Dominios**: Fix en redirecciones (Stripe/Auth) para soportar dominios personalizados.
+- 🔗 **Dominios**: Fix en redirecciones (Stripe/Auth) para soportar dominios personalizados.
 - 🌗 **UI**: Mejoras de contraste en Modo Oscuro y accesibilidad en calendarios.
+
+### v3.3.0 (2026-02-16) - SEO & Growth 🚀
+
+**Novedades:**
+- 🧲 **Link Magnets**: Nuevas calculadoras públicas (Inflación & 50/30/20) optimizadas para SEO/GEO.
+- 📊 **Analytics**: Tracking de uso de herramientas respetuoso con la privacidad.
+- 🚦 **Performance**: Mejora de Core Web Vitals (Fuentes & Imágenes).
 
 ### v3.1.0 (2026-02-13) - Experience Upgrade 🎨
 

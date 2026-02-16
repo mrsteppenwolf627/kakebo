@@ -49,18 +49,18 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/herramientas/calculadora-ahorro"
+                  href="/herramientas/regla-50-30-20"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Calculadora Kakebo
+                  Calculadora 50/30/20
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#how-it-works"
+                  href="/herramientas/calculadora-inflacion"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Cómo funciona
+                  Calculadora Inflación
                 </Link>
               </li>
               <li>

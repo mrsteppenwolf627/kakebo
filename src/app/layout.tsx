@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   },
   description:
     "La App de Kakebo definitiva. Gestión financiera minimalista con Inteligencia Artificial. Registra gastos, controla presupuestos y ahorra mes a mes en euros.",
-  keywords: ["kakebo", "ahorro", "finanzas personales", "control gastos", "app gastos", "método kakebo", "ahorrar dinero españa", "kakebo excel", "plantilla kakebo"],
+  keywords: ["kakebo", "ahorro", "finanzas personales", "control gastos", "app gastos", "método kakebo", "ahorrar dinero españa", "regla 50 30 20", "calculadora sueldo neto", "distribución salario", "kakebo excel", "calculadora inflación", "ipc españa", "actualizar renta ipc"],
   authors: [{ name: "Kakebo AI Team" }],
   creator: "Kakebo AI",
   publisher: "Kakebo AI",
