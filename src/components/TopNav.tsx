@@ -27,12 +27,12 @@ export default function TopNav() {
     <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-sm border-b border-border">
       <div className="max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         {/* Logo + Desktop Nav */}
-        <div className="flex items-center gap-4 lg:gap-8 flex-1">
-          <Link href="/app" className="font-serif text-xl font-medium tracking-tight text-foreground shrink-0">
-            Kakebo AI
+        <div className="flex h-16 items-center px-4 md:px-6">
+          <Link href="/app" className="mr-6 flex items-center gap-2 font-serif text-lg font-semibold tracking-tight transition-colors hover:text-primary">
+            <span>🏮</span>
+            <span>Kakebo</span>
           </Link>
-
-          <nav className="hidden md:flex items-center gap-4 lg:gap-6 overflow-x-auto no-scrollbar">
+          <nav className="flex items-center gap-4 text-sm font-medium lg:gap-6 overflow-x-auto no-scrollbar">
             {items.map((it) => (
               <Link
                 key={it.href}

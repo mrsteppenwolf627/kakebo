@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Iniciar Sesión | Kakebo AI",
-    description: "Accede a tu cuenta de Kakebo AI para gestionar tus gastos y presupuestos mensuales. Método japonés de ahorro digitalizado.",
+    title: "Iniciar Sesión | Kakebo",
+    description: "Accede a tu cuenta de Kakebo para gestionar tus gastos y presupuestos mensuales. Método japonés de ahorro digitalizado.",
     alternates: { canonical: "/login" },
 };
 

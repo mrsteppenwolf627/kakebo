@@ -64,10 +64,18 @@ export default async function HomePage(props: {
           <div className="flex flex-col sm:flex-row justify-center sm:justify-start gap-4">
             <Link
               href="/app/new"
-              className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 bg-primary text-primary-foreground text-sm font-medium rounded-md shadow-sm hover:opacity-90 transition-all active:scale-95"
+              className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-sm font-medium rounded-md shadow-sm hover:opacity-90 transition-all active:scale-95"
             >
               <span className="text-lg">💸</span>
               <span>Añadir Nuevo Gasto</span>
+            </Link>
+
+            <Link
+              href="/app/new-income"
+              className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 bg-emerald-600 text-white text-sm font-medium rounded-md shadow-sm hover:opacity-90 transition-all active:scale-95"
+            >
+              <span className="text-lg">💰</span>
+              <span>Añadir Ingreso</span>
             </Link>
 
             <ReportButton />

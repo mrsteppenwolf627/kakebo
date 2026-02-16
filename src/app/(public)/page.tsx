@@ -116,10 +116,10 @@ export default function PublicHomePage() {
               "mainEntity": [
                 {
                   "@type": "Question",
-                  "name": "¿Es gratis usar Kakebo AI?",
+                  "name": "¿Es gratis usar Kakebo?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Sí, Kakebo AI tiene un plan gratuito para siempre que te permite gestionar tus gastos mensuales sin coste. Ideal para empezar con el método Kakebo."
+                    "text": "Sí, Kakebo tiene un plan gratuito para siempre que te permite gestionar tus gastos mensuales sin coste. Ideal para empezar con el método Kakebo."
                   }
                 },
                 {
@@ -135,7 +135,7 @@ export default function PublicHomePage() {
                   "name": "¿Es mejor que un Excel de gastos?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Kakebo AI te da lo bueno del Excel (privacidad, control) pero con una interfaz móvil rápida, análisis automático y categorías inteligentes predefinidas."
+                    "text": "Kakebo te da lo bueno del Excel (privacidad, control) pero con una interfaz móvil rápida, análisis automático y categorías inteligentes predefinidas."
                   }
                 }
               ]

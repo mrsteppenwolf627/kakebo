@@ -344,7 +344,8 @@ export default function DashboardMoneyPanel({ ym }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
 
           {/* Card 1: Budget */}
-          <div className="border border-border bg-muted/20 p-5 rounded-md">
+          {/* Card 1: Budget */}
+          <div className="border border-border bg-muted/20 p-5 rounded-md relative group">
             <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide flex justify-between items-center">
               <span>Presupuesto</span>
               <button
@@ -354,10 +355,17 @@ export default function DashboardMoneyPanel({ ym }: Props) {
                 Gestionar Ingresos
               </button>
             </div>
-            <div className="text-2xl font-serif text-foreground mb-1">{money(availableForCategories)} €</div>
+            <div className={`text-2xl font-serif mb-1 ${availableForCategories < 0 ? "text-destructive" : "text-foreground"}`}>
+              {money(availableForCategories)} €
+            </div>
             <div className="text-[10px] text-muted-foreground">
               (Ingresos {money(income)} € − Fijos − Ahorro)
             </div>
+            {availableForCategories < 0 && (
+              <div className="absolute top-full left-0 mt-2 w-full bg-destructive/10 text-destructive text-[10px] p-2 rounded hidden group-hover:block z-10 border border-destructive/20 shadow-sm">
+                Tus ingresos no cubren los gastos fijos y el ahorro.
+              </div>
+            )}
           </div>
 
           {/* Card 2: Spent */}

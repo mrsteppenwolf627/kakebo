@@ -16,7 +16,7 @@ export default function FloatingAgentChat() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed bottom-24 right-6 z-50 w-[90vw] sm:w-[400px] h-[500px] shadow-2xl rounded-xl overflow-hidden"
+                        className="fixed bottom-24 right-6 z-[100] w-[90vw] sm:w-[400px] h-[500px] shadow-2xl rounded-xl overflow-hidden bg-background border border-border"
                     >
                         <AIChat mode="widget" onClose={() => setIsOpen(false)} />
                     </motion.div>
@@ -25,9 +25,9 @@ export default function FloatingAgentChat() {
 
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`fixed bottom-6 right-24 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 ${isOpen
-                        ? "bg-stone-100 text-stone-900 rotate-90"
-                        : "bg-blue-600 text-white hover:bg-blue-700"
+                className={`fixed bottom-6 right-24 z-[100] flex items-center justify-center w-14 h-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 ${isOpen
+                    ? "bg-stone-100 text-stone-900 rotate-90"
+                    : "bg-blue-600 text-white hover:bg-blue-700"
                     }`}
                 aria-label={isOpen ? "Cerrar chat" : "Abrir asistente"}
             >

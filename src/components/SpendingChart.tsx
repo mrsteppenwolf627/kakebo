@@ -69,8 +69,8 @@ export default function SpendingChart({
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="text-xs text-stone-500">
-            Total: <span className="font-medium text-stone-900">{total.toFixed(2)} €</span>
+          <div className="text-xs text-muted-foreground">
+            Total: <span className="font-medium text-foreground">{total.toFixed(2)} €</span>
           </div>
         </div>
 

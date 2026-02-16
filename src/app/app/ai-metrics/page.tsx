@@ -26,7 +26,7 @@ export default function AIMetricsPage() {
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
           <h1 className="text-2xl sm:text-3xl font-semibold">Métricas IA</h1>
-          <p className="text-sm text-black/60 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Panel de evaluación y monitoreo del modelo de IA
           </p>
         </div>

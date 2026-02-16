@@ -5,7 +5,7 @@ export function SeoContent() {
         <section className="mx-auto max-w-5xl px-4 py-12 border-t border-border mt-12">
             <div className="prose prose-sm prose-stone dark:prose-invert max-w-none text-muted-foreground">
                 <h3 className="text-lg font-serif font-medium text-foreground mb-4">
-                    Controla tus finanzas en España con Kakebo AI
+                    Controla tus finanzas en España con Kakebo
                 </h3>
 
                 <div className="grid gap-8 md:grid-cols-2 mb-12">
@@ -14,7 +14,7 @@ export function SeoContent() {
                         <p className="text-sm font-light leading-relaxed">
                             El <strong>Kakebo</strong> (pronunciado "kah-keh-boh") es el arte japonés de ahorrar dinero.
                             No es solo una app de control de gastos; es una filosofía que te invita a reflexionar sobre
-                            tus hábitos de consumo. Kakebo AI adapta este método centenario a la era digital para
+                            tus hábitos de consumo. Kakebo adapta este método centenario a la era digital para
                             usuarios en <strong>España</strong> y la zona euro.
                         </p>
                     </article>
@@ -33,12 +33,12 @@ export function SeoContent() {
 
                 {/* Comparison Table for SEO */}
                 <div className="mb-12 overflow-x-auto">
-                    <h4 className="text-sm font-semibold text-foreground mb-4">¿Por qué usar Kakebo AI vs Excel?</h4>
+                    <h4 className="text-sm font-semibold text-foreground mb-4">¿Por qué usar Kakebo vs Excel?</h4>
                     <table className="w-full text-left text-xs border-collapse">
                         <thead>
                             <tr className="border-b border-border">
                                 <th className="py-2 font-medium text-foreground">Característica</th>
-                                <th className="py-2 font-medium text-primary">Kakebo AI</th>
+                                <th className="py-2 font-medium text-primary">Kakebo</th>
                                 <th className="py-2 font-medium text-muted-foreground">Excel / Hojas de cálculo</th>
                                 <th className="py-2 font-medium text-muted-foreground">Apps de Bancos</th>
                             </tr>
