@@ -763,7 +763,7 @@ export default function ExpenseCalendar({
         </div>
 
         {/* ✅ BLOQUE SEO */}
-        <section className="mt-12 border-t border-border pt-8 space-y-3 text-sm text-stone-600 dark:text-stone-400">
+        <section className="mt-12 border-t border-border pt-8 space-y-3 text-sm text-muted-foreground">
           <h2 className="text-base font-semibold text-foreground">Control mensual con Kakebo</h2>
           <p>
             Este panel muestra tu resumen del mes con el método Kakebo: gasto total, desglose por
