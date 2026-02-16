@@ -197,7 +197,7 @@ export const POST = withLogging(async (request: NextRequest) => {
           // Since we are inside a route, calling another route via fetch requires full URL. 
           // Better to just inline a small "fill missing" logic or use a helper.
           // Let's use a fire-and-forget fetch to our own API to avoid circular dependency issues or code duplication complexity in this context.
-          const appUrl = process.env.NEXT_PUBLIC_APP_URL || request.headers.get("origin") || "http://localhost:3000";
+          const appUrl = request.headers.get("origin") || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
           fetch(`${appUrl}/api/ai/migrate-embeddings?limit=20`, {
             method: "POST",
             headers: {

@@ -50,7 +50,7 @@ export async function POST(req: Request) {
 
         console.log(`Creating Checkout Session for Customer: ${customerId} with Price: ${priceId}`);
 
-        const origin = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
         const checkoutSession = await stripe.checkout.sessions.create({
             customer: customerId,
