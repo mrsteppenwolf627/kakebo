@@ -99,9 +99,9 @@ export default function ExpenseCalendar({
     return base;
   }, [rows]);
 
-  // Use fetched income if available (new system), otherwise fallback to settings (legacy)
-  const settingsIncome = Number(settings?.monthly_income ?? 0);
-  const income = fetchedIncome > 0 ? fetchedIncome : settingsIncome;
+  // Sum both sources of income to avoid confusing users who have a base salary in settings
+  // and just added an extra income.
+  const income = settingsIncome + fetchedIncome;
 
   const savingGoal = Number(settings?.monthly_saving_goal ?? 0);
 
