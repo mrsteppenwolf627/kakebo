@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/Kakebo-AI-FF6B6B?style=for-the-badge&logo=openai&logoColor=white" alt="Kakebo AI" />
+<img src="https://img.shields.io/badge/Kakebo-FF6B6B?style=for-the-badge&logo=openai&logoColor=white" alt="Kakebo" />
 
-# 🏮 Kakebo AI
+# 🏮 Kakebo
 
 ### *Tu asistente financiero personal con IA que aprende de ti*
 
@@ -30,7 +30,7 @@
 
 **Kakebo** es una aplicación moderna de gestión financiera inspirada en el método japonés tradicional, pero potenciada con **Inteligencia Artificial de última generación**.
 
-A diferencia de otras apps financieras, Kakebo AI:
+A diferencia de otras apps financieras, Kakebo:
 
 - 🧠 **Aprende de ti**: Se vuelve más inteligente con cada interacción
 - 💬 **Habla tu idioma**: Consultas en lenguaje natural, sin jerga técnica
@@ -559,6 +559,17 @@ Este es un proyecto privado. Para miembros del equipo:
 ---
 
 ## 📝 Changelog
+
+### v3.2.0 (2026-02-16) - UI Polish & Brand Update 💅
+
+**User Experience Improvements:**
+- 💰 **Ingresos Fáciles**: Nuevo acceso directo "Añadir Ingreso" en Dashboard y Hero para facilitar la gestión de nóminas y extras.
+- 📉 **Dashboard Clarity**: Explicación visual cuando el balance disponible es negativo (Ingresos < Gastos Fijos + Ahorro).
+- 🌓 **Dark Mode Fixes**: Corrección de textos invisibles en gráficos y análisis de métricas.
+- 🎨 **Z-Index Fix**: El chat flotante ahora se superpone correctamente a todos los elementos.
+- 🏷️ **Rebranding**: Simplificación de marca "Kakebo AI" a **"Kakebo"**.
+
+---
 
 ### v3.1.0 (2026-02-13) - Frontend Polish & UX Improvements 🎨
 
