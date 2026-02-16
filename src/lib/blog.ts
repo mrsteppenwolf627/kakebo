@@ -13,6 +13,10 @@ export interface BlogPost {
         author: string;
         readingTime?: string;
         image?: string;
+        faq?: {
+            question: string;
+            answer: string;
+        }[];
     };
     content: string;
 }

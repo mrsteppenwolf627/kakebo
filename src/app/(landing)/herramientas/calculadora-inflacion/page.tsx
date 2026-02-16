@@ -16,6 +16,14 @@ export const metadata: Metadata = {
         description: "Calculadora gratuita de IPC y pérdida de poder adquisitivo. No dejes que tus ahorros pierdan valor.",
         siteName: "Kakebo",
         locale: "es_ES",
+        images: [
+            {
+                url: "/api/og?title=Calculadora Inflación&description=Calcula cuánto valor real pierden tus ahorros por el IPC. No dejes que tu dinero se evapore.",
+                width: 1200,
+                height: 630,
+                alt: "Kakebo Inflation Calculator",
+            }
+        ]
     },
     twitter: {
         card: "summary_large_image",

@@ -64,12 +64,34 @@ export function Navbar() {
           >
             Blog
           </Link>
-          <Link
-            href="/#tools"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Herramientas
-          </Link>
+
+          {/* Herramientas Dropdown */}
+          <div className="relative group">
+            <button className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground py-2 outline-none">
+              Herramientas
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:rotate-180">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[240px]">
+              <div className="bg-popover border border-border rounded-xl shadow-lg p-2 flex flex-col gap-1">
+                <Link
+                  href="/herramientas/regla-50-30-20"
+                  className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors"
+                >
+                  <span className="block font-medium text-foreground">Regla 50/30/20</span>
+                  <span className="block text-xs text-muted-foreground mt-0.5">Calculadora de presupuestos</span>
+                </Link>
+                <Link
+                  href="/herramientas/calculadora-inflacion"
+                  className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors"
+                >
+                  <span className="block font-medium text-foreground text-red-600">Calculadora Inflación</span>
+                  <span className="block text-xs text-muted-foreground mt-0.5">Pérdida de poder adquisitivo</span>
+                </Link>
+              </div>
+            </div>
+          </div>
           <Link
             href="#pricing"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"

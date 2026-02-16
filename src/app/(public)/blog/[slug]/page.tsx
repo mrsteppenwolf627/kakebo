@@ -4,11 +4,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer, Navbar } from "@/components/landing";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
+import { components } from "@/components/mdx/MDXComponents";
 
 interface Props {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 }
 
 export async function generateStaticParams() {
@@ -19,7 +21,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const post = getBlogPost(params.slug);
+    const { slug } = await params;
+    const post = getBlogPost(slug);
 
     if (!post) {
         return {};
@@ -32,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             title: post.frontmatter.title,
             description: post.frontmatter.excerpt,
             type: "article",
-            url: `/blog/${params.slug}`,
+            url: `/blog/${slug}`,
             images: [
                 {
                     url: post.frontmatter.image || "/og-image.jpg",
@@ -43,13 +46,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             ],
         },
         alternates: {
-            canonical: `/blog/${params.slug}`,
+            canonical: `/blog/${slug}`,
         },
     };
 }
 
-export default function BlogPostPage({ params }: Props) {
-    const post = getBlogPost(params.slug);
+export default async function BlogPostPage({ params }: Props) {
+    const { slug } = await params;
+    const post = getBlogPost(slug);
 
     if (!post) {
         notFound();
@@ -87,8 +91,16 @@ export default function BlogPostPage({ params }: Props) {
                 </header>
 
                 {/* Content */}
-                <div className="prose prose-lg prose-stone dark:prose-invert mx-auto">
-                    <MDXRemote source={post.content} />
+                <div className="prose prose-lg prose-stone dark:prose-invert mx-auto prose-headings:font-serif prose-headings:font-bold prose-p:font-light prose-p:leading-relaxed prose-li:font-light">
+                    <MDXRemote
+                        source={post.content}
+                        components={components}
+                        options={{
+                            mdxOptions: {
+                                remarkPlugins: [remarkGfm],
+                            },
+                        }}
+                    />
                 </div>
 
                 {/* CTA */}
@@ -113,18 +125,68 @@ export default function BlogPostPage({ params }: Props) {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "BlogPosting",
-                        headline: post.frontmatter.title,
-                        image: [post.frontmatter.image || "https://www.metodokakebo.com/og-image.jpg"],
-                        datePublished: post.frontmatter.date,
-                        dateModified: post.frontmatter.date,
-                        author: [{
-                            "@type": "Person",
-                            name: post.frontmatter.author,
-                        }],
-                    }),
+                    __html: JSON.stringify([
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "BlogPosting",
+                            headline: post.frontmatter.title,
+                            image: [post.frontmatter.image || "https://www.metodokakebo.com/og-image.jpg"],
+                            datePublished: post.frontmatter.date,
+                            dateModified: post.frontmatter.date,
+                            author: [{
+                                "@type": "Person",
+                                name: post.frontmatter.author,
+                            }],
+                            publisher: {
+                                "@type": "Organization",
+                                name: "Kakebo",
+                                logo: {
+                                    "@type": "ImageObject",
+                                    url: "https://www.metodokakebo.com/logo.png"
+                                }
+                            },
+                            mainEntityOfPage: {
+                                "@type": "WebPage",
+                                "@id": `https://www.metodokakebo.com/blog/${slug}`
+                            }
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "BreadcrumbList",
+                            itemListElement: [
+                                {
+                                    "@type": "ListItem",
+                                    position: 1,
+                                    name: "Inicio",
+                                    item: "https://www.metodokakebo.com"
+                                },
+                                {
+                                    "@type": "ListItem",
+                                    position: 2,
+                                    name: "Blog",
+                                    item: "https://www.metodokakebo.com/blog"
+                                },
+                                {
+                                    "@type": "ListItem",
+                                    position: 3,
+                                    name: post.frontmatter.title,
+                                    item: `https://www.metodokakebo.com/blog/${slug}`
+                                }
+                            ]
+                        },
+                        ...(post.frontmatter.faq ? [{
+                            "@context": "https://schema.org",
+                            "@type": "FAQPage",
+                            mainEntity: post.frontmatter.faq.map(item => ({
+                                "@type": "Question",
+                                name: item.question,
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: item.answer
+                                }
+                            }))
+                        }] : [])
+                    ]),
                 }}
             />
         </main>

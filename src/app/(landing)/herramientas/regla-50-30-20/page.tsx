@@ -12,6 +12,14 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Calculadora Regla 50/30/20 - Distribuye tu Sueldo",
         description: "La forma más fácil de dividir tu nómina: 50% Necesidades, 30% Caprichos, 20% Ahorro. Pruébala gratis.",
+        images: [
+            {
+                url: "/api/og?title=Regla 50/30/20&description=Distribuye tu sueldo idealmente: 50% Necesidades, 30% Caprichos, 20% Ahorro.",
+                width: 1200,
+                height: 630,
+                alt: "Kakebo 50/30/20 Calculator",
+            }
+        ]
     }
 };
 
