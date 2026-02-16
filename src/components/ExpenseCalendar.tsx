@@ -101,6 +101,7 @@ export default function ExpenseCalendar({
 
   // Sum both sources of income to avoid confusing users who have a base salary in settings
   // and just added an extra income.
+  const settingsIncome = Number(settings?.monthly_income ?? 0);
   const income = settingsIncome + fetchedIncome;
 
   const savingGoal = Number(settings?.monthly_saving_goal ?? 0);
