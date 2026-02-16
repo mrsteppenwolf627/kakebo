@@ -41,11 +41,24 @@ export default function ManageIncomesModal({ isOpen, onClose, ym, onUpdate }: Pr
         }
     }, [isOpen, ym]);
 
+    const [baseIncome, setBaseIncome] = useState(0);
+
     async function loadIncomes() {
         setLoading(true);
         try {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return;
+
+            // Fetch base income from settings
+            const { data: settings } = await supabase
+                .from("user_settings")
+                .select("monthly_income")
+                .eq("user_id", user.id)
+                .single();
+
+            if (settings) {
+                setBaseIncome(Number(settings.monthly_income) || 0);
+            }
 
             // Extract year and month from ym
             const [year, month] = ym.split("-").map(Number);
@@ -202,9 +215,13 @@ export default function ManageIncomesModal({ isOpen, onClose, ym, onUpdate }: Pr
 
                     {/* List */}
                     <div className="space-y-2">
-                        <h3 className="text-sm font-medium text-foreground flex justify-between items-center">
-                            <span>Listado de ingresos</span>
-                            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Total: {total.toFixed(2)} €</span>
+                        <h3 className="text-sm font-medium text-foreground flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                            <span>Listado de ingresos extra</span>
+                            <div className="text-xs bg-primary/10 text-primary px-3 py-2 rounded flex flex-col items-end">
+                                <span>Base (Config): {baseIncome.toFixed(2)} €</span>
+                                <span>Extras: {total.toFixed(2)} €</span>
+                                <span className="font-bold border-t border-primary/20 mt-1 pt-1">Total: {(baseIncome + total).toFixed(2)} €</span>
+                            </div>
                         </h3>
 
                         {loading ? (

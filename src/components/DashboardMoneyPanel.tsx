@@ -132,13 +132,9 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
       const newIncomeTotal = (incomeRows || []).reduce((acc, curr) => acc + Number(curr.amount), 0);
 
-      // Use new income if available, otherwise fallback to legacy setting for now
-      // This ensures smooth transition: if user hasn't added "incomes" yet, they see their setting.
-      // Once they add an income, that total takes precedence (assumes they are moving to new system).
-      // Actually, better logic: If newIncomeTotal > 0, use it. If 0, use legacy.
-      // But if legal income IS 0, this might be confusing.
-      // Let's rely on new system mostly.
-      setIncome(newIncomeTotal > 0 ? newIncomeTotal : legacyMi);
+      // Sum both sources of income to avoid confusing users who have a base salary in settings
+      // and just added an extra income.
+      setIncome(legacyMi + newIncomeTotal);
 
 
       // 2) fixed expenses (need due_day)
