@@ -14,8 +14,6 @@ export function Hero() {
         {/* Main Heading - Serif elegante */}
         <h1 className="mb-8 text-5xl font-serif font-normal tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl">
           Kakebo
-          <br />
-          <span className="text-muted-foreground">AI</span>
         </h1>
 
         {/* Subtitle */}
