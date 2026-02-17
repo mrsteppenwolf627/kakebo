@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s | Kakebo AI",
   },
   description:
-    "La App de Kakebo definitiva. Gestión financiera minimalista con Inteligencia Artificial. Registra gastos, controla presupuestos y ahorra mes a mes en euros.",
+    "Controla tus gastos con el método japonés Kakebo. Sin bancos, 100% privado y con asistencia de IA. Empieza tus 14 días gratis hoy.",
   keywords: ["kakebo", "ahorro", "finanzas personales", "control gastos", "app gastos", "método kakebo", "ahorrar dinero españa", "regla 50 30 20", "calculadora sueldo neto", "distribución salario", "kakebo excel", "calculadora inflación", "ipc españa", "actualizar renta ipc"],
   authors: [{ name: "Kakebo AI Team" }],
   creator: "Kakebo AI",
@@ -84,6 +84,7 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 import SoftwareAppJsonLd from "@/components/seo/SoftwareAppJsonLd";
+import { CookieBanner } from "@/components/landing";
 
 export default function RootLayout({
   children,
@@ -99,6 +100,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <CookieBanner />
           <Footer />
         </ThemeProvider>
       </body>

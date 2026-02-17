@@ -41,7 +41,7 @@ export function Features() {
 
           <FeatureCard
             title="Agente IA"
-            description="Asistente financiero inteligente que analiza tus gastos y te da consejos personalizados en tiempo real."
+            description="Nuestro Copiloto analiza tus patrones de gasto para detectar anomalías y sugerir ahorros. Tu asistente financiero personal 24/7."
             isPro
           />
         </div>

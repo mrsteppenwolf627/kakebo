@@ -246,6 +246,8 @@ Si decides continuar con la ayuda de la IA:
 **Novedades:**
 - 🔍 **SEO Aggressive**: Optimización de keywords de alto valor ("Sin bancos", "Gastos hormiga", "Alternativa a Excel").
 - 🌟 **Testimonios**: Nueva sección de prueba social con historias de usuarios reales.
+- 🧲 **CRO Tools**: Nuevo Simulador de Ahorro y Tabla Comparativa (Kakebo vs Excel vs Bancos).
+- 🍪 **Legal**: Banner de Cookies (GDPR) y páginas legales actualizadas.
 - 🧲 **Calculadora 50/30/20**: Corrección de enlaces y mejora de metadata para captación.
 - 🏷️ **Metadatos**: Títulos y descripciones optimizados para CTR.
 

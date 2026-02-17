@@ -65,6 +65,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="#alternatives"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
+                >
+                  Alternativas a Excel
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="#faq"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >

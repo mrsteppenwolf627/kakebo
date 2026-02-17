@@ -10,6 +10,9 @@ export function HowItWorks() {
           <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             El método Kakebo
           </h2>
+          <h3 className="mb-4 text-xl font-medium text-foreground">
+            ¿Cómo funciona el Kakebo digital?
+          </h3>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             Un sistema japonés de <strong>Ahorro Consciente</strong> (Mindful spending) para controlar tus finanzas sin estrés.
           </p>

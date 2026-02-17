@@ -9,12 +9,14 @@ import {
   Footer,
   SeoContent,
   Testimonials,
+  SavingsSimulator,
+  AlternativesSection,
 } from "@/components/landing";
 
 export const metadata: Metadata = {
   title: "La Mejor App de Kakebo 2026 | Ahorra el 20% de tu sueldo",
   description:
-    "La App de Kakebo definitiva para España. Registra gastos gratis, usa el método japonés de ahorro y olvídate de los excels complicados. Privacidad total.",
+    "Controla tus gastos con el método japonés Kakebo. Sin bancos, 100% privado y con asistencia de IA. Empieza tus 14 días gratis hoy.",
   alternates: { canonical: "/" },
   openGraph: {
     title: "La Mejor App de Kakebo 2026 | Ahorra el 20% de tu sueldo",
@@ -38,6 +40,8 @@ export default function PublicHomePage() {
         <div id="features">
           <Features />
         </div>
+
+        <SavingsSimulator />
 
         <div id="pricing">
           <PricingSection />
@@ -104,6 +108,8 @@ export default function PublicHomePage() {
             </div>
           </div>
         </section>
+
+        <AlternativesSection />
 
         <div id="faq">
           <FAQ />

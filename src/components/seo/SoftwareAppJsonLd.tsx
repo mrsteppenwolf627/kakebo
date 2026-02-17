@@ -4,10 +4,10 @@ export default function SoftwareAppJsonLd() {
         "@type": "SoftwareApplication",
         "name": "Kakebo AI",
         "applicationCategory": "FinanceApplication",
-        "operatingSystem": "Web",
+        "operatingSystem": "Web, iOS, Android",
         "offers": {
             "@type": "Offer",
-            "price": "0",
+            "price": "3.99",
             "priceCurrency": "EUR"
         },
         "description": "Aplicación de gestión financiera personal basada en el método japonés Kakebo e Inteligencia Artificial.",

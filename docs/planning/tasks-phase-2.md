@@ -51,5 +51,8 @@
 - [x] **Verification**: Validate Rich Snippets & Performance Score <!-- id: 46 -->
 - [x] **SEO**: Implement "Aggressive" Keywords (Competitor, Pain points) <!-- id: 48 -->
 - [x] **Content**: Add Testimonials Component <!-- id: 49 -->
+- [x] **CRO**: Add Savings Simulator Widget <!-- id: 51 -->
+- [x] **CRO**: Add Alternatives Comparison Section <!-- id: 52 -->
+- [x] **Legal**: Implement Cookie Banner <!-- id: 53 -->
 - [x] **Fix**: Calculator Navigation & Metadata <!-- id: 50 -->
 - [x] **Git Push**: Push Phase 2 Changes <!-- id: 47 -->

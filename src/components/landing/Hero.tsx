@@ -13,15 +13,14 @@ export function Hero() {
 
         {/* Main Heading - Serif elegante */}
         <h1 className="mb-8 text-5xl font-serif font-normal tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl">
-          Kakebo
+          Kakebo AI
         </h1>
 
         {/* Subtitle */}
-        {/* Subtitle */}
         <h2 className="mx-auto mb-12 max-w-3xl text-base text-muted-foreground sm:text-lg md:text-xl font-light leading-relaxed">
-          La <strong>App de Kakebo</strong> definitiva para el control de gastos.
+          La <strong>App de Control de Gastos basada en el Método Japonés</strong>.
           <br className="hidden sm:block" />
-          Método japonés simplificado: sin excels complejos ni trucos de gurú.
+          Sin bancos, 100% privado y con asistencia de IA.
         </h2>
 
         {/* CTA Buttons - Rectangulares, sobrios */}
@@ -36,9 +35,9 @@ export function Hero() {
           </Link>
         </div>
 
-        {/* Trust Signal */}
-        <p className="text-xs text-muted-foreground font-light tracking-wide">
-          Registro instantáneo · Sin tarjeta · <strong>Privacidad total sin bancos</strong> · App de finanzas sin conectar el banco
+        {/* Trust Signal - Enhanced Visibility */}
+        <p className="text-sm font-medium text-foreground tracking-wide bg-muted/50 py-2 px-4 rounded-full inline-block">
+          🔒 Registro instantáneo · Sin tarjeta · <strong>Privacidad total sin bancos</strong>
         </p>
 
         {/* Stats Card - Sobrio */}
