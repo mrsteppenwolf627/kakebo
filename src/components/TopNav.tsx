@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import UserMenu from "./UserMenu";
@@ -63,6 +64,7 @@ export default function TopNav() {
             + Ingreso
           </Link>
 
+          <LanguageSwitcher />
           <ThemeToggle />
           {/* Delegamos Auth a UserMenu */}
           <UserMenu />

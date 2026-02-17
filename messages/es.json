@@ -1,0 +1,223 @@
+{
+    "Common": {
+        "title": "Kakebo AI",
+        "description": "Método japonés de ahorro con IA"
+    },
+    "Hero": {
+        "badge": "Registra gastos con intención",
+        "title": "Kakebo AI",
+        "subtitle": "La <bold>App de Control de Gastos basada en el Método Japonés</bold>.<br>Sin bancos, 100% privado y con asistencia de IA.",
+        "ctaPrimary": "Empezar Gratis",
+        "ctaSecondary": "Más información",
+        "trustSignal": "🔒 Registro instantáneo · Sin tarjeta · <bold>Privacidad total sin bancos</bold>",
+        "stats": {
+            "trial": "14 días",
+            "trialLabel": "Prueba Premium Gratis",
+            "price": "0€",
+            "priceLabel": "Sin tarjeta requerida",
+            "privacy": "100%",
+            "privacyLabel": "Privacidad Total"
+        }
+    },
+    "Features": {
+        "title": "Minimalismo Financiero",
+        "subtitle": "Kakebo no es otra app llena de gráficos que no entiendes. Es un sistema para recuperar el control.",
+        "cards": {
+            "manual": {
+                "title": "Registro Manual Consciente",
+                "desc": "Al escribir cada gasto, tu cerebro procesa la compra. Es la clave del método para reducir el consumo impulsivo."
+            },
+            "privacy": {
+                "title": "Sin Conexión Bancaria",
+                "desc": "Tus claves son tuyas. No nos conectamos a tu banco. Privacidad absoluta y cero riesgo de seguridad."
+            },
+            "ai": {
+                "title": "Coach Financiero IA",
+                "desc": "Recibe consejos personalizados basados en tus patrones de gasto reales, no en consejos genéricos."
+            },
+            "fixed": {
+                "title": "Control de Fijos",
+                "desc": "Visualiza claramente cuánto te queda realmente después de pagar las facturas obligatorias."
+            }
+        }
+    },
+    "SavingsSimulator": {
+        "title": "¿Cuánto podrías ahorrar con Kakebo?",
+        "subtitle": "El método Kakebo te ayuda a reducir hasta un 20% tus gastos hormiga y variables. Compruébalo tú mismo.",
+        "incomeLabel": "Ingresos Mensuales",
+        "expensesLabel": "Gastos Actuales",
+        "resultLabel": "Potencial de Ahorro Mensual",
+        "disclaimer": "*Basado en el objetivo del 20% del método Kakebo",
+        "cta": "Empezar a ahorrar hoy",
+        "trial": "Prueba gratuita de 14 días. Sin tarjeta."
+    },
+    "Alternatives": {
+        "title": "¿Por qué elegir Kakebo AI?",
+        "subtitle": "La única alternativa que combina la privacidad del Excel con la comodidad de las Apps.",
+        "table": {
+            "headers": {
+                "feature": "Característica",
+                "kakebo": "Kakebo AI",
+                "excel": "Excel / Hojas de Cálculo",
+                "apps": "Apps Bancarias"
+            },
+            "rows": {
+                "privacy": {
+                    "feature": "🔒 Privacidad (Sin conexión bancaria)",
+                    "kakebo": "✅ Sí (Tus claves son tuyas)",
+                    "excel": "✅ Sí",
+                    "apps": "❌ No (Acceden a tu banco)"
+                },
+                "ai": {
+                    "feature": "🧠 Análisis con Inteligencia Artificial",
+                    "kakebo": "✅ Sí (Copiloto GPT-4)",
+                    "excel": "❌ No (Manual)",
+                    "apps": "⚠️ Básico (Algoritmos viejos)"
+                },
+                "method": {
+                    "feature": "🧘 Método Kakebo (Ahorro Consciente)",
+                    "kakebo": "✅ Nativo (4 Categorías)",
+                    "excel": "❌ Tienes que configurarlo tú",
+                    "apps": "❌ No (Categorías estándar)"
+                },
+                "ux": {
+                    "feature": "📱 Facilidad de uso (Móvil)",
+                    "kakebo": "✅ Excelente (PWA)",
+                    "excel": "❌ Terrible",
+                    "apps": "✅ Excelente"
+                }
+            }
+        }
+    },
+    "Tools": {
+        "Inflation": {
+            "meta": {
+                "title": "Calculadora Inflación 2026: ¿Cuánto dinero has perdido realmente?",
+                "description": "La inflación es el impuesto silencioso. Calcula cuántos ahorros has perdido en 2024-2026 y cuánto valdrá tu dinero en el futuro. Herramienta gratuita.",
+                "ogTitle": "¿Cuánto te está robando la inflación? (Calculadora 2026)",
+                "ogDescription": "Tus estimaciones fallan. Usa esta calculadora oficial de IPC para ver la pérdida real de poder adquisitivo de tus ahorros."
+            },
+            "header": {
+                "title": "Calculadora de <italic>Inflación en España</italic>",
+                "subtitle": "¿Cuánto vale tu dinero realmente? Calcula la pérdida de poder adquisitivo por el IPC y descubre por qué ahorrar no es suficiente."
+            },
+            "inputs": {
+                "savings": "Tus Ahorros Actuales",
+                "inflation": "Inflación Estimada (IPC)",
+                "inflationDisclaimer": "*Media histórica 2000-2024: ~2.5%",
+                "years": "Años de Proyección"
+            },
+            "results": {
+                "lossLabel": "Pérdida de Valor Real",
+                "lossText": "Tu dinero vale un <strong>{percentage}% menos</strong>",
+                "realLabel": "Poder de Compra Futuro",
+                "realText": "Equivalente actual de tus ahorros"
+            },
+            "chart": {
+                "nominal": "Dinero Nominal (Billete)",
+                "real": "Valor Real (Poder de Compra)",
+                "year": "Año"
+            },
+            "cta": {
+                "title": "Protege tus ahorros del IPC",
+                "text": "El primer paso para ganar a la inflación es controlar tus gastos y maximizar tu ahorro mensual. Kakebo es tu herramienta para lograrlo.",
+                "buttonPrimary": "Crear cuenta gratis",
+                "buttonSecondary": "Ver regla 50/30/20"
+            }
+        },
+        "Rule503020": {
+            "meta": {
+                "title": "Calculadora 50/30/20: Tu Sueldo Ideal en 1 Clic (Plantilla Gratis)",
+                "description": "No hagas números. Esta calculadora aplica la regla 50/30/20 a tu nómina neta al instante. Descubre cuánto deberías gastar en alquiler, ocio y ahorro.",
+                "ogTitle": "Calculadora 50/30/20: Distribuye tu Nómina en 1 Clic",
+                "ogDescription": "La herramienta definitiva para organizar tus finanzas. 50% Necesidades, 30% Caprichos, 20% Ahorro. Gratis y sin registro."
+            },
+            "header": {
+                "title": "Calculadora <italic>50/30/20</italic>",
+                "subtitle": "Descubre cuánto deberías ahorrar, gastar en básicos y dedicar a caprichos según tu sueldo. La regla de oro de las finanzas personales."
+            },
+            "inputs": {
+                "income": "Tu Ingreso Mensual Neto"
+            },
+            "chart": {
+                "center": "Distribución",
+                "needs": "Necesidades (50%)",
+                "wants": "Deseos (30%)",
+                "savings": "Ahorro (20%)"
+            },
+            "legend": {
+                "needs": {
+                    "label": "50% Necesidades",
+                    "desc": "Alquiler, hipoteca, supermercado, facturas de luz/agua, transporte. Lo imprescindible para vivir."
+                },
+                "wants": {
+                    "label": "30% Deseos (Opcional)",
+                    "desc": "Cenas fuera, hobbies, suscripciones (Netflix), ropa no esencial, viajes. Lo que te hace feliz pero podrías cortar."
+                },
+                "savings": {
+                    "label": "20% Ahorro",
+                    "desc": "Fondo de emergencia, inversiones, amortizar deuda, jubilación. Tu pago a ti mismo del futuro."
+                }
+            },
+            "cta": {
+                "title": "¿Quieres aplicar esta regla automáticamente?",
+                "text": "Kakebo clasifica tus gastos por ti y te avisa si te estás pasando del 30% en caprichos o si no llegas al 20% de ahorro.",
+                "button": "Empezar gratis con Kakebo"
+            }
+        }
+    },
+    "Blog": {
+        "index": {
+            "title": "Blog Kakebo",
+            "subtitle": "Consejos prácticos sobre ahorro, finanzas personales y vida consciente.",
+            "readMore": "Leer artículo"
+        },
+        "post": {
+            "readingTime": "min lectura",
+            "cta": {
+                "title": "¿Quieres aplicar el método Kakebo sin esfuerzo?",
+                "text": "Regístrate gratis en Kakebo AI y empieza a controlar tus gastos hoy mismo.",
+                "button": "Crear cuenta gratis"
+            }
+        }
+    },
+    "Auth": {
+        "leftPanel": {
+            "title": "Control de gastos <br />con método japonés",
+            "subtitle": "Registra, clasifica y revisa tus gastos mensuales con claridad. Sin complicaciones, sin humo.",
+            "features": {
+                "free": "Gratis para siempre (Plan Manual)",
+                "ai": "Agente IA opcional (15 días de prueba)",
+                "privacy": "Tus datos siempre privados y seguros"
+            }
+        },
+        "form": {
+            "backToHome": "Volver al inicio",
+            "login": {
+                "title": "Acceso",
+                "subtitle": "Entra para ver tu calendario y gastos"
+            },
+            "signup": {
+                "title": "Crear cuenta",
+                "subtitle": "Regístrate y empieza con el Plan Manual (gratis)"
+            },
+            "googleBtn": "Continuar con Google",
+            "divider": "O con email",
+            "emailLabel": "Email",
+            "passwordLabel": "Contraseña",
+            "submitLogin": "Entrar",
+            "submitSignup": "Crear cuenta",
+            "toggleToSignup": "¿No tienes cuenta? Créala aquí",
+            "toggleToLogin": "¿Ya tienes cuenta? Entra aquí",
+            "errors": {
+                "unknown": "Error desconocido",
+                "notConfirmed": "Tu email aún no está confirmado. Revisa tu correo (y spam)."
+            },
+            "success": {
+                "resend": "Email de confirmación reenviado. Revisa bandeja y spam.",
+                "signup": "Te hemos enviado un email para confirmar tu cuenta. Revisa tu bandeja y spam."
+            },
+            "resendBtn": "Reenviar email de confirmación"
+        }
+    }
+}

@@ -6,23 +6,26 @@ import { Footer, Navbar } from "@/components/landing";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { components } from "@/components/mdx/MDXComponents";
+import { getTranslations } from 'next-intl/server';
 
 interface Props {
     params: Promise<{
         slug: string;
+        locale: string;
     }>;
 }
 
 export async function generateStaticParams() {
-    const posts = getBlogPosts();
+    // Generate params for all available blog posts (slugs are language-agnostic in URL)
+    const posts = getBlogPosts('es'); // Get slugs from base locale
     return posts.map((post) => ({
         slug: post.slug,
     }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { slug } = await params;
-    const post = getBlogPost(slug);
+    const { slug, locale } = await params;
+    const post = getBlogPost(slug, locale);
 
     if (!post) {
         return {};
@@ -52,8 +55,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-    const { slug } = await params;
-    const post = getBlogPost(slug);
+    const { slug, locale } = await params;
+    const post = getBlogPost(slug, locale);
+    const t = await getTranslations({ locale, namespace: 'Blog.post' });
 
     if (!post) {
         notFound();
@@ -68,7 +72,7 @@ export default async function BlogPostPage({ params }: Props) {
                 <header className="mb-12 text-center">
                     <div className="mb-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
                         <time dateTime={post.frontmatter.date}>
-                            {new Date(post.frontmatter.date).toLocaleDateString("es-ES", {
+                            {new Date(post.frontmatter.date).toLocaleDateString(locale === 'es' ? "es-ES" : "en-US", {
                                 year: "numeric",
                                 month: "long",
                                 day: "numeric",
@@ -106,16 +110,16 @@ export default async function BlogPostPage({ params }: Props) {
                 {/* CTA */}
                 <div className="mt-16 rounded-2xl bg-stone-900 px-6 py-10 text-center text-white sm:px-12">
                     <h2 className="mb-4 text-2xl font-serif font-bold">
-                        ¿Quieres aplicar el método Kakebo sin esfuerzo?
+                        {t('cta.title')}
                     </h2>
                     <p className="mb-8 text-stone-300">
-                        Regístrate gratis en Kakebo AI y empieza a controlar tus gastos hoy mismo.
+                        {t('cta.text')}
                     </p>
                     <Link
                         href="/login?mode=signup"
                         className="inline-block rounded-full bg-white px-8 py-3 text-base font-semibold text-stone-900 transition-transform hover:scale-105"
                     >
-                        Crear cuenta gratis
+                        {t('cta.button')}
                     </Link>
                 </div>
             </article>

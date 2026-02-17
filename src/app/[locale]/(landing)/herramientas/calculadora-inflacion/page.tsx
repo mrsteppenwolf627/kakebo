@@ -2,35 +2,40 @@ import { Metadata } from "next";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { CalculatorInflation } from "@/components/landing/tools/CalculatorInflation";
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = {
-    title: "Calculadora Inflación 2026: ¿Cuánto dinero has perdido realmente?",
-    description: "La inflación es el impuesto silencioso. Calcula cuántos ahorros has perdido en 2024-2026 y cuánto valdrá tu dinero en el futuro. Herramienta gratuita.",
-    keywords: ["calculadora inflación españa", "calcular ipc acumulado", "actualizar renta ipc", "inflación españa 2026", "pérdida poder adquisitivo", "calculadora ipc ine"],
-    alternates: {
-        canonical: "/herramientas/calculadora-inflacion",
-    },
-    openGraph: {
-        type: "website",
-        title: "¿Cuánto te está robando la inflación? (Calculadora 2026)",
-        description: "Tus estimaciones fallan. Usa esta calculadora oficial de IPC para ver la pérdida real de poder adquisitivo de tus ahorros.",
-        siteName: "Kakebo",
-        locale: "es_ES",
-        images: [
-            {
-                url: "/api/og?title=Calculadora Inflación 2026&description=Calcula cuánto valor real pierden tus ahorros por el IPC.",
-                width: 1200,
-                height: 630,
-                alt: "Kakebo Inflation Calculator",
-            }
-        ]
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Calculadora Inflación 2026 - Kakebo",
-        description: "Descubre cuánto valor han perdido tus ahorros por el IPC.",
-    }
-};
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+    const t = await getTranslations({ locale, namespace: 'Tools.Inflation.meta' });
+
+    return {
+        title: t('title'),
+        description: t('description'),
+        keywords: ["calculadora inflación españa", "calcular ipc acumulado", "actualizar renta ipc", "inflación españa 2026", "pérdida poder adquisitivo", "calculadora ipc ine"], // Keywords might need their own translation or strategy
+        alternates: {
+            canonical: "/herramientas/calculadora-inflacion",
+        },
+        openGraph: {
+            type: "website",
+            title: t('ogTitle'),
+            description: t('ogDescription'),
+            siteName: "Kakebo",
+            locale: locale === 'es' ? "es_ES" : "en_US",
+            images: [
+                {
+                    url: "/api/og?title=Calculadora Inflación 2026&description=Calcula cuánto valor real pierden tus ahorros por el IPC.",
+                    width: 1200,
+                    height: 630,
+                    alt: "Kakebo Inflation Calculator",
+                }
+            ]
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: t('title'),
+            description: t('description'),
+        }
+    };
+}
 
 // Advanced JSON-LD Schema for GEO (Generative Engine Optimization)
 const SCHEMA = {

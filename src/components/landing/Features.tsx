@@ -1,47 +1,41 @@
+import { useTranslations } from "next-intl";
+
 export function Features() {
+  const t = useTranslations("Features");
+
   return (
     <section id="features" className="relative py-24 bg-muted/30">
       <div className="relative z-10 mx-auto max-w-7xl px-4">
         {/* Section Header */}
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-4xl font-serif font-normal tracking-tight text-foreground sm:text-5xl">
-            Características
+            {t("title")}
           </h2>
           <p className="mx-auto max-w-2xl text-base text-muted-foreground font-light">
-            Control financiero minimalista. Sin complicaciones innecesarias.
+            {t("subtitle")}
           </p>
         </div>
 
         {/* Features Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <FeatureCard
-            title="Gastos por mes"
-            description="Registra compras y movimientos organizados por mes. Cambia entre meses con un selector rápido y visual."
+            title={t("cards.manual.title")}
+            description={t("cards.manual.desc")}
           />
 
           <FeatureCard
-            title="Gastos fijos"
-            description="Define tus gastos recurrentes con inicio y fin. Actívalos o desactívalos sin perder el histórico."
+            title={t("cards.fixed.title")}
+            description={t("cards.fixed.desc")}
           />
 
           <FeatureCard
-            title="Presupuestos"
-            description="Compara presupuesto vs gasto real por categoría. Detecta fugas de dinero de un vistazo."
+            title={t("cards.privacy.title")}
+            description={t("cards.privacy.desc")}
           />
 
           <FeatureCard
-            title="Historial visual"
-            description="Revisa tus meses anteriores y compara tendencias. Entiende tu evolución financiera real."
-          />
-
-          <FeatureCard
-            title="Categorías"
-            description="Organiza gastos en categorías que tienen sentido. Detecta tus gastos hormiga y personaliza tu método Kakebo."
-          />
-
-          <FeatureCard
-            title="Agente IA"
-            description="Nuestro Copiloto analiza tus patrones de gasto para detectar anomalías y sugerir ahorros. Tu asistente financiero personal 24/7."
+            title={t("cards.ai.title")}
+            description={t("cards.ai.desc")}
             isPro
           />
         </div>

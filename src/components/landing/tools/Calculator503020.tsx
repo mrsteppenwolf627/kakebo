@@ -1,12 +1,12 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { analytics } from "@/lib/analytics";
+import { useTranslations } from "next-intl";
 
 export function Calculator503020() {
+    const t = useTranslations("Tools.Rule503020");
     const [income, setIncome] = useState(2000);
 
     useEffect(() => {
@@ -18,9 +18,9 @@ export function Calculator503020() {
     const savings = income * 0.2;
 
     const data = [
-        { name: "Necesidades (50%)", value: needs, color: "#1c1917" }, // stone-900
-        { name: "Ahorro (20%)", value: savings, color: "#10b981" },    // emerald-500
-        { name: "Deseos (30%)", value: wants, color: "#f59e0b" },      // amber-500
+        { name: t('chart.needs'), value: needs, color: "#1c1917" }, // stone-900
+        { name: t('chart.savings'), value: savings, color: "#10b981" },    // emerald-500
+        { name: t('chart.wants'), value: wants, color: "#f59e0b" },      // amber-500
     ];
 
     const formatMoney = (amount: number) =>
@@ -32,11 +32,12 @@ export function Calculator503020() {
             {/* Header */}
             <div className="text-center space-y-6">
                 <h1 className="text-5xl md:text-6xl font-serif text-stone-900 leading-[1.1]">
-                    Calculadora <span className="italic text-stone-500">50/30/20</span>
+                    {t.rich('header.title', {
+                        italic: (chunks) => <span className="italic text-stone-500">{chunks}</span>
+                    })}
                 </h1>
                 <p className="text-xl text-stone-600 font-light max-w-2xl mx-auto">
-                    Descubre cuánto deberías ahorrar, gastar en básicos y dedicar a caprichos según tu sueldo.
-                    La regla de oro de las finanzas personales.
+                    {t('header.subtitle')}
                 </p>
             </div>
 
@@ -47,7 +48,7 @@ export function Calculator503020() {
                 <div className="space-y-8 max-w-xl mx-auto text-center">
                     <div className="space-y-4">
                         <label className="text-sm font-medium text-stone-500 uppercase tracking-wider">
-                            Tu Ingreso Mensual Neto
+                            {t('inputs.income')}
                         </label>
                         <div className="flex items-center justify-center gap-4">
                             <span className="text-4xl md:text-5xl font-serif text-stone-900">
@@ -96,7 +97,7 @@ export function Calculator503020() {
                         </ResponsiveContainer>
                         {/* Center text on donut */}
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <span className="text-stone-400 text-sm font-light">Distribución</span>
+                            <span className="text-stone-400 text-sm font-light">{t('chart.center')}</span>
                         </div>
                     </div>
 
@@ -106,13 +107,12 @@ export function Calculator503020() {
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-stone-900" />
-                                    <span className="font-medium text-stone-900">50% Necesidades</span>
+                                    <span className="font-medium text-stone-900">{t('legend.needs.label')}</span>
                                 </div>
                                 <span className="text-xl font-serif text-stone-900">{formatMoney(needs)}</span>
                             </div>
                             <p className="text-xs text-stone-500 pl-5">
-                                Alquiler, hipoteca, supermercado, facturas de luz/agua, transporte.
-                                Lo imprescindible para vivir.
+                                {t('legend.needs.desc')}
                             </p>
                         </div>
 
@@ -120,13 +120,12 @@ export function Calculator503020() {
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-amber-500" />
-                                    <span className="font-medium text-stone-900">30% Deseos (Opcional)</span>
+                                    <span className="font-medium text-stone-900">{t('legend.wants.label')}</span>
                                 </div>
                                 <span className="text-xl font-serif text-stone-900">{formatMoney(wants)}</span>
                             </div>
                             <p className="text-xs text-stone-500 pl-5">
-                                Cenas fuera, hobbies, suscripciones (Netflix), ropa no esencial, viajes.
-                                Lo que te hace feliz pero podrías cortar.
+                                {t('legend.wants.desc')}
                             </p>
                         </div>
 
@@ -134,13 +133,12 @@ export function Calculator503020() {
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                                    <span className="font-medium text-stone-900">20% Ahorro</span>
+                                    <span className="font-medium text-stone-900">{t('legend.savings.label')}</span>
                                 </div>
                                 <span className="text-xl font-serif text-stone-900">{formatMoney(savings)}</span>
                             </div>
                             <p className="text-xs text-stone-500 pl-5">
-                                Fondo de emergencia, inversiones, amortizar deuda, jubilación.
-                                Tu pago a ti mismo del futuro.
+                                {t('legend.savings.desc')}
                             </p>
                         </div>
                     </div>
@@ -149,17 +147,17 @@ export function Calculator503020() {
                 {/* CTA */}
                 <div className="bg-stone-900 text-white p-8 rounded-xl text-center space-y-6">
                     <h3 className="text-2xl font-serif">
-                        ¿Quieres aplicar esta regla automáticamente?
+                        {t('cta.title')}
                     </h3>
                     <p className="text-stone-300 font-light max-w-lg mx-auto">
-                        Kakebo clasifica tus gastos por ti y te avisa si te estás pasando del 30% en caprichos o si no llegas al 20% de ahorro.
+                        {t('cta.text')}
                     </p>
                     <Link
                         href="/login?source=calculator_503020"
                         onClick={() => analytics.track("signup_click", { source: "calculator_503020", type: "primary" })}
                         className="inline-block bg-white text-stone-900 px-8 py-3 rounded-full font-medium hover:bg-stone-100 transition-colors"
                     >
-                        Empezar gratis con Kakebo
+                        {t('cta.button')}
                     </Link>
                 </div>
 

@@ -2,26 +2,31 @@ import { Metadata } from "next";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { Calculator503020 } from "@/components/landing/tools/Calculator503020";
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = {
-    title: "Calculadora 50/30/20: Tu Sueldo Ideal en 1 Clic (Plantilla Gratis)",
-    description: "No hagas números. Esta calculadora aplica la regla 50/30/20 a tu nómina neta al instante. Descubre cuánto deberías gastar en alquiler, ocio y ahorro.",
-    alternates: {
-        canonical: "/herramientas/regla-50-30-20",
-    },
-    openGraph: {
-        title: "Calculadora 50/30/20: Distribuye tu Nómina en 1 Clic",
-        description: "La herramienta definitiva para organizar tus finanzas. 50% Necesidades, 30% Caprichos, 20% Ahorro. Gratis y sin registro.",
-        images: [
-            {
-                url: "/api/og?title=Regla 50/30/20&description=Tu sueldo ideal en 1 clic: 50% Necesidades, 30% Caprichos, 20% Ahorro.",
-                width: 1200,
-                height: 630,
-                alt: "Kakebo 50/30/20 Calculator",
-            }
-        ]
-    }
-};
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+    const t = await getTranslations({ locale, namespace: 'Tools.Rule503020.meta' });
+
+    return {
+        title: t('title'),
+        description: t('description'),
+        alternates: {
+            canonical: "/herramientas/regla-50-30-20",
+        },
+        openGraph: {
+            title: t('ogTitle'),
+            description: t('ogDescription'),
+            images: [
+                {
+                    url: "/api/og?title=Regla 50/30/20&description=Tu sueldo ideal en 1 clic: 50% Necesidades, 30% Caprichos, 20% Ahorro.",
+                    width: 1200,
+                    height: 630,
+                    alt: "Kakebo 50/30/20 Calculator",
+                }
+            ]
+        }
+    };
+}
 
 // JSON-LD Schema
 const SCHEMA = {

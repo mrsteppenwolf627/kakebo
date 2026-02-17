@@ -86,23 +86,45 @@ const inter = Inter({ subsets: ["latin"] });
 import SoftwareAppJsonLd from "@/components/seo/SoftwareAppJsonLd";
 import { CookieBanner } from "@/components/landing";
 
-export default function RootLayout({
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+import { routing } from '@/i18n/routing';
+
+export default async function LocaleLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  params
+}: {
+  children: React.ReactNode;
+  params: { locale: string };
+}) {
+  const { locale } = params;
+
+  // Ensure that the incoming `locale` is valid
+  if (!routing.locales.includes(locale as any)) {
+    notFound();
+  }
+
+  // Providing all messages to the client
+  // side is the easiest way to get started
+  const messages = await getMessages();
+
   return (
-    <html lang="es" className="overflow-x-hidden" suppressHydrationWarning>
+    <html lang={locale} className="overflow-x-hidden" suppressHydrationWarning>
       <body className={`${inter.className} overflow-x-hidden max-w-[100vw] bg-sakura text-stone-900 dark:bg-stone-950 dark:text-stone-100 transition-colors duration-300 antialiased`}>
-        <SoftwareAppJsonLd />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <CookieBanner />
-          <Footer />
-        </ThemeProvider>
+        <NextIntlClientProvider messages={messages}>
+          <SoftwareAppJsonLd />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <CookieBanner />
+          </ThemeProvider>
+        </NextIntlClientProvider>
+        <Footer />
       </body>
     </html>
   );

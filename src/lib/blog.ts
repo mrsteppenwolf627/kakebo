@@ -21,7 +21,7 @@ export interface BlogPost {
     content: string;
 }
 
-export function getBlogPosts(): BlogPost[] {
+export function getBlogPosts(locale: string = 'es'): BlogPost[] {
     if (!fs.existsSync(contentDirectory)) {
         return [];
     }
@@ -29,9 +29,9 @@ export function getBlogPosts(): BlogPost[] {
     const files = fs.readdirSync(contentDirectory);
 
     const posts = files
-        .filter((file) => file.endsWith('.mdx'))
+        .filter((file) => file.endsWith(`.${locale}.mdx`))
         .map((file) => {
-            const slug = file.replace('.mdx', '');
+            const slug = file.replace(`.${locale}.mdx`, '');
             const filePath = path.join(contentDirectory, file);
             const fileContent = fs.readFileSync(filePath, 'utf8');
             const { data, content } = matter(fileContent);
@@ -49,10 +49,12 @@ export function getBlogPosts(): BlogPost[] {
     return posts;
 }
 
-export function getBlogPost(slug: string): BlogPost | null {
-    const filePath = path.join(contentDirectory, `${slug}.mdx`);
+export function getBlogPost(slug: string, locale: string = 'es'): BlogPost | null {
+    const filePath = path.join(contentDirectory, `${slug}.${locale}.mdx`);
 
     if (!fs.existsSync(filePath)) {
+        // Fallback to Spanish if English doesn't exist?
+        // For now, strict check.
         return null;
     }
 
@@ -71,5 +73,11 @@ export function getAllBlogSlugs() {
         return [];
     }
     const files = fs.readdirSync(contentDirectory);
-    return files.map((file) => file.replace('.mdx', ''));
+    // Get unique slugs by stripping locale extensions
+    const slugs = new Set(
+        files
+            .filter(file => file.endsWith('.mdx'))
+            .map(file => file.replace(/\.(es|en)\.mdx$/, ''))
+    );
+    return Array.from(slugs);
 }

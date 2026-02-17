@@ -1,0 +1,223 @@
+{
+    "Common": {
+        "title": "Kakebo AI",
+        "description": "Japanese savings method with AI"
+    },
+    "Hero": {
+        "badge": "Track expenses with intention",
+        "title": "Kakebo AI",
+        "subtitle": "The <bold>Japanese Method Expense Tracker App</bold>.<br>No bank formatting, 100% private and AI-powered.",
+        "ctaPrimary": "Start Free",
+        "ctaSecondary": "Learn More",
+        "trustSignal": "🔒 Instant registration · No card required · <bold>Total privacy</bold>",
+        "stats": {
+            "trial": "14 Days",
+            "trialLabel": "Free Premium Trial",
+            "price": "$0",
+            "priceLabel": "No Card Required",
+            "privacy": "100%",
+            "privacyLabel": "Total Privacy"
+        }
+    },
+    "Features": {
+        "title": "Financial Minimalism",
+        "subtitle": "Kakebo isn't just another app full of confusing charts. It's a system to regain control.",
+        "cards": {
+            "manual": {
+                "title": "Conscious Manual Tracking",
+                "desc": "By writing down each expense, your brain processes the purchase. This is key to reducing impulsive spending."
+            },
+            "privacy": {
+                "title": "No Bank Connection",
+                "desc": "Your passwords are yours. We don't connect to your bank. Absolute privacy and zero security risk."
+            },
+            "ai": {
+                "title": "AI Financial Coach",
+                "desc": "Get personalized advice based on your actual spending patterns, not generic tips."
+            },
+            "fixed": {
+                "title": "Fixed Expenses Control",
+                "desc": "Clearly visualize how much you really have left after paying mandatory bills."
+            }
+        }
+    },
+    "SavingsSimulator": {
+        "title": "How much could you save with Kakebo?",
+        "subtitle": "The Kakebo method helps you reduce variable spending by up to 20%. See for yourself.",
+        "incomeLabel": "Monthly Income",
+        "expensesLabel": "Current Expenses",
+        "resultLabel": "Monthly Savings Potential",
+        "disclaimer": "*Based on the 20% Kakebo method goal",
+        "cta": "Start saving today",
+        "trial": "14-day free trial. No card required."
+    },
+    "Alternatives": {
+        "title": "Why choose Kakebo AI?",
+        "subtitle": "The only alternative that combines Excel privacy with App convenience.",
+        "table": {
+            "headers": {
+                "feature": "Feature",
+                "kakebo": "Kakebo AI",
+                "excel": "Excel / Spreadsheets",
+                "apps": "Bank Apps"
+            },
+            "rows": {
+                "privacy": {
+                    "feature": "🔒 Privacy (No bank connection)",
+                    "kakebo": "✅ Yes (Your keys are yours)",
+                    "excel": "✅ Yes",
+                    "apps": "❌ No (Access your bank)"
+                },
+                "ai": {
+                    "feature": "🧠 AI Analysis",
+                    "kakebo": "✅ Yes (GPT-4 Copilot)",
+                    "excel": "❌ No (Manual)",
+                    "apps": "⚠️ Basic (Old algorithms)"
+                },
+                "method": {
+                    "feature": "🧘 Kakebo Method (Conscious Savings)",
+                    "kakebo": "✅ Native (4 Categories)",
+                    "excel": "❌ You have to config it",
+                    "apps": "❌ No (Standard categories)"
+                },
+                "ux": {
+                    "feature": "📱 Ease of use (Mobile)",
+                    "kakebo": "✅ Excellent (PWA)",
+                    "excel": "❌ Terrible",
+                    "apps": "✅ Excellent"
+                }
+            }
+        }
+    },
+    "Tools": {
+        "Inflation": {
+            "meta": {
+                "title": "Inflation Calculator 2026: How much money have you lost?",
+                "description": "Inflation is the silent tax. Calculate how much savings you lost in 2024-2026 and what your money will be worth in the future. Free tool.",
+                "ogTitle": "How much is inflation stealing from you? (Calculator 2026)",
+                "ogDescription": "Your estimates fail. Use this official CPI calculator to see the real loss of purchasing power of your savings."
+            },
+            "header": {
+                "title": "Inflation Calculator <italic>in Spain</italic>",
+                "subtitle": "How much is your money really worth? Calculate the loss of purchasing power due to CPI and discover why saving is not enough."
+            },
+            "inputs": {
+                "savings": "Your Current Savings",
+                "inflation": "Estimated Inflation (CPI)",
+                "inflationDisclaimer": "*Historical average 2000-2024: ~2.5%",
+                "years": "Projection Years"
+            },
+            "results": {
+                "lossLabel": "Real Value Loss",
+                "lossText": "Your money is worth <strong>{percentage}% less</strong>",
+                "realLabel": "Future Purchasing Power",
+                "realText": "Current equivalent of your savings"
+            },
+            "chart": {
+                "nominal": "Nominal Money (Banknote)",
+                "real": "Real Value (Purchasing Power)",
+                "year": "Year"
+            },
+            "cta": {
+                "title": "Protect your savings from CPI",
+                "text": "The first step to beating inflation is controlling your expenses and maximizing your monthly savings. Kakebo is your tool to achieve it.",
+                "buttonPrimary": "Create free account",
+                "buttonSecondary": "View 50/30/20 rule"
+            }
+        },
+        "Rule503020": {
+            "meta": {
+                "title": "50/30/20 Calculator: Your Ideal Salary in 1 Click (Free Template)",
+                "description": "Don't do numbers. This calculator applies the 50/30/20 rule to your net salary instantly. Find out how much you should spend on rent, fun, and savings.",
+                "ogTitle": "50/30/20 Calculator: Distribute your Payroll in 1 Click",
+                "ogDescription": "The ultimate tool to organize your finances. 50% Needs, 30% Wants, 20% Savings. Free and no signup."
+            },
+            "header": {
+                "title": "<italic>50/30/20</italic> Calculator",
+                "subtitle": "Discover how much you should save, spend on basics, and dedicate to wants based on your salary. The golden rule of personal finance."
+            },
+            "inputs": {
+                "income": "Your Net Monthly Income"
+            },
+            "chart": {
+                "center": "Distribution",
+                "needs": "Needs (50%)",
+                "wants": "Wants (30%)",
+                "savings": "Savings (20%)"
+            },
+            "legend": {
+                "needs": {
+                    "label": "50% Needs",
+                    "desc": "Rent, mortgage, groceries, utilities, transport. Essentials to live."
+                },
+                "wants": {
+                    "label": "30% Wants (Optional)",
+                    "desc": "Dining out, hobbies, subscriptions (Netflix), non-essential clothes, travel. What makes you happy but could be cut."
+                },
+                "savings": {
+                    "label": "20% Savings",
+                    "desc": "Emergency fund, investments, debt repayment, retirement. paying yourself first."
+                }
+            },
+            "cta": {
+                "title": "Want to apply this rule automatically?",
+                "text": "Kakebo categorizes your expenses for you and alerts you if you exceed 30% in wants or fall short of 20% savings.",
+                "button": "Start for free with Kakebo"
+            }
+        }
+    },
+    "Blog": {
+        "index": {
+            "title": "Kakebo Blog",
+            "subtitle": "Practical tips on saving, personal finance, and mindful living.",
+            "readMore": "Read article"
+        },
+        "post": {
+            "readingTime": "min read",
+            "cta": {
+                "title": "Want to apply the Kakebo method effortlessly?",
+                "text": "Sign up for free on Kakebo AI and start controlling your expenses today.",
+                "button": "Create free account"
+            }
+        }
+    },
+    "Auth": {
+        "leftPanel": {
+            "title": "Expense control <br />with Japanese method",
+            "subtitle": "Track, categorize, and review your monthly expenses with clarity. No complications, no fluff.",
+            "features": {
+                "free": "Free forever (Manual Plan)",
+                "ai": "Optional AI Agent (15-day trial)",
+                "privacy": "Your data always private and secure"
+            }
+        },
+        "form": {
+            "backToHome": "Back to home",
+            "login": {
+                "title": "Login",
+                "subtitle": "Enter to see your calendar and expenses"
+            },
+            "signup": {
+                "title": "Create account",
+                "subtitle": "Sign up and start with the Manual Plan (free)"
+            },
+            "googleBtn": "Continue with Google",
+            "divider": "Or with email",
+            "emailLabel": "Email",
+            "passwordLabel": "Password",
+            "submitLogin": "Enter",
+            "submitSignup": "Create account",
+            "toggleToSignup": "Don't have an account? Create one here",
+            "toggleToLogin": "Already have an account? Enter here",
+            "errors": {
+                "unknown": "Unknown error",
+                "notConfirmed": "Your email is not confirmed yet. Check your inbox (and spam)."
+            },
+            "success": {
+                "resend": "Confirmation email resent. Check inbox and spam.",
+                "signup": "We sent you an email to confirm your account. Check your inbox and spam."
+            },
+            "resendBtn": "Resend confirmation email"
+        }
+    }
+}

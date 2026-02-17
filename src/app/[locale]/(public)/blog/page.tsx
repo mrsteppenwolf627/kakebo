@@ -2,18 +2,23 @@ import { getBlogPosts } from "@/lib/blog";
 import { Metadata } from "next";
 import Link from "next/link";
 import { Footer, Navbar } from "@/components/landing";
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = {
-    title: "Kakebo Academy: Blog de Finanzas Personales y Ahorro Zen",
-    description:
-        "Más que un blog de finanzas. Aprende trucos psicológicos para gastar menos, domina el método Kakebo y descubre cómo vivir mejor con menos estrés financiero.",
-    alternates: {
-        canonical: "/blog",
-    },
-};
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+    const t = await getTranslations({ locale, namespace: 'Blog.index' });
+    return {
+        title: t('title'),
+        description: t('subtitle'),
+        alternates: {
+            canonical: "/blog",
+        },
+    };
+}
 
-export default function BlogIndexPage() {
-    const posts = getBlogPosts();
+export default async function BlogIndexPage({ params }: { params: { locale: string } }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: 'Blog.index' });
+    const posts = getBlogPosts(locale);
 
     return (
         <main className="min-h-screen bg-background">
@@ -23,10 +28,10 @@ export default function BlogIndexPage() {
                 <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h1 className="text-4xl font-serif font-bold text-foreground sm:text-5xl mb-4">
-                            Blog Kakebo
+                            {t('title')}
                         </h1>
                         <p className="text-lg text-muted-foreground font-light max-w-2xl mx-auto">
-                            Consejos prácticos sobre ahorro, finanzas personales y vida consciente.
+                            {t('subtitle')}
                         </p>
                     </div>
 
@@ -44,14 +49,14 @@ export default function BlogIndexPage() {
                                 <div className="flex flex-1 flex-col p-6">
                                     <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
                                         <time dateTime={post.frontmatter.date}>
-                                            {new Date(post.frontmatter.date).toLocaleDateString("es-ES", {
+                                            {new Date(post.frontmatter.date).toLocaleDateString(locale === 'es' ? "es-ES" : "en-US", {
                                                 year: "numeric",
                                                 month: "long",
                                                 day: "numeric",
                                             })}
                                         </time>
                                         <span>•</span>
-                                        <span>{post.frontmatter.readingTime || "5 min lectura"}</span>
+                                        <span>{post.frontmatter.readingTime || t('readMore')}</span>
                                     </div>
 
                                     <h3 className="mb-2 text-xl font-serif font-bold text-foreground">
@@ -68,7 +73,7 @@ export default function BlogIndexPage() {
                                         href={`/blog/${post.slug}`}
                                         className="inline-flex items-center text-sm font-medium text-primary hover:underline"
                                     >
-                                        Leer artículo
+                                        {t('readMore')}
                                         <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                         </svg>

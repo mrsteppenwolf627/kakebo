@@ -1,15 +1,19 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 export function AlternativesSection() {
+    const t = useTranslations("Alternatives");
+
     return (
         <section id="alternatives" className="py-24 bg-background">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="mx-auto max-w-3xl text-center mb-16">
                     <h2 className="text-3xl font-serif font-medium text-foreground sm:text-4xl">
-                        ¿Por qué elegir Kakebo AI?
+                        {t("title")}
                     </h2>
                     <p className="mt-4 text-lg text-muted-foreground">
-                        La única alternativa que combina la privacidad del Excel con la comodidad de las Apps.
+                        {t("subtitle")}
                     </p>
                 </div>
 
@@ -18,74 +22,74 @@ export function AlternativesSection() {
                         <thead className="bg-muted/50">
                             <tr>
                                 <th scope="col" className="py-4 pl-4 pr-3 text-left text-sm font-semibold text-foreground sm:pl-6">
-                                    Característica
+                                    {t("table.headers.feature")}
                                 </th>
                                 <th scope="col" className="px-3 py-4 text-center text-sm font-semibold text-primary bg-primary/5">
-                                    Kakebo AI
+                                    {t("table.headers.kakebo")}
                                 </th>
                                 <th scope="col" className="px-3 py-4 text-center text-sm font-semibold text-muted-foreground">
-                                    Excel / Hojas de Cálculo
+                                    {t("table.headers.excel")}
                                 </th>
                                 <th scope="col" className="px-3 py-4 text-center text-sm font-semibold text-muted-foreground">
-                                    Apps Bancarias (Fintonic, etc.)
+                                    {t("table.headers.apps")}
                                 </th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border bg-card">
                             <tr>
                                 <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-foreground sm:pl-6">
-                                    🔒 Privacidad (Sin conexión bancaria)
+                                    {t("table.rows.privacy.feature")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-foreground bg-primary/5 font-medium">
-                                    ✅ Sí (Tus claves son tuyas)
+                                    {t("table.rows.privacy.kakebo")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-muted-foreground">
-                                    ✅ Sí
+                                    {t("table.rows.privacy.excel")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-foreground">
-                                    ❌ No (Acceden a tu banco)
+                                    {t("table.rows.privacy.apps")}
                                 </td>
                             </tr>
                             <tr>
                                 <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-foreground sm:pl-6">
-                                    🧠 Análisis con Inteligencia Artificial
+                                    {t("table.rows.ai.feature")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-foreground bg-primary/5 font-medium">
-                                    ✅ Sí (Copiloto GPT-4)
+                                    {t("table.rows.ai.kakebo")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-muted-foreground">
-                                    ❌ No (Manual)
+                                    {t("table.rows.ai.excel")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-muted-foreground">
-                                    ⚠️ Básico (Algoritmos viejos)
+                                    {t("table.rows.ai.apps")}
                                 </td>
                             </tr>
                             <tr>
                                 <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-foreground sm:pl-6">
-                                    🧘 Método Kakebo (Ahorro Consciente)
+                                    {t("table.rows.method.feature")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-foreground bg-primary/5 font-medium">
-                                    ✅ Nativo (4 Categorías)
+                                    {t("table.rows.method.kakebo")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-muted-foreground">
-                                    ❌ Tienes que configurarlo tú
+                                    {t("table.rows.method.excel")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-muted-foreground">
-                                    ❌ No (Categorías estándar)
+                                    {t("table.rows.method.apps")}
                                 </td>
                             </tr>
                             <tr>
                                 <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-foreground sm:pl-6">
-                                    📱 Facilidad de uso (Móvil)
+                                    {t("table.rows.ux.feature")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-foreground bg-primary/5 font-medium">
-                                    ✅ Excelente (PWA)
+                                    {t("table.rows.ux.kakebo")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-muted-foreground">
-                                    ❌ Terrible
+                                    {t("table.rows.ux.excel")}
                                 </td>
                                 <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-foreground">
-                                    ✅ Excelente
+                                    {t("table.rows.ux.apps")}
                                 </td>
                             </tr>
                         </tbody>

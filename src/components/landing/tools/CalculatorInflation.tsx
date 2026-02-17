@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
@@ -12,8 +10,10 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import { analytics } from "@/lib/analytics";
+import { useTranslations } from "next-intl";
 
 export function CalculatorInflation() {
+    const t = useTranslations("Tools.Inflation");
     const [savings, setSavings] = useState(10000);
     const [inflationRate, setInflationRate] = useState(3);
     const [years, setYears] = useState(10);
@@ -30,7 +30,7 @@ export function CalculatorInflation() {
 
         return {
             year: i,
-            name: `Año ${i}`,
+            name: `${t('chart.year')} ${i}`,
             nominal: nominalValue,
             real: Math.round(realValue),
             lost: Math.round(nominalValue - realValue),
@@ -54,10 +54,12 @@ export function CalculatorInflation() {
             {/* Header */}
             <div className="text-center space-y-6">
                 <h1 className="text-5xl md:text-6xl font-serif text-stone-900 leading-[1.1]">
-                    Calculadora de <span className="italic text-red-500">Inflación en España</span>
+                    {t.rich('header.title', {
+                        italic: (chunks) => <span className="italic text-red-500">{chunks}</span>
+                    })}
                 </h1>
                 <p className="text-xl text-stone-600 font-light max-w-2xl mx-auto">
-                    ¿Cuánto vale tu dinero realmente? Calcula la pérdida de poder adquisitivo por el IPC y descubre por qué ahorrar no es suficiente.
+                    {t('header.subtitle')}
                 </p>
             </div>
 
@@ -69,7 +71,7 @@ export function CalculatorInflation() {
                 <div className="grid md:grid-cols-3 gap-8">
                     <div className="space-y-4">
                         <label htmlFor="savings-input" className="text-sm font-medium text-stone-500 uppercase tracking-wider block">
-                            Tus Ahorros Actuales
+                            {t('inputs.savings')}
                         </label>
                         <div className="relative">
                             <input
@@ -80,7 +82,6 @@ export function CalculatorInflation() {
                                 value={savings}
                                 onChange={(e) => setSavings(Number(e.target.value))}
                                 className="w-full text-2xl font-serif border-b-2 border-stone-200 focus:border-stone-900 outline-none py-2 bg-transparent transition-colors"
-                                aria-label="Cantidad de ahorros actuales en euros"
                             />
                             <span className="absolute right-0 top-3 text-stone-400">€</span>
                         </div>
@@ -88,7 +89,7 @@ export function CalculatorInflation() {
 
                     <div className="space-y-4">
                         <label htmlFor="inflation-input" className="text-sm font-medium text-stone-500 uppercase tracking-wider block">
-                            Inflación Estimada (IPC)
+                            {t('inputs.inflation')}
                         </label>
                         <div className="relative">
                             <input
@@ -100,18 +101,17 @@ export function CalculatorInflation() {
                                 value={inflationRate}
                                 onChange={(e) => setInflationRate(Number(e.target.value))}
                                 className="w-full text-2xl font-serif border-b-2 border-stone-200 focus:border-stone-900 outline-none py-2 bg-transparent transition-colors text-red-500"
-                                aria-label="Tasa de inflación anual estimada en porcentaje"
                             />
                             <span className="absolute right-0 top-3 text-stone-400">%</span>
                         </div>
                         <p className="text-xs text-stone-400">
-                            *Media histórica 2000-2024: ~2.5%
+                            {t('inputs.inflationDisclaimer')}
                         </p>
                     </div>
 
                     <div className="space-y-4">
                         <label htmlFor="years-input" className="text-sm font-medium text-stone-500 uppercase tracking-wider block">
-                            Años de Proyección
+                            {t('inputs.years')}
                         </label>
                         <div className="flex items-center gap-4">
                             <span className="text-2xl font-serif w-12">{years}</span>
@@ -124,7 +124,6 @@ export function CalculatorInflation() {
                                 value={years}
                                 onChange={(e) => setYears(Number(e.target.value))}
                                 className="w-full h-2 bg-stone-100 rounded-lg appearance-none cursor-pointer accent-stone-900"
-                                aria-label="Número de años para proyectar la inflación"
                             />
                         </div>
                     </div>
@@ -136,26 +135,29 @@ export function CalculatorInflation() {
                     {/* Main Stat: Loss */}
                     <div className="bg-red-50 p-6 rounded-xl border border-red-100 flex flex-col justify-center text-center space-y-2">
                         <span className="text-sm text-red-600 font-medium uppercase tracking-wider">
-                            Pérdida de Valor Real
+                            {t('results.lossLabel')}
                         </span>
                         <span className="text-4xl md:text-5xl font-serif text-red-600">
                             -{formatMoney(totalLost)}
                         </span>
                         <span className="text-red-400 font-light">
-                            Tu dinero vale un <strong>{lostPercentage}% menos</strong>
+                            {t.rich('results.lossText', {
+                                percentage: lostPercentage,
+                                strong: (chunks) => <strong>{chunks}</strong>
+                            })}
                         </span>
                     </div>
 
                     {/* Secondary Stat: Real Value */}
                     <div className="bg-stone-50 p-6 rounded-xl border border-stone-100 flex flex-col justify-center text-center space-y-2">
                         <span className="text-sm text-stone-500 font-medium uppercase tracking-wider">
-                            Poder de Compra Futuro
+                            {t('results.realLabel')}
                         </span>
                         <span className="text-4xl md:text-5xl font-serif text-stone-900">
                             {formatMoney(finalRealValue)}
                         </span>
                         <span className="text-stone-400 font-light">
-                            Equivalente actual de tus ahorros
+                            {t('results.realText')}
                         </span>
                     </div>
 
@@ -195,12 +197,12 @@ export function CalculatorInflation() {
                             <Tooltip
                                 formatter={(value: number | string | Array<number | string> | undefined) => [formatMoney(Number(value || 0)), ""]}
                                 contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e7e5e4' }}
-                                labelFormatter={(label) => `Año ${label}`}
+                                labelFormatter={(label) => `${t('chart.year')} ${label}`}
                             />
                             <Area
                                 type="monotone"
                                 dataKey="nominal"
-                                name="Dinero Nominal (Billete)"
+                                name={t('chart.nominal')}
                                 stroke="#a8a29e"
                                 fillOpacity={1}
                                 fill="url(#colorNominal)"
@@ -209,7 +211,7 @@ export function CalculatorInflation() {
                             <Area
                                 type="monotone"
                                 dataKey="real"
-                                name="Valor Real (Poder de Compra)"
+                                name={t('chart.real')}
                                 stroke="#1c1917"
                                 fillOpacity={1}
                                 fill="url(#colorReal)"
@@ -221,10 +223,10 @@ export function CalculatorInflation() {
                 {/* CTA */}
                 <div className="bg-stone-900 text-white p-8 rounded-xl text-center space-y-6">
                     <h3 className="text-2xl font-serif">
-                        Protege tus ahorros del IPC
+                        {t('cta.title')}
                     </h3>
                     <p className="text-stone-300 font-light max-w-lg mx-auto">
-                        El primer paso para ganar a la inflación es controlar tus gastos y maximizar tu ahorro mensual. Kakebo es tu herramienta para lograrlo.
+                        {t('cta.text')}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link
@@ -232,14 +234,14 @@ export function CalculatorInflation() {
                             onClick={() => analytics.track("signup_click", { source: "calculator_inflation", type: "primary" })}
                             className="inline-block bg-white text-stone-900 px-8 py-3 rounded-full font-medium hover:bg-stone-100 transition-colors"
                         >
-                            Crear cuenta gratis
+                            {t('cta.buttonPrimary')}
                         </Link>
                         <Link
                             href="/herramientas/regla-50-30-20"
                             onClick={() => analytics.track("tool_interaction", { tool: "inflation_calculator", action: "cross_sell" })}
                             className="inline-block border border-stone-700 text-stone-300 px-8 py-3 rounded-full font-medium hover:bg-stone-800 transition-colors"
                         >
-                            Ver regla 50/30/20
+                            {t('cta.buttonSecondary')}
                         </Link>
                     </div>
                 </div>

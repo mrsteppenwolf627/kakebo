@@ -5,7 +5,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function HeroCTA() {
+interface HeroCTAProps {
+    label?: string;
+}
+
+export function HeroCTA({ label = "Prueba 14 días gratis" }: HeroCTAProps) {
     const supabase = createClient();
     const router = useRouter();
     const [session, setSession] = useState<any>(null);
@@ -65,7 +69,7 @@ export function HeroCTA() {
             href="/login"
             className="inline-flex items-center justify-center border border-stone-900 bg-stone-900 dark:bg-stone-100 dark:text-stone-900 dark:border-stone-100 px-8 py-4 text-base font-normal text-white transition-opacity hover:opacity-90"
         >
-            Prueba 14 días gratis
+            {label}
         </Link>
     );
 }
