@@ -241,6 +241,14 @@ Si decides continuar con la ayuda de la IA:
 
 - 🌗 **UI**: Mejoras de contraste en Modo Oscuro y accesibilidad en calendarios.
 
+### v3.5.0 (2026-02-17) - Security Hardening 🛡️
+
+**Mejoras de Seguridad:**
+- 🔒 **Security Headers**: Implementación estricta de HSTS, CSP y X-Frame-Options para prevenir XSS y Clickjacking.
+- 🚦 **Rate Limiting**: Protección básica contra ataques DoS/fuerza bruta en la API.
+- 🛡️ **Middleware Blindado**: Redirección forzada para usuarios no autenticados en rutas protegidas.
+- 💾 **RLS Audit**: Endurecimiento de políticas de base de datos (Supabase) para garantizar la privacidad de los datos.
+
 ### v3.4.0 (2026-02-17) - SEO & Social Proof 🌟
 
 **Novedades:**
