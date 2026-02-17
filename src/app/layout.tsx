@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.metodokakebo.com"),
   title: {
     default: "Kakebo - Control de Gastos Inteligente",
-    template: "%s | Kakebo AI",
+    template: "%s | Kakebo AI: Ahorro Japonés",
   },
   description:
     "Controla tus gastos con el método japonés Kakebo. Sin bancos, 100% privado y con asistencia de IA. Empieza tus 14 días gratis hoy.",

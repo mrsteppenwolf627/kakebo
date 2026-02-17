@@ -4,21 +4,21 @@ import { Footer } from "@/components/landing/Footer";
 import { CalculatorInflation } from "@/components/landing/tools/CalculatorInflation";
 
 export const metadata: Metadata = {
-    title: "Calculadora Inflación España (Actualizado 2024) - Calcula tu IPC Real | Kakebo",
-    description: "Herramienta gratuita para calcular la pérdida de valor de tus ahorros por la inflación en España. Averigua cuánto vale tu dinero realmente hoy.",
-    keywords: ["calculadora inflación españa", "calcular ipc acumulado", "actualizar renta ipc", "inflación españa 2024", "pérdida poder adquisitivo", "calculadora ipc ine"],
+    title: "Calculadora Inflación 2026: ¿Cuánto dinero has perdido realmente?",
+    description: "La inflación es el impuesto silencioso. Calcula cuántos ahorros has perdido en 2024-2026 y cuánto valdrá tu dinero en el futuro. Herramienta gratuita.",
+    keywords: ["calculadora inflación españa", "calcular ipc acumulado", "actualizar renta ipc", "inflación españa 2026", "pérdida poder adquisitivo", "calculadora ipc ine"],
     alternates: {
         canonical: "/herramientas/calculadora-inflacion",
     },
     openGraph: {
         type: "website",
-        title: "¿Cuánto dinero te está robando la inflación?",
-        description: "Calculadora gratuita de IPC y pérdida de poder adquisitivo. No dejes que tus ahorros pierdan valor.",
+        title: "¿Cuánto te está robando la inflación? (Calculadora 2026)",
+        description: "Tus estimaciones fallan. Usa esta calculadora oficial de IPC para ver la pérdida real de poder adquisitivo de tus ahorros.",
         siteName: "Kakebo",
         locale: "es_ES",
         images: [
             {
-                url: "/api/og?title=Calculadora Inflación&description=Calcula cuánto valor real pierden tus ahorros por el IPC. No dejes que tu dinero se evapore.",
+                url: "/api/og?title=Calculadora Inflación 2026&description=Calcula cuánto valor real pierden tus ahorros por el IPC.",
                 width: 1200,
                 height: 630,
                 alt: "Kakebo Inflation Calculator",
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Calculadora Inflación España - Kakebo",
-        description: "Calcula el impacto del IPC en tus ahorros en segundos.",
+        title: "Calculadora Inflación 2026 - Kakebo",
+        description: "Descubre cuánto valor han perdido tus ahorros por el IPC.",
     }
 };
 
@@ -38,7 +38,7 @@ const SCHEMA = {
     "@graph": [
         {
             "@type": "SoftwareApplication",
-            "name": "Calculadora de Inflación Kakebo",
+            "name": "Calculadora de Inflación Kakebo 2026",
             "applicationCategory": "FinanceApplication",
             "operatingSystem": "Web",
             "offers": {

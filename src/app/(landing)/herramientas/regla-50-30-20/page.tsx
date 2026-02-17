@@ -4,17 +4,17 @@ import { Footer } from "@/components/landing/Footer";
 import { Calculator503020 } from "@/components/landing/tools/Calculator503020";
 
 export const metadata: Metadata = {
-    title: "Calculadora Regla 50/30/20 - Distribuye tu Sueldo | Kakebo",
-    description: "Calcula gratis tu presupuesto ideal con la regla 50/30/20. Averigua cuánto ahorrar y cuánto gastar en necesidades según tu salario neto.",
+    title: "Calculadora 50/30/20: Tu Sueldo Ideal en 1 Clic (Plantilla Gratis)",
+    description: "No hagas números. Esta calculadora aplica la regla 50/30/20 a tu nómina neta al instante. Descubre cuánto deberías gastar en alquiler, ocio y ahorro.",
     alternates: {
         canonical: "/herramientas/regla-50-30-20",
     },
     openGraph: {
-        title: "Calculadora Regla 50/30/20 - Distribuye tu Sueldo",
-        description: "La forma más fácil de dividir tu nómina: 50% Necesidades, 30% Caprichos, 20% Ahorro. Pruébala gratis.",
+        title: "Calculadora 50/30/20: Distribuye tu Nómina en 1 Clic",
+        description: "La herramienta definitiva para organizar tus finanzas. 50% Necesidades, 30% Caprichos, 20% Ahorro. Gratis y sin registro.",
         images: [
             {
-                url: "/api/og?title=Regla 50/30/20&description=Distribuye tu sueldo idealmente: 50% Necesidades, 30% Caprichos, 20% Ahorro.",
+                url: "/api/og?title=Regla 50/30/20&description=Tu sueldo ideal en 1 clic: 50% Necesidades, 30% Caprichos, 20% Ahorro.",
                 width: 1200,
                 height: 630,
                 alt: "Kakebo 50/30/20 Calculator",

@@ -14,14 +14,14 @@ import {
 } from "@/components/landing";
 
 export const metadata: Metadata = {
-  title: "La Mejor App de Kakebo 2026 | Ahorra el 20% de tu sueldo",
+  title: "Kakebo: El Método Japonés para Ahorrar (App 2026)",
   description:
-    "Controla tus gastos con el método japonés Kakebo. Sin bancos, 100% privado y con asistencia de IA. Empieza tus 14 días gratis hoy.",
+    "La alternativa a Excel y Fintonic que respeta tu privacidad. Sin conexión bancaria. Método Kakebo oficial con Inteligencia Artificial. Gratis 14 días.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "La Mejor App de Kakebo 2026 | Ahorra el 20% de tu sueldo",
+    title: "Kakebo: El Método Japonés para Ahorrar (App 2026)",
     description:
-      "La App de Kakebo definitiva para España. Registra gastos gratis, usa el método japonés de ahorro y olvídate de los excels complicados.",
+      "Olvídate de Excels complicados. Kakebo organiza tus gastos sin pedirte las claves del banco. 100% Privado y Seguro.",
     type: "website",
     url: "/",
   },

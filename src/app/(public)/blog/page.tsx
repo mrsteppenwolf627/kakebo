@@ -4,9 +4,9 @@ import Link from "next/link";
 import { Footer, Navbar } from "@/components/landing";
 
 export const metadata: Metadata = {
-    title: "Blog de Finanzas Kakebo | Ahorro y Método Japonés",
+    title: "Kakebo Academy: Blog de Finanzas Personales y Ahorro Zen",
     description:
-        "Artículos sobre el método Kakebo, ahorro inteligente, finanzas personales y estilo de vida minimalista. Aprende a gestionar tu dinero con Kakebo AI.",
+        "Más que un blog de finanzas. Aprende trucos psicológicos para gastar menos, domina el método Kakebo y descubre cómo vivir mejor con menos estrés financiero.",
     alternates: {
         canonical: "/blog",
     },
