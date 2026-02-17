@@ -40,6 +40,19 @@ export function Hero() {
           🔒 Registro instantáneo · Sin tarjeta · <strong>Privacidad total sin bancos</strong>
         </p>
 
+        {/* Product Hunt Badge */}
+        <div className="mt-8 flex justify-center">
+          <a href="https://www.producthunt.com/products/kakebo-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-kakebo-ai" target="_blank" rel="noopener noreferrer">
+            <img
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1080945&theme=light&t=1771340432212"
+              alt="Kakebo AI - Minimalist Japanese Kakebo method, now powered by AI | Product Hunt"
+              style={{ width: '250px', height: '54px' }}
+              width="250"
+              height="54"
+            />
+          </a>
+        </div>
+
         {/* Stats Card - Sobrio */}
         <div className="mx-auto mt-20 max-w-4xl border border-border bg-card p-8 sm:p-12 shadow-sm">
           <div className="grid gap-8 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border">
