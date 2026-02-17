@@ -238,8 +238,16 @@ Si decides continuar con la ayuda de la IA:
 - 🏷️ **Rebranding**: Unificación de marca a **"Kakebo"**. Despliegue de nueva identidad en Landing y App.
 - 💰 **Corrección Financiera**: Fix crítico en cálculo de ingresos (Base + Extras) y visualización de déficit.
 - 🔗 **Dominios**: Fix en redirecciones (Stripe/Auth) para soportar dominios personalizados.
-- 🔗 **Dominios**: Fix en redirecciones (Stripe/Auth) para soportar dominios personalizados.
+
 - 🌗 **UI**: Mejoras de contraste en Modo Oscuro y accesibilidad en calendarios.
+
+### v3.4.0 (2026-02-17) - SEO & Social Proof 🌟
+
+**Novedades:**
+- 🔍 **SEO Aggressive**: Optimización de keywords de alto valor ("Sin bancos", "Gastos hormiga", "Alternativa a Excel").
+- 🌟 **Testimonios**: Nueva sección de prueba social con historias de usuarios reales.
+- 🧲 **Calculadora 50/30/20**: Corrección de enlaces y mejora de metadata para captación.
+- 🏷️ **Metadatos**: Títulos y descripciones optimizados para CTR.
 
 ### v3.3.0 (2026-02-16) - SEO & Growth 🚀
 

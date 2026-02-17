@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.metodokakebo.com"),
   title: {
     default: "Kakebo - Control de Gastos Inteligente",
-    template: "%s | Kakebo",
+    template: "%s | Kakebo AI",
   },
   description:
     "La App de Kakebo definitiva. Gestión financiera minimalista con Inteligencia Artificial. Registra gastos, controla presupuestos y ahorra mes a mes en euros.",

@@ -28,6 +28,34 @@
 
 ---
 
+## [3.3.0] - 2026-02-16
+
+### 🚀 SEO & Growth Strategy
+- **Link Magnets**: Added public calculators for "Inflation" and "50/30/20 Rule" to attract organic traffic.
+- **Viral Features**: Implemented dynamic Open Graph image generation using `@vercel/og`.
+- **Blog Optimization**:
+    - Infrastructure for MDX with `remark-gfm` (Tables, Typography).
+    - Advanced Schema.org (`FAQPage`, `BreadcrumbList`) for AI/Voice search.
+- **Analytics**: Privacy-first tracking for tool usage.
+
+## [3.2.0] - 2026-02-16
+
+### 💅 Branding & Polish
+- **Rebranding**: Unification of brand identity to "Kakebo".
+- **Fixes**:
+    - Critical fix in Income calculation (Base + Extras).
+    - Domain redirection fixes for Auth/Stripe.
+- **UI**: accessible Dark Mode improvements.
+
+## [3.1.0] - 2026-02-13
+
+### 🎨 Experience Upgrade
+- **Floating Chat**: New global widget for Copilot access.
+- **Performance**: Optimized transitions and Core Web Vitals.
+- **Mobile**: Virtual keyboard and scroll fixes.
+
+---
+
 ## [2.0.0] - 2026-02-09
 
 ### 🚀 Major Release: KakeBot v2

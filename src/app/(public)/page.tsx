@@ -8,15 +8,16 @@ import {
   FAQ,
   Footer,
   SeoContent,
+  Testimonials,
 } from "@/components/landing";
 
 export const metadata: Metadata = {
-  title: "Kakebo Ahorro | Control de gastos mensual simple",
+  title: "La Mejor App de Kakebo 2026 | Ahorra el 20% de tu sueldo",
   description:
     "La App de Kakebo definitiva para España. Registra gastos gratis, usa el método japonés de ahorro y olvídate de los excels complicados. Privacidad total.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Kakebo Ahorro | Control de gastos mensual simple",
+    title: "La Mejor App de Kakebo 2026 | Ahorra el 20% de tu sueldo",
     description:
       "La App de Kakebo definitiva para España. Registra gastos gratis, usa el método japonés de ahorro y olvídate de los excels complicados.",
     type: "website",
@@ -45,6 +46,9 @@ export default function PublicHomePage() {
         <div id="how-it-works">
           <HowItWorks />
         </div>
+
+        <Testimonials />
+
 
         {/* SEO Content - Kakebo Method Explanation */}
         <section className="relative py-16">

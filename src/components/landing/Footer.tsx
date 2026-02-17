@@ -15,7 +15,7 @@ export function Footer() {
               <span className="text-lg font-serif text-foreground">Kakebo</span>
             </div>
             <p className="text-sm text-muted-foreground font-light leading-relaxed">
-              Control de gastos minimalista basado en el método japonés Kakebo.
+              Control de gastos minimalista basado en el método japonés Kakebo. La mejor alternativa a Excel y libretas.
             </p>
           </div>
 

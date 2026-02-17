@@ -38,7 +38,7 @@ export function Hero() {
 
         {/* Trust Signal */}
         <p className="text-xs text-muted-foreground font-light tracking-wide">
-          Registro instantáneo · Sin tarjeta · 100% privado
+          Registro instantáneo · Sin tarjeta · <strong>Privacidad total sin bancos</strong> · App de finanzas sin conectar el banco
         </p>
 
         {/* Stats Card - Sobrio */}

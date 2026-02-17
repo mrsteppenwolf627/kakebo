@@ -36,7 +36,7 @@ export function Features() {
 
           <FeatureCard
             title="Categorías"
-            description="Organiza gastos en categorías que tienen sentido para ti. Personaliza tu método Kakebo."
+            description="Organiza gastos en categorías que tienen sentido. Detecta tus gastos hormiga y personaliza tu método Kakebo."
           />
 
           <FeatureCard

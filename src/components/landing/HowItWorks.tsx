@@ -11,7 +11,7 @@ export function HowItWorks() {
             El método Kakebo
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Un sistema japonés simple pero efectivo para controlar tus finanzas
+            Un sistema japonés de <strong>Ahorro Consciente</strong> (Mindful spending) para controlar tus finanzas sin estrés.
           </p>
         </div>
 

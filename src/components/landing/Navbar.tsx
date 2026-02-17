@@ -76,7 +76,7 @@ export function Navbar() {
             <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[240px]">
               <div className="bg-popover border border-border rounded-xl shadow-lg p-2 flex flex-col gap-1">
                 <Link
-                  href="/herramientas/regla-50-30-20"
+                  href="/herramientas/calculadora-ahorro"
                   className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors"
                 >
                   <span className="block font-medium text-foreground">Regla 50/30/20</span>
