@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
+import { useTranslations } from "next-intl";
 
 function isYm(s: string | null) {
     return !!s && /^\d{4}-\d{2}$/.test(s);
@@ -21,6 +22,9 @@ export default function NewIncomeClient() {
     const supabase = useMemo(() => createClient(), []);
     const router = useRouter();
     const searchParams = useSearchParams();
+    const t = useTranslations("Transaction");
+    const tCommon = useTranslations("Transaction.Common");
+    const tIncome = useTranslations("Transaction.NewIncome");
 
     const ym = searchParams?.get("ym");
     const ymValid = isYm(ym);
@@ -33,6 +37,7 @@ export default function NewIncomeClient() {
     const [date, setDate] = useState(defaultDate);
     const [description, setDescription] = useState("");
     const [amount, setAmount] = useState("");
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [category, setCategory] = useState("general");
     const [error, setError] = useState<string | null>(null);
     const [saving, setSaving] = useState(false);
@@ -50,7 +55,7 @@ export default function NewIncomeClient() {
     async function saveIncome() {
         setError(null);
         if (!amount || !date) {
-            setError("Importe y fecha son obligatorios");
+            setError(tIncome("errors.required"));
             return;
         }
 
@@ -84,7 +89,7 @@ export default function NewIncomeClient() {
 
             if (!response.ok) {
                 const json = await response.json();
-                throw new Error(json.error || "Error guardando ingreso");
+                throw new Error(json.error || tIncome("errors.saveFailed"));
             }
 
             // Dispatch event for UI updates (DashboardMoneyPanel, ExpenseCalendar)
@@ -98,13 +103,13 @@ export default function NewIncomeClient() {
             router.push(`/app?ym=${targetYear}-${pad2(targetMonth)}`);
             router.refresh();
         } catch (e: any) {
-            setError(e?.message ?? "Error guardando ingreso");
+            setError(e?.message ?? tIncome("errors.saveFailed"));
         } finally {
             setSaving(false);
         }
     }
 
-    const badge = ymValid && ym ? `Mes: ${ym}` : "Mes: actual";
+    const badge = ymValid && ym ? tCommon("monthActivity", { month: ym }) : tCommon("currentMonth");
     const backHref = ymValid && ym ? `/app?ym=${ym}` : "/app";
 
     return (
@@ -118,7 +123,7 @@ export default function NewIncomeClient() {
                         onClick={() => router.push(backHref)}
                         className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
                     >
-                        ← Volver
+                        ← {tCommon("back")}
                     </button>
                     <div className="text-xs uppercase tracking-wide font-medium text-muted-foreground bg-muted px-2 py-1 rounded-sm">
                         {badge}
@@ -128,8 +133,8 @@ export default function NewIncomeClient() {
                 {/* Main Card */}
                 <div className="bg-card border border-border rounded-xl shadow-sm p-6 sm:p-8">
                     <div className="mb-8">
-                        <h1 className="text-2xl sm:text-3xl font-serif text-foreground font-medium mb-2">Nuevo ingreso</h1>
-                        <p className="text-sm text-muted-foreground">Registra una entrada de dinero (nómina, venta, regalo...).</p>
+                        <h1 className="text-2xl sm:text-3xl font-serif text-foreground font-medium mb-2">{tIncome("title")}</h1>
+                        <p className="text-sm text-muted-foreground">{tIncome("subtitle")}</p>
                     </div>
 
                     {error && (
@@ -141,7 +146,7 @@ export default function NewIncomeClient() {
                     <div className="space-y-6">
                         {/* Date Input */}
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-foreground">Fecha</label>
+                            <label className="text-sm font-medium text-foreground">{tCommon("date")}</label>
                             <input
                                 type="date"
                                 value={date}
@@ -150,26 +155,26 @@ export default function NewIncomeClient() {
                             />
                             {ymValid && ym && (
                                 <p className="text-xs text-muted-foreground">
-                                    La fecha se mantiene dentro del mes seleccionado.
+                                    {tCommon("dateHint")}
                                 </p>
                             )}
                         </div>
 
                         {/* Description */}
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-foreground">Concepto</label>
+                            <label className="text-sm font-medium text-foreground">{tCommon("concept")}</label>
                             <input
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                placeholder="Ej: Nómina enero"
+                                placeholder={tCommon("placeholders.conceptIncome")}
                                 autoFocus
                             />
                         </div>
 
                         {/* Amount */}
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-foreground">Importe (€)</label>
+                            <label className="text-sm font-medium text-foreground">{tCommon("amount")}</label>
                             <div className="relative">
                                 <span className="absolute left-3 top-2.5 text-muted-foreground text-sm">€</span>
                                 <input
@@ -190,7 +195,7 @@ export default function NewIncomeClient() {
                                 disabled={saving || !amount}
                                 className="w-full inline-flex items-center justify-center rounded-md bg-stone-900 dark:bg-stone-50 px-8 py-3 text-sm font-medium text-stone-50 dark:text-stone-900 shadow transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                             >
-                                {saving ? "Guardando..." : "Guardar Ingreso"}
+                                {saving ? tIncome("saving") : tIncome("submit")}
                             </button>
                         </div>
                     </div>

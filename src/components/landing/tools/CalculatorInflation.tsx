@@ -255,83 +255,82 @@ export function CalculatorInflation() {
 
                 {/* Definition Block for LLMs */}
                 <div className="bg-stone-50 p-6 rounded-lg border-l-4 border-stone-900 my-8">
-                    <h2 className="mt-0 text-2xl text-stone-900">¿Qué es la Inflación?</h2>
+                    <h2 className="mt-0 text-2xl text-stone-900">{t('content.whatTitle')}</h2>
                     <p className="mb-0">
-                        La <strong>inflación</strong> es el aumento generalizado y sostenido de los precios de bienes y servicios en una economía a lo largo del tiempo.
-                        En España, se mide principalmente a través del <strong>IPC (Índice de Precios de Consumo)</strong>.
-                        Cuando hay inflación, cada euro que tienes compra menos productos que antes; es decir, pierdes <em>poder adquisitivo</em>.
+                        {t.rich('content.whatText', {
+                            bold: (chunks) => <strong>{chunks}</strong>,
+                            italic: (chunks) => <em>{chunks}</em>
+                        })}
                     </p>
                 </div>
 
-                <h2>Entendiendo el Impacto de la Inflación en tus Ahorros</h2>
+                <h2>{t('content.impactTitle')}</h2>
                 <p>
-                    Imagina que guardas 10.000€ en una caja fuerte hoy. Con una inflación media del 3% anual:
+                    {t('content.impactText')}
                 </p>
                 <ul className="list-disc pl-5 space-y-2">
-                    <li><strong>Hoy:</strong> Puedes comprar un coche pequeño por 10.000€.</li>
-                    <li><strong>En 10 años:</strong> Ese mismo coche costará aproximadamente 13.439€.</li>
-                    <li><strong>El problema:</strong> Tú sigues teniendo solo 10.000€ en la caja. Tu dinero "existe", pero vale mucho menos.</li>
+                    <li>{t.rich('content.impactList.today', { bold: (chunks) => <strong>{chunks}</strong> })}</li>
+                    <li>{t.rich('content.impactList.future', { bold: (chunks) => <strong>{chunks}</strong> })}</li>
+                    <li>{t.rich('content.impactList.problem', { bold: (chunks) => <strong>{chunks}</strong> })}</li>
                 </ul>
 
-                <h3>Comparativa: Ahorro vs Inversión vs Inflación</h3>
+                <h3>{t('content.tableTitle')}</h3>
                 <div className="overflow-x-auto my-8">
                     <table className="min-w-full text-left text-sm whitespace-nowrap">
                         <thead className="uppercase tracking-wider border-b-2 border-stone-200 bg-stone-50">
                             <tr>
-                                <th scope="col" className="px-6 py-4 font-serif text-stone-900">Estrategia</th>
-                                <th scope="col" className="px-6 py-4 font-serif text-stone-900">Rentabilidad Típica</th>
-                                <th scope="col" className="px-6 py-4 font-serif text-stone-900">Resultado Real (con IPC 3%)</th>
+                                <th scope="col" className="px-6 py-4 font-serif text-stone-900">{t('content.tableHeaders.strategy')}</th>
+                                <th scope="col" className="px-6 py-4 font-serif text-stone-900">{t('content.tableHeaders.return')}</th>
+                                <th scope="col" className="px-6 py-4 font-serif text-stone-900">{t('content.tableHeaders.realResult')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-stone-100">
                             <tr className="bg-white hover:bg-stone-50 transition-colors">
-                                <td className="px-6 py-4 font-medium text-stone-900">Bajo el colchón</td>
-                                <td className="px-6 py-4">0%</td>
-                                <td className="px-6 py-4 text-red-600">-3% anual (Pérdida)</td>
+                                <td className="px-6 py-4 font-medium text-stone-900">{t('content.tableRows.mattress.name')}</td>
+                                <td className="px-6 py-4">{t('content.tableRows.mattress.return')}</td>
+                                <td className="px-6 py-4 text-red-600">{t('content.tableRows.mattress.result')}</td>
                             </tr>
                             <tr className="bg-white hover:bg-stone-50 transition-colors">
-                                <td className="px-6 py-4 font-medium text-stone-900">Cuenta de Ahorro</td>
-                                <td className="px-6 py-4">1% - 2%</td>
-                                <td className="px-6 py-4 text-orange-500">-1% a -2% (Pérdida leve)</td>
+                                <td className="px-6 py-4 font-medium text-stone-900">{t('content.tableRows.savings.name')}</td>
+                                <td className="px-6 py-4">{t('content.tableRows.savings.return')}</td>
+                                <td className="px-6 py-4 text-orange-500">{t('content.tableRows.savings.result')}</td>
                             </tr>
                             <tr className="bg-white hover:bg-stone-50 transition-colors">
-                                <td className="px-6 py-4 font-medium text-stone-900">Inversión Indexada (S&P500)</td>
-                                <td className="px-6 py-4">7% - 10%</td>
-                                <td className="px-6 py-4 text-emerald-600">+4% a +7% (Ganancia Real)</td>
+                                <td className="px-6 py-4 font-medium text-stone-900">{t('content.tableRows.investment.name')}</td>
+                                <td className="px-6 py-4">{t('content.tableRows.investment.return')}</td>
+                                <td className="px-6 py-4 text-emerald-600">{t('content.tableRows.investment.result')}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <h2>Preguntas Frecuentes sobre el IPC en España</h2>
+                <h2>{t('content.faqTitle')}</h2>
 
                 <div className="space-y-8">
                     <div>
-                        <h3 className="text-xl font-bold text-stone-900 mt-6">¿Cuál es la diferencia entre IPC e Inflación?</h3>
+                        <h3 className="text-xl font-bold text-stone-900 mt-6">{t('content.faq.q1')}</h3>
                         <p>
-                            Aunque se usan indistintamente, la <strong>inflación</strong> es el fenómeno económico (subida de precios), mientras que el <strong>IPC</strong> es la herramienta estadística que usa el INE para medirla.
-                            El IPC se basa en una "cesta de la compra" representativa (alimentos, energía, transporte) de las familias españolas.
+                            {t.rich('content.faq.a1', { bold: (chunks) => <strong>{chunks}</strong> })}
                         </p>
                     </div>
 
                     <div>
-                        <h3 className="text-xl font-bold text-stone-900 mt-6">¿Cómo calcular el IPC acumulado entre dos años?</h3>
+                        <h3 className="text-xl font-bold text-stone-900 mt-6">{t('content.faq.q2')}</h3>
                         <p>
-                            La fórmula oficial para calcular la variación del IPC es:
+                            {t('content.faq.a2')}
                         </p>
                         <code className="block bg-stone-100 p-4 rounded text-sm font-mono text-stone-800 my-4">
                             Tasa Variación = ((IPC Final - IPC Inicial) / IPC Inicial) x 100
                         </code>
                         <p>
-                            Esta fórmula es la que se utiliza legalmente para <strong>actualizar rentas de alquiler</strong> o revisiones salariales en convenios.
+                            {t.rich('content.faq.a2b', { bold: (chunks) => <strong>{chunks}</strong> })}
                         </p>
                     </div>
 
                     <div>
-                        <h3 className="text-xl font-bold text-stone-900 mt-6">¿Cuánto vale mi dinero de 2000 hoy en España?</h3>
+                        <h3 className="text-xl font-bold text-stone-900 mt-6">{t('content.faq.q3')}</h3>
                         <p>
-                            Debido a la inflación acumulada en España desde el año 2000 (aproximadamente un 60-70% acumulado), para comprar lo mismo que comprabas con 1.000€ en el año 2000,
-                            hoy necesitarías cerca de <strong>1.700€</strong>.
+                            {t.rich('content.faq.a3', { bold: (chunks) => <strong>{chunks}</strong> })}
                         </p>
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/browser";
+import { useTranslations } from "next-intl";
 
 type FixedExpenseRow = {
   id: string;
@@ -50,6 +51,7 @@ type EditForm = {
 };
 
 export default function FixedExpensesPage() {
+  const t = useTranslations("FixedExpenses");
   const supabase = useMemo(() => createClient(), []);
 
   const [rows, setRows] = useState<FixedExpenseRow[]>([]);
@@ -101,7 +103,7 @@ export default function FixedExpensesPage() {
       if (error) throw error;
       setRows((data as FixedExpenseRow[]) ?? []);
     } catch (e: any) {
-      setErr(e?.message ?? "Error cargando gastos fijos");
+      setErr(e?.message ?? t("status.errorLoad"));
     } finally {
       setLoading(false);
     }
@@ -120,12 +122,12 @@ export default function FixedExpensesPage() {
     const eYm = args.end_ym.trim();
     const dd = parseDueDay(args.due_day);
 
-    if (!nm) return { ok: false as const, message: "Pon un nombre." };
-    if (!Number.isFinite(amt) || amt <= 0) return { ok: false as const, message: "Importe inválido." };
-    if (!isYm(sYm)) return { ok: false as const, message: "start_ym debe ser YYYY-MM." };
-    if (eYm && !isYm(eYm)) return { ok: false as const, message: "end_ym debe ser YYYY-MM o vacío." };
-    if (eYm && eYm < sYm) return { ok: false as const, message: "end_ym no puede ser anterior a start_ym." };
-    if (args.due_day.trim() && dd === null) return { ok: false as const, message: "Día de cobro debe ser 1–31 (o vacío)." };
+    if (!nm) return { ok: false as const, message: t("form.validation.name") };
+    if (!Number.isFinite(amt) || amt <= 0) return { ok: false as const, message: t("form.validation.amount") };
+    if (!isYm(sYm)) return { ok: false as const, message: t("form.validation.startFormat") };
+    if (eYm && !isYm(eYm)) return { ok: false as const, message: t("form.validation.endFormat") };
+    if (eYm && eYm < sYm) return { ok: false as const, message: t("form.validation.endAfterStart") };
+    if (args.due_day.trim() && dd === null) return { ok: false as const, message: t("form.validation.dayFormat") };
 
     return {
       ok: true as const,
@@ -171,7 +173,7 @@ export default function FixedExpensesPage() {
       setDueDay("");
       await load();
     } catch (e: any) {
-      setErr(e?.message ?? "Error creando gasto fijo");
+      setErr(e?.message ?? t("status.errorCreate"));
     } finally {
       setSaving(false);
     }
@@ -190,12 +192,12 @@ export default function FixedExpensesPage() {
       if (error) throw error;
       setRows((prev) => prev.map((r) => (r.id === id ? { ...r, active: next } : r)));
     } catch (e: any) {
-      setErr(e?.message ?? "Error actualizando");
+      setErr(e?.message ?? t("status.errorUpdate"));
     }
   }
 
   async function removeRow(id: string) {
-    const ok = window.confirm("¿Eliminar este gasto fijo? No se puede deshacer.");
+    const ok = window.confirm(t("actions.confirmDelete"));
     if (!ok) return;
 
     setErr(null);
@@ -217,7 +219,7 @@ export default function FixedExpensesPage() {
 
       setRows((prev) => prev.filter((r) => r.id !== id));
     } catch (e: any) {
-      setErr(e?.message ?? "Error eliminando");
+      setErr(e?.message ?? t("status.errorDelete"));
     }
   }
 
@@ -283,7 +285,7 @@ export default function FixedExpensesPage() {
 
       cancelEdit();
     } catch (e: any) {
-      setErr(e?.message ?? "Error guardando cambios");
+      setErr(e?.message ?? t("status.errorSave"));
     } finally {
       setEditSaving(false);
     }
@@ -299,9 +301,9 @@ export default function FixedExpensesPage() {
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-medium text-foreground">Gastos fijos</h1>
+            <h1 className="text-2xl sm:text-3xl font-serif font-medium text-foreground">{t("title")}</h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Total activo: <span className="font-semibold text-foreground">{money(totalActive)} €</span>
+              {t("totalActive")} <span className="font-semibold text-foreground">{money(totalActive)} €</span>
             </p>
           </div>
 
@@ -310,56 +312,56 @@ export default function FixedExpensesPage() {
               href="/app"
               className="border border-border bg-card hover:bg-muted text-foreground px-3 py-2 text-sm rounded-lg transition-colors"
             >
-              ← Dashboard
+              ← {t("actions.back")}
             </Link>
             <button
               onClick={load}
               className="border border-border bg-card hover:bg-muted text-foreground px-3 py-2 text-sm rounded-lg transition-colors"
             >
-              Recargar
+              {t("actions.reload")}
             </button>
           </div>
         </div>
 
         {err && <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-lg border border-destructive/20">{err}</div>}
-        {loading && <div className="text-sm text-muted-foreground animate-pulse">Cargando…</div>}
+        {loading && <div className="text-sm text-muted-foreground animate-pulse">{t("status.loading")}</div>}
 
         {/* Alta */}
         <div className="border border-border bg-card p-4 sm:p-5 space-y-4 rounded-xl shadow-sm transition-colors">
-          <div className="font-medium text-foreground text-sm sm:text-base">Añadir gasto fijo</div>
+          <div className="font-medium text-foreground text-sm sm:text-base">{t("form.title")}</div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             <input
               className="border border-border bg-muted/50 text-foreground rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-shadow"
-              placeholder="Nombre (Ej: alquiler)"
+              placeholder={t("form.placeholder.name")}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
 
             <input
               className="border border-border bg-muted/50 text-foreground rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-shadow"
-              placeholder="Importe (Ej: 750)"
+              placeholder={t("form.placeholder.amount")}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
 
             <input
               className="border border-border bg-muted/50 text-foreground rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-shadow"
-              placeholder="Inicio (YYYY-MM)"
+              placeholder={t("form.placeholder.start")}
               value={startYm}
               onChange={(e) => setStartYm(e.target.value)}
             />
 
             <input
               className="border border-border bg-muted/50 text-foreground rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-shadow"
-              placeholder="Fin (opcional)"
+              placeholder={t("form.placeholder.end")}
               value={endYm}
               onChange={(e) => setEndYm(e.target.value)}
             />
 
             <input
               className="border border-border bg-muted/50 text-foreground rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-shadow"
-              placeholder="Día cobro (1–31)"
+              placeholder={t("form.placeholder.day")}
               inputMode="numeric"
               value={dueDay}
               onChange={(e) => setDueDay(e.target.value)}
@@ -372,21 +374,22 @@ export default function FixedExpensesPage() {
             disabled={saving}
             className="bg-stone-900 dark:bg-stone-100 text-stone-50 dark:text-stone-900 px-4 py-2 text-sm font-medium rounded-lg hover:opacity-90 disabled:opacity-50 transition-colors shadow-sm"
           >
-            {saving ? "Guardando…" : "Añadir"}
+            {saving ? t("actions.saving") : t("actions.add")}
           </button>
 
           <div className="text-xs text-muted-foreground">
-            El <span className="font-medium text-foreground">Día de cobro</span> es opcional. Si lo pones, luego lo usaremos para
-            calcular “pendiente” según el día del mes.
+            {t.rich("form.helper", {
+              bold: (chunks) => <span className="font-medium text-foreground">{chunks}</span>
+            })}
           </div>
         </div>
 
         {/* Lista */}
         <div className="border border-border bg-card p-4 sm:p-5 rounded-xl shadow-sm transition-colors">
-          <div className="font-medium text-foreground mb-4">Lista de gastos</div>
+          <div className="font-medium text-foreground mb-4">{t("list.title")}</div>
 
           {rows.length === 0 && !loading && (
-            <div className="text-sm text-muted-foreground italic">No hay gastos fijos todavía.</div>
+            <div className="text-sm text-muted-foreground italic">{t("list.empty")}</div>
           )}
 
           {rows.length > 0 && (
@@ -405,14 +408,14 @@ export default function FixedExpensesPage() {
                           <div className="text-sm font-medium text-foreground truncate">
                             {r.name}{" "}
                             {!r.active && (
-                              <span className="text-xs text-muted-foreground ml-2">(inactivo)</span>
+                              <span className="text-xs text-muted-foreground ml-2">({t("status.inactive")})</span>
                             )}
                           </div>
                           <div className="text-xs text-muted-foreground mt-0.5">
                             {r.start_ym}
-                            {r.end_ym ? ` → ${r.end_ym}` : " → (sin fin)"}
+                            {r.end_ym ? ` → ${r.end_ym}` : ` → ${t("list.noEnd")}`}
                             {" · "}
-                            {r.due_day ? `Día ${r.due_day}` : "Sin día"}
+                            {r.due_day ? t("list.day", { day: r.due_day }) : t("list.noDay")}
                           </div>
                         </div>
 
@@ -422,9 +425,9 @@ export default function FixedExpensesPage() {
                           <button
                             onClick={() => startEdit(r)}
                             className="text-xs bg-amber-100 text-amber-900 dark:bg-amber-900/30 dark:text-amber-200 border border-amber-200 dark:border-amber-800 px-2 py-1.5 rounded hover:opacity-80 transition-colors"
-                            title="Editar"
+                            title={t("actions.edit")}
                           >
-                            Editar
+                            {t("actions.edit")}
                           </button>
 
                           <button
@@ -433,17 +436,17 @@ export default function FixedExpensesPage() {
                               ? "bg-muted text-muted-foreground border-border hover:bg-muted/80"
                               : "bg-primary/10 text-primary border-primary/20 hover:bg-primary/20"
                               }`}
-                            title={r.active ? "Desactivar" : "Activar"}
+                            title={r.active ? t("actions.deactivate") : t("actions.activate")}
                           >
-                            {r.active ? "Desactivar" : "Activar"}
+                            {r.active ? t("actions.deactivate") : t("actions.activate")}
                           </button>
 
                           <button
                             onClick={() => removeRow(r.id)}
                             className="text-xs bg-destructive/10 text-destructive border border-destructive/20 px-2 py-1.5 rounded hover:bg-destructive/20 transition-colors"
-                            title="Eliminar"
+                            title={t("actions.delete")}
                           >
-                            Eliminar
+                            {t("actions.delete")}
                           </button>
                         </div>
                       </div>
@@ -452,7 +455,7 @@ export default function FixedExpensesPage() {
                     {/* Modo edición */}
                     {isEditing && editForm && (
                       <div className="space-y-3">
-                        <div className="text-sm font-semibold text-foreground">Editando</div>
+                        <div className="text-sm font-semibold text-foreground">{t("form.editing")}</div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
                           <input
@@ -461,7 +464,7 @@ export default function FixedExpensesPage() {
                             onChange={(e) =>
                               setEditForm({ ...editForm, name: e.target.value })
                             }
-                            placeholder="Nombre"
+                            placeholder={t("form.placeholder.name")}
                           />
 
                           <input
@@ -470,7 +473,7 @@ export default function FixedExpensesPage() {
                             onChange={(e) =>
                               setEditForm({ ...editForm, amount: e.target.value })
                             }
-                            placeholder="Importe"
+                            placeholder={t("form.placeholder.amount")}
                             inputMode="decimal"
                           />
 
@@ -480,7 +483,7 @@ export default function FixedExpensesPage() {
                             onChange={(e) =>
                               setEditForm({ ...editForm, start_ym: e.target.value })
                             }
-                            placeholder="Start YM"
+                            placeholder={t("form.placeholder.start")}
                           />
 
                           <input
@@ -489,7 +492,7 @@ export default function FixedExpensesPage() {
                             onChange={(e) =>
                               setEditForm({ ...editForm, end_ym: e.target.value })
                             }
-                            placeholder="End YM (opcional)"
+                            placeholder={t("form.placeholder.end")}
                           />
 
                           <input
@@ -498,7 +501,7 @@ export default function FixedExpensesPage() {
                             onChange={(e) =>
                               setEditForm({ ...editForm, due_day: e.target.value })
                             }
-                            placeholder="Día (1–31)"
+                            placeholder={t("form.placeholder.day")}
                             inputMode="numeric"
                           />
                         </div>
@@ -509,7 +512,7 @@ export default function FixedExpensesPage() {
                             disabled={editSaving}
                             className="bg-primary text-primary-foreground px-3 py-1.5 text-xs rounded-lg hover:opacity-90 disabled:opacity-50"
                           >
-                            {editSaving ? "Guardando…" : "Guardar"}
+                            {editSaving ? t("actions.saving") : t("actions.save")}
                           </button>
 
                           <button
@@ -517,7 +520,7 @@ export default function FixedExpensesPage() {
                             disabled={editSaving}
                             className="bg-muted text-muted-foreground border border-border px-3 py-1.5 text-xs rounded-lg hover:bg-muted/80 disabled:opacity-50"
                           >
-                            Cancelar
+                            {t("actions.cancel")}
                           </button>
                         </div>
                       </div>

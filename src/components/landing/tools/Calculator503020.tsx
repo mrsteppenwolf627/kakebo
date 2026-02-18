@@ -167,39 +167,37 @@ export function Calculator503020() {
 
             {/* SEO Content Section - Keeping it in Client Component for simplicity of layout, but could be passed as children */}
             <div className="prose prose-stone max-w-none prose-headings:font-serif prose-p:font-light prose-p:text-lg text-stone-600">
-                <h2>¿Qué es la regla 50/30/20?</h2>
+                <h2>{t('content.whatTitle')}</h2>
                 <p>
-                    Popularizada por la senadora estadounidense Elizabeth Warren en su libro <em>"All Your Worth: The Ultimate Lifetime Money Plan"</em>,
-                    la regla 50/30/20 es el método más sencillo y eficaz para gestionar tus finanzas personales si odias los presupuestos complicados.
+                    {t.rich('content.whatText1', { em: (chunks) => <em>{chunks}</em> })}
                 </p>
                 <p>
-                    La premisa es simple: no necesitas trackear cada céntimo obsesivamente (aunque <strong>Kakebo</strong> te ayuda a hacerlo fácil),
-                    sino dividir tu ingreso neto mensual en tres grandes cubos:
+                    {t.rich('content.whatText2', { bold: (chunks) => <strong>{chunks}</strong> })}
                 </p>
 
                 <div className="grid md:grid-cols-3 gap-8 my-12 not-prose">
                     <div className="space-y-2">
                         <span className="text-4xl font-serif text-stone-900 block">50%</span>
-                        <h3 className="font-bold text-stone-900 text-lg">Necesidades</h3>
-                        <p className="text-sm">Gastos fijos y esenciales. Si perrieras tu trabajo, estos son los gastos que seguirías teniendo que pagar.</p>
+                        <h3 className="font-bold text-stone-900 text-lg">{t('content.needsTitle')}</h3>
+                        <p className="text-sm">{t('content.needsDesc')}</p>
                     </div>
                     <div className="space-y-2">
                         <span className="text-4xl font-serif text-amber-500 block">30%</span>
-                        <h3 className="font-bold text-stone-900 text-lg">Deseos</h3>
-                        <p className="text-sm">Gastos variables que mejoran tu calidad de vida. Son flexibles y los primeros en cortarse en tiempos difíciles.</p>
+                        <h3 className="font-bold text-stone-900 text-lg">{t('content.wantsTitle')}</h3>
+                        <p className="text-sm">{t('content.wantsDesc')}</p>
                     </div>
                     <div className="space-y-2">
                         <span className="text-4xl font-serif text-emerald-500 block">20%</span>
-                        <h3 className="font-bold text-stone-900 text-lg">Ahorro</h3>
-                        <p className="text-sm">Tu pasaporte a la libertad financiera. Fondo de emergencia, inversión a largo plazo y pago de deudas.</p>
+                        <h3 className="font-bold text-stone-900 text-lg">{t('content.savingsTitle')}</h3>
+                        <p className="text-sm">{t('content.savingsDesc')}</p>
                     </div>
                 </div>
 
-                <h2>¿Cómo usar esta calculadora de ahorro?</h2>
+                <h2>{t('content.howTitle')}</h2>
                 <ol>
-                    <li><strong>Introduce tus ingresos netos:</strong> Es la cantidad final que llega a tu banco cada mes (después de impuestos).</li>
-                    <li><strong>Ajusta tus gastos fijos:</strong> Intenta que tu alquiler/hipoteca + facturas no supere la mitad de ese número.</li>
-                    <li><strong>Automatiza tu ahorro:</strong> Configura una transferencia automática del 20% a otra cuenta (o a Kakebo) nada más cobrar.</li>
+                    <li>{t.rich('content.howStep1', { bold: (chunks) => <strong>{chunks}</strong> })}</li>
+                    <li>{t.rich('content.howStep2', { bold: (chunks) => <strong>{chunks}</strong> })}</li>
+                    <li>{t.rich('content.howStep3', { bold: (chunks) => <strong>{chunks}</strong> })}</li>
                 </ol>
             </div>
 

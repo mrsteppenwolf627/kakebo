@@ -4,18 +4,19 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 import { canUsePremium, Profile } from "@/lib/auth/access-control";
+import { useTranslations } from "next-intl";
 
 const KAKEBO_CATEGORIES = {
-  supervivencia: { label: "Supervivencia", color: "#dc2626" },
-  opcional: { label: "Opcional", color: "#2563eb" },
-  cultura: { label: "Cultura", color: "#16a34a" },
-  extra: { label: "Extra", color: "#9333ea" },
+  supervivencia: { labelKey: "supervivencia", color: "#dc2626" },
+  opcional: { labelKey: "opcional", color: "#2563eb" },
+  cultura: { labelKey: "cultura", color: "#16a34a" },
+  extra: { labelKey: "extra", color: "#9333ea" },
 } as const;
 
 type CategoryKey = keyof typeof KAKEBO_CATEGORIES;
 
 /**
- * Map AI categories (English) to frontend categories (Spanish)
+ * Map AI categories (English) to frontend categories (Spanish keys)
  */
 const AI_TO_FRONTEND_CATEGORY: Record<string, CategoryKey> = {
   survival: "supervivencia",
@@ -48,6 +49,9 @@ export default function NewExpensePage() {
   const supabase = useMemo(() => createClient(), []);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations("Transaction");
+  const tCommon = useTranslations("Transaction.Common");
+  const tExpense = useTranslations("Transaction.NewExpense");
 
   const ym = searchParams?.get("ym");
   const ymValid = isYm(ym);
@@ -143,7 +147,7 @@ export default function NewExpensePage() {
 
         if (!cancelled) setMonthClosed(status === "closed");
       } catch (e: any) {
-        if (!cancelled) setError(e?.message ?? "Error comprobando el mes");
+        if (!cancelled) setError(e?.message ?? tExpense("errors.checkFailed"));
       } finally {
         if (!cancelled) setChecking(false);
       }
@@ -154,11 +158,11 @@ export default function NewExpensePage() {
     return () => {
       cancelled = true;
     };
-  }, [ymValid, ym, supabase]);
+  }, [ymValid, ym, supabase, tExpense]);
 
   async function requestAISuggestion() {
     if (!note.trim()) {
-      setAiError("Escribe un concepto primero");
+      setAiError(tExpense("ai.emptyError"));
       return;
     }
 
@@ -247,6 +251,7 @@ export default function NewExpensePage() {
   }
 
   async function ensureMonth(userId: string, year: number, month: number) {
+    // ... same implementation ...
     const { data, error } = await supabase
       .from("months")
       .select("id,status")
@@ -279,7 +284,7 @@ export default function NewExpensePage() {
     if (checking) return;
 
     if (inputsDisabled) {
-      setError(`Mes cerrado (${ym}): no se pueden añadir gastos.`);
+      setError(tExpense("errors.monthClosed", { ym }));
       return;
     }
 
@@ -301,9 +306,7 @@ export default function NewExpensePage() {
 
       if (m.status === "closed") {
         setError(
-          `Mes cerrado (${targetYear}-${pad2(
-            targetMonth
-          )}): no se pueden añadir gastos.`
+          tExpense("errors.monthClosed", { ym: `${targetYear}-${pad2(targetMonth)}` })
         );
         return;
       }
@@ -327,13 +330,13 @@ export default function NewExpensePage() {
       router.push(`/app?ym=${targetYear}-${pad2(targetMonth)}`);
       router.refresh?.();
     } catch (e: any) {
-      setError(e?.message ?? "Error guardando gasto");
+      setError(e?.message ?? tExpense("errors.saveFailed"));
     } finally {
       setSaving(false);
     }
   }
 
-  const badge = ymValid && ym ? `Mes: ${ym}` : "Mes: actual";
+  const badge = ymValid && ym ? tCommon("monthActivity", { month: ym }) : tCommon("currentMonth");
   const backHref = ymValid && ym ? `/app?ym=${ym}` : "/app";
 
   return (
@@ -347,7 +350,7 @@ export default function NewExpensePage() {
             onClick={() => router.push(backHref)}
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
           >
-            ← Volver
+            ← {tCommon("back")}
           </button>
           <div className="text-xs uppercase tracking-wide font-medium text-muted-foreground bg-muted px-2 py-1 rounded-sm">
             {badge}
@@ -357,16 +360,16 @@ export default function NewExpensePage() {
         {/* Main Card */}
         <div className="bg-card border border-border rounded-xl shadow-sm p-6 sm:p-8">
           <div className="mb-8">
-            <h1 className="text-2xl sm:text-3xl font-serif text-foreground font-medium mb-2">Nuevo gasto</h1>
-            <p className="text-sm text-muted-foreground">Registra un nuevo movimiento en tu Kakebo.</p>
+            <h1 className="text-2xl sm:text-3xl font-serif text-foreground font-medium mb-2">{tExpense("title")}</h1>
+            <p className="text-sm text-muted-foreground">{tExpense("subtitle")}</p>
           </div>
 
           {inputsDisabled && (
             <div className="mb-6 p-3 bg-destructive/10 border border-destructive/20 text-destructive text-sm rounded-md flex items-start gap-2">
               <span className="text-lg">🔒</span>
               <div>
-                <strong>Mes cerrado.</strong>
-                <p className="opacity-90">No se pueden añadir gastos a este periodo.</p>
+                <strong>{tCommon("monthClosed")}</strong>
+                <p className="opacity-90">{tCommon("monthClosedDesc")}</p>
               </div>
             </div>
           )}
@@ -380,7 +383,7 @@ export default function NewExpensePage() {
           <div className="space-y-6">
             {/* Date Input */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Fecha</label>
+              <label className="text-sm font-medium text-foreground">{tCommon("date")}</label>
               <input
                 type="date"
                 value={date}
@@ -390,14 +393,14 @@ export default function NewExpensePage() {
               />
               {ymValid && ym && (
                 <p className="text-xs text-muted-foreground">
-                  La fecha se mantiene dentro del mes seleccionado.
+                  {tCommon("dateHint")}
                 </p>
               )}
             </div>
 
             {/* Concept + AI */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Concepto</label>
+              <label className="text-sm font-medium text-foreground">{tCommon("concept")}</label>
               <div className="flex gap-2">
                 <input
                   value={note}
@@ -409,7 +412,7 @@ export default function NewExpensePage() {
                     }
                   }}
                   className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  placeholder="Ej: compra supermercado"
+                  placeholder={tCommon("placeholders.conceptExpense")}
                   disabled={inputsDisabled}
                   autoFocus
                 />
@@ -419,12 +422,12 @@ export default function NewExpensePage() {
                     onClick={requestAISuggestion}
                     disabled={inputsDisabled || aiLoading || !note.trim()}
                     className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium ring-offset-background hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 transition-colors shadow-sm"
-                    title="Sugerir categoría con IA"
+                    title={tExpense("ai.tooltip")}
                   >
                     {aiLoading ? (
                       <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                     ) : (
-                      "🤖 IA"
+                      `🤖 ${tExpense("ai.button")}`
                     )}
                   </button>
                 )}
@@ -440,14 +443,14 @@ export default function NewExpensePage() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                      Sugerencia IA
+                      {tExpense("ai.suggestionTitle")}
                     </p>
                     <div className="text-sm text-blue-700 dark:text-blue-300">
-                      Categoría:{" "}
+                      {tCommon("category")}:{" "}
                       <span className="font-semibold" style={{ color: KAKEBO_CATEGORIES[aiSuggestion.category].color }}>
-                        {KAKEBO_CATEGORIES[aiSuggestion.category].label}
+                        {tCommon(`categories.${KAKEBO_CATEGORIES[aiSuggestion.category].labelKey}`)}
                       </span>
-                      {" "}• {(aiSuggestion.confidence * 100).toFixed(0)}% confianza
+                      {" "}• {tExpense("ai.confidence", { percent: (aiSuggestion.confidence * 100).toFixed(0) })}
                     </div>
                   </div>
                   <div className="flex gap-2 shrink-0">
@@ -456,14 +459,14 @@ export default function NewExpensePage() {
                       onClick={acceptSuggestion}
                       className="inline-flex h-8 items-center justify-center rounded-md bg-blue-600 px-3 text-xs font-medium text-white shadow hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                     >
-                      Aceptar
+                      {tExpense("ai.accept")}
                     </button>
                     <button
                       type="button"
                       onClick={dismissSuggestion}
                       className="inline-flex h-8 items-center justify-center rounded-md border border-blue-200 dark:border-blue-700 bg-transparent px-3 text-xs font-medium text-blue-900 dark:text-blue-100 shadow-sm hover:bg-blue-100 dark:hover:bg-blue-900/40"
                     >
-                      Ignorar
+                      {tExpense("ai.ignore")}
                     </button>
                   </div>
                 </div>
@@ -473,14 +476,14 @@ export default function NewExpensePage() {
             {suggestionAccepted && aiSuggestion && (
               <div className="flex items-center gap-2 text-xs text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900 p-2 rounded-md">
                 <span>✨</span>
-                <span>Categoría detectada: <strong>{KAKEBO_CATEGORIES[aiSuggestion.category].label}</strong></span>
+                <span>{tExpense("ai.detected")} <strong>{tCommon(`categories.${KAKEBO_CATEGORIES[aiSuggestion.category].labelKey}`)}</strong></span>
               </div>
             )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Amount */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Importe (€)</label>
+                <label className="text-sm font-medium text-foreground">{tCommon("amount")}</label>
                 <div className="relative">
                   <span className="absolute left-3 top-2.5 text-muted-foreground text-sm">€</span>
                   <input
@@ -497,7 +500,7 @@ export default function NewExpensePage() {
 
               {/* Category */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Categoría</label>
+                <label className="text-sm font-medium text-foreground">{tCommon("category")}</label>
                 <div className="relative">
                   <div
                     className="absolute left-3 top-3 h-3 w-3 rounded-full ring-1 ring-black/5 dark:ring-white/10"
@@ -511,7 +514,7 @@ export default function NewExpensePage() {
                   >
                     {Object.entries(KAKEBO_CATEGORIES).map(([key, c]) => (
                       <option key={key} value={key}>
-                        {c.label}
+                        {tCommon(`categories.${c.labelKey}`)}
                       </option>
                     ))}
                   </select>
@@ -526,7 +529,7 @@ export default function NewExpensePage() {
                 disabled={saving || inputsDisabled || checking}
                 className="w-full inline-flex items-center justify-center rounded-md bg-stone-900 dark:bg-stone-50 px-8 py-3 text-sm font-medium text-stone-50 dark:text-stone-900 shadow transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
               >
-                {checking ? "Comprobando..." : saving ? "Guardando..." : "Guardar Gasto"}
+                {checking ? tExpense("checking") : saving ? tExpense("saving") : tExpense("submit")}
               </button>
             </div>
           </div>

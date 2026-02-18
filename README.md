@@ -239,6 +239,7 @@ Si decides continuar con la ayuda de la IA:
 - 🇪🇸/🇬🇧 **Soporte Bilingüe**: Kakebo ahora habla Español e Inglés nativo. Switcher de idioma instantáneo.
 - 🗺️ **SEO Internacional**: Etiquetas `hreflang` y metadatos optimizados para cada idioma.
 - 📍 **Rutas Localizadas**: Navegación amigable `/es` y `/en` para mejor indexación.
+- ⚖️ **Legal**: Páginas de Privacidad, Cookies y Términos totalmente traducidas y adaptadas.
 
 **Mejoras:**
 - 🔧 **Tools Refactor**: Calculadoras (Inflación, 50/30/20) reescritas para ser "Client Components" más rápidos y estables.

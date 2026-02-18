@@ -5,9 +5,11 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
+import { useTranslations } from "next-intl";
 
 
 export function Navbar() {
+  const t = useTranslations("Navigation");
   const supabase = createClient();
   const router = useRouter();
   const [session, setSession] = useState<any>(null);
@@ -63,13 +65,13 @@ export function Navbar() {
             href="/blog"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
-            Blog
+            {t('blog')}
           </Link>
 
           {/* Herramientas Dropdown */}
           <div className="relative group">
             <button className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground py-2 outline-none">
-              Herramientas
+              {t('tools')}
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:rotate-180">
                 <path d="m6 9 6 6 6-6" />
               </svg>
@@ -80,15 +82,22 @@ export function Navbar() {
                   href="/herramientas/calculadora-ahorro"
                   className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors"
                 >
-                  <span className="block font-medium text-foreground">Regla 50/30/20</span>
-                  <span className="block text-xs text-muted-foreground mt-0.5">Calculadora de presupuestos</span>
+                  <span className="block font-medium text-foreground">{t('toolsSavings')}</span>
+                  <span className="block text-xs text-muted-foreground mt-0.5">{t('toolsSavingsDesc')}</span>
+                </Link>
+                <Link
+                  href="/herramientas/regla-50-30-20"
+                  className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors"
+                >
+                  <span className="block font-medium text-foreground">{t('tools503020')}</span>
+                  <span className="block text-xs text-muted-foreground mt-0.5">{t('tools503020Desc')}</span>
                 </Link>
                 <Link
                   href="/herramientas/calculadora-inflacion"
                   className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors"
                 >
-                  <span className="block font-medium text-foreground text-red-600">Calculadora Inflación</span>
-                  <span className="block text-xs text-muted-foreground mt-0.5">Pérdida de poder adquisitivo</span>
+                  <span className="block font-medium text-foreground text-red-600">{t('toolsInflation')}</span>
+                  <span className="block text-xs text-muted-foreground mt-0.5">{t('toolsInflationDesc')}</span>
                 </Link>
               </div>
             </div>
@@ -97,19 +106,19 @@ export function Navbar() {
             href="#pricing"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
-            Precios
+            {t('pricing')}
           </Link>
           <Link
             href="#features"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
-            Características
+            {t('features')}
           </Link>
           <Link
             href="#how-it-works"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
-            Cómo funciona
+            {t('howItWorks')}
           </Link>
         </nav>
 
@@ -125,7 +134,7 @@ export function Navbar() {
               onClick={handleDashboardClick}
               className="inline-flex items-center px-4 py-1.5 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm font-medium"
             >
-              Ir al Dashboard
+              {t('goToDashboard')}
             </Link>
           ) : (
             <>
@@ -133,13 +142,13 @@ export function Navbar() {
                 href="/login"
                 className="hidden sm:inline-flex items-center px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground font-medium transition-colors"
               >
-                Entrar
+                {t('login')}
               </Link>
               <Link
                 href="/login"
                 className="inline-flex items-center px-4 py-1.5 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm font-medium"
               >
-                Empezar
+                {t('start')}
               </Link>
             </>
           )}

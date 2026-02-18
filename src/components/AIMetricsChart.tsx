@@ -14,6 +14,7 @@ import {
   Legend,
   CartesianGrid,
 } from "recharts";
+import { useTranslations } from "next-intl";
 
 type ChartMode = "bar" | "pie";
 
@@ -42,8 +43,6 @@ const DEFAULT_COLORS = [
 
 import { useTheme } from "next-themes";
 
-// ... (imports remain)
-
 export default function AIMetricsChart({
   title,
   subtitle,
@@ -53,6 +52,7 @@ export default function AIMetricsChart({
   const [mode, setMode] = useState<ChartMode>("bar");
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
+  const t = useTranslations("AIMetrics.charts");
 
   const chartColors = useMemo(() => {
     return {
@@ -81,7 +81,7 @@ export default function AIMetricsChart({
       <div className="border border-border bg-card p-4 rounded-xl shadow-sm">
         <div className="font-medium text-foreground">{title}</div>
         {subtitle && <div className="text-xs text-muted-foreground">{subtitle}</div>}
-        <div className="mt-4 text-sm text-muted-foreground italic">No hay datos disponibles</div>
+        <div className="mt-4 text-sm text-muted-foreground italic">{t("noData")}</div>
       </div>
     );
   }
@@ -99,17 +99,17 @@ export default function AIMetricsChart({
             onClick={() => setMode("bar")}
             className={`px-3 py-1 text-xs rounded-sm transition-all ${mode === "bar" ? "bg-card text-foreground shadow-sm font-medium" : "text-muted-foreground hover:text-foreground"
               }`}
-            title="Ver barras"
+            title={t("viewBar")}
           >
-            Barras
+            {t("viewBar")}
           </button>
           <button
             onClick={() => setMode("pie")}
             className={`px-3 py-1 text-xs rounded-sm transition-all ${mode === "pie" ? "bg-card text-foreground shadow-sm font-medium" : "text-muted-foreground hover:text-foreground"
               }`}
-            title="Ver gráfico circular"
+            title={t("viewPie")}
           >
-            Circular
+            {t("viewPie")}
           </button>
         </div>
       </div>
@@ -142,7 +142,7 @@ export default function AIMetricsChart({
                   fontSize: "12px",
                   color: chartColors.text,
                 }}
-                formatter={(value) => [valueFormatter(Number(value)), "Valor"]}
+                formatter={(value) => [valueFormatter(Number(value)), t("value")]}
               />
               <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={20}>
                 {chartData.map((entry) => (
@@ -163,7 +163,7 @@ export default function AIMetricsChart({
                   fontSize: "12px",
                   color: chartColors.text,
                 }}
-                formatter={(value) => [valueFormatter(Number(value)), "Valor"]}
+                formatter={(value) => [valueFormatter(Number(value)), t("value")]}
               />
               <Pie
                 data={chartData}

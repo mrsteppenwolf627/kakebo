@@ -1,5 +1,14 @@
 import { Suspense } from "react";
 import NewIncomeClient from "./NewIncomeClient";
+import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+    const t = await getTranslations({ locale, namespace: "Transaction.NewIncome" });
+    return {
+        title: `${t("title")} | Kakebo`,
+        description: t("subtitle"),
+    };
+}
 
 function NewIncomeSkeleton() {
     return (

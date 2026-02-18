@@ -1,6 +1,9 @@
 import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const t = useTranslations("Navigation");
+
   return (
     <footer className="relative border-t border-border bg-background">
       <div className="mx-auto max-w-7xl px-4 py-12">
@@ -15,7 +18,7 @@ export function Footer() {
               <span className="text-lg font-serif text-foreground">Kakebo</span>
             </div>
             <p className="text-sm text-muted-foreground font-light leading-relaxed">
-              Control de gastos minimalista basado en el método japonés Kakebo. La mejor alternativa a Excel y libretas.
+              {useTranslations("Common")("description")}
             </p>
 
             {/* Product Hunt Widget */}
@@ -35,14 +38,14 @@ export function Footer() {
 
           {/* Product */}
           <div>
-            <h3 className="mb-4 text-sm font-serif text-foreground">Producto</h3>
+            <h3 className="mb-4 text-sm font-serif text-foreground">{t('product')}</h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="#pricing"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Precios
+                  {t('pricing')}
                 </Link>
               </li>
               <li>
@@ -50,7 +53,7 @@ export function Footer() {
                   href="#features"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Características
+                  {t('features')}
                 </Link>
               </li>
               <li>
@@ -58,7 +61,15 @@ export function Footer() {
                   href="/blog"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Blog
+                  {t('blog')}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/herramientas/calculadora-ahorro"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
+                >
+                  {t('toolsSavings')}
                 </Link>
               </li>
               <li>
@@ -66,7 +77,7 @@ export function Footer() {
                   href="/herramientas/regla-50-30-20"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Calculadora 50/30/20
+                  {t('tools503020')}
                 </Link>
               </li>
               <li>
@@ -74,7 +85,7 @@ export function Footer() {
                   href="/herramientas/calculadora-inflacion"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Calculadora Inflación
+                  {t('toolsInflation')}
                 </Link>
               </li>
               <li>
@@ -82,7 +93,7 @@ export function Footer() {
                   href="#alternatives"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Alternativas a Excel
+                  {t('alternatives')}
                 </Link>
               </li>
               <li>
@@ -90,7 +101,7 @@ export function Footer() {
                   href="#faq"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  FAQ
+                  {t('faq')}
                 </Link>
               </li>
             </ul>
@@ -98,14 +109,14 @@ export function Footer() {
 
           {/* Account */}
           <div>
-            <h3 className="mb-4 text-sm font-serif text-foreground">Cuenta</h3>
+            <h3 className="mb-4 text-sm font-serif text-foreground">{t('account')}</h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/login"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Entrar
+                  {t('login')}
                 </Link>
               </li>
               <li>
@@ -113,7 +124,7 @@ export function Footer() {
                   href="/login"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Crear cuenta
+                  {t('createAccount')}
                 </Link>
               </li>
               <li>
@@ -121,7 +132,7 @@ export function Footer() {
                   href="/app"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Dashboard
+                  {t('dashboard')}
                 </Link>
               </li>
             </ul>
@@ -129,14 +140,14 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="mb-4 text-sm font-serif text-foreground">Legal</h3>
+            <h3 className="mb-4 text-sm font-serif text-foreground">{t('legal')}</h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/privacy"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Privacidad
+                  {t('privacy')}
                 </Link>
               </li>
               <li>
@@ -144,7 +155,7 @@ export function Footer() {
                   href="/terms"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Términos
+                  {t('terms')}
                 </Link>
               </li>
               <li>
@@ -152,7 +163,7 @@ export function Footer() {
                   href="/cookies"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
-                  Cookies
+                  {t('cookies')}
                 </Link>
               </li>
             </ul>
@@ -171,7 +182,7 @@ export function Footer() {
                 Stripe
               </span>
               <span className="flex items-center gap-1">
-                Seguro
+                {t('secure')}
               </span>
             </div>
           </div>

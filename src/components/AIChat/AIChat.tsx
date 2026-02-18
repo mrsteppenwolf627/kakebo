@@ -3,11 +3,13 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useAgent } from '@/hooks/useAgent';
 import { ChatMessage } from './ChatMessage';
+import { useTranslations } from 'next-intl';
 
 export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full" | "widget"; onClose?: () => void }) {
     const { messages, isLoading, error, sendMessage, clearHistory } = useAgent();
     const [inputValue, setInputValue] = useState('');
     const messagesContainerRef = useRef<HTMLDivElement>(null);
+    const t = useTranslations("Agent");
 
     // Auto-scroll al fondo cuando llegan nuevos mensajes
     useEffect(() => {
@@ -54,10 +56,10 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                     )}
                     <div>
                         <h2 className={`font-serif font-medium ${mode === 'widget' ? 'text-sm' : 'text-lg'} text-foreground`}>
-                            {mode === 'widget' ? 'Asistente Kakebo' : 'Asistente Financiero'}
+                            {mode === 'widget' ? t('title.widget') : t('title.full')}
                         </h2>
                         {mode !== 'widget' && (
-                            <p className="text-xs text-muted-foreground">GPT-4o-mini & Agentes</p>
+                            <p className="text-xs text-muted-foreground">{t('subtitle')}</p>
                         )}
                     </div>
                 </div>
@@ -67,7 +69,7 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                             onClick={clearHistory}
                             className="text-xs text-muted-foreground hover:text-destructive transition-colors px-3 py-1 rounded-md hover:bg-muted"
                         >
-                            Borrar chat
+                            {t('actions.clear')}
                         </button>
                     )}
                     {mode === 'widget' && onClose && (
@@ -92,21 +94,21 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                             <span className="text-2xl">👋</span>
                         </div>
                         <p className="font-medium text-foreground text-center">
-                            {mode === 'widget' ? '¿En qué te ayudo?' : '¡Hola! Soy tu asistente Kakebo.'}
+                            {mode === 'widget' ? t('welcome.widget') : t('welcome.full')}
                         </p>
                         {mode !== 'widget' && (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full max-w-md mt-4">
                                 <button
-                                    onClick={() => sendMessage("¿Cuánto he gastado este mes en total?")}
+                                    onClick={() => sendMessage(t('suggestions.totalSpent'))}
                                     className="p-3 text-xs bg-muted/50 hover:bg-card hover:shadow-sm border border-border rounded-lg transition-all text-left text-foreground"
                                 >
-                                    "¿Gasto total del mes?"
+                                    "{t('suggestions.totalSpentShort')}"
                                 </button>
                                 <button
-                                    onClick={() => sendMessage("Analiza mis patrones de gasto en comida")}
+                                    onClick={() => sendMessage(t('suggestions.analyzeFood'))}
                                     className="p-3 text-xs bg-muted/50 hover:bg-card hover:shadow-sm border border-border rounded-lg transition-all text-left text-foreground"
                                 >
-                                    "Analiza gastos en comida"
+                                    "{t('suggestions.analyzeFoodShort')}"
                                 </button>
                             </div>
                         )}
@@ -132,7 +134,7 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                 {error && (
                     <div className="flex justify-center my-4">
                         <div className="bg-destructive/10 text-destructive px-3 py-2 rounded-lg text-xs flex items-center gap-2 shadow-sm border border-destructive/20">
-                            <span className="font-bold">Error:</span> {error}
+                            <span className="font-bold">{t('error')}:</span> {error}
                         </div>
                     </div>
                 )}
@@ -147,7 +149,7 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                         type="text"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        placeholder={mode === 'widget' ? "Escribe aquí..." : "Pregunta algo sobre tus finanzas..."}
+                        placeholder={mode === 'widget' ? t('input.placeholderWidget') : t('input.placeholderFull')}
                         disabled={isLoading}
                         className={`flex-1 ${mode === 'widget' ? 'p-2 text-sm' : 'p-3 px-4'} rounded-xl border border-border bg-muted/30 text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-shadow disabled:bg-muted disabled:text-muted-foreground placeholder:text-muted-foreground/60`}
                     />
@@ -163,7 +165,7 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                             </svg>
                         ) : (
                             <span className="flex items-center gap-2">
-                                <span>Enviar</span>
+                                <span>{t('actions.send')}</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <line x1="22" y1="2" x2="11" y2="13"></line>
                                     <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -174,7 +176,7 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                 </form>
                 {mode !== 'widget' && (
                     <div className="text-center mt-2">
-                        <p className="text-[10px] text-muted-foreground">Los agentes de IA pueden cometer errores.</p>
+                        <p className="text-[10px] text-muted-foreground">{t('disclaimer')}</p>
                     </div>
                 )}
             </div>

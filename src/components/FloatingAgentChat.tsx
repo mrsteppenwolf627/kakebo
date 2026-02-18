@@ -4,8 +4,11 @@ import { useState } from "react";
 import { AIChat } from "./AIChat/AIChat";
 import { AnimatePresence, motion } from "framer-motion";
 
+import { useTranslations } from "next-intl";
+
 export default function FloatingAgentChat() {
     const [isOpen, setIsOpen] = useState(false);
+    const t = useTranslations("Agent.actions");
 
     return (
         <>
@@ -29,7 +32,7 @@ export default function FloatingAgentChat() {
                     ? "bg-stone-100 text-stone-900 rotate-90"
                     : "bg-blue-600 text-white hover:bg-blue-700"
                     }`}
-                aria-label={isOpen ? "Cerrar chat" : "Abrir asistente"}
+                aria-label={isOpen ? t("closeChat") : t("openAssistant")}
             >
                 {isOpen ? (
                     <svg

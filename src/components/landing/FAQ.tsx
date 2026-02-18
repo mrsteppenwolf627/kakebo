@@ -7,46 +7,34 @@ interface FaqItemProps {
   answer: string;
 }
 
+import { useTranslations } from 'next-intl';
+
 export function FAQ() {
+  const t = useTranslations('FAQ');
+  const questions = ['q1', 'q2', 'q3', 'q4', 'q5'] as const;
+
   return (
     <section id="faq" className="relative py-24 bg-background">
       <div className="relative z-10 mx-auto max-w-4xl px-4">
         {/* Section Header */}
         <div className="mb-12 text-center border-b border-border pb-8">
           <h2 className="mb-4 text-4xl font-serif font-normal tracking-tight text-foreground sm:text-5xl">
-            Preguntas frecuentes
+            {t('title')}
           </h2>
           <p className="text-base text-muted-foreground font-light">
-            Respuestas directas a las dudas más comunes
+            {t('subtitle')}
           </p>
         </div>
 
         {/* FAQ Items */}
         <div className="space-y-4">
-          <FaqItem
-            question="¿Realmente es gratis empezar?"
-            answer="Sí, 100%. Puedes registrarte y usar el Plan Manual (control de gastos completo) sin pagar nada. El registro es instantáneo y no necesitas tarjeta de crédito."
-          />
-
-          <FaqItem
-            question="¿Qué incluye el trial de 15 días del Plan Pro?"
-            answer="El trial te da acceso completo al Agente IA de finanzas: análisis automático, consejos personalizados, predicciones de ahorro e insights inteligentes. Para activarlo necesitas agregar una tarjeta, pero NO se te cobrará hasta el día 16. Te avisaremos antes de cualquier cargo."
-          />
-
-          <FaqItem
-            question="¿Puedo cancelar el Plan Pro durante el trial?"
-            answer="Sí, puedes cancelar en cualquier momento desde tu perfil. Si cancelas durante los 15 días de trial, NO se te cobrará nada. Es así de simple."
-          />
-
-          <FaqItem
-            question="¿Kakebo sirve aunque ya use una app bancaria?"
-            answer="Sí. Tu banco te muestra movimientos; Kakebo te obliga a entender decisiones y patrones. La clave está en la revisión mensual consciente y la intención de mejorar."
-          />
-
-          <FaqItem
-            question="¿Mis datos están seguros?"
-            answer="Sí. Usamos Supabase para autenticación y Stripe para pagos. Tus datos financieros están encriptados y nunca compartimos información con terceros."
-          />
+          {questions.map((key) => (
+            <FaqItem
+              key={key}
+              question={t(`questions.${key}.question`)}
+              answer={t(`questions.${key}.answer`)}
+            />
+          ))}
         </div>
       </div>
     </section>

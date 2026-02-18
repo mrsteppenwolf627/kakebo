@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/browser";
 import { Link, useRouter } from "@/i18n/routing";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface HeroCTAProps {
     label?: string;
@@ -45,6 +46,8 @@ export function HeroCTA({ label = "Prueba 14 días gratis" }: HeroCTAProps) {
         router.push("/app");
     };
 
+    const t = useTranslations("Navigation");
+
     if (loading) {
         return (
             <div className="w-[140px] h-[58px] bg-stone-900/5 dark:bg-stone-100/5 animate-pulse rounded-sm" />
@@ -58,7 +61,7 @@ export function HeroCTA({ label = "Prueba 14 días gratis" }: HeroCTAProps) {
                 onClick={handleDashboardClick}
                 className="inline-flex items-center justify-center border border-stone-900 bg-stone-900 dark:bg-stone-100 dark:text-stone-900 dark:border-stone-100 px-8 py-4 text-base font-normal text-white transition-opacity hover:opacity-90"
             >
-                Ir al Dashboard
+                {t('goToDashboard')}
             </Link>
         );
     }

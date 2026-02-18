@@ -1,5 +1,6 @@
 import AuthGate from "@/components/AuthGate";
 import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 import ExpenseCalendar from "@/components/ExpenseCalendar";
 import MonthSelector from "@/components/MonthSelector";
 
@@ -45,6 +46,8 @@ export default async function HomePage(props: {
 
   const ym = `${year}-${pad2(month)}`;
 
+  const t = await getTranslations("Dashboard");
+
   return (
     <AuthGate>
       <main className="min-h-screen px-4 sm:px-8 py-8 sm:py-12">
@@ -53,10 +56,10 @@ export default async function HomePage(props: {
           {/* HEADER - Estilo Wabi-Sabi: Simple, espacio en blanco, serif para título */}
           <header className="border-b border-border pb-6">
             <h1 className="text-3xl sm:text-5xl font-serif font-normal text-foreground tracking-tight">
-              Mi Kakebo
+              {t("Header.title")}
             </h1>
             <p className="text-muted-foreground text-sm sm:text-base mt-2 font-light">
-              Control de gastos mensual
+              {t("Header.subtitle")}
             </p>
           </header>
 
@@ -67,7 +70,7 @@ export default async function HomePage(props: {
               className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-sm font-medium rounded-md shadow-sm hover:opacity-90 transition-all active:scale-95"
             >
               <span className="text-lg">💸</span>
-              <span>Añadir Nuevo Gasto</span>
+              <span>{t("Actions.addExpense")}</span>
             </Link>
 
             <Link
@@ -75,7 +78,7 @@ export default async function HomePage(props: {
               className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 bg-emerald-600 text-white text-sm font-medium rounded-md shadow-sm hover:opacity-90 transition-all active:scale-95"
             >
               <span className="text-lg">💰</span>
-              <span>Añadir Ingreso</span>
+              <span>{t("Actions.addIncome")}</span>
             </Link>
 
             <ReportButton />
@@ -95,27 +98,22 @@ export default async function HomePage(props: {
           {/* SEO BLOCK - Estilo sobrio */}
           <section className="mt-16 space-y-6 border-t border-border pt-12 text-sm text-stone-600 dark:text-stone-400">
             <h2 className="text-xl font-serif font-normal text-foreground">
-              Control de gastos mensual con método Kakebo
+              {t("SEO.title")}
             </h2>
 
             <p className="leading-relaxed">
-              <strong className="text-stone-900">Kakebo Ahorro</strong> es una herramienta para organizar tu
-              economía personal con un enfoque mensual: registras gastos, los
-              clasificas por categorías y revisas el progreso hacia tu objetivo de
-              ahorro.
+              {t.rich("SEO.p1", {
+                bold: (chunks) => <strong className="text-stone-900">{chunks}</strong>,
+              })}
             </p>
 
             <p className="leading-relaxed">
-              El método <em>Kakebo</em> se basa en la consciencia de gasto: saber en
-              qué se va el dinero (Supervivencia, Opcional, Cultura y Extra) y
-              ajustar hábitos con presupuestos realistas.
+              {t.rich("SEO.p2", {
+                bold: (chunks) => <strong>{chunks}</strong>,
+              })}
             </p>
 
-            <p className="leading-relaxed">
-              En el dashboard puedes ver el total gastado del mes, el desglose por
-              categorías, un gráfico (barras o "queso") y el progreso hacia el
-              objetivo de ahorro configurado en Ajustes.
-            </p>
+            <p className="leading-relaxed">{t("SEO.p3")}</p>
           </section>
         </div>
         <FloatingAgentChat />

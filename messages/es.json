@@ -3,6 +3,38 @@
         "title": "Kakebo AI",
         "description": "Método japonés de ahorro con IA"
     },
+    "Navigation": {
+        "blog": "Blog",
+        "tools": "Herramientas",
+        "pricing": "Precios",
+        "features": "Características",
+        "howItWorks": "Cómo funciona",
+        "login": "Entrar",
+        "dashboard": "Dashboard",
+        "start": "Empezar",
+        "account": "Cuenta",
+        "createAccount": "Crear cuenta",
+        "legal": "Legal",
+        "privacy": "Privacidad",
+        "terms": "Términos",
+        "cookies": "Cookies",
+        "product": "Producto",
+        "alternatives": "Alternativas a Excel",
+        "faq": "FAQ",
+        "tools503020": "Regla 50/30/20",
+        "tools503020Desc": "Calculadora de presupuestos",
+        "toolsInflation": "Calculadora Inflación",
+        "toolsInflationDesc": "Pérdida de poder adquisitivo",
+        "toolsSavings": "Calculadora Ahorro",
+        "toolsSavingsDesc": "Distribuye tu sueldo",
+        "goToDashboard": "Ir al Dashboard",
+        "secure": "Seguro"
+    },
+    "CookieBanner": {
+        "text": "Utilizamos cookies propias y de terceros para mejorar tu experiencia y analizar el uso de la web.",
+        "moreInfo": "Más información",
+        "accept": "Aceptar"
+    },
     "Hero": {
         "badge": "Registra gastos con intención",
         "title": "Kakebo AI",
@@ -123,6 +155,90 @@
                 "text": "El primer paso para ganar a la inflación es controlar tus gastos y maximizar tu ahorro mensual. Kakebo es tu herramienta para lograrlo.",
                 "buttonPrimary": "Crear cuenta gratis",
                 "buttonSecondary": "Ver regla 50/30/20"
+            },
+            "content": {
+                "whatTitle": "¿Qué es la Inflación?",
+                "whatText": "La <bold>inflación</bold> es el aumento generalizado y sostenido de los precios de bienes y servicios en una economía a lo largo del tiempo. En España, se mide principalmente a través del <bold>IPC (Índice de Precios de Consumo)</bold>. Cuando hay inflación, cada euro que tienes compra menos productos que antes; es decir, pierdes <italic>poder adquisitivo</italic>.",
+                "impactTitle": "Entendiendo el Impacto de la Inflación en tus Ahorros",
+                "impactText": "Imagina que guardas 10.000€ en una caja fuerte hoy. Con una inflación media del 3% anual:",
+                "impactList": {
+                    "today": "<bold>Hoy:</bold> Puedes comprar un coche pequeño por 10.000€.",
+                    "future": "<bold>En 10 años:</bold> Ese mismo coche costará aproximadamente 13.439€.",
+                    "problem": "<bold>El problema:</bold> Tú sigues teniendo solo 10.000€ en la caja. Tu dinero 'existe', pero vale mucho menos."
+                },
+                "tableTitle": "Comparativa: Ahorro vs Inversión vs Inflación",
+                "tableHeaders": {
+                    "strategy": "Estrategia",
+                    "return": "Rentabilidad Típica",
+                    "realResult": "Resultado Real (con IPC 3%)"
+                },
+                "tableRows": {
+                    "mattress": {
+                        "name": "Bajo el colchón",
+                        "return": "0%",
+                        "result": "-3% anual (Pérdida)"
+                    },
+                    "savings": {
+                        "name": "Cuenta de Ahorro",
+                        "return": "1% - 2%",
+                        "result": "-1% a -2% (Pérdida leve)"
+                    },
+                    "investment": {
+                        "name": "Inversión Indexada (S&P500)",
+                        "return": "7% - 10%",
+                        "result": "+4% a +7% (Ganancia Real)"
+                    }
+                },
+                "faqTitle": "Preguntas Frecuentes sobre el IPC en España",
+                "faq": {
+                    "q1": "¿Cuál es la diferencia entre IPC e Inflación?",
+                    "a1": "Aunque se usan indistintamente, la <bold>inflación</bold> es el fenómeno económico (subida de precios), mientras que el <bold>IPC</bold> es la herramienta estadística que usa el INE para medirla. El IPC se basa en una 'cesta de la compra' representativa (alimentos, energía, transporte) de las familias españolas.",
+                    "q2": "¿Cómo calcular el IPC acumulado entre dos años?",
+                    "a2": "La fórmula oficial para calcular la variación del IPC es:",
+                    "a2b": "Esta fórmula es la que se utiliza legalmente para <bold>actualizar rentas de alquiler</bold> o revisiones salariales en convenios.",
+                    "q3": "¿Cuánto vale mi dinero de 2000 hoy en España?",
+                    "a3": "Debido a la inflación acumulada en España desde el año 2000 (aproximadamente un 60-70% acumulado), para comprar lo mismo que comprabas con 1.000€ en el año 2000, hoy necesitarías cerca de <bold>1.700€</bold>."
+                }
+            }
+        },
+        "Savings": {
+            "meta": {
+                "title": "Calculadora de Ahorro Kakebo: Distribuye tu sueldo",
+                "description": "Descubre la distribución ideal de tus ingresos según el método japonés Kakebo. Calcula cuánto deberías gastar en supervivencia, ocio, cultura y ahorro.",
+                "ogTitle": "Calculadora de Ahorro Kakebo: Tu sueldo ideal",
+                "ogDescription": "Distribuye tu nómina con el método japonés: 50% Supervivencia, 20% Ocio, 10% Cultura, 20% Ahorro."
+            },
+            "header": {
+                "title": "Calculadora de Ahorro Kakebo",
+                "subtitle": "Descubre cómo deberías distribuir tu sueldo para ahorrar sin esfuerzo usando el método japonés."
+            },
+            "inputs": {
+                "title": "Tus números mensuales",
+                "income": "Ingresos Netos Mensuales",
+                "incomeDesc": "Tu nómina y otros ingresos fijos.",
+                "fixed": "Gastos Fijos Actuales (Aprox.)",
+                "fixedDesc": "Alquiler, hipoteca, luz, agua, internet..."
+            },
+            "tips": {
+                "title": "El secreto Kakebo",
+                "desc": "El método no te dice 'no gastes', te dice 'gasta con intención'. La clave es mover dinero de 'Vicio' a 'Cultura' o 'Ahorro'."
+            },
+            "results": {
+                "title": "Tu Distribución Ideal",
+                "savingPotential": "Capacidad de Ahorro",
+                "recommended": "20% Recomendado",
+                "categories": {
+                    "survival": "Supervivencia (50%)",
+                    "optional": "Ocio y Vicio (20%)",
+                    "culture": "Cultura (10%)"
+                },
+                "ctaTitle": "¿Quieres llevar este control día a día automáticamente?",
+                "ctaButton": "Crear mi Kakebo Gratis"
+            },
+            "content": {
+                "whyTitle": "¿Por qué usar la regla 50/30/20 con Kakebo?",
+                "whyText1": "La calculadora utiliza una adaptación de la popular regla presupuestaria 50/30/20 aplicada al método Kakebo. Esta regla sugiere que el 50% de tus ingresos debe ir a necesidades básicas (Supervivencia), el 30% a deseos (Ocio + Cultura) y el 20% a ahorro (Extra).",
+                "whyText2": "Sin embargo, Kakebo va más allá de los porcentajes. Te invita a reflexionar: ¿Ese gasto en 'Ocio' te hizo feliz? ¿Podrías mover parte del presupuesto de 'Supervivencia' a 'Cultura'? La <bold>calculadora de ahorro</bold> te da el punto de partida numérico; la App de Kakebo te ayuda a mantener el hábito."
             }
         },
         "Rule503020": {
@@ -163,6 +279,21 @@
                 "title": "¿Quieres aplicar esta regla automáticamente?",
                 "text": "Kakebo clasifica tus gastos por ti y te avisa si te estás pasando del 30% en caprichos o si no llegas al 20% de ahorro.",
                 "button": "Empezar gratis con Kakebo"
+            },
+            "content": {
+                "whatTitle": "¿Qué es la regla 50/30/20?",
+                "whatText1": "Popularizada por la senadora estadounidense Elizabeth Warren en su libro 'All Your Worth: The Ultimate Lifetime Money Plan', la regla 50/30/20 es el método más sencillo y eficaz para gestionar tus finanzas personales si odias los presupuestos complicados.",
+                "whatText2": "La premisa es simple: no necesitas trackear cada céntimo obsesivamente (aunque <bold>Kakebo</bold> te ayuda a hacerlo fácil), sino dividir tu ingreso neto mensual en tres grandes cubos:",
+                "needsTitle": "Necesidades",
+                "needsDesc": "Gastos fijos y esenciales. Si perdieras tu trabajo, estos son los gastos que seguirías teniendo que pagar.",
+                "wantsTitle": "Deseos",
+                "wantsDesc": "Gastos variables que mejoran tu calidad de vida. Son flexibles y los primeros en cortarse en tiempos difíciles.",
+                "savingsTitle": "Ahorro",
+                "savingsDesc": "Tu pasaporte a la libertad financiera. Fondo de emergencia, inversión a largo plazo y pago de deudas.",
+                "howTitle": "¿Cómo usar esta calculadora de ahorro?",
+                "howStep1": "<bold>Introduce tus ingresos netos:</bold> Es la cantidad final que llega a tu banco cada mes (después de impuestos).",
+                "howStep2": "<bold>Ajusta tus gastos fijos:</bold> Intenta que tu alquiler/hipoteca + facturas no supere la mitad de ese número.",
+                "howStep3": "<bold>Automatiza tu ahorro:</bold> Configura una transferencia automática del 20% a otra cuenta (o a Kakebo) nada más cobrar."
             }
         }
     },
@@ -182,6 +313,12 @@
         }
     },
     "Landing": {
+        "meta": {
+            "title": "Kakebo: El Método Japonés para Ahorrar (App 2026)",
+            "description": "La alternativa a Excel y Fintonic que respeta tu privacidad. Sin conexión bancaria. Método Kakebo oficial con Inteligencia Artificial. Gratis 14 días.",
+            "ogTitle": "Kakebo: El Método Japonés para Ahorrar (App 2026)",
+            "ogDescription": "Olvídate de Excels complicados. Kakebo organiza tus gastos sin pedirte las claves del banco. 100% Privado y Seguro."
+        },
         "SEO": {
             "whatIs": {
                 "title": "Qué es Kakebo y para qué sirve",
@@ -214,107 +351,107 @@
                 "a2": "Se basa en registrar gastos manualmente, categorizarlos en 4 grupos (Supervivencia, Ocio, Cultura, Extra) y reflexionar sobre ellos a final de mes. Es más consciente que una app bancaria automática.",
                 "q3": "¿Es mejor que un Excel de gastos?",
                 "a3": "Kakebo te da lo bueno del Excel (privacidad, control) pero con una interfaz móvil rápida, análisis automático y categorías inteligentes predefinidas."
-            },
-            "HowItWorks": {
-                "title": "El método Kakebo",
-                "subtitle": "¿Cómo funciona el Kakebo digital?",
-                "desc": "Un sistema japonés de <bold>Ahorro Consciente</bold> (Mindful spending) para controlar tus finanzas sin estrés.",
-                "steps": {
-                    "step1": {
-                        "title": "Define tu objetivo",
-                        "desc": "Establece una meta de ahorro mensual realista. No ciencia ficción, algo que puedas cumplir."
-                    },
-                    "step2": {
-                        "title": "Anota tus gastos",
-                        "desc": "Registra cada gasto cuando ocurre. No lo dejes para \"mañana\". La consistencia es la clave."
-                    },
-                    "step3": {
-                        "title": "Clasifica por categorías",
-                        "desc": "Separa tus gastos: supervivencia, fijos, ocio, cultura. Detecta dónde se te va el dinero."
-                    },
-                    "step4": {
-                        "title": "Revisa y ajusta",
-                        "desc": "Al final del mes, revisa qué funcionó y qué no. Decide 1-2 cambios concretos para el próximo mes."
-                    }
+            }
+        },
+        "HowItWorks": {
+            "title": "El método Kakebo",
+            "subtitle": "¿Cómo funciona el Kakebo digital?",
+            "desc": "Un sistema japonés de <bold>Ahorro Consciente</bold> (Mindful spending) para controlar tus finanzas sin estrés.",
+            "steps": {
+                "step1": {
+                    "title": "Define tu objetivo",
+                    "desc": "Establece una meta de ahorro mensual realista. No ciencia ficción, algo que puedas cumplir."
                 },
-                "example": {
-                    "title": "Ejemplo práctico",
-                    "income": "Ingresos del mes:",
-                    "fixed": "Gastos fijos activos:",
-                    "variable": "Gastos variables:",
-                    "remaining": "Te quedan:",
-                    "note": "Si tu objetivo era ahorrar 200€, vas bien. Si no, miras qué categoría se te fue de madre y ajustas el siguiente mes. Simple."
+                "step2": {
+                    "title": "Anota tus gastos",
+                    "desc": "Registra cada gasto cuando ocurre. No lo dejes para \"mañana\". La consistencia es la clave."
+                },
+                "step3": {
+                    "title": "Clasifica por categorías",
+                    "desc": "Separa tus gastos: supervivencia, fijos, ocio, cultura. Detecta dónde se te va el dinero."
+                },
+                "step4": {
+                    "title": "Revisa y ajusta",
+                    "desc": "Al final del mes, revisa qué funcionó y qué no. Decide 1-2 cambios concretos para el próximo mes."
                 }
             },
-            "Pricing": {
-                "title": "Un único plan. Todo incluido.",
-                "subtitle": "Disfruta de la experiencia completa de Kakebo durante 14 días. Sin compromiso.",
-                "planName": "Kakebo Premium",
-                "planDesc": "Agente IA + Análisis avanzado + Presupuestos ilimitados",
-                "price": "3.99€",
-                "period": "/mes",
-                "trial": "14 días gratis · Sin tarjeta",
-                "features": {
-                    "f1": "Registro de gastos ilimitados",
-                    "f2": "Gestión de gastos fijos y suscripciones",
-                    "f3": "Presupuestos por categoría (Kakebo)",
-                    "f4": "Historial completo y exportación",
-                    "f5": "Agente IA de finanzas personal",
-                    "f6": "Análisis automático de patrones",
-                    "f7": "Consejos de ahorro personalizados",
-                    "f8": "Soporte prioritario"
-                },
-                "cta": "Empezar prueba de 14 días gratis",
-                "note": "No se requiere tarjeta de crédito para empezar. Cancela cuando quieras.",
-                "footer": "💳 Pagos procesados por Stripe · 🔒 Datos encriptados · ✓ Cancelación instantánea"
-            },
-            "Content": {
-                "title": "Controla tus finanzas en España con Kakebo",
-                "article1": {
-                    "title": "¿Qué es el método Kakebo?",
-                    "p": "El <bold>Kakebo</bold> (pronunciado \"kah-keh-boh\") es el arte japonés de ahorrar dinero. No es solo una app de control de gastos; es una filosofía que te invita a reflexionar sobre tus hábitos de consumo. Kakebo adapta este método centenario a la era digital para usuarios en <bold>España</bold> y la zona euro."
-                },
-                "article2": {
-                    "title": "Ahorro inteligente en Euros",
-                    "p": "Diseñada específicamente para la gestión económica en <bold>euros (€)</bold>, nuestra plataforma te permite categorizar gastos vitales (Supervivencia), disfrutar de la vida (Ocio y Vicio), cultivar tu mente (Cultura) y prever imprevistos (Extra). Es la herramienta ideal para quienes buscan una <bold>app de finanzas personales gratuita</bold> y efectiva."
-                },
-                "table": {
-                    "title": "¿Por qué usar Kakebo vs Excel?",
-                    "headers": {
-                        "feature": "Característica",
-                        "kakebo": "Kakebo",
-                        "excel": "Excel / Hojas de cálculo",
-                        "apps": "Apps de Bancos"
-                    },
-                    "rows": {
-                        "auto": {
-                            "feature": "Automatización",
-                            "kakebo": "✅ Agente IA Inteligente",
-                            "excel": "❌ Manual y tedioso",
-                            "apps": "⚠️ Solo sus propias cuentas"
-                        },
-                        "method": {
-                            "feature": "Método de Ahorro",
-                            "kakebo": "✅ Filosofía Kakebo integrada",
-                            "excel": "❌ Solo números, sin método",
-                            "apps": "❌ Solo historial de transacciones"
-                        },
-                        "privacy": {
-                            "feature": "Privacidad",
-                            "kakebo": "✅ 100% Privado (Tú controlas los datos)",
-                            "excel": "✅ Privado (Local)",
-                            "apps": "❌ Venden perfiles comerciales"
-                        },
-                        "mobile": {
-                            "feature": "Soporte Móvil",
-                            "kakebo": "✅ Web App Optimizada (PWA)",
-                            "excel": "❌ Incómodo en pantallas pequeñas",
-                            "apps": "✅ Buena App Nativa"
-                        }
-                    }
-                },
-                "tags": "Kakebo App España • Control de gastos mensual • Ahorro doméstico • Finanzas personales • Alternativa a Fintonic • Plantilla Kakebo Excel"
+            "example": {
+                "title": "Ejemplo práctico",
+                "income": "Ingresos del mes:",
+                "fixed": "Gastos fijos activos:",
+                "variable": "Gastos variables:",
+                "remaining": "Te quedan:",
+                "note": "Si tu objetivo era ahorrar 200€, vas bien. Si no, miras qué categoría se te fue de madre y ajustas el siguiente mes. Simple."
             }
+        },
+        "Pricing": {
+            "title": "Un único plan. Todo incluido.",
+            "subtitle": "Disfruta de la experiencia completa de Kakebo durante 14 días. Sin compromiso.",
+            "planName": "Kakebo Premium",
+            "planDesc": "Agente IA + Análisis avanzado + Presupuestos ilimitados",
+            "price": "3.99€",
+            "period": "/mes",
+            "trial": "14 días gratis · Sin tarjeta",
+            "features": {
+                "f1": "Registro de gastos ilimitados",
+                "f2": "Gestión de gastos fijos y suscripciones",
+                "f3": "Presupuestos por categoría (Kakebo)",
+                "f4": "Historial completo y exportación",
+                "f5": "Agente IA de finanzas personal",
+                "f6": "Análisis automático de patrones",
+                "f7": "Consejos de ahorro personalizados",
+                "f8": "Soporte prioritario"
+            },
+            "cta": "Empezar prueba de 14 días gratis",
+            "note": "No se requiere tarjeta de crédito para empezar. Cancela cuando quieras.",
+            "footer": "💳 Pagos procesados por Stripe · 🔒 Datos encriptados · ✓ Cancelación instantánea"
+        },
+        "Content": {
+            "title": "Controla tus finanzas en España con Kakebo",
+            "article1": {
+                "title": "¿Qué es el método Kakebo?",
+                "p": "El <bold>Kakebo</bold> (pronunciado \"kah-keh-boh\") es el arte japonés de ahorrar dinero. No es solo una app de control de gastos; es una filosofía que te invita a reflexionar sobre tus hábitos de consumo. Kakebo adapta este método centenario a la era digital para usuarios en <bold>España</bold> y la zona euro."
+            },
+            "article2": {
+                "title": "Ahorro inteligente en Euros",
+                "p": "Diseñada específicamente para la gestión económica en <bold>euros (€)</bold>, nuestra plataforma te permite categorizar gastos vitales (Supervivencia), disfrutar de la vida (Ocio y Vicio), cultivar tu mente (Cultura) y prever imprevistos (Extra). Es la herramienta ideal para quienes buscan una <bold>app de finanzas personales gratuita</bold> y efectiva."
+            },
+            "table": {
+                "title": "¿Por qué usar Kakebo vs Excel?",
+                "headers": {
+                    "feature": "Característica",
+                    "kakebo": "Kakebo",
+                    "excel": "Excel / Hojas de cálculo",
+                    "apps": "Apps de Bancos"
+                },
+                "rows": {
+                    "auto": {
+                        "feature": "Automatización",
+                        "kakebo": "✅ Agente IA Inteligente",
+                        "excel": "❌ Manual y tedioso",
+                        "apps": "⚠️ Solo sus propias cuentas"
+                    },
+                    "method": {
+                        "feature": "Método de Ahorro",
+                        "kakebo": "✅ Filosofía Kakebo integrada",
+                        "excel": "❌ Solo números, sin método",
+                        "apps": "❌ Solo historial de transacciones"
+                    },
+                    "privacy": {
+                        "feature": "Privacidad",
+                        "kakebo": "✅ 100% Privado (Tú controlas los datos)",
+                        "excel": "✅ Privado (Local)",
+                        "apps": "❌ Venden perfiles comerciales"
+                    },
+                    "mobile": {
+                        "feature": "Soporte Móvil",
+                        "kakebo": "✅ Web App Optimizada (PWA)",
+                        "excel": "❌ Incómodo en pantallas pequeñas",
+                        "apps": "✅ Buena App Nativa"
+                    }
+                }
+            },
+            "tags": "Kakebo App España • Control de gastos mensual • Ahorro doméstico • Finanzas personales • Alternativa a Fintonic • Plantilla Kakebo Excel"
         }
     },
     "Auth": {
@@ -357,6 +494,24 @@
         }
     },
     "Dashboard": {
+        "title": "Mi Kakebo",
+        "subtitle": "Control de gastos mensual",
+        "Header": {
+            "title": "Mi Kakebo",
+            "subtitle": "Control de gastos mensual"
+        },
+        "Actions": {
+            "addExpense": "Añadir Nuevo Gasto",
+            "addIncome": "Añadir Ingreso",
+            "report": "Informe",
+            "generateReport": "Generar Informe"
+        },
+        "SEO": {
+            "title": "Control de gastos mensual con método Kakebo",
+            "p1": "<bold>Kakebo</bold> es tu herramienta definitiva para la <bold>gestión de gastos personales</bold>. A diferencia de un Excel complicado, Kakebo te ayuda a clasificar tus finanzas en 4 categorías esenciales: Supervivencia, Ocio, Cultura y Extras.",
+            "p2": "El método japonés Kakebo fomenta el <bold>ahorro consciente</bold>. No se trata de recortar por recortar, sino de entender a dónde va tu dinero para tomar mejores decisiones cada mes.",
+            "p3": "Visualiza tu progreso con gráficos claros, establece objetivos de ahorro realistas y alcanza la libertad financiera paso a paso."
+        },
         "MonthSelector": {
             "today": "Ir a hoy",
             "prev": "Mes anterior",
@@ -398,6 +553,11 @@
             }
         },
         "ExpenseCalendar": {
+            "SEO": {
+                "title": "Control mensual con Kakebo",
+                "p1": "Este panel muestra tu resumen del mes con el método Kakebo: gasto total, desglose por categorías, presupuestos y progreso hacia el objetivo de ahorro.",
+                "p2": "El objetivo es que veas de un vistazo si estás cumpliendo tus metas de ahorro o si necesitas ajustar tus gastos en alguna categoría."
+            },
             "status": {
                 "closed": "estado: cerrado",
                 "open": "estado: abierto",
@@ -414,7 +574,8 @@
                 "close": "Cerrar Mes",
                 "addExpense": "+ Nuevo gasto",
                 "addIncome": "💰 + Nuevo ingreso",
-                "history": "Ver histórico completo"
+                "history": "Ver histórico completo",
+                "delete": "Eliminar"
             },
             "summary": {
                 "income": "Ingreso mensual",
@@ -452,6 +613,68 @@
             }
         }
     },
+    "Testimonials": {
+        "title": "Comunidad Kakebo",
+        "subtitle": "Gente real que ahorra dinero real",
+        "items": {
+            "t1": {
+                "body": "Llevaba años intentando usar Excel para mis gastos, pero siempre lo dejaba a la semana. Kakebo es la única app que me ha hecho constante.",
+                "author": "Elena M.",
+                "role": "Diseñadora Gráfica"
+            },
+            "t2": {
+                "body": "Me encanta que no tenga conexión con bancos. Me da mucha paz mental saber que mis datos no están viajando por ahí.",
+                "author": "Carlos Rodriguez",
+                "role": "Ingeniero de Software"
+            },
+            "t3": {
+                "body": "La filosofía de categorizar en 'Vicio' vs 'Cultura' me cambió la mentalidad. He ahorrado 300€ el primer mes casi sin darme cuenta.",
+                "author": "Sarah J.",
+                "role": "Estudiante"
+            },
+            "t4": {
+                "body": "Simple, bonita y directa. Justo lo que buscaba para aplicar el método Kakebo sin complicarme con libretas físicas.",
+                "author": "Miguel Ángel",
+                "role": "Freelance"
+            },
+            "t5": {
+                "body": "El chatbot de IA es una locura. Le pregunto '¿cuánto gasté en cafés?' y me lo dice al momento. Brutal.",
+                "author": "Laura P.",
+                "role": "Marketing Manager"
+            },
+            "t6": {
+                "body": "Por fin una app que entiende que 'ahorrar' no es 'sufrir'. Kakebo me ha enseñado a gastar mejor, no a dejar de vivir.",
+                "author": "David G.",
+                "role": "Profesor"
+            }
+        }
+    },
+    "FAQ": {
+        "title": "Preguntas frecuentes",
+        "subtitle": "Respuestas directas a las dudas más comunes",
+        "questions": {
+            "q1": {
+                "question": "¿Realmente es gratis empezar?",
+                "answer": "Sí, 100%. Puedes registrarte y usar el Plan Manual (control de gastos completo) sin pagar nada. El registro es instantáneo y no necesitas tarjeta de crédito."
+            },
+            "q2": {
+                "question": "¿Qué incluye el trial de 15 días del Plan Pro?",
+                "answer": "El trial te da acceso completo al Agente IA de finanzas: análisis automático, consejos personalizados, predicciones de ahorro e insights inteligentes. Para activarlo necesitas agregar una tarjeta, pero NO se te cobrará hasta el día 16. Te avisaremos antes de cualquier cargo."
+            },
+            "q3": {
+                "question": "¿Puedo cancelar el Plan Pro durante el trial?",
+                "answer": "Sí, puedes cancelar en cualquier momento desde tu perfil. Si cancelas durante los 15 días de trial, NO se te cobrará nada. Es así de simple."
+            },
+            "q4": {
+                "question": "¿Kakebo sirve aunque ya use una app bancaria?",
+                "answer": "Sí. Tu banco te muestra movimientos; Kakebo te obliga a entender decisiones y patrones. La clave está en la revisión mensual consciente y la intención de mejorar."
+            },
+            "q5": {
+                "question": "¿Mis datos están seguros?",
+                "answer": "Sí. Usamos Supabase para autenticación y Stripe para pagos. Tus datos financieros están encriptados y nunca compartimos información con terceros."
+            }
+        }
+    },
     "NotFound": {
         "title": "Página no encontrada",
         "desc": "Lo sentimos, la página que buscas no existe o ha sido movida.",
@@ -462,5 +685,525 @@
         "desc": "Ha ocurrido un error inesperado.",
         "retry": "Intentar de nuevo",
         "home": "Volver al inicio"
+    },
+    "Agent": {
+        "title": {
+            "widget": "Asistente Kakebo",
+            "full": "Asistente Financiero"
+        },
+        "subtitle": "GPT-4o-mini & Agentes",
+        "actions": {
+            "clear": "Borrar chat",
+            "send": "Enviar",
+            "openAssistant": "Abrir asistente",
+            "closeChat": "Cerrar chat"
+        },
+        "avatar": "IA",
+        "welcome": {
+            "widget": "¿En qué te ayudo?",
+            "full": "¡Hola! Soy tu asistente Kakebo."
+        },
+        "suggestions": {
+            "totalSpent": "¿Cuánto he gastado este mes en total?",
+            "totalSpentShort": "¿Gasto total del mes?",
+            "analyzeFood": "Analiza mis patrones de gasto en comida",
+            "analyzeFoodShort": "Analiza gastos en comida"
+        },
+        "input": {
+            "placeholderWidget": "Escribe aquí...",
+            "placeholderFull": "Pregunta algo sobre tus finanzas..."
+        },
+        "disclaimer": "Los agentes de IA pueden cometer errores.",
+        "error": "Error"
+    },
+    "CategoryGuide": {
+        "title": "Guía de categorías",
+        "subtitle": "Para clasificar gastos rápido sin pensarlo demasiado.",
+        "sections": {
+            "supervivencia": {
+                "title": "Supervivencia",
+                "subtitle": "Gastos fijos y esenciales (no negociables).",
+                "items": {
+                    "i1": {
+                        "label": "Alimentación",
+                        "examples": "Compra del supermercado."
+                    },
+                    "i2": {
+                        "label": "Vivienda",
+                        "examples": "Alquiler/hipoteca, comunidad, impuestos."
+                    },
+                    "i3": {
+                        "label": "Suministros",
+                        "examples": "Luz, agua, gas, internet."
+                    },
+                    "i4": {
+                        "label": "Transporte",
+                        "examples": "Abono, gasolina, mantenimiento del coche."
+                    },
+                    "i5": {
+                        "label": "Salud",
+                        "examples": "Farmacia, seguro médico o dentista."
+                    }
+                }
+            },
+            "opcional": {
+                "title": "Ocio y Vicio",
+                "subtitle": "Gastos variables y deseos (recortables si toca apretar).",
+                "items": {
+                    "i1": {
+                        "label": "Restauración",
+                        "examples": "Comer fuera, cafés, delivery."
+                    },
+                    "i2": {
+                        "label": "Cultura",
+                        "examples": "Cine, conciertos, libros o suscripciones."
+                    },
+                    "i3": {
+                        "label": "Compras",
+                        "examples": "Ropa, accesorios o gadgets no urgentes."
+                    },
+                    "i4": {
+                        "label": "Tabaco/Alcohol",
+                        "examples": "Para ver cuánto pesan de verdad."
+                    }
+                }
+            },
+            "cultura": {
+                "title": "Cultura",
+                "subtitle": "Enriquecimiento personal (Kakebo lo separa).",
+                "items": {
+                    "i1": {
+                        "label": "Formación",
+                        "examples": "Cursos, talleres o idiomas."
+                    },
+                    "i2": {
+                        "label": "Eventos",
+                        "examples": "Museos, teatros o conferencias."
+                    },
+                    "i3": {
+                        "label": "Herramientas",
+                        "examples": "Material para hobby que aporte habilidad."
+                    }
+                }
+            },
+            "extra": {
+                "title": "Extras",
+                "subtitle": "Lo inesperado o puntual (lo que desestabiliza).",
+                "items": {
+                    "i1": {
+                        "label": "Regalos",
+                        "examples": "Cumpleaños, bodas o detalles."
+                    },
+                    "i2": {
+                        "label": "Reparaciones",
+                        "examples": "Averías del coche, móvil roto, fontanero."
+                    },
+                    "i3": {
+                        "label": "Viajes",
+                        "examples": "Escapadas o billetes de avión."
+                    }
+                }
+            }
+        }
+    },
+    "FixedExpenses": {
+        "title": "Gastos fijos",
+        "totalActive": "Total activo:",
+        "actions": {
+            "back": "Dashboard",
+            "reload": "Recargar",
+            "add": "Añadir",
+            "saving": "Guardando…",
+            "save": "Guardar",
+            "cancel": "Cancelar",
+            "edit": "Editar",
+            "delete": "Eliminar",
+            "activate": "Activar",
+            "deactivate": "Desactivar",
+            "confirmDelete": "¿Eliminar este gasto fijo? No se puede deshacer."
+        },
+        "status": {
+            "loading": "Cargando…",
+            "errorLoad": "Error cargando gastos fijos",
+            "errorCreate": "Error creando gasto fijo",
+            "errorUpdate": "Error actualizando",
+            "errorDelete": "Error eliminando",
+            "errorSave": "Error guardando cambios",
+            "active": "activo",
+            "inactive": "inactivo"
+        },
+        "form": {
+            "title": "Añadir gasto fijo",
+            "editing": "Editando",
+            "placeholder": {
+                "name": "Nombre (Ej: alquiler)",
+                "amount": "Importe (Ej: 750)",
+                "start": "Inicio (YYYY-MM)",
+                "end": "Fin (opcional)",
+                "day": "Día cobro (1–31)"
+            },
+            "helper": "El <bold>Día de cobro</bold> es opcional. Si lo pones, luego lo usaremos para calcular “pendiente” según el día del mes.",
+            "validation": {
+                "name": "Pon un nombre.",
+                "amount": "Importe inválido.",
+                "startFormat": "start_ym debe ser YYYY-MM.",
+                "endFormat": "end_ym debe ser YYYY-MM o vacío.",
+                "endAfterStart": "end_ym no puede ser anterior a start_ym.",
+                "dayFormat": "Día de cobro debe ser 1–31 (o vacío)."
+            }
+        },
+        "list": {
+            "title": "Lista de gastos",
+            "empty": "No hay gastos fijos todavía.",
+            "noEnd": "(sin fin)",
+            "day": "Día {day}",
+            "noDay": "Sin día"
+        }
+    },
+    "AIMetrics": {
+        "title": "Métricas IA",
+        "subtitle": "Panel de evaluación y monitoreo del modelo de IA",
+        "loading": "Cargando métricas...",
+        "error": "Error al cargar métricas",
+        "retry": "Reintentar",
+        "noData": "No hay métricas disponibles",
+        "period": "Período:",
+        "periods": {
+            "7d": "7 días",
+            "30d": "30 días",
+            "90d": "90 días",
+            "all": "Todo"
+        },
+        "summary": {
+            "totalRequests": "Total peticiones",
+            "successRate": "Tasa de éxito",
+            "totalCost": "Costo total",
+            "avgLatency": "Latencia media",
+            "accuracy": "Accuracy",
+            "accuracySubtitle": "{corrected} correcciones de {total}",
+            "tokenUsage": {
+                "title": "Uso de tokens",
+                "input": "Tokens entrada",
+                "output": "Tokens salida",
+                "total": "Total tokens",
+                "costPerRequest": "Costo por petición"
+            }
+        },
+        "charts": {
+            "byType": {
+                "title": "Por tipo",
+                "subtitle": "Total: {total}",
+                "classification": "Clasificación",
+                "assistant": "Asistente"
+            },
+            "byModel": "Por modelo",
+            "viewBar": "Barras",
+            "viewPie": "Circular",
+            "value": "Valor",
+            "noData": "No hay datos disponibles"
+        },
+        "embeddings": {
+            "title": "Embeddings RAG",
+            "subtitle": "Vectores para búsqueda semántica de gastos",
+            "generate": "Generar embeddings",
+            "processing": "Procesando...",
+            "totalExpenses": "Total gastos",
+            "withEmbeddings": "Con embedding",
+            "withoutEmbeddings": "Sin embedding",
+            "completed": "completado"
+        },
+        "logs": {
+            "title": "Logs recientes",
+            "empty": "No hay logs disponibles",
+            "type": "Tipo:",
+            "model": "Modelo:",
+            "latency": "Latencia:",
+            "cost": "Costo:",
+            "categoryAI": "Categoría IA:",
+            "confidence": "{percent}% confianza",
+            "correctedTo": "Corregido a:",
+            "error": "Error:",
+            "dateUnknown": "Fecha desconocida",
+            "types": {
+                "classification": "Clasificación",
+                "assistant": "Asistente"
+            },
+            "categories": {
+                "survival": "Supervivencia",
+                "optional": "Opcional",
+                "culture": "Cultura",
+                "extra": "Extra"
+            }
+        }
+    },
+    "Transaction": {
+        "NewExpense": {
+            "title": "Nuevo gasto",
+            "subtitle": "Registra un nuevo movimiento en tu Kakebo.",
+            "submit": "Guardar Gasto",
+            "saving": "Guardando...",
+            "checking": "Comprobando...",
+            "ai": {
+                "button": "IA",
+                "tooltip": "Sugerir categoría con IA",
+                "emptyError": "Escribe un concepto primero",
+                "suggestionTitle": "Sugerencia IA",
+                "accept": "Aceptar",
+                "ignore": "Ignorar",
+                "detected": "Categoría detectada:",
+                "loading": "Analizando...",
+                "confidence": "{percent}% confianza"
+            },
+            "errors": {
+                "monthClosed": "Mes cerrado ({ym}): no se pueden añadir gastos.",
+                "checkFailed": "Error comprobando el mes",
+                "saveFailed": "Error guardando gasto"
+            }
+        },
+        "NewIncome": {
+            "title": "Nuevo ingreso",
+            "subtitle": "Registra una entrada de dinero (nómina, venta, regalo...).",
+            "submit": "Guardar Ingreso",
+            "saving": "Guardando...",
+            "errors": {
+                "required": "Importe y fecha son obligatorios",
+                "saveFailed": "Error guardando ingreso"
+            }
+        },
+        "Common": {
+            "back": "Volver",
+            "date": "Fecha",
+            "concept": "Concepto",
+            "amount": "Importe (€)",
+            "category": "Categoría",
+            "monthActivity": "Mes: {month}",
+            "currentMonth": "Mes: actual",
+            "monthClosed": "Mes cerrado",
+            "monthClosedDesc": "No se pueden añadir gastos a este periodo.",
+            "dateHint": "La fecha se mantiene dentro del mes seleccionado.",
+            "placeholders": {
+                "conceptExpense": "Ej: compra supermercado",
+                "conceptIncome": "Ej: Nómina enero",
+                "amount": "0.00"
+            },
+            "categories": {
+                "supervivencia": "Supervivencia",
+                "opcional": "Opcional",
+                "cultura": "Cultura",
+                "extra": "Extra"
+            }
+        }
+    },
+    "Settings": {
+        "title": "Ajustes",
+        "General": {
+            "income": "Ingresos mensuales (€)",
+            "savingGoal": "Objetivo de ahorro (€)",
+            "budgetsTitle": "Presupuestos por categoría",
+            "budgetSurvival": "Supervivencia (€)",
+            "budgetOptional": "Opcional (€)",
+            "budgetCulture": "Cultura (€)",
+            "budgetExtra": "Extra (€)",
+            "saveButton": "Guardar ajustes",
+            "saving": "Guardando...",
+            "success": "Ajustes guardados.",
+            "errorSession": "Sesión no encontrada",
+            "errorSave": "Error guardando ajustes",
+            "loadError": "Error cargando ajustes",
+            "loading": "Cargando...",
+            "disclaimer": "Estos ajustes se guardan en tu cuenta (Supabase), no en el navegador."
+        },
+        "FixedExpenses": {
+            "title": "Gastos fijos",
+            "totalActive": "Total activos:",
+            "loading": "Cargando gastos fijos...",
+            "none": "Aún no tienes gastos fijos.",
+            "addTitle": "Añadir gasto fijo",
+            "addButton": "Añadir gasto fijo",
+            "saving": "Guardando...",
+            "yourFixed": "Tus gastos fijos",
+            "reload": "Recargar gastos fijos",
+            "inactive": "(inactivo)",
+            "noEnd": "(sin fin)",
+            "activate": "Activar",
+            "deactivate": "Desactivar",
+            "fields": {
+                "name": "Nombre",
+                "amount": "Importe (€)",
+                "active": "Activo",
+                "start": "Desde (YYYY-MM)",
+                "end": "Hasta (opcional, YYYY-MM)",
+                "placeholderName": "Ej: Alquiler",
+                "placeholderStart": "2026-01",
+                "placeholderEnd": "2026-12",
+                "yes": "Sí",
+                "no": "No"
+            },
+            "errors": {
+                "nameReq": "Pon un nombre (ej: Alquiler).",
+                "amountPos": "El importe debe ser mayor que 0.",
+                "startFmt": "start_ym debe ser YYYY-MM (ej: 2026-01).",
+                "endFmt": "end_ym debe ser YYYY-MM o vacío.",
+                "endAfterStart": "end_ym no puede ser anterior a start_ym.",
+                "save": "Error guardando gasto fijo",
+                "load": "Error cargando gastos fijos",
+                "update": "Error actualizando gasto fijo",
+                "session": "Sesión no encontrada"
+            },
+            "success": {
+                "added": "Gasto fijo añadido.",
+                "activated": "Activado.",
+                "deactivated": "Desactivado."
+            },
+            "info": "Los gastos fijos se aplican al mes si <strong>start_ym ≤ ym</strong> y <strong>end_ym</strong> está vacío o <strong>end_ym ≥ ym</strong>."
+        },
+        "SEO": {
+            "title": "Ajustes de presupuesto y objetivo de ahorro",
+            "desc": "En esta sección puedes definir tu ingreso mensual, tu objetivo de ahorro y los presupuestos máximos por categoría del método Kakebo. Esto te permite controlar el gasto y medir la evolución de tus hábitos mes a mes.",
+            "keywords": "(Hueco SEO: texto sobre “presupuesto mensual”, “objetivo de ahorro”, “método kakebo”.)"
+        }
+    },
+    "Admin": {
+        "title": "Panel de Administración",
+        "subtitle": "Gestiona accesos VIP y configuración del sistema.",
+        "accessDenied": {
+            "title": "Acceso Denegado",
+            "desc": "No tienes permisos para acceder al panel de administración."
+        },
+        "grantVip": {
+            "title": "Otorgar Acceso VIP",
+            "desc": "Concede acceso premium manual a usuarios (amigos, beta testers, etc.)",
+            "placeholder": "usuario@ejemplo.com",
+            "button": "Otorgar VIP",
+            "granting": "Otorgando...",
+            "success": "Acceso VIP otorgado a {email}",
+            "error": "Error al otorgar acceso VIP"
+        },
+        "vipUsers": {
+            "title": "Usuarios VIP",
+            "refresh": "Actualizar",
+            "refreshing": "Actualizando...",
+            "empty": "No hay usuarios VIP actualmente.",
+            "tier": "Tier: {tier}",
+            "created": "Creado: {date}",
+            "revoke": "Revocar",
+            "revokeConfirm": "¿Revocar acceso VIP de {email}?",
+            "revokeSuccess": "Acceso VIP revocado de {email}",
+            "revokeError": "Error al revocar acceso VIP"
+        }
+    },
+    "Layout": {
+        "metadata": {
+            "defaultTitle": "Kakebo - Control de Gastos Inteligente",
+            "templateTitle": "%s | Kakebo AI: Ahorro Japonés",
+            "description": "Controla tus gastos con el método japonés Kakebo. Sin bancos, 100% privado y con asistencia de IA. Empieza tus 14 días gratis hoy.",
+            "keywords": "kakebo, ahorro, finanzas personales, control gastos, app gastos, método kakebo, ahorrar dinero españa, regla 50 30 20, calculadora sueldo neto, distribución salario, kakebo excel, calculadora inflación, ipc españa, actualizar renta ipc",
+            "ogTitle": "Kakebo AI: Finanzas Zen",
+            "ogDescription": "Domina tus finanzas con el método japonés Kakebo potenciado por IA.",
+            "twitterTitle": "Kakebo AI: Finanzas Zen",
+            "twitterDescription": "Gestión financiera minimalista con Inteligencia Artificial."
+        }
+    },
+    "Privacy": {
+        "meta": {
+            "title": "Política de Privacidad | Kakebo AI",
+            "description": "Cómo gestionamos tus datos en Kakebo AI."
+        },
+        "title": "Política de Privacidad",
+        "lastUpdate": "Última actualización: {year}",
+        "sections": {
+            "info": {
+                "title": "1. Información que Recopilamos",
+                "content": "Recopilamos información que nos proporcionas directamente, como tu correo electrónico al registrarte, y datos de uso de la aplicación (gastos registrados, categorías)."
+            },
+            "usage": {
+                "title": "2. Uso de la Información",
+                "content": "Utilizamos tu información para:",
+                "list": {
+                    "i1": "Proporcionar, mantener y mejorar nuestros servicios.",
+                    "i2": "Procesar transacciones (en caso de suscripciones).",
+                    "i3": "Enviarte notificaciones técnicas o de soporte."
+                }
+            },
+            "payments": {
+                "title": "3. Datos de Pagos (Stripe)",
+                "p1": "Si realizas pagos en Kakebo AI, utilizamos <bold>Stripe</bold> como pasarela de pago segura.",
+                "p2": "<bold>Kakebo AI no tiene acceso ni almacena tus números completos de tarjeta de pago.</bold> Esta información se transmite directamente a Stripe de forma encriptada. Stripe procesa tus datos de pago de acuerdo con su <link>Política de Privacidad</link>."
+            },
+            "sharing": {
+                "title": "4. Compartir Información",
+                "content": "No vendemos tus datos personales. Solo compartimos información con proveedores de servicios (como Stripe o proveedores de hosting) necesarios para operar la aplicación, bajo estrictas cláusulas de confidencialidad."
+            },
+            "rights": {
+                "title": "5. Tus Derechos",
+                "content": "Tienes derecho a acceder, rectificar o eliminar tus datos personales. Puedes hacerlo desde la configuración de tu cuenta o contactándonos."
+            }
+        }
+    },
+    "Cookies": {
+        "meta": {
+            "title": "Política de Cookies | Kakebo AI",
+            "description": "Uso de cookies en Kakebo AI."
+        },
+        "title": "Política de Cookies",
+        "lastUpdate": "Última actualización: {year}",
+        "sections": {
+            "whatIs": {
+                "title": "1. ¿Qué son las cookies?",
+                "content": "Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas una página web."
+            },
+            "usage": {
+                "title": "2. Cookies que utilizamos",
+                "content": "Utilizamos cookies esenciales para el funcionamiento de la aplicación:",
+                "list": {
+                    "i1": "<bold>Cookies de Sesión:</bold> Para mantener tu sesión iniciada de forma segura (Supabase Auth).",
+                    "i2": "<bold>Cookies de Preferencias:</bold> Para recordar si prefieres el modo claro u oscuro.",
+                    "i3": "<bold>Cookies de Pago (Stripe):</bold> Stripe puede establecer cookies necesarias para la prevención de fraude y el procesamiento seguro de pagos."
+                }
+            },
+            "management": {
+                "title": "3. Gestión de cookies",
+                "content": "Puedes configurar tu navegador para rechazar todas las cookies o para que te avise cuando se envía una cookie. Sin embargo, algunas partes del servicio (como el inicio de sesión o los pagos) no funcionarán correctamente sin ellas."
+            }
+        }
+    },
+    "Terms": {
+        "meta": {
+            "title": "Términos y Condiciones | Kakebo AI",
+            "description": "Términos de uso y condiciones de servicio de Kakebo AI."
+        },
+        "title": "Términos y Condiciones",
+        "lastUpdate": "Última actualización: {year}",
+        "sections": {
+            "intro": {
+                "title": "1. Introducción",
+                "content": "Bienvenido a Kakebo AI. Al acceder o utilizar nuestra aplicación web, aceptas estar legalmente vinculado por estos Términos de Servicio."
+            },
+            "desc": {
+                "title": "2. Descripción del Servicio",
+                "content": "Kakebo AI es una herramienta de gestión financiera personal basada en el método japonés Kakebo, diseñada para ayudar a los usuarios a registrar gastos y fomentar el ahorro."
+            },
+            "account": {
+                "title": "3. Cuentas de Usuario",
+                "content": "Para usar ciertas funciones, debes registrarte. Eres responsable de mantener la confidencialidad de tus credenciales. Nos reservamos el derecho de suspender cuentas que violen estos términos."
+            },
+            "payments": {
+                "title": "4. Pagos y Suscripciones (Stripe)",
+                "content": "Algunas funciones avanzadas pueden requerir una suscripción de pago. Los pagos son procesados de forma segura a través de <bold>Stripe</bold>.",
+                "list": {
+                    "i1": "No almacenamos tus datos completos de tarjeta de crédito/débito en nuestros servidores.",
+                    "i2": "Las transacciones están sujetas a los términos y condiciones de Stripe, además de los nuestros.",
+                    "i3": "Puedes cancelar tu suscripción en cualquier momento desde tu panel de control."
+                }
+            },
+            "liability": {
+                "title": "5. Responsabilidad",
+                "content": "Kakebo AI se proporciona \"tal cual\". No garantizamos que el servicio sea ininterrumpido o libre de errores. No somos asesores financieros; la información proporcionada es solo para fines informativos y de gestión personal."
+            },
+            "modifications": {
+                "title": "6. Modificaciones",
+                "content": "Nos reservamos el derecho de modificar estos términos en cualquier momento. Te notificaremos sobre cambios significativos."
+            }
+        }
     }
 }

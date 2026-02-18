@@ -13,20 +13,25 @@ import {
   AlternativesSection,
 } from "@/components/landing";
 
-export const metadata: Metadata = {
-  title: "Kakebo: El Método Japonés para Ahorrar (App 2026)",
-  description:
-    "La alternativa a Excel y Fintonic que respeta tu privacidad. Sin conexión bancaria. Método Kakebo oficial con Inteligencia Artificial. Gratis 14 días.",
-  alternates: { canonical: "/" },
-  openGraph: {
-    title: "Kakebo: El Método Japonés para Ahorrar (App 2026)",
-    description:
-      "Olvídate de Excels complicados. Kakebo organiza tus gastos sin pedirte las claves del banco. 100% Privado y Seguro.",
-    type: "website",
-    url: "/",
-  },
-  robots: { index: true, follow: true },
-};
+import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Landing.meta" });
+
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: { canonical: "/" },
+    openGraph: {
+      title: t("ogTitle"),
+      description: t("ogDescription"),
+      type: "website",
+      url: "/",
+    },
+    robots: { index: true, follow: true },
+  };
+}
 
 import { useTranslations } from 'next-intl';
 

@@ -3,12 +3,15 @@ import { AgentMessage } from '@/hooks/useAgent';
 // Usaremos iconos de lucide-react si están disponibles, o texto simple por ahora
 // import { Bot, User, Cpu, AlertCircle } from 'lucide-react'; 
 
+import { useTranslations } from 'next-intl';
+
 interface ChatMessageProps {
     message: AgentMessage;
 }
 
 export function ChatMessage({ message }: ChatMessageProps) {
     const isUser = message.role === 'user';
+    const t = useTranslations("Agent");
 
     return (
         <div className={`flex w-full mb-4 ${isUser ? 'justify-end' : 'justify-start'}`}>
@@ -22,7 +25,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
                     {/* Avatar (opcional) */}
                     {!isUser && (
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">
-                            AI
+                            {t('avatar')}
                         </div>
                     )}
 

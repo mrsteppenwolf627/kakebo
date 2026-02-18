@@ -751,7 +751,7 @@ export default function ExpenseCalendar({
                       onClick={() => removeExpense(r.id)}
                       disabled={isClosed || deletingId === r.id || isLocked}
                       className="text-muted-foreground hover:text-destructive disabled:opacity-30 transition-colors p-1"
-                      title={isClosed ? t("status.closedMsg") : "Eliminar"}
+                      title={isClosed ? t("status.closedMsg") : t("actions.delete")}
                     >
                       {deletingId === r.id ? "…" : "✕"}
                     </button>
@@ -762,16 +762,13 @@ export default function ExpenseCalendar({
           )}
         </div>
 
+
         {/* ✅ BLOQUE SEO - Internal hidden description */}
         <section className="mt-12 border-t border-border pt-8 space-y-3 text-sm text-muted-foreground">
-          <h2 className="text-base font-semibold text-foreground">Control mensual con Kakebo</h2>
-          <p>
-            Este panel muestra tu resumen del mes con el método Kakebo: gasto total, desglose por
-            categorías, presupuestos y progreso hacia el objetivo de ahorro.
-          </p>
+          <h2 className="text-base font-semibold text-foreground">{t("SEO.title")}</h2>
+          <p>{t("SEO.p1")}</p>
           <div className="text-xs opacity-50">
-            (Hueco SEO: texto sobre “control de gastos mensual”, “kakebo”, “presupuesto por
-            categorías”, etc.)
+            {t("SEO.p2")}
           </div>
         </section>
       </div>

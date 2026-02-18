@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/browser";
 import AIMetricsChart from "@/components/AIMetricsChart";
 import AILogsList from "@/components/AILogsList";
 import { AIMetrics, AILogEntry } from "@/lib/ai/metrics";
+import { useTranslations } from "next-intl";
 
 type DateRange = "7d" | "30d" | "90d" | "all";
 
@@ -16,13 +17,6 @@ interface EmbeddingStatus {
   status: "complete" | "in_progress" | "not_started";
 }
 
-const DATE_RANGE_LABELS: Record<DateRange, string> = {
-  "7d": "7 días",
-  "30d": "30 días",
-  "90d": "90 días",
-  all: "Todo",
-};
-
 function getDateRangeStart(range: DateRange): string | undefined {
   if (range === "all") return undefined;
   const days = parseInt(range);
@@ -33,6 +27,7 @@ function getDateRangeStart(range: DateRange): string | undefined {
 
 export default function AIMetricsClient() {
   const supabase = useMemo(() => createClient(), []);
+  const t = useTranslations("AIMetrics");
 
   const [metrics, setMetrics] = useState<AIMetrics | null>(null);
   const [logs, setLogs] = useState<AILogEntry[]>([]);
@@ -63,7 +58,7 @@ export default function AIMetricsClient() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error?.message || "Error al cargar métricas");
+        throw new Error(data.error?.message || t("error"));
       }
 
       setMetrics(data.data.metrics);
@@ -74,7 +69,7 @@ export default function AIMetricsClient() {
     } finally {
       setLoading(false);
     }
-  }, [dateRange]);
+  }, [dateRange, t]);
 
   useEffect(() => {
     fetchMetrics();
@@ -127,18 +122,18 @@ export default function AIMetricsClient() {
     return [
       {
         key: "classification",
-        name: "Clasificación",
+        name: t("charts.byType.classification"),
         value: metrics.byType.classification,
         color: "#2563eb",
       },
       {
         key: "assistant",
-        name: "Asistente",
+        name: t("charts.byType.assistant"),
         value: metrics.byType.assistant,
         color: "#16a34a",
       },
     ];
-  }, [metrics]);
+  }, [metrics, t]);
 
   // Prepare chart data for model distribution
   const modelChartData = useMemo(() => {
@@ -176,7 +171,7 @@ export default function AIMetricsClient() {
           onClick={fetchMetrics}
           className="mt-2 text-sm underline hover:no-underline"
         >
-          Reintentar
+          {t("retry")}
         </button>
       </div>
     );
@@ -184,7 +179,7 @@ export default function AIMetricsClient() {
 
   if (!metrics) {
     return (
-      <div className="text-black/50">No hay métricas disponibles</div>
+      <div className="text-black/50">{t("noData")}</div>
     );
   }
 
@@ -192,17 +187,17 @@ export default function AIMetricsClient() {
     <div className="space-y-6">
       {/* Date range filter */}
       <div className="flex items-center gap-2">
-        <span className="text-sm text-muted-foreground">Período:</span>
-        {(Object.keys(DATE_RANGE_LABELS) as DateRange[]).map((range) => (
+        <span className="text-sm text-muted-foreground">{t("period")}</span>
+        {(["7d", "30d", "90d", "all"] as const).map((range) => (
           <button
             key={range}
             onClick={() => setDateRange(range)}
             className={`px-3 py-1.5 text-sm border rounded-md transition-colors ${dateRange === range
-                ? "bg-foreground text-background border-foreground font-medium"
-                : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/50"
+              ? "bg-foreground text-background border-foreground font-medium"
+              : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/50"
               }`}
           >
-            {DATE_RANGE_LABELS[range]}
+            {t(`periods.${range}`)}
           </button>
         ))}
       </div>
@@ -210,50 +205,53 @@ export default function AIMetricsClient() {
       {/* Summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         <MetricCard
-          label="Total peticiones"
+          label={t("summary.totalRequests")}
           value={metrics.totalRequests.toString()}
         />
         <MetricCard
-          label="Tasa de éxito"
+          label={t("summary.successRate")}
           value={`${metrics.successRate.toFixed(1)}%`}
           highlight={metrics.successRate >= 95 ? "green" : metrics.successRate >= 80 ? "yellow" : "red"}
         />
         <MetricCard
-          label="Costo total"
+          label={t("summary.totalCost")}
           value={`$${metrics.totalCostUsd.toFixed(4)}`}
         />
         <MetricCard
-          label="Latencia media"
+          label={t("summary.avgLatency")}
           value={`${metrics.avgLatencyMs}ms`}
         />
         <MetricCard
-          label="Accuracy"
+          label={t("summary.accuracy")}
           value={`${metrics.classificationAccuracy}%`}
-          subtitle={`${metrics.classificationsCorrected} correcciones de ${metrics.classificationsTotal}`}
+          subtitle={t("summary.accuracySubtitle", {
+            corrected: metrics.classificationsCorrected,
+            total: metrics.classificationsTotal
+          })}
           highlight={metrics.classificationAccuracy >= 90 ? "green" : metrics.classificationAccuracy >= 70 ? "yellow" : "red"}
         />
       </div>
 
       {/* Token usage */}
       <div className="border border-border bg-card p-4 rounded-xl shadow-sm">
-        <div className="font-medium text-foreground mb-3">Uso de tokens</div>
+        <div className="font-medium text-foreground mb-3">{t("summary.tokenUsage.title")}</div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           <div>
-            <div className="text-muted-foreground text-xs">Tokens entrada</div>
+            <div className="text-muted-foreground text-xs">{t("summary.tokenUsage.input")}</div>
             <div className="font-mono font-medium text-foreground">{metrics.totalInputTokens.toLocaleString()}</div>
           </div>
           <div>
-            <div className="text-muted-foreground text-xs">Tokens salida</div>
+            <div className="text-muted-foreground text-xs">{t("summary.tokenUsage.output")}</div>
             <div className="font-mono font-medium text-foreground">{metrics.totalOutputTokens.toLocaleString()}</div>
           </div>
           <div>
-            <div className="text-muted-foreground text-xs">Total tokens</div>
+            <div className="text-muted-foreground text-xs">{t("summary.tokenUsage.total")}</div>
             <div className="font-mono font-medium text-foreground">
               {(metrics.totalInputTokens + metrics.totalOutputTokens).toLocaleString()}
             </div>
           </div>
           <div>
-            <div className="text-muted-foreground text-xs">Costo por petición</div>
+            <div className="text-muted-foreground text-xs">{t("summary.tokenUsage.costPerRequest")}</div>
             <div className="font-mono font-medium text-foreground">${metrics.avgCostPerRequest.toFixed(6)}</div>
           </div>
         </div>
@@ -262,12 +260,12 @@ export default function AIMetricsClient() {
       {/* Charts */}
       <div className="grid md:grid-cols-2 gap-4">
         <AIMetricsChart
-          title="Por tipo"
-          subtitle={`Total: ${metrics.totalRequests}`}
+          title={t("charts.byType.title")}
+          subtitle={t("charts.byType.subtitle", { total: metrics.totalRequests })}
           data={typeChartData}
         />
         <AIMetricsChart
-          title="Por modelo"
+          title={t("charts.byModel")}
           data={modelChartData}
         />
       </div>
@@ -277,9 +275,9 @@ export default function AIMetricsClient() {
         <div className="border border-border bg-card p-4 rounded-xl shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <div className="font-medium text-foreground">Embeddings RAG</div>
+              <div className="font-medium text-foreground">{t("embeddings.title")}</div>
               <div className="text-xs text-muted-foreground">
-                Vectores para búsqueda semántica de gastos
+                {t("embeddings.subtitle")}
               </div>
             </div>
             {embeddingStatus.status !== "complete" && (
@@ -288,22 +286,22 @@ export default function AIMetricsClient() {
                 disabled={migrating}
                 className="border border-border bg-muted/50 text-foreground px-3 py-1.5 text-sm rounded-lg hover:bg-muted transition-colors disabled:opacity-50"
               >
-                {migrating ? "Procesando..." : "Generar embeddings"}
+                {migrating ? t("embeddings.processing") : t("embeddings.generate")}
               </button>
             )}
           </div>
 
           <div className="grid grid-cols-3 gap-4 text-sm mb-3">
             <div>
-              <div className="text-muted-foreground text-xs">Total gastos</div>
+              <div className="text-muted-foreground text-xs">{t("embeddings.totalExpenses")}</div>
               <div className="font-mono font-medium text-foreground">{embeddingStatus.totalExpenses}</div>
             </div>
             <div>
-              <div className="text-muted-foreground text-xs">Con embedding</div>
+              <div className="text-muted-foreground text-xs">{t("embeddings.withEmbeddings")}</div>
               <div className="font-mono font-medium text-green-600 dark:text-green-400">{embeddingStatus.withEmbeddings}</div>
             </div>
             <div>
-              <div className="text-muted-foreground text-xs">Sin embedding</div>
+              <div className="text-muted-foreground text-xs">{t("embeddings.withoutEmbeddings")}</div>
               <div className="font-mono font-medium text-amber-600 dark:text-amber-400">{embeddingStatus.withoutEmbeddings}</div>
             </div>
           </div>
@@ -316,7 +314,7 @@ export default function AIMetricsClient() {
             />
           </div>
           <div className="text-xs text-muted-foreground mt-1">
-            {embeddingStatus.percentage}% completado
+            {embeddingStatus.percentage}% {t("embeddings.completed")}
             {embeddingStatus.status === "complete" && " ✓"}
           </div>
 

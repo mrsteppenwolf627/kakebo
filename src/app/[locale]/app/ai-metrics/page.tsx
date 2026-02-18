@@ -1,10 +1,14 @@
 import { Suspense } from "react";
 import AIMetricsClient from "./AIMetricsClient";
+import { getTranslations } from "next-intl/server";
 
-export const metadata = {
-  title: "Métricas IA | Kakebo",
-  description: "Panel de evaluación del modelo de IA",
-};
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale, namespace: "AIMetrics" });
+  return {
+    title: `${t("title")} | Kakebo`,
+    description: t("subtitle"),
+  };
+}
 
 function LoadingFallback() {
   return (
@@ -20,14 +24,16 @@ function LoadingFallback() {
   );
 }
 
-export default function AIMetricsPage() {
+export default async function AIMetricsPage({ params: { locale } }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale, namespace: "AIMetrics" });
+
   return (
     <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold">Métricas IA</h1>
+          <h1 className="text-2xl sm:text-3xl font-semibold">{t("title")}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Panel de evaluación y monitoreo del modelo de IA
+            {t("subtitle")}
           </p>
         </div>
 
@@ -38,3 +44,5 @@ export default function AIMetricsPage() {
     </main>
   );
 }
+
+

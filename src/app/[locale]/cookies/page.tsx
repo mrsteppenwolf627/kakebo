@@ -1,49 +1,42 @@
+import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
+import { Navbar } from "@/components/landing";
 
-export const metadata = {
-    title: "Política de Cookies | Kakebo AI",
-    description: "Uso de cookies en Kakebo AI.",
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Cookies.meta" });
+
+    return {
+        title: t("title"),
+        description: t("description"),
+    };
+}
 
 export default function CookiesPage() {
+    const t = useTranslations("Cookies");
+
     return (
-        <main className="min-h-screen bg-background py-16 px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-3xl prose prose-stone dark:prose-invert">
-                <h1>Política de Cookies</h1>
-                <p className="lead">Última actualización: {new Date().getFullYear()}</p>
+        <main className="min-h-screen bg-background text-foreground">
+            <Navbar />
+            <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-3xl prose prose-stone dark:prose-invert">
+                    <h1>{t("title")}</h1>
+                    <p className="lead">{t("lastUpdate", { year: new Date().getFullYear() })}</p>
 
-                <h2>1. ¿Qué son las cookies?</h2>
-                <p>
-                    Las cookies son pequeños archivos de texto que se almacenan en tu
-                    dispositivo cuando visitas una página web.
-                </p>
+                    <h2>{t("sections.whatIs.title")}</h2>
+                    <p>{t("sections.whatIs.content")}</p>
 
-                <h2>2. Cookies que utilizamos</h2>
-                <p>
-                    Utilizamos cookies esenciales para el funcionamiento de la aplicación:
-                </p>
-                <ul>
-                    <li>
-                        <strong>Cookies de Sesión:</strong> Para mantener tu sesión iniciada
-                        de forma segura (Supabase Auth).
-                    </li>
-                    <li>
-                        <strong>Cookies de Preferencias:</strong> Para recordar si prefieres
-                        el modo claro u oscuro.
-                    </li>
-                    <li>
-                        <strong>Cookies de Pago (Stripe):</strong> Stripe puede establecer
-                        cookies necesarias para la prevención de fraude y el procesamiento
-                        seguro de pagos.
-                    </li>
-                </ul>
+                    <h2>{t("sections.usage.title")}</h2>
+                    <p>{t("sections.usage.content")}</p>
+                    <ul>
+                        <li><span dangerouslySetInnerHTML={{ __html: t.raw("sections.usage.list.i1") }} /></li>
+                        <li><span dangerouslySetInnerHTML={{ __html: t.raw("sections.usage.list.i2") }} /></li>
+                        <li><span dangerouslySetInnerHTML={{ __html: t.raw("sections.usage.list.i3") }} /></li>
+                    </ul>
 
-                <h2>3. Gestión de cookies</h2>
-                <p>
-                    Puedes configurar tu navegador para rechazar todas las cookies o para
-                    que te avise cuando se envía una cookie. Sin embargo, algunas partes
-                    del servicio (como el inicio de sesión o los pagos) no funcionarán
-                    correctamente sin ellas.
-                </p>
+                    <h2>{t("sections.management.title")}</h2>
+                    <p>{t("sections.management.content")}</p>
+                </div>
             </div>
         </main>
     );
