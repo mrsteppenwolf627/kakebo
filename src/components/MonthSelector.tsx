@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
@@ -26,6 +27,8 @@ export default function MonthSelector({
   month: number;
 }) {
   const router = useRouter();
+  const t = useTranslations("Dashboard.MonthSelector");
+  const locale = useLocale();
 
   const currentYm = useMemo(() => toYm(year, month), [year, month]);
 
@@ -54,8 +57,9 @@ export default function MonthSelector({
 
   const label = useMemo(() => {
     const d = new Date(year, month - 1, 1);
-    return d.toLocaleDateString("es-ES", { month: "long", year: "numeric" });
-  }, [year, month]);
+    // Locale-aware date formatting
+    return d.toLocaleDateString(locale, { month: "long", year: "numeric" });
+  }, [year, month, locale]);
 
   return (
     <div className="border border-border rounded-lg p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-card shadow-sm transition-colors">
@@ -76,7 +80,7 @@ export default function MonthSelector({
           type="button"
           onClick={goPrev}
           className="border border-border rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted hover:border-foreground/20 transition-all"
-          title="Mes anterior"
+          title={t("prev")}
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -85,16 +89,16 @@ export default function MonthSelector({
           type="button"
           onClick={goToday}
           className="border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900 px-4 py-2 text-xs sm:text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors rounded-md"
-          title="Ir al mes actual"
+          title={t("today")}
         >
-          Ir a hoy
+          {t("today")}
         </button>
 
         <button
           type="button"
           onClick={goNext}
           className="border border-border rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted hover:border-foreground/20 transition-all"
-          title="Mes siguiente"
+          title={t("next")}
         >
           <ChevronRight className="w-5 h-5" />
         </button>

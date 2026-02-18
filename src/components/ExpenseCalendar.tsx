@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/browser";
 import { canUsePremium, Profile } from "@/lib/auth/access-control";
 import Link from "next/link";
 import SpendingChart from "@/components/SpendingChart";
+import { useTranslations } from "next-intl";
 
 const KAKEBO_CATEGORIES = {
   supervivencia: { label: "Supervivencia", color: "#fca5a5" }, // Red-300 (Pastel)
@@ -56,6 +57,7 @@ export default function ExpenseCalendar({
   year: number;
   month: number;
 }) {
+  const t = useTranslations("Dashboard.ExpenseCalendar");
   const supabase = createClient();
 
   const [rows, setRows] = useState<ExpenseRow[]>([]);
@@ -434,8 +436,8 @@ export default function ExpenseCalendar({
 
   const isClosed = monthRow?.status === "closed";
   const monthStatusLabel = monthRow?.status
-    ? `estado: ${monthRow.status === "closed" ? "cerrado" : "abierto"}`
-    : "sin registro de mes aún";
+    ? (monthRow.status === "closed" ? t("status.closed") : t("status.open"))
+    : t("status.unknown");
 
   function budgetFor(key: CategoryKey) {
     if (!settings) return null;
@@ -455,10 +457,10 @@ export default function ExpenseCalendar({
   const chartCategories = useMemo(() => {
     return (Object.keys(KAKEBO_CATEGORIES) as CategoryKey[]).map((key) => ({
       key,
-      label: KAKEBO_CATEGORIES[key].label,
+      label: t(`categories.${key}`), // Translating labels for chart
       color: KAKEBO_CATEGORIES[key].color,
     }));
-  }, []);
+  }, [t]);
 
   // Check if viewing past month and user is not premium
   const isLocked = useMemo(() => {
@@ -489,14 +491,14 @@ export default function ExpenseCalendar({
 
             {isClosed && (
               <div className="mt-2 text-xs text-muted-foreground bg-muted border border-border rounded-md p-2 inline-block">
-                Mes cerrado · No se pueden añadir ni eliminar gastos.
+                {t("status.closedMsg")}
               </div>
             )}
 
             <div className="text-sm text-muted-foreground font-light mt-2">
-              Gastos: <span className="font-mono text-foreground font-medium">{rows.length}</span>
+              {t("stats.expenses")} <span className="font-mono text-foreground font-medium">{rows.length}</span>
               <span className="mx-2 text-border">·</span>
-              Total: <span className="font-mono text-foreground font-medium">{money(total)} €</span>
+              {t("stats.total")} <span className="font-mono text-foreground font-medium">{money(total)} €</span>
             </div>
           </div>
 
@@ -505,7 +507,7 @@ export default function ExpenseCalendar({
               onClick={load}
               className="border border-border bg-card rounded-md px-4 py-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
             >
-              Actualizar
+              {t("actions.update")}
             </button>
 
             {isClosed ? (
@@ -513,18 +515,18 @@ export default function ExpenseCalendar({
                 onClick={reopenMonth}
                 disabled={closing}
                 className="border border-border bg-card rounded-md px-4 py-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground hover:border-primary/50 disabled:opacity-50 transition-colors"
-                title="Reabrir mes"
+                title={t("actions.reopen")}
               >
-                {closing ? "…" : "Reabrir"}
+                {closing ? "…" : t("actions.reopen")}
               </button>
             ) : (
               <button
                 onClick={closeMonth}
                 disabled={closing}
                 className="border border-stone-800 bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 rounded-md px-4 py-2 text-xs sm:text-sm hover:opacity-90 disabled:opacity-50 transition-colors shadow-sm"
-                title="Cerrar mes"
+                title={t("actions.close")}
               >
-                {closing ? "…" : "Cerrar Mes"}
+                {closing ? "…" : t("actions.close")}
               </button>
             )}
           </div>
@@ -533,19 +535,19 @@ export default function ExpenseCalendar({
         {/* Finanzas del mes */}
         <div className="border border-border rounded-lg p-5 sm:p-6 space-y-3 bg-muted/30">
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-muted-foreground font-light">Ingreso mensual</span>
+            <span className="text-muted-foreground font-light">{t("summary.income")}</span>
             <span className="font-mono text-foreground">
               {settingsLoading ? "…" : income > 0 ? `${money(income)} €` : "—"}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-muted-foreground font-light">Gastos fijos</span>
+            <span className="text-muted-foreground font-light">{t("summary.fixed")}</span>
             <span className="font-mono text-foreground">{income > 0 ? `${money(fixedTotal)} €` : "—"}</span>
           </div>
 
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-muted-foreground font-light">Utilizable</span>
+            <span className="text-muted-foreground font-light">{t("summary.usable")}</span>
             <span
               className={`font-mono ${income > 0 && availableForCategories < 0 ? "text-destructive" : "text-foreground"
                 }`}
@@ -555,7 +557,7 @@ export default function ExpenseCalendar({
           </div>
 
           <div className="flex items-center justify-between text-sm gap-2">
-            <span className="text-muted-foreground font-light">Disponible</span>
+            <span className="text-muted-foreground font-light">{t("summary.available")}</span>
             <span
               className={`font-mono ${income > 0 && availableAfterExpenses < 0 ? "text-destructive" : "text-foreground"
                 }`}
@@ -565,7 +567,7 @@ export default function ExpenseCalendar({
           </div>
 
           <div className="flex items-center justify-between text-sm gap-2 border-t border-border pt-3">
-            <span className="text-muted-foreground font-light">Objetivo ahorro</span>
+            <span className="text-muted-foreground font-light">{t("summary.savingGoal")}</span>
             <span className="font-mono text-foreground">
               {savingGoal > 0 ? `${money(savingGoal)} €` : "—"}
             </span>
@@ -574,7 +576,7 @@ export default function ExpenseCalendar({
           {income > 0 && savingGoal > 0 ? (
             <div className="pt-2">
               <div className="flex items-center justify-between text-sm mb-1">
-                <span className="text-muted-foreground text-xs">Progreso ahorro</span>
+                <span className="text-muted-foreground text-xs">{t("summary.savingProgress")}</span>
                 <span className="font-medium text-foreground text-xs">{savingPct}%</span>
               </div>
 
@@ -587,24 +589,22 @@ export default function ExpenseCalendar({
               </div>
 
               <div className="mt-2 text-xs text-muted-foreground">
-                Ahorrado: <span className="font-medium text-foreground">{money(Math.max(0, savedSoFar))} €</span>{" "}
-                / Objetivo: <span className="font-medium text-foreground">{money(savingGoal)} €</span>
+                {t("summary.saved")} <span className="font-medium text-foreground">{money(Math.max(0, savedSoFar))} €</span>{" "}
+                / {t("summary.goal")} <span className="font-medium text-foreground">{money(savingGoal)} €</span>
                 {savingProgress >= 1 ? (
-                  <span className="ml-2 text-green-600 dark:text-green-400 font-medium">¡Objetivo conseguido!</span>
+                  <span className="ml-2 text-green-600 dark:text-green-400 font-medium">{t("summary.achieved")}</span>
                 ) : (
                   <span className="ml-2">
-                    Faltan <span className="font-medium text-foreground">{money(remainingToGoal)} €</span>
+                    {t("summary.missing", { amount: money(remainingToGoal) })}
                   </span>
                 )}
               </div>
             </div>
           ) : (
             <div className="text-xs text-muted-foreground pt-2">
-              Configura ingreso y objetivo en{" "}
-              <Link href="/app/settings" className="underline hover:text-foreground">
-                Ajustes
-              </Link>{" "}
-              para ver el progreso de ahorro.
+              {t.rich("summary.noConfig", {
+                settingsLink: (chunks: any) => <Link href="/app/settings" className="underline hover:text-foreground">{chunks}</Link>
+              })}
             </div>
           )}
         </div>
@@ -631,19 +631,19 @@ export default function ExpenseCalendar({
                       className="inline-block h-2.5 w-2.5 rounded-full ring-1 ring-inset ring-black/5 dark:ring-white/10"
                       style={{ backgroundColor: cat.color }}
                     />
-                    <div className="font-medium text-foreground text-sm">{cat.label}</div>
+                    <div className="font-medium text-foreground text-sm">{t(`categories.${key}`)}</div>
                   </div>
                   <div className="text-sm font-semibold font-mono text-foreground">{money(spent)} €</div>
                 </div>
 
                 <div className="text-xs text-muted-foreground flex items-center justify-between">
-                  <span>{pct.toFixed(0)}% del total</span>
+                  <span>{t("categories.percentTotal", { percent: pct.toFixed(0) })}</span>
                   {budget != null ? (
                     <span className={over ? "text-destructive font-medium" : ""}>
-                      Presup.: {money(budget)} € {remaining != null ? `· Restan ${money(remaining)} €` : ""}
+                      {t("categories.budget", { amount: money(budget) })} {remaining != null ? `· ${t("categories.remaining", { amount: money(remaining) })}` : ""}
                     </span>
                   ) : (
-                    <span>Sin presupuesto</span>
+                    <span>{t("categories.noBudget")}</span>
                   )}
                 </div>
 
@@ -666,15 +666,15 @@ export default function ExpenseCalendar({
         <div className="border border-border p-6 rounded-lg bg-card shadow-sm relative overflow-hidden">
           {isLocked && (
             <div className="absolute inset-0 z-10 bg-white/60 dark:bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
-              <p className="text-lg font-bold text-foreground mb-2">Histórico bloqueado</p>
+              <p className="text-lg font-bold text-foreground mb-2">{t("locked.title")}</p>
               <p className="text-sm text-muted-foreground mb-4 max-w-xs">
-                Tu periodo de prueba ha finalizado. Actualiza a Premium para ver tus datos históricos.
+                {t("locked.desc")}
               </p>
               <Link
                 href="/pricing"
                 className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
               >
-                Desbloquear Historial
+                {t("locked.unlock")}
               </Link>
             </div>
           )}
@@ -693,22 +693,22 @@ export default function ExpenseCalendar({
               href={`/app/new?ym=${ym}`}
               className={`flex-1 sm:flex-none border border-stone-900 bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 px-5 py-2.5 text-sm font-medium text-center rounded-md hover:opacity-90 transition-colors shadow-sm ${isClosed ? "pointer-events-none opacity-50" : ""
                 }`}
-              title={isClosed ? "Mes cerrado" : "Añadir gasto"}
+              title={isClosed ? t("status.closedMsg") : t("actions.addExpense")}
             >
-              + Nuevo gasto
+              {t("actions.addExpense")}
             </Link>
             <Link
               href={`/app/new-income?ym=${ym}`}
               className={`flex-1 sm:flex-none border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 text-foreground px-5 py-2.5 text-sm font-medium text-center rounded-md hover:bg-muted transition-colors shadow-sm ${isClosed ? "pointer-events-none opacity-50" : ""
                 }`}
-              title={isClosed ? "Mes cerrado" : "Añadir ingreso"}
+              title={isClosed ? t("status.closedMsg") : t("actions.addIncome")}
             >
-              💰 + Nuevo ingreso
+              {t("actions.addIncome")}
             </Link>
           </div>
 
           <Link href={`/app/history/${ym}`} className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 text-center sm:text-right decoration-border transition-colors">
-            Ver histórico completo
+            {t("actions.history")}
           </Link>
         </div>
 
@@ -720,14 +720,14 @@ export default function ExpenseCalendar({
           {isLocked && (
             <div className="absolute inset-0 z-10 bg-white/60 dark:bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center select-none">
               <span className="text-2xl mb-2">🔒</span>
-              <p className="font-semibold">Historial Premium</p>
+              <p className="font-semibold">{t("locked.premium")}</p>
             </div>
           )}
 
-          <div className="font-medium text-foreground mb-4 text-sm sm:text-base">Últimos movimientos</div>
+          <div className="font-medium text-foreground mb-4 text-sm sm:text-base">{t("list.title")}</div>
 
           {rows.length === 0 && !loading && (
-            <div className="text-sm text-muted-foreground italic py-4 text-center">No hay gastos registrados este mes.</div>
+            <div className="text-sm text-muted-foreground italic py-4 text-center">{t("list.empty")}</div>
           )}
 
           {rows.length > 0 && (
@@ -738,9 +738,9 @@ export default function ExpenseCalendar({
                   className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 text-sm py-3 first:pt-0 last:pb-0"
                 >
                   <div className="min-w-0 flex-1">
-                    <div className="font-medium text-foreground truncate">{r.note || "Sin concepto"}</div>
+                    <div className="font-medium text-foreground truncate">{r.note || t("list.noConcept")}</div>
                     <div className="text-xs text-muted-foreground mt-0.5">
-                      {r.date} · <span style={{ color: (KAKEBO_CATEGORIES as any)[r.category]?.color }}>{(KAKEBO_CATEGORIES as any)[r.category]?.label ?? r.category}</span>
+                      {r.date} · <span style={{ color: (KAKEBO_CATEGORIES as any)[r.category]?.color }}>{t(`categories.${r.category}`)}</span>
                     </div>
                   </div>
 
@@ -751,7 +751,7 @@ export default function ExpenseCalendar({
                       onClick={() => removeExpense(r.id)}
                       disabled={isClosed || deletingId === r.id || isLocked}
                       className="text-muted-foreground hover:text-destructive disabled:opacity-30 transition-colors p-1"
-                      title={isClosed ? "Mes cerrado" : "Eliminar"}
+                      title={isClosed ? t("status.closedMsg") : "Eliminar"}
                     >
                       {deletingId === r.id ? "…" : "✕"}
                     </button>
@@ -762,7 +762,7 @@ export default function ExpenseCalendar({
           )}
         </div>
 
-        {/* ✅ BLOQUE SEO */}
+        {/* ✅ BLOQUE SEO - Internal hidden description */}
         <section className="mt-12 border-t border-border pt-8 space-y-3 text-sm text-muted-foreground">
           <h2 className="text-base font-semibold text-foreground">Control mensual con Kakebo</h2>
           <p>

@@ -168,8 +168,8 @@
     },
     "Blog": {
         "index": {
-            "title": "Kakebo Blog",
-            "subtitle": "Practical tips on saving, personal finance, and mindful living.",
+            "title": "Kakebo Academy Blog: Japanese Savings Hacks & Zen Finance (2026)",
+            "subtitle": "Learn how to save $200/mo without cutting joy. Kakebo method guides, savings hacks, and stoic financial mindset. Read for free.",
             "readMore": "Read article"
         },
         "post": {
@@ -219,5 +219,112 @@
             },
             "resendBtn": "Resend confirmation email"
         }
+    },
+    "Dashboard": {
+        "MonthSelector": {
+            "today": "Go to today",
+            "prev": "Previous month",
+            "next": "Next month"
+        },
+        "MoneyPanel": {
+            "title": "Monthly Balance",
+            "subtitle": "Simplified financial control.",
+            "cards": {
+                "budget": {
+                    "label": "Budget",
+                    "manageIncome": "Manage Income",
+                    "formula": "(Income {amount} € − Fixed − Savings)",
+                    "deficit": "Deficit: {amount} €",
+                    "deficitDesc": "Your income does not cover fixed expenses and savings."
+                },
+                "spent": {
+                    "label": "Spent",
+                    "desc": "Sum of recorded expenses"
+                },
+                "available": {
+                    "label": "Real Available",
+                    "desc": "What you have left to finish the month"
+                }
+            },
+            "inputs": {
+                "balanceLabel": "💰 Current Bank Balance (€)",
+                "liquidityLabel": "Real Liquidity (Bank − Reserves):",
+                "liquidityDesc": "This is your real 'cushion' discounting what is already committed.",
+                "save": "OK",
+                "savingCheck": "I have already transferred savings ({amount} €)",
+                "savingDesc": "Check this when you move money to your savings account.",
+                "savingPending": "Pending transfer: {amount} €"
+            },
+            "messages": {
+                "saved": "Balance saved.",
+                "savingDone": "Savings marked as transferred.",
+                "savingPending": "Savings marked as pending."
+            }
+        },
+        "ExpenseCalendar": {
+            "status": {
+                "closed": "status: closed",
+                "open": "status: open",
+                "unknown": "no month record yet",
+                "closedMsg": "Month closed · Cannot add or remove expenses."
+            },
+            "stats": {
+                "expenses": "Expenses:",
+                "total": "Total:"
+            },
+            "actions": {
+                "update": "Refresh",
+                "reopen": "Reopen",
+                "close": "Close Month",
+                "addExpense": "+ New expense",
+                "addIncome": "💰 + New income",
+                "history": "View full history"
+            },
+            "summary": {
+                "income": "Monthly Income",
+                "fixed": "Fixed Expenses",
+                "usable": "Usable",
+                "available": "Available",
+                "savingGoal": "Saving Goal",
+                "savingProgress": "Saving Progress",
+                "saved": "Saved:",
+                "goal": "Goal:",
+                "achieved": "Goal achieved!",
+                "missing": "Missing {amount} €",
+                "noConfig": "Configure income and goal in Settings to see saving progress."
+            },
+            "categories": {
+                "supervivencia": "Survival",
+                "opcional": "Optional",
+                "cultura": "Culture",
+                "extra": "Extra",
+                "percentTotal": "{percent}% of total",
+                "budget": "Budget: {amount} €",
+                "remaining": "Remains {amount} €",
+                "noBudget": "No budget"
+            },
+            "locked": {
+                "title": "History Locked",
+                "desc": "Your trial period has ended. Upgrade to Premium to see your historical data.",
+                "unlock": "Unlock History",
+                "premium": "Premium History"
+            },
+            "list": {
+                "title": "Recent Transactions",
+                "empty": "No expenses recorded this month.",
+                "noConcept": "No concept"
+            }
+        }
+    },
+    "NotFound": {
+        "title": "Page Not Found",
+        "desc": "Sorry, the page you are looking for does not exist or has been moved.",
+        "home": "Back to Home"
+    },
+    "Error": {
+        "title": "Something went wrong",
+        "desc": "An unexpected error occurred.",
+        "retry": "Try again",
+        "home": "Back to Home"
     }
 }

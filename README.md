@@ -187,6 +187,7 @@ Si decides continuar con la ayuda de la IA:
 - 🎨 **Tailwind CSS**
 - 📊 **Recharts**
 - 📄 **React-PDF Renderer**
+- 🌍 **next-intl** (i18n)
 
 </td>
 <td valign="top" width="50%">
@@ -231,6 +232,17 @@ Si decides continuar con la ayuda de la IA:
 ---
 
 ## 📝 Changelog Reciente
+
+### v3.6.0 (2026-02-18) - Global Expansion 🌍
+
+**Internationalization:**
+- 🇪🇸/🇬🇧 **Soporte Bilingüe**: Kakebo ahora habla Español e Inglés nativo. Switcher de idioma instantáneo.
+- 🗺️ **SEO Internacional**: Etiquetas `hreflang` y metadatos optimizados para cada idioma.
+- 📍 **Rutas Localizadas**: Navegación amigable `/es` y `/en` para mejor indexación.
+
+**Mejoras:**
+- 🔧 **Tools Refactor**: Calculadoras (Inflación, 50/30/20) reescritas para ser "Client Components" más rápidos y estables.
+- 🐛 **Build Fixes**: Resolución de conflictos de tipos en webhooks de Stripe y configuración de Next.js.
 
 ### v3.2.0 (2026-02-16) - Branding & Polish 💅
 

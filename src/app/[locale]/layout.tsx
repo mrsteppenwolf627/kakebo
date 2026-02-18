@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { Footer } from "@/components/landing/Footer";
-import "./globals.css";
+import { Footer } from "@/components/landing";
+import "../globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.metodokakebo.com"),
@@ -33,6 +33,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "/",
+    languages: {
+      "es": "/es",
+      "en": "/en",
+    },
   },
   openGraph: {
     title: "Kakebo AI: Finanzas Zen",

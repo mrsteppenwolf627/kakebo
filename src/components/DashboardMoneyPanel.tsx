@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import ManageIncomesModal from "./ManageIncomesModal";
 import TrialBanner from "./saas/TrialBanner";
+import { useTranslations } from "next-intl";
 
 type Props = {
   year: number;
@@ -62,6 +63,7 @@ function monthRangeFromYm(ym: string) {
 }
 
 export default function DashboardMoneyPanel({ ym }: Props) {
+  const t = useTranslations("Dashboard.MoneyPanel");
   const supabase = useMemo(() => createClient(), []);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
@@ -269,7 +271,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       if (error) throw error;
 
       setCurrentBalance(next);
-      setOkMsg("Saldo guardado.");
+      setOkMsg(t("messages.saved"));
     } catch (e: any) {
       setErr(e?.message ?? "Error guardando saldo");
     } finally {
@@ -296,7 +298,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       if (error) throw error;
 
       setSavingsDone(next);
-      setOkMsg(next ? "Ahorro marcado como transferido." : "Ahorro marcado como pendiente.");
+      setOkMsg(next ? t("messages.savingDone") : t("messages.savingPending"));
     } catch (e: any) {
       setErr(e?.message ?? "Error guardando ahorro");
     } finally {
@@ -324,12 +326,12 @@ export default function DashboardMoneyPanel({ ym }: Props) {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 border-b border-border pb-4">
           <div>
-            <div className="text-xs sm:text-sm text-muted-foreground font-light mb-1 uppercase tracking-wider">Balance Mensual</div>
+            <div className="text-xs sm:text-sm text-muted-foreground font-light mb-1 uppercase tracking-wider">{t("title")}</div>
             <div className="text-lg sm:text-xl font-serif text-foreground">{ym}</div>
           </div>
 
           <div className="text-xs text-muted-foreground/70 sm:max-w-xs leading-relaxed text-right">
-            Control financiero simplificado.
+            {t("subtitle")}
           </div>
         </div>
 
@@ -344,35 +346,35 @@ export default function DashboardMoneyPanel({ ym }: Props) {
           {/* Card 1: Budget */}
           <div className="border border-border bg-muted/20 p-5 rounded-md relative group">
             <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide flex justify-between items-center">
-              <span>Presupuesto</span>
+              <span>{t("cards.budget.label")}</span>
               <button
                 onClick={() => setShowIncomeModal(true)}
                 className="text-primary hover:underline text-[10px]"
               >
-                Gestionar Ingresos
+                {t("cards.budget.manageIncome")}
               </button>
             </div>
             <div className={`text-2xl font-serif mb-1 ${availableForCategories < 0 ? "text-destructive" : "text-foreground"}`}>
               {money(Math.max(0, availableForCategories))} €
             </div>
             <div className="text-[10px] text-muted-foreground">
-              (Ingresos {money(income)} € − Fijos − Ahorro)
+              {t("cards.budget.formula", { amount: money(income) })}
             </div>
             {availableForCategories < 0 && (
               <div className="absolute top-full left-0 mt-2 w-full bg-destructive/10 text-destructive text-[10px] p-2 rounded block z-10 border border-destructive/20 shadow-sm animate-in fade-in zoom-in-95 duration-200">
-                <strong>Déficit: {money(availableForCategories)} €</strong>
+                <strong>{t("cards.budget.deficit", { amount: money(availableForCategories) })}</strong>
                 <br />
-                Tus ingresos no cubren los gastos fijos y el ahorro.
+                {t("cards.budget.deficitDesc")}
               </div>
             )}
           </div>
 
           {/* Card 2: Spent */}
           <div className="border border-border bg-muted/20 p-5 rounded-md">
-            <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide">Gastado</div>
+            <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide">{t("cards.spent.label")}</div>
             <div className="text-2xl font-serif text-foreground mb-1">{money(monthSpent)} €</div>
             <div className="text-[10px] text-muted-foreground">
-              Suma de gastos registrados
+              {t("cards.spent.desc")}
             </div>
           </div>
 
@@ -380,12 +382,12 @@ export default function DashboardMoneyPanel({ ym }: Props) {
           <div className="border border-border bg-card shadow-sm p-5 relative overflow-hidden group rounded-md">
             <div className="absolute top-0 right-0 w-16 h-16 bg-muted/30 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
             <div className="relative z-10">
-              <div className="text-xs text-foreground font-bold mb-1 uppercase tracking-wide">Disponible Real</div>
+              <div className="text-xs text-foreground font-bold mb-1 uppercase tracking-wide">{t("cards.available.label")}</div>
               <div className={`text-3xl font-serif mb-1 ${availableAfterExpenses >= 0 ? "text-foreground" : "text-destructive"}`}>
                 {money(availableAfterExpenses)} €
               </div>
               <div className="text-[10px] text-muted-foreground">
-                Lo que te queda para terminar el mes
+                {t("cards.available.desc")}
               </div>
             </div>
           </div>
@@ -397,7 +399,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
             {/* Liquidez / Banco */}
             <div className="space-y-3">
-              <label className="text-xs text-muted-foreground font-medium block">💰 Saldo actual en Banco (€)</label>
+              <label className="text-xs text-muted-foreground font-medium block">{t("inputs.balanceLabel")}</label>
               <div className="flex items-center gap-2">
                 <input
                   value={balanceInput}
@@ -411,13 +413,13 @@ export default function DashboardMoneyPanel({ ym }: Props) {
                   disabled={savingBalance}
                   className="bg-primary text-primary-foreground px-4 py-2 text-xs font-medium hover:opacity-90 disabled:opacity-50 transition-colors rounded-md"
                 >
-                  {savingBalance ? "..." : "OK"}
+                  {savingBalance ? "..." : t("inputs.save")}
                 </button>
               </div>
               <div className="text-[10px] text-muted-foreground leading-tight">
-                Liquidez real (Banco − Reservas): <span className="font-mono text-foreground font-medium">{money(liquidity)} €</span>
+                {t("inputs.liquidityLabel")} <span className="font-mono text-foreground font-medium">{money(liquidity)} €</span>
                 <br />
-                <span className="opacity-70">Esto es tu "colchón" real descontando lo que ya está comprometido.</span>
+                <span className="opacity-70">{t("inputs.liquidityDesc")}</span>
               </div>
             </div>
 
@@ -433,16 +435,16 @@ export default function DashboardMoneyPanel({ ym }: Props) {
                   className="w-4 h-4 accent-primary cursor-pointer rounded-sm"
                 />
                 <label htmlFor="savingsCheck" className="text-sm text-foreground cursor-pointer select-none">
-                  Ya he transferido el ahorro ({money(savingGoal)} €)
+                  {t("inputs.savingCheck", { amount: money(savingGoal) })}
                 </label>
               </div>
               <div className="text-[10px] text-muted-foreground pl-7">
-                Marca esto cuando muevas el dinero a tu cuenta de ahorro.
+                {t("inputs.savingDesc")}
                 {savingSavingsDone && <span className="ml-2 opacity-70">(Guardando...)</span>}
               </div>
               {savingsPending > 0 && (
                 <div className="text-[10px] text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 inline-block rounded-sm ml-7 border border-amber-200 dark:border-amber-800">
-                  Pendiente de transferir: {money(savingsPending)} €
+                  {t("inputs.savingPending", { amount: money(savingsPending) })}
                 </div>
               )}
             </div>

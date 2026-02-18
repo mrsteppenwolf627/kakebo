@@ -168,8 +168,8 @@
     },
     "Blog": {
         "index": {
-            "title": "Blog Kakebo",
-            "subtitle": "Consejos prácticos sobre ahorro, finanzas personales y vida consciente.",
+            "title": "Blog Kakebo Academy: Trucos de Ahorro Japonés y Finanzas Zen (2026)",
+            "subtitle": "Aprende a ahorrar 200€/mes sin dejar de vivir. Guías del método Kakebo, trucos de ahorro y mentalidad financiera estoica. Lee gratis.",
             "readMore": "Leer artículo"
         },
         "post": {
@@ -219,5 +219,112 @@
             },
             "resendBtn": "Reenviar email de confirmación"
         }
+    },
+    "Dashboard": {
+        "MonthSelector": {
+            "today": "Ir a hoy",
+            "prev": "Mes anterior",
+            "next": "Mes siguiente"
+        },
+        "MoneyPanel": {
+            "title": "Balance Mensual",
+            "subtitle": "Control financiero simplificado.",
+            "cards": {
+                "budget": {
+                    "label": "Presupuesto",
+                    "manageIncome": "Gestionar Ingresos",
+                    "formula": "(Ingresos {amount} € − Fijos − Ahorro)",
+                    "deficit": "Déficit: {amount} €",
+                    "deficitDesc": "Tus ingresos no cubren los gastos fijos y el ahorro."
+                },
+                "spent": {
+                    "label": "Gastado",
+                    "desc": "Suma de gastos registrados"
+                },
+                "available": {
+                    "label": "Disponible Real",
+                    "desc": "Lo que te queda para terminar el mes"
+                }
+            },
+            "inputs": {
+                "balanceLabel": "💰 Saldo actual en Banco (€)",
+                "liquidityLabel": "Liquidez real (Banco − Reservas):",
+                "liquidityDesc": "Esto es tu 'colchón' real descontando lo que ya está comprometido.",
+                "save": "OK",
+                "savingCheck": "Ya he transferido el ahorro ({amount} €)",
+                "savingDesc": "Marca esto cuando muevas el dinero a tu cuenta de ahorro.",
+                "savingPending": "Pendiente de transferir: {amount} €"
+            },
+            "messages": {
+                "saved": "Saldo guardado.",
+                "savingDone": "Ahorro marcado como transferido.",
+                "savingPending": "Ahorro marcado como pendiente."
+            }
+        },
+        "ExpenseCalendar": {
+            "status": {
+                "closed": "estado: cerrado",
+                "open": "estado: abierto",
+                "unknown": "sin registro de mes aún",
+                "closedMsg": "Mes cerrado · No se pueden añadir ni eliminar gastos."
+            },
+            "stats": {
+                "expenses": "Gastos:",
+                "total": "Total:"
+            },
+            "actions": {
+                "update": "Actualizar",
+                "reopen": "Reabrir",
+                "close": "Cerrar Mes",
+                "addExpense": "+ Nuevo gasto",
+                "addIncome": "💰 + Nuevo ingreso",
+                "history": "Ver histórico completo"
+            },
+            "summary": {
+                "income": "Ingreso mensual",
+                "fixed": "Gastos fijos",
+                "usable": "Utilizable",
+                "available": "Disponible",
+                "savingGoal": "Objetivo ahorro",
+                "savingProgress": "Progreso ahorro",
+                "saved": "Ahorrado:",
+                "goal": "Objetivo:",
+                "achieved": "¡Objetivo conseguido!",
+                "missing": "Faltan {amount} €",
+                "noConfig": "Configura ingreso y objetivo en Ajustes para ver el progreso de ahorro."
+            },
+            "categories": {
+                "supervivencia": "Supervivencia",
+                "opcional": "Opcional",
+                "cultura": "Cultura",
+                "extra": "Extra",
+                "percentTotal": "{percent}% del total",
+                "budget": "Presup.: {amount} €",
+                "remaining": "Restan {amount} €",
+                "noBudget": "Sin presupuesto"
+            },
+            "locked": {
+                "title": "Histórico bloqueado",
+                "desc": "Tu periodo de prueba ha finalizado. Actualiza a Premium para ver tus datos históricos.",
+                "unlock": "Desbloquear Historial",
+                "premium": "Historial Premium"
+            },
+            "list": {
+                "title": "Últimos movimientos",
+                "empty": "No hay gastos registrados este mes.",
+                "noConcept": "Sin concepto"
+            }
+        }
+    },
+    "NotFound": {
+        "title": "Página no encontrada",
+        "desc": "Lo sentimos, la página que buscas no existe o ha sido movida.",
+        "home": "Volver al inicio"
+    },
+    "Error": {
+        "title": "Algo salió mal",
+        "desc": "Ha ocurrido un error inesperado.",
+        "retry": "Intentar de nuevo",
+        "home": "Volver al inicio"
     }
 }
