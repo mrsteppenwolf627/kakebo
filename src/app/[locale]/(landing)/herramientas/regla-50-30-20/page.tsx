@@ -4,7 +4,8 @@ import { Footer } from "@/components/landing/Footer";
 import { Calculator503020 } from "@/components/landing/tools/Calculator503020";
 import { getTranslations } from 'next-intl/server';
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+    const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Tools.Rule503020.meta' });
 
     return {

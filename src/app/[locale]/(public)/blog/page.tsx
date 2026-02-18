@@ -4,7 +4,8 @@ import Link from "next/link";
 import { Footer, Navbar } from "@/components/landing";
 import { getTranslations } from 'next-intl/server';
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+    const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Blog.index' });
     return {
         title: t('title'),
@@ -15,7 +16,7 @@ export async function generateMetadata({ params: { locale } }: { params: { local
     };
 }
 
-export default async function BlogIndexPage({ params }: { params: { locale: string } }) {
+export default async function BlogIndexPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Blog.index' });
     const posts = getBlogPosts(locale);
