@@ -236,7 +236,7 @@ Si decides continuar con la ayuda de la IA:
 ### v3.6.0 (2026-02-18) - Global Expansion 🌍
 
 **Internationalization:**
-- 🇪🇸/🇬🇧 **Soporte Bilingüe**: Kakebo ahora habla Español e Inglés nativo. Switcher de idioma instantáneo.
+- 🇪🇸/🇬🇧 **Soporte Bilingüe**: Kakebo ahora habla Español e Inglés nativo. Nuevo switcher tipo toggle visual.
 - 🗺️ **SEO Internacional**: Etiquetas `hreflang` y metadatos optimizados para cada idioma.
 - 📍 **Rutas Localizadas**: Navegación amigable `/es` y `/en` para mejor indexación.
 - ⚖️ **Legal**: Páginas de Privacidad, Cookies y Términos totalmente traducidas y adaptadas.
