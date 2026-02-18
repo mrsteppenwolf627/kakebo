@@ -181,6 +181,142 @@
             }
         }
     },
+    "Landing": {
+        "SEO": {
+            "whatIs": {
+                "title": "Qué es Kakebo y para qué sirve",
+                "p1": "<bold>Kakebo</bold> es un método japonés de ahorro basado en registrar tus gastos y revisar el mes con intención. No va de gráficos espectaculares, va de ver lo obvio: en qué se te va el dinero y qué puedes ajustar sin vivir como un ermitaño.",
+                "p2": "En la práctica, funciona porque te obliga a hacer tres cosas que la mayoría evita: <bold>anotar</bold>, <bold>clasificar</bold> y <bold>revisar</bold>. Si eres constante, mejoras tu control del gasto casi sin darte cuenta."
+            },
+            "categories": {
+                "title": "Categorías típicas del Kakebo (y cómo usarlas)",
+                "survival": {
+                    "title": "Supervivencia",
+                    "desc": "Comida, transporte básico, farmacia, suministros esenciales."
+                },
+                "fixed": {
+                    "title": "Gastos fijos",
+                    "desc": "Alquiler, luz, internet, suscripciones necesarias, seguros."
+                },
+                "leisure": {
+                    "title": "Ocio",
+                    "desc": "Restaurantes, salidas, caprichos, compras impulsivas (sí, esas)."
+                },
+                "culture": {
+                    "title": "Cultura y crecimiento",
+                    "desc": "Libros, formación, hobbies, actividades que suman a largo plazo."
+                }
+            },
+            "faqSchema": {
+                "q1": "¿Es gratis usar Kakebo?",
+                "a1": "Sí, Kakebo tiene un plan gratuito para siempre que te permite gestionar tus gastos mensuales sin coste. Ideal para empezar con el método Kakebo.",
+                "q2": "¿Cómo funciona el método Kakebo?",
+                "a2": "Se basa en registrar gastos manualmente, categorizarlos en 4 grupos (Supervivencia, Ocio, Cultura, Extra) y reflexionar sobre ellos a final de mes. Es más consciente que una app bancaria automática.",
+                "q3": "¿Es mejor que un Excel de gastos?",
+                "a3": "Kakebo te da lo bueno del Excel (privacidad, control) pero con una interfaz móvil rápida, análisis automático y categorías inteligentes predefinidas."
+            },
+            "HowItWorks": {
+                "title": "El método Kakebo",
+                "subtitle": "¿Cómo funciona el Kakebo digital?",
+                "desc": "Un sistema japonés de <bold>Ahorro Consciente</bold> (Mindful spending) para controlar tus finanzas sin estrés.",
+                "steps": {
+                    "step1": {
+                        "title": "Define tu objetivo",
+                        "desc": "Establece una meta de ahorro mensual realista. No ciencia ficción, algo que puedas cumplir."
+                    },
+                    "step2": {
+                        "title": "Anota tus gastos",
+                        "desc": "Registra cada gasto cuando ocurre. No lo dejes para \"mañana\". La consistencia es la clave."
+                    },
+                    "step3": {
+                        "title": "Clasifica por categorías",
+                        "desc": "Separa tus gastos: supervivencia, fijos, ocio, cultura. Detecta dónde se te va el dinero."
+                    },
+                    "step4": {
+                        "title": "Revisa y ajusta",
+                        "desc": "Al final del mes, revisa qué funcionó y qué no. Decide 1-2 cambios concretos para el próximo mes."
+                    }
+                },
+                "example": {
+                    "title": "Ejemplo práctico",
+                    "income": "Ingresos del mes:",
+                    "fixed": "Gastos fijos activos:",
+                    "variable": "Gastos variables:",
+                    "remaining": "Te quedan:",
+                    "note": "Si tu objetivo era ahorrar 200€, vas bien. Si no, miras qué categoría se te fue de madre y ajustas el siguiente mes. Simple."
+                }
+            },
+            "Pricing": {
+                "title": "Un único plan. Todo incluido.",
+                "subtitle": "Disfruta de la experiencia completa de Kakebo durante 14 días. Sin compromiso.",
+                "planName": "Kakebo Premium",
+                "planDesc": "Agente IA + Análisis avanzado + Presupuestos ilimitados",
+                "price": "3.99€",
+                "period": "/mes",
+                "trial": "14 días gratis · Sin tarjeta",
+                "features": {
+                    "f1": "Registro de gastos ilimitados",
+                    "f2": "Gestión de gastos fijos y suscripciones",
+                    "f3": "Presupuestos por categoría (Kakebo)",
+                    "f4": "Historial completo y exportación",
+                    "f5": "Agente IA de finanzas personal",
+                    "f6": "Análisis automático de patrones",
+                    "f7": "Consejos de ahorro personalizados",
+                    "f8": "Soporte prioritario"
+                },
+                "cta": "Empezar prueba de 14 días gratis",
+                "note": "No se requiere tarjeta de crédito para empezar. Cancela cuando quieras.",
+                "footer": "💳 Pagos procesados por Stripe · 🔒 Datos encriptados · ✓ Cancelación instantánea"
+            },
+            "Content": {
+                "title": "Controla tus finanzas en España con Kakebo",
+                "article1": {
+                    "title": "¿Qué es el método Kakebo?",
+                    "p": "El <bold>Kakebo</bold> (pronunciado \"kah-keh-boh\") es el arte japonés de ahorrar dinero. No es solo una app de control de gastos; es una filosofía que te invita a reflexionar sobre tus hábitos de consumo. Kakebo adapta este método centenario a la era digital para usuarios en <bold>España</bold> y la zona euro."
+                },
+                "article2": {
+                    "title": "Ahorro inteligente en Euros",
+                    "p": "Diseñada específicamente para la gestión económica en <bold>euros (€)</bold>, nuestra plataforma te permite categorizar gastos vitales (Supervivencia), disfrutar de la vida (Ocio y Vicio), cultivar tu mente (Cultura) y prever imprevistos (Extra). Es la herramienta ideal para quienes buscan una <bold>app de finanzas personales gratuita</bold> y efectiva."
+                },
+                "table": {
+                    "title": "¿Por qué usar Kakebo vs Excel?",
+                    "headers": {
+                        "feature": "Característica",
+                        "kakebo": "Kakebo",
+                        "excel": "Excel / Hojas de cálculo",
+                        "apps": "Apps de Bancos"
+                    },
+                    "rows": {
+                        "auto": {
+                            "feature": "Automatización",
+                            "kakebo": "✅ Agente IA Inteligente",
+                            "excel": "❌ Manual y tedioso",
+                            "apps": "⚠️ Solo sus propias cuentas"
+                        },
+                        "method": {
+                            "feature": "Método de Ahorro",
+                            "kakebo": "✅ Filosofía Kakebo integrada",
+                            "excel": "❌ Solo números, sin método",
+                            "apps": "❌ Solo historial de transacciones"
+                        },
+                        "privacy": {
+                            "feature": "Privacidad",
+                            "kakebo": "✅ 100% Privado (Tú controlas los datos)",
+                            "excel": "✅ Privado (Local)",
+                            "apps": "❌ Venden perfiles comerciales"
+                        },
+                        "mobile": {
+                            "feature": "Soporte Móvil",
+                            "kakebo": "✅ Web App Optimizada (PWA)",
+                            "excel": "❌ Incómodo en pantallas pequeñas",
+                            "apps": "✅ Buena App Nativa"
+                        }
+                    }
+                },
+                "tags": "Kakebo App España • Control de gastos mensual • Ahorro doméstico • Finanzas personales • Alternativa a Fintonic • Plantilla Kakebo Excel"
+            }
+        }
+    },
     "Auth": {
         "leftPanel": {
             "title": "Control de gastos <br />con método japonés",

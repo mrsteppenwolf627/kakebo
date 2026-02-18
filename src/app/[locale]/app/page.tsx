@@ -1,5 +1,5 @@
 import AuthGate from "@/components/AuthGate";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import ExpenseCalendar from "@/components/ExpenseCalendar";
 import MonthSelector from "@/components/MonthSelector";
 

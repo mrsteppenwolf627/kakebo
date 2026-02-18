@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link"; // Keeping regular Link for now as it's a client component and might need router push
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 export function SavingsSimulator() {

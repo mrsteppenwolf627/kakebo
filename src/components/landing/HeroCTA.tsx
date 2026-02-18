@@ -1,9 +1,8 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/browser";
-import Link from "next/link";
+import { Link, useRouter } from "@/i18n/routing";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 interface HeroCTAProps {
     label?: string;

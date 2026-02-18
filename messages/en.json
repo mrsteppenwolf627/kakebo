@@ -181,6 +181,142 @@
             }
         }
     },
+    "Landing": {
+        "SEO": {
+            "whatIs": {
+                "title": "What is Kakebo and what is it for?",
+                "p1": "<bold>Kakebo</bold> is a Japanese savings method based on tracking your expenses and reviewing your month with intention. It's not about fancy charts, it's about seeing the obvious: where your money goes and what you can tweak without living like a hermit.",
+                "p2": "In practice, it works because it forces you to do three things most people avoid: <bold>track</bold>, <bold>categorize</bold>, and <bold>review</bold>. If you are consistent, you improve your spending control almost without realizing it."
+            },
+            "categories": {
+                "title": "Typical Kakebo Categories (and how to use them)",
+                "survival": {
+                    "title": "Survival",
+                    "desc": "Food, basic transport, pharmacy, essential supplies."
+                },
+                "fixed": {
+                    "title": "Fixed Expenses",
+                    "desc": "Rent, electricity, internet, necessary subscriptions, insurance."
+                },
+                "leisure": {
+                    "title": "Leisure (Wants)",
+                    "desc": "Restaurants, outings, treats, impulse buys (yes, those)."
+                },
+                "culture": {
+                    "title": "Culture & Growth",
+                    "desc": "Books, training, hobbies, activities that add value long-term."
+                }
+            },
+            "faqSchema": {
+                "q1": "Is Kakebo free to use?",
+                "a1": "Yes, Kakebo has a free-forever plan that allows you to manage your monthly expenses at no cost. Ideal for starting with the Kakebo method.",
+                "q2": "How does the Kakebo method work?",
+                "a2": "It relies on manually tracking expenses, categorizing them into 4 groups (Survival, Leisure, Culture, Extra), and reflecting on them at the end of the month. It is more conscious than an automatic banking app.",
+                "q3": "Is it better than an expense Excel?",
+                "a3": "Kakebo gives you the best of Excel (privacy, control) but with a fast mobile interface, automatic analysis, and smart predefined categories."
+            },
+            "HowItWorks": {
+                "title": "The Kakebo Method",
+                "subtitle": "How does digital Kakebo work?",
+                "desc": "A Japanese system of <bold>Mindful Spending</bold> to control your finances without stress.",
+                "steps": {
+                    "step1": {
+                        "title": "Define your goal",
+                        "desc": "Set a realistic monthly savings goal. Not science fiction, something you can achieve."
+                    },
+                    "step2": {
+                        "title": "Track your expenses",
+                        "desc": "Record every expense when it happens. Don't leave it for \"tomorrow\". Consistency is key."
+                    },
+                    "step3": {
+                        "title": "Classify by categories",
+                        "desc": "Separate your expenses: survival, fixed, leisure, culture. Detect where your money goes."
+                    },
+                    "step4": {
+                        "title": "Review and adjust",
+                        "desc": "At the end of the month, review what worked and what didn't. Decide 1-2 concrete changes for the next month."
+                    }
+                },
+                "example": {
+                    "title": "Practical example",
+                    "income": "Monthly Income:",
+                    "fixed": "Active Fixed Expenses:",
+                    "variable": "Variable Expenses:",
+                    "remaining": "You have left:",
+                    "note": "If your goal was to save €200, you're doing well. If not, see which category went overboard and adjust next month. Simple."
+                }
+            },
+            "Pricing": {
+                "title": "One single plan. All included.",
+                "subtitle": "Enjoy the full Kakebo experience for 14 days. No commitment.",
+                "planName": "Kakebo Premium",
+                "planDesc": "AI Agent + Advanced Analysis + Unlimited Budgets",
+                "price": "€3.99",
+                "period": "/mo",
+                "trial": "14 days free · No card",
+                "features": {
+                    "f1": "Unlimited expense tracking",
+                    "f2": "Fixed expenses and subscription management",
+                    "f3": "Category budgets (Kakebo)",
+                    "f4": "Full history and export",
+                    "f5": "Personal AI Finance Agent",
+                    "f6": "Automatic pattern analysis",
+                    "f7": "Personalized savings tips",
+                    "f8": "Priority support"
+                },
+                "cta": "Start 14-day free trial",
+                "note": "No credit card required to start. Cancel anytime.",
+                "footer": "💳 Payments processed by Stripe · 🔒 Encrypted data · ✓ Instant cancellation"
+            },
+            "Content": {
+                "title": "Control your finances in Europe with Kakebo",
+                "article1": {
+                    "title": "What is the Kakebo method?",
+                    "p": "<bold>Kakebo</bold> (pronounced \"kah-keh-boh\") is the Japanese art of saving money. It is not just an expense tracker app; it is a philosophy that invites you to reflect on your spending habits. Kakebo adapts this century-old method to the digital age for users in <bold>Europe</bold> and beyond."
+                },
+                "article2": {
+                    "title": "Smart savings in Euros",
+                    "p": "Designed specifically for economic management in <bold>Euros (€)</bold>, our platform allows you to categorize vital expenses (Survival), enjoy life (Leisure and Vice), cultivate your mind (Culture), and foresee unforeseen events (Extra). It's the ideal tool for those looking for a <bold>free personal finance app</bold> that works."
+                },
+                "table": {
+                    "title": "Why use Kakebo vs Excel?",
+                    "headers": {
+                        "feature": "Feature",
+                        "kakebo": "Kakebo",
+                        "excel": "Excel / Spreadsheets",
+                        "apps": "Bank Apps"
+                    },
+                    "rows": {
+                        "auto": {
+                            "feature": "Automation",
+                            "kakebo": "✅ Intelligent AI Agent",
+                            "excel": "❌ Manual and tedious",
+                            "apps": "⚠️ Only their own accounts"
+                        },
+                        "method": {
+                            "feature": "Saving Method",
+                            "kakebo": "✅ Integrated Kakebo Philosophy",
+                            "excel": "❌ Only numbers, no method",
+                            "apps": "❌ Only transaction history"
+                        },
+                        "privacy": {
+                            "feature": "Privacy",
+                            "kakebo": "✅ 100% Private (You control data)",
+                            "excel": "✅ Private (Local)",
+                            "apps": "❌ Sell commercial profiles"
+                        },
+                        "mobile": {
+                            "feature": "Mobile Support",
+                            "kakebo": "✅ Optimized Web App (PWA)",
+                            "excel": "❌ Awkward on small screens",
+                            "apps": "✅ Good Native App"
+                        }
+                    }
+                },
+                "tags": "Kakebo App Europe • Monthly expense control • Household savings • Personal finance • Fintonic alternative • Kakebo Excel Template"
+            }
+        }
+    },
     "Auth": {
         "leftPanel": {
             "title": "Expense control <br />with Japanese method",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 export function CookieBanner() {
     const [isVisible, setIsVisible] = useState(false);
@@ -25,7 +25,7 @@ export function CookieBanner() {
             <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 md:flex-row">
                 <p className="text-sm text-muted-foreground text-center md:text-left">
                     Utilizamos cookies propias y de terceros para mejorar tu experiencia y analizar el uso de la web.{" "}
-                    <Link href="/politica-privacidad" className="underline hover:text-foreground">
+                    <Link href="/privacy" className="underline hover:text-foreground">
                         Más información
                     </Link>
                 </p>

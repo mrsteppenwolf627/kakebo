@@ -1,4 +1,8 @@
+import { useTranslations } from "next-intl";
+
 export function HowItWorks() {
+  const t = useTranslations('Landing.HowItWorks');
+
   return (
     <section className="relative py-24">
       {/* Background */}
@@ -8,13 +12,15 @@ export function HowItWorks() {
         {/* Section Header */}
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            El método Kakebo
+            {t('title')}
           </h2>
           <h3 className="mb-4 text-xl font-medium text-foreground">
-            ¿Cómo funciona el Kakebo digital?
+            {t('subtitle')}
           </h3>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Un sistema japonés de <strong>Ahorro Consciente</strong> (Mindful spending) para controlar tus finanzas sin estrés.
+            {t.rich('desc', {
+              bold: (chunks) => <strong>{chunks}</strong>
+            })}
           </p>
         </div>
 
@@ -26,8 +32,8 @@ export function HowItWorks() {
           <div className="space-y-12">
             <Step
               number="01"
-              title="Define tu objetivo"
-              description="Establece una meta de ahorro mensual realista. No ciencia ficción, algo que puedas cumplir."
+              title={t('steps.step1.title')}
+              description={t('steps.step1.desc')}
               icon={
                 <svg className="h-8 w-8 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -43,8 +49,8 @@ export function HowItWorks() {
 
             <Step
               number="02"
-              title="Anota tus gastos"
-              description='Registra cada gasto cuando ocurre. No lo dejes para "mañana". La consistencia es la clave.'
+              title={t('steps.step2.title')}
+              description={t('steps.step2.desc')}
               icon={
                 <svg className="h-8 w-8 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -60,8 +66,8 @@ export function HowItWorks() {
 
             <Step
               number="03"
-              title="Clasifica por categorías"
-              description="Separa tus gastos: supervivencia, fijos, ocio, cultura. Detecta dónde se te va el dinero."
+              title={t('steps.step3.title')}
+              description={t('steps.step3.desc')}
               icon={
                 <svg className="h-8 w-8 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -77,8 +83,8 @@ export function HowItWorks() {
 
             <Step
               number="04"
-              title="Revisa y ajusta"
-              description="Al final del mes, revisa qué funcionó y qué no. Decide 1-2 cambios concretos para el próximo mes."
+              title={t('steps.step4.title')}
+              description={t('steps.step4.desc')}
               icon={
                 <svg className="h-8 w-8 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -96,28 +102,27 @@ export function HowItWorks() {
 
         {/* Example Card */}
         <div className="mx-auto mt-16 max-w-3xl rounded-sm border-2 border-primary/20 bg-muted/20 p-8 shadow-sm">
-          <h3 className="mb-4 text-xl font-bold text-foreground">Ejemplo práctico</h3>
+          <h3 className="mb-4 text-xl font-bold text-foreground">{t('example.title')}</h3>
           <div className="space-y-3 text-muted-foreground">
             <div className="flex justify-between border-b border-border pb-2">
-              <span className="font-medium">Ingresos del mes:</span>
+              <span className="font-medium">{t('example.income')}</span>
               <span className="font-bold text-green-600 dark:text-green-400">1.800€</span>
             </div>
             <div className="flex justify-between border-b border-border pb-2">
-              <span className="font-medium">Gastos fijos activos:</span>
+              <span className="font-medium">{t('example.fixed')}</span>
               <span className="font-bold text-red-600 dark:text-red-400">-950€</span>
             </div>
             <div className="flex justify-between border-b border-border pb-2">
-              <span className="font-medium">Gastos variables:</span>
+              <span className="font-medium">{t('example.variable')}</span>
               <span className="font-bold text-red-600 dark:text-red-400">-620€</span>
             </div>
             <div className="flex justify-between pt-2">
-              <span className="text-lg font-bold">Te quedan:</span>
+              <span className="text-lg font-bold">{t('example.remaining')}</span>
               <span className="text-lg font-bold text-foreground">230€</span>
             </div>
           </div>
           <p className="mt-4 text-sm text-muted-foreground/80">
-            Si tu objetivo era ahorrar 200€, vas bien. Si no, miras qué categoría se te fue de
-            madre y ajustas el siguiente mes. Simple.
+            {t('example.note')}
           </p>
         </div>
       </div>

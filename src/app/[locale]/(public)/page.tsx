@@ -28,7 +28,10 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+import { useTranslations } from 'next-intl';
+
 export default function PublicHomePage() {
+  const t = useTranslations('Landing');
   return (
     <main className="min-h-screen overflow-x-hidden">
       <Navbar />
@@ -60,20 +63,12 @@ export default function PublicHomePage() {
           <div className="relative z-10 mx-auto w-full max-w-5xl px-4">
             <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
               <h2 className="text-2xl font-serif font-bold tracking-tight text-foreground mb-4">
-                Qué es Kakebo y para qué sirve
+                {t('SEO.whatIs.title')}
               </h2>
 
               <div className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  <b className="text-foreground">Kakebo</b> es un método japonés de ahorro basado en registrar tus gastos y
-                  revisar el mes con intención. No va de gráficos espectaculares, va de ver lo
-                  obvio: en qué se te va el dinero y qué puedes ajustar sin vivir como un ermitaño.
-                </p>
-                <p>
-                  En la práctica, funciona porque te obliga a hacer tres cosas que la mayoría
-                  evita: <b className="text-foreground">anotar</b>, <b className="text-foreground">clasificar</b> y <b className="text-foreground">revisar</b>. Si eres constante,
-                  mejoras tu control del gasto casi sin darte cuenta.
-                </p>
+                <p dangerouslySetInnerHTML={{ __html: t.raw('SEO.whatIs.p1') }} />
+                <p dangerouslySetInnerHTML={{ __html: t.raw('SEO.whatIs.p2') }} />
               </div>
             </div>
           </div>
@@ -84,25 +79,25 @@ export default function PublicHomePage() {
           <div className="mx-auto w-full max-w-5xl px-4">
             <div className="rounded-3xl border border-border bg-card/60 backdrop-blur-sm p-8 shadow-lg">
               <h2 className="text-2xl font-serif font-bold tracking-tight text-foreground mb-6">
-                Categorías típicas del Kakebo (y cómo usarlas)
+                {t('SEO.categories.title')}
               </h2>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <CategoryCard
-                  title="Supervivencia"
-                  desc="Comida, transporte básico, farmacia, suministros esenciales."
+                  title={t('SEO.categories.survival.title')}
+                  desc={t('SEO.categories.survival.desc')}
                 />
                 <CategoryCard
-                  title="Gastos fijos"
-                  desc="Alquiler, luz, internet, suscripciones necesarias, seguros."
+                  title={t('SEO.categories.fixed.title')}
+                  desc={t('SEO.categories.fixed.desc')}
                 />
                 <CategoryCard
-                  title="Ocio"
-                  desc="Restaurantes, salidas, caprichos, compras impulsivas (sí, esas)."
+                  title={t('SEO.categories.leisure.title')}
+                  desc={t('SEO.categories.leisure.desc')}
                 />
                 <CategoryCard
-                  title="Cultura y crecimiento"
-                  desc="Libros, formación, hobbies, actividades que suman a largo plazo."
+                  title={t('SEO.categories.culture.title')}
+                  desc={t('SEO.categories.culture.desc')}
                 />
               </div>
             </div>
@@ -126,26 +121,26 @@ export default function PublicHomePage() {
               "mainEntity": [
                 {
                   "@type": "Question",
-                  "name": "¿Es gratis usar Kakebo?",
+                  "name": t('SEO.faqSchema.q1'),
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Sí, Kakebo tiene un plan gratuito para siempre que te permite gestionar tus gastos mensuales sin coste. Ideal para empezar con el método Kakebo."
+                    "text": t('SEO.faqSchema.a1')
                   }
                 },
                 {
                   "@type": "Question",
-                  "name": "¿Cómo funciona el método Kakebo?",
+                  "name": t('SEO.faqSchema.q2'),
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Se basa en registrar gastos manualmente, categorizarlos en 4 grupos (Supervivencia, Ocio, Cultura, Extra) y reflexionar sobre ellos a final de mes. Es más consciente que una app bancaria automática."
+                    "text": t('SEO.faqSchema.a2')
                   }
                 },
                 {
                   "@type": "Question",
-                  "name": "¿Es mejor que un Excel de gastos?",
+                  "name": t('SEO.faqSchema.q3'),
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Kakebo te da lo bueno del Excel (privacidad, control) pero con una interfaz móvil rápida, análisis automático y categorías inteligentes predefinidas."
+                    "text": t('SEO.faqSchema.a3')
                   }
                 }
               ]

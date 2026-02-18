@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Navbar, Footer } from "@/components/landing";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 export default function SavingsCalculatorPage() {
     const [income, setIncome] = useState<number>(1500);

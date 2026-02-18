@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/browser";
 
 type MonthRow = {
@@ -143,11 +143,10 @@ export default function HistoryPage() {
                   <div className="sm:hidden space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="font-medium">{ymLabel(m.year, m.month)}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded ${
-                        m.status === "closed"
+                      <span className={`text-xs px-2 py-0.5 rounded ${m.status === "closed"
                           ? "bg-black/10 text-black/60"
                           : "bg-green-100 text-green-700"
-                      }`}>
+                        }`}>
                         {m.status === "closed" ? "Cerrado" : "Abierto"}
                       </span>
                     </div>

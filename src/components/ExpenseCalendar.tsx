@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { canUsePremium, Profile } from "@/lib/auth/access-control";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import SpendingChart from "@/components/SpendingChart";
 import { useTranslations } from "next-intl";
 

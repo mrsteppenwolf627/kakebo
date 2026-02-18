@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { canUsePremium, Profile, getTrialDaysLeft } from "@/lib/auth/access-control";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 export default function TrialBanner() {
     const [loading, setLoading] = useState(true);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/browser";
 
 type FixedExpenseRow = {
@@ -430,8 +430,8 @@ export default function FixedExpensesPage() {
                           <button
                             onClick={() => toggleActive(r.id, !r.active)}
                             className={`text-xs px-2 py-1.5 rounded border transition-colors ${r.active
-                                ? "bg-muted text-muted-foreground border-border hover:bg-muted/80"
-                                : "bg-primary/10 text-primary border-primary/20 hover:bg-primary/20"
+                              ? "bg-muted text-muted-foreground border-border hover:bg-muted/80"
+                              : "bg-primary/10 text-primary border-primary/20 hover:bg-primary/20"
                               }`}
                             title={r.active ? "Desactivar" : "Activar"}
                           >

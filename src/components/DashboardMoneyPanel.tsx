@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/browser";
 import ManageIncomesModal from "./ManageIncomesModal";
 import TrialBanner from "./saas/TrialBanner";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 type Props = {
   year: number;

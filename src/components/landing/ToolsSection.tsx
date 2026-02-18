@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { ArrowRight, PieChart, TrendingUp } from "lucide-react";
 
 export function ToolsSection() {

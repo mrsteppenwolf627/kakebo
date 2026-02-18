@@ -1,6 +1,6 @@
 import { getBlogPosts } from "@/lib/blog";
 import { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Footer, Navbar } from "@/components/landing";
 import { getTranslations } from 'next-intl/server';
 

@@ -1,5 +1,4 @@
 import { useTranslations } from "next-intl";
-import Link from "next/link"; // Standard link is fine here since we are already in locale context, but next-intl Link is better for automated prefixing if we link to home
 import { Link as I18nLink } from "@/i18n/routing";
 
 export default function NotFound() {

@@ -1,6 +1,6 @@
 import { getBlogPost, getBlogPosts } from "@/lib/blog";
 import { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { Footer, Navbar } from "@/components/landing";
 import { MDXRemote } from "next-mdx-remote/rsc";
