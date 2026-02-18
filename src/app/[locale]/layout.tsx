@@ -127,8 +127,8 @@ export default async function LocaleLayout({
             {children}
             <CookieBanner />
           </ThemeProvider>
+          <Footer />
         </NextIntlClientProvider>
-        <Footer />
       </body>
     </html>
   );

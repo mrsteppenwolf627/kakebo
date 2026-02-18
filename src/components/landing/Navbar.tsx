@@ -1,11 +1,11 @@
 "use client";
 
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
-import { useRouter } from "next/navigation";
+
 
 export function Navbar() {
   const supabase = createClient();
