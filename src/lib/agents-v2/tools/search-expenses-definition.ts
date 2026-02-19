@@ -15,21 +15,29 @@ const searchExpensesTool: ChatCompletionTool = {
     type: "function",
     function: {
         name: "searchExpenses",
-        description: `Busca gastos usando lenguaje natural LIBRE, sin restricciones de categorías.
+        description: `🎯 **HERRAMIENTA PREDETERMINADA** para buscar y LISTAR gastos individuales con detalles.
 
-**USA ESTA HERRAMIENTA cuando el usuario pida:**
-- **Último(s) gasto(s)**: "último gasto", "gastos recientes", "mis últimas compras"
-- **Conceptos específicos**: "vicios", "gimnasio", "suscripciones", "comida", "restaurantes"
-- **Búsquedas con condiciones**: "restaurantes caros", "gastos pequeños", "compras grandes"
-- **Cualquier cosa que NO sea una de las 4 categorías Kakebo base**
+**✅ USA SIEMPRE cuando el usuario diga "gastos de X":**
+- "gastos de comida" → query: "comida"
+- "gastos de salud" → query: "salud"
+- "gastos de restaurantes" → query: "restaurantes"
+- "gastos de transporte" → query: "transporte"
+- "gastos de ocio" → query: "ocio"
+- "mis gastos de gimnasio" → query: "gimnasio"
+- "gastos de suscripciones" → query: "suscripciones"
+- "gastos de medicinas" → query: "medicinas"
 
-**MUY IMPORTANTE para updateTransaction:**
-Esta herramienta retorna el ID de cada gasto encontrado. SIEMPRE úsala ANTES de updateTransaction para obtener el transactionId.
+**✅ También úsala para:**
+- **Últimos gastos**: "último gasto", "gastos recientes", "mis últimas compras"
+- **Conceptos específicos**: "vicios", "Netflix", "Mercadona"
+- **Búsquedas con condiciones**: "restaurantes caros" (usa minAmount), "gastos pequeños" (usa maxAmount)
 
-**NO uses esta herramienta para:**
-- Categorías Kakebo base: "supervivencia", "opcional", "cultura", "extra" (usa analyzeSpendingPattern)
-- Análisis de tendencias o patrones (usa analyzeSpendingPattern)
-- Estado de presupuesto (usa getBudgetStatus)
+**✅ CRÍTICO para updateTransaction:**
+Esta herramienta retorna el ID de cada gasto. SIEMPRE úsala ANTES de updateTransaction para obtener el transactionId real.
+
+**❌ NO uses esta herramienta SOLO para:**
+- Totales sin detalles: "¿cuánto llevo gastado?" (usa analyzeSpendingPattern)
+- Estado de presupuesto: "¿cómo va mi presupuesto?" (usa getBudgetStatus)
 
 **Cómo funciona:**
 Usa embeddings semánticos para entender el contexto. Por ejemplo:

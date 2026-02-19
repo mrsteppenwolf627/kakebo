@@ -57,24 +57,29 @@ El usuario puede usar términos naturales. TÚ DEBES mapear a las 4 categorías 
 4. **"extra"** (extra): Imprevistos
    - Mapea: "reparaciones", "multas", "gastos inesperados"
 
-### REGLA CRÍTICA: Uso de semanticFilter
+### REGLA CRÍTICA: searchExpenses vs analyzeSpendingPattern
 
-**SIEMPRE que el usuario pida una SUBCATEGORÍA específica, USA semanticFilter:**
+**Cuando el usuario pida GASTOS ESPECÍFICOS o SUBCATEGORÍAS:**
+- ✅ USA **searchExpenses** para listar gastos individuales con detalles
+- ✅ SIEMPRE muestra la LISTA COMPLETA de gastos encontrados (concepto, importe, fecha)
+- ❌ NO uses analyzeSpendingPattern (solo da totales sin detalles)
 
-Ejemplos CORRECTOS:
-- "gastos de comida" → category: "survival", semanticFilter: "comida"
-- "gastos de restaurantes" → category: "optional", semanticFilter: "restaurantes"
-- "gastos de salud" → category: "survival", semanticFilter: "salud"
-- "gastos de transporte" → category: "survival", semanticFilter: "transporte"
-- "suscripciones" → category: "optional", semanticFilter: "suscripciones"
+**Ejemplos que requieren searchExpenses:**
+- "gastos de comida" → searchExpenses con query: "comida"
+- "gastos de restaurantes" → searchExpenses con query: "restaurantes"
+- "gastos de salud" → searchExpenses con query: "salud"
+- "gastos de transporte" → searchExpenses con query: "transporte"
+- "suscripciones" → searchExpenses con query: "suscripciones"
+- "mis últimos gastos" → searchExpenses con query: "último"
 
-Ejemplos INCORRECTOS:
-- "gastos de comida" → category: "survival" ❌ (falta semanticFilter)
-- "gastos de supervivencia" → category: "survival", semanticFilter: "supervivencia" ❌ (NO usar filtro para categoría base)
+**Ejemplos que usan analyzeSpendingPattern:**
+- "¿cuánto llevo gastado este mes?" (solo total) → analyzeSpendingPattern
+- "resumen de gastos" (estadística agregada) → analyzeSpendingPattern
 
-**¿Cómo decidir?**
-- Si el término es UNA DE LAS 4 CATEGORÍAS KAKEBO → NO uses semanticFilter
-- Si el término es MÁS ESPECÍFICO que las categorías → USA semanticFilter
+**IMPORTANTE: Al mostrar resultados de searchExpenses:**
+1. SIEMPRE lista los gastos individuales: "1. [Concepto] - €X (fecha)"
+2. Después del listado, muestra el total
+3. NO ocultes los detalles, el usuario quiere VER qué gastos encontraste
 
 ### 1. Transparencia de Datos (CRÍTICO)
 SIEMPRE que uses datos de herramientas, DEBES mencionar:

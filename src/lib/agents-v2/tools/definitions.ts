@@ -19,17 +19,24 @@ const analyzeSpendingPatternTool: ChatCompletionTool = {
   type: "function",
   function: {
     name: "analyzeSpendingPattern",
-    description: `Analiza patrones de gasto del usuario por categoría y período de tiempo.
+    description: `Analiza patrones de gasto AGREGADOS (totales, promedios, estadísticas) por categoría.
 
-**Úsala cuando el usuario pregunte sobre:**
-- Cuánto ha gastado EN UNA CATEGORÍA KAKEBO COMPLETA (ej: "gastos de supervivencia", "gastos opcionales", "gastos de cultura")
-- Análisis de patrones POR CATEGORÍA AMPLIA (ej: "¿estoy gastando más en opcional?", "tendencia de supervivencia")
-- Resumen de gastos por categoría (ej: "este mes", "esta semana") SIN subcategorías específicas
+**⚠️ REGLA CRÍTICA: USA searchExpenses PRIMERO para "gastos de X"**
 
-**NO la uses para búsquedas específicas como:**
-- "restaurantes", "salud", "transporte", "comida" → USA searchExpenses en su lugar
-- "gimnasio", "suscripciones", "medicinas" → USA searchExpenses en su lugar
-- Cualquier cosa MÁS ESPECÍFICA que las 4 categorías Kakebo → USA searchExpenses
+**Úsala SOLO cuando el usuario pida ESTADÍSTICAS SIN LISTAR GASTOS:**
+- "¿cuánto he gastado este mes?" (solo total, sin detalles)
+- "resumen de gastos por categoría"
+- "¿estoy gastando más en opcional que antes?"
+- "tendencia de supervivencia"
+- "promedio de gastos"
+
+**❌ NO LA USES cuando el usuario quiera VER GASTOS INDIVIDUALES:**
+- "gastos de comida" → USA searchExpenses (lista gastos específicos)
+- "gastos de restaurantes" → USA searchExpenses
+- "gastos de salud" → USA searchExpenses
+- "mis últimos gastos" → USA searchExpenses
+- "muéstrame los gastos de X" → USA searchExpenses
+- CUALQUIER consulta donde el usuario quiera DETALLES de gastos → USA searchExpenses
 
 **MAPEO SEMÁNTICO CRÍTICO - Categorías:**
 Debes interpretar inteligentemente el lenguaje natural del usuario:
@@ -44,11 +51,15 @@ Debes interpretar inteligentemente el lenguaje natural del usuario:
 
 - **"all"** (Todas): cuando el usuario NO especifica categoría o pide análisis general
 
-**Ejemplos de mapeo:**
-- "¿cuánto he gastado en comida?" → category: "survival"
-- "gastos de ocio" → category: "optional"
-- "mis gastos en libros" → category: "culture"
-- "¿cuánto he gastado?" → category: "all"`,
+**Ejemplos CORRECTOS (solo totales, sin listar gastos):**
+- "¿cuánto llevo gastado este mes?" (solo total) → category: "all"
+- "resumen de gastos de supervivencia" (estadística) → category: "survival"
+- "¿he gastado más en opcional que el mes pasado?" (comparación) → category: "optional"
+
+**Ejemplos INCORRECTOS (usa searchExpenses en su lugar):**
+- "gastos de comida" → ❌ NO uses esta herramienta, usa searchExpenses
+- "gastos de ocio" → ❌ NO uses esta herramienta, usa searchExpenses
+- "mis gastos en libros" → ❌ NO uses esta herramienta, usa searchExpenses`,
 
     parameters: {
       type: "object",

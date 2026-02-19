@@ -48,6 +48,18 @@ export interface SimilarExpense {
 }
 
 /**
+ * Structured filters for pre-filtering embeddings search
+ * All filters are optional (undefined = disabled)
+ */
+export interface StructuredSearchFilters {
+  categories?: string[];      // e.g., ['supervivencia', 'opcional']
+  dateStart?: string;          // ISO date 'YYYY-MM-DD'
+  dateEnd?: string;
+  amountMin?: number;
+  amountMax?: number;
+}
+
+/**
  * Generate embedding for a text using OpenAI
  */
 export async function generateEmbedding(text: string): Promise<EmbeddingResult> {
@@ -155,7 +167,12 @@ export async function storeExpenseEmbedding(
   expenseId: string,
   userId: string,
   textContent: string,
-  embedding: number[]
+  embedding: number[],
+  metadata?: {
+    category?: string;
+    date?: string;
+    amount?: number;
+  }
 ): Promise<void> {
   try {
     // Upsert: update if exists, insert if not
@@ -165,6 +182,10 @@ export async function storeExpenseEmbedding(
         user_id: userId,
         embedding: embedding,
         text_content: textContent,
+        // Include metadata if provided (trigger will auto-populate if not)
+        ...(metadata?.category && { category: metadata.category }),
+        ...(metadata?.date && { date: metadata.date }),
+        ...(metadata?.amount && { amount: metadata.amount }),
       },
       { onConflict: "expense_id" }
     );
@@ -201,7 +222,7 @@ export async function deleteExpenseEmbedding(
 /**
  * Search for similar expenses using vector similarity
  *
- * Uses the match_expenses function created in Supabase
+ * Uses match_expenses_v2 (with structured filters) or match_expenses (legacy)
  */
 export async function searchSimilarExpenses(
   supabase: SupabaseClient,
@@ -210,17 +231,57 @@ export async function searchSimilarExpenses(
   options: {
     limit?: number;
     threshold?: number;
+    filters?: StructuredSearchFilters;
   } = {}
 ): Promise<SimilarExpense[]> {
-  const { limit = 5, threshold = 0.5 } = options;
+  const { limit = 5, threshold = 0.5, filters } = options;
 
   try {
-    const { data, error } = await supabase.rpc("match_expenses", {
-      query_embedding: queryEmbedding,
-      match_threshold: threshold,
-      match_count: limit,
-      p_user_id: userId,
-    });
+    // Use v2 function if filters provided or feature flag enabled
+    const useStructuredFilters =
+      process.env.USE_STRUCTURED_FILTERS === "true" ||
+      (filters && Object.keys(filters).length > 0);
+
+    let data, error;
+
+    if (useStructuredFilters) {
+      // Use match_expenses_v2 with structured filters
+      // Note: p_user_id must come before optional parameters (PostgreSQL requirement)
+      const result = await supabase.rpc("match_expenses_v2", {
+        query_embedding: queryEmbedding,
+        p_user_id: userId,
+        match_threshold: threshold,
+        match_count: limit,
+        p_categories: filters?.categories || null,
+        p_date_start: filters?.dateStart || null,
+        p_date_end: filters?.dateEnd || null,
+        p_amount_min: filters?.amountMin || null,
+        p_amount_max: filters?.amountMax || null,
+      });
+
+      data = result.data;
+      error = result.error;
+
+      apiLogger.info(
+        {
+          userId,
+          filters,
+          resultsCount: data?.length || 0,
+        },
+        "Used match_expenses_v2 with structured filters"
+      );
+    } else {
+      // Use legacy match_expenses (backward compatibility)
+      const result = await supabase.rpc("match_expenses", {
+        query_embedding: queryEmbedding,
+        match_threshold: threshold,
+        match_count: limit,
+        p_user_id: userId,
+      });
+
+      data = result.data;
+      error = result.error;
+    }
 
     if (error) {
       apiLogger.error({ error }, "Failed to search similar expenses");
@@ -259,6 +320,7 @@ export async function searchExpensesByText(
   options: {
     limit?: number;
     threshold?: number;
+    filters?: StructuredSearchFilters;
   } = {}
 ): Promise<{
   results: SimilarExpense[];
@@ -268,7 +330,7 @@ export async function searchExpensesByText(
   // Generate embedding for query
   const { embedding, tokens, costUsd } = await generateEmbedding(query);
 
-  // Search for similar expenses
+  // Search for similar expenses (with optional structured filters)
   const results = await searchSimilarExpenses(supabase, userId, embedding, options);
 
   return {

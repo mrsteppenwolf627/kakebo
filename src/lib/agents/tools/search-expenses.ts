@@ -97,6 +97,52 @@ function getCategoryKeywords(query: string): string[] | null {
 /**
  * Determine optimal similarity threshold based on query type
  */
+/**
+ * Expands query with semantic context to match human thinking.
+ *
+ * Examples:
+ * - "comida" → "comida alimentación supermercado restaurante bocadillo compra alimentos groceries"
+ * - "salud" → "salud medicina farmacia médico hospital dentista"
+ *
+ * This helps embeddings capture the FULL semantic spectrum of what a human means.
+ */
+function expandQueryWithContext(query: string): string {
+    const queryLower = query.toLowerCase().trim();
+
+    // FOOD: Broad concept including groceries, restaurants, snacks
+    const foodKeywords = ["comida", "alimento", "alimentación", "comer"];
+    if (foodKeywords.some(kw => queryLower.includes(kw))) {
+        return `${query} alimentación supermercado mercado restaurante bocadillo comida compra alimentos groceries food meal`;
+    }
+
+    // HEALTH: Medical, pharmacy, doctor visits
+    const healthKeywords = ["salud", "medicina", "medicamento"];
+    if (healthKeywords.some(kw => queryLower.includes(kw))) {
+        return `${query} medicina farmacia médico hospital dentista consulta tratamiento`;
+    }
+
+    // TRANSPORT: Gas, parking, public transit, rideshares
+    const transportKeywords = ["transporte", "gasolina", "combustible"];
+    if (transportKeywords.some(kw => queryLower.includes(kw))) {
+        return `${query} gasolina uber taxi metro autobús parking aparcamiento combustible`;
+    }
+
+    // ENTERTAINMENT: Movies, games, subscriptions
+    const entertainmentKeywords = ["ocio", "entretenimiento"];
+    if (entertainmentKeywords.some(kw => queryLower.includes(kw))) {
+        return `${query} cine netflix spotify juegos videojuegos suscripción streaming`;
+    }
+
+    // GYM/FITNESS: Gym memberships, classes, sports
+    const fitnessKeywords = ["gimnasio", "deporte", "fitness"];
+    if (fitnessKeywords.some(kw => queryLower.includes(kw))) {
+        return `${query} gym entrenamiento clase deporte fitness ejercicio`;
+    }
+
+    // No expansion needed for specific brands or direct queries
+    return query;
+}
+
 function getOptimalThreshold(query: string): number {
     const queryLower = query.toLowerCase().trim();
 
@@ -104,6 +150,18 @@ function getOptimalThreshold(query: string): number {
     const specificBrands = ["netflix", "spotify", "amazon", "youtube", "uber", "cabify"];
     if (specificBrands.some(brand => queryLower.includes(brand))) {
         return 0.6; // Strict
+    }
+
+    // EXPANDED FOOD QUERIES: Lower threshold since we're adding context
+    const foodQueries = ["comida", "alimento", "supermercado", "mercado", "alimentación"];
+    if (foodQueries.some(term => queryLower.includes(term))) {
+        return 0.35; // Lower threshold because expanded query captures more semantic space
+    }
+
+    // Health queries can be stricter
+    const healthQueries = ["medicamento", "medicina", "farmacia", "salud"];
+    if (healthQueries.some(term => queryLower.includes(term))) {
+        return 0.45; // Slightly lower with expanded query
     }
 
     // Category keywords (use permissive threshold)
@@ -168,9 +226,17 @@ function getPeriodDates(period: string): { start: string; end: string } | null {
             end = now;
     }
 
+    // Format dates in local timezone (avoid UTC conversion issues)
+    const formatLocalDate = (date: Date): string => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     return {
-        start: start.toISOString().split("T")[0],
-        end: end.toISOString().split("T")[0],
+        start: formatLocalDate(start),
+        end: formatLocalDate(end),
     };
 }
 
@@ -416,25 +482,42 @@ export async function searchExpenses(
             }
         }
 
-        // ========== SEMANTIC SEARCH WITH DYNAMIC THRESHOLD ==========
+        // ========== SEMANTIC SEARCH WITH DYNAMIC THRESHOLD + STRUCTURED FILTERS ==========
         // Skip semantic search if we're using keywords (to avoid false positives)
         let results: Awaited<ReturnType<typeof searchExpensesByText>>['results'] = [];
 
         if (!categoryKeywords || categoryKeywords.length === 0) {
             // Only use semantic search for non-category queries
+
+            // 🎯 EXPAND QUERY WITH SEMANTIC CONTEXT (human-like thinking)
+            const expandedQuery = expandQueryWithContext(params.query);
             const optimalThreshold = getOptimalThreshold(params.query);
+            const periodDates = getPeriodDates(period);
+
             apiLogger.info({
-                query: params.query,
+                originalQuery: params.query,
+                expandedQuery,
                 threshold: optimalThreshold,
-            }, "Using semantic search (no category keywords matched)");
+                periodDates,
+                amountFilters: {
+                    min: params.minAmount,
+                    max: params.maxAmount,
+                },
+            }, "Using semantic search with structured filters + query expansion");
 
             const searchResults = await searchExpensesByText(
                 supabase,
                 userId,
-                params.query,
+                expandedQuery, // ← Use expanded query instead of original
                 {
                     limit: 100, // Get more results for filtering
                     threshold: optimalThreshold, // Dynamic threshold based on query type
+                    filters: {
+                        dateStart: periodDates?.start,
+                        dateEnd: periodDates?.end,
+                        amountMin: params.minAmount,
+                        amountMax: params.maxAmount,
+                    },
                 }
             );
             results = searchResults.results;
@@ -462,23 +545,14 @@ export async function searchExpenses(
             };
         }
 
-        // Apply period filter
+        // NOTE: Period and amount filters are now applied in the database (P2-1)
+        // Results from searchExpensesByText already have filters applied
+        // Keep filteredResults as-is (no post-filtering needed)
         let filteredResults = results;
+
+        // Get period dates for filtering keyword results and fixed expenses
+        // (semantic search results already filtered in DB)
         const periodDates = getPeriodDates(period);
-
-        if (periodDates) {
-            filteredResults = results.filter(exp =>
-                exp.date >= periodDates.start && exp.date <= periodDates.end
-            );
-        }
-
-        // Apply amount filters
-        if (params.minAmount !== undefined) {
-            filteredResults = filteredResults.filter(exp => exp.amount >= params.minAmount!);
-        }
-        if (params.maxAmount !== undefined) {
-            filteredResults = filteredResults.filter(exp => exp.amount <= params.maxAmount!);
-        }
 
         // ========== APPLY USER FEEDBACK LEARNING ==========
         // Get user's previous corrections for this query
