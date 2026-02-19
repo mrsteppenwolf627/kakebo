@@ -1,5 +1,81 @@
 # Changelog
 
+## [3.8.0] - 2026-02-19
+
+### Added
+
+**AI Learning & Accuracy Improvements:**
+
+- **Merchant Map & Learned Rules (P1-1)**
+  - Automatic learning from category corrections
+  - User-specific rules (prioritized) and global rules (consensus-based)
+  - Database: New `merchant_rules` table with RLS policies
+  - Utilities: `merchant-extractor.ts`, `category-suggester.ts`, `learn-from-correction.ts`
+  - Integration: Automatic rule learning on category updates in `update-transaction.ts`
+  - Tests: 59 passing tests (`merchant-extractor`, `category-suggester`, `learn-from-correction`)
+  - Seed data: 17 common merchants (Mercadona, Netflix, Uber, etc.)
+
+- **Correction Examples for Few-Shot Learning (P1-2)**
+  - Storage of full transaction examples for GPT few-shot prompting
+  - Database: New `correction_examples` table with usage tracking
+  - Utilities: `example-retriever.ts` with functions for retrieval, formatting, and tracking
+  - Integration: Automatic example saving on category corrections
+  - Tests: 21 passing tests (`example-retriever`)
+  - Seed data: 10 common correction examples (supermarkets, streaming, transport, education)
+
+- **GPT Integration with Correction Examples**
+  - Automatic integration of user correction examples into GPT classification
+  - Enhanced prompt structure: System → Static examples → Correction examples → User input
+  - Modification: `classifier.ts` retrieves examples before GPT call
+  - Modification: `/api/ai/classify` route passes Supabase client and userId
+  - Tests: 7 passing integration tests (`classifier-with-examples`)
+  - Expected impact: 20-30% reduction in correction rate
+  - Documentation: `docs/GPT_INTEGRATION_P1-2.md`
+
+**Safety & Validation Features:**
+
+- **Write Confirmation (P0-1)**
+  - Explicit confirmation for write operations (create/update/delete transactions)
+  - Feature flag: `ENABLE_WRITE_CONFIRMATION` (default: false)
+  - Types: New `ConfirmationRequest` type in agent response
+  - Gating logic: Implemented in `function-caller.ts`
+  - Tests: 13 passing tests (`write-confirmation.test.ts`)
+
+- **Pre-write Validation (P0-2)**
+  - Validation rules before database insert:
+    - Amount validation (must be >0, <€10,000)
+    - Date validation (max 7 days future, warn for >1 year past)
+    - Concept validation (min 3 chars, warn for ambiguous terms)
+    - Duplicate detection (24-hour window, warn for similar transactions)
+  - Implementation: `transaction-validator.ts`
+  - Integration: Validation in `create-transaction.ts`
+  - Returns: Errors (block creation) and warnings (inform but allow)
+  - Tests: 24 passing tests (`transaction-validator.test.ts`)
+
+### Changed
+
+- **update-transaction.ts**: Now automatically learns merchant rules and saves correction examples on category updates
+- **classifier.ts**: Extended `ClassifyOptions` interface with `supabase`, `userId`, `useCorrectionExamples` parameters
+- **/api/ai/classify**: Now passes Supabase client and userId to classifier for automatic correction example integration
+
+### Technical Details
+
+- **Total tests**: 124 (all passing)
+  - P0-1 Write Confirmation: 13 tests
+  - P0-2 Pre-write Validation: 24 tests
+  - P1-1 Merchant Map: 59 tests
+  - P1-2 Correction Examples: 21 tests
+  - GPT Integration: 7 tests
+
+- **Database migrations**:
+  - `001_merchant_rules.sql`: Merchant rules table with RLS and helper functions
+  - `002_correction_examples.sql`: Correction examples table with RLS and helper functions
+
+- **Documentation**:
+  - `src/lib/agents/tools/utils/README_MERCHANT_MAP.md`: Merchant map documentation
+  - `src/lib/agents/tools/utils/README_CORRECTION_EXAMPLES.md`: Correction examples documentation
+  - `docs/GPT_INTEGRATION_P1-2.md`: GPT integration guide
+
 ## [3.6.5] - 2026-02-19
 
 ### Fixed

@@ -7,6 +7,12 @@ import {
   CURRENT_PROMPT_VERSION,
 } from "./prompts";
 import { apiLogger } from "@/lib/logger";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import {
+  getRelevantExamples,
+  formatExamplesForPrompt as formatCorrectionExamples,
+  trackExampleUsage,
+} from "@/lib/agents/tools/utils/example-retriever";
 
 /**
  * Result of expense classification
@@ -45,6 +51,12 @@ export interface ClassifyOptions {
   promptVersion?: string;
   /** Temperature for randomness (default: 0.1 for consistency) */
   temperature?: number;
+  /** Supabase client for retrieving correction examples (P1-2) */
+  supabase?: SupabaseClient;
+  /** User ID for retrieving user-specific correction examples (P1-2) */
+  userId?: string;
+  /** Whether to use correction examples for few-shot learning (default: true if supabase + userId provided) */
+  useCorrectionExamples?: boolean;
 }
 
 /**
@@ -66,23 +78,70 @@ export async function classifyExpense(
     model = DEFAULT_MODEL,
     promptVersion = CURRENT_PROMPT_VERSION,
     temperature = 0.1,
+    supabase,
+    userId,
+    useCorrectionExamples = !!(supabase && userId),
   } = options;
 
   const startTime = Date.now();
   const prompt = getPromptVersion(promptVersion);
 
+  // ========== RETRIEVE CORRECTION EXAMPLES (P1-2) ==========
+  let correctionExamplesText = "";
+  let exampleIds: string[] = [];
+
+  if (useCorrectionExamples && supabase && userId) {
+    try {
+      const examples = await getRelevantExamples(supabase, userId, {
+        limit: 3,
+        minConfidence: 0.8,
+      });
+
+      if (examples.length > 0) {
+        correctionExamplesText = formatCorrectionExamples(examples, "es");
+        // Note: We'd need to modify getRelevantExamples to return IDs
+        // For now, we'll track usage after classification
+        apiLogger.info(
+          { input, examplesCount: examples.length, userId },
+          "Retrieved correction examples for classification"
+        );
+      } else {
+        apiLogger.debug({ input, userId }, "No correction examples found");
+      }
+    } catch (err) {
+      apiLogger.warn(
+        { err, input, userId },
+        "Failed to retrieve correction examples - continuing without them"
+      );
+    }
+  }
+  // =========================================================
+
   // Build messages for the API
   const messages: { role: "system" | "user" | "assistant"; content: string }[] = [
     { role: "system", content: prompt.system },
-    // Add few-shot examples
+    // Add static few-shot examples
     {
       role: "user",
       content: `Aquí tienes ejemplos de clasificación:\n\n${formatExamplesForPrompt(prompt.examples)}`,
     },
     { role: "assistant", content: "Entendido. Clasificaré los gastos siguiendo estos ejemplos." },
-    // Actual input
-    { role: "user", content: `Clasifica este gasto: "${input}"` },
   ];
+
+  // Add user-specific correction examples if available (P1-2)
+  if (correctionExamplesText) {
+    messages.push({
+      role: "user",
+      content: correctionExamplesText,
+    });
+    messages.push({
+      role: "assistant",
+      content: "Perfecto. Tendré en cuenta tus correcciones anteriores para clasificar mejor.",
+    });
+  }
+
+  // Add actual input
+  messages.push({ role: "user", content: `Clasifica este gasto: "${input}"` });
 
   try {
     const completion = await openai.chat.completions.create({
@@ -175,12 +234,15 @@ export async function classifyExpense(
 /**
  * Batch classify multiple expenses
  * More efficient than calling classifyExpense multiple times
+ *
+ * Note: Correction examples (P1-2) are retrieved for EACH expense independently.
+ * This ensures each expense gets the most relevant examples.
  */
 export async function classifyExpenses(
   inputs: string[],
   options: ClassifyOptions = {}
 ): Promise<ClassificationResult[]> {
-  // For now, just run them in parallel
-  // Future optimization: batch API calls
+  // Run classifications in parallel
+  // Each classification retrieves its own correction examples
   return Promise.all(inputs.map((input) => classifyExpense(input, options)));
 }

@@ -37,6 +37,8 @@ export const POST = withLogging(async (request: NextRequest) => {
       const results = await classifyExpenses(input.texts, {
         model: input.model,
         promptVersion: input.promptVersion,
+        supabase, // Pass supabase client for P1-2 correction examples
+        userId: user.id, // Pass user ID for P1-2 correction examples
       });
 
       // Calculate totals
@@ -59,6 +61,8 @@ export const POST = withLogging(async (request: NextRequest) => {
     const result = await classifyExpense(input.text, {
       model: input.model,
       promptVersion: input.promptVersion,
+      supabase, // Pass supabase client for P1-2 correction examples
+      userId: user.id, // Pass user ID for P1-2 correction examples
     });
 
     // Log the AI interaction and get the logId

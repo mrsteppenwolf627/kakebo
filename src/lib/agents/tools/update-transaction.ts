@@ -1,5 +1,9 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { apiLogger } from "@/lib/logger";
+import {
+  learnFromCorrection,
+  type LearningResult,
+} from "./utils/learn-from-correction";
 
 /**
  * Parameters for updating an existing transaction
@@ -21,6 +25,7 @@ export interface UpdateTransactionResult {
   transactionId: string;
   updatedFields: string[];
   message: string;
+  learningResult?: LearningResult; // Learning result if category was corrected (P1-1)
 }
 
 /**
@@ -165,6 +170,99 @@ export async function updateTransaction(
       );
     }
 
+    // ========== LEARN FROM CATEGORY CORRECTION (P1-1) ==========
+    let learningResult: LearningResult | undefined;
+
+    // If category was updated, this is a user correction - learn from it
+    if (params.category !== undefined && existing.category) {
+      const oldCategory = existing.category; // Spanish format from DB
+      const newCategory = getSpanishCategoryName(params.category); // Spanish format
+      const concept = existing.note || ""; // Transaction concept
+
+      apiLogger.info(
+        {
+          transactionId: params.transactionId,
+          concept,
+          oldCategory,
+          newCategory,
+          userId,
+        },
+        "Category correction detected - learning from user correction"
+      );
+
+      try {
+        learningResult = await learnFromCorrection(
+          supabase,
+          userId,
+          concept,
+          oldCategory,
+          newCategory
+        );
+
+        if (learningResult.success && learningResult.merchant) {
+          apiLogger.info(
+            {
+              merchant: learningResult.merchant,
+              category: newCategory,
+              ruleCreated: learningResult.ruleCreated,
+              ruleUpdated: learningResult.ruleUpdated,
+              userId,
+            },
+            "Successfully learned from category correction"
+          );
+
+          // ========== SAVE CORRECTION EXAMPLE (P1-2) ==========
+          // Also save full example for few-shot learning
+          try {
+            const { error: exampleError } = await supabase.rpc(
+              "save_correction_example",
+              {
+                p_user_id: userId,
+                p_concept: concept,
+                p_amount: existing.amount,
+                p_date: existing.date,
+                p_old_category: oldCategory,
+                p_new_category: newCategory,
+                p_merchant: learningResult.merchant,
+                p_transaction_id: params.transactionId,
+                p_confidence: 1.0, // User explicit correction
+              }
+            );
+
+            if (exampleError) {
+              apiLogger.warn(
+                { error: exampleError, transactionId: params.transactionId },
+                "Failed to save correction example - continuing"
+              );
+            } else {
+              apiLogger.info(
+                { concept, oldCategory, newCategory, userId },
+                "Saved correction example for few-shot learning"
+              );
+            }
+          } catch (exampleSaveError) {
+            // Don't fail update if example save fails
+            apiLogger.warn(
+              { error: exampleSaveError },
+              "Error saving correction example - continuing"
+            );
+          }
+          // =====================================================
+        }
+      } catch (learningError) {
+        // Don't fail the entire update if learning fails
+        apiLogger.warn(
+          {
+            error: learningError,
+            transactionId: params.transactionId,
+            userId,
+          },
+          "Failed to learn from category correction - continuing with update"
+        );
+      }
+    }
+    // ============================================================
+
     const fieldsText = updatedFields.join(", ");
     const message = `✅ Transacción actualizada: ${fieldsText} modificado(s)`;
 
@@ -182,6 +280,7 @@ export async function updateTransaction(
       transactionId: params.transactionId,
       updatedFields,
       message,
+      learningResult,
     };
   } catch (error) {
     apiLogger.error({ error, params }, "Error in updateTransaction");

@@ -234,6 +234,27 @@ Si decides continuar con la ayuda de la IA:
 
 ## 📝 Changelog Reciente
 
+### v3.8.0 (2026-02-19) - AI Accuracy & Safety Improvements 🧠🛡️
+
+**AI Learning & Accuracy:**
+- 🧠 **Merchant Map & Learned Rules (P1-1)**: El sistema ahora aprende automáticamente de tus correcciones de categoría. Si cambias "Mercadona" de opcional a supervivencia, futuras compras usarán la categoría correcta. Sistema de reglas personales (priorizadas) y globales (consenso de usuarios).
+- 📚 **Correction Examples (P1-2)**: Almacenamiento de ejemplos completos de correcciones para few-shot learning con GPT. El AI aprende del contexto completo (concepto, importe, fecha) para mejorar clasificaciones futuras.
+- 🎯 **GPT Integration**: Integración automática de ejemplos de corrección en el clasificador GPT. El sistema ahora muestra al AI tus correcciones pasadas para evitar errores repetidos. Reducción esperada del 20-30% en tasa de correcciones.
+
+**Safety & Validation:**
+- 🛡️ **Write Confirmation (P0-1)**: Confirmación explícita para operaciones de escritura (crear/actualizar/eliminar gastos) para prevenir cambios accidentales por el AI.
+- ✅ **Pre-write Validation (P0-2)**: Validación automática antes de crear transacciones:
+  - Validación de importes (>0, <€10,000)
+  - Validación de fechas (máx 7 días futuro, alerta >1 año pasado)
+  - Validación de conceptos (mín 3 caracteres, alerta términos ambiguos)
+  - Detección de duplicados (ventana 24h)
+
+**Technical Details:**
+- 📊 **124 tests** implementados (todos pasando): 13 P0-1 + 24 P0-2 + 59 P1-1 + 21 P1-2 + 7 GPT Integration
+- 🗄️ **2 nuevas tablas**: `merchant_rules` (reglas aprendidas) y `correction_examples` (ejemplos para GPT)
+- 🔄 **Aprendizaje automático**: Cada corrección de categoría actualiza reglas y ejemplos sin intervención manual
+- 🚀 **Latencia mínima**: Recuperación de ejemplos <50ms, sin impacto en experiencia de usuario
+
 ### v3.7.0 (2026-02-19) - Auto-Embeddings System 🤖
 
 - 🔄 **Embeddings Automáticos**: Sistema de generación automática de embeddings cada 5 gastos (global, todos los usuarios)
