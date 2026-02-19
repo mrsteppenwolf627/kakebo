@@ -106,7 +106,7 @@ export default function TopNav() {
             ))}
             <div className="h-px bg-border my-2" />
             <div className="flex items-center justify-between py-2">
-              <span className="text-sm text-muted-foreground">Configuración</span>
+              <span className="text-sm text-muted-foreground">{t('configuration')}</span>
               <div className="flex items-center gap-2">
                 <LanguageSwitcher />
                 <ThemeToggle />
