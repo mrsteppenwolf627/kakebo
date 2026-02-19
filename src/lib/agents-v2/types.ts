@@ -24,12 +24,32 @@ export interface ExecutionMetrics {
 }
 
 /**
+ * Pending action awaiting user confirmation
+ */
+export interface PendingAction {
+  toolCall: OpenAIToolCall;
+  toolName: string;
+  arguments: Record<string, unknown>;
+  description: string; // Human-readable description for user
+}
+
+/**
+ * Confirmation request for write operations
+ */
+export interface ConfirmationRequest {
+  message: string; // Confirmation question for user
+  pendingAction: PendingAction;
+  requiresConfirmation: true;
+}
+
+/**
  * Response from the agent
  */
 export interface AgentResponse {
   message: string;
   toolsUsed: string[];
   metrics: ExecutionMetrics;
+  confirmationRequest?: ConfirmationRequest; // Present when confirmation needed
 }
 
 /**

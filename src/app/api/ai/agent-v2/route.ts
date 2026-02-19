@@ -12,7 +12,7 @@ import { processFunctionCalling } from "@/lib/agents-v2/function-caller";
 /**
  * Request schema for agent-v2 endpoint
  *
- * Same as v1 for compatibility with existing frontend
+ * Same as v1 for compatibility with existing frontend, with optional confirmedAction
  */
 const agentRequestSchema = z.object({
   message: z
@@ -28,6 +28,21 @@ const agentRequestSchema = z.object({
     )
     .optional()
     .default([]),
+  confirmedAction: z
+    .object({
+      toolCall: z.object({
+        id: z.string(),
+        type: z.literal("function"),
+        function: z.object({
+          name: z.string(),
+          arguments: z.string(), // JSON string
+        }),
+      }),
+      toolName: z.string(),
+      arguments: z.record(z.unknown()),
+      description: z.string(),
+    })
+    .optional(),
 });
 
 type AgentRequest = z.infer<typeof agentRequestSchema>;
@@ -96,15 +111,18 @@ export const POST = withLogging(async (request: NextRequest) => {
       input.message,
       input.history,
       supabase,
-      user.id
+      user.id,
+      input.confirmedAction // Pass confirmed action if user approved write operation
     );
 
     // Return successful response
     // Format is compatible with v1 (frontend expects same structure)
+    // Include confirmationRequest if present (for write operations requiring confirmation)
     return responses.ok({
       message: result.message,
       toolsUsed: result.toolsUsed,
       metrics: result.metrics,
+      confirmationRequest: result.confirmationRequest, // NEW: for write confirmation flow
     });
   } catch (error) {
     // Handle all errors (validation, auth, processing)

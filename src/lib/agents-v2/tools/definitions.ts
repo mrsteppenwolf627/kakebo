@@ -728,3 +728,65 @@ export const TOOLS_BY_NAME: Record<string, ChatCompletionTool> = {
   setBudget: setBudgetTool,
   getCurrentCycle: getCurrentCycleTool,
 };
+
+/**
+ * Tool metadata for confirmation flow and safety checks
+ *
+ * Tools with requiresConfirmation=true will NOT be executed automatically.
+ * The agent will ask for user confirmation before proceeding.
+ */
+export interface ToolMetadata {
+  requiresConfirmation: boolean;
+  confirmationTemplate?: (args: Record<string, unknown>) => string;
+}
+
+/**
+ * Metadata map for tools requiring special handling
+ */
+export const TOOL_METADATA: Record<string, ToolMetadata> = {
+  // WRITE OPERATIONS - Require explicit confirmation
+  createTransaction: {
+    requiresConfirmation: true,
+    confirmationTemplate: (args) => {
+      const type = args.type === 'income' ? 'ingreso' : 'gasto';
+      return `¿Confirmas que quieres registrar un ${type} de ${args.amount}€ en ${args.category} con concepto "${args.concept}"?`;
+    },
+  },
+  updateTransaction: {
+    requiresConfirmation: true,
+    confirmationTemplate: (args) => {
+      const changes: string[] = [];
+      if (args.amount) changes.push(`importe a ${args.amount}€`);
+      if (args.concept) changes.push(`concepto a "${args.concept}"`);
+      if (args.category) changes.push(`categoría a ${args.category}`);
+      if (args.date) changes.push(`fecha a ${args.date}`);
+
+      return `¿Confirmas que quieres cambiar ${changes.join(', ')} del gasto?`;
+    },
+  },
+  setBudget: {
+    requiresConfirmation: true,
+    confirmationTemplate: (args) => {
+      const category = args.category === 'all' ? 'todas las categorías' : args.category;
+      return `¿Confirmas que quieres establecer el presupuesto de ${category} en ${args.amount}€?`;
+    },
+  },
+  calculateWhatIf: {
+    requiresConfirmation: true,
+    confirmationTemplate: (args) => {
+      return `¿Confirmas que quieres crear el escenario "${args.name}" por ${args.estimatedCost}€?`;
+    },
+  },
+
+  // READ OPERATIONS - No confirmation needed (safe)
+  analyzeSpendingPattern: { requiresConfirmation: false },
+  getBudgetStatus: { requiresConfirmation: false },
+  detectAnomalies: { requiresConfirmation: false },
+  predictMonthlySpending: { requiresConfirmation: false },
+  getSpendingTrends: { requiresConfirmation: false },
+  searchExpenses: { requiresConfirmation: false },
+  getCurrentCycle: { requiresConfirmation: false },
+
+  // HYBRID - submitFeedback is write but safe (learning feedback)
+  submitFeedback: { requiresConfirmation: false },
+};

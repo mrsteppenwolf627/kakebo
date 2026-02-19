@@ -40,7 +40,7 @@ import type {
 } from "openai/resources/chat/completions";
 
 import { KAKEBO_SYSTEM_PROMPT } from "./prompts";
-import { KAKEBO_TOOLS } from "./tools/definitions";
+import { KAKEBO_TOOLS, TOOL_METADATA } from "./tools/definitions";
 import { executeTools, getToolNames } from "./tools/executor";
 import {
   getUserContextCached,
@@ -51,6 +51,7 @@ import type {
   AgentResponse,
   OpenAIToolCall,
   OpenAIAssistantMessage,
+  PendingAction,
 } from "./types";
 
 /**
@@ -152,21 +153,24 @@ function validateToolCalls(toolCalls: OpenAIToolCall[]): {
  * 2. First LLM call with tools available
  * 3. If no tool calls → return direct response (DONE)
  * 4. If tool calls → validate and filter tool calls
- * 5. Execute tools in parallel
- * 6. Second LLM call with tool results
- * 7. Return final response with metrics
+ * 5. CHECK CONFIRMATION: If tool requires confirmation and not confirmed → return confirmationRequest
+ * 6. Execute tools in parallel
+ * 7. Second LLM call with tool results
+ * 8. Return final response with metrics
  *
  * @param userMessage - Current user message
  * @param conversationHistory - Previous messages in conversation
  * @param supabase - Supabase client
  * @param userId - User ID
+ * @param confirmedAction - Optional: Pending action that user has confirmed
  * @returns Agent response with message, tools used, and metrics
  */
 export async function processFunctionCalling(
   userMessage: string,
   conversationHistory: ConversationMessage[],
   supabase: SupabaseClient,
-  userId: string
+  userId: string,
+  confirmedAction?: PendingAction
 ): Promise<AgentResponse> {
   const startTime = Date.now();
   let inputTokens = 0;
@@ -333,7 +337,86 @@ export async function processFunctionCalling(
         toolsRequested: toolNames,
         toolCount: toolCallsToExecute.length,
       },
-      "Tools validated - executing in parallel"
+      "Tools validated - checking confirmation requirements"
+    );
+
+    // ========== STEP 4.5: CHECK WRITE CONFIRMATION ==========
+    // If any tool requires confirmation and user hasn't confirmed, return confirmation request
+    const toolsRequiringConfirmation = toolCallsToExecute.filter((toolCall) => {
+      const toolName = toolCall.function.name;
+      const metadata = TOOL_METADATA[toolName];
+      return metadata?.requiresConfirmation === true;
+    });
+
+    // Check if confirmation is enabled via feature flag
+    const confirmationEnabled = process.env.ENABLE_WRITE_CONFIRMATION === "true";
+
+    if (confirmationEnabled && toolsRequiringConfirmation.length > 0 && !confirmedAction) {
+      // User needs to confirm - return confirmation request
+      const toolCall = toolsRequiringConfirmation[0]; // Take first tool requiring confirmation
+      const toolName = toolCall.function.name;
+      const args = JSON.parse(toolCall.function.arguments);
+      const metadata = TOOL_METADATA[toolName];
+
+      const confirmationMessage = metadata.confirmationTemplate
+        ? metadata.confirmationTemplate(args)
+        : `¿Confirmas que quieres ejecutar esta acción?`;
+
+      const pendingAction: PendingAction = {
+        toolCall,
+        toolName,
+        arguments: args,
+        description: confirmationMessage,
+      };
+
+      const latencyMs = Date.now() - startTime;
+      const costUsd = calculateCost(DEFAULT_MODEL, inputTokens, outputTokens);
+
+      apiLogger.info(
+        {
+          userId,
+          toolName,
+          requiresConfirmation: true,
+        },
+        "Write operation requires confirmation - returning confirmation request"
+      );
+
+      // Return confirmation request instead of executing
+      return {
+        message: confirmationMessage,
+        toolsUsed: [],
+        metrics: {
+          model: DEFAULT_MODEL,
+          latencyMs,
+          inputTokens,
+          outputTokens,
+          totalTokens: inputTokens + outputTokens,
+          costUsd,
+          toolCalls: 0,
+        },
+        confirmationRequest: {
+          message: confirmationMessage,
+          pendingAction,
+          requiresConfirmation: true,
+        },
+      };
+    }
+
+    // If user confirmed action, use the confirmed tool call directly
+    const finalToolCallsToExecute = confirmedAction
+      ? [confirmedAction.toolCall]
+      : toolCallsToExecute;
+
+    // ========================================================
+
+    apiLogger.info(
+      {
+        userId,
+        toolsRequested: toolNames,
+        toolCount: finalToolCallsToExecute.length,
+        confirmed: !!confirmedAction,
+      },
+      "Executing tools in parallel"
     );
 
     // ========== DIAGNOSTIC LOGGING ==========
@@ -342,7 +425,7 @@ export async function processFunctionCalling(
     // ========================================
 
     const { toolMessages, logs } = await executeTools(
-      toolCallsToExecute,
+      finalToolCallsToExecute,
       supabase,
       userId
     );
