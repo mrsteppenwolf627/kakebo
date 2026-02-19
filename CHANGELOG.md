@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.6.4] - 2026-02-19
+
+### Fixed
+- **Mobile Header Layout**: Decluttered mobile header by moving secondary actions (Language/Theme) to the menu. Fixed background opacity and z-index issues.
+
 ## [3.6.3] - 2026-02-19
 
 ### Fixed

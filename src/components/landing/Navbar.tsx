@@ -162,7 +162,6 @@ export function Navbar() {
 
         {/* Mobile Menu Toggle */}
         <div className="flex md:hidden items-center gap-4">
-          <ThemeToggle />
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="p-2 -mr-2 text-muted-foreground hover:text-foreground"

@@ -50,6 +50,7 @@ export default function TopNav() {
         </div>
 
         {/* Right Side: Nuevo + UserMenu */}
+        {/* Right Side: Nuevo + UserMenu */}
         <div className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/app/new"
@@ -64,8 +65,11 @@ export default function TopNav() {
             + Ingreso
           </Link>
 
-          <LanguageSwitcher />
-          <ThemeToggle />
+          <div className="hidden md:flex items-center gap-2">
+            <LanguageSwitcher />
+            <ThemeToggle />
+          </div>
+
           {/* Delegamos Auth a UserMenu */}
           <UserMenu />
 
@@ -86,7 +90,7 @@ export default function TopNav() {
 
       {/* Mobile Navigation Dropdown */}
       {menuOpen && (
-        <div className="md:hidden fixed top-16 left-0 w-full bg-background border-b border-border shadow-sm z-40 animate-in slide-in-from-top-2">
+        <div className="md:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-background border-b border-border shadow-sm z-50 overflow-y-auto animate-in slide-in-from-top-2">
           <div className="px-4 py-4 space-y-4">
             {items.map((it) => (
               <Link
@@ -100,6 +104,14 @@ export default function TopNav() {
                 {it.label}
               </Link>
             ))}
+            <div className="h-px bg-border my-2" />
+            <div className="flex items-center justify-between py-2">
+              <span className="text-sm text-muted-foreground">Configuración</span>
+              <div className="flex items-center gap-2">
+                <LanguageSwitcher />
+                <ThemeToggle />
+              </div>
+            </div>
             <div className="h-px bg-border my-2" />
             <Link
               href="/app/new"
