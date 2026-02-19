@@ -1,5 +1,9 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { apiLogger } from "@/lib/logger";
+import {
+  validateTransactionBeforeWrite,
+  formatValidationResult,
+} from "./validators/transaction-validator";
 
 /**
  * Parameters for creating a new transaction (expense or income)
@@ -25,6 +29,7 @@ export interface CreateTransactionResult {
   category: string;
   date: string;
   message: string;
+  warnings?: string[]; // Validation warnings (if any)
 }
 
 /**
@@ -132,19 +137,45 @@ export async function createTransaction(
     );
     // ========================================
 
-    // Validate amount
-    if (params.amount <= 0) {
-      throw new Error("El importe debe ser mayor que 0");
-    }
-
-    // Validate concept
-    if (!params.concept || params.concept.trim().length === 0) {
-      throw new Error("El concepto no puede estar vacío");
-    }
-
-    // Prepare data
+    // Prepare data for validation
     const dbCategory = getSpanishCategoryName(params.category);
     const date = params.date || getCurrentDate();
+
+    // ========== VALIDATE TRANSACTION BEFORE WRITE (P0-2) ==========
+    const validationResult = await validateTransactionBeforeWrite(supabase, {
+      type: params.type,
+      amount: params.amount,
+      concept: params.concept,
+      category: dbCategory,
+      date,
+      userId,
+    });
+
+    // If validation failed (errors present), throw error
+    if (!validationResult.valid) {
+      const errorMessage = formatValidationResult(validationResult);
+      apiLogger.warn(
+        {
+          userId,
+          validationErrors: validationResult.errors,
+          validationWarnings: validationResult.warnings,
+        },
+        "Transaction validation failed - blocking creation"
+      );
+      throw new Error(errorMessage);
+    }
+
+    // Log warnings (but continue with creation)
+    if (validationResult.warnings.length > 0) {
+      apiLogger.info(
+        {
+          userId,
+          validationWarnings: validationResult.warnings,
+        },
+        "Transaction validation passed with warnings"
+      );
+    }
+    // ==============================================================
 
     // Determine which table to insert into
     const tableName = params.type === "expense" ? "expenses" : "incomes";
@@ -250,6 +281,7 @@ export async function createTransaction(
       category: params.category,
       date: date,
       message,
+      warnings: validationResult.warnings.length > 0 ? validationResult.warnings : undefined,
     };
   } catch (error) {
     apiLogger.error({ error, params }, "Error in createTransaction");
