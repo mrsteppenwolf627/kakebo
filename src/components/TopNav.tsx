@@ -25,7 +25,7 @@ export default function TopNav() {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-sm border-b border-border">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
       <div className="max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         {/* Logo + Desktop Nav */}
         <div className="flex h-16 items-center px-4 md:px-6">
@@ -75,14 +75,18 @@ export default function TopNav() {
             className="md:hidden p-2 text-muted-foreground hover:text-foreground"
             aria-label="Menú"
           >
-            {menuOpen ? "✕" : "☰"}
+            {menuOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 18 18" /></svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>
+            )}
           </button>
         </div>
       </div>
 
       {/* Mobile Navigation Dropdown */}
       {menuOpen && (
-        <div className="md:hidden fixed top-16 left-0 w-full bg-background border-b border-border shadow-sm z-20 animate-in slide-in-from-top-2">
+        <div className="md:hidden fixed top-16 left-0 w-full bg-background border-b border-border shadow-sm z-40 animate-in slide-in-from-top-2">
           <div className="px-4 py-4 space-y-4">
             {items.map((it) => (
               <Link

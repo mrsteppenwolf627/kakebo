@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.6.3] - 2026-02-19
+
+### Fixed
+- **Mobile TopNav Refinement**: Replaced text-based hamburger icon with SVG for consistent rendering. Increased z-index to ensure visibility.
+
 ## [3.6.2] - 2026-02-19
 
 ### Fixed
