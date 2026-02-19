@@ -6,17 +6,19 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import UserMenu from "./UserMenu";
+import { useTranslations } from "next-intl";
 
 export default function TopNav() {
+  const t = useTranslations("Navigation");
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const items = [
-    { href: "/", label: "Inicio" },
-    { href: "/app", label: "Dashboard" },
-    { href: "/app/agent", label: "Agente IA" },
-    { href: "/app/fixed", label: "Fijos" },
-    { href: "/app/ai-metrics", label: "Análisis" },
+    { href: "/", label: t('home') },
+    { href: "/app", label: t('dashboard') },
+    { href: "/app/agent", label: t('agent') },
+    { href: "/app/fixed", label: t('fixed') },
+    { href: "/app/ai-metrics", label: t('analysis') },
   ];
 
   // Close menu on route change
@@ -56,13 +58,13 @@ export default function TopNav() {
             href="/app/new"
             className="hidden md:inline-flex items-center px-3 py-1.5 text-xs sm:text-sm bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 hover:opacity-90 transition-colors whitespace-nowrap rounded-md shadow-sm"
           >
-            + Gasto
+            {t('newExpense')}
           </Link>
           <Link
             href="/app/new-income"
             className="hidden md:inline-flex items-center px-3 py-1.5 text-xs sm:text-sm border border-stone-200 dark:border-stone-800 bg-background hover:bg-muted transition-colors whitespace-nowrap rounded-md shadow-sm"
           >
-            + Ingreso
+            {t('newIncome')}
           </Link>
 
           <div className="hidden md:flex items-center gap-2">
@@ -117,13 +119,13 @@ export default function TopNav() {
               href="/app/new"
               className="block text-center w-full py-3 bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 font-medium rounded-md"
             >
-              + Nuevo Gasto
+              {t('newExpenseLong')}
             </Link>
             <Link
               href="/app/new-income"
               className="block text-center w-full py-3 border border-stone-200 dark:border-stone-800 bg-background font-medium rounded-md"
             >
-              + Nuevo Ingreso
+              {t('newIncomeLong')}
             </Link>
           </div>
         </div>
