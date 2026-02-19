@@ -76,6 +76,7 @@ A diferencia de un Excel o una app bancaria, Kakebo:
 - 🎯 **Presupuestos Dinámicos**: Configura límites por categoría y recibe alertas visuales.
 - 💳 **Registro Dual**: Añade gastos vía Chat (Copilot) o interfaz rápida (Quick Add).
 - 🎲 **Escenarios What-If**: Planifica gastos futuros y ve cómo afectan a tu ahorro.
+- 🔄 **Embeddings Automáticos**: Sistema de búsqueda semántica que aprende automáticamente cada 5 gastos (global).
 
 ### 📄 Reportes & Análisis
 
@@ -232,6 +233,14 @@ Si decides continuar con la ayuda de la IA:
 ---
 
 ## 📝 Changelog Reciente
+
+### v3.7.0 (2026-02-19) - Auto-Embeddings System 🤖
+
+- 🔄 **Embeddings Automáticos**: Sistema de generación automática de embeddings cada 5 gastos (global, todos los usuarios)
+- ⚡ **Búsqueda Semántica**: El agente aprende automáticamente de los gastos sin intervención manual
+- 🚀 **Procesamiento en Batch**: Hasta 50 gastos procesados en paralelo (~2.75 gastos/segundo)
+- 💰 **Ultra-Económico**: ~$0.000005 por cada 12 gastos procesados
+- 🔍 **Transparente**: Sistema completamente automático, invisible para el usuario
 
 ### v3.6.2 (2026-02-19) - Mobile Navigation Global Fix 🌍
 

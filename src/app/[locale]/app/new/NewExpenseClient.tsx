@@ -25,6 +25,16 @@ const AI_TO_FRONTEND_CATEGORY: Record<string, CategoryKey> = {
   extra: "extra",
 };
 
+/**
+ * Map frontend categories (Spanish) to API categories (English)
+ */
+const FRONTEND_TO_API_CATEGORY: Record<CategoryKey, string> = {
+  supervivencia: "survival",
+  opcional: "optional",
+  cultura: "culture",
+  extra: "extra",
+};
+
 interface AISuggestion {
   category: CategoryKey;
   note: string;
@@ -311,19 +321,24 @@ export default function NewExpensePage() {
         return;
       }
 
-      const cat = KAKEBO_CATEGORIES[category];
-
-      const { error } = await supabase.from("expenses").insert({
-        user_id: session.user.id,
-        month_id: m.id,
-        date: safeDate,
-        note,
-        amount: Number(amount),
-        category,
-        color: cat.color,
+      // Use API endpoint instead of direct Supabase insert
+      // This triggers the auto-embeddings system
+      const response = await fetch("/api/expenses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          date: safeDate,
+          amount: Number(amount),
+          category: FRONTEND_TO_API_CATEGORY[category], // Map to English
+          note,
+          month_id: m.id,
+        }),
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || "Error al guardar el gasto");
+      }
 
       await recordCorrectionIfNeeded(category);
 

@@ -11,7 +11,9 @@ import {
   generateEmbedding,
   createExpenseText,
   storeExpenseEmbedding,
+  shouldTriggerEmbeddings,
 } from "@/lib/ai";
+import { apiLogger } from "@/lib/logger";
 
 /**
  * GET /api/expenses
@@ -163,50 +165,46 @@ export const POST = withLogging(async (request: NextRequest) => {
 
     if (error) throw error;
 
-    // Generate and store embedding (async, don't block response)
-    if (data && input.note) {
-      const textContent = createExpenseText({
-        note: input.note,
-        amount: input.amount,
-        category: input.category,
-        date: input.date,
-      });
-
-      generateEmbedding(textContent)
-        .then(({ embedding }) => {
-          storeExpenseEmbedding(supabase, data.id, user.id, textContent, embedding);
-        })
-        .catch(() => {
-          // Silent fail - embedding generation shouldn't block expense creation
-        });
-    }
-
-    // Auto-update embeddings every 10 expenses
-    // We do this asynchronously without blocking the response
+    // Auto-trigger batch embedding generation every 5 expenses (global counter)
+    // This runs asynchronously without blocking the response
     (async () => {
       try {
-        const { count } = await supabase
-          .from("expenses")
-          .select("*", { count: "exact", head: true })
-          .eq("user_id", user.id);
+        apiLogger.info("Checking if auto-embedding trigger should fire");
 
-        if (count && count % 10 === 0) {
-          // Trigger migration for up to 20 pending items
-          // We call the internal logic of migrate-embeddings or just a simplified version here
-          // For simplicity, we'll hit the API endpoint logically or just import the logic if possible.
-          // Since we are inside a route, calling another route via fetch requires full URL. 
-          // Better to just inline a small "fill missing" logic or use a helper.
-          // Let's use a fire-and-forget fetch to our own API to avoid circular dependency issues or code duplication complexity in this context.
-          const appUrl = request.headers.get("origin") || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-          fetch(`${appUrl}/api/ai/migrate-embeddings?limit=20`, {
+        // Check if we should trigger batch embedding generation
+        const shouldTrigger = await shouldTriggerEmbeddings(supabase);
+
+        apiLogger.info({ shouldTrigger }, "Auto-embedding trigger check result");
+
+        if (shouldTrigger) {
+          // Trigger background embedding processing
+          const appUrl =
+            request.headers.get("origin") ||
+            process.env.NEXT_PUBLIC_APP_URL ||
+            "http://localhost:3000";
+          const secret = process.env.INTERNAL_API_SECRET || "dev-secret";
+
+          const url = `${appUrl}/api/ai/process-embeddings?limit=50&secret=${secret}`;
+
+          apiLogger.info({ url }, "Triggering batch embedding processing");
+
+          // Fire-and-forget: Don't wait for response
+          fetch(url, {
             method: "POST",
-            headers: {
-              Cookie: request.headers.get("cookie") || ""
-            }
-          }).catch(err => console.error("Auto-embedding trigger failed:", err));
+          })
+            .then((res) => {
+              apiLogger.info({ status: res.status }, "Auto-embedding response received");
+              return res.json();
+            })
+            .then((data) => {
+              apiLogger.info({ data }, "Auto-embedding processing completed");
+            })
+            .catch((err) => {
+              apiLogger.error({ err }, "Auto-embedding fetch failed");
+            });
         }
       } catch (err) {
-        console.error("Error checking expense count for auto-embeddings:", err);
+        apiLogger.error({ err }, "Error in auto-embedding trigger check");
       }
     })();
 
