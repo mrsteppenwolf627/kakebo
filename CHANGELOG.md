@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.6.1] - 2026-02-19
+
+### Fixed
+- **Mobile TopNav**: Hidden desktop navigation links and action buttons on mobile to prevent clutter.
+
 ## [Unreleased] - 2026-02-09
 
 ### Design Updates (Beta Feedback)

@@ -33,7 +33,7 @@ export default function TopNav() {
             <span>🏮</span>
             <span>Kakebo</span>
           </Link>
-          <nav className="flex items-center gap-4 text-sm font-medium lg:gap-6 overflow-x-auto no-scrollbar">
+          <nav className="hidden md:flex items-center gap-4 text-sm font-medium lg:gap-6 overflow-x-auto no-scrollbar">
             {items.map((it) => (
               <Link
                 key={it.href}
@@ -53,13 +53,13 @@ export default function TopNav() {
         <div className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/app/new"
-            className="inline-flex items-center px-3 py-1.5 text-xs sm:text-sm bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 hover:opacity-90 transition-colors whitespace-nowrap rounded-md shadow-sm"
+            className="hidden md:inline-flex items-center px-3 py-1.5 text-xs sm:text-sm bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 hover:opacity-90 transition-colors whitespace-nowrap rounded-md shadow-sm"
           >
             + Gasto
           </Link>
           <Link
             href="/app/new-income"
-            className="inline-flex items-center px-3 py-1.5 text-xs sm:text-sm border border-stone-200 dark:border-stone-800 bg-background hover:bg-muted transition-colors whitespace-nowrap rounded-md shadow-sm"
+            className="hidden md:inline-flex items-center px-3 py-1.5 text-xs sm:text-sm border border-stone-200 dark:border-stone-800 bg-background hover:bg-muted transition-colors whitespace-nowrap rounded-md shadow-sm"
           >
             + Ingreso
           </Link>

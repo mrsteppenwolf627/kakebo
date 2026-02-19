@@ -233,6 +233,10 @@ Si decides continuar con la ayuda de la IA:
 
 ## 📝 Changelog Reciente
 
+### v3.6.1 (2026-02-19) - Mobile Fixes 📱
+
+- 🐛 **Mobile Nav**: Corrección de visualización en menú superior móvil. Ocultados enlaces de escritorio para evitar saturación.
+
 ### v3.6.0 (2026-02-18) - Global Expansion 🌍
 
 **Internationalization:**
