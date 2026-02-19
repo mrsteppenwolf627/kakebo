@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.6.2] - 2026-02-19
+
+### Fixed
+- **Global Mobile Navigation**: Implemented a responsive hamburger menu for the Landing Page, Blog, and Tools pages. This ensures navigation is accessible on all mobile devices across the entire site.
+
 ## [3.6.1] - 2026-02-19
 
 ### Fixed

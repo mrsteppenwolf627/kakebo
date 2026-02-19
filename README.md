@@ -233,6 +233,10 @@ Si decides continuar con la ayuda de la IA:
 
 ## 📝 Changelog Reciente
 
+### v3.6.2 (2026-02-19) - Mobile Navigation Global Fix 🌍
+
+- 📱 **Global Mobile Menu**: Implementado menú hamburguesa en todas las páginas públicas (Landing, Blog, Herramientas). Ahora la navegación es consistente en toda la web.
+
 ### v3.6.1 (2026-02-19) - Mobile Fixes 📱
 
 - 🐛 **Mobile Nav**: Corrección de visualización en menú superior móvil. Ocultados enlaces de escritorio para evitar saturación.
