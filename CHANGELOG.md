@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.6.5] - 2026-02-19
+
+### Fixed
+- **Mobile Localization**: Fully localized mobile menu strings (ES/EN). Added dynamic translations for Dashboard and Public navigation.
+
 ## [3.6.4] - 2026-02-19
 
 ### Fixed

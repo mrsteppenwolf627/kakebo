@@ -28,7 +28,17 @@
         "toolsSavings": "Savings Calculator",
         "toolsSavingsDesc": "Distribute your salary",
         "goToDashboard": "Go to Dashboard",
-        "secure": "Secure"
+        "secure": "Secure",
+        "home": "Home",
+        "agent": "AI Agent",
+        "fixed": "Fixed",
+        "analysis": "Analysis",
+        "newExpense": "+ Expense",
+        "newIncome": "+ Income",
+        "newExpenseLong": "+ New Expense",
+        "newIncomeLong": "+ New Income",
+        "configuration": "Settings",
+        "language": "Language"
     },
     "CookieBanner": {
         "text": "We use our own and third-party cookies to improve your experience and analyze the use of the website.",

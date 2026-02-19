@@ -53,7 +53,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border transition-colors">
+    <header className="fixed top-0 left-0 right-0 z-[100] bg-white/80 dark:bg-stone-950/80 backdrop-blur-md border-b border-border transition-colors">
       <div className="max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" onClick={closeMenu} className="flex items-center gap-3 transition-opacity hover:opacity-70 group">
@@ -164,7 +164,7 @@ export function Navbar() {
         <div className="flex md:hidden items-center gap-4">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 -mr-2 text-muted-foreground hover:text-foreground"
+            className="p-2 -mr-2 text-muted-foreground hover:text-foreground relative z-50"
             aria-label="Menu"
           >
             {isMenuOpen ? (
@@ -178,7 +178,7 @@ export function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div className="md:hidden fixed top-16 left-0 right-0 bottom-0 bg-background border-t border-border z-40 overflow-y-auto animate-in slide-in-from-top-2">
+        <div className="md:hidden fixed top-16 left-0 right-0 bottom-0 bg-white dark:bg-stone-950 border-t border-border z-[99] overflow-y-auto animate-in slide-in-from-top-2">
           <div className="p-4 flex flex-col gap-6">
             <nav className="flex flex-col gap-4">
               <Link
@@ -239,7 +239,7 @@ export function Navbar() {
 
             <div className="flex flex-col gap-4 mt-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Idioma</span>
+                <span className="text-sm text-muted-foreground">{t('language')}</span>
                 <LanguageSwitcher />
               </div>
 

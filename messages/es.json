@@ -28,7 +28,17 @@
         "toolsSavings": "Calculadora Ahorro",
         "toolsSavingsDesc": "Distribuye tu sueldo",
         "goToDashboard": "Ir al Dashboard",
-        "secure": "Seguro"
+        "secure": "Seguro",
+        "home": "Inicio",
+        "agent": "Agente IA",
+        "fixed": "Fijos",
+        "analysis": "Análisis",
+        "newExpense": "+ Gasto",
+        "newIncome": "+ Ingreso",
+        "newExpenseLong": "+ Nuevo Gasto",
+        "newIncomeLong": "+ Nuevo Ingreso",
+        "configuration": "Configuración",
+        "language": "Idioma"
     },
     "CookieBanner": {
         "text": "Utilizamos cookies propias y de terceros para mejorar tu experiencia y analizar el uso de la web.",
