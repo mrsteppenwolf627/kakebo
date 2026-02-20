@@ -100,6 +100,37 @@ export default function ReportDialog({
         }
     }
 
+    function handleDownloadCSV(isExcel: boolean) {
+        if (!reportData || !reportData.expenses) return;
+
+        const headers = ["Fecha", "Concepto", "Categoría", "Importe"];
+        const rows = reportData.expenses.map((e: any) => [
+            e.date,
+            `"${e.concept.replace(/"/g, '""')}"`, // escape quotes
+            e.category,
+            e.amount
+        ]);
+
+        const separator = isExcel ? ";" : ",";
+        const csvContent = [
+            headers.join(separator),
+            ...rows.map((row: any[]) => row.join(separator))
+        ].join("\n");
+
+        const blobParts = isExcel ? [new Uint8Array([0xEF, 0xBB, 0xBF]), csvContent] : [csvContent];
+        const blob = new Blob(blobParts, { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("link"); // use a tag instead of link for download
+        const aTag = document.createElement("a");
+        aTag.href = url;
+        aTag.download = `kakebo-report-${range}-${date}.csv`;
+        document.body.appendChild(aTag);
+        aTag.click();
+        document.body.removeChild(aTag);
+        URL.revokeObjectURL(url);
+    }
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in">
             <div className="bg-card border border-border w-full max-w-md p-6 rounded-xl shadow-lg space-y-6" onClick={(e) => e.stopPropagation()}>
@@ -159,20 +190,34 @@ export default function ReportDialog({
                             {loading ? "Preparando..." : "Preparar Informe"}
                         </button>
                     ) : (
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2 w-full justify-between items-center sm:items-start mt-4 border-t border-border pt-4">
                             <button
                                 onClick={() => setReportData(null)}
-                                className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground border border-border rounded-md"
+                                className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground border border-border rounded-md w-full sm:w-auto text-center order-last sm:order-first mt-2 sm:mt-0"
                             >
-                                Cambiar filtros
+                                Diferentes filtros
                             </button>
-                            <PDFDownloadLink
-                                document={<ReportPDF data={reportData} />}
-                                fileName={`kakebo-report-${range}-${date}.pdf`}
-                                className="px-4 py-2 bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 rounded-md text-sm font-medium hover:opacity-90 inline-flex items-center gap-2"
-                            >
-                                {({ loading: pdfLoading }) => (pdfLoading ? "Generando PDF..." : "📥 Descargar PDF")}
-                            </PDFDownloadLink>
+                            <div className="flex flex-wrap gap-2 justify-end w-full sm:w-auto">
+                                <button
+                                    onClick={() => handleDownloadCSV(false)}
+                                    className="px-3 py-2 bg-stone-100 text-stone-900 border border-stone-200 dark:bg-stone-800 dark:border-stone-700 dark:text-stone-100 hover:opacity-80 rounded-md text-sm font-medium transition-opacity inline-flex items-center gap-2"
+                                >
+                                    <span>📊</span> CSV
+                                </button>
+                                <button
+                                    onClick={() => handleDownloadCSV(true)}
+                                    className="px-3 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-900/30 dark:border-emerald-800 dark:text-emerald-400 hover:opacity-80 rounded-md text-sm font-medium transition-opacity inline-flex items-center gap-2"
+                                >
+                                    <span>📉</span> Excel
+                                </button>
+                                <PDFDownloadLink
+                                    document={<ReportPDF data={reportData} />}
+                                    fileName={`kakebo-report-${range}-${date}.pdf`}
+                                    className="px-4 py-2 bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 rounded-md text-sm font-medium hover:opacity-90 inline-flex items-center gap-2"
+                                >
+                                    {({ loading: pdfLoading }) => (pdfLoading ? "Cargando..." : "📥 PDF")}
+                                </PDFDownloadLink>
+                            </div>
                         </div>
                     )}
                 </div>

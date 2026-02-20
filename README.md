@@ -82,11 +82,12 @@ A diferencia de un Excel o una app bancaria, Kakebo:
 
 - 📑 **Reportes PDF**: Genera informes mensuales detallados para guardar o imprimir.
 - 📊 **Análisis Visual**: Gráficos de distribución (Donut) y evolución (Barras).
-- 💾 **Exportación**: Tus datos siempre disponibles.
+- 💾 **Exportación**: Tus datos siempre disponibles, exportables también nativamente a CSV y Excel (XLS).
 
 ### 🎨 Diseño Zen (Wabi-Sabi)
 
 - 🌸 Interfaz minimalista que reduce la ansiedad financiera.
+- 🌟 **Onboarding Guiado**: Tour interactivo "paso a paso" para configurar ingresos y ahorro la primera vez.
 - 🌓 **Modo Oscuro** automático y cuidado.
 - 🌓 **Modo Oscuro** automático y cuidado.
 - 📱 **Totalmente Responsive** (PWA-ready).

@@ -506,6 +506,32 @@
         }
     },
     "Dashboard": {
+        "Onboarding": {
+            "welcome": {
+                "title": "Welcome to Kakebo!",
+                "desc": "The Kakebo method will help you become aware of your spending and save effectively. To start using your Dashboard, we need a couple of basic details.",
+                "next": "Start setup"
+            },
+            "income": {
+                "title": "What is your monthly income?",
+                "desc": "Enter your base salary or monthly average. You can add extra income later."
+            },
+            "savings": {
+                "title": "How much do you want to save?",
+                "desc": "The Kakebo method separates your savings at the beginning, not at the end of the month. 'Pay yourself first'.",
+                "finish": "Save and Start"
+            },
+            "done": {
+                "title": "All Set!",
+                "desc": "Your basic settings are saved. Remember to record every cent you spend to take absolute control of your money.",
+                "start": "Go to my Dashboard"
+            },
+            "common": {
+                "skip": "Skip for now",
+                "back": "Back",
+                "next": "Next"
+            }
+        },
         "title": "My Kakebo",
         "subtitle": "Monthly Expense Tracker",
         "Header": {

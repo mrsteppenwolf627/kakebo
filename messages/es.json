@@ -506,6 +506,32 @@
         }
     },
     "Dashboard": {
+        "Onboarding": {
+            "welcome": {
+                "title": "¡Bienvenido a Kakebo!",
+                "desc": "El método Kakebo te ayudará a tomar consciencia de tus gastos y a ahorrar de forma efectiva. Para empezar a usar tu Dashboard, necesitamos un par de datos básicos.",
+                "next": "Comenzar configuración"
+            },
+            "income": {
+                "title": "¿Cuáles son tus ingresos mensuales?",
+                "desc": "Introduce tu sueldo base o promedio mensual. Podrás añadir ingresos extra más adelante."
+            },
+            "savings": {
+                "title": "¿Cuánto quieres ahorrar?",
+                "desc": "El método Kakebo separa tu ahorro al principio, no al final del mes. 'Págate a ti mismo' primero.",
+                "finish": "Guardar y Empezar"
+            },
+            "done": {
+                "title": "¡Todo Listo!",
+                "desc": "Tus ajustes básicos están guardados. Recuerda registrar cada céntimo que gastes para tomar control absoluto de tu dinero.",
+                "start": "Ir a mi Dashboard"
+            },
+            "common": {
+                "skip": "Saltar por ahora",
+                "back": "Atrás",
+                "next": "Siguiente"
+            }
+        },
         "title": "Mi Kakebo",
         "subtitle": "Control de gastos mensual",
         "Header": {

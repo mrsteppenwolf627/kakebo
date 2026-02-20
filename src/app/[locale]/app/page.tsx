@@ -10,6 +10,7 @@ import ReportButton from "@/components/reports/ReportButton";
 
 import DashboardMoneyPanel from "@/components/DashboardMoneyPanel";
 import FloatingAgentChat from "@/components/FloatingAgentChat";
+import OnboardingTour from "@/components/dashboard/OnboardingTour";
 
 
 function parseYm(ym?: string) {
@@ -118,6 +119,7 @@ export default async function HomePage(props: {
         </div>
         <FloatingAgentChat />
         <FloatingAddButton />
+        <OnboardingTour />
       </main>
     </AuthGate>
   );

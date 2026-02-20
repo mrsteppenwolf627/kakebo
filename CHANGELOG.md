@@ -10,6 +10,10 @@
 - 🌍 **Internationalization**: Full ES/EN support for the tutorial content and image alt/title attributes.
 - 🧭 **Navigation**: Integrated tutorial link into desktop and mobile top navbars.
 
+**User Experience (UX):**
+- 🌟 **Onboarding Flow**: Added an interactive, step-by-step modal tour for new users in the Dashboard to set up their monthly income and saving goals.
+- 📉 **Export Options**: Added CSV and Excel export buttons directly into the Dashboard Report dialog for better data flexibility.
+
 ## [3.9.0] - 2026-02-20
 
 ### Added
