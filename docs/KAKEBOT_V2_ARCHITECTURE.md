@@ -1,8 +1,8 @@
 # KakeBot v2 - Architecture Documentation
 
-**Version:** 2.0
-**Last Updated:** 2026-02-09
-**Status:** Production Ready (Staging)
+**Version:** 3.9
+**Last Updated:** 2026-02-20
+**Status:** Production Ready
 
 ---
 
@@ -30,10 +30,17 @@ KakeBot v2 is a hardened financial assistant powered by OpenAI Function Calling.
 - ✅ Honest error handling (no invented data)
 - ✅ Cost-controlled tool calling (max 3 tools per query)
 - ✅ Performance-optimized with caching
+- ✅ **Streaming SSE**: Responses streamed token-by-token via `/api/ai/agent-v2/stream`
+- ✅ **Cross-category search**: Concept queries search all categories, show category per expense
+- ✅ **Multi-signal re-ranking**: Semantic + recency + category match confidence score
+- ✅ **AI Learning loop**: Merchant rules → correction examples → few-shot prompting → metrics
 
-**Migration from v1:**
+**Model:** GPT-5 Nano (`gpt-5-nano`) — 400k context, $0.05/1M input, $0.40/1M output
+
+**Migration history:**
 - v1: LangGraph with 3-node pipeline (Router → Tools → Synthesizer)
 - v2: Native OpenAI Function Calling (1-2 LLM calls, 40-60% faster)
+- v3.9: GPT-5 Nano + Streaming SSE + Learning loop + Cross-category search
 
 ---
 
@@ -66,7 +73,7 @@ KakeBot v2 is a hardened financial assistant powered by OpenAI Function Calling.
                   ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  LAYER 3: First LLM Call (OpenAI)                           │
-│  - Model: gpt-4o-mini                                        │
+│  - Model: gpt-5-nano                                        │
 │  - Temperature: 0.3 (consistent tool selection)             │
 │  - Decides: Use tools OR direct response                    │
 └─────────────────┬───────────────────────────────────────────┘
@@ -110,7 +117,7 @@ KakeBot v2 is a hardened financial assistant powered by OpenAI Function Calling.
          │                  ▼
          │    ┌─────────────────────────────────────────────┐
          │    │  LAYER 8: Second LLM Call                   │
-         │    │  - Model: gpt-4o-mini                       │
+         │    │  - Model: gpt-5-nano                       │
          │    │  - Temperature: 0.6 (natural synthesis)     │
          │    │  - Synthesizes final response               │
          │    └─────────────┬───────────────────────────────┘
@@ -271,7 +278,7 @@ permission → "No tengo permiso. Verifica tu sesión."
 ### 6. Available Tools
 
 **1. analyzeSpendingPattern**
-- Purpose: Analyze spending by category and period
+- Purpose: Aggregated totals by category and period (use for totals, NOT for listing expenses)
 - Parameters: category, period, groupBy
 - Returns: total, average, trend, top expenses
 - Restrictions: None (works with any data)
@@ -300,11 +307,18 @@ permission → "No tengo permiso. Verifica tu sesión."
 - Returns: trend direction, percentage change
 - Restrictions: Requires 60+ days of data
 
+**6. searchExpenses** *(cross-category search)*
+- Purpose: List individual expenses matching a concept (searches ALL categories)
+- Parameters: query, period, minAmount, maxAmount, limit
+- Returns: expenses with `id`, `concept`, `amount`, `date`, `category`, `confidence`
+- Key behavior: "comida" finds Mercadona [Supervivencia] AND restaurants [Opcional]
+- Re-ranking: Multi-signal confidence (semantic 0.6 + recency 0.2 + category 0.2), `crossCategory: true` disables category penalty
+
 ---
 
 ## Data Flow
 
-### Example: "¿Cuánto he gastado en comida este mes?"
+### Example: "gastos de comida" (cross-category search + streaming)
 
 **Step-by-step:**
 
@@ -314,37 +328,42 @@ permission → "No tengo permiso. Verifica tu sesión."
    - Generate disclaimer: "CONTEXTO - HISTÓRICO LIMITADO: 45 días..."
 
 2. **System Prompt Construction**
-   - Base prompt: Hardened rules
-   - + Context: "Histórico limitado" warning
-   - + History: Previous conversation turns
+   - Base prompt: Hardened rules + BÚSQUEDA TRANSVERSAL rule
+   - + Correction examples (P1-2 few-shot): Up to 6 previous corrections
+   - + Context disclaimer + conversation history
 
-3. **First LLM Call**
-   - GPT decides: Use `analyzeSpendingPattern`
-   - Tool call: `{ category: "survival", period: "current_month" }`
+3. **SSE: emit `thinking`** → client shows "Pensando..."
 
-4. **Tool Call Validation**
+4. **First LLM Call (stream: true)**
+   - GPT decides: Use `searchExpenses` (NOT `analyzeSpendingPattern`)
+   - Tool call: `{ query: "comida", period: "current_month" }`
+   - Tool_call deltas buffered until stream complete
+
+5. **SSE: emit `tools`** → client shows "Consultando: searchExpenses"
+
+6. **Tool Call Validation**
    - Count: 1 tool (< 3 limit ✓)
    - Forbidden combo: None ✓
-   - Companion: Not required ✓
 
-5. **Tool Execution**
-   - Query Supabase: Get expenses for user, category=supervivencia, month=current
-   - Calculate: total, average, trend, top expenses
+7. **Tool Execution — cross-category search**
+   - Expand query: "comida" → "comida alimentación supermercado restaurante..."
+   - Vector search: `match_expenses_v2()` with date filter (no category filter)
+   - Keyword match: All categories matching food keywords
+   - Merge + Re-rank: `rerankResults(results, "comida", { crossCategory: true })`
+   - Returns expenses from Supervivencia AND Opcional
 
-6. **Output Validation**
-   - Check: totalAmount >= 0 ✓
-   - Check: topExpenses sum <= total ✓
-   - Check: trend valid ✓
-   - Result: Valid data
+8. **SSE: emit `executing`** → client shows "Analizando tus datos..."
 
-7. **Second LLM Call**
-   - Input: Tool result + hardened prompt
-   - GPT synthesizes: "Has gastado €450 en supervivencia este mes (basado en 12 transacciones del 1 al 9 de febrero)"
+9. **Second LLM Call (stream: true) — synthesis**
+   - GPT streams response token by token
 
-8. **Response**
-   - Message: Final synthesized text
-   - Metrics: latency, tokens, cost
-   - Tools used: ["analyzeSpendingPattern"]
+10. **SSE: emit `chunk`** (×N) → client appends tokens to bubble
+
+11. **SSE: emit `done`**
+    - Final message includes category per expense:
+      "1. **Mercadona** - €45.20 [Supervivencia] (15/02) (ID: abc-123)
+       2. **Cena restaurante** - €32.00 [Opcional] (12/02) (ID: def-456)"
+    - Metrics: latency, tokens, cost
 
 ---
 
@@ -406,17 +425,17 @@ permission → "No tengo permiso. Verifica tu sesión."
 
 ### Cost per Query
 
-**Model:** gpt-4o-mini
-- Input: $0.150 per 1M tokens
-- Output: $0.600 per 1M tokens
+**Model:** gpt-5-nano
+- Input: $0.050 per 1M tokens
+- Output: $0.400 per 1M tokens
 
 **Typical costs:**
-- Direct response: ~150 tokens → $0.00008
-- 1 tool: ~500 tokens → $0.0002
-- 3 tools: ~1000 tokens → $0.0004
+- Direct response: ~150 tokens → $0.00003
+- 1 tool: ~500 tokens → $0.00009
+- 3 tools: ~1000 tokens → $0.00018
 
 **Monthly estimate (1000 users, 5 queries/user/month):**
-- 5000 queries × $0.0003 avg = **$1.50/month**
+- 5000 queries × $0.00012 avg = **$0.60/month**
 
 ### Cache Effectiveness
 
@@ -433,39 +452,46 @@ permission → "No tengo permiso. Verifica tu sesión."
 ### Test Coverage
 
 ```
-Total tests: 40
-├── Original (Sprint 0): 15 tests
+Total unit tests: 156 (all passing)
+├── Sprint 0 (Original): 15 tests
 ├── Sprint 1 (Hardening): 10 tests
-└── Sprint 2 (Adaptive): 15 tests
-
-Coverage:
-├── Unit tests: 100% (all core functions)
-├── Integration tests: 100% (full flow)
-└── Edge cases: 90% (most scenarios)
+├── Sprint 2 (Adaptive): 15 tests
+├── P0-1 Write Confirmation: 13 tests
+├── P0-2 Pre-write Validation: 24 tests
+├── P1-1 Merchant Map: 59 tests
+├── P1-2 Correction Examples: 21 tests
+├── P2-2 Re-ranking: 34 tests
+└── P2-3 Learning Metrics: 18 tests
 ```
 
-### Test Suites
+### Key Test Suites
 
-**1. function-caller.test.ts** (15 tests)
-- General questions without tools
-- Semantic mapping ("comida" → "survival")
-- Temporal context ("este mes" → "current_month")
-- Multiple tools in one query
-- Error handling
-- Multi-turn conversations
+**1. result-reranker.test.ts** (34 tests)
+- Recency exponential decay
+- Category inference from query
+- `crossCategory: true` mode (neutral scores)
+- Full `rerankResults` pipeline
 
-**2. hardening-integration.test.ts** (10 tests)
-- Transparency requirements
-- Error exposure
-- Numerical consistency validation
-- Data quality warnings
+**2. learning-metrics.test.ts** (18 tests)
+- Empty tables → score: 35 (default precision)
+- Merchant rule velocity trends
+- Top misclassification pairs
+- Search feedback precision
+- Error resilience (DB errors return zeros)
 
-**3. sprint2-integration.test.ts** (15 tests)
-- User context classification
-- Tool appropriateness validation
-- Tool calling limits
-- Cache effectiveness
-- End-to-end integration
+**3. merchant-extractor + category-suggester + learn-from-correction** (59 tests)
+- 30+ merchant extraction patterns
+- Category confidence scoring
+- Feedback loop learning
+
+**4. transaction-validator.test.ts** (24 tests)
+- Amount / date / concept validation
+- Duplicate detection (24h window)
+
+**5. example-retriever.test.ts** (21 tests)
+- Few-shot example retrieval
+- Prompt formatting
+- Usage tracking
 
 ### Running Tests
 
@@ -581,21 +607,22 @@ git push origin staging
 
 ## Changelog
 
+### v3.9.0 (2026-02-20)
+- GPT-5 Nano model upgrade
+- Streaming SSE endpoint (`/api/ai/agent-v2/stream`)
+- Cross-category search (`crossCategory: true` in re-ranker)
+- Multi-signal re-ranking (P2-2)
+- Learning Metrics dashboard (P2-3)
+- Structured filters in vector search (P2-1)
+
+### v3.8.0 (2026-02-19)
+- Write Confirmation (P0-1), Pre-write Validation (P0-2)
+- Merchant Map & Learned Rules (P1-1)
+- Correction Examples for Few-Shot Learning (P1-2)
+
 ### v2.0.0 (2026-02-09) - Initial Release
-
-**Sprint 1: Hardening**
-- System Prompt v2 with strict transparency rules
-- Tool Output Validator for numerical consistency
-- Transparent Error Handling with classification
-
-**Sprint 2: Adaptive & Efficient**
-- User Context Analyzer for experience-based behavior
-- Tool Calling Limits for cost control
-
-**Metrics:**
-- 40 tests passing
-- 9/10 production readiness
-- 3,133 lines of production code
+- System Prompt v2 + Tool Output Validator + Error Handling (Sprint 1)
+- User Context Analyzer + Tool Calling Limits (Sprint 2)
 
 ---
 
@@ -605,9 +632,12 @@ git push origin staging
 - **Sprint 2 Details:** See `SPRINT2_IMPLEMENTATION.md`
 - **Deployment Guide:** See `DEPLOYMENT_GUIDE.md`
 - **API Documentation:** See `API_DOCUMENTATION.md`
+- **Merchant Map:** See `src/lib/agents/tools/utils/README_MERCHANT_MAP.md`
+- **Correction Examples:** See `src/lib/agents/tools/utils/README_CORRECTION_EXAMPLES.md`
+- **Structured Filters:** See `src/migrations/README_P2-1_STRUCTURED_FILTERS.md`
 
 ---
 
 **Maintained by:** AI Team
-**Last Review:** 2026-02-09
-**Status:** ✅ Production Ready (Staging)
+**Last Review:** 2026-02-20
+**Status:** ✅ Production Ready

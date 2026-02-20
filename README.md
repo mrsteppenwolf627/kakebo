@@ -9,7 +9,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js" alt="Next.js" />
   <img src="https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?style=flat-square&logo=openai" alt="OpenAI" />
+  <img src="https://img.shields.io/badge/OpenAI-GPT--5--Nano-412991?style=flat-square&logo=openai" alt="OpenAI" />
   <img src="https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=flat-square&logo=supabase" alt="Supabase" />
   <img src="https://img.shields.io/badge/License-Proprietary-red?style=flat-square" alt="License" />
 </p>
@@ -64,7 +64,7 @@ A diferencia de un Excel o una app bancaria, Kakebo:
 🤖 "✅ Escenario creado. Necesitas ahorrar 200€/mes durante 6 meses"
 ```
 
-**Powered by GPT-4o-mini con Function Calling + 12 herramientas especializadas**
+**Powered by GPT-5 Nano con Function Calling + 12 herramientas especializadas**
 
 </details>
 
@@ -208,11 +208,13 @@ Si decides continuar con la ayuda de la IA:
 
 ### 🤖 AI Architecture (v3 - Copilot)
 
-- **Model**: GPT-4o-mini con Function Calling
-- **Agent Type**: Proactive Copilot
+- **Model**: GPT-5 Nano con Function Calling (streaming SSE)
+- **Agent Type**: Proactive Copilot con respuestas en tiempo real
 - **Tools**: 12 herramientas especializadas (Lectura + Escritura)
-- **Memory**: PostgreSQL + pgvector para búsqueda semántica y aprendizaje.
+- **Search**: Búsqueda semántica transversal (todas las categorías) con re-ranking multi-señal
+- **Memory**: PostgreSQL + pgvector + merchant rules + correction examples (few-shot)
 - **Safety**: Confirmación explícita para acciones críticas (Write operations).
+- **Learning**: Sistema de métricas (tasa de aprendizaje, precisión de búsqueda, score 0-100)
 
 ---
 
@@ -233,6 +235,23 @@ Si decides continuar con la ayuda de la IA:
 ---
 
 ## 📝 Changelog Reciente
+
+### v3.9.0 (2026-02-20) - AI Search & Streaming ⚡🔍
+
+**Búsqueda transversal:**
+- 🔍 **Cross-category Search**: Al preguntar por "comida", "vicios", "salud"... la búsqueda recorre **todas** las categorías (Supervivencia, Opcional, Cultura, Extra) y muestra la categoría de origen de cada gasto.
+- 🎯 **Re-ranking Multi-señal (P2-2)**: Los resultados se priorizan combinando similitud semántica (60%), recencia (20%) y coincidencia de categoría (20%). Modo `crossCategory` para búsquedas conceptuales.
+- 📡 **Filtros Estructurados en Vector Search (P2-1)**: Pre-filtros de categoría, fecha e importe en `expense_embeddings` antes de la búsqueda vectorial. 10× mejora de latencia (500ms → 50ms), 96% menos filas escaneadas.
+
+**Streaming SSE:**
+- ⚡ **Respuestas en tiempo real**: Nuevo endpoint `/api/ai/agent-v2/stream` con Server-Sent Events. El agente emite tokens conforme los genera GPT, sin esperar la respuesta completa.
+- 💬 **UX mejorada**: Burbuja de texto que crece token a token + cursor parpadeante + badge de estado animado ("Pensando...", "Consultando: analyzeSpendingPattern", "Analizando datos...").
+- 🔄 **Hook `useAgentStream`**: Cliente React para parseo SSE con soporte de eventos `thinking`, `tools`, `executing`, `chunk`, `done`, `error`, `confirmation`.
+
+**Modelo y métricas:**
+- 🤖 **GPT-5 Nano**: Actualización a `gpt-5-nano` (400k contexto, $0.05/1M input, $0.40/1M output).
+- 📊 **Learning Metrics (P2-3)**: Dashboard de aprendizaje con score 0-100 basado en reglas aprendidas (40%), precisión de búsqueda (35%) y uso de ejemplos (25%). Endpoint `/api/ai/metrics` extendido.
+- **156 tests** (todos pasando)
 
 ### v3.8.0 (2026-02-19) - AI Accuracy & Safety Improvements 🧠🛡️
 

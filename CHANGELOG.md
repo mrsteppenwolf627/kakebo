@@ -1,5 +1,87 @@
 # Changelog
 
+## [3.9.0] - 2026-02-20
+
+### Added
+
+**Cross-category Search (Búsqueda Transversal):**
+
+- **Transversal concept search**: Queries like "comida", "vicios", "salud" now search ALL Kakebo categories simultaneously (Supervivencia, Opcional, Cultura, Extra). Previously, "comida" only returned Supervivencia items.
+- **Category label per expense**: When listing `searchExpenses` results, each expense now shows its source category: `[Concepto] - €X [Categoría] (fecha)`.
+- **Re-ranker `crossCategory` mode**: New `crossCategory: boolean` option in `RerankOptions`. When enabled, all categories receive a neutral category match score (1.0) — no penalty for non-primary categories.
+- System prompt updated:
+  - New **BÚSQUEDA TRANSVERSAL** section with mandatory category-label format
+  - Ejemplo 1 rewritten: uses `searchExpenses` (not `analyzeSpendingPattern`) for concept queries
+  - Section 7 semantic mapping clarified: applies **only** to `analyzeSpendingPattern`, not `searchExpenses`
+
+**Streaming SSE (`/api/ai/agent-v2/stream`):**
+
+- New endpoint returns Server-Sent Events instead of a single JSON response
+- Event protocol: `thinking → tools → executing → chunk* → done | error | confirmation`
+- First LLM call with `stream: true`: direct responses stream live; tool_call deltas buffered until complete
+- Second LLM call (synthesis) fully streamed token by token
+- `stream_options: { include_usage: true }` for accurate token counting across both calls
+- Auth + Zod validation outside the ReadableStream (clean 401/422 before stream starts)
+- Header `X-Accel-Buffering: no` to disable nginx/Vercel response buffering
+
+**`useAgentStream` hook (`src/hooks/useAgent.ts`):**
+
+- SSE parser with `\n\n` boundary splitting and `data: ` prefix handling
+- `accumulatedRef` (ref, not state) avoids stale closures when accumulating content
+- Exposes: `messages`, `isLoading`, `streamingContent`, `streamingStatus`, `error`, `sendMessage`, `clearHistory`
+- Status labels: `thinking → "Pensando..."`, `tools → "Consultando: toolName"`, `executing → "Analizando tus datos..."`
+
+**AIChat streaming UI (`src/components/AIChat/AIChat.tsx`):**
+
+- Status badge with pulse animation (shown during thinking/executing phases)
+- Streaming bubble that grows token by token with blinking cursor `|`
+- Bouncing dots only when `isLoading && !streamingContent && !streamingStatus`
+
+**P2-1: Structured Filters in Vector Search:**
+
+- New metadata columns in `expense_embeddings`: `category`, `expense_date`, `amount`
+- New Supabase RPC `match_expenses_v2()` with optional pre-filters (categories, date range, amount range)
+- `StructuredSearchFilters` TypeScript interface; `searchExpensesByText()` updated
+- 10× latency improvement (500ms → 50ms), 96% reduction in rows scanned
+- Feature flag: `USE_STRUCTURED_FILTERS` in `.env.local`
+
+**P2-2: Multi-signal Re-ranking:**
+
+- `result-reranker.ts`: Confidence score combining semantic similarity (0.6), recency exponential decay (0.2), category match (0.2)
+- `calculateRecencyScore()`, `inferQueryCategories()`, `calculateCategoryMatchScore()`, `computeConfidence()`, `rerankResults()`
+- 34 unit tests passing
+
+**P2-3: Learning Metrics System:**
+
+- `learning-metrics.ts`: `getLearningMetrics()` queries `merchant_rules`, `correction_examples`, `search_feedback` in parallel
+- `calculateLearningScore()`: composite score 0-100 (rule coverage 40% + search precision 35% + example activity 25%)
+- `velocityTrend`: "improving" / "stable" / "declining" based on week-over-week rule creation rate
+- `topMisclassifications` and `topQueriesWithIssues` for debugging classification errors
+- `/api/ai/metrics` extended: now returns `learning` section alongside AI call metrics
+- 18 unit tests passing
+
+**Model upgrade — GPT-5 Nano:**
+
+- `DEFAULT_MODEL = "gpt-5-nano"` in `src/lib/ai/client.ts`
+- Pricing updated: $0.05/1M input, $0.40/1M output, 400k context window
+- `temperature` parameter removed from all LLM calls (not supported by GPT-5 Nano)
+
+### Changed
+
+- `search-expenses.ts`: `rerankResults()` called with `crossCategory: true` for all concept searches
+- `search-expenses-definition.ts`: Tool description explicitly states cross-category behavior
+- `update-transaction.ts`: Fixed missing `date` field in existing transaction fetch (broke `save_correction_example`)
+- `function-caller.ts`: Removed `temperature: 0.3` and `temperature: 0.6`
+
+### Technical Details
+
+- **Total unit tests**: 156 (all passing)
+  - P2-2 Multi-signal re-ranking: 34 tests
+  - P2-3 Learning metrics: 18 tests
+  - Plus all previous: 104 tests
+- **New files**: `stream-caller.ts`, `stream/route.ts`, `result-reranker.ts`, `learning-metrics.ts`
+- **Database migrations**: `003_structured_filters_embeddings.sql`, `004_match_expenses_v2.sql`
+
 ## [3.8.0] - 2026-02-19
 
 ### Added
