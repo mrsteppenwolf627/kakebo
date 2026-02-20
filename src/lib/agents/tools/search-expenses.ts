@@ -635,8 +635,9 @@ export async function searchExpenses(
         }, "Merged all search results");
 
         // Re-rank with multi-signal confidence scoring (P2-2)
-        // Combines: semantic similarity (0.6) + recency (0.2) + category match (0.2)
-        const rerankedResults = rerankResults(combinedResults, params.query);
+        // crossCategory: true → all categories rank equally (no penalty for non-primary categories)
+        // This ensures concept searches ("comida", "vicios") return results from all categories
+        const rerankedResults = rerankResults(combinedResults, params.query, { crossCategory: true });
         const topResults = rerankedResults.slice(0, limit);
 
         // Calculate metrics

@@ -39,12 +39,14 @@ Esta herramienta retorna el ID de cada gasto. SIEMPRE úsala ANTES de updateTran
 - Totales sin detalles: "¿cuánto llevo gastado?" (usa analyzeSpendingPattern)
 - Estado de presupuesto: "¿cómo va mi presupuesto?" (usa getBudgetStatus)
 
-**Cómo funciona:**
+**Cómo funciona (BÚSQUEDA TRANSVERSAL):**
+Busca en TODAS las categorías (Supervivencia, Opcional, Cultura, Extra) simultáneamente.
 Usa embeddings semánticos para entender el contexto. Por ejemplo:
-- "vicios" encuentra: tabaco, alcohol, apuestas, vaper
-- "comida" encuentra: supermercado, restaurantes, delivery (en TODAS las categorías)
-- "gimnasio" encuentra: cuotas, clases, entrenador personal
+- "comida" encuentra: Mercadona [Supervivencia], restaurantes [Opcional], delivery [Opcional]
+- "vicios" encuentra: tabaco [Opcional], alcohol [Opcional], energéticas [Supervivencia]
+- "salud" encuentra: farmacia [Supervivencia], dentista [Supervivencia], yoga [Opcional]
 
+Cada resultado incluye su campo "category" — SIEMPRE muéstraselo al usuario.
 Aprende de TODOS los usuarios, así que mejora con el tiempo.`,
         parameters: {
             type: "object",

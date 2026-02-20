@@ -29,6 +29,14 @@ export interface RerankOptions {
    * Defaults to actual current date.
    */
   queryDate?: string;
+
+  /**
+   * When true, disables category match scoring so all categories rank equally.
+   * Use for concept searches ("comida", "vicios") where results should span
+   * all Kakebo categories without penalizing non-primary ones.
+   * Default: false.
+   */
+  crossCategory?: boolean;
 }
 
 /**
@@ -200,16 +208,18 @@ export function computeConfidence(
     categoryMatch: rawWeights.categoryMatch / weightSum,
   };
 
+  // In cross-category mode all categories rank equally (no penalty)
+  const categoryMatchScore = options.crossCategory
+    ? 1.0
+    : calculateCategoryMatchScore(expense.category, inferQueryCategories(query));
+
   const signals: RankSignals = {
     semantic: Math.max(0, Math.min(1, expense.similarity)),
     recency: calculateRecencyScore(expense.date, {
       halfLifeDays: options.recencyHalfLifeDays ?? DEFAULT_RECENCY_HALF_LIFE_DAYS,
       referenceDate: options.queryDate,
     }),
-    categoryMatch: calculateCategoryMatchScore(
-      expense.category,
-      inferQueryCategories(query)
-    ),
+    categoryMatch: categoryMatchScore,
   };
 
   const confidence =
