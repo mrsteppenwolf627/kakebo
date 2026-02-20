@@ -187,13 +187,6 @@ async function executeSingleTool(
     // Parse arguments (JSON string → object)
     const args = JSON.parse(toolCall.function.arguments);
 
-    // ========== DIAGNOSTIC LOGGING ==========
-    console.log("🔍 [executor] executeSingleTool called");
-    console.log("🔍 [executor] Tool name:", toolName);
-    console.log("🔍 [executor] userId:", userId);
-    console.log("🔍 [executor] Arguments:", args);
-    // ========================================
-
     apiLogger.debug(
       {
         toolName,
@@ -265,15 +258,6 @@ async function executeSingleTool(
 
       // NEW: Copilot CRUD tools (v3)
       case "createTransaction":
-        // ========== DIAGNOSTIC LOGGING ==========
-        console.log("🔍 [executor] createTransaction case - userId:", userId);
-        console.log("🔍 [executor] createTransaction case - args:", args);
-        apiLogger.info(
-          { userId, args },
-          "executor calling createTransaction - DIAGNOSTIC"
-        );
-        // ========================================
-
         result = await createTransaction(
           supabase,
           userId,
@@ -438,12 +422,6 @@ export async function executeTools(
   if (!toolCalls || toolCalls.length === 0) {
     return { toolMessages: [], logs: [] };
   }
-
-  // ========== DIAGNOSTIC LOGGING ==========
-  console.log("🔍 [executor] executeTools called with userId:", userId);
-  console.log("🔍 [executor] Tool count:", toolCalls.length);
-  console.log("🔍 [executor] Tools:", toolCalls.map((tc) => tc.function.name));
-  // ========================================
 
   apiLogger.info(
     {

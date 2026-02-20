@@ -53,15 +53,6 @@ export async function updateTransaction(
   params: UpdateTransactionParams
 ): Promise<UpdateTransactionResult> {
   try {
-    // ========== DIAGNOSTIC LOGGING ==========
-    console.log("🔍 [updateTransaction] Called with params:", params);
-    console.log("🔍 [updateTransaction] userId:", userId);
-    apiLogger.info(
-      { userId, params },
-      "updateTransaction called - DIAGNOSTIC"
-    );
-    // ========================================
-
     // Validate that at least one field is being updated
     if (
       params.amount === undefined &&
@@ -107,18 +98,11 @@ export async function updateTransaction(
     // Determine which table to update
     const tableName = params.type === "income" ? "incomes" : "expenses";
 
-    // ========== DIAGNOSTIC: Check if transaction exists BEFORE update ==========
     const { data: existing, error: checkError } = await supabase
       .from(tableName)
       .select("id,user_id,amount,note,category,date")
       .eq("id", params.transactionId)
       .maybeSingle();
-
-    console.log("🔍 [updateTransaction] Checking if transaction exists...");
-    console.log("🔍 [updateTransaction] Table:", tableName);
-    console.log("🔍 [updateTransaction] Transaction ID:", params.transactionId);
-    console.log("🔍 [updateTransaction] Existing transaction:", existing);
-    console.log("🔍 [updateTransaction] Check error:", checkError);
 
     if (checkError) {
       apiLogger.error(

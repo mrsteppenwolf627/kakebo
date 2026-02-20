@@ -78,9 +78,6 @@ export const POST = withLogging(async (request: NextRequest) => {
     // Require authentication
     const user = await requireAuth();
 
-    // ========== DIAGNOSTIC LOGGING ==========
-    console.log("🔍 [route.ts] Authenticated user ID:", user.id);
-
     // Get Supabase client
     const supabase = await createClient();
 
@@ -92,7 +89,6 @@ export const POST = withLogging(async (request: NextRequest) => {
       .single();
 
     if (!canUsePremium(profile as Profile)) {
-      console.log("❌ [route.ts] Access denied: User is not premium/trial active");
       throw new ApiError(
         "FORBIDDEN",
         "Tu periodo de prueba ha finalizado. Suscríbete para continuar usando el Agente IA.",
@@ -100,17 +96,9 @@ export const POST = withLogging(async (request: NextRequest) => {
       );
     }
 
-    console.log("✅ [route.ts] Access granted: User has active premium/trial");
-    // ========================================
-
     // Parse and validate request
     const body = await request.json();
     const input = agentRequestSchema.parse(body);
-
-    // ========== DIAGNOSTIC LOGGING ==========
-    console.log("🔍 [route.ts] Message:", input.message);
-    console.log("🔍 [route.ts] About to call processAgentMessage with userId:", user.id);
-    // ========================================
 
     // Process message through agent
     const result = await processAgentMessage(
@@ -119,11 +107,6 @@ export const POST = withLogging(async (request: NextRequest) => {
       supabase,
       user.id
     );
-
-    // ========== DIAGNOSTIC LOGGING ==========
-    console.log("🔍 [route.ts] processAgentMessage completed");
-    console.log("🔍 [route.ts] Tools used:", result.toolsUsed);
-    // ========================================
 
     // Return successful response
     return responses.ok(result);

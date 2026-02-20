@@ -193,22 +193,6 @@ export async function getBudgetStatus(
       throw new Error("User settings not found");
     }
 
-    // Debug: Log ALL settings keys to see actual column names
-    console.log("📊 Budget values from DB:", {
-      supervivencia: settings.budget_supervivencia,
-      opcional: settings.budget_opcional,
-      cultura: settings.budget_cultura,
-      extra: settings.budget_extra,
-    });
-
-    // Debug: Log query parameters
-    console.log("🔍 Budget query params:", {
-      month,
-      startDate: `${month}-01`,
-      endDate: getNextMonth(month),
-      userId
-    });
-
     // Get expenses for the month
     const { data: expenses, error: expensesError } = await supabase
       .from("expenses")
@@ -222,13 +206,6 @@ export async function getBudgetStatus(
       throw expensesError;
     }
 
-    // Debug: Log expenses to see category names
-    console.log("💰 Expenses from DB:", {
-      count: expenses?.length || 0,
-      categories: [...new Set(expenses?.map(e => e.category))],
-      totalAmount: expenses?.reduce((sum, e) => sum + (e.amount || 0), 0) || 0
-    });
-
     // Calculate spending by category (expenses use Spanish category names)
     const spendingByCategory = (expenses || []).reduce(
       (acc, exp) => {
@@ -238,8 +215,6 @@ export async function getBudgetStatus(
       },
       {} as Record<string, number>
     );
-
-    console.log("📊 Spending by category:", spendingByCategory);
 
     // Calculate days
     const daysElapsed = getDaysElapsedInMonth(month);
@@ -351,8 +326,6 @@ export async function getBudgetStatus(
       disponibleReal, // THIS is what user can really spend
       currentBalance,
     };
-
-    console.log("✅ Budget status result:", JSON.stringify(result, null, 2));
 
     return result;
   } catch (error) {

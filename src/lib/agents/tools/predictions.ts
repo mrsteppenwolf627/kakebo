@@ -186,22 +186,6 @@ export async function predictMonthlySpending(
       throw expensesError;
     }
 
-    // Debug: Log query results
-    console.log("📊 Prediction query params:", {
-      month,
-      startDate: `${month}-01`,
-      endDate: getNextMonth(month),
-      userId,
-      daysElapsed,
-      daysRemaining,
-    });
-
-    console.log("💰 Expenses found:", {
-      count: expenses?.length || 0,
-      categories: [...new Set(expenses?.map(e => e.category))],
-      totalAmount: expenses?.reduce((sum, e) => sum + (e.amount || 0), 0) || 0,
-    });
-
     // Calculate by category
     const categories: Array<"survival" | "optional" | "culture" | "extra"> = [
       "survival",
