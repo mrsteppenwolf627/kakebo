@@ -11,7 +11,14 @@
       "Bash(npm run dev:*)",
       "Bash(git push:*)",
       "Bash(git checkout:*)",
-      "Bash(git merge:*)"
+      "Bash(git merge:*)",
+      "Bash(supabase:*)",
+      "Bash(grep:*)",
+      "Bash(taskkill:*)",
+      "Bash(timeout /t:*)",
+      "Bash(npx kill-port:*)",
+      "Bash(npx jest:*)",
+      "Bash(curl:*)"
     ]
   },
   "hooks": {
