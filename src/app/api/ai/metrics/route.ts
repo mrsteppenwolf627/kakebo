@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
-import { getAIMetrics, getRecentLogs } from "@/lib/ai";
+import { getAIMetrics, getRecentLogs, getLearningMetrics } from "@/lib/ai";
 import { z } from "zod";
 
 /**
@@ -64,19 +64,21 @@ export const GET = withLogging(async (request: NextRequest) => {
       logsLimit: searchParams.get("logsLimit") || undefined,
     });
 
-    // Get aggregated metrics
-    const metrics = await getAIMetrics(supabase, user.id, {
-      startDate: query.startDate,
-      endDate: query.endDate,
-    });
-
-    // Optionally include recent logs
-    const logs = query.includeLogs
-      ? await getRecentLogs(supabase, user.id, query.logsLimit)
-      : undefined;
+    // Run AI metrics + learning metrics in parallel
+    const [metrics, learning, logs] = await Promise.all([
+      getAIMetrics(supabase, user.id, {
+        startDate: query.startDate,
+        endDate: query.endDate,
+      }),
+      getLearningMetrics(supabase, user.id),
+      query.includeLogs
+        ? getRecentLogs(supabase, user.id, query.logsLimit)
+        : Promise.resolve(undefined),
+    ]);
 
     return responses.ok({
       metrics,
+      learning,
       ...(logs && { logs }),
     });
   } catch (error) {

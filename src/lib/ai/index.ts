@@ -8,3 +8,4 @@ export * from "./assistant";
 export * from "./metrics";
 export * from "./embeddings";
 export * from "./auto-embeddings";
+export * from "./learning-metrics";
