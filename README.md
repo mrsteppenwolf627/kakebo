@@ -92,6 +92,7 @@ A diferencia de un Excel o una app bancaria, Kakebo:
 - 📱 **Totalmente Responsive** (PWA-ready).
 
 ### 🛠️ Herramientas Gratuitas (SEO Magnets)
+- 📖 **Tutorial Interactivo Kakebo**: Guía paso a paso sobre el método y uso de la plataforma.
 - 📉 **Calculadora de Inflación**: Visualiza la pérdida de poder adquisitivo de tus ahorros.
 - 🍰 **Regla 50/30/20**: Distribuye tu sueldo idealmente entre necesidades, caprichos y ahorro.
 - 🕵️ **Analytics Privado**: Sistema de tracking propio sin cookies invasivas.

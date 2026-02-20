@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 type UserSettingsRow = {
     user_id: string;
@@ -71,7 +72,9 @@ export default function SettingsClient() {
     const [ok, setOk] = useState<string | null>(null);
 
     const [userId, setUserId] = useState<string | null>(null);
+    const [tier, setTier] = useState<string>("free");
     const [form, setForm] = useState<Omit<UserSettingsRow, "user_id">>(DEFAULT);
+    const [cancelLoading, setCancelLoading] = useState(false);
 
     // ✅ gastos fijos
     const [fixedLoading, setFixedLoading] = useState(true);
@@ -139,6 +142,14 @@ export default function SettingsClient() {
                     budget_extra: num(row?.budget_extra ?? 0),
                 });
 
+                // 1.5) tier
+                const { data: profile } = await supabase
+                    .from("profiles")
+                    .select("tier")
+                    .eq("id", uid)
+                    .single();
+                if (profile) setTier(profile.tier || "free");
+
                 // 2) fixed expenses
                 const { data: fx, error: fxErr } = await supabase
                     .from("fixed_expenses")
@@ -196,6 +207,28 @@ export default function SettingsClient() {
             setErr(e?.message ?? tGen("errorSave"));
         } finally {
             setSaving(false);
+        }
+    }
+
+    async function handleCancel() {
+        if (!window.confirm("¿estás seguro??")) {
+            return;
+        }
+
+        setCancelLoading(true);
+        try {
+            const res = await fetch('/api/stripe/cancel', { method: 'POST' });
+            if (res.ok) {
+                alert("Suscripción cancelada correctamente.");
+                window.location.reload();
+            } else {
+                alert("Error al cancelar la suscripción.");
+                setCancelLoading(false);
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Error al cancelar la suscripción.");
+            setCancelLoading(false);
         }
     }
 
@@ -616,6 +649,33 @@ export default function SettingsClient() {
                                 </div>
                             </div>
                         )}
+                    </section>
+
+                    {/* ✅ SUBSCRIPTION */}
+                    <section className="mt-10 border-t border-border pt-8 space-y-4">
+                        <div className="flex items-baseline justify-between gap-3">
+                            <h2 className="text-lg font-semibold text-foreground">{tGen("subscriptionTitle")}</h2>
+                        </div>
+                        <div className="border border-border rounded-lg p-5 space-y-4 sm:space-y-0 sm:flex sm:items-center sm:justify-between bg-card">
+                            <div className="mr-4">
+                                <div className="font-semibold text-foreground">{tGen("subscriptionDescTitle")}</div>
+                                <div className="text-sm text-muted-foreground mt-1">{tGen("subscriptionDescText")}</div>
+                            </div>
+                            <div className="flex flex-col sm:items-end gap-3 w-full sm:w-auto mt-4 sm:mt-0">
+                                <Link href="/app/subscription" className="inline-flex w-full sm:w-auto bg-primary text-primary-foreground rounded-md px-4 py-2 hover:opacity-90 font-medium transition-colors whitespace-nowrap justify-center items-center shadow-sm">
+                                    {tGen("subscriptionBtn")}
+                                </Link>
+                                {tier === 'pro' && (
+                                    <button
+                                        onClick={handleCancel}
+                                        disabled={cancelLoading}
+                                        className="text-xs text-muted-foreground hover:text-foreground underline decoration-muted-foreground/50 hover:decoration-foreground transition-all text-center sm:text-right"
+                                    >
+                                        {cancelLoading ? "Cancelando..." : "cancelar subscripción"}
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                     </section>
 
                     {/* ✅ BLOQUE SEO */}

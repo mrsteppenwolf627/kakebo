@@ -15,10 +15,12 @@ export default function TopNav() {
 
   const items = [
     { href: "/", label: t('home') },
+    { href: "/tutorial", label: t('tutorial') },
     { href: "/app", label: t('dashboard') },
     { href: "/app/agent", label: t('agent') },
     { href: "/app/fixed", label: t('fixed') },
     { href: "/app/ai-metrics", label: t('analysis') },
+    { href: "/app/subscription", label: t('subscription') },
   ];
 
   // Close menu on route change

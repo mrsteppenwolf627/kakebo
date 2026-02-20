@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.9.1] - 2026-02-20
+
+### Added
+
+**SEO & Tutorial Page:**
+- 📖 **New Tutorial Section**: Created a complete, SEO-optimized guide explaining the Kakebo method and how to use the application.
+- 🖼️ **ExpandableImage Component**: Interactive lightbox effect for tutorial screenshots.
+- 🌍 **Internationalization**: Full ES/EN support for the tutorial content and image alt/title attributes.
+- 🧭 **Navigation**: Integrated tutorial link into desktop and mobile top navbars.
+
 ## [3.9.0] - 2026-02-20
 
 ### Added

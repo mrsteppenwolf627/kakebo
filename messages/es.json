@@ -38,7 +38,9 @@
         "newExpenseLong": "+ Nuevo Gasto",
         "newIncomeLong": "+ Nuevo Ingreso",
         "configuration": "Configuración",
-        "language": "Idioma"
+        "language": "Idioma",
+        "subscription": "Suscripción",
+        "tutorial": "Tutorial"
     },
     "CookieBanner": {
         "text": "Utilizamos cookies propias y de terceros para mejorar tu experiencia y analizar el uso de la web.",
@@ -1021,7 +1023,11 @@
             "errorSave": "Error guardando ajustes",
             "loadError": "Error cargando ajustes",
             "loading": "Cargando...",
-            "disclaimer": "Estos ajustes se guardan en tu cuenta (Supabase), no en el navegador."
+            "disclaimer": "Estos ajustes se guardan en tu cuenta (Supabase), no en el navegador.",
+            "subscriptionTitle": "Suscripción Kakebo",
+            "subscriptionDescTitle": "Gestiona tu plan",
+            "subscriptionDescText": "Actualiza a Pro o cancela tu suscripción actual de forma segura.",
+            "subscriptionBtn": "Ver Suscripción"
         },
         "FixedExpenses": {
             "title": "Gastos fijos",
@@ -1071,6 +1077,61 @@
             "title": "Ajustes de presupuesto y objetivo de ahorro",
             "desc": "En esta sección puedes definir tu ingreso mensual, tu objetivo de ahorro y los presupuestos máximos por categoría del método Kakebo. Esto te permite controlar el gasto y medir la evolución de tus hábitos mes a mes.",
             "keywords": "(Hueco SEO: texto sobre “presupuesto mensual”, “objetivo de ahorro”, “método kakebo”.)"
+        }
+    },
+    "Tutorial": {
+        "title": "Tutorial del Método Kakebo",
+        "subtitle": "Guía paso a paso para dominar tus finanzas personales y empezar a ahorrar sin esfuerzo.",
+        "metaTitle": "Cómo usar el Método Kakebo | Tutorial completo de Ahorro",
+        "metaDescription": "Aprende qué es el método japonés Kakebo, cómo dividir tus gastos en 4 categorías y empezar a ahorrar desde el primer mes con esta guía completa.",
+        "toc": {
+            "title": "Índice de Contenidos",
+            "section1": "1. ¿Qué es el Kakebo?",
+            "section2": "2. Las 4 categorías de gasto",
+            "section3": "3. Cómo usar el Dashboard",
+            "section4": "4. El Agente Financiero Inteligente"
+        },
+        "content": {
+            "s1": {
+                "title": "¿Qué es el Método Kakebo?",
+                "p1": "El Kakebo es un sistema tradicional japonés de ahorro y gestión financiera diseñado a principios del siglo XX. Su premisa es simple: registrar manualmente tus gastos para tomar consciencia de a dónde va tu dinero.",
+                "p2": "A diferencia de aplicaciones bancarias que automatizan todo (lo que fomenta el desapego por el gasto), Kakebo requiere que apuntes tú mismo cada movimiento. Al asociar gastos con categorías específicas, descubres tus 'agujeros negros' financieros."
+            },
+            "s2": {
+                "title": "Las 4 Categorías de Gasto",
+                "intro": "Para que el método funcione, debes asignar un presupuesto máximo a 4 grandes apartados, y registrar los gastos en ellos:",
+                "c1": "<bold>Supervivencia:</bold> Gastos ineludibles. Alquiler, hipoteca, agua, luz, supermercado o gasolina para ir a trabajar.",
+                "c2": "<bold>Opcional:</bold> Aquello que mejora tu vida pero no es estricto. Tomar algo en un bar, ropa nueva, restaurantes o salir de cañas.",
+                "c3": "<bold>Cultura:</bold> Todo lo que te aporta conocimiento o bienestar emocional continuado. Libros, museos, cursos, Netflix o Spotify.",
+                "c4": "<bold>Extra:</bold> Gastos imprevistos o puntuales. Regalos de cumpleaños, reparaciones del coche, vacaciones o averías."
+            },
+            "s3": {
+                "title": "Cómo usar el Dashboard",
+                "p1": "En nuestra plataforma digital hemos adaptado este método para que no necesites una libreta de papel. El ciclo comienza cada mes:",
+                "step1": "Configura tus ingresos y tu objetivo de ahorro mensual (el dinero que \"te pagas a ti mismo\" primero).",
+                "step2": "Cada vez que gastes, entra y registra el gasto con un concepto y su cantidad.",
+                "step3": "La barra verde central te muestra la salud de tu objetivo de ahorro, si lo mantienes o si corres peligro de no llegar.",
+                "p2": "A través del panel visual podrás ver siempre de un vistazo cuánto dinero real te queda disponible para gastar, descontando ya el ahorro que habías planeado."
+            },
+            "s4": {
+                "title": "Potencia tu ahorro con el Agente IA",
+                "p1": "La gran novedad de Kakebo AI es su Agente Financiero Inteligente. Al registrar un gasto, si no tienes clara su categoría, puedes darle al botón mágico 'IA' y nuestro modelo decidirá la categoría más apropiada basándose en el comportamiento colectivo.",
+                "p2": "Además, en la sección 'Agente IA' puedes chatear libremente: pídele consejos para llegar a tu meta, hazle preguntas sobre en qué categoría poner un gasto raro o que te analice tu ritmo de consumo comparado con el mes anterior."
+            }
+        },
+        "images": {
+            "img1": {
+                "alt": "Dashboard principal del Método Kakebo mostrando resumen de gastos e ingresos interactivo",
+                "title": "Comienza a controlar tus gastos en el panel principal"
+            },
+            "img2": {
+                "alt": "Distribución de gastos según las 4 categorías Kakebo: Supervivencia, Opcional, Cultura y Extra",
+                "title": "Aprende a dividir tus gastos mensuales eficientemente"
+            },
+            "img3": {
+                "alt": "Listado detallado de movimientos recientes y gastos categorizados por la Inteligencia Artificial",
+                "title": "Analiza tu historial de gastos y evalúa tus decisiones"
+            }
         }
     },
     "Admin": {

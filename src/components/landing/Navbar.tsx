@@ -68,6 +68,12 @@ export function Navbar() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           <Link
+            href="/tutorial"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {t('tutorial')}
+          </Link>
+          <Link
             href="/blog"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
@@ -181,6 +187,13 @@ export function Navbar() {
         <div className="md:hidden fixed top-16 left-0 right-0 bottom-0 bg-white dark:bg-stone-950 border-t border-border z-[99] overflow-y-auto animate-in slide-in-from-top-2">
           <div className="p-4 flex flex-col gap-6">
             <nav className="flex flex-col gap-4">
+              <Link
+                href="/tutorial"
+                onClick={closeMenu}
+                className="text-lg font-medium text-foreground py-2 border-b border-border/40"
+              >
+                {t('tutorial')}
+              </Link>
               <Link
                 href="/blog"
                 onClick={closeMenu}
