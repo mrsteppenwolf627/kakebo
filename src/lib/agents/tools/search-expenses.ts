@@ -1,6 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { apiLogger } from "@/lib/logger";
 import { searchExpensesByText } from "@/lib/ai/embeddings";
+import { rerankResults } from "./utils/result-reranker";
 
 /**
  * Parameters for free-form expense search
@@ -27,7 +28,8 @@ export interface SearchExpensesResult {
         amount: number;
         date: string;
         category: string;
-        similarity: number; // How similar to the query (0-1)
+        similarity: number;  // Semantic similarity score (0-1)
+        confidence?: number; // Multi-signal confidence score (0-1) — P2-2
     }>;
     insights: string[];
 }
@@ -632,9 +634,10 @@ export async function searchExpenses(
             totalCombined: combinedResults.length,
         }, "Merged all search results");
 
-        // Sort by similarity and limit
-        combinedResults.sort((a, b) => b.similarity - a.similarity);
-        const topResults = combinedResults.slice(0, limit);
+        // Re-rank with multi-signal confidence scoring (P2-2)
+        // Combines: semantic similarity (0.6) + recency (0.2) + category match (0.2)
+        const rerankedResults = rerankResults(combinedResults, params.query);
+        const topResults = rerankedResults.slice(0, limit);
 
         // Calculate metrics
         const totalAmount = topResults.reduce((sum, exp) => sum + exp.amount, 0);
@@ -655,6 +658,7 @@ export async function searchExpenses(
             date: exp.date,
             category: categoryMap[exp.category] || exp.category,
             similarity: Math.round(exp.similarity * 100) / 100,
+            confidence: Math.round(exp.confidence * 100) / 100, // P2-2 multi-signal score
         }));
 
         // Generate insights
