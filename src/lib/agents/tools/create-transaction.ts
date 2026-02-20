@@ -4,6 +4,10 @@ import {
   validateTransactionBeforeWrite,
   formatValidationResult,
 } from "./validators/transaction-validator";
+import {
+  suggestCategory,
+  shouldUseSuggestion,
+} from "./utils/category-suggester";
 
 /**
  * Parameters for creating a new transaction (expense or income)
@@ -138,8 +142,34 @@ export async function createTransaction(
     // ========================================
 
     // Prepare data for validation
-    const dbCategory = getSpanishCategoryName(params.category);
+    let dbCategory = getSpanishCategoryName(params.category);
     const date = params.date || getCurrentDate();
+
+    // ========== P1-1: MERCHANT RULE OVERRIDE ==========
+    // If there's a learned rule for this merchant, use it instead of GPT's category
+    try {
+      const merchantSuggestion = await suggestCategory(supabase, userId, params.concept);
+      if (merchantSuggestion && shouldUseSuggestion(merchantSuggestion)) {
+        if (merchantSuggestion.category !== dbCategory) {
+          apiLogger.info(
+            {
+              concept: params.concept,
+              gptCategory: dbCategory,
+              learnedCategory: merchantSuggestion.category,
+              merchant: merchantSuggestion.merchant,
+              source: merchantSuggestion.source,
+              userId,
+            },
+            "P1-1: Overriding GPT category with learned merchant rule"
+          );
+          dbCategory = merchantSuggestion.category;
+        }
+      }
+    } catch (err) {
+      // Non-blocking: if merchant lookup fails, use GPT's category
+      apiLogger.warn({ err, concept: params.concept }, "P1-1: Merchant rule lookup failed - using GPT category");
+    }
+    // ==================================================
 
     // ========== VALIDATE TRANSACTION BEFORE WRITE (P0-2) ==========
     const validationResult = await validateTransactionBeforeWrite(supabase, {

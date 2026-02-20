@@ -46,6 +46,10 @@ import {
   getUserContextCached,
   generateContextDisclaimer,
 } from "./context-analyzer";
+import {
+  getRelevantExamples,
+  formatExamplesForPrompt,
+} from "@/lib/agents/tools/utils/example-retriever";
 import type {
   ConversationMessage,
   AgentResponse,
@@ -209,6 +213,27 @@ export async function processFunctionCalling(
     );
     // =================================================
 
+    // ========== P1-2: FETCH CORRECTION EXAMPLES FOR FEW-SHOT LEARNING ==========
+    // Retrieve user's past corrections to guide GPT category decisions
+    let correctionExamplesMessage = "";
+    try {
+      const correctionExamples = await getRelevantExamples(supabase, userId, {
+        limit: 6,
+        minConfidence: 0.8,
+      });
+      if (correctionExamples.length > 0) {
+        correctionExamplesMessage = formatExamplesForPrompt(correctionExamples);
+        apiLogger.debug(
+          { userId, count: correctionExamples.length },
+          "P1-2: Loaded correction examples for few-shot prompting"
+        );
+      }
+    } catch (err) {
+      // Non-blocking: if fetch fails, proceed without examples
+      apiLogger.warn({ err, userId }, "P1-2: Failed to load correction examples");
+    }
+    // =========================================================================
+
     // Step 1: Build messages array for OpenAI
     const messages: ChatCompletionMessageParam[] = [
       // System prompt defines role, capabilities, and semantic mapping
@@ -224,6 +249,18 @@ export async function processFunctionCalling(
         content: contextDisclaimer,
       },
       // ========================================
+
+      // ========== P1-2: FEW-SHOT EXAMPLES ==========
+      // Inject correction examples to improve category accuracy
+      ...(correctionExamplesMessage
+        ? [
+            {
+              role: "system" as const,
+              content: `CORRECCIONES PREVIAS DEL USUARIO (úsalas para categorizar con precisión):\n${correctionExamplesMessage}`,
+            },
+          ]
+        : []),
+      // ===============================================
 
       // Conversation history (for multi-turn context)
       ...conversationHistory.map(
@@ -255,7 +292,6 @@ export async function processFunctionCalling(
       messages,
       tools: KAKEBO_TOOLS,
       tool_choice: "auto", // Let GPT decide if/which tools to use
-      temperature: 0.3, // Lower temperature for more consistent tool calling
     });
 
     const firstMessage = firstCompletion.choices[0]
@@ -468,7 +504,6 @@ export async function processFunctionCalling(
     const finalCompletion = await openai.chat.completions.create({
       model: DEFAULT_MODEL,
       messages: messagesWithTools,
-      temperature: 0.6, // Slightly higher temperature for more natural synthesis
     });
 
     const finalMessage = finalCompletion.choices[0]?.message;

@@ -20,18 +20,21 @@ export const openai = new OpenAI({
 
 /**
  * Default model for expense classification
- * GPT-4o-mini: Fast, cheap, good enough for classification tasks
- *
- * Pricing (as of 2026):
- * - Input: $0.15 / 1M tokens
- * - Output: $0.60 / 1M tokens
+ * GPT-5-nano: Fast, cheap, good enough for classification tasks
  */
-export const DEFAULT_MODEL = "gpt-4o-mini";
+export const DEFAULT_MODEL = "gpt-5-nano";
 
 /**
  * Model configuration
  */
 export const MODEL_CONFIG = {
+  "gpt-5-nano": {
+    name: "GPT-5 Nano",
+    inputCostPer1M: 0.05,
+    outputCostPer1M: 0.4,
+    maxTokens: 400000,
+    description: "Fast and cheap, good for classification",
+  },
   "gpt-4o-mini": {
     name: "GPT-4o Mini",
     inputCostPer1M: 0.15,

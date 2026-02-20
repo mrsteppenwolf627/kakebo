@@ -110,7 +110,7 @@ export async function updateTransaction(
     // ========== DIAGNOSTIC: Check if transaction exists BEFORE update ==========
     const { data: existing, error: checkError } = await supabase
       .from(tableName)
-      .select("id,user_id,amount,note,category")
+      .select("id,user_id,amount,note,category,date")
       .eq("id", params.transactionId)
       .maybeSingle();
 
