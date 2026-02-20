@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from 'react';
-import { useAgent } from '@/hooks/useAgent';
+import { useAgentStream } from '@/hooks/useAgent';
 import { ChatMessage } from './ChatMessage';
 import { useTranslations } from 'next-intl';
 
 export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full" | "widget"; onClose?: () => void }) {
-    const { messages, isLoading, error, sendMessage, clearHistory } = useAgent();
+    const { messages, isLoading, streamingContent, streamingStatus, error, sendMessage, clearHistory } = useAgentStream();
     const [inputValue, setInputValue] = useState('');
     const messagesContainerRef = useRef<HTMLDivElement>(null);
     const t = useTranslations("Agent");
@@ -119,15 +119,35 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                     <ChatMessage key={msg.id} message={msg} />
                 ))}
 
+                {/* Streaming state: status badge + partial message bubble */}
                 {isLoading && (
-                    <div className="flex justify-start">
-                        <div className="bg-card border border-border rounded-2xl p-3 rounded-bl-none shadow-sm flex items-center gap-2">
-                            <div className="flex space-x-1">
-                                <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                                <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                                <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                    <div className="flex justify-start flex-col gap-1">
+                        {/* Status badge (Pensando... / Consultando herramientas...) */}
+                        {streamingStatus && (
+                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground px-1">
+                                <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+                                {streamingStatus}
                             </div>
-                        </div>
+                        )}
+
+                        {streamingContent ? (
+                            /* Partial message bubble — grows token by token */
+                            <div className="bg-card border border-border rounded-2xl px-4 py-3 rounded-bl-none shadow-sm max-w-[85%] text-sm text-foreground whitespace-pre-wrap">
+                                {streamingContent}
+                                <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse align-middle" />
+                            </div>
+                        ) : (
+                            /* Bouncing dots while waiting for first token */
+                            !streamingStatus && (
+                                <div className="bg-card border border-border rounded-2xl p-3 rounded-bl-none shadow-sm flex items-center gap-2">
+                                    <div className="flex space-x-1">
+                                        <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                        <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                                        <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                                    </div>
+                                </div>
+                            )
+                        )}
                     </div>
                 )}
 
