@@ -167,6 +167,9 @@ export default function PublicHomePage() {
               "name": "Kakebo AI",
               "applicationCategory": "FinanceApplication",
               "operatingSystem": "Web, iOS, Android (PWA)",
+              "url": "https://www.metodokakebo.com",
+              "image": "https://www.metodokakebo.com/api/og",
+              "description": t('meta.description'),
               "offers": {
                 "@type": "Offer",
                 "price": "3.99",
