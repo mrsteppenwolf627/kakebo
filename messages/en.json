@@ -49,7 +49,7 @@
     },
     "Hero": {
         "badge": "Track expenses with intention",
-        "title": "Kakebo AI",
+        "title": "Kakebo AI: <br className=\"hidden sm:inline\" />Japanese Method Expense Tracker App",
         "subtitle": "The <bold>Japanese Method Expense Tracker App</bold>.<br>No bank formatting, 100% private and AI-powered.",
         "ctaPrimary": "Start Free",
         "ctaSecondary": "Learn More",
@@ -344,10 +344,10 @@
     },
     "Landing": {
         "meta": {
-            "title": "Kakebo AI: Japanese Savings App with Artificial Intelligence",
-            "description": "Smart app for expense control. Connect with the Kakebo Method without linking your bank accounts. Start your free trial.",
-            "ogTitle": "Kakebo AI: Japanese Savings App with Artificial Intelligence",
-            "ogDescription": "Smart app for expense control. Connect with the Kakebo Method without linking your bank accounts. Start your free trial."
+            "title": "Kakebo AI: Japanese Savings App | No Bank, With AI",
+            "description": "Take control of your expenses with the Kakebo Japanese method. 100% private web app, no bank connection, powered by AI. Start your 14-day free trial, no card required.",
+            "ogTitle": "Kakebo AI: Japanese Savings App | No Bank, With AI",
+            "ogDescription": "Take control of your expenses with the Kakebo Japanese method. 100% private web app, no bank connection, powered by AI. Start your 14-day free trial, no card required."
         },
         "SEO": {
             "whatIs": {
@@ -481,7 +481,7 @@
                     }
                 }
             },
-            "tags": "Kakebo App Europe • Monthly expense control • Household savings • Personal finance • Fintonic alternative • Kakebo Excel Template"
+            "tags": ""
         }
     },
     "Auth": {
@@ -714,12 +714,12 @@
                 "answer": "Yes, 100%. You can sign up and use the Manual Plan (full expense tracking) without paying anything. Registration is instant and no credit card required."
             },
             "q2": {
-                "question": "What does the 15-day Pro Plan trial include?",
-                "answer": "The trial gives you full access to the AI Finance Agent: automatic analysis, personalized tips, savings predictions and smart insights. To activate it you need to add a card, but you will NOT be charged until day 16. We will notify you before any charge."
+                "question": "What does the 14-day Pro Plan trial include?",
+                "answer": "The trial gives you full access to the AI Finance Agent: automatic analysis, personalized tips, savings predictions and smart insights. To activate it you need to add a card, but you will NOT be charged until day 15. We will notify you before any charge."
             },
             "q3": {
                 "question": "Can I cancel the Pro Plan during the trial?",
-                "answer": "Yes, you can cancel at any time from your profile. If you cancel during the 15-day trial, you will NOT be charged anything. It's that simple."
+                "answer": "Yes, you can cancel at any time from your profile. If you cancel during the 14-day trial, you will NOT be charged anything. It's that simple."
             },
             "q4": {
                 "question": "Is Kakebo useful even if I already use a banking app?",

@@ -49,7 +49,7 @@
     },
     "Hero": {
         "badge": "Registra gastos con intención",
-        "title": "Kakebo AI",
+        "title": "Kakebo AI: <br className=\"hidden sm:inline\" />App de Control de Gastos con el Método Japonés",
         "subtitle": "La <bold>App de Control de Gastos basada en el Método Japonés</bold>.<br>Sin bancos, 100% privado y con asistencia de IA.",
         "ctaPrimary": "Empezar Gratis",
         "ctaSecondary": "Más información",
@@ -344,10 +344,10 @@
     },
     "Landing": {
         "meta": {
-            "title": "Kakebo AI: App de Ahorro Japonés con Inteligencia Artificial",
-            "description": "App inteligente para el control de gastos. Conecta con el Método Kakebo sin vincular tus cuentas bancarias. Empieza tu prueba gratuita.",
-            "ogTitle": "Kakebo AI: App de Ahorro Japonés con Inteligencia Artificial",
-            "ogDescription": "App inteligente para el control de gastos. Conecta con el Método Kakebo sin vincular tus cuentas bancarias. Empieza tu prueba gratuita."
+            "title": "Kakebo AI: App de Ahorro Japonés | Sin Banco, Con IA",
+            "description": "Controla tus gastos con el método japonés Kakebo. App web 100% privada, sin conexión bancaria, con IA. Empieza gratis 14 días, sin tarjeta.",
+            "ogTitle": "Kakebo AI: App de Ahorro Japonés | Sin Banco, Con IA",
+            "ogDescription": "Controla tus gastos con el método japonés Kakebo. App web 100% privada, sin conexión bancaria, con IA. Empieza gratis 14 días, sin tarjeta."
         },
         "SEO": {
             "whatIs": {
@@ -481,7 +481,7 @@
                     }
                 }
             },
-            "tags": "Kakebo App España • Control de gastos mensual • Ahorro doméstico • Finanzas personales • Alternativa a Fintonic • Plantilla Kakebo Excel"
+            "tags": ""
         }
     },
     "Auth": {
@@ -714,12 +714,12 @@
                 "answer": "Sí, 100%. Puedes registrarte y usar el Plan Manual (control de gastos completo) sin pagar nada. El registro es instantáneo y no necesitas tarjeta de crédito."
             },
             "q2": {
-                "question": "¿Qué incluye el trial de 15 días del Plan Pro?",
-                "answer": "El trial te da acceso completo al Agente IA de finanzas: análisis automático, consejos personalizados, predicciones de ahorro e insights inteligentes. Para activarlo necesitas agregar una tarjeta, pero NO se te cobrará hasta el día 16. Te avisaremos antes de cualquier cargo."
+                "question": "¿Qué incluye el trial de 14 días del Plan Pro?",
+                "answer": "El trial te da acceso completo al Agente IA de finanzas: análisis automático, consejos personalizados, predicciones de ahorro e insights inteligentes. Para activarlo necesitas agregar una tarjeta, pero NO se te cobrará hasta el día 15. Te avisaremos antes de cualquier cargo."
             },
             "q3": {
                 "question": "¿Puedo cancelar el Plan Pro durante el trial?",
-                "answer": "Sí, puedes cancelar en cualquier momento desde tu perfil. Si cancelas durante los 15 días de trial, NO se te cobrará nada. Es así de simple."
+                "answer": "Sí, puedes cancelar en cualquier momento desde tu perfil. Si cancelas durante los 14 días de trial, NO se te cobrará nada. Es así de simple."
             },
             "q4": {
                 "question": "¿Kakebo sirve aunque ya use una app bancaria?",
