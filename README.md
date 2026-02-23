@@ -238,6 +238,18 @@ Si decides continuar con la ayuda de la IA:
 
 ## 📝 Changelog Reciente
 
+### v3.11.0 (2026-02-23) - Link Baiting & Core Web Vitals ⚡🧲
+
+**SEO & Marketing (Link Baiting):**
+- 🧲 **Widgets Integrables**: Calculadoras de Ahorro, 50/30/20 e Inflación ahora incrustables (embed) en webs de terceros mediante un modal iframe "Powered by Kakebo".
+- 📖 **Textos Enriquecidos**: Herramientas interactivas con texto SEO detallado (Long-form content), FAQs e interlinking a los artículos del blog recién publicados.
+- 🔗 **Schema Markup**: Inyección de datos estructurados `SoftwareApplication` y `FAQPage`/`HowTo` para ganar *Rich Snippets* en Google.
+
+**Performance (Core Web Vitals):**
+- ⚡ **LCP Optimizado**: Badge inicial reemplazado por `next/image` con precarga (`priority={true}`) para mejorar el Largest Contentful Paint.
+- 🎨 **CLS Eliminado**: Inyección nativa de variables CSS de fuentes (Inter y Playfair Display) para evitar saltos (Cumulative Layout Shift).
+- 📦 **Lazy Loading (INP)**: Implementado `next/dynamic` en la Landing Page para diferir la hidratación Javascript de secciones inferiores, mejorando el Interaction to Next Paint.
+
 ### v3.10.0 (2026-02-23) - Content Strategy & Blog Launch 📝🚀
 
 **Marketing & SEO:**
