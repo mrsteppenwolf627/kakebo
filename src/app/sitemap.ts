@@ -27,23 +27,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/login`,
+            url: `${baseUrl}/tutorial`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
-        },
-        // Static pages
-        {
-            url: `${baseUrl}/privacy`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.5,
-        },
-        {
-            url: `${baseUrl}/terms`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.5,
         },
         {
             url: `${baseUrl}/sobre-nosotros`,
@@ -69,13 +56,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.9,
-        },
-        // Although /app is protected, having it in sitemap can help discovery of the entry point
-        {
-            url: `${baseUrl}/app`,
-            lastModified: new Date(),
-            changeFrequency: 'daily',
-            priority: 0.8,
         },
         ...blogEntries,
     ]
