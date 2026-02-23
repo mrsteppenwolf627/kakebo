@@ -60,7 +60,7 @@ export function CalculatorInflation() {
             <div className="text-center space-y-6">
                 <h1 className="text-5xl md:text-6xl font-serif text-foreground leading-[1.1]">
                     {t.rich('header.title', {
-                        italic: (chunks) => <span className="italic text-red-500">{chunks}</span>
+                        italic: (chunks) => <span className="italic text-red-500 dark:text-red-400">{chunks}</span>
                     })}
                 </h1>
                 <p className="text-xl text-muted-foreground font-light max-w-2xl mx-auto">
@@ -70,7 +70,7 @@ export function CalculatorInflation() {
 
             {/* Calculator Card */}
             <div className="bg-card border border-border p-8 md:p-12 rounded-2xl shadow-sm space-y-12 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-stone-200 via-red-400 to-stone-200"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-stone-200 dark:from-stone-800 via-red-400 dark:via-red-500 to-stone-200 dark:to-stone-800"></div>
 
                 {/* Input Section */}
                 <div className="grid md:grid-cols-3 gap-8">
@@ -105,7 +105,7 @@ export function CalculatorInflation() {
                                 step="0.1"
                                 value={inflationRate}
                                 onChange={(e) => setInflationRate(Number(e.target.value))}
-                                className="w-full text-2xl font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-red-500"
+                                className="w-full text-2xl font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-red-500 dark:text-red-400"
                             />
                             <span className="absolute right-0 top-3 text-muted-foreground">%</span>
                         </div>

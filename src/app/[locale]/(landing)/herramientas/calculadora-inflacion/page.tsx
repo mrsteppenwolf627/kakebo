@@ -110,7 +110,7 @@ const SCHEMA = {
 
 export default function CalculatorInflationPage() {
     return (
-        <div className="min-h-screen bg-stone-50 selection:bg-stone-200">
+        <div className="min-h-screen bg-background dark:bg-background selection:bg-stone-200 dark:selection:bg-stone-800">
             <Navbar />
 
             <script
