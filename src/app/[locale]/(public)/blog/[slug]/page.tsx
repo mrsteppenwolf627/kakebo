@@ -15,13 +15,8 @@ interface Props {
     }>;
 }
 
-export async function generateStaticParams() {
-    // Generate params for all available blog posts (slugs are language-agnostic in URL)
-    const posts = getBlogPosts('es'); // Get slugs from base locale
-    return posts.map((post) => ({
-        slug: post.slug,
-    }));
-}
+// Removed generateStaticParams to fix DYNAMIC_SERVER_USAGE error.
+// The `[locale]` segment is inherently dynamic due to next-intl, so we must render these dynamically.
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug, locale } = await params;
