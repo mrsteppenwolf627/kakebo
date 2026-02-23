@@ -23,9 +23,9 @@ export function Calculator503020() {
     const savings = income * 0.2;
 
     const data = [
-        { name: t('chart.needs'), value: needs, color: "#1c1917" }, // stone-900
-        { name: t('chart.savings'), value: savings, color: "#10b981" },    // emerald-500
-        { name: t('chart.wants'), value: wants, color: "#f59e0b" },      // amber-500
+        { name: t('chart.needs'), value: needs, colorClass: "text-stone-900 dark:text-stone-300" },
+        { name: t('chart.savings'), value: savings, colorClass: "text-emerald-500 dark:text-emerald-400" },
+        { name: t('chart.wants'), value: wants, colorClass: "text-amber-500 dark:text-amber-400" },
     ];
 
     const formatMoney = (amount: number) =>
@@ -67,7 +67,7 @@ export function Calculator503020() {
                             step="50"
                             value={income}
                             onChange={(e) => setIncome(Number(e.target.value))}
-                            className="w-full h-2 bg-stone-200 dark:bg-stone-800 rounded-lg appearance-none cursor-pointer accent-stone-900 dark:accent-stone-100"
+                            className="w-full h-2 bg-stone-200 dark:bg-stone-700/80 rounded-lg appearance-none cursor-pointer accent-stone-900 dark:accent-stone-100"
                             aria-label="Selector de ingresos mensuales netos"
                         />
                     </div>
@@ -91,7 +91,7 @@ export function Calculator503020() {
                                     stroke="none"
                                 >
                                     {data.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                        <Cell key={`cell-${index}`} fill="currentColor" className={entry.colorClass} />
                                     ))}
                                 </Pie>
                                 <Tooltip
@@ -108,10 +108,10 @@ export function Calculator503020() {
 
                     {/* Legend / Breakdown */}
                     <div className="space-y-6">
-                        <div className="p-4 bg-stone-50 dark:bg-stone-900/50 rounded-xl border border-stone-100 dark:border-stone-800">
+                        <div className="p-4 bg-stone-50 dark:bg-stone-800/80 rounded-xl border border-stone-100 dark:border-stone-700">
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-stone-900 dark:bg-stone-400" />
+                                    <div className="w-3 h-3 rounded-full bg-stone-900 dark:bg-stone-300" />
                                     <span className="font-medium text-foreground">{t('legend.needs.label')}</span>
                                 </div>
                                 <span className="text-xl font-serif text-foreground">{formatMoney(needs)}</span>
@@ -121,7 +121,7 @@ export function Calculator503020() {
                             </p>
                         </div>
 
-                        <div className="p-4 bg-amber-50/50 dark:bg-amber-900/20 rounded-xl border border-amber-100/50 dark:border-amber-900/50">
+                        <div className="p-4 bg-amber-50/50 dark:bg-amber-900/40 rounded-xl border border-amber-100/50 dark:border-amber-700/50">
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-amber-500" />
@@ -134,7 +134,7 @@ export function Calculator503020() {
                             </p>
                         </div>
 
-                        <div className="p-4 bg-emerald-50/50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100/50 dark:border-emerald-900/50">
+                        <div className="p-4 bg-emerald-50/50 dark:bg-emerald-900/40 rounded-xl border border-emerald-100/50 dark:border-emerald-700/50">
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-emerald-500" />
