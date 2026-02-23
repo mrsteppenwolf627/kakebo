@@ -1,62 +1,59 @@
 import { MetadataRoute } from 'next'
 import { getBlogPosts } from '@/lib/blog';
+import { routing } from '@/i18n/routing';
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.metodokakebo.com';
-
     const posts = getBlogPosts();
+    const locales = routing.locales;
 
-    const blogEntries: MetadataRoute.Sitemap = posts.map((post) => ({
-        url: `${baseUrl}/blog/${post.slug}`,
-        lastModified: new Date(post.frontmatter.date),
-        changeFrequency: 'monthly',
-        priority: 0.7,
-    }));
+    const coreRoutes = [
+        { path: '', priority: 1, changeFrequency: 'weekly' as const },
+        { path: '/tutorial', priority: 0.8, changeFrequency: 'monthly' as const },
+        { path: '/sobre-nosotros', priority: 0.7, changeFrequency: 'monthly' as const },
+        { path: '/blog', priority: 0.8, changeFrequency: 'weekly' as const },
+        { path: '/herramientas/regla-50-30-20', priority: 0.9, changeFrequency: 'weekly' as const },
+        { path: '/herramientas/calculadora-inflacion', priority: 0.9, changeFrequency: 'weekly' as const },
+        { path: '/herramientas/calculadora-ahorro', priority: 0.9, changeFrequency: 'weekly' as const },
+    ];
 
-    return [
-        {
-            url: baseUrl,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 1,
-        },
-        {
-            url: `${baseUrl}/blog`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.8,
-        },
-        {
-            url: `${baseUrl}/tutorial`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.8,
-        },
-        {
-            url: `${baseUrl}/sobre-nosotros`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.7,
-        },
-        // Tools
-        {
-            url: `${baseUrl}/herramientas/regla-50-30-20`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.9,
-        },
-        {
-            url: `${baseUrl}/herramientas/calculadora-inflacion`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.9,
-        },
-        {
-            url: `${baseUrl}/herramientas/calculadora-ahorro`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.9,
-        },
-        ...blogEntries,
-    ]
+    const sitemapEntries: MetadataRoute.Sitemap = [];
+
+    // Add localized core routes
+    coreRoutes.forEach((route) => {
+        locales.forEach((locale) => {
+            sitemapEntries.push({
+                url: `${baseUrl}/${locale}${route.path}`,
+                lastModified: new Date(),
+                changeFrequency: route.changeFrequency,
+                priority: route.priority,
+                alternates: {
+                    languages: locales.reduce((acc, l) => {
+                        acc[l] = `${baseUrl}/${l}${route.path}`;
+                        return acc;
+                    }, {} as Record<string, string>)
+                }
+            });
+        });
+    });
+
+    // Add localized blog posts
+    posts.forEach((post) => {
+        locales.forEach((locale) => {
+            sitemapEntries.push({
+                url: `${baseUrl}/${locale}/blog/${post.slug}`,
+                lastModified: new Date(post.frontmatter.date),
+                changeFrequency: 'monthly',
+                priority: 0.7,
+                alternates: {
+                    languages: locales.reduce((acc, l) => {
+                        acc[l] = `${baseUrl}/${l}/blog/${post.slug}`;
+                        return acc;
+                    }, {} as Record<string, string>)
+                }
+            });
+        });
+    });
+
+    return sitemapEntries;
 }
