@@ -79,6 +79,12 @@ export function Navbar() {
           >
             {t('blog')}
           </Link>
+          <Link
+            href="/sobre-nosotros"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {t('about')}
+          </Link>
 
           {/* Herramientas Dropdown */}
           <div className="relative group">
@@ -200,6 +206,13 @@ export function Navbar() {
                 className="text-lg font-medium text-foreground py-2 border-b border-border/40"
               >
                 {t('blog')}
+              </Link>
+              <Link
+                href="/sobre-nosotros"
+                onClick={closeMenu}
+                className="text-lg font-medium text-foreground py-2 border-b border-border/40"
+              >
+                {t('about')}
               </Link>
 
               <div className="flex flex-col gap-2">

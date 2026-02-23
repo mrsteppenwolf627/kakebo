@@ -40,7 +40,8 @@
         "configuration": "Settings",
         "language": "Language",
         "subscription": "Subscription",
-        "tutorial": "Tutorial"
+        "tutorial": "Tutorial",
+        "about": "About Us"
     },
     "CookieBanner": {
         "text": "We use our own and third-party cookies to improve your experience and analyze the use of the website.",
@@ -1319,6 +1320,45 @@
                 "title": "6. Modifications",
                 "content": "We reserve the right to modify these terms at any time. We will notify you of significant changes."
             }
+        }
+    },
+    "About": {
+        "meta": {
+            "title": "About Kakebo AI: Philosophy, Privacy, and Our Team",
+            "description": "Learn who is behind Kakebo AI, our mission to give you back your financial control, and our absolute commitment to your privacy. No banks, no fluff.",
+            "ogTitle": "About Kakebo AI: Our Mission and Values",
+            "ogDescription": "Discover why we created the most private and secure Kakebo app on the market, designed for peace of mind."
+        },
+        "title": "Our mission:",
+        "subtitle": "To give you back control of your money without selling your data",
+        "story": {
+            "title": "The Story",
+            "p1": "Kakebo AI was born out of a shared frustration. Traditional banking apps were designed to make you consume more, not to help you save. On the other hand, expense tracking apps required connecting to your bank, reading and selling your transactional data to profile you.",
+            "p2": "We decided there was a better way. To use the Japanese <bold>Kakebo</bold> (Mindful Spending) method powered by Artificial Intelligence in a way that is <bold>100% private and independent</bold> from banks."
+        },
+        "values": {
+            "title": "Our Values",
+            "v1": {
+                "title": "Absolute Privacy",
+                "desc": "Your data is yours. Kakebo AI will never require a connection to your bank. We don't read your bank accounts, we don't sell data to third parties."
+            },
+            "v2": {
+                "title": "Mindful Savings",
+                "desc": "We believe in intentional categorization (Survival, Leisure, Culture). Writing down an expense is the first step to avoiding impulsive spending."
+            },
+            "v3": {
+                "title": "Technology with Purpose",
+                "desc": "We use AI not to overwhelm you, but to be your financial coach. We detect patterns and give you real and actionable advice."
+            }
+        },
+        "team": {
+            "title": "The Project",
+            "desc": "Kakebo AI is developed and maintained by an independent and bootstrapping team of personal finance and privacy-focused technology enthusiasts. Our long-term goal is to create the finance tool we always wanted to use ourselves, free from biases and ads."
+        },
+        "contact": {
+            "title": "Contact and Support",
+            "text": "Do you have questions, feature requests, or just want to talk about zen finances? Write to us at:",
+            "email": "soporte@metodokakebo.com"
         }
     }
 }
