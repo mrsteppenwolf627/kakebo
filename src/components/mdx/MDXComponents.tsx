@@ -3,13 +3,13 @@ import React from "react";
 import Image from "next/image";
 
 function CustomLink(props: any) {
-    const href = props.href;
-    const customClass = props.className || "";
+    const { href, className, ...restProps } = props;
+    const customClass = className || "";
     const baseClass = "text-primary hover:underline font-medium decoration-primary/30 underline-offset-4 transition-colors";
     const combinedClass = customClass ? `${baseClass} ${customClass}` : baseClass;
 
     if (!href) {
-        return <a {...props} className={combinedClass} />;
+        return <a {...restProps} className={combinedClass} />;
     }
 
     if (href.startsWith("/")) {
@@ -20,17 +20,17 @@ function CustomLink(props: any) {
         const finalHref = unPrefixedHref === '//' ? '/' : unPrefixedHref;
 
         return (
-            <Link href={finalHref} {...props} className={combinedClass}>
+            <Link href={finalHref} {...restProps} className={combinedClass}>
                 {props.children}
             </Link>
         );
     }
 
     if (href.startsWith("#")) {
-        return <a {...props} className={combinedClass} />;
+        return <a href={href} {...restProps} className={combinedClass} />;
     }
 
-    return <a target="_blank" rel="noopener noreferrer" {...props} className={combinedClass} />;
+    return <a href={href} target="_blank" rel="noopener noreferrer" {...restProps} className={combinedClass} />;
 }
 
 function RoundedImage(props: any) {
