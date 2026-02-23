@@ -80,6 +80,7 @@ export default function PublicHomePage() {
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p dangerouslySetInnerHTML={{ __html: t.raw('SEO.whatIs.p1') }} />
                 <p dangerouslySetInnerHTML={{ __html: t.raw('SEO.whatIs.p2') }} />
+                <p dangerouslySetInnerHTML={{ __html: t.raw('SEO.whatIs.p3') }} />
               </div>
             </div>
           </div>

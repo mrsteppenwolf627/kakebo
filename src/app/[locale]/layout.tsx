@@ -7,11 +7,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Layout.metadata" });
 
+  const isProduction = process.env.NEXT_PUBLIC_APP_URL === "https://www.metodokakebo.com";
+
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.metodokakebo.com"),
     title: {
       default: t("defaultTitle"),
-      template: t("templateTitle"),
+      template: "%s",
     },
     description: t("description"),
     keywords: t("keywords").split(", "),
@@ -66,11 +68,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       images: ["/og-image.jpg"],
     },
     robots: {
-      index: true,
-      follow: true,
+      index: isProduction,
+      follow: isProduction,
       googleBot: {
-        index: true,
-        follow: true,
+        index: isProduction,
+        follow: isProduction,
         'max-video-preview': -1,
         'max-image-preview': 'large',
         'max-snippet': -1,

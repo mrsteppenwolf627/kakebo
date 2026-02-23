@@ -354,7 +354,8 @@
             "whatIs": {
                 "title": "What is Kakebo and what is it for?",
                 "p1": "<bold>Kakebo</bold> is a Japanese savings method based on tracking your expenses and reviewing your month with intention. It's not about fancy charts, it's about seeing the obvious: where your money goes and what you can tweak without living like a hermit.",
-                "p2": "In practice, it works because it forces you to do three things most people avoid: <bold>track</bold>, <bold>categorize</bold>, and <bold>review</bold>. If you are consistent, you improve your spending control almost without realizing it."
+                "p2": "In practice, it works because it forces you to do three things most people avoid: <bold>track</bold>, <bold>categorize</bold>, and <bold>review</bold>. If you are consistent, you improve your spending control almost without realizing it.",
+                "p3": "You can calculate your savings potential with our <a href=\"/en/herramientas/calculadora-ahorro\" class=\"text-primary font-medium hover:underline\">savings calculator</a>, discover our <a href=\"/en/tutorial\" class=\"text-primary font-medium hover:underline\">step-by-step tutorial</a>, or read more tips on our <a href=\"/en/blog\" class=\"text-primary font-medium hover:underline\">official blog</a>."
             },
             "categories": {
                 "title": "Typical Kakebo Categories (and how to use them)",
@@ -1332,9 +1333,9 @@
         "title": "Our mission:",
         "subtitle": "To give you back control of your money without selling your data",
         "story": {
-            "title": "The Story",
-            "p1": "Kakebo AI was born out of a shared frustration. Traditional banking apps were designed to make you consume more, not to help you save. On the other hand, expense tracking apps required connecting to your bank, reading and selling your transactional data to profile you.",
-            "p2": "We decided there was a better way. To use the Japanese <bold>Kakebo</bold> (Mindful Spending) method powered by Artificial Intelligence in a way that is <bold>100% private and independent</bold> from banks."
+            "title": "Our Story and Methodology",
+            "p1": "Kakebo AI was born out of a shared frustration by developers and personal finance experts. Traditional banking apps are designed to incentivize consumption, not savings. On the other hand, budgeting apps require connecting to your bank, compromising your privacy by commercializing your transactional data.",
+            "p2": "After years studying savings systems, we found the definitive solution in the Japanese <bold>Kakebo</bold> (Mindful Spending) method, backed by over a century of empirical efficacy. We have digitized this rigorous manual control method powered by Artificial Intelligence, keeping the platform <bold>100% private and independent</bold> from banks and financial institutions."
         },
         "values": {
             "title": "Our Values",
@@ -1352,8 +1353,8 @@
             }
         },
         "team": {
-            "title": "The Project",
-            "desc": "Kakebo AI is developed and maintained by an independent and bootstrapping team of personal finance and privacy-focused technology enthusiasts. Our long-term goal is to create the finance tool we always wanted to use ourselves, free from biases and ads."
+            "title": "The Team behind Kakebo AI",
+            "desc": "We are an independent team of developers and analysts united by privacy and financial health. Our expertise in developing secure software led us to create this ethical and transparent alternative. Our absolute commitment: to provide the best methodological tool to organize your money, free from biases, banks, and third-party data sales."
         },
         "contact": {
             "title": "Contact and Support",
