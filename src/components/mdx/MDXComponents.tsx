@@ -21,7 +21,7 @@ function CustomLink(props: any) {
 }
 
 function RoundedImage(props: any) {
-    return <Image alt={props.alt} className="rounded-xl border border-stone-200 shadow-sm my-8" {...props} />;
+    return <img alt={props.alt || "Blog image"} className="rounded-xl border border-stone-200 shadow-sm my-8 w-full h-auto object-cover" {...props} />;
 }
 
 function Callout(props: any) {
