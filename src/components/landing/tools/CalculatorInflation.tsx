@@ -58,24 +58,24 @@ export function CalculatorInflation() {
 
             {/* Header */}
             <div className="text-center space-y-6">
-                <h1 className="text-5xl md:text-6xl font-serif text-stone-900 leading-[1.1]">
+                <h1 className="text-5xl md:text-6xl font-serif text-foreground leading-[1.1]">
                     {t.rich('header.title', {
                         italic: (chunks) => <span className="italic text-red-500">{chunks}</span>
                     })}
                 </h1>
-                <p className="text-xl text-stone-600 font-light max-w-2xl mx-auto">
+                <p className="text-xl text-muted-foreground font-light max-w-2xl mx-auto">
                     {t('header.subtitle')}
                 </p>
             </div>
 
             {/* Calculator Card */}
-            <div className="bg-white border border-stone-200 p-8 md:p-12 rounded-2xl shadow-sm space-y-12 relative overflow-hidden">
+            <div className="bg-card border border-border p-8 md:p-12 rounded-2xl shadow-sm space-y-12 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-stone-200 via-red-400 to-stone-200"></div>
 
                 {/* Input Section */}
                 <div className="grid md:grid-cols-3 gap-8">
                     <div className="space-y-4">
-                        <label htmlFor="savings-input" className="text-sm font-medium text-stone-500 uppercase tracking-wider block">
+                        <label htmlFor="savings-input" className="text-sm font-medium text-muted-foreground uppercase tracking-wider block">
                             {t('inputs.savings')}
                         </label>
                         <div className="relative">
@@ -86,14 +86,14 @@ export function CalculatorInflation() {
                                 step="1000"
                                 value={savings}
                                 onChange={(e) => setSavings(Number(e.target.value))}
-                                className="w-full text-2xl font-serif border-b-2 border-stone-200 focus:border-stone-900 outline-none py-2 bg-transparent transition-colors"
+                                className="w-full text-2xl font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-foreground"
                             />
-                            <span className="absolute right-0 top-3 text-stone-400">€</span>
+                            <span className="absolute right-0 top-3 text-muted-foreground">€</span>
                         </div>
                     </div>
 
                     <div className="space-y-4">
-                        <label htmlFor="inflation-input" className="text-sm font-medium text-stone-500 uppercase tracking-wider block">
+                        <label htmlFor="inflation-input" className="text-sm font-medium text-muted-foreground uppercase tracking-wider block">
                             {t('inputs.inflation')}
                         </label>
                         <div className="relative">
@@ -105,21 +105,21 @@ export function CalculatorInflation() {
                                 step="0.1"
                                 value={inflationRate}
                                 onChange={(e) => setInflationRate(Number(e.target.value))}
-                                className="w-full text-2xl font-serif border-b-2 border-stone-200 focus:border-stone-900 outline-none py-2 bg-transparent transition-colors text-red-500"
+                                className="w-full text-2xl font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-red-500"
                             />
-                            <span className="absolute right-0 top-3 text-stone-400">%</span>
+                            <span className="absolute right-0 top-3 text-muted-foreground">%</span>
                         </div>
-                        <p className="text-xs text-stone-400">
+                        <p className="text-xs text-muted-foreground">
                             {t('inputs.inflationDisclaimer')}
                         </p>
                     </div>
 
                     <div className="space-y-4">
-                        <label htmlFor="years-input" className="text-sm font-medium text-stone-500 uppercase tracking-wider block">
+                        <label htmlFor="years-input" className="text-sm font-medium text-muted-foreground uppercase tracking-wider block">
                             {t('inputs.years')}
                         </label>
                         <div className="flex items-center gap-4">
-                            <span className="text-2xl font-serif w-12">{years}</span>
+                            <span className="text-2xl font-serif w-12 text-foreground">{years}</span>
                             <input
                                 id="years-input"
                                 type="range"
@@ -128,7 +128,7 @@ export function CalculatorInflation() {
                                 step="1"
                                 value={years}
                                 onChange={(e) => setYears(Number(e.target.value))}
-                                className="w-full h-2 bg-stone-100 rounded-lg appearance-none cursor-pointer accent-stone-900"
+                                className="w-full h-2 bg-stone-200 dark:bg-stone-800 rounded-lg appearance-none cursor-pointer accent-stone-900 dark:accent-stone-100"
                             />
                         </div>
                     </div>
@@ -138,11 +138,11 @@ export function CalculatorInflation() {
                 <div className="grid md:grid-cols-2 gap-8 items-stretch">
 
                     {/* Main Stat: Loss */}
-                    <div className="bg-red-50 p-6 rounded-xl border border-red-100 flex flex-col justify-center text-center space-y-2">
-                        <span className="text-sm text-red-600 font-medium uppercase tracking-wider">
+                    <div className="bg-red-50 dark:bg-red-900/10 p-6 rounded-xl border border-red-100 dark:border-red-900/30 flex flex-col justify-center text-center space-y-2">
+                        <span className="text-sm text-red-600 dark:text-red-400 font-medium uppercase tracking-wider">
                             {t('results.lossLabel')}
                         </span>
-                        <span className="text-4xl md:text-5xl font-serif text-red-600">
+                        <span className="text-4xl md:text-5xl font-serif text-red-600 dark:text-red-300">
                             -{formatMoney(totalLost)}
                         </span>
                         <span className="text-red-400 font-light">
@@ -154,14 +154,14 @@ export function CalculatorInflation() {
                     </div>
 
                     {/* Secondary Stat: Real Value */}
-                    <div className="bg-stone-50 p-6 rounded-xl border border-stone-100 flex flex-col justify-center text-center space-y-2">
-                        <span className="text-sm text-stone-500 font-medium uppercase tracking-wider">
+                    <div className="bg-stone-50 dark:bg-stone-900/50 p-6 rounded-xl border border-stone-100 dark:border-stone-800 flex flex-col justify-center text-center space-y-2">
+                        <span className="text-sm text-muted-foreground font-medium uppercase tracking-wider">
                             {t('results.realLabel')}
                         </span>
-                        <span className="text-4xl md:text-5xl font-serif text-stone-900">
+                        <span className="text-4xl md:text-5xl font-serif text-foreground">
                             {formatMoney(finalRealValue)}
                         </span>
-                        <span className="text-stone-400 font-light">
+                        <span className="text-muted-foreground font-light">
                             {t('results.realText')}
                         </span>
                     </div>
@@ -226,7 +226,7 @@ export function CalculatorInflation() {
                 </div>
 
                 {/* CTA */}
-                <div className="bg-stone-900 text-white p-8 rounded-xl text-center space-y-6">
+                <div className="bg-stone-900 dark:bg-stone-800 text-white p-8 rounded-xl text-center space-y-6">
                     <h3 className="text-2xl font-serif">
                         {t('cta.title')}
                     </h3>
@@ -237,7 +237,7 @@ export function CalculatorInflation() {
                         <Link
                             href="/login?source=calculator_inflation"
                             onClick={() => analytics.track("signup_click", { source: "calculator_inflation", type: "primary" })}
-                            className="inline-block bg-white text-stone-900 px-8 py-3 rounded-full font-medium hover:bg-stone-100 transition-colors"
+                            className="inline-block bg-white text-stone-900 px-8 py-3 rounded-full font-medium hover:bg-stone-100 dark:hover:bg-stone-200 transition-colors"
                         >
                             {t('cta.buttonPrimary')}
                         </Link>
@@ -267,11 +267,11 @@ export function CalculatorInflation() {
             </div>
 
             {/* SEO & GEO Semantic Content Section */}
-            <div className="prose prose-stone max-w-none prose-headings:font-serif prose-p:font-light prose-p:text-lg text-stone-600">
+            <div className="prose prose-stone dark:prose-invert max-w-none prose-headings:font-serif prose-p:font-light prose-p:text-lg text-muted-foreground">
 
                 {/* Definition Block for LLMs */}
-                <div className="bg-stone-50 p-6 rounded-lg border-l-4 border-stone-900 my-8">
-                    <h2 className="mt-0 text-2xl text-stone-900">{t('content.whatTitle')}</h2>
+                <div className="bg-stone-50 dark:bg-stone-900/50 p-6 rounded-lg border-l-4 border-stone-900 dark:border-stone-100 my-8">
+                    <h2 className="mt-0 text-2xl text-foreground">{t('content.whatTitle')}</h2>
                     <p className="mb-0">
                         {t.rich('content.whatText', {
                             bold: (chunks) => <strong>{chunks}</strong>,
@@ -293,28 +293,28 @@ export function CalculatorInflation() {
                 <h3>{t('content.tableTitle')}</h3>
                 <div className="overflow-x-auto my-8">
                     <table className="min-w-full text-left text-sm whitespace-nowrap">
-                        <thead className="uppercase tracking-wider border-b-2 border-stone-200 bg-stone-50">
+                        <thead className="uppercase tracking-wider border-b-2 border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/50">
                             <tr>
-                                <th scope="col" className="px-6 py-4 font-serif text-stone-900">{t('content.tableHeaders.strategy')}</th>
-                                <th scope="col" className="px-6 py-4 font-serif text-stone-900">{t('content.tableHeaders.return')}</th>
-                                <th scope="col" className="px-6 py-4 font-serif text-stone-900">{t('content.tableHeaders.realResult')}</th>
+                                <th scope="col" className="px-6 py-4 font-serif text-foreground">{t('content.tableHeaders.strategy')}</th>
+                                <th scope="col" className="px-6 py-4 font-serif text-foreground">{t('content.tableHeaders.return')}</th>
+                                <th scope="col" className="px-6 py-4 font-serif text-foreground">{t('content.tableHeaders.realResult')}</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-stone-100">
-                            <tr className="bg-white hover:bg-stone-50 transition-colors">
-                                <td className="px-6 py-4 font-medium text-stone-900">{t('content.tableRows.mattress.name')}</td>
+                        <tbody className="divide-y divide-stone-100 dark:divide-stone-800/50">
+                            <tr className="bg-white dark:bg-transparent hover:bg-stone-50 dark:hover:bg-stone-900/50 transition-colors">
+                                <td className="px-6 py-4 font-medium text-foreground">{t('content.tableRows.mattress.name')}</td>
                                 <td className="px-6 py-4">{t('content.tableRows.mattress.return')}</td>
-                                <td className="px-6 py-4 text-red-600">{t('content.tableRows.mattress.result')}</td>
+                                <td className="px-6 py-4 text-red-600 dark:text-red-400">{t('content.tableRows.mattress.result')}</td>
                             </tr>
-                            <tr className="bg-white hover:bg-stone-50 transition-colors">
-                                <td className="px-6 py-4 font-medium text-stone-900">{t('content.tableRows.savings.name')}</td>
+                            <tr className="bg-white dark:bg-transparent hover:bg-stone-50 dark:hover:bg-stone-900/50 transition-colors">
+                                <td className="px-6 py-4 font-medium text-foreground">{t('content.tableRows.savings.name')}</td>
                                 <td className="px-6 py-4">{t('content.tableRows.savings.return')}</td>
-                                <td className="px-6 py-4 text-orange-500">{t('content.tableRows.savings.result')}</td>
+                                <td className="px-6 py-4 text-orange-500 dark:text-orange-400">{t('content.tableRows.savings.result')}</td>
                             </tr>
-                            <tr className="bg-white hover:bg-stone-50 transition-colors">
-                                <td className="px-6 py-4 font-medium text-stone-900">{t('content.tableRows.investment.name')}</td>
+                            <tr className="bg-white dark:bg-transparent hover:bg-stone-50 dark:hover:bg-stone-900/50 transition-colors">
+                                <td className="px-6 py-4 font-medium text-foreground">{t('content.tableRows.investment.name')}</td>
                                 <td className="px-6 py-4">{t('content.tableRows.investment.return')}</td>
-                                <td className="px-6 py-4 text-emerald-600">{t('content.tableRows.investment.result')}</td>
+                                <td className="px-6 py-4 text-emerald-600 dark:text-emerald-400">{t('content.tableRows.investment.result')}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -324,18 +324,18 @@ export function CalculatorInflation() {
 
                 <div className="space-y-8">
                     <div>
-                        <h3 className="text-xl font-bold text-stone-900 mt-6">{t('content.faq.q1')}</h3>
+                        <h3 className="text-xl font-bold text-foreground mt-6">{t('content.faq.q1')}</h3>
                         <p>
                             {t.rich('content.faq.a1', { bold: (chunks) => <strong>{chunks}</strong> })}
                         </p>
                     </div>
 
                     <div>
-                        <h3 className="text-xl font-bold text-stone-900 mt-6">{t('content.faq.q2')}</h3>
+                        <h3 className="text-xl font-bold text-foreground mt-6">{t('content.faq.q2')}</h3>
                         <p>
                             {t('content.faq.a2')}
                         </p>
-                        <code className="block bg-stone-100 p-4 rounded text-sm font-mono text-stone-800 my-4">
+                        <code className="block bg-stone-100 dark:bg-stone-800 p-4 rounded text-sm font-mono text-stone-800 dark:text-stone-200 my-4">
                             Tasa Variación = ((IPC Final - IPC Inicial) / IPC Inicial) x 100
                         </code>
                         <p>
@@ -344,14 +344,14 @@ export function CalculatorInflation() {
                     </div>
 
                     <div>
-                        <h3 className="text-xl font-bold text-stone-900 mt-6">{t('content.faq.q3')}</h3>
+                        <h3 className="text-xl font-bold text-foreground mt-6">{t('content.faq.q3')}</h3>
                         <p>
                             {t.rich('content.faq.a3', { bold: (chunks) => <strong>{chunks}</strong> })}
                         </p>
                     </div>
                 </div>
 
-                <h3 className="mt-12 text-2xl mb-4 font-serif text-stone-900">{t('content.interlinkingTitle')}</h3>
+                <h3 className="mt-12 text-2xl mb-4 font-serif text-foreground">{t('content.interlinkingTitle')}</h3>
                 <ul>
                     <li>
                         <Link href="/blog/alternativas-a-app-bancarias" className="text-primary hover:underline">

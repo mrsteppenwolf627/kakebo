@@ -36,27 +36,27 @@ export function Calculator503020() {
 
             {/* Header */}
             <div className="text-center space-y-6">
-                <h1 className="text-5xl md:text-6xl font-serif text-stone-900 leading-[1.1]">
+                <h1 className="text-5xl md:text-6xl font-serif text-foreground leading-[1.1]">
                     {t.rich('header.title', {
-                        italic: (chunks) => <span className="italic text-stone-500">{chunks}</span>
+                        italic: (chunks) => <span className="italic text-muted-foreground">{chunks}</span>
                     })}
                 </h1>
-                <p className="text-xl text-stone-600 font-light max-w-2xl mx-auto">
+                <p className="text-xl text-muted-foreground font-light max-w-2xl mx-auto">
                     {t('header.subtitle')}
                 </p>
             </div>
 
             {/* Calculator Card */}
-            <div className="bg-white border border-stone-200 p-8 md:p-12 rounded-2xl shadow-sm space-y-12">
+            <div className="bg-card border border-border p-8 md:p-12 rounded-2xl shadow-sm space-y-12">
 
                 {/* Input Section */}
                 <div className="space-y-8 max-w-xl mx-auto text-center">
                     <div className="space-y-4">
-                        <label className="text-sm font-medium text-stone-500 uppercase tracking-wider">
+                        <label className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
                             {t('inputs.income')}
                         </label>
                         <div className="flex items-center justify-center gap-4">
-                            <span className="text-4xl md:text-5xl font-serif text-stone-900">
+                            <span className="text-4xl md:text-5xl font-serif text-foreground">
                                 {formatMoney(income)}
                             </span>
                         </div>
@@ -67,7 +67,7 @@ export function Calculator503020() {
                             step="50"
                             value={income}
                             onChange={(e) => setIncome(Number(e.target.value))}
-                            className="w-full h-2 bg-stone-100 rounded-lg appearance-none cursor-pointer accent-stone-900"
+                            className="w-full h-2 bg-stone-200 dark:bg-stone-800 rounded-lg appearance-none cursor-pointer accent-stone-900 dark:accent-stone-100"
                             aria-label="Selector de ingresos mensuales netos"
                         />
                     </div>
@@ -108,41 +108,41 @@ export function Calculator503020() {
 
                     {/* Legend / Breakdown */}
                     <div className="space-y-6">
-                        <div className="p-4 bg-stone-50 rounded-xl border border-stone-100">
+                        <div className="p-4 bg-stone-50 dark:bg-stone-900/50 rounded-xl border border-stone-100 dark:border-stone-800">
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-stone-900" />
-                                    <span className="font-medium text-stone-900">{t('legend.needs.label')}</span>
+                                    <div className="w-3 h-3 rounded-full bg-stone-900 dark:bg-stone-400" />
+                                    <span className="font-medium text-foreground">{t('legend.needs.label')}</span>
                                 </div>
-                                <span className="text-xl font-serif text-stone-900">{formatMoney(needs)}</span>
+                                <span className="text-xl font-serif text-foreground">{formatMoney(needs)}</span>
                             </div>
-                            <p className="text-xs text-stone-500 pl-5">
+                            <p className="text-xs text-muted-foreground pl-5">
                                 {t('legend.needs.desc')}
                             </p>
                         </div>
 
-                        <div className="p-4 bg-amber-50/50 rounded-xl border border-amber-100/50">
+                        <div className="p-4 bg-amber-50/50 dark:bg-amber-900/20 rounded-xl border border-amber-100/50 dark:border-amber-900/50">
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-amber-500" />
-                                    <span className="font-medium text-stone-900">{t('legend.wants.label')}</span>
+                                    <span className="font-medium text-foreground">{t('legend.wants.label')}</span>
                                 </div>
-                                <span className="text-xl font-serif text-stone-900">{formatMoney(wants)}</span>
+                                <span className="text-xl font-serif text-foreground">{formatMoney(wants)}</span>
                             </div>
-                            <p className="text-xs text-stone-500 pl-5">
+                            <p className="text-xs text-muted-foreground pl-5">
                                 {t('legend.wants.desc')}
                             </p>
                         </div>
 
-                        <div className="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100/50">
+                        <div className="p-4 bg-emerald-50/50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100/50 dark:border-emerald-900/50">
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                                    <span className="font-medium text-stone-900">{t('legend.savings.label')}</span>
+                                    <span className="font-medium text-foreground">{t('legend.savings.label')}</span>
                                 </div>
-                                <span className="text-xl font-serif text-stone-900">{formatMoney(savings)}</span>
+                                <span className="text-xl font-serif text-foreground">{formatMoney(savings)}</span>
                             </div>
-                            <p className="text-xs text-stone-500 pl-5">
+                            <p className="text-xs text-muted-foreground pl-5">
                                 {t('legend.savings.desc')}
                             </p>
                         </div>
@@ -150,7 +150,7 @@ export function Calculator503020() {
                 </div>
 
                 {/* CTA */}
-                <div className="bg-stone-900 text-white p-8 rounded-xl text-center space-y-6">
+                <div className="bg-stone-900 dark:bg-stone-800 text-white p-8 rounded-xl text-center space-y-6">
                     <h3 className="text-2xl font-serif">
                         {t('cta.title')}
                     </h3>
@@ -160,7 +160,7 @@ export function Calculator503020() {
                     <Link
                         href="/login?source=calculator_503020"
                         onClick={() => analytics.track("signup_click", { source: "calculator_503020", type: "primary" })}
-                        className="inline-block bg-white text-stone-900 px-8 py-3 rounded-full font-medium hover:bg-stone-100 transition-colors"
+                        className="inline-block bg-white text-stone-900 px-8 py-3 rounded-full font-medium hover:bg-stone-100 dark:hover:bg-stone-200 transition-colors"
                     >
                         {t('cta.button')}
                     </Link>
@@ -182,7 +182,7 @@ export function Calculator503020() {
             </div>
 
             {/* SEO Content Section - Keeping it in Client Component for simplicity of layout, but could be passed as children */}
-            <div className="prose prose-stone max-w-none prose-headings:font-serif prose-p:font-light prose-p:text-lg text-stone-600">
+            <div className="prose prose-stone dark:prose-invert max-w-none prose-headings:font-serif prose-p:font-light prose-p:text-lg text-muted-foreground">
                 <h2>{t('content.whatTitle')}</h2>
                 <p>
                     {t.rich('content.whatText1', { em: (chunks) => <em>{chunks}</em> })}
@@ -193,19 +193,19 @@ export function Calculator503020() {
 
                 <div className="grid md:grid-cols-3 gap-8 my-12 not-prose">
                     <div className="space-y-2">
-                        <span className="text-4xl font-serif text-stone-900 block">50%</span>
-                        <h3 className="font-bold text-stone-900 text-lg">{t('content.needsTitle')}</h3>
-                        <p className="text-sm">{t('content.needsDesc')}</p>
+                        <span className="text-4xl font-serif text-foreground block">50%</span>
+                        <h3 className="font-bold text-foreground text-lg">{t('content.needsTitle')}</h3>
+                        <p className="text-sm text-muted-foreground">{t('content.needsDesc')}</p>
                     </div>
                     <div className="space-y-2">
                         <span className="text-4xl font-serif text-amber-500 block">30%</span>
-                        <h3 className="font-bold text-stone-900 text-lg">{t('content.wantsTitle')}</h3>
-                        <p className="text-sm">{t('content.wantsDesc')}</p>
+                        <h3 className="font-bold text-foreground text-lg">{t('content.wantsTitle')}</h3>
+                        <p className="text-sm text-muted-foreground">{t('content.wantsDesc')}</p>
                     </div>
                     <div className="space-y-2">
                         <span className="text-4xl font-serif text-emerald-500 block">20%</span>
-                        <h3 className="font-bold text-stone-900 text-lg">{t('content.savingsTitle')}</h3>
-                        <p className="text-sm">{t('content.savingsDesc')}</p>
+                        <h3 className="font-bold text-foreground text-lg">{t('content.savingsTitle')}</h3>
+                        <p className="text-sm text-muted-foreground">{t('content.savingsDesc')}</p>
                     </div>
                 </div>
 
@@ -216,7 +216,7 @@ export function Calculator503020() {
                     <li>{t.rich('content.howStep3', { bold: (chunks) => <strong>{chunks}</strong> })}</li>
                 </ol>
 
-                <h3 className="mt-12 text-2xl mb-4 font-serif text-stone-900">{t('content.interlinkingTitle')}</h3>
+                <h3 className="mt-12 text-2xl mb-4 font-serif text-foreground">{t('content.interlinkingTitle')}</h3>
                 <ul>
                     <li>
                         <Link href="/blog/regla-30-dias" className="text-primary hover:underline">
