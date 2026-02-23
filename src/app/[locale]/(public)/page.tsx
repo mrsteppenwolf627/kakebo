@@ -12,6 +12,12 @@ import {
   SavingsSimulator,
   AlternativesSection,
 } from "@/components/landing";
+import dynamic from "next/dynamic";
+
+const DynamicTestimonials = dynamic(() => import("@/components/landing").then(mod => mod.Testimonials));
+const DynamicSavingsSimulator = dynamic(() => import("@/components/landing").then(mod => mod.SavingsSimulator));
+const DynamicAlternativesSection = dynamic(() => import("@/components/landing").then(mod => mod.AlternativesSection));
+const DynamicFAQ = dynamic(() => import("@/components/landing").then(mod => mod.FAQ));
 
 import { getTranslations } from "next-intl/server";
 
@@ -49,7 +55,7 @@ export default function PublicHomePage() {
           <Features />
         </div>
 
-        <SavingsSimulator />
+        <DynamicSavingsSimulator />
 
         <div id="pricing">
           <PricingSection />
@@ -59,7 +65,7 @@ export default function PublicHomePage() {
           <HowItWorks />
         </div>
 
-        <Testimonials />
+        <DynamicTestimonials />
 
 
         {/* SEO Content - Kakebo Method Explanation */}
@@ -109,10 +115,10 @@ export default function PublicHomePage() {
           </div>
         </section>
 
-        <AlternativesSection />
+        <DynamicAlternativesSection />
 
         <div id="faq">
-          <FAQ />
+          <DynamicFAQ />
         </div>
 
         <SeoContent />

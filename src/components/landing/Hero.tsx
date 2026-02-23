@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { HeroCTA } from "./HeroCTA";
+import Image from "next/image";
 
 export function Hero() {
   const t = useTranslations("Hero");
@@ -44,12 +45,14 @@ export function Hero() {
         {/* Product Hunt Badge */}
         <div className="mt-8 flex justify-center">
           <a href="https://www.producthunt.com/products/kakebo-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-kakebo-ai" target="_blank" rel="noopener noreferrer">
-            <img
+            <Image
               src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1080945&theme=light&t=1771340432212"
               alt="Kakebo AI - Minimalist Japanese Kakebo method, now powered by AI | Product Hunt"
               style={{ width: '250px', height: '54px' }}
-              width="250"
-              height="54"
+              width={250}
+              height={54}
+              priority={true}
+              unoptimized={true}
             />
           </a>
         </div>

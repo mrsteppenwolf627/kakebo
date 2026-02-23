@@ -88,9 +88,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
 import SoftwareAppJsonLd from "@/components/seo/SoftwareAppJsonLd";
 import { CookieBanner } from "@/components/landing";
@@ -119,8 +120,8 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className="overflow-x-hidden" suppressHydrationWarning>
-      <body className={`${inter.className} overflow-x-hidden max-w-[100vw] bg-sakura text-stone-900 dark:bg-stone-950 dark:text-stone-100 transition-colors duration-300 antialiased`}>
+    <html lang={locale} className={`${inter.variable} ${playfair.variable} overflow-x-hidden`} suppressHydrationWarning>
+      <body className={`font-sans overflow-x-hidden max-w-[100vw] bg-sakura text-stone-900 dark:bg-stone-950 dark:text-stone-100 transition-colors duration-300 antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <SoftwareAppJsonLd />
           <ThemeProvider
