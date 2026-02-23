@@ -4,20 +4,33 @@ import Image from "next/image";
 
 function CustomLink(props: any) {
     const href = props.href;
+    const customClass = props.className || "";
+    const baseClass = "text-primary hover:underline font-medium decoration-primary/30 underline-offset-4 transition-colors";
+    const combinedClass = customClass ? `${baseClass} ${customClass}` : baseClass;
+
+    if (!href) {
+        return <a {...props} className={combinedClass} />;
+    }
 
     if (href.startsWith("/")) {
+        // If the URL already contains the localized prefix (e.g. href="/es" or href="/en/blog"),
+        // next-intl's Link will crash with a 500 Server Error because it expects un-prefixed paths.
+        // We strip the locale before passing it to the internal Link component.
+        const unPrefixedHref = href.replace(/^\/(es|en)(\/|$)/, '/') || '/';
+        const finalHref = unPrefixedHref === '//' ? '/' : unPrefixedHref;
+
         return (
-            <Link href={href} {...props} className="text-primary hover:underline font-medium decoration-primary/30 underline-offset-4 transition-colors">
+            <Link href={finalHref} {...props} className={combinedClass}>
                 {props.children}
             </Link>
         );
     }
 
     if (href.startsWith("#")) {
-        return <a {...props} />;
+        return <a {...props} className={combinedClass} />;
     }
 
-    return <a target="_blank" rel="noopener noreferrer" {...props} className="text-primary hover:underline font-medium decoration-primary/30 underline-offset-4 transition-colors" />;
+    return <a target="_blank" rel="noopener noreferrer" {...props} className={combinedClass} />;
 }
 
 function RoundedImage(props: any) {
