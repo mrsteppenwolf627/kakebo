@@ -134,6 +134,15 @@
         }
     },
     "Tools": {
+        "Common": {
+            "embed": {
+                "button": "💻 Add to my website",
+                "title": "Embed this calculator in your blog",
+                "desc": "Copy the following HTML code and insert it into your website's editor. It's free, won't break your design, and will help your readers.",
+                "copy": "Copy iframe code",
+                "copied": "Copied!"
+            }
+        },
         "Inflation": {
             "meta": {
                 "title": "Inflation Calculator 2026: How much money have you lost?",
@@ -210,7 +219,10 @@
                     "a2b": "This formula is legally used to <bold>update rental income</bold> or salary reviews in agreements.",
                     "q3": "How much is my money from 2000 worth today in Spain?",
                     "a3": "Due to accumulated inflation in Spain since the year 2000 (approximately 60-70% accumulated), to buy the same thing you bought with €1,000 in the year 2000, today you would need close to <bold>€1,700</bold>."
-                }
+                },
+                "interlinkingTitle": "Keep reading and protect your wealth:",
+                "link1": "Alternatives to banking apps that read your data",
+                "link2": "Kakebo vs YNAB: Which is better for you?"
             }
         },
         "Savings": {
@@ -250,7 +262,10 @@
             "content": {
                 "whyTitle": "Why use the 50/30/20 rule with Kakebo?",
                 "whyText1": "The calculator uses an adaptation of the popular 50/30/20 budgetary rule applied to the Kakebo method. This rule suggests that 50% of your income should go to basic needs (Survival), 30% to wants (Leisure + Culture), and 20% to savings (Extra).",
-                "whyText2": "However, Kakebo goes beyond percentages. It invites you to reflect: Did that 'Leisure' expense make you happy? Could you move part of the 'Survival' budget to 'Culture'? The <bold>savings calculator</bold> gives you the numerical starting point; the Kakebo App helps you maintain the habit."
+                "whyText2": "However, Kakebo goes beyond percentages. It invites you to reflect: Did that 'Leisure' expense make you happy? Could you move part of the 'Survival' budget to 'Culture'? The <bold>savings calculator</bold> gives you the numerical starting point; the Kakebo App helps you maintain the habit.",
+                "interlinkingTitle": "Improve your financial control:",
+                "link1": "Kakebo Method for Freelancers (Irregular income)",
+                "link2": "How to save as a couple without fighting"
             }
         },
         "Rule503020": {
@@ -305,7 +320,10 @@
                 "howTitle": "How to use this savings calculator?",
                 "howStep1": "<bold>Enter your net income:</bold> It is the final amount that reaches your bank each month (after taxes).",
                 "howStep2": "<bold>Adjust your fixed expenses:</bold> Try to keep your rent/mortgage + bills from exceeding half of that number.",
-                "howStep3": "<bold>Automate your savings:</bold> Set up an automatic transfer of 20% to another account (or Kakebo) as soon as you get paid."
+                "howStep3": "<bold>Automate your savings:</bold> Set up an automatic transfer of 20% to another account (or Kakebo) as soon as you get paid.",
+                "interlinkingTitle": "Recommended readings:",
+                "link1": "The 30-day rule to avoid impulse buying",
+                "link2": "Dangers of automatic savings apps"
             }
         }
     },

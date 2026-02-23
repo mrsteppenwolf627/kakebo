@@ -134,6 +134,15 @@
         }
     },
     "Tools": {
+        "Common": {
+            "embed": {
+                "button": "💻 Añadir a mi web",
+                "title": "Inserta esta calculadora en tu blog",
+                "desc": "Copia el siguiente código HTML e insértalo en el editor de tu página web. Es gratis, no altera tu diseño y ayudará a tus lectores.",
+                "copy": "Copiar código iframe",
+                "copied": "¡Copiado!"
+            }
+        },
         "Inflation": {
             "meta": {
                 "title": "Calculadora Inflación 2026: ¿Cuánto dinero has perdido realmente?",
@@ -210,7 +219,10 @@
                     "a2b": "Esta fórmula es la que se utiliza legalmente para <bold>actualizar rentas de alquiler</bold> o revisiones salariales en convenios.",
                     "q3": "¿Cuánto vale mi dinero de 2000 hoy en España?",
                     "a3": "Debido a la inflación acumulada en España desde el año 2000 (aproximadamente un 60-70% acumulado), para comprar lo mismo que comprabas con 1.000€ en el año 2000, hoy necesitarías cerca de <bold>1.700€</bold>."
-                }
+                },
+                "interlinkingTitle": "Sigue leyendo y protege tu patrimonio:",
+                "link1": "Alternativas a las apps bancarias que leen tus datos",
+                "link2": "Kakebo vs YNAB: ¿Cuál es mejor para ti?"
             }
         },
         "Savings": {
@@ -250,7 +262,10 @@
             "content": {
                 "whyTitle": "¿Por qué usar la regla 50/30/20 con Kakebo?",
                 "whyText1": "La calculadora utiliza una adaptación de la popular regla presupuestaria 50/30/20 aplicada al método Kakebo. Esta regla sugiere que el 50% de tus ingresos debe ir a necesidades básicas (Supervivencia), el 30% a deseos (Ocio + Cultura) y el 20% a ahorro (Extra).",
-                "whyText2": "Sin embargo, Kakebo va más allá de los porcentajes. Te invita a reflexionar: ¿Ese gasto en 'Ocio' te hizo feliz? ¿Podrías mover parte del presupuesto de 'Supervivencia' a 'Cultura'? La <bold>calculadora de ahorro</bold> te da el punto de partida numérico; la App de Kakebo te ayuda a mantener el hábito."
+                "whyText2": "Sin embargo, Kakebo va más allá de los porcentajes. Te invita a reflexionar: ¿Ese gasto en 'Ocio' te hizo feliz? ¿Podrías mover parte del presupuesto de 'Supervivencia' a 'Cultura'? La <bold>calculadora de ahorro</bold> te da el punto de partida numérico; la App de Kakebo te ayuda a mantener el hábito.",
+                "interlinkingTitle": "Mejora tu control financiero:",
+                "link1": "Método Kakebo para autónomos (Ingresos irregulares)",
+                "link2": "Ahorrar en pareja sin discutir"
             }
         },
         "Rule503020": {
@@ -305,7 +320,10 @@
                 "howTitle": "¿Cómo usar esta calculadora de ahorro?",
                 "howStep1": "<bold>Introduce tus ingresos netos:</bold> Es la cantidad final que llega a tu banco cada mes (después de impuestos).",
                 "howStep2": "<bold>Ajusta tus gastos fijos:</bold> Intenta que tu alquiler/hipoteca + facturas no supere la mitad de ese número.",
-                "howStep3": "<bold>Automatiza tu ahorro:</bold> Configura una transferencia automática del 20% a otra cuenta (o a Kakebo) nada más cobrar."
+                "howStep3": "<bold>Automatiza tu ahorro:</bold> Configura una transferencia automática del 20% a otra cuenta (o a Kakebo) nada más cobrar.",
+                "interlinkingTitle": "Lecturas recomendadas:",
+                "link1": "La regla de los 30 días para evitar compras impulsivas",
+                "link2": "Peligros de las apps de ahorro automático"
             }
         }
     },

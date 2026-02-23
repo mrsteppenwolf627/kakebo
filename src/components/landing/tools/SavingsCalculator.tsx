@@ -3,9 +3,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { EmbedModal } from "./EmbedModal";
 
 export function SavingsCalculator() {
     const t = useTranslations("Tools.Savings");
+    const tCommon = useTranslations("Tools.Common.embed");
+    const [isEmbedOpen, setIsEmbedOpen] = useState(false);
     const [income, setIncome] = useState<number>(1500);
     const [fixedExpenses, setFixedExpenses] = useState<number>(600);
 
@@ -187,6 +190,19 @@ export function SavingsCalculator() {
                                 </Link>
                             </div>
                         </div>
+
+                        {/* Embed Button */}
+                        <div className="flex justify-center mt-4">
+                            <button
+                                onClick={() => setIsEmbedOpen(true)}
+                                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                </svg>
+                                {tCommon('button')}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -199,8 +215,28 @@ export function SavingsCalculator() {
                     <p>
                         {t.rich('content.whyText2', { bold: (chunks) => <strong>{chunks}</strong> })}
                     </p>
+
+                    <h3 className="mt-12">{t('content.interlinkingTitle')}</h3>
+                    <ul>
+                        <li>
+                            <Link href="/blog/metodo-kakebo-para-autonomos" className="text-primary hover:underline">
+                                {t('content.link1')}
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/blog/ahorro-pareja" className="text-primary hover:underline">
+                                {t('content.link2')}
+                            </Link>
+                        </li>
+                    </ul>
                 </div>
             </div>
+
+            <EmbedModal
+                isOpen={isEmbedOpen}
+                onClose={() => setIsEmbedOpen(false)}
+                toolPath="/herramientas/calculadora-ahorro"
+            />
         </div>
     );
 }

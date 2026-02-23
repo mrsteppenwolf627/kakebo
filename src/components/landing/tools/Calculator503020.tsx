@@ -6,9 +6,12 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { analytics } from "@/lib/analytics";
 import { useTranslations } from "next-intl";
+import { EmbedModal } from "./EmbedModal";
 
 export function Calculator503020() {
     const t = useTranslations("Tools.Rule503020");
+    const tCommon = useTranslations("Tools.Common.embed");
+    const [isEmbedOpen, setIsEmbedOpen] = useState(false);
     const [income, setIncome] = useState(2000);
 
     useEffect(() => {
@@ -163,6 +166,19 @@ export function Calculator503020() {
                     </Link>
                 </div>
 
+                {/* Embed Button */}
+                <div className="flex justify-center mt-4">
+                    <button
+                        onClick={() => setIsEmbedOpen(true)}
+                        className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors"
+                    >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                        {tCommon('button')}
+                    </button>
+                </div>
+
             </div>
 
             {/* SEO Content Section - Keeping it in Client Component for simplicity of layout, but could be passed as children */}
@@ -199,8 +215,27 @@ export function Calculator503020() {
                     <li>{t.rich('content.howStep2', { bold: (chunks) => <strong>{chunks}</strong> })}</li>
                     <li>{t.rich('content.howStep3', { bold: (chunks) => <strong>{chunks}</strong> })}</li>
                 </ol>
+
+                <h3 className="mt-12 text-2xl mb-4 font-serif text-stone-900">{t('content.interlinkingTitle')}</h3>
+                <ul>
+                    <li>
+                        <Link href="/blog/regla-30-dias" className="text-primary hover:underline">
+                            {t('content.link1')}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/blog/peligros-apps-ahorro-automatico" className="text-primary hover:underline">
+                            {t('content.link2')}
+                        </Link>
+                    </li>
+                </ul>
             </div>
 
+            <EmbedModal
+                isOpen={isEmbedOpen}
+                onClose={() => setIsEmbedOpen(false)}
+                toolPath="/herramientas/regla-50-30-20"
+            />
         </div>
     );
 }

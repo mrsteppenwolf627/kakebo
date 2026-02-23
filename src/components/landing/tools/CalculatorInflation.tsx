@@ -13,9 +13,12 @@ import {
 } from "recharts";
 import { analytics } from "@/lib/analytics";
 import { useTranslations } from "next-intl";
+import { EmbedModal } from "./EmbedModal";
 
 export function CalculatorInflation() {
     const t = useTranslations("Tools.Inflation");
+    const tCommon = useTranslations("Tools.Common.embed");
+    const [isEmbedOpen, setIsEmbedOpen] = useState(false);
     const [savings, setSavings] = useState(10000);
     const [inflationRate, setInflationRate] = useState(3);
     const [years, setYears] = useState(10);
@@ -246,6 +249,19 @@ export function CalculatorInflation() {
                             {t('cta.buttonSecondary')}
                         </Link>
                     </div>
+
+                    {/* Embed Button */}
+                    <div className="flex justify-center mt-6">
+                        <button
+                            onClick={() => setIsEmbedOpen(true)}
+                            className="inline-flex items-center gap-2 text-sm text-stone-400 hover:text-white transition-colors"
+                        >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                            {tCommon('button')}
+                        </button>
+                    </div>
                 </div>
 
             </div>
@@ -335,8 +351,27 @@ export function CalculatorInflation() {
                     </div>
                 </div>
 
+                <h3 className="mt-12 text-2xl mb-4 font-serif text-stone-900">{t('content.interlinkingTitle')}</h3>
+                <ul>
+                    <li>
+                        <Link href="/blog/alternativas-a-app-bancarias" className="text-primary hover:underline">
+                            {t('content.link1')}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/blog/kakebo-vs-ynab" className="text-primary hover:underline">
+                            {t('content.link2')}
+                        </Link>
+                    </li>
+                </ul>
+
             </div>
 
+            <EmbedModal
+                isOpen={isEmbedOpen}
+                onClose={() => setIsEmbedOpen(false)}
+                toolPath="/herramientas/calculadora-inflacion"
+            />
         </div>
     );
 }
