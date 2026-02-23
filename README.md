@@ -250,6 +250,9 @@ Si decides continuar con la ayuda de la IA:
 - 🎨 **CLS Eliminado**: Inyección nativa de variables CSS de fuentes (Inter y Playfair Display) para evitar saltos (Cumulative Layout Shift).
 - 📦 **Lazy Loading (INP)**: Implementado `next/dynamic` en la Landing Page para diferir la hidratación Javascript de secciones inferiores, mejorando el Interaction to Next Paint.
 
+**Bugfixes:**
+- 🐛 **MDX 500 Error**: Solucionado un error 500 (Internal Server Error) recurrente al renderizar imágenes dentro de los artículos del blog debido a incompatibilidades con atributos obligatorios del componente nativo `next/image`.
+
 ### v3.10.0 (2026-02-23) - Content Strategy & Blog Launch 📝🚀
 
 **Marketing & SEO:**
