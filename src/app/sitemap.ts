@@ -45,6 +45,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.5,
         },
+        {
+            url: `${baseUrl}/sobre-nosotros`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
         // Tools
         {
             url: `${baseUrl}/herramientas/regla-50-30-20`,
@@ -54,6 +60,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
         {
             url: `${baseUrl}/herramientas/calculadora-inflacion`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/herramientas/calculadora-ahorro`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.9,
