@@ -50,10 +50,10 @@
     },
     "Hero": {
         "badge": "Track expenses with intention",
-        "title": "Kakebo AI: <br className=\"hidden sm:inline\" />Japanese Method Expense Tracker App",
-        "subtitle": "The <bold>Japanese Method Expense Tracker App</bold>.<br>No bank formatting, 100% private and AI-powered.",
-        "ctaPrimary": "Start Free",
-        "ctaSecondary": "Learn More",
+        "title": "Kakebo Online: <br className=\"hidden sm:inline\" />Expense Tracker App with the Japanese Method",
+        "subtitle": "The <bold>Expense Tracker based on the Japanese Method</bold>.<br>No banks, 100% private, AI-powered.",
+        "ctaPrimary": "Get Started Free",
+        "ctaSecondary": "Learn more",
         "trustSignal": "🔒 Instant registration · No card required · <bold>Total privacy</bold>",
         "stats": {
             "trial": "14 Days",
@@ -345,9 +345,9 @@
     },
     "Landing": {
         "meta": {
-            "title": "Kakebo AI: Japanese Savings App | No Bank, With AI",
+            "title": "Kakebo AI: Online Kakebo Savings App | No Bank, AI-Powered",
             "description": "Control your expenses with the Japanese method. 100% private, no bank connection. Built-in AI. Start for free.",
-            "ogTitle": "Kakebo AI: Japanese Savings App | No Bank, With AI",
+            "ogTitle": "Kakebo AI: Online Kakebo Savings App | No Bank, AI-Powered",
             "ogDescription": "Control your expenses with the Japanese method. 100% private, no bank connection. Built-in AI. Start for free."
         },
         "SEO": {

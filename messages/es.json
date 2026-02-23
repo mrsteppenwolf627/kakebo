@@ -50,7 +50,7 @@
     },
     "Hero": {
         "badge": "Registra gastos con intención",
-        "title": "Kakebo AI: <br className=\"hidden sm:inline\" />App de Control de Gastos con el Método Japonés",
+        "title": "Kakebo Online: <br className=\"hidden sm:inline\" />App de Control de Gastos con el Método Japonés",
         "subtitle": "La <bold>App de Control de Gastos basada en el Método Japonés</bold>.<br>Sin bancos, 100% privado y con asistencia de IA.",
         "ctaPrimary": "Empezar Gratis",
         "ctaSecondary": "Más información",
@@ -345,9 +345,9 @@
     },
     "Landing": {
         "meta": {
-            "title": "Kakebo AI: App de Ahorro Japonés | Sin Banco, Con IA",
+            "title": "Kakebo AI: App Kakebo Online para Ahorro | Sin Banco, Con IA",
             "description": "Controla tus gastos con el método japonés. 100% privado, sin conectar tu banco. IA integrada. Empieza gratis.",
-            "ogTitle": "Kakebo AI: App de Ahorro Japonés | Sin Banco, Con IA",
+            "ogTitle": "Kakebo AI: App Kakebo Online para Ahorro | Sin Banco, Con IA",
             "ogDescription": "Controla tus gastos con el método japonés. 100% privado, sin conectar tu banco. IA integrada. Empieza gratis."
         },
         "SEO": {
