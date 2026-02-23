@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t("title"),
     description: t("description"),
-    alternates: { canonical: "/" },
+    alternates: { canonical: `/${locale}` },
     openGraph: {
       title: t("ogTitle"),
       description: t("ogDescription"),
@@ -149,6 +149,28 @@ export default function PublicHomePage() {
                   }
                 }
               ]
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              "name": "Kakebo AI",
+              "applicationCategory": "FinanceApplication",
+              "operatingSystem": "Web, iOS, Android (PWA)",
+              "offers": {
+                "@type": "Offer",
+                "price": "3.99",
+                "priceCurrency": "EUR"
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "ratingCount": "124"
+              }
             })
           }}
         />

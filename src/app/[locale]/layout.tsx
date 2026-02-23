@@ -35,10 +35,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       apple: "/icon.png",
     },
     alternates: {
-      canonical: "/",
+      canonical: `/${locale}`,
       languages: {
         "es": "/es",
         "en": "/en",
+        "x-default": "/es"
       },
     },
     openGraph: {

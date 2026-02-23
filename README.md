@@ -238,9 +238,13 @@ Si decides continuar con la ayuda de la IA:
 
 ## 📝 Changelog Reciente
 
-### v3.9.0 (2026-02-20) - AI Search & Streaming ⚡🔍
+### v3.10.0 (2026-02-23) - Content Strategy & Blog Launch 📝🚀
 
-**Búsqueda transversal:**
+**Marketing & SEO:**
+- 📝 **10 Artículos Core Bilingües**: Publicados 10 posts de alto valor abordando dolores reales de los usuarios ("Kakebo vs YNAB", "Apps de Ahorro Automático", "Ahorro en Pareja") usando técnicas de Copywriting Avanzado.
+- 🇪🇸/🇬🇧 **Blog Internacionalizado**: Todos los artículos disponibles, enrutados de forma nativa en español e inglés con optimización de metadata y schema de FAQs.
+
+### v3.9.0 (2026-02-20) - AI Search & Streaming ⚡🔍
 - 🔍 **Cross-category Search**: Al preguntar por "comida", "vicios", "salud"... la búsqueda recorre **todas** las categorías (Supervivencia, Opcional, Cultura, Extra) y muestra la categoría de origen de cada gasto.
 - 🎯 **Re-ranking Multi-señal (P2-2)**: Los resultados se priorizan combinando similitud semántica (60%), recencia (20%) y coincidencia de categoría (20%). Modo `crossCategory` para búsquedas conceptuales.
 - 📡 **Filtros Estructurados en Vector Search (P2-1)**: Pre-filtros de categoría, fecha e importe en `expense_embeddings` antes de la búsqueda vectorial. 10× mejora de latencia (500ms → 50ms), 96% menos filas escaneadas.

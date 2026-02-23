@@ -3,7 +3,9 @@ import { Metadata } from "next";
 import { Link } from "@/i18n/routing";
 import { Footer, Navbar } from "@/components/landing";
 import { getTranslations } from 'next-intl/server';
-
+import Image from 'next/image';
+import fs from 'fs';
+import path from 'path';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Blog.index' });
@@ -37,51 +39,67 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                     </div>
 
                     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                        {posts.map((post) => (
-                            <article
-                                key={post.slug}
-                                className="flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/50 hover:shadow-md"
-                            >
-                                {/* Image placeholder - In real app, use next/image with post.frontmatter.image */}
-                                <div className="aspect-video w-full bg-muted/50 flex items-center justify-center text-muted-foreground/20">
-                                    <span className="text-4xl font-serif">K</span>
-                                </div>
+                        {posts.map((post) => {
+                            const publicImagePath = post.frontmatter.image ? path.join(process.cwd(), 'public', post.frontmatter.image) : null;
+                            const hasImage = publicImagePath && fs.existsSync(publicImagePath);
 
-                                <div className="flex flex-1 flex-col p-6">
-                                    <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
-                                        <time dateTime={post.frontmatter.date}>
-                                            {new Date(post.frontmatter.date).toLocaleDateString(locale === 'es' ? "es-ES" : "en-US", {
-                                                year: "numeric",
-                                                month: "long",
-                                                day: "numeric",
-                                            })}
-                                        </time>
-                                        <span>•</span>
-                                        <span>{post.frontmatter.readingTime || t('readMore')}</span>
-                                    </div>
+                            return (
+                                <article
+                                    key={post.slug}
+                                    className="flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/50 hover:shadow-md"
+                                >
+                                    {hasImage && post.frontmatter.image ? (
+                                        <div className="relative aspect-video w-full overflow-hidden">
+                                            <Image
+                                                src={post.frontmatter.image}
+                                                alt={post.frontmatter.title}
+                                                fill
+                                                className="object-cover transition-transform hover:scale-105"
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="aspect-video w-full bg-muted/50 flex items-center justify-center text-muted-foreground/20">
+                                            <span className="text-4xl font-serif">K</span>
+                                        </div>
+                                    )}
 
-                                    <h3 className="mb-2 text-xl font-serif font-bold text-foreground">
-                                        <Link href={`/blog/${post.slug}`} className="hover:underline">
-                                            {post.frontmatter.title}
+                                    <div className="flex flex-1 flex-col p-6">
+                                        <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
+                                            <time dateTime={post.frontmatter.date}>
+                                                {new Date(post.frontmatter.date).toLocaleDateString(locale === 'es' ? "es-ES" : "en-US", {
+                                                    year: "numeric",
+                                                    month: "long",
+                                                    day: "numeric",
+                                                })}
+                                            </time>
+                                            <span>•</span>
+                                            <span>{post.frontmatter.readingTime || t('readMore')}</span>
+                                        </div>
+
+                                        <h3 className="mb-2 text-xl font-serif font-bold text-foreground">
+                                            <Link href={`/blog/${post.slug}`} className="hover:underline">
+                                                {post.frontmatter.title}
+                                            </Link>
+                                        </h3>
+
+                                        <p className="mb-4 flex-1 text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                                            {post.frontmatter.excerpt}
+                                        </p>
+
+                                        <Link
+                                            href={`/blog/${post.slug}`}
+                                            className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+                                        >
+                                            {t('readMore')}
+                                            <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                            </svg>
                                         </Link>
-                                    </h3>
-
-                                    <p className="mb-4 flex-1 text-sm text-muted-foreground line-clamp-3 leading-relaxed">
-                                        {post.frontmatter.excerpt}
-                                    </p>
-
-                                    <Link
-                                        href={`/blog/${post.slug}`}
-                                        className="inline-flex items-center text-sm font-medium text-primary hover:underline"
-                                    >
-                                        {t('readMore')}
-                                        <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                        </svg>
-                                    </Link>
-                                </div>
-                            </article>
-                        ))}
+                                    </div>
+                                </article>
+                            );
+                        })}
                     </div>
                 </div>
             </div>
