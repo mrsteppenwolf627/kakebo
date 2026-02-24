@@ -13,6 +13,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         description: t('description'),
         alternates: {
             canonical: `https://www.metodokakebo.com/${locale}/herramientas/calculadora-ahorro`,
+            languages: {
+                "es": "https://www.metodokakebo.com/es/herramientas/calculadora-ahorro",
+                "en": "https://www.metodokakebo.com/en/herramientas/calculadora-ahorro",
+                "x-default": "https://www.metodokakebo.com/es/herramientas/calculadora-ahorro"
+            }
         },
         openGraph: {
             type: "website",

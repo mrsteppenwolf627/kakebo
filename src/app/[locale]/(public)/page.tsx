@@ -29,11 +29,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: t("title"),
     description: t("description"),
     alternates: {
-      canonical: `/${locale}`,
+      canonical: `https://www.metodokakebo.com/${locale === 'es' ? 'es' : 'en'}`,
       languages: {
-        "es": "/es",
-        "en": "/en",
-        "x-default": "/es"
+        "es": "https://www.metodokakebo.com/es",
+        "en": "https://www.metodokakebo.com/en",
+        "x-default": "https://www.metodokakebo.com/es"
       }
     },
     openGraph: {

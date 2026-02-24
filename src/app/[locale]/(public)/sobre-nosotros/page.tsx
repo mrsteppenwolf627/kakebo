@@ -14,6 +14,11 @@ export async function generateMetadata({ params: { locale } }: { params: { local
         },
         alternates: {
             canonical: `https://www.metodokakebo.com/${locale === 'es' ? 'es' : 'en'}/sobre-nosotros`,
+            languages: {
+                "es": "https://www.metodokakebo.com/es/sobre-nosotros",
+                "en": "https://www.metodokakebo.com/en/sobre-nosotros",
+                "x-default": "https://www.metodokakebo.com/es/sobre-nosotros"
+            }
         },
     };
 }
