@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         title: t('title'),
         description: t('description'),
         alternates: {
-            canonical: "/herramientas/regla-50-30-20",
+            canonical: `https://www.metodokakebo.com/${locale}/herramientas/regla-50-30-20`,
         },
         openGraph: {
             title: t('ogTitle'),

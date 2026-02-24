@@ -25,6 +25,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       address: false,
       telephone: false,
     },
+    alternates: {
+      languages: {
+        "es": "https://www.metodokakebo.com/es",
+        "en": "https://www.metodokakebo.com/en",
+        "x-default": "https://www.metodokakebo.com/es",
+      },
+    },
     manifest: "/manifest.webmanifest",
     themeColor: "#fafaf9",
     appleWebApp: {
@@ -35,14 +42,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     icons: {
       icon: "/icon.png",
       apple: "/icon.png",
-    },
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        "es": "/es",
-        "en": "/en",
-        "x-default": "/es"
-      },
     },
     openGraph: {
       title: t("ogTitle"),
@@ -95,7 +94,6 @@ import { Inter, Playfair_Display } from "next/font/google";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
-import SoftwareAppJsonLd from "@/components/seo/SoftwareAppJsonLd";
 import { CookieBanner } from "@/components/landing";
 
 import { NextIntlClientProvider } from 'next-intl';
@@ -125,7 +123,6 @@ export default async function LocaleLayout({
     <html lang={locale} className={`${inter.variable} ${playfair.variable} overflow-x-hidden`} suppressHydrationWarning>
       <body className={`font-sans overflow-x-hidden max-w-[100vw] bg-sakura text-stone-900 dark:bg-stone-950 dark:text-stone-100 transition-colors duration-300 antialiased`}>
         <NextIntlClientProvider messages={messages}>
-          <SoftwareAppJsonLd />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

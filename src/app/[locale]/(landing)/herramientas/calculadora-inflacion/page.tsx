@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         description: t('description'),
         keywords: ["calculadora inflación españa", "calcular ipc acumulado", "actualizar renta ipc", "inflación españa 2026", "pérdida poder adquisitivo", "calculadora ipc ine"], // Keywords might need their own translation or strategy
         alternates: {
-            canonical: "/herramientas/calculadora-inflacion",
+            canonical: `https://www.metodokakebo.com/${locale}/herramientas/calculadora-inflacion`,
         },
         openGraph: {
             type: "website",
