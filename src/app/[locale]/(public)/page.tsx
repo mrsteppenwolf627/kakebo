@@ -129,32 +129,33 @@ export default function PublicHomePage() {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": [
-                {
-                  "@type": "Question",
-                  "name": t('SEO.faqSchema.q1'),
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": t('SEO.faqSchema.a1')
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": t('SEO.faqSchema.q2'),
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": t('SEO.faqSchema.a2')
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": t('SEO.faqSchema.q3'),
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": t('SEO.faqSchema.a3')
-                  }
-                }
+              "@type": "SoftwareApplication",
+              "name": "Kakebo AI",
+              "url": "https://www.metodokakebo.com",
+              "applicationCategory": "FinanceApplication",
+              "operatingSystem": "Web, PWA, iOS, Android",
+              "inLanguage": "es",
+              "offers": {
+                "@type": "Offer",
+                "price": "3.99",
+                "priceCurrency": "EUR",
+                "availability": "https://schema.org/InStock",
+                "priceValidUntil": "2027-01-01"
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "ratingCount": "24",
+                "bestRating": "5"
+              },
+              "description": "App de control de gastos basada en el método japonés Kakebo. Sin conexión bancaria, 100% privado, con Agente IA integrado.",
+              "screenshot": "https://www.metodokakebo.com/api/og",
+              "featureList": [
+                "Registro manual consciente de gastos",
+                "Agente IA financiero personal",
+                "Sin conexión bancaria",
+                "Categorías Kakebo nativas",
+                "Historial y exportación"
               ]
             })
           }}
@@ -164,23 +165,41 @@ export default function PublicHomePage() {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              "name": "Kakebo AI",
-              "applicationCategory": "FinanceApplication",
-              "operatingSystem": "Web, iOS, Android (PWA)",
-              "url": "https://www.metodokakebo.com",
-              "image": "https://www.metodokakebo.com/api/og",
-              "description": t('meta.description'),
-              "offers": {
-                "@type": "Offer",
-                "price": "3.99",
-                "priceCurrency": "EUR"
-              },
-              "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.8",
-                "ratingCount": "124"
-              }
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "¿Realmente es gratis empezar con Kakebo AI?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Sí, 100%. Puedes registrarte y usar el Plan Manual (control de gastos completo) sin pagar nada. El registro es instantáneo y no necesitas tarjeta de crédito."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "¿Qué incluye el trial de 14 días del Plan Pro?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "El trial te da acceso completo al Agente IA de finanzas: análisis automático, consejos personalizados, predicciones de ahorro e insights inteligentes. No se cobra hasta el día 15."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "¿Puedo cancelar el Plan Pro durante el trial?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Sí, puedes cancelar en cualquier momento desde tu perfil. Si cancelas durante los 14 días de trial, no se cobra nada."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "¿Mis datos financieros están seguros en Kakebo AI?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Sí. Usamos Supabase para autenticación y Stripe para pagos. Tus datos financieros están encriptados y nunca compartimos información con terceros. No nos conectamos a tu banco."
+                  }
+                }
+              ]
             })
           }}
         />

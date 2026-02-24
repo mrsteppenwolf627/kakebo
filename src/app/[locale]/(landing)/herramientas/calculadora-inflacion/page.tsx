@@ -119,7 +119,68 @@ export default function CalculatorInflationPage() {
             />
 
             <main className="pt-32 pb-20 px-6">
+                <div className="max-w-4xl mx-auto text-center mb-12">
+                    <h1 className="text-4xl md:text-5xl font-bold font-serif text-foreground mb-6">
+                        Calculadora de Inflación
+                    </h1>
+                    <p className="text-lg text-muted-foreground">
+                        Descubre cuánto poder adquisitivo pierden tus ahorros con el paso del tiempo.
+                    </p>
+                </div>
+
                 <CalculatorInflation />
+
+                <section className="py-16 max-w-3xl mx-auto space-y-12">
+                    <div>
+                        <h2 className="text-2xl font-bold font-serif mb-4">¿Cómo usar esta calculadora de inflación?</h2>
+                        <div className="space-y-4 text-muted-foreground">
+                            <p>
+                                El enemigo silencioso de tus ahorros en el banco no son los gastos imprevistos, sino la <strong>inflación</strong>. Esta calculadora te permite visualizar la devaluación real de tu dinero a lo largo de los años.
+                            </p>
+                            <p>
+                                Para utilizarla, introduce la cantidad de dinero que tienes ahorrada en "Efectivo Actual", selecciona una tasa de inflación estimada (históricamente en España ronda el 2-3% anual) y el número de años que prevés mantener ese dinero parado. La calculadora dibujará la curva de pérdida de valor.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 className="text-2xl font-bold font-serif mb-4">¿Qué te dice el resultado?</h2>
+                        <div className="space-y-4 text-muted-foreground">
+                            <p>
+                                La gráfica resultante es reveladora: te muestra la diferencia entre tu "Dinero Nominal" (el número que ves en tu cuenta corriente) y el "Poder Adquisitivo Real" (lo que realmente podrás comprar con ese dinero en el futuro).
+                            </p>
+                            <p>
+                                Si dejas 10.000€ quietos bajo el colchón durante 10 años con una inflación del 3%, seguirás teniendo 10.000 billetes, pero su capacidad de compra será equivalente a unos 7.400€ de hoy. Has perdido un 26% de tu riqueza simplemente por no hacer nada.
+                            </p>
+                            <p>
+                                Este resultado es la motivación principal para pasar del ahorro estático (guardar por guardar) a la inversión activa, buscando rentabilidades que al menos igualen o superen el porcentaje de inflación.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 className="text-2xl font-bold font-serif mb-4">Preguntas frecuentes sobre inflación e IPC</h2>
+                        <div className="space-y-6">
+                            {/* We cast here because we know the schema structure matches what we expect */}
+                            {((SCHEMA["@graph"].find(g => g["@type"] === "FAQPage") as any)?.mainEntity || []).map((faq: any, index: number) => (
+                                <div key={index}>
+                                    <h3 className="text-lg font-bold text-foreground">{faq.name}</h3>
+                                    <p className="text-muted-foreground mt-2">{faq.acceptedAnswer.text}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="text-center pt-8 border-t border-border">
+                        <h3 className="text-2xl font-bold mb-4">Vence a la inflación controlando tus gastos</h3>
+                        <p className="text-muted-foreground mb-6">
+                            El primer paso para protegerte de la subida de precios es optimizar en qué gastas tu dinero. Kakebo AI te ayuda a encontrar fugas de capital para que puedas ahorrar e invertir más rápido.
+                        </p>
+                        <a href="/login" className="bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-full hover:bg-primary/90 transition-colors inline-block">
+                            Optimizar mis gastos gratis
+                        </a>
+                    </div>
+                </section>
             </main>
 
             <Footer />

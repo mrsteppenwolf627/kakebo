@@ -79,7 +79,69 @@ export default function Calculator503020Page() {
             />
 
             <main className="pt-32 pb-20 px-6">
+                <div className="max-w-4xl mx-auto text-center mb-12">
+                    <h1 className="text-4xl md:text-5xl font-bold font-serif text-foreground mb-6">
+                        Calculadora Regla 50/30/20
+                    </h1>
+                    <p className="text-lg text-muted-foreground">
+                        Descubre tu sueldo ideal distribuyéndolo entre necesidades, caprichos y ahorro.
+                    </p>
+                </div>
+
                 <Calculator503020 />
+
+                <section className="py-16 max-w-3xl mx-auto space-y-12">
+                    <div>
+                        <h2 className="text-2xl font-bold font-serif mb-4">¿Cómo usar esta calculadora de la Regla 50/30/20?</h2>
+                        <div className="space-y-4 text-muted-foreground">
+                            <p>
+                                La <strong>regla 50/30/20</strong> es uno de los métodos de gestión financiera más populares del mundo por su tremenda simplicidad. Esta calculadora está diseñada para traducir tu sueldo neto a esos porcentajes de manera automática.
+                            </p>
+                            <p>
+                                Solo tienes que introducir tu salario mensual exacto. La herramienta dividirá ese monto en tres bloques (50% necesidades básicas, 30% estilo de vida, 20% ahorro e inversión). Esta visión macro es el paso fundamental antes de descender al micro y registrar gastos individuales diarios con el método Kakebo.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 className="text-2xl font-bold font-serif mb-4">¿Qué te dice el resultado?</h2>
+                        <div className="space-y-4 text-muted-foreground">
+                            <p>
+                                El bloque del <strong>50% (Necesidades)</strong> te indica el límite de dinero que debería ir destinado a sobrevivir: vivienda, facturas de luz y agua, comida del supermercado y transporte básico. Si tus gastos vitales superan ese 50%, tu economía está en alerta y deberías enfocarte en reducirlos.
+                            </p>
+                            <p>
+                                El bloque del <strong>30% (Caprichos)</strong> engloba tus restaurantes, compras no esenciales, Netflix y salidas. Es el presupuesto para disfrutar tu vida sin remordimientos.
+                            </p>
+                            <p>
+                                El bloque del <strong>20% (Ahorro)</strong> no es opcional. Es la porción de tu sueldo que debe ir directamente a un fondo de emergencia o inversiones a final de mes (o idealmente, a principio de mes).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 className="text-2xl font-bold font-serif mb-4">Pasos para aplicar la regla 50/30/20 en tu día a día</h2>
+                        <div className="space-y-6">
+                            {HOW_TO_SCHEMA.step.map((step, index) => (
+                                <div key={index} className="flex gap-4">
+                                    <div className="flex-none w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+                                        {index + 1}
+                                    </div>
+                                    <p className="text-muted-foreground mt-1">{step.text}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="text-center pt-8 border-t border-border">
+                        <h3 className="text-2xl font-bold mb-4">Lleva esta regla a un nivel superior</h3>
+                        <p className="text-muted-foreground mb-6">
+                            Saber los porcentajes es solo el principio. Únete a Kakebo AI para que nuestro asistente inteligente clasifique tus gastos diarios en estas áreas automáticamente.
+                        </p>
+                        <a href="/login" className="bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-full hover:bg-primary/90 transition-colors inline-block">
+                            Crear cuenta en Kakebo
+                        </a>
+                    </div>
+                </section>
             </main>
 
             <Footer />

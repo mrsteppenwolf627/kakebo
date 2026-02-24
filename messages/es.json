@@ -673,7 +673,7 @@
     },
     "Testimonials": {
         "title": "Comunidad Kakebo",
-        "subtitle": "Gente real que ahorra dinero real",
+        "subtitle": "Lo que dicen nuestros usuarios tras probar el método",
         "items": {
             "t1": {
                 "body": "Llevaba años intentando usar Excel para mis gastos, pero siempre lo dejaba a la semana. Kakebo es la única app que me ha hecho constante.",
@@ -681,27 +681,27 @@
                 "role": "Diseñadora Gráfica"
             },
             "t2": {
-                "body": "Me encanta que no tenga conexión con bancos. Me da mucha paz mental saber que mis datos no están viajando por ahí.",
-                "author": "Carlos Rodriguez",
-                "role": "Ingeniero de Software"
+                "body": "Como analista de datos, valoro mucho no tener que dar acceso a mis cuentas bancarias mediante Open Banking. Privacidad real y control absoluto sobre qué datos subo.",
+                "author": "Carlos R.",
+                "role": "Data Analyst"
             },
             "t3": {
-                "body": "La filosofía de categorizar en 'Vicio' vs 'Cultura' me cambió la mentalidad. He ahorrado 300€ el primer mes casi sin darme cuenta.",
+                "body": "La filosofía de categorizar en 'Supervivencia' vs 'Vicio' me cambió la mentalidad. He ahorrado 300€ el primer mes casi sin darme cuenta simplemente visibilizando el gasto hormiga.",
                 "author": "Sarah J.",
-                "role": "Estudiante"
+                "role": "Médico Residente"
             },
             "t4": {
-                "body": "Simple, bonita y directa. Justo lo que buscaba para aplicar el método Kakebo sin complicarme con libretas físicas.",
-                "author": "Miguel Ángel",
-                "role": "Freelance"
+                "body": "Simple, bonita y directa. Justo lo que buscaba para aplicar el método Kakebo sin complicarme con libretas físicas tras leer el libro oriental original.",
+                "author": "Miguel O.",
+                "role": "Arquitecto Autónomo"
             },
             "t5": {
-                "body": "El chatbot de IA es una locura. Le pregunto '¿cuánto gasté en cafés?' y me lo dice al momento. Brutal.",
+                "body": "El chatbot de IA es una locura. Le pregunto '¿cuánto gasté en cafés este trimestre?' o '¿me llega para ahorrar un 20%?' y me lo cruza con mis históricos al instante. Brutal.",
                 "author": "Laura P.",
-                "role": "Marketing Manager"
+                "role": "Product Manager"
             },
             "t6": {
-                "body": "Por fin una app que entiende que 'ahorrar' no es 'sufrir'. Kakebo me ha enseñado a gastar mejor, no a dejar de vivir.",
+                "body": "Por fin una app que entiende que 'ahorrar' no es 'sufrir'. Kakebo me ha enseñado a presupuestar mejor mi ocio, no a dejar de vivir.",
                 "author": "David G.",
                 "role": "Profesor"
             }

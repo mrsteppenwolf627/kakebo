@@ -673,7 +673,7 @@
     },
     "Testimonials": {
         "title": "Kakebo Community",
-        "subtitle": "Real people saving real money",
+        "subtitle": "What our users say after trying the method",
         "items": {
             "t1": {
                 "body": "I had been trying to use Excel for my expenses for years, but I always quit after a week. Kakebo is the only app that has made me consistent.",
@@ -681,27 +681,27 @@
                 "role": "Graphic Designer"
             },
             "t2": {
-                "body": "I love that it doesn't connect to banks. It gives me great peace of mind knowing my data isn't traveling around.",
-                "author": "Carlos Rodriguez",
-                "role": "Software Engineer"
+                "body": "As a data analyst, I highly value not having to give access to my bank accounts via Open Banking. Real privacy and absolute control over what data I upload.",
+                "author": "Carlos R.",
+                "role": "Data Analyst"
             },
             "t3": {
-                "body": "The philosophy of categorizing 'Vice' vs 'Culture' changed my mindset. I saved €300 the first month almost without realizing it.",
+                "body": "The philosophy of categorizing 'Survival' vs 'Vice' changed my mindset. I saved €300 the first month almost without realizing it just by visualizing small expenses.",
                 "author": "Sarah J.",
-                "role": "Student"
+                "role": "Medical Resident"
             },
             "t4": {
-                "body": "Simple, beautiful and direct. Just what I was looking for to apply the Kakebo method without complicating myself with physical notebooks.",
-                "author": "Miguel Ángel",
-                "role": "Freelance"
+                "body": "Simple, beautiful and direct. Just what I was looking for to apply the Kakebo method without complicating myself with physical notebooks after reading the original book.",
+                "author": "Miguel O.",
+                "role": "Freelance Architect"
             },
             "t5": {
-                "body": "The AI chatbot is crazy. I ask 'how much did I spend on coffee?' and it tells me instantly. Brutal.",
+                "body": "The AI chatbot is crazy. I ask 'how much did I spend on coffee this quarter?' or 'will I reach my 20% savings goal?' and it crosses data with my history instantly. Brutal.",
                 "author": "Laura P.",
-                "role": "Marketing Manager"
+                "role": "Product Manager"
             },
             "t6": {
-                "body": "Finally an app that understands that 'saving' is not 'suffering'. Kakebo has taught me to spend better, not to stop living.",
+                "body": "Finally an app that understands that 'saving' is not 'suffering'. Kakebo has taught me to budget my leisure better, not to stop living.",
                 "author": "David G.",
                 "role": "Teacher"
             }
@@ -1125,61 +1125,6 @@
             "keywords": "(SEO Placeholder: text about \"monthly budget\", \"saving goal\", \"kakebo method\".)"
         }
     },
-    "Tutorial": {
-        "title": "Kakebo Method Tutorial",
-        "subtitle": "Step-by-step guide to mastering your personal finances and starting to save effortlessly.",
-        "metaTitle": "How to use the Kakebo Method | Complete Saving Tutorial",
-        "metaDescription": "Learn what the Japanese Kakebo method is, how to divide your expenses into 4 categories, and start saving from the very first month with this complete guide.",
-        "toc": {
-            "title": "Table of Contents",
-            "section1": "1. What is Kakebo?",
-            "section2": "2. The 4 spending categories",
-            "section3": "3. How to use the Dashboard",
-            "section4": "4. The Smart AI Financial Agent"
-        },
-        "content": {
-            "s1": {
-                "title": "What is the Kakebo Method?",
-                "p1": "Kakebo is a traditional Japanese financial management and savings system created in the early 20th century. Its premise is simple: manually tracking your expenses to become conscious of where your money goes.",
-                "p2": "Unlike banking apps that automate everything (fostering detachment from spending), Kakebo requires you to write down every transaction yourself. By associating expenses with specific categories, you discover your financial 'black holes'."
-            },
-            "s2": {
-                "title": "The 4 Spending Categories",
-                "intro": "For the method to work, you must assign a maximum budget to 4 main sections, and categorize your expenses within them:",
-                "c1": "<bold>Survival:</bold> Unavoidable expenses. Rent, mortgage, water, electricity, groceries, or gas to commute.",
-                "c2": "<bold>Optional:</bold> Things that improve your life but aren't strictly necessary. Drinks at a bar, new clothes, restaurants, or dining out.",
-                "c3": "<bold>Culture:</bold> Everything that brings you continuous knowledge or emotional well-being. Books, museums, courses, Netflix, or Spotify.",
-                "c4": "<bold>Extra:</bold> Unforeseen or one-off expenses. Birthday gifts, car repairs, vacations, or emergencies."
-            },
-            "s3": {
-                "title": "How to use the Dashboard",
-                "p1": "In our digital platform, we have adapted this method so you don't need a paper notebook. The cycle begins every month:",
-                "step1": "Set up your monthly income and savings goal (the money you \"pay yourself\" first).",
-                "step2": "Every time you spend, log in and record the expense with a concept and its amount.",
-                "step3": "The central green bar shows the health of your savings goal, whether you are keeping it on track or in danger of missing it.",
-                "p2": "Through the visual dashboard, you can always see at a glance how much real available money you have left to spend, after discounting the savings you had planned."
-            },
-            "s4": {
-                "title": "Boost your savings with the AI Agent",
-                "p1": "The big novelty of Kakebo AI is its Smart Financial Agent. When recording an expense, if you are unsure of its category, you can hit the magic 'AI' button, and our model will decide the most appropriate category based on collective behavior.",
-                "p2": "Additionally, in the 'AI Agent' section you can chat freely: ask for advice to reach your goal, inquire about where to categorize weird expenses, or request an analysis of your consumption compared to the previous month."
-            }
-        },
-        "images": {
-            "img1": {
-                "alt": "Main Kakebo Method dashboard showing an interactive summary of expenses and incomes",
-                "title": "Start tracking your expenses in the main dashboard"
-            },
-            "img2": {
-                "alt": "Expense distribution according to the 4 Kakebo categories: Survival, Optional, Culture, and Extra",
-                "title": "Learn how to divide your monthly expenses efficiently"
-            },
-            "img3": {
-                "alt": "Detailed list of recent transactions and expenses categorized by Artificial Intelligence",
-                "title": "Analyze your expense history and evaluate your decisions"
-            }
-        }
-    },
     "Admin": {
         "title": "Admin Panel",
         "subtitle": "Manage VIP access and system configuration.",
@@ -1326,22 +1271,22 @@
     "About": {
         "meta": {
             "title": "About Kakebo AI: Philosophy, Privacy, and Our Team",
-            "description": "Learn who is behind Kakebo AI, our mission to give you back your financial control, and our absolute commitment to your privacy. No banks, no fluff.",
+            "description": "Learn who is behind Kakebo AI, our mission to give you back your financial control, and our absolute commitment to your privacy. Created by Antonio Alarcón.",
             "ogTitle": "About Kakebo AI: Our Mission and Values",
-            "ogDescription": "Discover why we created the most private and secure Kakebo app on the market, designed for peace of mind."
+            "ogDescription": "Discover why we created the most private and secure Kakebo app on the market, designed for financial peace of mind."
         },
         "title": "Our mission:",
         "subtitle": "To give you back control of your money without selling your data",
         "story": {
-            "title": "Our Story and Methodology",
-            "p1": "Kakebo AI was born out of a shared frustration by developers and personal finance experts. Traditional banking apps are designed to incentivize consumption, not savings. On the other hand, budgeting apps require connecting to your bank, compromising your privacy by commercializing your transactional data.",
-            "p2": "After years studying savings systems, we found the definitive solution in the Japanese <bold>Kakebo</bold> (Mindful Spending) method, backed by over a century of empirical efficacy. We have digitized this rigorous manual control method powered by Artificial Intelligence, keeping the platform <bold>100% private and independent</bold> from banks and financial institutions."
+            "title": "Our Story",
+            "p1": "Kakebo AI was born from a personal frustration of its creator, <bold>Antonio Alarcón</bold>, a software developer and personal finance enthusiast based in Spain. After trying dozens of banking apps and spreadsheets (the former designed to incentivize consumption, the latter requiring too much maintenance), he realized that something fundamental was missing in the market: a modern yet truly private tool.",
+            "p2": "After years studying savings systems, Antonio found the definitive solution in the Japanese <bold>Kakebo</bold> (Mindful Spending) method. He then decided to build Kakebo AI: the digitization of this rigorous manual control powered by Artificial Intelligence, keeping the platform <bold>100% independent</bold> of banks or financial institutions that commercialize your data."
         },
         "values": {
             "title": "Our Values",
             "v1": {
                 "title": "Absolute Privacy",
-                "desc": "Your data is yours. Kakebo AI will never require a connection to your bank. We don't read your bank accounts, we don't sell data to third parties."
+                "desc": "Your data is yours. Kakebo AI will never require a connection to your bank. We don't read your bank accounts, we don't sell profiles to third parties."
             },
             "v2": {
                 "title": "Mindful Savings",
@@ -1349,16 +1294,16 @@
             },
             "v3": {
                 "title": "Technology with Purpose",
-                "desc": "We use AI not to overwhelm you, but to be your financial coach. We detect patterns and give you real and actionable advice."
+                "desc": "We use AI not to overwhelm you with empty charts, but to be your financial coach. We detect patterns and give you real and actionable advice."
             }
         },
         "team": {
             "title": "The Team behind Kakebo AI",
-            "desc": "We are an independent team of developers and analysts united by privacy and financial health. Our expertise in developing secure software led us to create this ethical and transparent alternative. Our absolute commitment: to provide the best methodological tool to organize your money, free from biases, banks, and third-party data sales."
+            "desc": "Kakebo AI is a project founded and developed by Antonio Alarcón (mrsteppenwolf627), with the goal of democratizing financial health through secure code. With servers in the European Union and full commitment to the General Data Protection Regulation (GDPR), we operate ethically and transparently. Our promise: to provide the best methodological tool to organize your money, free from biases and selling data to third parties."
         },
         "contact": {
-            "title": "Contact and Support",
-            "text": "Do you have questions, feature requests, or just want to talk about zen finances? Write to us at:",
+            "title": "Contact and Direct Support",
+            "text": "Do you have operational questions, feature requests, or just want to talk about finance and investing? Write to us directly at:",
             "email": "soporte@metodokakebo.com"
         }
     }

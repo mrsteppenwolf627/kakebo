@@ -82,6 +82,7 @@ export default function TutorialPage() {
                             <li>{t('content.s3.step3')}</li>
                         </ol>
                         <p>{t('content.s3.p2')}</p>
+                        <p>{t('content.s3.p3')}</p>
 
                         <figure className="my-8 aspect-[16/9] w-full">
                             <ExpandableImage
@@ -95,6 +96,8 @@ export default function TutorialPage() {
                         <h2 id="section4" className="scroll-m-24">{t('toc.section4')}</h2>
                         <p>{t('content.s4.p1')}</p>
                         <p>{t('content.s4.p2')}</p>
+                        <p>{t('content.s4.p3')}</p>
+                        <p>{t('content.s4.p4')}</p>
 
                         <div className="mt-12 p-8 bg-card border border-border rounded-2xl text-center shadow-lg not-prose">
                             <h3 className="text-2xl font-serif font-bold text-foreground mb-3">¿Listo para empezar a ahorrar?</h3>
@@ -103,7 +106,6 @@ export default function TutorialPage() {
                                 Crea tu cuenta ahora
                             </Link>
                         </div>
-
                     </div>
 
                     {/* Sticky TOCSidebar */}
