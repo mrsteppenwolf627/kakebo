@@ -238,6 +238,18 @@ Si decides continuar con la ayuda de la IA:
 
 ## 📝 Changelog Reciente
 
+### v3.11.1 (2026-02-24) - Technical SEO & Content Polish 🛠️📈
+
+**SEO & Internacionalización:**
+- 🏷️ **Hreflang Tags**: Implementación completa de etiquetas `hreflang` dinámicas y con rutas absolutas en el `<head>` a través de `generateMetadata`, asegurando la correcta indexación de las versiones `/es` y `/en` en Google.
+- 🔗 **Canonical URLs Fix**: Corregida la desestructuración síncrona de `params` en Next.js 15 que causaba que páginas localizadas (como `/es/sobre-nosotros`) apuntaran erróneamente a la versión en inglés (`/en/sobre-nosotros`).
+- 🤖 **Schema Markup**: Inyectado el schema `SoftwareApplication` en los artículos del blog sobre "Kakebo Online" para ganar Rich Snippets descriptivos como aplicación financiera.
+- 📝 **Estructura Interna**: Se eliminó un tag `<title>` duplicado en el layout principal para mejorar el parseo por parte de los motores de búsqueda, y se añadieron enlaces internos contextuales a herramientas desde la Homepage.
+
+**Content & UX:**
+- ✍️ **Expansión de Contenido**: Ampliación estratégica de 6 artículos clave del blog (en ambos idiomas) con ~250-370 palabras adicionales cada uno para superar el umbral de los 800-1000 vocablos, profundizando en la psicología del método, la regla de los 30 días, y obstáculos comunes.
+- 🎯 **Optimización de Conversión**: Reubicación estratégica de los bloques CTA (Call to Action) para que aparezcan *antes* de la sección de "Artículos Relacionados" en los nuevos posts, maximizando la visibilidad.
+
 ### v3.11.0 (2026-02-23) - Link Baiting & Core Web Vitals ⚡🧲
 
 **SEO & Marketing (Link Baiting):**
