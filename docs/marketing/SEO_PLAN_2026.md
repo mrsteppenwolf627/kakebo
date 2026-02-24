@@ -82,5 +82,35 @@ Este es el portal competidor de origen italiano (control por voz).
 
 ---
 
+## ✅ MEJORAS DE CONTENIDO BLOG APLICADAS (2026-02-24)
+
+*Todas las mejoras del documento `docs/marketing/blog-mejoras-seo.md` fueron aplicadas a los 12 artículos `.es.mdx`.*
+
+### Cambios globales (todos los artículos)
+- Emojis eliminados de todos los H2
+- Fechas escalonadas (de `2025-11-18` a `2026-02-13`)
+- CTA H2 único y específico por artículo antes del botón final
+- Sección `## Artículos relacionados` con 3 links internos en cada artículo
+
+### Expansiones de contenido (artículos críticos)
+- **`kakebo-online-gratis`**: +800 palabras — paso a paso, tabla comparativa de opciones, FAQ, sección de uso en móvil
+- **`metodo-kakebo-guia-definitiva`**: +1.200 palabras — historia de Motoko Hani, las 4 preguntas del método, errores frecuentes, comparativa vs YNAB/50-30-20
+
+### Reescrituras de tono (artículos con léxico excesivo)
+- `kakebo-sueldo-minimo`: Las 3 reglas y sección digital completamente reescritas
+- `kakebo-vs-ynab`: Sección final "Lo mejor de ambos mundos" reescrita
+- `metodo-kakebo-para-autonomos`: Introducción, cita y secciones extremas reescritas
+- `libro-kakebo-pdf`: Sección `El Kakebo Digital` completamente reescrita
+- `regla-30-dias`: Paso a paso y sección Kakebo AI reescritas
+- `ahorro-pareja`: Modelos de cuenta y sección IA reescritas
+
+### Contenido nuevo (secciones añadidas)
+- `eliminar-gastos-hormiga`: Nueva sección "Cómo detectar tus gastos hormiga este mes"
+- `alternativas-a-app-bancarias`: Párrafo final reescrito (más directo y creíble)
+- `peligros-apps-ahorro-automatico`: Sección `Kakebo AI` reescrita sin hipérboles
+- `plantilla-kakebo-excel`: Párrafo "veredicto final" mejorado en tono
+
+---
+
 **Resumen de Carga de Trabajo Inmediato:**
 Hoy mismo hay que corregir el Site `robots.txt`, el `sitemap.xml`, lanzar la reindexación, modificar el `page.tsx` del index (Title, H1, Meta), el `page.tsx` (RootLayout para Canonicals) y configurar los schemas de forma manual o utilizando `next: metadata`.
