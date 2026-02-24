@@ -112,5 +112,35 @@ Este es el portal competidor de origen italiano (control por voz).
 
 ---
 
+## ✅ MEJORAS DE CONTENIDO BLOG EN INGLÉS APLICADAS (2026-02-24)
+
+*Todas las mejoras equivalentes a los artículos `.es.mdx` fueron aplicadas a los 12 artículos `.en.mdx`.* (commit `0662cbb`)
+
+### Cambios globales (todos los artículos EN)
+- Emojis eliminados de todos los H2 (💻, 📱, 🤖, 🐜, 🕵️, 🇺🇸, 🇯🇵, 🏆, 🎢, 📖, 🧠, 👁️, etc.)
+- Fechas escalonadas (de `2025-11-18` a `2026-02-10`, espejando versiones ES)
+- CTA H2 único y específico por artículo antes del botón final
+- Sección `## Related articles` con 3 links internos `/en/blog/` en cada artículo
+
+### Expansiones de contenido
+- **`kakebo-online-gratis.en.mdx`**: +800 palabras — paso a paso (5 pasos), tabla comparativa, FAQ, sección de uso en móvil
+- **`metodo-kakebo-guia-definitiva.en.mdx`**: Reescritura completa de ~48 líneas a ~2000 palabras — historia de Motoko Hani, 4 preguntas del método, errores frecuentes, comparativa vs YNAB/50-30-20
+
+### Reescrituras de tono (artículos con léxico hiperbólico/incoherente)
+- `kakebo-sueldo-minimo.en.mdx`: Las 3 reglas y la sección digital completamente reescritas
+- `kakebo-vs-ynab.en.mdx`: Sección `### 🚀 Kakebo AI` extremadamente verbosa reemplazada
+- `metodo-kakebo-para-autonomos.en.mdx`: Paso 3, categorías, cita y sección IA reescritas
+- `libro-kakebo-pdf.en.mdx`: Sección `## ⚡ Digital Kakebo` completamente reescrita (4 párrafos limpios)
+- `regla-30-dias.en.mdx`: Paso a paso y sección Kakebo AI reescritas
+- `ahorro-pareja.en.mdx`: Modelos de cuenta y sección IA reescritas
+- `peligros-apps-ahorro-automatico.en.mdx`: Sección `## ⛩️ Kakebo AI` reescrita
+- `alternativas-a-app-bancarias.en.mdx`: Sección `## 🎬 Decision Making` eliminada y reemplazada
+
+### Contenido nuevo (secciones añadidas)
+- `eliminar-gastos-hormiga.en.mdx`: Nueva sección "How to use Kakebo to detect your latte factor this month"
+- `plantilla-kakebo-excel.en.mdx`: "The final verdict" reescrito con tono más equilibrado
+
+---
+
 **Resumen de Carga de Trabajo Inmediato:**
 Hoy mismo hay que corregir el Site `robots.txt`, el `sitemap.xml`, lanzar la reindexación, modificar el `page.tsx` del index (Title, H1, Meta), el `page.tsx` (RootLayout para Canonicals) y configurar los schemas de forma manual o utilizando `next: metadata`.
