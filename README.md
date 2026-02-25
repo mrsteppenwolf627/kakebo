@@ -24,6 +24,51 @@
 </div>
 
 ---
+# Kakebo — Case Study (Portfolio)
+
+**Kakebo** es una app **full-stack** de budgeting inspirada en el método Kakeibo, construida como **producto real** (no demo) y diseñada para demostrar capacidades de **AI + automatización + data + UX**.
+
+- **Demo:** <<www.metodokakebo.com>>
+- **Stack:** Next.js + TypeScript + Tailwind, Supabase (Postgres/RLS), OpenAI (tool/function calling + streaming), Stripe, Vercel
+- **Rol:** End-to-end (producto, arquitectura, DB, frontend, backend, IA, despliegue)
+
+## Problema
+La mayoría de apps de finanzas personales son “cajas negras” o cobran por funciones básicas. Quería un sistema propio para:
+- registrar ingresos/gastos con categorías,
+- controlar presupuestos mensuales y sub-presupuestos,
+- visualizar métricas claras,
+- y contar con un **copiloto IA** capaz de responder y calcular sobre mis datos.
+
+## Solución (qué hace)
+- **Gestión de presupuestos y gastos** (mensual, categorías y sub-presupuestos)
+- **Dashboard y métricas** (visión de estado, evolución y hábitos de gasto)
+- **Copiloto IA** con herramientas: clasifica gastos, responde preguntas (“si gasto X, ¿cuánto me queda?”), y ayuda a mantener el sistema ordenado
+- **Auth + seguridad**: control de acceso y permisos con **Row-Level Security (RLS)** en Postgres
+- **Pagos (Stripe)** para habilitar un modelo SaaS (si se quisiera monetizar)
+
+## Arquitectura (alto nivel)
+**UI (Next.js)** → **API/Server Actions** → **Supabase (Postgres + RLS)**  
+Copiloto IA: **LLM con tool calling** → lee datos (select) → calcula → propone acciones → (opcional) escribe con confirmación del usuario  
+Streaming de respuestas para UX tipo “chat” (SSE/streaming).
+
+## Highlights técnicos (lo que demuestra)
+- **Diseño de data model** para budgeting (entidades, categorías, agregaciones)
+- **Seguridad real** con RLS y control de permisos por usuario
+- **Integración LLM** con tool/function calling (y reglas de escritura segura)
+- **Experiencia de producto**: UX clara, flujos simples, y métricas entendibles
+- **Despliegue** (Vercel) y prácticas de proyecto listas para entorno real
+
+## Por qué importa (para un rol técnico)
+Kakebo no es “una web bonita”: es un **sistema de datos + producto** que integra IA de forma útil, con seguridad, y con capacidad de escalar a un SaaS real.
+
+## Roadmap (próximos pasos)
+- Memoria y personalización del copiloto (preferencias + hábitos)
+- Mejora de observabilidad (logs, trazas, métricas de uso del copiloto)
+- Reglas de negocio más avanzadas (objetivos, alertas, recomendaciones)
+- Importación de movimientos (CSV/banco) y conciliación
+
+## Contacto
+**Aitor Alarcón Muñoz** — <<https://www.linkedin.com/in/aitoralarcon/>> — <<aitor@aitoralmu.xyz>>
 
 ## 🌸 ¿Qué es Kakebo?
 
