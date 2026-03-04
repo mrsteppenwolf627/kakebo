@@ -16,6 +16,14 @@ const KAKEBO_CATEGORIES = {
 
 type CategoryKey = keyof typeof KAKEBO_CATEGORIES;
 
+const API_TO_FRONTEND: Record<string, CategoryKey> = {
+  survival: "supervivencia",
+  optional: "opcional",
+  culture: "cultura",
+  extra: "extra",
+};
+
+
 type ExpenseRow = {
   id: string;
   user_id: string;
@@ -94,7 +102,8 @@ export default function ExpenseCalendar({
     };
 
     for (const r of rows) {
-      const key = r.category as CategoryKey;
+      const mappedCat = API_TO_FRONTEND[r.category] || r.category;
+      const key = mappedCat as CategoryKey;
       if (key in base) base[key] += Number(r.amount) || 0;
     }
 
@@ -740,7 +749,7 @@ export default function ExpenseCalendar({
                   <div className="min-w-0 flex-1">
                     <div className="font-medium text-foreground truncate">{r.note || t("list.noConcept")}</div>
                     <div className="text-xs text-muted-foreground mt-0.5">
-                      {r.date} · <span style={{ color: (KAKEBO_CATEGORIES as any)[r.category]?.color }}>{t(`categories.${r.category}`)}</span>
+                      {r.date} · <span style={{ color: (KAKEBO_CATEGORIES as any)[API_TO_FRONTEND[r.category] || r.category]?.color }}>{t(`categories.${API_TO_FRONTEND[r.category] || r.category}`)}</span>
                     </div>
                   </div>
 

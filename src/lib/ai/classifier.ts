@@ -144,13 +144,19 @@ export async function classifyExpense(
   messages.push({ role: "user", content: `Clasifica este gasto: "${input}"` });
 
   try {
-    const completion = await openai.chat.completions.create({
+    const payload: any = {
       model,
       messages,
-      temperature,
-      max_tokens: 150,
+      max_completion_tokens: 150,
       response_format: { type: "json_object" },
-    });
+    };
+
+    // gpt-5-nano doesn't support custom temperatures
+    if (model !== "gpt-5-nano") {
+      payload.temperature = temperature;
+    }
+
+    const completion = await openai.chat.completions.create(payload);
 
     const latencyMs = Date.now() - startTime;
     const usage = completion.usage;
