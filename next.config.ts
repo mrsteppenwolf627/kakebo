@@ -6,6 +6,34 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
+  async redirects() {
+    return [
+      {
+        source: "/es",
+        destination: "/",
+        permanent: true, // Esto devuelve un 301
+      },
+      {
+        source: "/es/:path*",
+        destination: "/:path*",
+        permanent: true, // Esto devuelve un 301
+      },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/es",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/es/:path*",
+        destination: "/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
