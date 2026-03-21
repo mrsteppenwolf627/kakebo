@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: t("title"),
     description: t("description"),
     alternates: {
-      canonical: `https://www.metodokakebo.com/${locale === 'es' ? '' : 'en'}/herramientas`,
+      canonical: `https://www.metodokakebo.com${locale === 'es' ? '' : '/en'}/herramientas`,
       languages: {
         "es": "https://www.metodokakebo.com/herramientas",
         "en": "https://www.metodokakebo.com/en/herramientas",
