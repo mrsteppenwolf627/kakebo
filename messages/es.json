@@ -135,6 +135,16 @@
         }
     },
     "Tools": {
+        "Index": {
+            "meta": {
+                "title": "Herramientas Kakebo: Calculadoras de Ahorro e Inflación",
+                "description": "Calculadoras gratuitas para gestionar tus finanzas: Regla 50/30/20, Calculadora de Inflación IPC y simuladores de ahorro."
+            },
+            "header": {
+                "title": "Herramientas de <italic>Ahorro Zen</italic>",
+                "subtitle": "Utilidades gratuitas diseñadas para darte claridad mental sobre tus números. Sin registros, sin trampas."
+            }
+        },
         "Common": {
             "embed": {
                 "button": "💻 Añadir a mi web",
@@ -146,10 +156,10 @@
         },
         "Inflation": {
             "meta": {
-                "title": "Calculadora Inflación 2026: ¿Cuánto dinero has perdido realmente?",
-                "description": "La inflación es el impuesto silencioso. Calcula cuántos ahorros has perdido en 2024-2026 y cuánto valdrá tu dinero en el futuro. Herramienta gratuita.",
-                "ogTitle": "¿Cuánto te está robando la inflación? (Calculadora 2026)",
-                "ogDescription": "Tus estimaciones fallan. Usa esta calculadora oficial de IPC para ver la pérdida real de poder adquisitivo de tus ahorros."
+                "title": "Calculadora de Inflación 2026: ¿Cuánto valor pierde tu dinero? (IPC)",
+                "description": "¿Cómo afecta el IPC a tus ahorros? Usa nuestra Calculadora de Inflación Gratuita 2026 para ver la pérdida real de poder adquisitivo. ¡Actualizada para España!",
+                "ogTitle": "Calculadora de Inflación 2026: Tu Poder Adquisitivo Real",
+                "ogDescription": "Descubre cuánto dinero pierdes por el IPC acumulado. Herramienta de cálculo de inflación para proteger tus ahorros."
             },
             "header": {
                 "title": "Calculadora de <italic>Inflación en España</italic>",
@@ -188,6 +198,10 @@
                     "future": "<bold>En 10 años:</bold> Ese mismo coche costará aproximadamente 13.439€.",
                     "problem": "<bold>El problema:</bold> Tú sigues teniendo solo 10.000€ en la caja. Tu dinero 'existe', pero vale mucho menos."
                 },
+                "rentTitle": "¿Cómo actualizar tu alquiler por el IPC?",
+                "rentText": "Si tu contrato de alquiler especifica que la renta se actualizará conforme al IPC, el propietario puede subirte el precio anualmente. Para calcularlo, se toma la tasa interanual publicada por el INE el mes anterior al aniversario del contrato. Es fundamental comprobar si existe un tope máximo legal (como el límite del 3% en España durante 2024-2025).",
+                "accumulatedTitle": "Inflación Acumulada: El Efecto 'Interés Compuesto' Inverso",
+                "accumulatedText": "La inflación es acumulativa. Una inflación del 2% anual durante 10 años no significa que los precios han subido un 20%, sino que han subido más del 21.8% debido al efecto compuesto. Este es el motivo por el cual dejar dinero quieto durante décadas es financieramente peligroso.",
                 "tableTitle": "Comparativa: Ahorro vs Inversión vs Inflación",
                 "tableHeaders": {
                     "strategy": "Estrategia",
@@ -1357,9 +1371,11 @@
             "desc": "No somos una gran corporación ni un equipo enorme. Soy Aitor, un desarrollador independiente (indie hacker) creando desde cero la herramienta de finanzas que siempre quise usar. Kakebo AI es un proyecto construido con esfuerzo personal, código seguro y servidores en la Unión Europea. Mi compromiso absoluto: proporcionarte la mejor herramienta metodológica para organizar tu dinero, libre de sesgos, bancos y venta de datos a terceros."
         },
         "contact": {
-            "title": "Contacto Directo",
-            "text": "¿Tienes dudas, peticiones de funcionalidades o simplemente quieres hablar de finanzas zen? Yo mismo te responderé. Escríbeme a:",
-            "email": "aitor@aitoralmu.xyz"
+            "title": "Contacto Directo y Soporte",
+            "text": "¿Tienes dudas sobre el método o necesitas soporte técnico? Como creador del proyecto, atiendo personalmente cada petición para asegurar la calidad del servicio.",
+            "email": "aitor@aitoralmu.xyz",
+            "phone": "+34 662 24 93 27",
+            "phoneLabel": "Atención al cliente (WhatsApp/Llamadas)"
         }
     }
 }

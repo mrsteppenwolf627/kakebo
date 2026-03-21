@@ -54,11 +54,11 @@ export function CalculatorInflation() {
         }).format(amount);
 
     return (
-        <div className="max-w-4xl mx-auto space-y-16">
+        <div className="max-w-6xl mx-auto space-y-16">
 
             {/* Header */}
             <div className="text-center space-y-6">
-                <h1 className="text-5xl md:text-6xl font-serif text-foreground leading-[1.1]">
+                <h1 className="text-5xl md:text-7xl font-serif text-foreground leading-[1.1]">
                     {t.rich('header.title', {
                         italic: (chunks) => <span className="italic text-red-500 dark:text-red-400">{chunks}</span>
                     })}
@@ -68,193 +68,78 @@ export function CalculatorInflation() {
                 </p>
             </div>
 
-            {/* Calculator Card */}
-            <div className="bg-card border border-border p-8 md:p-12 rounded-2xl shadow-sm space-y-12 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-stone-200 dark:from-stone-800 via-red-400 dark:via-red-500 to-stone-200 dark:to-stone-800"></div>
+            {/* Calculator Layout: Grid on Desktop */}
+            <div className="grid lg:grid-cols-12 gap-8 items-start">
 
-                {/* Input Section */}
-                <div className="grid md:grid-cols-3 gap-8">
-                    <div className="space-y-4">
-                        <label htmlFor="savings-input" className="text-sm font-medium text-muted-foreground uppercase tracking-wider block">
-                            {t('inputs.savings')}
-                        </label>
-                        <div className="relative">
-                            <input
-                                id="savings-input"
-                                type="number"
-                                min="0"
-                                step="1000"
-                                value={savings}
-                                onChange={(e) => setSavings(Number(e.target.value))}
-                                className="w-full text-2xl font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-foreground"
-                            />
-                            <span className="absolute right-0 top-3 text-muted-foreground">€</span>
+                {/* Left Sidebar: Inputs */}
+                <aside className="lg:col-span-4 bg-card border border-border p-8 rounded-2xl shadow-sm space-y-8 sticky top-24">
+                    <div className="space-y-6">
+                        <div className="space-y-4">
+                            <label htmlFor="savings-input" className="text-xs font-bold text-muted-foreground uppercase tracking-widest block">
+                                {t('inputs.savings')}
+                            </label>
+                            <div className="relative">
+                                <input
+                                    id="savings-input"
+                                    type="number"
+                                    min="0"
+                                    step="1000"
+                                    value={savings}
+                                    onChange={(e) => setSavings(Number(e.target.value))}
+                                    className="w-full text-3xl font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-foreground"
+                                />
+                                <span className="absolute right-0 top-3 text-muted-foreground font-serif">€</span>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <label htmlFor="inflation-input" className="text-xs font-bold text-muted-foreground uppercase tracking-widest block">
+                                {t('inputs.inflation')}
+                            </label>
+                            <div className="relative">
+                                <input
+                                    id="inflation-input"
+                                    type="number"
+                                    min="0"
+                                    max="50"
+                                    step="0.1"
+                                    value={inflationRate}
+                                    onChange={(e) => setInflationRate(Number(e.target.value))}
+                                    className="w-full text-3xl font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-red-500 dark:text-red-400"
+                                />
+                                <span className="absolute right-0 top-3 text-muted-foreground font-serif">%</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                {t('inputs.inflationDisclaimer')}
+                            </p>
+                        </div>
+
+                        <div className="space-y-4">
+                            <label htmlFor="years-input" className="text-xs font-bold text-muted-foreground uppercase tracking-widest block">
+                                {t('inputs.years')}
+                            </label>
+                            <div className="space-y-4">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-3xl font-serif text-foreground">{years} <small className="text-sm font-light text-muted-foreground uppercase">Años</small></span>
+                                </div>
+                                <input
+                                    id="years-input"
+                                    type="range"
+                                    min="1"
+                                    max="40"
+                                    step="1"
+                                    value={years}
+                                    onChange={(e) => setYears(Number(e.target.value))}
+                                    className="w-full h-2 bg-stone-100 dark:bg-stone-800 rounded-lg appearance-none cursor-pointer accent-stone-900 dark:accent-stone-100"
+                                />
+                            </div>
                         </div>
                     </div>
 
-                    <div className="space-y-4">
-                        <label htmlFor="inflation-input" className="text-sm font-medium text-muted-foreground uppercase tracking-wider block">
-                            {t('inputs.inflation')}
-                        </label>
-                        <div className="relative">
-                            <input
-                                id="inflation-input"
-                                type="number"
-                                min="0"
-                                max="50"
-                                step="0.1"
-                                value={inflationRate}
-                                onChange={(e) => setInflationRate(Number(e.target.value))}
-                                className="w-full text-2xl font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-red-500 dark:text-red-400"
-                            />
-                            <span className="absolute right-0 top-3 text-muted-foreground">%</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                            {t('inputs.inflationDisclaimer')}
-                        </p>
-                    </div>
-
-                    <div className="space-y-4">
-                        <label htmlFor="years-input" className="text-sm font-medium text-muted-foreground uppercase tracking-wider block">
-                            {t('inputs.years')}
-                        </label>
-                        <div className="flex items-center gap-4">
-                            <span className="text-2xl font-serif w-12 text-foreground">{years}</span>
-                            <input
-                                id="years-input"
-                                type="range"
-                                min="1"
-                                max="40"
-                                step="1"
-                                value={years}
-                                onChange={(e) => setYears(Number(e.target.value))}
-                                className="w-full h-2 bg-stone-200 dark:bg-stone-800 rounded-lg appearance-none cursor-pointer accent-stone-900 dark:accent-stone-100"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Results Overview */}
-                <div className="grid md:grid-cols-2 gap-8 items-stretch">
-
-                    {/* Main Stat: Loss */}
-                    <div className="bg-red-50 dark:bg-red-900/10 p-6 rounded-xl border border-red-100 dark:border-red-900/30 flex flex-col justify-center text-center space-y-2">
-                        <span className="text-sm text-red-600 dark:text-red-400 font-medium uppercase tracking-wider">
-                            {t('results.lossLabel')}
-                        </span>
-                        <span className="text-4xl md:text-5xl font-serif text-red-600 dark:text-red-300">
-                            -{formatMoney(totalLost)}
-                        </span>
-                        <span className="text-red-400 font-light">
-                            {t.rich('results.lossText', {
-                                percentage: lostPercentage,
-                                strong: (chunks) => <strong>{chunks}</strong>
-                            })}
-                        </span>
-                    </div>
-
-                    {/* Secondary Stat: Real Value */}
-                    <div className="bg-stone-50 dark:bg-stone-900/50 p-6 rounded-xl border border-stone-100 dark:border-stone-800 flex flex-col justify-center text-center space-y-2">
-                        <span className="text-sm text-muted-foreground font-medium uppercase tracking-wider">
-                            {t('results.realLabel')}
-                        </span>
-                        <span className="text-4xl md:text-5xl font-serif text-foreground">
-                            {formatMoney(finalRealValue)}
-                        </span>
-                        <span className="text-muted-foreground font-light">
-                            {t('results.realText')}
-                        </span>
-                    </div>
-
-                </div>
-
-                {/* Chart */}
-                <div className="h-[350px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart
-                            data={data}
-                            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                        >
-                            <defs>
-                                <linearGradient id="colorNominal" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#e7e5e4" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#e7e5e4" stopOpacity={0} />
-                                </linearGradient>
-                                <linearGradient id="colorReal" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#1c1917" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#1c1917" stopOpacity={0} />
-                                </linearGradient>
-                            </defs>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f4" />
-                            <XAxis
-                                dataKey="year"
-                                tickLine={false}
-                                axisLine={false}
-                                tick={{ fill: '#a8a29e', fontSize: 12 }}
-                                interval={Math.floor(years / 5)}
-                            />
-                            <YAxis
-                                tickFormatter={(value) => `${value / 1000}k`}
-                                tickLine={false}
-                                axisLine={false}
-                                tick={{ fill: '#a8a29e', fontSize: 12 }}
-                            />
-                            <Tooltip
-                                formatter={(value: number | string | Array<number | string> | undefined) => [formatMoney(Number(value || 0)), ""]}
-                                contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e7e5e4' }}
-                                labelFormatter={(label) => `${t('chart.year')} ${label}`}
-                            />
-                            <Area
-                                type="monotone"
-                                dataKey="nominal"
-                                name={t('chart.nominal')}
-                                stroke="#a8a29e"
-                                fillOpacity={1}
-                                fill="url(#colorNominal)"
-                                strokeDasharray="5 5"
-                            />
-                            <Area
-                                type="monotone"
-                                dataKey="real"
-                                name={t('chart.real')}
-                                stroke="#1c1917"
-                                fillOpacity={1}
-                                fill="url(#colorReal)"
-                            />
-                        </AreaChart>
-                    </ResponsiveContainer>
-                </div>
-
-                {/* CTA */}
-                <div className="bg-stone-900 dark:bg-stone-800 text-white p-8 rounded-xl text-center space-y-6">
-                    <h3 className="text-2xl font-serif">
-                        {t('cta.title')}
-                    </h3>
-                    <p className="text-stone-300 font-light max-w-lg mx-auto">
-                        {t('cta.text')}
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link
-                            href="/login?source=calculator_inflation"
-                            onClick={() => analytics.track("signup_click", { source: "calculator_inflation", type: "primary" })}
-                            className="inline-block bg-white text-stone-900 px-8 py-3 rounded-full font-medium hover:bg-stone-100 dark:hover:bg-stone-200 transition-colors"
-                        >
-                            {t('cta.buttonPrimary')}
-                        </Link>
-                        <Link
-                            href="/herramientas/regla-50-30-20"
-                            onClick={() => analytics.track("tool_interaction", { tool: "inflation_calculator", action: "cross_sell" })}
-                            className="inline-block border border-stone-700 text-stone-300 px-8 py-3 rounded-full font-medium hover:bg-stone-800 transition-colors"
-                        >
-                            {t('cta.buttonSecondary')}
-                        </Link>
-                    </div>
-
-                    {/* Embed Button */}
-                    <div className="flex justify-center mt-6">
+                    <div className="pt-6 border-t border-border">
                         <button
                             onClick={() => setIsEmbedOpen(true)}
-                            className="inline-flex items-center gap-2 text-sm text-stone-400 hover:text-white transition-colors"
+                            className="w-full inline-flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors p-3 border border-dashed border-border rounded-lg"
                         >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
@@ -262,12 +147,134 @@ export function CalculatorInflation() {
                             {tCommon('button')}
                         </button>
                     </div>
-                </div>
+                </aside>
 
+                {/* Main Content: Results + Chart */}
+                <div className="lg:col-span-8 space-y-8">
+                    {/* Calculator Card */}
+                    <div className="bg-card border border-border p-8 md:p-12 rounded-2xl shadow-sm space-y-12 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-stone-200 dark:from-stone-800 via-red-400 dark:via-red-500 to-stone-200 dark:to-stone-800"></div>
+
+                        {/* Results Overview */}
+                        <div className="grid md:grid-cols-2 gap-8 items-stretch">
+                            {/* Main Stat: Loss */}
+                            <div className="bg-red-50 dark:bg-red-900/10 p-8 rounded-xl border border-red-100 dark:border-red-900/30 flex flex-col justify-center text-center space-y-2">
+                                <span className="text-xs text-red-600 dark:text-red-400 font-bold uppercase tracking-widest">
+                                    {t('results.lossLabel')}
+                                </span>
+                                <span className="text-5xl font-serif text-red-600 dark:text-red-300">
+                                    -{formatMoney(totalLost)}
+                                </span>
+                                <span className="text-red-400 font-light text-lg">
+                                    {t.rich('results.lossText', {
+                                        percentage: lostPercentage,
+                                        strong: (chunks) => <strong className="font-bold">{chunks}</strong>
+                                    })}
+                                </span>
+                            </div>
+
+                            {/* Secondary Stat: Real Value */}
+                            <div className="bg-stone-50 dark:bg-stone-900/50 p-8 rounded-xl border border-stone-100 dark:border-stone-800 flex flex-col justify-center text-center space-y-2">
+                                <span className="text-xs text-muted-foreground font-bold uppercase tracking-widest">
+                                    {t('results.realLabel')}
+                                </span>
+                                <span className="text-5xl font-serif text-foreground">
+                                    {formatMoney(finalRealValue)}
+                                </span>
+                                <span className="text-muted-foreground font-light text-lg">
+                                    {t('results.realText')}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Chart */}
+                        <div className="h-[400px] w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart
+                                    data={data}
+                                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                                >
+                                    <defs>
+                                        <linearGradient id="colorNominal" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#e7e5e4" stopOpacity={0.8} />
+                                            <stop offset="95%" stopColor="#e7e5e4" stopOpacity={0} />
+                                        </linearGradient>
+                                        <linearGradient id="colorReal" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#1c1917" stopOpacity={0.8} />
+                                            <stop offset="95%" stopColor="#1c1917" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f4" />
+                                    <XAxis
+                                        dataKey="year"
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tick={{ fill: '#a8a29e', fontSize: 12 }}
+                                        interval={Math.floor(years / 5)}
+                                    />
+                                    <YAxis
+                                        tickFormatter={(value) => `${value / 1000}k`}
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tick={{ fill: '#a8a29e', fontSize: 12 }}
+                                    />
+                                    <Tooltip
+                                        formatter={(value: number | string | Array<number | string> | undefined) => [formatMoney(Number(value || 0)), ""]}
+                                        contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e7e5e4' }}
+                                        labelFormatter={(label) => `${t('chart.year')} ${label}`}
+                                    />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="nominal"
+                                        name={t('chart.nominal')}
+                                        stroke="#a8a29e"
+                                        fillOpacity={1}
+                                        fill="url(#colorNominal)"
+                                        strokeDasharray="5 5"
+                                    />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="real"
+                                        name={t('chart.real')}
+                                        stroke="#1c1917"
+                                        fillOpacity={1}
+                                        fill="url(#colorReal)"
+                                    />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
+
+                        {/* CTA Internal */}
+                        <div className="bg-stone-900 dark:bg-stone-800 text-white p-10 rounded-xl text-center space-y-8">
+                            <h3 className="text-3xl font-serif">
+                                {t('cta.title')}
+                            </h3>
+                            <p className="text-stone-300 font-light max-w-lg mx-auto text-lg leading-relaxed">
+                                {t('cta.text')}
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                                <Link
+                                    href="/login?source=calculator_inflation"
+                                    onClick={() => analytics.track("signup_click", { source: "calculator_inflation", type: "primary" })}
+                                    className="inline-block bg-white text-stone-900 px-10 py-4 rounded-full font-bold hover:bg-stone-100 dark:hover:bg-stone-200 transition-all hover:scale-105"
+                                >
+                                    {t('cta.buttonPrimary')}
+                                </Link>
+                                <Link
+                                    href="/herramientas/regla-50-30-20"
+                                    onClick={() => analytics.track("tool_interaction", { tool: "inflation_calculator", action: "cross_sell" })}
+                                    className="inline-block border border-stone-700 text-stone-300 px-10 py-4 rounded-full font-bold hover:bg-stone-800 transition-all"
+                                >
+                                    {t('cta.buttonSecondary')}
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* SEO & GEO Semantic Content Section */}
-            <div className="prose prose-stone dark:prose-invert max-w-none prose-headings:font-serif prose-p:font-light prose-p:text-lg text-muted-foreground">
+            <div className="prose prose-stone dark:prose-invert max-w-4xl mx-auto prose-headings:font-serif prose-p:font-light prose-p:text-xl text-muted-foreground leading-relaxed">
 
                 {/* Definition Block for LLMs */}
                 <div className="bg-stone-50 dark:bg-stone-900/50 p-6 rounded-lg border-l-4 border-stone-900 dark:border-stone-100 my-8">
@@ -289,6 +296,16 @@ export function CalculatorInflation() {
                     <li>{t.rich('content.impactList.future', { bold: (chunks) => <strong>{chunks}</strong> })}</li>
                     <li>{t.rich('content.impactList.problem', { bold: (chunks) => <strong>{chunks}</strong> })}</li>
                 </ul>
+
+                <h2>{t('content.rentTitle')}</h2>
+                <p>
+                    {t('content.rentText')}
+                </p>
+
+                <h2>{t('content.accumulatedTitle')}</h2>
+                <p>
+                    {t('content.accumulatedText')}
+                </p>
 
                 <h3>{t('content.tableTitle')}</h3>
                 <div className="overflow-x-auto my-8">

@@ -1,6 +1,11 @@
 import type React from "react";
+import { Navbar } from "@/components/landing";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
-  // NO h-screen, NO overflow-hidden, NO fixed, NO wrappers raros
-  return <>{children}</>;
+  return (
+    <>
+      <Navbar />
+      {children}
+    </>
+  );
 }

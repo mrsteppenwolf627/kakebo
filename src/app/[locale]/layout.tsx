@@ -27,9 +27,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     },
     alternates: {
       languages: {
-        "es": "https://www.metodokakebo.com/es",
+        "es": "https://www.metodokakebo.com",
         "en": "https://www.metodokakebo.com/en",
-        "x-default": "https://www.metodokakebo.com/es",
+        "x-default": "https://www.metodokakebo.com",
       },
     },
     manifest: "/manifest.webmanifest",

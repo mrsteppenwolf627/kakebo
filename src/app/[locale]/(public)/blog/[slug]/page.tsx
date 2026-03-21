@@ -189,6 +189,25 @@ export default async function BlogPostPage({ params }: Props) {
                                     text: item.answer
                                 }
                             }))
+                        }] : []),
+                        ...(slug === 'plantilla-kakebo-excel' ? [{
+                            "@context": "https://schema.org",
+                            "@type": "SoftwareApplication",
+                            "name": "Plantilla Kakebo Excel Gratis",
+                            "applicationCategory": "FinanceApplication",
+                            "operatingSystem": "Excel, Google Sheets",
+                            "offers": {
+                                "@type": "Offer",
+                                "price": "0",
+                                "priceCurrency": "EUR"
+                            },
+                            "description": "Plantilla gratuita de Excel para llevar el método Kakebo de forma manual y organizada.",
+                            "featureList": [
+                                "4 categorías Kakebo",
+                                "Control de ingresos y gastos fijos",
+                                "Balance mensual automático",
+                                "Gráficos de ahorro"
+                            ]
                         }] : [])
                     ]),
                 }}

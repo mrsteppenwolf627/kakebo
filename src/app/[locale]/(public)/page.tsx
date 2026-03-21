@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import {
-  Navbar,
   Hero,
   Features,
   PricingSection,
   HowItWorks,
   FAQ,
-  Footer,
   SeoContent,
   Testimonials,
   SavingsSimulator,
@@ -29,11 +27,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: t("title"),
     description: t("description"),
     alternates: {
-      canonical: `https://www.metodokakebo.com/${locale === 'es' ? 'es' : 'en'}`,
+      canonical: `https://www.metodokakebo.com/${locale === 'es' ? '' : 'en'}`,
       languages: {
-        "es": "https://www.metodokakebo.com/es",
+        "es": "https://www.metodokakebo.com",
         "en": "https://www.metodokakebo.com/en",
-        "x-default": "https://www.metodokakebo.com/es"
+        "x-default": "https://www.metodokakebo.com"
       }
     },
     openGraph: {
@@ -46,13 +44,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-import { useTranslations } from 'next-intl';
-
-export default function PublicHomePage() {
-  const t = useTranslations('Landing');
+export default async function PublicHomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Landing' });
   return (
     <main className="min-h-screen overflow-x-hidden">
-      <Navbar />
 
       {/* Add padding to account for fixed navbar */}
       <div className="pt-20">
@@ -141,7 +137,7 @@ export default function PublicHomePage() {
               "url": "https://www.metodokakebo.com",
               "applicationCategory": "FinanceApplication",
               "operatingSystem": "Web, PWA, iOS, Android",
-              "inLanguage": "es",
+              "inLanguage": locale,
               "offers": {
                 "@type": "Offer",
                 "price": "3.99",
@@ -155,7 +151,7 @@ export default function PublicHomePage() {
                 "ratingCount": "24",
                 "bestRating": "5"
               },
-              "description": "App de control de gastos basada en el método japonés Kakebo. Sin conexión bancaria, 100% privado, con Agente IA integrado.",
+              "description": t('meta.description'),
               "screenshot": "https://www.metodokakebo.com/api/og",
               "featureList": [
                 "Registro manual consciente de gastos",
@@ -176,34 +172,26 @@ export default function PublicHomePage() {
               "mainEntity": [
                 {
                   "@type": "Question",
-                  "name": "¿Realmente es gratis empezar con Kakebo AI?",
+                  "name": t('SEO.faqSchema.q1'),
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Sí, 100%. Puedes registrarte y usar el Plan Manual (control de gastos completo) sin pagar nada. El registro es instantáneo y no necesitas tarjeta de crédito."
+                    "text": t('SEO.faqSchema.a1')
                   }
                 },
                 {
                   "@type": "Question",
-                  "name": "¿Qué incluye el trial de 14 días del Plan Pro?",
+                  "name": t('SEO.faqSchema.q2'),
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "El trial te da acceso completo al Agente IA de finanzas: análisis automático, consejos personalizados, predicciones de ahorro e insights inteligentes. No se cobra hasta el día 15."
+                    "text": t('SEO.faqSchema.a2')
                   }
                 },
                 {
                   "@type": "Question",
-                  "name": "¿Puedo cancelar el Plan Pro durante el trial?",
+                  "name": t('SEO.faqSchema.q3'),
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Sí, puedes cancelar en cualquier momento desde tu perfil. Si cancelas durante los 14 días de trial, no se cobra nada."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "¿Mis datos financieros están seguros en Kakebo AI?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Sí. Usamos Supabase para autenticación y Stripe para pagos. Tus datos financieros están encriptados y nunca compartimos información con terceros. No nos conectamos a tu banco."
+                    "text": t('SEO.faqSchema.a3')
                   }
                 }
               ]

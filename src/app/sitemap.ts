@@ -26,14 +26,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Add localized core routes
     coreRoutes.forEach((route) => {
         locales.forEach((locale) => {
+            const path = route.path === '' && locale === 'es' ? '' : (locale === 'es' ? route.path : `/${locale}${route.path}`);
             sitemapEntries.push({
-                url: `${baseUrl}/${locale}${route.path}`,
+                url: `${baseUrl}${path}`,
                 lastModified: new Date(),
                 changeFrequency: route.changeFrequency,
                 priority: route.priority,
                 alternates: {
                     languages: locales.reduce((acc, l) => {
-                        acc[l] = `${baseUrl}/${l}${route.path}`;
+                        const lPath = route.path === '' && l === 'es' ? '' : (l === 'es' ? route.path : `/${l}${route.path}`);
+                        acc[l] = `${baseUrl}${lPath}`;
                         return acc;
                     }, {} as Record<string, string>)
                 }
@@ -44,14 +46,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Add localized blog posts
     posts.forEach((post) => {
         locales.forEach((locale) => {
+            const path = locale === 'es' ? `/blog/${post.slug}` : `/${locale}/blog/${post.slug}`;
             sitemapEntries.push({
-                url: `${baseUrl}/${locale}/blog/${post.slug}`,
+                url: `${baseUrl}${path}`,
                 lastModified: new Date(post.frontmatter.date),
                 changeFrequency: 'monthly',
                 priority: 0.7,
                 alternates: {
                     languages: locales.reduce((acc, l) => {
-                        acc[l] = `${baseUrl}/${l}/blog/${post.slug}`;
+                        const lPath = l === 'es' ? `/blog/${post.slug}` : `/${l}/blog/${post.slug}`;
+                        acc[l] = `${baseUrl}${lPath}`;
                         return acc;
                     }, {} as Record<string, string>)
                 }

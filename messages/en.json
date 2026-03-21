@@ -135,6 +135,16 @@
         }
     },
     "Tools": {
+        "Index": {
+            "meta": {
+                "title": "Kakebo Tools: Savings and Inflation Calculators",
+                "description": "Free calculators to manage your finances: 50/30/20 Rule, CPI Inflation Calculator, and savings simulators."
+            },
+            "header": {
+                "title": "<italic>Zen Saving</italic> Tools",
+                "subtitle": "Free utilities designed to give you mental clarity about your numbers. No registrations, no traps."
+            }
+        },
         "Common": {
             "embed": {
                 "button": "💻 Add to my website",
@@ -146,10 +156,10 @@
         },
         "Inflation": {
             "meta": {
-                "title": "Inflation Calculator 2026: How much money have you lost?",
-                "description": "Inflation is the silent tax. Calculate how much savings you lost in 2024-2026 and what your money will be worth in the future. Free tool.",
-                "ogTitle": "How much is inflation stealing from you? (Calculator 2026)",
-                "ogDescription": "Your estimates fail. Use this official CPI calculator to see the real loss of purchasing power of your savings."
+                "title": "Inflation Calculator 2026: Calculate Real Purchasing Power (CPI)",
+                "description": "How much is inflation stealing from your savings? Calculate your money's future value with this free Inflation Calculator. Updated for 2026!",
+                "ogTitle": "Inflation Calculator 2026: Your Real Purchasing Power",
+                "ogDescription": "Discover how much money you lose due to accumulated CPI. Inflation calculation tool to protect your savings."
             },
             "header": {
                 "title": "Inflation Calculator <italic>in Spain</italic>",
@@ -188,6 +198,10 @@
                     "future": "<bold>In 10 years:</bold> That same car will cost approximately €13,439.",
                     "problem": "<bold>The problem:</bold> You still only have €10,000 in the safe. Your money 'exists', but it is worth much less."
                 },
+                "rentTitle": "How to update your rent with CPI?",
+                "rentText": "If your rental contract specifies that the rent will be updated according to the CPI, the landlord can increase the price annually. To calculate it, the interannual rate published by the NSI the month prior to the contract anniversary is taken. It is essential to check if there is a legal maximum cap (such as the 3% limit in Spain during 2024-2025).",
+                "accumulatedTitle": "Accumulated Inflation: The Reverse 'Compound Interest' Effect",
+                "accumulatedText": "Inflation is cumulative. A 2% annual inflation for 10 years does not mean that prices have risen by 20%, but that they have risen by more than 21.8% due to the compound effect. This is why leaving money idle for decades is financially dangerous.",
                 "tableTitle": "Comparison: Savings vs Investment vs Inflation",
                 "tableHeaders": {
                     "strategy": "Strategy",
@@ -1302,9 +1316,11 @@
             "desc": "We are not a big corporation or a huge team. I am Aitor, an independent developer (indie hacker) building from scratch the finance tool I always wanted to use. Kakebo AI is a project built with personal effort, secure code, and servers in the European Union. My absolute commitment: to provide you with the best methodological tool to organize your money, free from biases, banks, and selling data to third parties."
         },
         "contact": {
-            "title": "Direct Contact",
-            "text": "Do you have questions, feature requests, or just want to talk about zen finance? I will answer you myself. Write me at:",
-            "email": "aitor@aitoralmu.xyz"
+            "title": "Direct Contact and Support",
+            "text": "Do you have questions about the method or need technical support? As the project creator, I personally attend to each request to ensure service quality.",
+            "email": "aitor@aitoralmu.xyz",
+            "phone": "+34 662 24 93 27",
+            "phoneLabel": "Customer Support (WhatsApp/Calls)"
         }
     }
 }

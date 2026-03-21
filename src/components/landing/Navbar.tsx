@@ -1,6 +1,6 @@
 "use client";
 
-import { Link, useRouter } from "@/i18n/routing";
+import { Link, useRouter, usePathname } from "@/i18n/routing";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useEffect, useState } from "react";
@@ -12,9 +12,13 @@ export function Navbar() {
   const t = useTranslations("Navigation");
   const supabase = createClient();
   const router = useRouter();
+  const pathname = usePathname();
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const isHome = pathname === "/";
+  const getHashPath = (hash: string) => isHome ? hash : `/${hash}`;
 
   useEffect(() => {
     let mounted = true;
@@ -121,19 +125,19 @@ export function Navbar() {
             </div>
           </div>
           <Link
-            href="#pricing"
+            href={getHashPath("#pricing") as any}
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             {t('pricing')}
           </Link>
           <Link
-            href="#features"
+            href={getHashPath("#features") as any}
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             {t('features')}
           </Link>
           <Link
-            href="#how-it-works"
+            href={getHashPath("#how-it-works") as any}
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             {t('howItWorks')}
@@ -241,21 +245,21 @@ export function Navbar() {
               </div>
 
               <Link
-                href="#pricing"
+                href={getHashPath("#pricing") as any}
                 onClick={closeMenu}
                 className="text-lg font-medium text-foreground py-2 border-b border-border/40"
               >
                 {t('pricing')}
               </Link>
               <Link
-                href="#features"
+                href={getHashPath("#features") as any}
                 onClick={closeMenu}
                 className="text-lg font-medium text-foreground py-2 border-b border-border/40"
               >
                 {t('features')}
               </Link>
               <Link
-                href="#how-it-works"
+                href={getHashPath("#how-it-works") as any}
                 onClick={closeMenu}
                 className="text-lg font-medium text-foreground py-2 border-b border-border/40"
               >
