@@ -11,20 +11,6 @@ const nextConfig: NextConfig = {
       {
         source: "/es",
         destination: "/",
-        permanent: true, // Esto devuelve un 301
-      },
-      {
-        source: "/es/:path*",
-        destination: "/:path*",
-        permanent: true, // Esto devuelve un 301
-      },
-    ];
-  },
-  async headers() {
-    return [
-      {
-        source: "/es",
-        destination: "/",
         permanent: true,
       },
       {
