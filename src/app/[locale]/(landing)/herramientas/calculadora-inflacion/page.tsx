@@ -13,11 +13,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         description: t('description'),
         keywords: ["calculadora de inflacion", "calculadora inflacion", "inflation calculator", "calculadora ipc", "perdida poder adquisitivo", "actualizar renta ipc", "calculadora ipc ine", "inflacion acumulada"],
         alternates: {
-            canonical: `https://www.metodokakebo.com/${locale}/herramientas/calculadora-inflacion`,
+            canonical: `https://www.metodokakebo.com/${locale === 'es' ? '' : 'en'}/herramientas/calculadora-inflacion`,
             languages: {
-                "es": "https://www.metodokakebo.com/es/herramientas/calculadora-inflacion",
+                "es": "https://www.metodokakebo.com/herramientas/calculadora-inflacion",
                 "en": "https://www.metodokakebo.com/en/herramientas/calculadora-inflacion",
-                "x-default": "https://www.metodokakebo.com/es/herramientas/calculadora-inflacion"
+                "x-default": "https://www.metodokakebo.com/herramientas/calculadora-inflacion"
             }
         },
         openGraph: {
