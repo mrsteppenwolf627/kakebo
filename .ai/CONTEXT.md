@@ -287,21 +287,22 @@ NEXT_PUBLIC_SITE_URL=https://kakebo-neon.vercel.app
 
 ---
 
-## 🚀 PRÓXIMOS PASOS
+## 🔮 Future Roadmap
 
-1. **Completar Fase 3:**
-   - Probar clasificación IA en `/app/new`
-   - Crear embeddings para gastos existentes
+## Completed (v3.12.0)
+- **Income Card** — Ahora visible en el panel principal con color verde
+- **4-Card Layout**: Presupuesto, Gastos, Disponible + Ingresos
+- **Responsive Grid**: 4 cols (desktop), 2×2 (tablet), 1 col (mobile)
 
-2. **Fase 4 - Agentes:**
-   - Implementar LangGraph
-   - Agente de análisis financiero
-   - Agente de recomendaciones
+### Próximo (v3.13.0)
+- **Flow Chart** — Gráfico de Ingresos → Presupuesto → Gastos → Disponible
+- **Projected Income** — Estimación de ingresos futuros
+- **Income Breakdown** — Desglose de fuentes de ingreso (nómina, extras, etc.)
 
-3. **Fase 5 - AWS:**
-   - Migrar a EC2/App Runner
-   - CI/CD con GitHub Actions
-   - CloudWatch para monitoring
+### Futuro (v4.0.0)
+- **Budget Distribution** — Recomendaciones automáticas de cómo distribuir presupuesto
+- **Spending Patterns** — Análisis temporal de patrones de gasto
+- **Multi-currency Support** — Soportar múltiples monedas
 
 ---
 

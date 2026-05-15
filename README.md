@@ -202,6 +202,26 @@ USE_FUNCTION_CALLING_AGENT=true
 
 ---
 
+## 📦 Changelog
+
+### v3.12.0 — Dashboard Income Card & Responsive Layout 📊💚
+
+**Features:**
+- **Income Card**: Nueva card mostrando ingresos mensuales totales (base + extras)
+- **Responsive Grid**: Layout 4-card con breakpoints: 4 cols (lg), 2×2 (sm), 1 col (mobile)
+- **Visual Hierarchy**: Flujo claro de dinero: Ingresos → Presupuesto → Gastado → Disponible
+- **Dark Mode Support**: Gradiente verde oscuro optimizado para tema oscuro
+
+**Technical:**
+- Cambiado `sm:grid-cols-3` por `grid-cols-2 lg:grid-cols-4`
+- Las 3 cards existentes sin cambios
+- Los datos de ingresos ya existían, solo necesitaban visualización
+
+**Bugfix:**
+- Ingresos que se guardaban correctamente pero no se mostraban en el dashboard principal
+
+---
+
 ## 💎 Modelo de Suscripción (SaaS)
 
 ### 🎁 14 Días Premium Gratis
