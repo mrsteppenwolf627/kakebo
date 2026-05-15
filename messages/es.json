@@ -683,6 +683,13 @@
                 "empty": "No hay gastos registrados este mes.",
                 "noConcept": "Sin concepto"
             }
+        },
+        "RecentMovements": {
+            "title": "Últimos movimientos",
+            "empty": "Sin movimientos en este mes",
+            "noConcept": "Sin concepto",
+            "noDescription": "Ingreso",
+            "incomeLabel": "Ingreso"
         }
     },
     "Testimonials": {

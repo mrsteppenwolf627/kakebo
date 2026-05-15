@@ -1,7 +1,7 @@
 import AuthGate from "@/components/AuthGate";
 import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
-import ExpenseCalendar from "@/components/ExpenseCalendar";
+import RecentMovements from "@/components/RecentMovements";
 import MonthSelector from "@/components/MonthSelector";
 
 import CategoryGuideCard from "@/components/CategoryGuideCard";
@@ -90,7 +90,7 @@ export default async function HomePage(props: {
           {/* Panel de dinero */}
           <DashboardMoneyPanel year={year} month={month} ym={ym} />
 
-          <ExpenseCalendar year={year} month={month} />
+          <RecentMovements year={year} month={month} ym={ym} />
 
           <div className="mt-8">
             <CategoryGuideCard />

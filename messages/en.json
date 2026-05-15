@@ -683,6 +683,13 @@
                 "empty": "No expenses recorded this month.",
                 "noConcept": "No concept"
             }
+        },
+        "RecentMovements": {
+            "title": "Recent Movements",
+            "empty": "No movements this month",
+            "noConcept": "No concept",
+            "noDescription": "Income",
+            "incomeLabel": "Income"
         }
     },
     "Testimonials": {
