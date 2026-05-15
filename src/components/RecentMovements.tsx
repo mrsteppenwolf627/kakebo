@@ -53,6 +53,7 @@ export default function RecentMovements({ year, month, ym }: Props) {
   const [movements, setMovements] = useState<Movement[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -127,6 +128,36 @@ export default function RecentMovements({ year, month, ym }: Props) {
     };
   }, [load]);
 
+  const removeExpense = async (id: string) => {
+    if (!confirm("¿Eliminar este gasto?")) return;
+    setDeletingId(id);
+    try {
+      const { error } = await supabase.from("expenses").delete().eq("id", id);
+      if (error) throw error;
+      await load();
+      window.dispatchEvent(new CustomEvent("kakebo:expenses-changed"));
+    } catch (e: any) {
+      setErr("Error eliminando gasto: " + e.message);
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const removeIncome = async (id: string) => {
+    if (!confirm("¿Eliminar este ingreso?")) return;
+    setDeletingId(id);
+    try {
+      const { error } = await supabase.from("incomes").delete().eq("id", id);
+      if (error) throw error;
+      await load();
+      window.dispatchEvent(new CustomEvent("kakebo:incomes-changed"));
+    } catch (e: any) {
+      setErr("Error eliminando ingreso: " + e.message);
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   if (loading) {
     return (
       <section className="border border-border rounded-lg p-6 bg-card">
@@ -192,15 +223,28 @@ export default function RecentMovements({ year, month, ym }: Props) {
                   </div>
                 </div>
 
-                <div
-                  className={`font-semibold font-mono tabular-nums ${
-                    m.type === "income"
-                      ? "text-green-600 dark:text-green-400"
-                      : "text-foreground"
-                  }`}
-                >
-                  {m.type === "income" ? "+" : "-"}
-                  {money(m.amount)} €
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`font-semibold font-mono tabular-nums ${
+                      m.type === "income"
+                        ? "text-green-600 dark:text-green-400"
+                        : "text-foreground"
+                    }`}
+                  >
+                    {m.type === "income" ? "+" : "-"}
+                    {money(m.amount)} €
+                  </div>
+
+                  <button
+                    onClick={() =>
+                      m.type === "expense" ? removeExpense(m.id) : removeIncome(m.id)
+                    }
+                    disabled={deletingId === m.id}
+                    className="text-muted-foreground hover:text-destructive disabled:opacity-30 transition-colors p-1"
+                    title={m.type === "expense" ? "Eliminar gasto" : "Eliminar ingreso"}
+                  >
+                    {deletingId === m.id ? "…" : "✕"}
+                  </button>
                 </div>
               </li>
             );
