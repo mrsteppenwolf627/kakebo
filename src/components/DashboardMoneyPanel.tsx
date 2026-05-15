@@ -342,15 +342,15 @@ export default function DashboardMoneyPanel({ ym }: Props) {
         {/* Main Stats - 4 Cards Responsive Layout (v3.12.0) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
 
-          {/* Card 1: Income (NEW) */}
-          <div className="border border-border bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/20 p-5 rounded-md">
-            <div className="text-xs text-green-700 dark:text-green-400 font-bold mb-1 uppercase tracking-wide">
+          {/* Card 1: Ingresos */}
+          <div className="border border-border bg-muted/20 p-5 rounded-md">
+            <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide">
               {t("cards.incomes.label", "Ingresos")}
             </div>
-            <div className="text-2xl font-serif text-green-700 dark:text-green-300 mb-1">
+            <div className="text-2xl font-serif text-foreground mb-1">
               {money(income)} €
             </div>
-            <div className="text-[10px] text-green-600/70 dark:text-green-400/70">
+            <div className="text-[10px] text-muted-foreground">
               {t("cards.incomes.desc", "Este mes")}
             </div>
           </div>

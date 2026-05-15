@@ -289,20 +289,22 @@ NEXT_PUBLIC_SITE_URL=https://kakebo-neon.vercel.app
 
 ## 🔮 Future Roadmap
 
-## Completed (v3.12.0)
-- **Income Card** — Ahora visible en el panel principal con color verde
-- **4-Card Layout**: Presupuesto, Gastos, Disponible + Ingresos
-- **Responsive Grid**: 4 cols (desktop), 2×2 (tablet), 1 col (mobile)
+### Completed (v3.12.0 - v3.12.1)
+- ✅ **Income Card on Dashboard** — Visible in main panel with income total
+- ✅ **4-Card Layout**: Desktop 4 cols, Tablet 2×2, Mobile 1 col
+- ✅ **Recent Movements Combined** — Expenses + Incomes in single list, sorted by date
+- ✅ **Delete from list** — Remove expenses and incomes directly from list
+- ✅ **Consistent Card Styling** — All 4 cards now have unified appearance
 
 ### Próximo (v3.13.0)
-- **Flow Chart** — Gráfico de Ingresos → Presupuesto → Gastos → Disponible
-- **Projected Income** — Estimación de ingresos futuros
-- **Income Breakdown** — Desglose de fuentes de ingreso (nómina, extras, etc.)
+- [ ] **Money Flow Visualization** — Visual diagram of income flow
+- [ ] **Income Forecast** — Projection of future income
+- [ ] **Advanced Filters** — Filter by date range, category, amount
 
 ### Futuro (v4.0.0)
-- **Budget Distribution** — Recomendaciones automáticas de cómo distribuir presupuesto
-- **Spending Patterns** — Análisis temporal de patrones de gasto
-- **Multi-currency Support** — Soportar múltiples monedas
+- [ ] **Budget Distribution** — Auto recommendations
+- [ ] **Expense Trends** — Historical pattern analysis
+- [ ] **Multi-currency Support** — Multiple currencies
 
 ---
 

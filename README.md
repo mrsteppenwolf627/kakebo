@@ -204,6 +204,20 @@ USE_FUNCTION_CALLING_AGENT=true
 
 ## 📦 Changelog
 
+### v3.12.1 (2026-05-15) — Income Card Styling Fix 🎨
+
+**Bugfix:**
+- Fix income card styling to match other dashboard cards
+- Income card now uses consistent `bg-muted/20` instead of custom green gradient
+- Adjusted text colors for better consistency and accessibility
+- Income card now visually unified with Presupuesto, Gastado, Disponible cards
+
+**Technical:**
+- Simplified color scheme in DashboardMoneyPanel
+- Maintains dark mode support with CSS variables
+
+---
+
 ### v3.12.0 — Dashboard Income Card & Responsive Layout 📊💚
 
 **Features:**
