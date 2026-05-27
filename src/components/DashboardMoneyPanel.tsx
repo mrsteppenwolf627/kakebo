@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Lock, LockOpen } from "lucide-react";
 import { createClient } from "@/lib/supabase/browser";
 import ManageIncomesModal from "./ManageIncomesModal";
 import TrialBanner from "./saas/TrialBanner";
@@ -66,6 +68,7 @@ function monthRangeFromYm(ym: string) {
 export default function DashboardMoneyPanel({ ym }: Props) {
   const t = useTranslations("Dashboard.MoneyPanel");
   const supabase = useMemo(() => createClient(), []);
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
@@ -75,6 +78,11 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
   const [fixedRows, setFixedRows] = useState<FixedExpenseRow[]>([]);
   const [savingsDone, setSavingsDone] = useState(false);
+
+  // month close/reopen
+  const [monthId, setMonthId] = useState<string | null>(null);
+  const [monthStatus, setMonthStatus] = useState<"open" | "closed" | null>(null);
+  const [closingMonth, setClosingMonth] = useState(false);
 
   // gastos del mes (Kakebo)
   const [monthSpent, setMonthSpent] = useState(0);
@@ -149,10 +157,10 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       if (fxErr) throw fxErr;
       setFixedRows((fx as FixedExpenseRow[]) ?? []);
 
-      // 3) month savings_done
+      // 3) month savings_done + status
       const { data: mo, error: moErr } = await supabase
         .from("months")
-        .select("savings_done")
+        .select("id,savings_done,status")
         .eq("user_id", userId)
         .eq("year", y)
         .eq("month", m)
@@ -162,6 +170,8 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
       const done = Boolean(mo?.[0]?.savings_done ?? false);
       setSavingsDone(done);
+      setMonthId(mo?.[0]?.id ?? null);
+      setMonthStatus((mo?.[0]?.status as "open" | "closed") ?? null);
 
       // 4) month spent (expenses)
       const { data: ex, error: exErr } = await supabase
@@ -249,6 +259,100 @@ export default function DashboardMoneyPanel({ ym }: Props) {
     return cb - pendingFixedTotal - savingsPending;
   }, [currentBalance, pendingFixedTotal, savingsPending]);
 
+  async function closeMonth() {
+    setErr(null);
+    setClosingMonth(true);
+    try {
+      const { data: sessionRes } = await supabase.auth.getSession();
+      const userId = sessionRes.session?.user?.id;
+      if (!userId) throw new Error("Auth session missing");
+
+      const { y, m } = monthRangeFromYm(ym);
+      const nextMonth = m === 12 ? 1 : m + 1;
+      const nextYear = m === 12 ? y + 1 : y;
+      const nextYm = `${nextYear}-${String(nextMonth).padStart(2, "0")}`;
+
+      const ok = window.confirm(
+        `Vas a CERRAR el mes ${ym}.\n\nSe abrirá automáticamente el siguiente ciclo (${nextYm}) para que puedas registrar gastos de inmediato.\n\n¿Continuar?`
+      );
+      if (!ok) return;
+
+      // Find or create month record
+      let mId = monthId;
+      if (!mId) {
+        const { data: created, error: createErr } = await supabase
+          .from("months")
+          .insert({ user_id: userId, year: y, month: m, status: "open", savings_done: false })
+          .select("id")
+          .single();
+        if (createErr) throw createErr;
+        mId = created.id;
+      }
+
+      const { error } = await supabase
+        .from("months")
+        .update({ status: "closed", closed_at: new Date().toISOString() })
+        .eq("id", mId)
+        .eq("user_id", userId);
+      if (error) throw error;
+
+      // Auto-open next cycle (idempotent)
+      const { data: existing } = await supabase
+        .from("months")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("year", nextYear)
+        .eq("month", nextMonth)
+        .limit(1);
+
+      if (!existing?.[0]) {
+        await supabase.from("months").insert({
+          user_id: userId,
+          year: nextYear,
+          month: nextMonth,
+          status: "open",
+          savings_done: false,
+        });
+      }
+
+      router.push(`/app?ym=${nextYm}`);
+    } catch (e: any) {
+      setErr(e?.message ?? "Error cerrando mes");
+    } finally {
+      setClosingMonth(false);
+    }
+  }
+
+  async function reopenMonth() {
+    setErr(null);
+    setClosingMonth(true);
+    try {
+      const { data: sessionRes } = await supabase.auth.getSession();
+      const userId = sessionRes.session?.user?.id;
+      if (!userId) throw new Error("Auth session missing");
+      if (!monthId) return;
+
+      const ok = window.confirm(
+        `Vas a REABRIR el mes ${ym}. Podrás volver a añadir y eliminar gastos.\n\n¿Continuar?`
+      );
+      if (!ok) return;
+
+      const { error } = await supabase
+        .from("months")
+        .update({ status: "open", closed_at: null })
+        .eq("id", monthId)
+        .eq("user_id", userId);
+      if (error) throw error;
+
+      setMonthStatus("open");
+      await load();
+    } catch (e: any) {
+      setErr(e?.message ?? "Error reabriendo mes");
+    } finally {
+      setClosingMonth(false);
+    }
+  }
+
   async function saveCurrentBalance() {
     setErr(null);
     setOkMsg(null);
@@ -328,11 +432,43 @@ export default function DashboardMoneyPanel({ ym }: Props) {
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 border-b border-border pb-4">
           <div>
             <div className="text-xs sm:text-sm text-muted-foreground font-light mb-1 uppercase tracking-wider">{t("title")}</div>
-            <div className="text-lg sm:text-xl font-serif text-foreground">{ym}</div>
+            <div className="flex items-center gap-2">
+              <div className="text-lg sm:text-xl font-serif text-foreground">{ym}</div>
+              {monthStatus === "closed" && (
+                <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground bg-muted border border-border rounded px-1.5 py-0.5">
+                  Cerrado
+                </span>
+              )}
+            </div>
           </div>
 
-          <div className="text-xs text-muted-foreground/70 sm:max-w-xs leading-relaxed text-right">
-            {t("subtitle")}
+          <div className="flex flex-col sm:items-end gap-2">
+            <div className="text-xs text-muted-foreground/70 sm:max-w-xs leading-relaxed text-right hidden sm:block">
+              {t("subtitle")}
+            </div>
+            {monthStatus !== null && (
+              monthStatus === "closed" ? (
+                <button
+                  onClick={reopenMonth}
+                  disabled={closingMonth}
+                  className="flex items-center gap-1.5 border border-border bg-card rounded-md px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:border-primary/50 disabled:opacity-50 transition-colors"
+                  title="Reabrir mes"
+                >
+                  <LockOpen className="w-3.5 h-3.5" />
+                  {closingMonth ? "…" : "Reabrir mes"}
+                </button>
+              ) : (
+                <button
+                  onClick={closeMonth}
+                  disabled={closingMonth}
+                  className="flex items-center gap-1.5 border border-stone-800 bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 rounded-md px-3 py-1.5 text-xs hover:opacity-90 disabled:opacity-50 transition-colors shadow-sm"
+                  title="Cerrar mes"
+                >
+                  <Lock className="w-3.5 h-3.5" />
+                  {closingMonth ? "…" : "Cerrar mes"}
+                </button>
+              )
+            )}
           </div>
         </div>
 
