@@ -1,6 +1,6 @@
 # Kakebo AI Agent - Context Document
 
-**Last Updated:** 2026-02-16  
+**Last Updated:** 2026-05-27  
 **Version:** 3.0 - Intelligent Copilot & Growth Engine
 
 ---
@@ -31,6 +31,12 @@ Kakebo is a financial management app with an AI agent that helps users understan
    - Anomaly detection
    - Trend analysis
    - Predictions
+
+4. **Monthly Cycle Management** *(nómina-a-nómina)*
+   - Kakebo cycle is paycheck-to-paycheck (26th–28th), NOT calendar month (1st–31st)
+   - Closing a month automatically assumes paycheck received and opens next cycle
+   - User can register expenses **immediately** after closing — no need to wait for day 1
+   - Month records created on-demand per `(user_id, year, month)` in Supabase
 
 ---
 
@@ -190,22 +196,50 @@ src/lib/ai/
 
 ## 🚀 Recent Changes (2026-05-27)
 
-### Auto-Reset Monthly Cycle on Month Close
+### Monthly Cycle Auto-Reset Feature
 
-**Feature:** When the user closes a month, the system automatically opens the next nómina-to-nómina cycle so expenses can be registered immediately without waiting for the 1st of the calendar month.
+**What it does:**  
+When the user closes a month, the system automatically assumes the paycheck has been received, opens the next nómina-to-nómina cycle, and navigates there — so expenses can be registered **immediately** without waiting for the 1st of the calendar month.
 
-**Changed file:** `src/components/ExpenseCalendar.tsx` → `closeMonth()`
+#### User Impact
+- Before: User had to manually navigate to the next month and wait for the system to recognise a new period.
+- After: One click to close → next cycle opens instantly → user can register the first expense of the new cycle straight away.
 
-**Behaviour:**
-1. User clicks "Cerrar mes" for e.g. `2026-05`.
-2. Confirmation dialog now shows the next cycle that will open (`2026-06`).
-3. Current month is marked `status: "closed"` in the `months` table (unchanged).
-4. Next month record is created as `status: "open"` if it does not already exist (idempotent — safe to call multiple times).
-5. App navigates automatically to `/app?ym=<next-ym>` so the user can start registering expenses in the new cycle immediately.
+#### Files Affected
 
-**Cycle logic:** month +1 (wraps Dec → Jan of next year). The `months` table rows are created on-demand per `(user_id, year, month)` — RLS unchanged.
+| File | Change |
+|------|--------|
+| `src/components/ExpenseCalendar.tsx` | Modified `closeMonth()` — added auto-open logic and navigation |
+| `src/__tests__/api/months.test.ts` | 2 new tests for idempotent next-cycle creation |
 
-**Tests added:** `src/__tests__/api/months.test.ts` — two new cases covering idempotent next-cycle creation and returning an already-open next month.
+#### Behaviour (step by step)
+1. User clicks **"Cerrar mes"** (e.g. closing `2026-05`).
+2. Confirmation dialog now shows the next cycle that will open: *"Se abrirá automáticamente el siguiente ciclo (2026-06)…"*
+3. Current month is marked `status: "closed"` with `closed_at` timestamp in `months` table.
+4. System checks if next month record already exists for this user:
+   - **Exists:** no action (idempotent).
+   - **Does not exist:** inserts new row `{ year, month, status: "open", savings_done: false }`.
+5. App navigates automatically to `/app?ym=2026-06` — new cycle is open and ready.
+
+#### Cycle Logic
+```
+Closing 2026-05  →  Opens 2026-06
+Closing 2026-12  →  Opens 2027-01  (Dec → Jan year wrap)
+```
+Month +1 arithmetic with correct year overflow. Cycle is always **paycheck-to-paycheck**, not calendar month.
+
+#### Security (RLS)
+- Insert uses `userId` from the authenticated Supabase session — same pattern as the existing `createMonth()` helper.
+- RLS policies on `months` table are unchanged; no new policies needed.
+
+#### Tests Added
+```
+src/__tests__/api/months.test.ts
+├── "should open next cycle month when called after closing (idempotent create)"
+│   → POST /api/months for a non-existent next month → 201 Created, status: "open"
+└── "should return existing open next cycle if already created"
+    → POST /api/months for an already-open next month → 200 OK, status: "open"
+```
 
 ---
 
