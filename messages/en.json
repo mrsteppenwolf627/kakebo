@@ -593,6 +593,10 @@
             "title": "Monthly Balance",
             "subtitle": "Simplified financial control.",
             "cards": {
+                "incomes": {
+                    "label": "Income",
+                    "desc": "This month"
+                },
                 "budget": {
                     "label": "Budget",
                     "manageIncome": "Manage Income",

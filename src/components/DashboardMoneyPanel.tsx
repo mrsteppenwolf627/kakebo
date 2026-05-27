@@ -481,13 +481,13 @@ export default function DashboardMoneyPanel({ ym }: Props) {
           {/* Card 1: Ingresos */}
           <div className="border border-border bg-muted/20 p-5 rounded-md">
             <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide">
-              {t("cards.incomes.label", "Ingresos")}
+              {t("cards.incomes.label")}
             </div>
             <div className="text-2xl font-serif text-foreground mb-1">
               {money(income)} €
             </div>
             <div className="text-[10px] text-muted-foreground">
-              {t("cards.incomes.desc", "Este mes")}
+              {t("cards.incomes.desc")}
             </div>
           </div>
 

@@ -593,6 +593,10 @@
             "title": "Balance Mensual",
             "subtitle": "Control financiero simplificado.",
             "cards": {
+                "incomes": {
+                    "label": "Ingresos",
+                    "desc": "Este mes"
+                },
                 "budget": {
                     "label": "Presupuesto",
                     "manageIncome": "Gestionar Ingresos",
