@@ -180,5 +180,60 @@ describe("Months API", () => {
       expect(data.success).toBe(false);
       expect(data.error.code).toBe("VALIDATION_ERROR");
     });
+
+    it("should open next cycle month when called after closing (idempotent create)", async () => {
+      // Simulates POST /api/months called for the next month right after closing current one.
+      // The next month does not exist yet → should be created as "open".
+      const nextMonth = {
+        id: "next-month-456",
+        year: 2025,
+        month: 3,
+        status: "open",
+        savings_done: false,
+        user_id: "user-123",
+      };
+
+      mockSupabase.single
+        .mockResolvedValueOnce({ data: null, error: { code: "PGRST116" } })
+        .mockResolvedValueOnce({ data: nextMonth, error: null });
+
+      const request = new NextRequest("http://localhost/api/months", {
+        method: "POST",
+        body: JSON.stringify({ ym: "2025-03" }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(201);
+      expect(data.data.status).toBe("open");
+      expect(data.data.month).toBe(3);
+    });
+
+    it("should return existing open next cycle if already created", async () => {
+      // If closeMonth ran twice or user navigated manually, the next month already exists.
+      const existingNext = {
+        id: "next-month-456",
+        year: 2025,
+        month: 3,
+        status: "open",
+        user_id: "user-123",
+      };
+
+      mockSupabase.single.mockResolvedValueOnce({ data: existingNext, error: null });
+
+      const request = new NextRequest("http://localhost/api/months", {
+        method: "POST",
+        body: JSON.stringify({ ym: "2025-03" }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.data.status).toBe("open");
+    });
   });
 });

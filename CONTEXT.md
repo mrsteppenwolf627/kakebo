@@ -188,6 +188,27 @@ src/lib/ai/
 
 ---
 
+## 🚀 Recent Changes (2026-05-27)
+
+### Auto-Reset Monthly Cycle on Month Close
+
+**Feature:** When the user closes a month, the system automatically opens the next nómina-to-nómina cycle so expenses can be registered immediately without waiting for the 1st of the calendar month.
+
+**Changed file:** `src/components/ExpenseCalendar.tsx` → `closeMonth()`
+
+**Behaviour:**
+1. User clicks "Cerrar mes" for e.g. `2026-05`.
+2. Confirmation dialog now shows the next cycle that will open (`2026-06`).
+3. Current month is marked `status: "closed"` in the `months` table (unchanged).
+4. Next month record is created as `status: "open"` if it does not already exist (idempotent — safe to call multiple times).
+5. App navigates automatically to `/app?ym=<next-ym>` so the user can start registering expenses in the new cycle immediately.
+
+**Cycle logic:** month +1 (wraps Dec → Jan of next year). The `months` table rows are created on-demand per `(user_id, year, month)` — RLS unchanged.
+
+**Tests added:** `src/__tests__/api/months.test.ts` — two new cases covering idempotent next-cycle creation and returning an already-open next month.
+
+---
+
 ## 🚀 Recent Changes (2026-02-09)
 
 ### Added

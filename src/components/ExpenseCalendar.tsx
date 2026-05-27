@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 import { canUsePremium, Profile } from "@/lib/auth/access-control";
 import { Link } from "@/i18n/routing";
@@ -67,6 +68,7 @@ export default function ExpenseCalendar({
 }) {
   const t = useTranslations("Dashboard.ExpenseCalendar");
   const supabase = createClient();
+  const router = useRouter();
 
   const [rows, setRows] = useState<ExpenseRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -370,8 +372,12 @@ export default function ExpenseCalendar({
 
       if (m.status === "closed") return;
 
+      const nextMonth = month === 12 ? 1 : month + 1;
+      const nextYear = month === 12 ? year + 1 : year;
+      const nextYm = `${nextYear}-${pad2(nextMonth)}`;
+
       const ok = window.confirm(
-        `Vas a CERRAR el mes ${ym}. No podrás añadir ni eliminar gastos en este mes.\n\n¿Continuar?`
+        `Vas a CERRAR el mes ${ym}.\n\nSe abrirá automáticamente el siguiente ciclo (${nextYm}) para que puedas registrar gastos de inmediato.\n\n¿Continuar?`
       );
       if (!ok) return;
 
@@ -383,7 +389,28 @@ export default function ExpenseCalendar({
 
       if (error) throw error;
 
-      await load();
+      // Auto-open next cycle: create next month as "open" if it doesn't exist yet
+      const { data: existing } = await supabase
+        .from("months")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("year", nextYear)
+        .eq("month", nextMonth)
+        .limit(1);
+
+      if (!existing?.[0]) {
+        await supabase
+          .from("months")
+          .insert({
+            user_id: userId,
+            year: nextYear,
+            month: nextMonth,
+            status: "open",
+            savings_done: false,
+          });
+      }
+
+      router.push(`/app?ym=${nextYm}`);
     } catch (e: any) {
       setErr(e?.message ?? "Error cerrando mes");
     } finally {
