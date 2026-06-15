@@ -127,26 +127,24 @@ Priority 3: Semantic Similarity
 
 ---
 
-## 💎 Freemium Model
+## 💎 Free Model (100% Free)
 
-### Premium Features (Paid)
-1. **PDF Reports** - Generate detailed expense reports with charts
-2. **AI Agent** - Chat with financial assistant
-3. **AI Classification** - Auto-categorize expenses with AI
+Kakebo AI is now a completely free tool. There are no paid tiers, trials, or paywalls.
 
-### Free Features
+### Core Features (Free for everyone)
 - Expense tracking
 - Dashboard and charts
 - Monthly budget management
 - Category breakdown
 - Calendar view
-- Manual expense categorization
+- Manual and AI-assisted expense categorization
+- AI Agent chat
+- PDF Reports generation
 
 ### Access Control
-Users get premium access via:
-1. **Stripe Subscription** - Automatic after payment
-2. **VIP Manual Grant** - Admin-granted for friends, beta testers, owner
-3. **15-Day Trial** - Automatic for new signups
+- Registration is free and does not require a credit card.
+- All authenticated users have full access to all features.
+- Admin panel remains to manage potential future VIP/early-access features or to monitor usage, but all current functionality is globally available.
 
 ### Admin Panel
 - Located at `/app/admin`
