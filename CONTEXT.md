@@ -1,5 +1,28 @@
 # Kakebo AI Agent - Context Document
 
+## P0.6 Auditoria Final de Cierre (2026-06-15) - "Audit: close P0 free model migration (via Codex)"
+
+### Veredicto
+- **Estado final:** `P0 NO CERRADA`
+- **Motivo de bloqueo:** quedan referencias visibles/documentales de pagos, suscripciones y Stripe en contenido internacionalizado que todavia puede llegar a usuarios y buscadores
+
+### Estado resumido
+- Stripe ya no esta activo, la home ya no renderiza pricing ni `id="pricing"`, el dashboard ya no enlaza a suscripcion y `README.md`/`ADRs.md` ya describen el modelo gratuito
+- El cierre definitivo de P0 sigue bloqueado por copy legal/SEO residual, especialmente en `messages/en.json`
+- `npm run build` -> **PASS**
+- `npm run lint` -> **FAIL** (`307 problemas`, deuda preexistente no causada por la migracion)
+- `npm test` -> **FAIL** (`39 suites / 0 tests`, bug preexistente de path resolution)
+
+### Riesgos pendientes
+1. **ALTA** - `messages/en.json` mantiene referencias a `Stripe`, `Payments and Subscriptions`, `Payment Data` y servicios premium futuros que pueden seguir apareciendo en paginas legales/indexables
+2. **MEDIA** - `next.config.ts` mantiene `typescript.ignoreBuildErrors = true` y `eslint.ignoreDuringBuilds = true`
+3. **MEDIA** - la suite de tests sigue rota y no protege regresiones
+4. **BAJA** - columnas `stripe_*`, `tier` y `trial_ends_at` pueden seguir existiendo en Supabase como deuda de limpieza
+
+### Siguiente tarea recomendada
+- `P0.7`: limpiar el copy legal/SEO internacionalizado que siga mencionando Stripe, pagos, suscripciones o monetizacion premium futura, y revalidar home/legal/readme con una auditoria corta de cierre
+
+
 **Last Updated:** 2026-06-15  
 **Version:** 4.3 - P0.5 completado: cierre definitivo de migración gratuita
 
