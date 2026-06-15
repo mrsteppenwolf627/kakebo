@@ -20,9 +20,8 @@ export default function SoftwareAppJsonLd() {
         ],
         "offers": {
             "@type": "Offer",
-            "price": "3.99",
-            "priceCurrency": "EUR",
-            "priceValidUntil": "2026-12-31"
+            "price": "0",
+            "priceCurrency": "EUR"
         },
         "aggregateRating": {
             "@type": "AggregateRating",

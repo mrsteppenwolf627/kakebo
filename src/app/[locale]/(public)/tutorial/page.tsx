@@ -108,7 +108,7 @@ export default function TutorialPage() {
 
                         <div className="mt-12 p-8 bg-card border border-border rounded-2xl text-center shadow-lg not-prose">
                             <h3 className="text-2xl font-serif font-bold text-foreground mb-3">¿Listo para empezar a ahorrar?</h3>
-                            <p className="text-muted-foreground mb-6">Prueba gratis durante 14 días sin necesidad de tarjeta de crédito.</p>
+                            <p className="text-muted-foreground mb-6">Gratis para siempre, sin necesidad de tarjeta de crédito.</p>
                             <Link href="/login" className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-md hover:opacity-90 transition-opacity shadow-sm">
                                 Crea tu cuenta ahora
                             </Link>

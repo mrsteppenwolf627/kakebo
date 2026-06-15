@@ -72,7 +72,7 @@ export function SavingsSimulator() {
                         {t("cta")}
                     </Link>
                     <p className="mt-4 text-xs text-muted-foreground">
-                        {t("trial")}
+                        {t("note")}
                     </p>
                 </div>
             </div>

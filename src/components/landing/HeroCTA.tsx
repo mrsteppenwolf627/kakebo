@@ -9,7 +9,7 @@ interface HeroCTAProps {
     label?: string;
 }
 
-export function HeroCTA({ label = "Prueba 14 días gratis" }: HeroCTAProps) {
+export function HeroCTA({ label = "Empieza gratis" }: HeroCTAProps) {
     const supabase = createClient();
     const router = useRouter();
     const [session, setSession] = useState<any>(null);

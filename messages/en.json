@@ -6,7 +6,6 @@
     "Navigation": {
         "blog": "Blog",
         "tools": "Tools",
-        "pricing": "Pricing",
         "features": "Features",
         "howItWorks": "How it Works",
         "login": "Login",
@@ -39,7 +38,6 @@
         "newIncomeLong": "+ New Income",
         "configuration": "Settings",
         "language": "Language",
-        "subscription": "Settings",
         "tutorial": "Tutorial",
         "about": "About Us"
     },
@@ -56,8 +54,8 @@
         "ctaSecondary": "Learn more",
         "trustSignal": "🔒 Instant registration · No card required · <bold>Free forever</bold>",
         "stats": {
-            "trial": "Free",
-            "trialLabel": "Forever. No card needed.",
+            "free": "Free",
+            "freeLabel": "Forever. No card needed.",
             "price": "$0",
             "priceLabel": "No Card Required",
             "privacy": "100%",
@@ -94,7 +92,7 @@
         "resultLabel": "Monthly Savings Potential",
         "disclaimer": "*Based on the 20% Kakebo method goal",
         "cta": "Start saving today",
-        "trial": "Free forever. No card required."
+        "note": "Free forever. No card required."
     },
     "Alternatives": {
         "title": "Why choose Kakebo AI?",
@@ -430,28 +428,6 @@
                 "note": "If your goal was to save €200, you're doing well. If not, see which category went overboard and adjust next month. Simple."
             }
         },
-        "Pricing": {
-            "title": "Free. Forever.",
-            "subtitle": "Kakebo is completely free. Sign up and start managing your finances today.",
-            "planName": "Kakebo Free",
-            "planDesc": "AI Agent + Advanced Analysis + Unlimited Budgets",
-            "price": "€0",
-            "period": "/mo",
-            "trial": "No limits · No card",
-            "features": {
-                "f1": "Unlimited expense tracking",
-                "f2": "Fixed expenses and subscription management",
-                "f3": "Category budgets (Kakebo)",
-                "f4": "Full history and export",
-                "f5": "Personal AI Finance Agent",
-                "f6": "Automatic pattern analysis",
-                "f7": "Personalized savings tips",
-                "f8": "Email support"
-            },
-            "cta": "Get started for free",
-            "note": "No credit card required. Free forever.",
-            "footer": "🔒 Encrypted data · 100% Private · No intrusive ads"
-        },
         "Content": {
             "title": "Control your finances in Europe with Kakebo",
             "article1": {
@@ -676,12 +652,6 @@
                 "remaining": "Remains {amount} €",
                 "noBudget": "No budget"
             },
-            "locked": {
-                "title": "History Unlocked",
-                "desc": "You have access to all your historical data.",
-                "unlock": "View History",
-                "premium": "Full History"
-            },
             "list": {
                 "title": "Recent Transactions",
                 "empty": "No expenses recorded this month.",
@@ -746,7 +716,7 @@
             },
             "q3": {
                 "question": "Will I have to pay in the future?",
-                "answer": "Current features will remain free. In the future we may add premium services, but the core tool will always have a powerful free version."
+                "answer": "The current features will remain free. Our goal is to always keep a powerful free version of the core tool available to everyone."
             },
             "q4": {
                 "question": "Is Kakebo useful even if I already use a banking app?",
@@ -1159,7 +1129,7 @@
         },
         "grantVip": {
             "title": "Grant VIP Access",
-            "desc": "Manually grant premium access to users (friends, beta testers, etc.)",
+            "desc": "Manually grant manual access to users (friends, beta testers, etc.)",
             "placeholder": "user@example.com",
             "button": "Grant VIP",
             "granting": "Granting...",
@@ -1208,18 +1178,18 @@
                 "content": "We use your information to:",
                 "list": {
                     "i1": "Provide, maintain, and improve our services.",
-                    "i2": "Process transactions (for subscriptions).",
+                    "i2": "Keep your account active and secure.",
                     "i3": "Send you technical or support notifications."
                 }
             },
             "payments": {
-                "title": "3. Payment Data (Stripe)",
-                "p1": "If you make payments on Kakebo AI, we use <bold>Stripe</bold> as a secure payment gateway.",
-                "p2": "<bold>Kakebo AI does not have access to nor stores your full payment card numbers.</bold> This information is transmitted directly to Stripe in encrypted form. Stripe processes your payment data according to their <link>Privacy Policy</link>."
+                "title": "3. Data & Privacy",
+                "p1": "Kakebo AI is a free tool. We do not collect payment data nor connect to your bank accounts.",
+                "p2": "<bold>Your privacy is our priority.</bold> Your financial data is encrypted and you have full control over what you choose to record."
             },
             "sharing": {
                 "title": "4. Sharing Information",
-                "content": "We do not sell your personal data. We only share information with service providers (like Stripe or hosting providers) necessary to operate the application, under strict confidentiality clauses."
+                "content": "We do not sell your personal data. We only share information with essential service providers (such as hosting) necessary to operate the application, under strict confidentiality clauses."
             },
             "rights": {
                 "title": "5. Your Rights",
@@ -1244,13 +1214,12 @@
                 "content": "We use essential cookies for the app to function:",
                 "list": {
                     "i1": "<bold>Session Cookies:</bold> To keep you securely logged in (Supabase Auth).",
-                    "i2": "<bold>Preference Cookies:</bold> To remember if you prefer light or dark mode.",
-                    "i3": "<bold>Payment Cookies (Stripe):</bold> Stripe may set cookies necessary for fraud prevention and secure payment processing."
+                    "i2": "<bold>Preference Cookies:</bold> To remember if you prefer light or dark mode."
                 }
             },
             "management": {
                 "title": "3. Cookie Management",
-                "content": "You can configure your browser to reject all cookies or to alert you when a cookie is sent. However, some parts of the service (like login or payments) will not work properly without them."
+                "content": "You can configure your browser to reject all cookies or to alert you when a cookie is sent. However, some parts of the service (like login) will not work properly without them."
             }
         }
     },
@@ -1272,15 +1241,15 @@
             },
             "account": {
                 "title": "3. User Accounts",
-                "content": "To use certain features, you must register. You are responsible for maintaining the confidentiality of your credentials. We reserve the right to suspend accounts that violate these terms."
+                "content": "To use the platform, you must register. You are responsible for maintaining the confidentiality of your credentials. We reserve the right to suspend accounts that violate these terms."
             },
             "payments": {
-                "title": "4. Payments and Subscriptions (Stripe)",
-                "content": "Some advanced features may require a paid subscription. Payments are securely processed via <bold>Stripe</bold>.",
+                "title": "4. Free Service",
+                "content": "Kakebo AI is currently a free service.",
                 "list": {
-                    "i1": "We do not store your full credit/debit card data on our servers.",
-                    "i2": "Transactions are subject to Stripe's terms and conditions, in addition to ours.",
-                    "i3": "You can cancel your subscription at any time from your dashboard."
+                    "i1": "We do not request card data nor charge for the use of the current features.",
+                    "i2": "Any future change to the business model will be communicated to users.",
+                    "i3": "We do not connect to your bank nor carry out financial transactions."
                 }
             },
             "liability": {

@@ -6,7 +6,6 @@
     "Navigation": {
         "blog": "Blog",
         "tools": "Herramientas",
-        "pricing": "Precios",
         "features": "Características",
         "howItWorks": "Cómo funciona",
         "login": "Entrar",
@@ -39,7 +38,6 @@
         "newIncomeLong": "+ Nuevo Ingreso",
         "configuration": "Configuración",
         "language": "Idioma",
-        "subscription": "Ajustes",
         "tutorial": "Tutorial",
         "about": "Sobre Nosotros"
     },
@@ -56,8 +54,8 @@
         "ctaSecondary": "Más información",
         "trustSignal": "🔒 Registro instantáneo · Sin tarjeta · <bold>Gratis para siempre</bold>",
         "stats": {
-            "trial": "Gratis",
-            "trialLabel": "Para siempre. Sin tarjeta.",
+            "free": "Gratis",
+            "freeLabel": "Para siempre. Sin tarjeta.",
             "price": "0€",
             "priceLabel": "Sin tarjeta requerida",
             "privacy": "100%",
@@ -94,7 +92,7 @@
         "resultLabel": "Potencial de Ahorro Mensual",
         "disclaimer": "*Basado en el objetivo del 20% del método Kakebo",
         "cta": "Empezar a ahorrar hoy",
-        "trial": "Gratis para siempre. Sin tarjeta."
+        "note": "Gratis para siempre. Sin tarjeta."
     },
     "Alternatives": {
         "title": "¿Por qué elegir Kakebo AI?",
@@ -430,28 +428,6 @@
                 "note": "Si tu objetivo era ahorrar 200€, vas bien. Si no, miras qué categoría se te fue de madre y ajustas el siguiente mes. Simple."
             }
         },
-        "Pricing": {
-            "title": "Gratis. Para siempre.",
-            "subtitle": "Kakebo es completamente gratuito. Regístrate y empieza a controlar tus gastos hoy mismo.",
-            "planName": "Kakebo Gratuito",
-            "planDesc": "Agente IA + Análisis avanzado + Presupuestos ilimitados",
-            "price": "0€",
-            "period": "/mes",
-            "trial": "Sin límites · Sin tarjeta",
-            "features": {
-                "f1": "Registro de gastos ilimitados",
-                "f2": "Gestión de gastos fijos y suscripciones",
-                "f3": "Presupuestos por categoría (Kakebo)",
-                "f4": "Historial completo y exportación",
-                "f5": "Agente IA de finanzas personal",
-                "f6": "Análisis automático de patrones",
-                "f7": "Consejos de ahorro personalizados",
-                "f8": "Soporte por email"
-            },
-            "cta": "Empezar gratis ahora",
-            "note": "No se requiere tarjeta de crédito. Gratis para siempre.",
-            "footer": "🔒 Datos encriptados · 100% Privado · Sin publicidad intrusiva"
-        },
         "Content": {
             "title": "Controla tus finanzas en España con Kakebo",
             "article1": {
@@ -676,12 +652,6 @@
                 "remaining": "Restan {amount} €",
                 "noBudget": "Sin presupuesto"
             },
-            "locked": {
-                "title": "Histórico desbloqueado",
-                "desc": "Tienes acceso a todo tu historial de datos.",
-                "unlock": "Ver Historial",
-                "premium": "Historial Completo"
-            },
             "list": {
                 "title": "Últimos movimientos",
                 "empty": "No hay gastos registrados este mes.",
@@ -746,7 +716,7 @@
             },
             "q3": {
                 "question": "¿Habrá que pagar en el futuro?",
-                "answer": "Las funciones actuales seguirán siendo gratuitas. En el futuro podríamos añadir servicios premium, pero el núcleo de la herramienta siempre tendrá una versión gratuita potente."
+                "answer": "Las funciones actuales seguirán siendo gratuitas. Nuestro objetivo es mantener siempre disponible una versión gratuita potente del núcleo de la herramienta para todos."
             },
             "q4": {
                 "question": "¿Kakebo sirve aunque ya use una app bancaria?",
@@ -1214,7 +1184,7 @@
         },
         "grantVip": {
             "title": "Otorgar Acceso VIP",
-            "desc": "Concede acceso premium manual a usuarios (amigos, beta testers, etc.)",
+            "desc": "Concede acceso manual a usuarios (amigos, beta testers, etc.)",
             "placeholder": "usuario@ejemplo.com",
             "button": "Otorgar VIP",
             "granting": "Otorgando...",

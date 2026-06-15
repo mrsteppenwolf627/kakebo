@@ -61,8 +61,8 @@ export function Hero() {
         <div className="mx-auto mt-20 max-w-4xl border border-border bg-card p-8 sm:p-12 shadow-sm">
           <div className="grid gap-8 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border">
             <div className="pt-4 sm:pt-0 text-center">
-              <div className="mb-2 text-4xl font-serif text-foreground">{t("stats.trial")}</div>
-              <div className="text-sm text-muted-foreground font-light">{t("stats.trialLabel")}</div>
+              <div className="mb-2 text-4xl font-serif text-foreground">{t("stats.free")}</div>
+              <div className="text-sm text-muted-foreground font-light">{t("stats.freeLabel")}</div>
             </div>
             <div className="pt-4 sm:pt-0 text-center">
               <div className="mb-2 text-4xl font-serif text-foreground">{t("stats.price")}</div>

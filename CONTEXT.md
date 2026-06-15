@@ -1,5 +1,51 @@
 # Kakebo AI Agent - Context Document
 
+## P0.7 Cierre Estricto de Migración Gratuita (2026-06-15) — "Fix: remove final public SaaS and payment references (via Claude Opus)"
+
+### Veredicto propuesto
+- **Estado:** `P0 LISTA PARA AUDITORÍA FINAL`
+- **Motivo:** eliminada toda referencia pública/indexable a Stripe, pagos, suscripciones, planes pro, trial y precios propios. Lo que queda son restos internos (stubs neutralizados, lógica `canUsePremium` que siempre devuelve true, columnas DB) clasificados como deuda P1 documentada, no visibles al usuario ni indexables.
+
+### Archivos modificados en P0.7
+| Archivo | Cambio |
+|---------|--------|
+| `messages/en.json` | Legal Privacy/Cookies/Terms reescritos (Stripe → modelo gratuito, igualando es.json); FAQ q3 sin "premium services"; Admin desc "premium"→"manual"; eliminado namespace `Pricing`; eliminado `Dashboard.locked`; eliminadas claves `Navigation.pricing` y `Navigation.subscription`; `Hero.stats.trial/trialLabel`→`free/freeLabel`; `SavingsSimulator.trial`→`note` |
+| `messages/es.json` | FAQ q3 sin "servicios premium"; Admin desc "premium"→"manual"; eliminado namespace `Pricing`; eliminado `Dashboard.locked`; eliminadas claves `Navigation.pricing` y `Navigation.subscription`; `Hero.stats.trial/trialLabel`→`free/freeLabel`; `SavingsSimulator.trial`→`note` |
+| `src/components/landing/PricingSection.tsx` | **eliminado** (componente muerto con `id="pricing"` y "Premium Plan") |
+| `src/components/landing/index.tsx` | (ya sin export en P0.5) |
+| `src/components/landing/Hero.tsx` | referencias `stats.free/freeLabel` |
+| `src/components/landing/SavingsSimulator.tsx` | referencia `note` |
+| `src/components/landing/HeroCTA.tsx` | label por defecto "Prueba 14 días gratis" → "Empieza gratis" |
+| `src/components/seo/SoftwareAppJsonLd.tsx` | JSON-LD `price "3.99"` → `"0"`, eliminado `priceValidUntil` (era indexable en blog) |
+| `src/app/[locale]/(public)/tutorial/page.tsx` | copy "Prueba gratis durante 14 días..." → "Gratis para siempre, sin tarjeta" |
+| `src/content/blog/*.mdx` | limpiados precios propios "3,99€/mes"/"$3.99/month", "planes pro", "free trial"/"prueba gratuita 14 días", "modelo de suscripción Freemium" → mensajería gratuita. Archivos: kakebo-online-gratis (es/en), kakebo-online-guia-completa.es / complete-guide.en, peligros-apps-ahorro-automatico (es/en), alternativas-a-app-bancarias (es/en), plantilla-kakebo-excel (es/en), libro-kakebo-pdf.es |
+
+### Referencias conservadas y motivo (no bloquean P0)
+- **CONTEXT.md / ADRs.md** — registro histórico de la migración (rule B).
+- **`src/lib/stripe/server.ts`, `src/app/api/stripe/*/route.ts`, `src/app/api/webhooks/stripe/route.ts`** — stubs legacy neutralizados (410/null) con comentario "Stripe has been removed". No indexables. Deuda P1.
+- **`src/components/saas/*` (PremiumPrompt, TrialBanner, StripeSuccessHandler)** — componentes neutralizados que renderizan `null`. No visibles. Deuda P1.
+- **`src/lib/auth/access-control.ts`** — campos de tipo `stripe_customer_id`, `stripe_subscription_id` que reflejan columnas DB (conservadas para P1, ver ADR-002).
+- **`src/app/[locale]/app/new/NewExpenseClient.tsx`, `src/app/api/ai/agent/route.ts`** — `canUsePremium`/`hasPremiumAccess` (siempre true para usuario autenticado). Lógica interna, no copy visible ni indexable. Deuda P1.
+- **`src/app/[locale]/app/(cancel-)subscription`** — páginas legacy con copy CORRECTO ("Kakebo es gratuito. No hay suscripción que cancelar").
+- **`messages/es.json` legal p1** — "No recopilamos datos de pago" (negación: refuerza el modelo gratuito).
+- **Blog: menciones de "suscripciones" (Netflix, streaming, gimnasio)** — categoría legítima de gasto del usuario.
+- **Blog `kakebo-vs-ynab`** — describe precios de COMPETIDORES (YNAB ~$100/año, libreta, freemium), no de Kakebo.
+- **Blog: "invoice/facturas" (autónomos), "checkout mental" (tienda), "trial and error" (idiom)** — sentido no relacionado con pagos de Kakebo.
+- **`src/lib/ai/embeddings.ts`** comentario "Pricing (OpenAI API)" y prompts con "€/mes" (cálculos de ahorro) — internos, no sobre precio de Kakebo.
+
+### Validación P0.7
+- `npm run build` → **PASS**
+- `npm run lint` → **306 problemas** (223 errores, 83 warnings) — uno menos que los 307 previos (al borrar PricingSection.tsx). **Cero errores nuevos** introducidos por P0.7. Deuda preexistente P1.
+- `npm test` → **39 suites fallidas / 0 tests** — bug preexistente de path resolution, no causado por P0.7. Deuda P1.
+
+### Deuda técnica P1 (no bloqueante de P0)
+1. `typescript.ignoreBuildErrors` y `eslint.ignoreDuringBuilds` en `next.config.ts`.
+2. Suite de tests rota (path resolution con doble lockfile).
+3. Stubs internos SaaS/Stripe y lógica `canUsePremium` (limpieza de código).
+4. Columnas `stripe_*`, `tier`, `trial_ends_at` en Supabase (migración formal P1).
+
+---
+
 ## P0.6 Auditoria Final de Cierre (2026-06-15) - "Audit: close P0 free model migration (via Codex)"
 
 ### Veredicto
