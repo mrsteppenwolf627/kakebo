@@ -39,7 +39,7 @@
         "newIncomeLong": "+ Nuevo Ingreso",
         "configuration": "Configuración",
         "language": "Idioma",
-        "subscription": "Suscripción",
+        "subscription": "Ajustes",
         "tutorial": "Tutorial",
         "about": "Sobre Nosotros"
     },
@@ -54,7 +54,7 @@
         "subtitle": "La <bold>App de Control de Gastos basada en el Método Japonés</bold>.<br>Sin bancos, 100% privado y con asistencia de IA.",
         "ctaPrimary": "Empezar Gratis",
         "ctaSecondary": "Más información",
-        "trustSignal": "🔒 Registro instantáneo · Sin tarjeta · <bold>Privacidad total sin bancos</bold>",
+        "trustSignal": "🔒 Registro instantáneo · Sin tarjeta · <bold>Gratis para siempre</bold>",
         "stats": {
             "trial": "Gratis",
             "trialLabel": "Para siempre. Sin tarjeta.",
@@ -505,8 +505,8 @@
             "title": "Control de gastos <br />con método japonés",
             "subtitle": "Registra, clasifica y revisa tus gastos mensuales con claridad. Sin complicaciones, sin humo.",
             "features": {
-                "free": "Gratis para siempre (Plan Manual)",
-                "ai": "Agente IA opcional (15 días de prueba)",
+                "free": "Gratis para siempre",
+                "ai": "Agente IA incluido",
                 "privacy": "Tus datos siempre privados y seguros"
             }
         },
@@ -518,7 +518,7 @@
             },
             "signup": {
                 "title": "Crear cuenta",
-                "subtitle": "Regístrate y empieza con el Plan Manual (gratis)"
+                "subtitle": "Regístrate y empieza a ahorrar gratis"
             },
             "googleBtn": "Continuar con Google",
             "divider": "O con email",
@@ -677,10 +677,10 @@
                 "noBudget": "Sin presupuesto"
             },
             "locked": {
-                "title": "Histórico bloqueado",
-                "desc": "Tu periodo de prueba ha finalizado. Actualiza a Premium para ver tus datos históricos.",
-                "unlock": "Desbloquear Historial",
-                "premium": "Historial Premium"
+                "title": "Histórico desbloqueado",
+                "desc": "Tienes acceso a todo tu historial de datos.",
+                "unlock": "Ver Historial",
+                "premium": "Historial Completo"
             },
             "list": {
                 "title": "Últimos movimientos",
@@ -741,12 +741,12 @@
                 "answer": "Sí, 100%. Puedes registrarte y usar el Plan Manual (control de gastos completo) sin pagar nada. El registro es instantáneo y no necesitas tarjeta de crédito."
             },
             "q2": {
-                "question": "¿Qué incluye el trial de 14 días del Plan Pro?",
-                "answer": "El trial te da acceso completo al Agente IA de finanzas: análisis automático, consejos personalizados, predicciones de ahorro e insights inteligentes. Para activarlo necesitas agregar una tarjeta, pero NO se te cobrará hasta el día 15. Te avisaremos antes de cualquier cargo."
+                "question": "¿Qué incluye Kakebo?",
+                "answer": "Incluye todo: registro ilimitado de gastos, gestión de gastos fijos, asistente de IA, análisis automático, consejos personalizados y predicciones de ahorro. Todo de forma gratuita."
             },
             "q3": {
-                "question": "¿Puedo cancelar el Plan Pro durante el trial?",
-                "answer": "Sí, puedes cancelar en cualquier momento desde tu perfil. Si cancelas durante los 14 días de trial, NO se te cobrará nada. Es así de simple."
+                "question": "¿Habrá que pagar en el futuro?",
+                "answer": "Las funciones actuales seguirán siendo gratuitas. En el futuro podríamos añadir servicios premium, pero el núcleo de la herramienta siempre tendrá una versión gratuita potente."
             },
             "q4": {
                 "question": "¿Kakebo sirve aunque ya use una app bancaria?",
@@ -754,7 +754,7 @@
             },
             "q5": {
                 "question": "¿Mis datos están seguros?",
-                "answer": "Sí. Usamos Supabase para autenticación y Stripe para pagos. Tus datos financieros están encriptados y nunca compartimos información con terceros."
+                "answer": "Sí. Usamos Supabase para autenticación y seguridad de datos. Tus datos financieros están encriptados y nunca compartimos información con terceros."
             }
         }
     },
@@ -1095,10 +1095,10 @@
             "loadError": "Error cargando ajustes",
             "loading": "Cargando...",
             "disclaimer": "Estos ajustes se guardan en tu cuenta (Supabase), no en el navegador.",
-            "subscriptionTitle": "Suscripción Kakebo",
-            "subscriptionDescTitle": "Gestiona tu plan",
-            "subscriptionDescText": "Actualiza a Pro o cancela tu suscripción actual de forma segura.",
-            "subscriptionBtn": "Ver Suscripción"
+            "subscriptionTitle": "Cuenta Kakebo",
+            "subscriptionDescTitle": "Gestiona tu cuenta",
+            "subscriptionDescText": "Revisa tus datos y configuración de forma segura.",
+            "subscriptionBtn": "Ver Perfil"
         },
         "FixedExpenses": {
             "title": "Gastos fijos",
@@ -1263,18 +1263,18 @@
                 "content": "Utilizamos tu información para:",
                 "list": {
                     "i1": "Proporcionar, mantener y mejorar nuestros servicios.",
-                    "i2": "Procesar transacciones (en caso de suscripciones).",
+                    "i2": "Mantener tu cuenta activa y segura.",
                     "i3": "Enviarte notificaciones técnicas o de soporte."
                 }
             },
             "payments": {
-                "title": "3. Datos de Pagos (Stripe)",
-                "p1": "Si realizas pagos en Kakebo AI, utilizamos <bold>Stripe</bold> como pasarela de pago segura.",
-                "p2": "<bold>Kakebo AI no tiene acceso ni almacena tus números completos de tarjeta de pago.</bold> Esta información se transmite directamente a Stripe de forma encriptada. Stripe procesa tus datos de pago de acuerdo con su <link>Política de Privacidad</link>."
+                "title": "3. Datos y Privacidad",
+                "p1": "Kakebo AI es una herramienta gratuita. No recopilamos datos de pago ni conectamos con tus cuentas bancarias.",
+                "p2": "<bold>Tu privacidad es nuestra prioridad.</bold> Tus datos financieros están encriptados y tú tienes el control total sobre lo que decides registrar."
             },
             "sharing": {
                 "title": "4. Compartir Información",
-                "content": "No vendemos tus datos personales. Solo compartimos información con proveedores de servicios (como Stripe o proveedores de hosting) necesarios para operar la aplicación, bajo estrictas cláusulas de confidencialidad."
+                "content": "No vendemos tus datos personales. Solo compartimos información con proveedores de servicios esenciales para operar la aplicación (como hosting), bajo estrictas cláusulas de confidencialidad."
             },
             "rights": {
                 "title": "5. Tus Derechos",
@@ -1299,13 +1299,12 @@
                 "content": "Utilizamos cookies esenciales para el funcionamiento de la aplicación:",
                 "list": {
                     "i1": "<bold>Cookies de Sesión:</bold> Para mantener tu sesión iniciada de forma segura (Supabase Auth).",
-                    "i2": "<bold>Cookies de Preferencias:</bold> Para recordar si prefieres el modo claro u oscuro.",
-                    "i3": "<bold>Cookies de Pago (Stripe):</bold> Stripe puede establecer cookies necesarias para la prevención de fraude y el procesamiento seguro de pagos."
+                    "i2": "<bold>Cookies de Preferencias:</bold> Para recordar si prefieres el modo claro u oscuro."
                 }
             },
             "management": {
                 "title": "3. Gestión de cookies",
-                "content": "Puedes configurar tu navegador para rechazar todas las cookies o para que te avise cuando se envía una cookie. Sin embargo, algunas partes del servicio (como el inicio de sesión o los pagos) no funcionarán correctamente sin ellas."
+                "content": "Puedes configurar tu navegador para rechazar todas las cookies o para que te avise cuando se envía una cookie. Sin embargo, algunas partes del servicio (como el inicio de sesión) no funcionarán correctamente sin ellas."
             }
         }
     },
@@ -1323,19 +1322,19 @@
             },
             "desc": {
                 "title": "2. Descripción del Servicio",
-                "content": "Kakebo AI es una herramienta de gestión financiera personal basada en el método japonés Kakebo, diseñada para ayudar a los usuarios a registrar gastos y fomentar el ahorro."
+                "content": "Kakebo AI es una herramienta de gestión financiera personal gratuita basada en el método japonés Kakebo, diseñada para ayudar a los usuarios a registrar gastos y fomentar el ahorro."
             },
             "account": {
                 "title": "3. Cuentas de Usuario",
-                "content": "Para usar ciertas funciones, debes registrarte. Eres responsable de mantener la confidencialidad de tus credenciales. Nos reservamos el derecho de suspender cuentas que violen estos términos."
+                "content": "Para usar la plataforma, debes registrarte. Eres responsable de mantener la confidencialidad de tus credenciales. Nos reservamos el derecho de suspender cuentas que violen estos términos."
             },
             "payments": {
-                "title": "4. Pagos y Suscripciones (Stripe)",
-                "content": "Algunas funciones avanzadas pueden requerir una suscripción de pago. Los pagos son procesados de forma segura a través de <bold>Stripe</bold>.",
+                "title": "4. Gratuidad del Servicio",
+                "content": "Kakebo AI es actualmente un servicio gratuito.",
                 "list": {
-                    "i1": "No almacenamos tus datos completos de tarjeta de crédito/débito en nuestros servidores.",
-                    "i2": "Las transacciones están sujetas a los términos y condiciones de Stripe, además de los nuestros.",
-                    "i3": "Puedes cancelar tu suscripción en cualquier momento desde tu panel de control."
+                    "i1": "No solicitamos datos de tarjeta ni realizamos cargos por el uso de las funciones actuales.",
+                    "i2": "Cualquier cambio futuro en el modelo de negocio será notificado a los usuarios.",
+                    "i3": "No nos conectamos a tu banco ni realizamos transacciones financieras."
                 }
             },
             "liability": {

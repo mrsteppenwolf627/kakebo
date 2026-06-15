@@ -187,9 +187,6 @@ export function Footer() {
 
             <div className="flex items-center gap-6 text-xs text-muted-foreground font-light">
               <span className="flex items-center gap-1">
-                Stripe
-              </span>
-              <span className="flex items-center gap-1">
                 {t('secure')}
               </span>
             </div>

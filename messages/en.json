@@ -39,7 +39,7 @@
         "newIncomeLong": "+ New Income",
         "configuration": "Settings",
         "language": "Language",
-        "subscription": "Subscription",
+        "subscription": "Settings",
         "tutorial": "Tutorial",
         "about": "About Us"
     },
@@ -54,7 +54,7 @@
         "subtitle": "The <bold>Expense Tracker based on the Japanese Method</bold>.<br>No banks, 100% private, AI-powered.",
         "ctaPrimary": "Get Started Free",
         "ctaSecondary": "Learn more",
-        "trustSignal": "🔒 Instant registration · No card required · <bold>Total privacy</bold>",
+        "trustSignal": "🔒 Instant registration · No card required · <bold>Free forever</bold>",
         "stats": {
             "trial": "Free",
             "trialLabel": "Forever. No card needed.",
@@ -677,10 +677,10 @@
                 "noBudget": "No budget"
             },
             "locked": {
-                "title": "History Locked",
-                "desc": "Your trial period has ended. Upgrade to Premium to see your historical data.",
-                "unlock": "Unlock History",
-                "premium": "Premium History"
+                "title": "History Unlocked",
+                "desc": "You have access to all your historical data.",
+                "unlock": "View History",
+                "premium": "Full History"
             },
             "list": {
                 "title": "Recent Transactions",

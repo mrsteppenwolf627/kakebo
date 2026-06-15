@@ -500,19 +500,7 @@ export default function ExpenseCalendar({
 
   // Check if viewing past month and user is not premium
   const isLocked = useMemo(() => {
-    if (!profile) return false; // Loading or error, let's show data or wait
-
-    const now = new Date();
-    const currentYm = `${now.getFullYear()}-${pad2(now.getMonth() + 1)}`;
-
-    // Si estamos viendo un mes pasado (lexicográficamente menor)
-    if (ym < currentYm) {
-      // Y no tenemos premium
-      if (!canUsePremium(profile)) {
-        return true;
-      }
-    }
-    return false;
+    return false; // Free model: history is unlocked for everyone
   }, [ym, profile]);
 
   return (
