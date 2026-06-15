@@ -1,5 +1,45 @@
 # Kakebo AI Agent - Context Document
 
+**Last Updated:** 2026-06-15  
+**Version:** 3.1 - Technical Pipeline Stabilization (P1.1)
+
+---
+
+## 🔧 P1.1 - Pipeline Stabilization (2026-06-15)
+
+### Estado: COMPLETADA
+
+### Diagnóstico de Vitest
+
+**Causa raíz:** El directorio raíz del proyecto no tenía `node_modules`. Los módulos estaban instalados solo en la subcarpeta `kakebo/kakebo/node_modules`. Al ejecutar `npm test` desde el directorio raíz, `vitest` no se encontraba en PATH.
+
+**Solución:** `npm install` en el directorio raíz.
+
+### Archivos Modificados
+
+| Archivo | Cambio |
+|---------|--------|
+| `src/app/api/og/route.tsx` | Eliminado código muerto de carga de fuentes (Inter-Bold.ttf no existía, fontData/interSemiBold/playfairDisplay nunca se usaban en ImageResponse) |
+| `next.config.ts` | Eliminada opción `eslint.ignoreDuringBuilds` (no reconocida en Next.js 16) |
+
+### Validaciones Ejecutadas
+
+- `npm run build` → **PASS** sin warning de Inter-Bold.ttf
+- `npm run lint` → ~306 problemas (223 errors, 83 warnings) — sin cambios, deuda P1.3
+- `npm test` → **469 tests ejecutados** (422 pass / 47 fail) — antes: 0 tests ejecutados
+
+### Deuda Técnica Pendiente (P1.2+)
+
+| Problema | Prioridad |
+|---------|-----------|
+| `typescript.ignoreBuildErrors: true` | P1.2 |
+| 223 errores ESLint | P1.3 |
+| `src/middleware.ts` deprecado (→ `proxy.ts`) | P1.2 |
+| 47 tests fallando por lógica real | P1.2 |
+| Doble carpeta `kakebo/kakebo` | P1.2 |
+
+---
+
 ## P0.8 Auditoria Corta Final de Cierre (2026-06-15) - "Audit: final close of P0 free model migration (via Codex)"
 
 ### Veredicto final
