@@ -39,7 +39,7 @@ const agentRequestSchema = z.object({
         }),
       }),
       toolName: z.string(),
-      arguments: z.record(z.unknown()),
+      arguments: z.record(z.string(), z.unknown()),
       description: z.string(),
     })
     .optional(),

@@ -69,8 +69,7 @@ export const POST = withLogging(
     } catch (error) {
       return handleApiError(error);
     }
-  },
-  { skipAuthLog: true } // Skip logging auth details for internal endpoint
+  }
 );
 
 /**

@@ -1,7 +1,72 @@
 # Kakebo AI Agent - Context Document
 
 **Last Updated:** 2026-06-15  
-**Version:** 3.3 - ESLint Debt Reduction (P1.3)
+**Version:** 3.4 - TypeScript Strictness Audit (P1.4)
+
+---
+
+## 🔧 P1.4 - TypeScript Strictness Audit (2026-06-15)
+
+### Estado: COMPLETADA
+
+### Resultado: `ignoreBuildErrors` ELIMINADO — Build TypeScript clean ✅
+
+### Inventario de errores TypeScript (vía `tsc --noEmit`)
+
+| Categoría | Archivos | Errores | En build? |
+|-----------|---------|---------|-----------|
+| Zod v4 breaking change (`z.record` requiere 2 args) | `agent-v2/route.ts` | 1 | **SÍ** → **CORREGIDO** |
+| `withLogging` 2° argumento no soportado | `process-embeddings/route.ts` | 1 | **SÍ** → **CORREGIDO** |
+| Test mocks con campos renombrados (`SpendingPatternResult`) | `function-caller.test.ts`, `hardening-integration.test.ts`, `sprint2-integration.test.ts` | ~17 | NO (Vitest no hace tsc) |
+| LangGraph `AgentState` vs `UpdateType<StateDefinition>` | `graph.test.ts` | 7 | NO |
+| Supabase mock falta propiedad `then` | `expenses.test.ts`, `fixed-expenses.test.ts` | 6 | NO |
+| `Object.keys()` sobre `undefined` | `nodes/tools.test.ts` | 3 | NO |
+| Argumento extra en mock de settings | `settings.test.ts` | 2 | NO |
+| Directorio anidado `kakebo/` | `kakebo/next.config.ts`, `kakebo/nanobot/...` | ~20 | NO → **EXCLUIDO** |
+
+### Hallazgo clave: Next.js NO comprueba test files en el TypeScript build check
+
+El build TypeScript de Next.js verifica solo los archivos de la aplicación (pages, routes, components).
+Los 35 errores restantes en `src/__tests__/**` no bloquean el build.
+
+### Correcciones Aplicadas
+
+1. **`z.record(z.unknown())` → `z.record(z.string(), z.unknown())`** en `agent-v2/route.ts`
+   - Causa: Zod v4 cambió la firma de `z.record` para requerir key schema + value schema explícitos
+2. **Eliminado 2° argumento `{ skipAuthLog: true }`** de `withLogging()` en `process-embeddings/route.ts`
+   - Causa: `withLogging` solo acepta 1 argumento (el handler)
+3. **`kakebo/` excluido de `tsconfig.json`**
+   - Alineado con ESLint config (misma razón: directorio duplicado con `node_modules` propio)
+
+### ¿Puede eliminarse `ignoreBuildErrors`?
+
+**SÍ. ELIMINADO.** Prueba empírica: `npm run build` sin `ignoreBuildErrors` completó sin errores TypeScript.
+
+### Deuda TypeScript restante (no bloquea build)
+
+- 35 errores en test files (tipos de mocks no actualizados tras cambios en interfaces)
+  - `SpendingPatternResult`: tests usan `totalSpent`/`transactionCount` (campos renombrados en la interfaz)
+  - `BudgetStatusResult`: tests usan `budgetLimit` y omiten el campo requerido `month`
+  - `MonthlyPredictionResult`: tests usan `predictedTotal` (correcto: `projectedTotal`)
+  - `AgentState` vs LangGraph `UpdateType<StateDefinition>`: incompatibilidad de tipos internos
+  - Supabase mocks: falta propiedad `then` en el tipo del mock
+- Candidatos para P1.5 (actualizar mocks a tipos actuales)
+
+### Resultados Finales P1.4
+
+- **`tsc --noEmit` (fuente, sin tests/kakebo)**: 0 errores ✅
+- **Build**: ✅ sin `ignoreBuildErrors`
+- **Tests**: 506/506 ✅
+- **`ignoreBuildErrors`**: ELIMINADO de `next.config.ts` ✅
+
+### Archivos Modificados en P1.4
+
+| Archivo | Cambio |
+|---------|--------|
+| `next.config.ts` | Eliminado `typescript.ignoreBuildErrors: true` |
+| `tsconfig.json` | Añadido `"kakebo"` a `exclude` |
+| `src/app/api/ai/agent-v2/route.ts` | `z.record(z.unknown())` → `z.record(z.string(), z.unknown())` |
+| `src/app/api/ai/process-embeddings/route.ts` | Eliminado 2° argumento inválido de `withLogging()` |
 
 ---
 
