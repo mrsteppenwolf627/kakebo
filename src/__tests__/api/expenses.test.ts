@@ -56,7 +56,7 @@ describe("Expenses API", () => {
         ...mockSupabase,
         then: (resolve: (value: { data: typeof mockExpenses; error: null }) => void) =>
           resolve({ data: mockExpenses, error: null }),
-      });
+      } as never);
 
       const request = new NextRequest("http://localhost/api/expenses");
       const response = await GET(request);
@@ -72,7 +72,7 @@ describe("Expenses API", () => {
         ...mockSupabase,
         then: (resolve: (value: { data: []; error: null }) => void) =>
           resolve({ data: [], error: null }),
-      });
+      } as never);
 
       const request = new NextRequest(
         "http://localhost/api/expenses?ym=2025-01"
@@ -89,7 +89,7 @@ describe("Expenses API", () => {
         ...mockSupabase,
         then: (resolve: (value: { data: []; error: null }) => void) =>
           resolve({ data: [], error: null }),
-      });
+      } as never);
 
       const request = new NextRequest(
         "http://localhost/api/expenses?category=survival"

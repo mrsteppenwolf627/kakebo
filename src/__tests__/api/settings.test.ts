@@ -55,6 +55,7 @@ describe("Settings API", () => {
       });
 
       const request = new NextRequest("http://localhost/api/settings");
+      // @ts-expect-error -- GET takes 0 args (no request param in handler)
       const response = await GET(request);
       const data = await response.json();
 
@@ -89,6 +90,7 @@ describe("Settings API", () => {
         });
 
       const request = new NextRequest("http://localhost/api/settings");
+      // @ts-expect-error -- GET takes 0 args (no request param in handler)
       const response = await GET(request);
       const data = await response.json();
 

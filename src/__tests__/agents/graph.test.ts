@@ -51,9 +51,9 @@ describe("Agent Graph Integration", () => {
       },
     };
 
-    const result = await graph.invoke(initialState, {
+    const result = await graph.invoke(initialState as never, {
       recursionLimit: 25,
-    });
+    }) as unknown as AgentState;
 
     expect(result).toBeDefined();
     expect(result.intent).toBeDefined();
@@ -81,9 +81,9 @@ describe("Agent Graph Integration", () => {
       },
     };
 
-    const result = await graph.invoke(initialState, {
+    const result = await graph.invoke(initialState as never, {
       recursionLimit: 25,
-    });
+    }) as unknown as AgentState;
 
     expect(result.finalResponse).toBeDefined();
     expect(result.toolsToCall.length).toBeLessThanOrEqual(1);
@@ -115,9 +115,9 @@ describe("Agent Graph Integration", () => {
       },
     };
 
-    const result = await graph.invoke(initialState, {
+    const result = await graph.invoke(initialState as never, {
       recursionLimit: 25,
-    });
+    }) as unknown as AgentState;
 
     expect(result.messages.length).toBeGreaterThanOrEqual(initialMessages.length);
   });
@@ -143,9 +143,9 @@ describe("Agent Graph Integration", () => {
       },
     };
 
-    const result = await graph.invoke(initialState, {
+    const result = await graph.invoke(initialState as never, {
       recursionLimit: 25,
-    });
+    }) as unknown as AgentState;
 
     expect(result.metrics).toBeDefined();
     expect(result.metrics.model).toBe("gpt-4o-mini");

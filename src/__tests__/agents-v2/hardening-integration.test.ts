@@ -91,7 +91,6 @@ describe("Sprint 1 Hardening - Integration Tests", () => {
       // Mock: Tool returns valid data
       mockAnalyze.mockResolvedValueOnce({
         totalAmount: 450.5,
-        transactionCount: 12,
         averagePerPeriod: 37.54,
         trend: "stable",
         trendPercentage: 0,
@@ -155,7 +154,6 @@ describe("Sprint 1 Hardening - Integration Tests", () => {
       // Mock: Tool returns data with only 3 transactions
       mockAnalyze.mockResolvedValueOnce({
         totalAmount: 120.0,
-        transactionCount: 3, // < 10 threshold
         averagePerPeriod: 40.0,
         trend: "stable",
         trendPercentage: 0,
@@ -401,6 +399,7 @@ describe("Sprint 1 Hardening - Integration Tests", () => {
 
       // Mock: Tool returns invalid data (negative budget)
       mockBudget.mockResolvedValueOnce({
+        month: "2026-02",
         totalBudget: -500, // INVALID
         totalSpent: 450,
         totalRemaining: 50,
@@ -465,7 +464,6 @@ describe("Sprint 1 Hardening - Integration Tests", () => {
       // Mock: Tool returns valid data
       mockAnalyze.mockResolvedValueOnce({
         totalAmount: 350.75,
-        transactionCount: 18,
         averagePerPeriod: 19.49,
         trend: "increasing",
         trendPercentage: 12.5,

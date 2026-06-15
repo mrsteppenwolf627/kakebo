@@ -46,7 +46,7 @@ describe("Tool Executor Node", () => {
     const result = await toolExecutorNode(mockState, mockSupabase);
 
     expect(result.toolResults).toBeDefined();
-    expect(Object.keys(result.toolResults).length).toBeGreaterThan(0);
+    expect(Object.keys(result.toolResults!).length).toBeGreaterThan(0);
   });
 
   it("should handle tool execution with no tools", async () => {
@@ -55,13 +55,13 @@ describe("Tool Executor Node", () => {
     const result = await toolExecutorNode(mockState, mockSupabase);
 
     expect(result.toolResults).toBeDefined();
-    expect(Object.keys(result.toolResults).length).toBe(0);
+    expect(Object.keys(result.toolResults!).length).toBe(0);
   });
 
   it("should process tool results with success flag", async () => {
     const result = await toolExecutorNode(mockState, mockSupabase);
 
-    for (const toolResult of Object.values(result.toolResults)) {
+    for (const toolResult of Object.values(result.toolResults!)) {
       expect(toolResult).toHaveProperty("success");
       expect(typeof (toolResult as any).success).toBe("boolean");
     }

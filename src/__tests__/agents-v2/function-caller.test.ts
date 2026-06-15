@@ -185,14 +185,17 @@ describe("OpenAI Function Calling (v2)", () => {
 
       // Mock: Tool execution result
       mockAnalyze.mockResolvedValueOnce({
-        totalSpent: 450.5,
-        transactionCount: 15,
-        averagePerTransaction: 30.03,
-        dailyBreakdown: [],
-        topMerchants: [
-          { name: "Mercadona", total: 180.0, count: 5 },
-          { name: "Carrefour", total: 150.0, count: 4 },
+        category: "survival",
+        period: "current_month",
+        totalAmount: 450.5,
+        averagePerPeriod: 30.03,
+        trend: "stable",
+        trendPercentage: 0,
+        topExpenses: [
+          { concept: "Mercadona", amount: 180.0, date: "2026-02-01" },
+          { concept: "Carrefour", amount: 150.0, date: "2026-02-01" },
         ],
+        insights: [],
       });
 
       // Mock: Second call - GPT synthesizes response
@@ -268,11 +271,14 @@ describe("OpenAI Function Calling (v2)", () => {
       } as never);
 
       mockAnalyze.mockResolvedValueOnce({
-        totalSpent: 120.0,
-        transactionCount: 4,
-        averagePerTransaction: 30.0,
-        dailyBreakdown: [],
-        topMerchants: [],
+        category: "optional",
+        period: "current_month",
+        totalAmount: 120.0,
+        averagePerPeriod: 30.0,
+        trend: "stable",
+        trendPercentage: 0,
+        topExpenses: [],
+        insights: [],
       });
 
       mockCreate.mockResolvedValueOnce({
@@ -338,11 +344,14 @@ describe("OpenAI Function Calling (v2)", () => {
       } as never);
 
       mockAnalyze.mockResolvedValueOnce({
-        totalSpent: 800.0,
-        transactionCount: 25,
-        averagePerTransaction: 32.0,
-        dailyBreakdown: [],
-        topMerchants: [],
+        category: "all",
+        period: "current_month",
+        totalAmount: 800.0,
+        averagePerPeriod: 32.0,
+        trend: "stable",
+        trendPercentage: 0,
+        topExpenses: [],
+        insights: [],
       });
 
       mockCreate.mockResolvedValueOnce({
@@ -406,11 +415,14 @@ describe("OpenAI Function Calling (v2)", () => {
       } as never);
 
       mockAnalyze.mockResolvedValueOnce({
-        totalSpent: 75.0,
-        transactionCount: 3,
-        averagePerTransaction: 25.0,
-        dailyBreakdown: [],
-        topMerchants: [],
+        category: "optional",
+        period: "current_week",
+        totalAmount: 75.0,
+        averagePerPeriod: 25.0,
+        trend: "stable",
+        trendPercentage: 0,
+        topExpenses: [],
+        insights: [],
       });
 
       mockCreate.mockResolvedValueOnce({
@@ -474,11 +486,14 @@ describe("OpenAI Function Calling (v2)", () => {
       } as never);
 
       mockAnalyze.mockResolvedValueOnce({
-        totalSpent: 950.0,
-        transactionCount: 30,
-        averagePerTransaction: 31.67,
-        dailyBreakdown: [],
-        topMerchants: [],
+        category: "all",
+        period: "last_month",
+        totalAmount: 950.0,
+        averagePerPeriod: 31.67,
+        trend: "stable",
+        trendPercentage: 0,
+        topExpenses: [],
+        insights: [],
       });
 
       mockCreate.mockResolvedValueOnce({
@@ -553,29 +568,30 @@ describe("OpenAI Function Calling (v2)", () => {
 
       // Mock: Budget tool result
       mockBudget.mockResolvedValueOnce({
+        month: "2026-02",
+        totalBudget: 1000.0,
         totalSpent: 750.0,
-        budgetLimit: 1000.0,
-        percentageUsed: 75.0,
-        remaining: 250.0,
-        status: "warning" as const,
-        categoryBreakdown: [],
+        totalRemaining: 250.0,
+        overallStatus: "warning",
+        categories: [],
       });
 
       // Mock: Anomalies tool result
       mockAnomalies.mockResolvedValueOnce({
         anomalies: [
           {
-            transactionId: "tx_1",
+            expense_id: "tx_1",
+            concept: "Compra inusual",
             amount: 250.0,
-            description: "Compra inusual",
             category: "optional",
             date: "2026-02-05",
-            zScore: 2.5,
-            reason: "Gasto 2.5x superior al promedio",
+            reason: "unusually_high_amount",
+            severity: "high",
+            historicalAverage: 100.0,
+            deviationPercentage: 150.0,
           },
         ],
-        totalAnomalies: 1,
-        period: "current_month",
+        summary: "1 anomaly detected",
       });
 
       // Mock: GPT synthesizes combined response
@@ -797,11 +813,14 @@ describe("OpenAI Function Calling (v2)", () => {
       } as never);
 
       mockAnalyze.mockResolvedValueOnce({
-        totalSpent: 400.0,
-        transactionCount: 12,
-        averagePerTransaction: 33.33,
-        dailyBreakdown: [],
-        topMerchants: [],
+        category: "survival",
+        period: "current_month",
+        totalAmount: 400.0,
+        averagePerPeriod: 33.33,
+        trend: "stable",
+        trendPercentage: 0,
+        topExpenses: [],
+        insights: [],
       });
 
       mockCreate.mockResolvedValueOnce({
@@ -908,11 +927,14 @@ describe("OpenAI Function Calling (v2)", () => {
       } as never);
 
       mockAnalyze.mockResolvedValueOnce({
-        totalSpent: 700.0,
-        transactionCount: 28,
-        averagePerTransaction: 25.0,
-        dailyBreakdown: [],
-        topMerchants: [],
+        category: "all",
+        period: "last_month",
+        totalAmount: 700.0,
+        averagePerPeriod: 25.0,
+        trend: "stable",
+        trendPercentage: 0,
+        topExpenses: [],
+        insights: [],
       });
 
       mockCreate.mockResolvedValueOnce({
@@ -1032,11 +1054,14 @@ describe("OpenAI Function Calling (v2)", () => {
         } as never);
 
       mockAnalyze.mockResolvedValueOnce({
-        totalSpent: 500.0,
-        transactionCount: 10,
-        averagePerTransaction: 50.0,
-        dailyBreakdown: [],
-        topMerchants: [],
+        category: "all",
+        period: "current_month",
+        totalAmount: 500.0,
+        averagePerPeriod: 50.0,
+        trend: "stable",
+        trendPercentage: 0,
+        topExpenses: [],
+        insights: [],
       });
 
       const result = await processFunctionCalling(

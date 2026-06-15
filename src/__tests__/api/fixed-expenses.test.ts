@@ -62,7 +62,7 @@ describe("Fixed Expenses API", () => {
         ...mockSupabase,
         then: (resolve: (value: { data: typeof mockFixedExpenses; error: null }) => void) =>
           resolve({ data: mockFixedExpenses, error: null }),
-      });
+      } as never);
 
       const request = new NextRequest("http://localhost/api/fixed-expenses");
       const response = await GET(request);
@@ -78,7 +78,7 @@ describe("Fixed Expenses API", () => {
         ...mockSupabase,
         then: (resolve: (value: { data: []; error: null }) => void) =>
           resolve({ data: [], error: null }),
-      });
+      } as never);
 
       const request = new NextRequest(
         "http://localhost/api/fixed-expenses?active=true"
@@ -94,7 +94,7 @@ describe("Fixed Expenses API", () => {
         ...mockSupabase,
         then: (resolve: (value: { data: []; error: null }) => void) =>
           resolve({ data: [], error: null }),
-      });
+      } as never);
 
       const request = new NextRequest(
         "http://localhost/api/fixed-expenses?category=survival"

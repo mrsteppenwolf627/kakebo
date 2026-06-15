@@ -381,7 +381,6 @@ describe("Sprint 2 - Integration Tests", () => {
 
         mockAnalyze.mockResolvedValueOnce({
           totalAmount: 500,
-          transactionCount: 20,
           averagePerPeriod: 25,
           trend: "stable",
           trendPercentage: 0,
@@ -481,9 +480,16 @@ describe("Sprint 2 - Integration Tests", () => {
         const mockSupabase = createMockSupabase(mockExpenses);
 
         mockPredict.mockResolvedValueOnce({
-          predictedTotal: 1200,
+          month: "2026-02",
+          currentDate: "2026-02-15",
+          daysElapsed: 15,
+          daysRemaining: 13,
+          spentSoFar: 600,
+          projectedTotal: 1200,
+          budget: 1000,
+          projectedOverage: 200,
           confidence: "medium",
-          daysAnalyzed: 15,
+          byCategory: [],
         });
 
         mockCreate.mockResolvedValueOnce({
@@ -610,7 +616,6 @@ describe("Sprint 2 - Integration Tests", () => {
 
       mockAnalyze.mockResolvedValueOnce({
         totalAmount: 450,
-        transactionCount: 15,
         averagePerPeriod: 30,
         trend: "stable",
         trendPercentage: 0,

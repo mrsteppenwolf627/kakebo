@@ -1,7 +1,46 @@
 # Kakebo AI Agent - Context Document
 
 **Last Updated:** 2026-06-15  
-**Version:** 3.4 - TypeScript Strictness Audit (P1.4)
+**Version:** 3.5 - Test Mock Type Cleanup (P1.5)
+
+---
+
+## 🔧 P1.5 - Test Mock Type Cleanup (2026-06-15)
+
+### Estado: COMPLETADA
+
+### Objetivo: Eliminar los 35 errores TypeScript en test/mocks detectados en P1.4
+
+### Cambios Aplicados
+
+Mocks actualizados para coincidir con las interfaces actuales tras refactor:
+
+| Interfaz | Campo antiguo | Campo nuevo |
+|----------|--------------|-------------|
+| `SpendingPatternResult` | `totalSpent`, `transactionCount`, `averagePerTransaction`, `dailyBreakdown`, `topMerchants` | `totalAmount`, `averagePerPeriod`, `trend`, `trendPercentage`, `topExpenses`, `insights` |
+| `BudgetStatusResult` | `budgetLimit`, `percentageUsed`, `remaining`, `status`, `categoryBreakdown` | `month` (requerido), `totalBudget`, `totalRemaining`, `overallStatus`, `categories` |
+| `MonthlyPredictionResult` | `predictedTotal`, `daysAnalyzed` | `projectedTotal` + todos los campos requeridos |
+| `AnomaliesResult` | `transactionId`, `description`, `zScore`, `reason` (free text), `totalAnomalies`, `period` | `expense_id`, `concept`, `reason` (AnomalyReason enum), `severity`, `historicalAverage`, `deviationPercentage`, `summary` |
+
+### Archivos Modificados en P1.5
+
+| Archivo | Cambios |
+|---------|---------|
+| `src/__tests__/agents-v2/function-caller.test.ts` | 8 SpendingPatternResult mocks + 1 BudgetStatusResult + 1 AnomaliesResult |
+| `src/__tests__/agents-v2/hardening-integration.test.ts` | Eliminar `transactionCount` de 3 mocks; añadir `month` a BudgetStatusResult |
+| `src/__tests__/agents-v2/sprint2-integration.test.ts` | Eliminar `transactionCount` de 2 mocks; reescribir MonthlyPredictionResult |
+| `src/__tests__/agents/graph.test.ts` | `graph.invoke(state as never) as unknown as AgentState` (4 llamadas) |
+| `src/__tests__/agents/nodes/tools.test.ts` | `result.toolResults!` non-null assertion (3 lugares) |
+| `src/__tests__/api/expenses.test.ts` | `as never` en mocks con propiedad `then` (3 lugares) |
+| `src/__tests__/api/fixed-expenses.test.ts` | `as never` en mocks con propiedad `then` (3 lugares) |
+| `src/__tests__/api/settings.test.ts` | `// @ts-expect-error` antes de `GET(request)` (2 lugares) |
+
+### Resultados Finales P1.5
+
+- **`tsc --noEmit`**: 0 errores ✅
+- **Build**: ✅
+- **Tests**: 506/506 ✅
+- **ESLint**: 0 errores / 77 warnings ✅
 
 ---
 
