@@ -1,7 +1,48 @@
 # Kakebo AI Agent - Context Document
 
 **Last Updated:** 2026-06-15  
-**Version:** 3.1 - Technical Pipeline Stabilization (P1.1)
+**Version:** 3.2 - Test Suite Repair (P1.2)
+
+---
+
+## 🔧 P1.2 - Test Suite Repair (2026-06-15)
+
+### Estado: COMPLETADA
+
+### Resultado: 506 tests pass / 0 fail (antes: 469 tests, 47 fallos)
+
+### Causas Raíz Clasificadas y Fixes Aplicados
+
+| Causa | Tests afectados | Fix |
+|-------|----------------|-----|
+| Mock apuntaba a `@/lib/supabase/client` en lugar de `server` | 4 archivos API (settings, months, fixed-expenses, expenses) | Cambio de import en `vi.mock(...)` |
+| `new OpenAI()` falla en entorno jsdom (browser flag requerido) | Todos los tests que importan `client.ts` | `dangerouslyAllowBrowser: true` en `src/lib/ai/client.ts` |
+| Mock de budget-status usaba métodos wrongos (`.like()`) y categorías en inglés | `budget-status.test.ts` (8 tests) | Reescritura completa del mock con métodos correctos y categorías en español |
+| `detectAnomalies` y `predictMonthlySpending` usaban categorías en inglés (`"survival"`) | `day2-tools.test.ts` (2 tests) | Cambiado a español (`"supervivencia"`) para coincidir con lógica del código |
+| Mock de `day2-tools` tenía menos de 20 registros históricos (MINIMUM_HISTORICAL_DATA = 20) | `day2-tools.test.ts` | Aumentado de `Array(10)` a `Array(25)` |
+| Mock de `day2-tools` faltaban métodos `.gte()` y `.lt()` en cadena de predicciones | `day2-tools.test.ts` | Añadidos al `chainMock` |
+| Mock de `update-transaction` faltaba `maybeSingle` (código verifica existencia antes de actualizar) | `update-transaction.test.ts` | Añadido `maybeSingle` con datos mock correctos |
+| `learning-metrics.test.ts` usaba fecha de referencia hardcoded (`2026-02-20`) para `daysAgo()` | `learning-metrics.test.ts` | Cambiado a `new Date()` (relativo a fecha actual) |
+| `calculate-whatif.test.ts` tenía `targetDate: "2026-08-12"` fijo (era 6 meses en Feb, ahora 2) | `calculate-whatif.test.ts` | Cambiado a cálculo dinámico: 6 meses desde hoy |
+| Mock de `agent.test.ts` faltaba `.single()` en cadena Supabase (ruta busca perfil con `.single()`) | `agent.test.ts` (2 tests) | Añadido `single` al mock de Supabase |
+
+### Archivos Modificados en P1.2
+
+| Archivo | Tipo de cambio |
+|---------|---------------|
+| `src/lib/ai/client.ts` | `dangerouslyAllowBrowser: true` |
+| `src/__tests__/api/settings.test.ts` | Mock: `supabase/client` → `supabase/server` |
+| `src/__tests__/api/months.test.ts` | Mock: `supabase/client` → `supabase/server` |
+| `src/__tests__/api/fixed-expenses.test.ts` | Mock: `supabase/client` → `supabase/server` |
+| `src/__tests__/api/expenses.test.ts` | Mock: `supabase/client` → `supabase/server` |
+| `src/__tests__/agents/tools/budget-status.test.ts` | Reescritura completa del mock |
+| `src/__tests__/agents/tools/day2-tools.test.ts` | Categorías en español, más datos históricos, métodos gte/lt |
+| `src/__tests__/agents/tools/update-transaction.test.ts` | Añadido `maybeSingle` al mock |
+| `src/__tests__/agents/tools/calculate-whatif.test.ts` | Target date dinámica (6 meses desde hoy) |
+| `src/__tests__/api/ai/agent.test.ts` | Añadido `single` al mock Supabase |
+| `src/__tests__/lib/ai/learning-metrics.test.ts` | `daysAgo()` relativo a `new Date()` |
+
+---
 
 ---
 

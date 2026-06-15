@@ -144,13 +144,17 @@ describe("calculateWhatIf", () => {
   });
 
   it("should calculate months remaining correctly", async () => {
+    const sixMonthsFromNow = new Date();
+    sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
+    const targetDateStr = sixMonthsFromNow.toISOString().split("T")[0];
+
     const mockScenario = {
       id: "scenario-6months",
       user_id: userId,
       name: "Laptop nueva",
       estimated_cost: 1200,
       category: "extra",
-      target_date: "2026-08-12", // 6 months from now
+      target_date: targetDateStr,
       status: "planned",
       monthly_savings_needed: 200,
     };
@@ -164,7 +168,7 @@ describe("calculateWhatIf", () => {
       name: "Laptop nueva",
       estimatedCost: 1200,
       category: "extra",
-      targetDate: "2026-08-12",
+      targetDate: targetDateStr,
     });
 
     expect(result.success).toBe(true);

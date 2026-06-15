@@ -15,7 +15,7 @@ const mockSupabase = {
   single: vi.fn(),
 };
 
-vi.mock("@/lib/supabase/client", () => ({
+vi.mock("@/lib/supabase/server", () => ({
   createClient: () => mockSupabase,
 }));
 

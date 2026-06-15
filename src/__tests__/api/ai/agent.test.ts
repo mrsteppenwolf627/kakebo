@@ -9,6 +9,7 @@ vi.mock("@/lib/supabase/server", () => ({
     select: vi.fn().mockReturnThis(),
     eq: vi.fn().mockReturnThis(),
     order: vi.fn().mockResolvedValue({ data: [], error: null }),
+    single: vi.fn().mockResolvedValue({ data: { id: "user-123", email: "test@example.com" }, error: null }),
   }),
 }));
 

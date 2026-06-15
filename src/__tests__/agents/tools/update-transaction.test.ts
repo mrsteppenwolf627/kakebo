@@ -13,6 +13,11 @@ describe("updateTransaction", () => {
       eq: vi.fn().mockReturnThis(),
       select: vi.fn().mockReturnThis(),
       single: vi.fn().mockReturnThis(),
+      // maybeSingle is used to check record existence before updating
+      maybeSingle: vi.fn().mockResolvedValue({
+        data: { id: transactionId, user_id: userId, note: "Existing", category: "supervivencia" },
+        error: null,
+      }),
     };
   });
 
@@ -225,7 +230,7 @@ describe("updateTransaction", () => {
   });
 
   it("should handle transaction not found", async () => {
-    mockSupabase.single.mockResolvedValue({
+    mockSupabase.maybeSingle.mockResolvedValue({
       data: null,
       error: null,
     });

@@ -23,12 +23,12 @@ describe("Day 2 Tools", () => {
 
   describe("detectAnomalies", () => {
     it("should detect unusually high amounts", async () => {
-      // Historical: average 30€
-      const historicalExpenses = Array(10)
+      // Historical: average 30€ — need ≥20 records for reliable detection
+      const historicalExpenses = Array(25)
         .fill(null)
         .map((_, i) => ({
-          category: "survival",
-          amount: 30 + i,
+          category: "supervivencia",
+          amount: 30 + (i % 5),
         }));
 
       // Current: one expense of 200€ (anomaly)
@@ -37,14 +37,14 @@ describe("Day 2 Tools", () => {
           id: "1",
           note: "Expensive item",
           amount: 200,
-          category: "survival",
+          category: "supervivencia",
           date: "2026-02-01",
         },
         {
           id: "2",
           note: "Normal item",
           amount: 30,
-          category: "survival",
+          category: "supervivencia",
           date: "2026-02-02",
         },
       ];
@@ -93,11 +93,11 @@ describe("Day 2 Tools", () => {
     });
 
     it("should handle no anomalies", async () => {
-      // Need at least 6 historical expenses to not be considered "rare"
-      const historicalExpenses = Array(10)
+      // Need at least 20 historical expenses for reliable detection
+      const historicalExpenses = Array(25)
         .fill(null)
         .map(() => ({
-          category: "survival",
+          category: "supervivencia",
           amount: 30,
         }));
 
@@ -106,14 +106,14 @@ describe("Day 2 Tools", () => {
           id: "1",
           note: "Normal expense",
           amount: 30,
-          category: "survival",
+          category: "supervivencia",
           date: "2026-02-01",
         },
         {
           id: "2",
           note: "Normal expense",
           amount: 32,
-          category: "survival",
+          category: "supervivencia",
           date: "2026-02-02",
         },
       ];
@@ -158,11 +158,11 @@ describe("Day 2 Tools", () => {
         budget_extra: 50,
       };
 
-      // Simulate spending 10€/day in survival for 10 days
+      // Simulate spending 10€/day in supervivencia for 10 days
       const mockExpenses = Array(10)
         .fill(null)
         .map((_, i) => ({
-          category: "survival",
+          category: "supervivencia",
           amount: 10,
           date: `2026-02-${String(i + 1).padStart(2, "0")}`,
         }));
@@ -172,7 +172,8 @@ describe("Day 2 Tools", () => {
           from: vi.fn().mockReturnThis(),
           select: vi.fn().mockReturnThis(),
           eq: vi.fn().mockReturnThis(),
-          like: vi.fn().mockReturnThis(),
+          gte: vi.fn().mockReturnThis(),
+          lt: vi.fn().mockReturnThis(),
           order: vi.fn().mockReturnThis(),
           single: vi.fn().mockReturnThis(),
         };
@@ -218,7 +219,8 @@ describe("Day 2 Tools", () => {
           from: vi.fn().mockReturnThis(),
           select: vi.fn().mockReturnThis(),
           eq: vi.fn().mockReturnThis(),
-          like: vi.fn().mockReturnThis(),
+          gte: vi.fn().mockReturnThis(),
+          lt: vi.fn().mockReturnThis(),
           order: vi.fn().mockReturnThis(),
           single: vi.fn().mockReturnThis(),
         };

@@ -28,14 +28,12 @@ vi.mock("@/lib/logger", () => ({
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/** Build an ISO timestamp N days ago from a reference date */
-function daysAgo(days: number, from = "2026-02-20"): string {
-  const d = new Date(from);
+/** Build an ISO timestamp N days ago from now */
+function daysAgo(days: number): string {
+  const d = new Date();
   d.setDate(d.getDate() - days);
   return d.toISOString();
 }
-
-const NOW_ISO = "2026-02-20T00:00:00.000Z";
 
 function makeSupabaseMock(tableData: Record<string, unknown[]>): SupabaseClient {
   return {
