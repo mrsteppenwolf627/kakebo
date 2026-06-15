@@ -1,11 +1,87 @@
 # Kakebo AI Agent - Context Document
 
 **Last Updated:** 2026-06-15  
-**Version:** 4.0 - Herramienta Gratuita + Crecimiento SEO
+**Version:** 4.1 - Auditoría final migración a modelo gratuito
 
 > **CAMBIO DE MODELO DE NEGOCIO (2026-06-15):** Kakebo ya no es una herramienta de pago.
 > Stripe, paywalls, trial de 15 días y SubscriptionGuard han sido eliminados.
 > Todo usuario autenticado tiene acceso completo. La monetización futura será por SEO, afiliación y comparativas.
+
+> **RESULTADO AUDITORÍA P0.2 (2026-06-15): NO APTO PARA PRODUCCIÓN**
+> La migración SaaS → herramienta gratuita quedó incompleta.
+> Persisten rutas, dependencias, copies y configuración técnica del modelo anterior.
+
+---
+
+## Auditoría Final P0.2 (2026-06-15)
+
+### Veredicto
+- **Estado final:** `NO APTO PARA PRODUCCIÓN`
+- **Resultado de migración:** incompleta
+- **ADRs:** no existe `ADRs.md` en el repo auditado
+
+### Hallazgos críticos
+1. **Superficie Stripe/SaaS aún expuesta**
+   - La build sigue publicando rutas obsoletas: `/api/stripe/cancel`, `/api/stripe/checkout`, `/api/stripe/portal`, `/api/webhooks/stripe`, `/[locale]/app/subscription`, `/[locale]/app/cancel-subscription`.
+   - Archivos afectados:
+     - `src/app/api/stripe/cancel/route.ts`
+     - `src/app/api/stripe/checkout/route.ts`
+     - `src/app/api/stripe/portal/route.ts`
+     - `src/app/api/webhooks/stripe/route.ts`
+     - `src/app/[locale]/app/subscription/page.tsx`
+     - `src/app/[locale]/app/cancel-subscription/page.tsx`
+
+2. **Dependencia y código de pago no eliminados**
+   - `package.json` mantiene `stripe`.
+   - Sigue existiendo `src/lib/stripe/server.ts`.
+   - Siguen presentes componentes residuales de SaaS (`PremiumPrompt`, `TrialBanner`, `SubscriptionGuard`, `StripeSuccessHandler`) aunque varios rendericen `null`.
+
+3. **UX y copy aún referencian pricing/premium/trial/subscription**
+   - Navegación y landing aún enlazan o nombran pricing: `src/components/landing/Hero.tsx`, `Navbar.tsx`, `Footer.tsx`, `PricingSection.tsx`.
+   - Settings y navegación interna siguen llevando a suscripción/perfil SaaS: `src/app/[locale]/app/settings/SettingsClient.tsx`, `src/components/TopNav.tsx`.
+   - `ExpenseCalendar.tsx` aún muestra copy y enlaces de bloqueo premium.
+   - `messages/es.json` y `messages/en.json` conservan múltiples claves de `pricing`, `trial`, `premium`, `subscription`, e incluso FAQ/copy heredado del trial.
+
+### Hallazgos técnicos
+1. **Lint roto**
+   - `npm run lint` falla con **225 errores** y **86 warnings**.
+   - Hay errores masivos de `no-explicit-any`, reglas de hooks, `no-html-link-for-pages`, `react/no-unescaped-entities` y `set-state-in-effect`.
+
+2. **Suite de tests rota**
+   - `npm test` falla: **39 suites fallidas / 0 tests ejecutados**.
+   - Error base observado:
+     - `Cannot find module '/@fs/C:/Users/a.alarcon/Desktop/Cursor projects/kakebo/src/__tests__/setup.ts'`
+   - La configuración actual apunta a una raíz equivocada al convivir dos `package-lock.json`.
+
+3. **Build no bloquea errores de calidad**
+   - `npm run build` termina, pero lo hace con señales de riesgo:
+     - `typescript.ignoreBuildErrors = true`
+     - `eslint.ignoreDuringBuilds = true`
+     - warning por lockfiles múltiples
+     - warning por `middleware` deprecado
+     - warning por fuente OG inexistente: `assets/fonts/Inter-Bold.ttf`
+
+### SEO técnico
+- `robots.txt` y `sitemap.xml` existen.
+- `sitemap.ts` genera rutas públicas principales, pero la auditoría encontró contenido y navegación todavía anclados a `#pricing`.
+- `next.config.ts` conserva CSP con `frame-src https://js.stripe.com`, lo cual contradice el objetivo de eliminar Stripe.
+
+### Commits revisados
+- **Claude:** `4cd29e1` `Refactor: remove SaaS model and Stripe integration (via Claude)`
+- **Claude:** `bfde5b1` `Feat: Botón descargar plantilla en página Kakebo (via Claude)`
+- **Claude:** `d82f3b2` `Feat: Auto-reset monthly cycle on month close (via Claude)`
+- **Gemini:** `82b8663` `Feat: adapt UX and copy to free model (via Gemini)`
+
+### Validación ejecutada
+- `npm run lint` → **FAIL**
+- `npm run build` → **PASS con warnings**
+- `npm test` → **FAIL**
+
+### Riesgos abiertos
+1. Usuario y crawler siguen viendo restos del modelo de pago.
+2. El pipeline permite publicar aunque lint y type quality estén degradados.
+3. La suite de tests no protege regresiones reales ahora mismo.
+4. La documentación principal sigue siendo internamente contradictoria sobre el estado de la migración.
 
 ---
 
