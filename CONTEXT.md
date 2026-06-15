@@ -1,5 +1,47 @@
 # Kakebo AI Agent - Context Document
 
+## P0.8 Auditoria Corta Final de Cierre (2026-06-15) - "Audit: final close of P0 free model migration (via Codex)"
+
+### Veredicto final
+- **Estado:** `P0 CERRADA`
+- **Motivo:** no quedan referencias publicas contradictorias al modelo gratuito en home, i18n publico, paginas legales indexables, metadata SEO, JSON-LD, README, navegacion, CTAs ni FAQ. Las coincidencias restantes son historicas, internas, negativas ("no recopilamos datos de pago") o menciones legitimas a suscripciones/precios/pagos de terceros o de gastos del usuario.
+
+### Coincidencias restantes auditadas
+1. `messages/en.json` / `messages/es.json` - secciones legales `payments`
+   - **Visible/indexable:** si
+   - **Bloquea P0:** no
+   - **Motivo:** el texto refuerza el modelo gratuito: "we do not collect payment data", "free service", "no card data", "no charges"
+
+2. `README.md`
+   - **Visible/indexable:** si
+   - **Bloquea P0:** no
+   - **Motivo:** las menciones a `trial`, `pricing`, `Stripe` y `paywalls` aparecen solo para afirmar su eliminacion o negar el modelo SaaS
+
+3. `src/content/blog/*.mdx` y bloques SEO/educativos en `messages/*.json`
+   - **Visible/indexable:** si
+   - **Bloquea P0:** no
+   - **Motivo:** las menciones a suscripciones, pagos, invoices, precios o competidores pertenecen a gastos legitimos del usuario, ejemplos educativos o comparativas de terceros, no a monetizacion de Kakebo
+
+4. Claves internas con nombres legacy como `subscriptionTitle` o callbacks `.subscription.unsubscribe()`
+   - **Visible/indexable:** no
+   - **Bloquea P0:** no
+   - **Motivo:** son nombres tecnicos o API callbacks sin copy contradictorio mostrado al usuario
+
+### Validacion P0.8
+- `npm run build` -> **PASS**
+- `npm run lint` -> **FAIL** (`306 problemas`: `223 errors`, `83 warnings`) - deuda tecnica preexistente, no relacionada con la migracion gratuita
+- `npm test` -> **FAIL** (`39 suites fallidas / 0 tests`) - bug preexistente de path resolution, no relacionado con la migracion gratuita
+
+### Riesgos pendientes P1
+1. `next.config.ts` mantiene `typescript.ignoreBuildErrors` y `eslint.ignoreDuringBuilds`
+2. suite de tests rota por resolucion de rutas
+3. stubs internos legacy de Stripe/SaaS y columnas DB `stripe_*` documentadas para limpieza posterior
+4. warning de build por fuente `Inter-Bold.ttf` en `src/app/api/og/route.tsx`
+
+### Siguiente tarea recomendada
+- `P1.1`: saneamiento tecnico del pipeline (tests, lint, `next.config.ts`, warning de OG font) sin reabrir P0
+
+
 ## P0.7 Cierre Estricto de Migración Gratuita (2026-06-15) — "Fix: remove final public SaaS and payment references (via Claude Opus)"
 
 ### Veredicto propuesto
