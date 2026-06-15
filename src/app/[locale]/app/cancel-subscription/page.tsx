@@ -1,8 +1,8 @@
 import CancelClient from "./CancelClient";
 
 export const metadata = {
-    title: "Cancelar Suscripción | Kakebo",
-    description: "Cancelar suscripción de Kakebo Pro",
+    title: "Kakebo Gratuito | Kakebo",
+    description: "Kakebo es gratuito. No hay suscripción que cancelar.",
 };
 
 export default function CancelPage() {

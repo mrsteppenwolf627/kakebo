@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import {
   Hero,
   Features,
-  PricingSection,
   HowItWorks,
   FAQ,
   SeoContent,
@@ -59,10 +58,6 @@ export default async function PublicHomePage({ params }: { params: Promise<{ loc
         </div>
 
         <DynamicSavingsSimulator />
-
-        <div id="pricing">
-          <PricingSection />
-        </div>
 
         <div id="how-it-works">
           <HowItWorks />
@@ -140,10 +135,9 @@ export default async function PublicHomePage({ params }: { params: Promise<{ loc
               "inLanguage": locale,
               "offers": {
                 "@type": "Offer",
-                "price": "3.99",
+                "price": "0",
                 "priceCurrency": "EUR",
-                "availability": "https://schema.org/InStock",
-                "priceValidUntil": "2027-01-01"
+                "availability": "https://schema.org/InStock"
               },
               "aggregateRating": {
                 "@type": "AggregateRating",

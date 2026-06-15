@@ -1,11 +1,9 @@
 import SubscriptionClient from "./SubscriptionClient";
-import { getTranslations } from "next-intl/server";
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
-    const t = await getTranslations({ locale, namespace: "Navigation" });
+export async function generateMetadata() {
     return {
-        title: `${t("subscription")} | Kakebo`,
-        description: "Gestiona tu suscripción premium",
+        title: "Acceso Gratuito | Kakebo",
+        description: "Kakebo es una herramienta gratuita. Todos los usuarios registrados tienen acceso completo.",
     };
 }
 

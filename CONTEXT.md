@@ -1,17 +1,42 @@
 # Kakebo AI Agent - Context Document
 
 **Last Updated:** 2026-06-15  
-**Version:** 4.2 - P0.3 completado: migración SaaS a herramienta gratuita finalizada
+**Version:** 4.3 - P0.5 completado: cierre definitivo de migración gratuita
 
 > **CAMBIO DE MODELO DE NEGOCIO (2026-06-15):** Kakebo ya no es una herramienta de pago.
 > Stripe, paywalls, trial de 15 días y SubscriptionGuard han sido eliminados.
 > Todo usuario autenticado tiene acceso completo. La monetización futura será por SEO, afiliación y comparativas.
 
-> **RESULTADO P0.3 (2026-06-15): APTO PARA PRODUCCIÓN**
-> Commit `6404b81` — "Fix: remove remaining SaaS and Stripe artifacts (via Claude)"
-> Stripe eliminado de package.json, CSP corregida, SettingsClient limpio, Navbar/Footer/Hero/ExpenseCalendar sin referencias premium/pricing.
-> ADRs.md creado. Build: PASS. Lint: 307 problemas preexistentes (no introducidos en P0.3). Tests: 39 suites fallidas por bug de configuración preexistente (path resolution).
+> **RESULTADO P0.5 (2026-06-15): APTO PARA PRODUCCIÓN**
+> PricingSection eliminada de la home, JSON-LD corregido (price 0), FAQ y Auth messages limpios, TopNav sin /app/subscription, metadata de páginas legacy corregida, README reescrito sin SaaS.
+> Build: PASS. Lint: 307 problemas preexistentes (sin cambios respecto a P0.3). Tests: 39 suites fallidas por bug preexistente de path resolution.
 > Riesgos pendientes: typescript.ignoreBuildErrors=true, eslint.ignoreDuringBuilds=true, suite de tests rota, columnas stripe_* en Supabase sin migración de limpieza.
+
+---
+
+## P0.5 Completado (2026-06-15) — "Fix: remove remaining SaaS references and close free migration (via Claude)"
+
+### Veredicto
+- **Estado final:** `APTO PARA PRODUCCIÓN` — migración SaaS cerrada definitivamente
+- **ADRs:** sin cambios (ADR-001, ADR-002 vigentes)
+
+### Cambios ejecutados en P0.5
+| Archivo | Cambio |
+|---------|--------|
+| `src/app/[locale]/(public)/page.tsx` | eliminado import y renderizado de PricingSection, eliminado `id="pricing"`, JSON-LD price `"3.99"` → `"0"`, eliminado `priceValidUntil` |
+| `src/components/landing/index.tsx` | eliminado export de PricingSection |
+| `src/components/TopNav.tsx` | eliminado enlace `/app/subscription` (desktop + mobile) |
+| `src/app/[locale]/app/subscription/page.tsx` | metadata reescrita: "Acceso Gratuito | Kakebo" |
+| `src/app/[locale]/app/cancel-subscription/page.tsx` | metadata reescrita: "Kakebo Gratuito | Kakebo" |
+| `messages/en.json` | Auth features: "15-day trial" → "AI Agent included"; FAQ q2/q3 reescritas (eliminado Pro Plan/trial); FAQ q5: eliminado "Stripe for payments"; Settings subscriptionDesc actualizado; meta description: eliminado "14-day free trial" |
+| `messages/es.json` | meta description: eliminado "14 días gratis" |
+| `README.md` | reescrito: eliminados Stripe, Pricing, SaaS model, subscription section; añadido modelo de monetización por blog/SEO/afiliación |
+| `CONTEXT.md` | actualizado a v4.3 |
+
+### Validación P0.5
+- `npm run build` → **PASS**
+- `npm run lint` → **307 problemas** (223 errores, 84 warnings — idéntico a P0.3, P0.5 no introduce errores nuevos)
+- `npm test` → **39 suites fallidas / 0 tests** — bug preexistente de path resolution, sin cambios
 
 ---
 

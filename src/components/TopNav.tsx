@@ -20,7 +20,6 @@ export default function TopNav() {
     { href: "/app/agent", label: t('agent') },
     { href: "/app/fixed", label: t('fixed') },
     { href: "/app/ai-metrics", label: t('analysis') },
-    { href: "/app/subscription", label: t('subscription') },
   ];
 
   // Close menu on route change

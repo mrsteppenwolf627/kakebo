@@ -505,8 +505,8 @@
             "title": "Expense control <br />with Japanese method",
             "subtitle": "Track, categorize, and review your monthly expenses with clarity. No complications, no fluff.",
             "features": {
-                "free": "Free forever (Manual Plan)",
-                "ai": "Optional AI Agent (15-day trial)",
+                "free": "Free forever",
+                "ai": "AI Agent included",
                 "privacy": "Your data always private and secure"
             }
         },
@@ -741,12 +741,12 @@
                 "answer": "Yes, 100%. You can sign up and use the Manual Plan (full expense tracking) without paying anything. Registration is instant and no credit card required."
             },
             "q2": {
-                "question": "What does the 14-day Pro Plan trial include?",
-                "answer": "The trial gives you full access to the AI Finance Agent: automatic analysis, personalized tips, savings predictions and smart insights. To activate it you need to add a card, but you will NOT be charged until day 15. We will notify you before any charge."
+                "question": "What does Kakebo include?",
+                "answer": "Everything: unlimited expense tracking, fixed expense management, AI assistant, automatic analysis, personalized tips, and savings predictions. All for free."
             },
             "q3": {
-                "question": "Can I cancel the Pro Plan during the trial?",
-                "answer": "Yes, you can cancel at any time from your profile. If you cancel during the 14-day trial, you will NOT be charged anything. It's that simple."
+                "question": "Will I have to pay in the future?",
+                "answer": "Current features will remain free. In the future we may add premium services, but the core tool will always have a powerful free version."
             },
             "q4": {
                 "question": "Is Kakebo useful even if I already use a banking app?",
@@ -754,7 +754,7 @@
             },
             "q5": {
                 "question": "Are my data secure?",
-                "answer": "Yes. We use Supabase for authentication and Stripe for payments. Your financial data is encrypted and never shared with third parties."
+                "answer": "Yes. We use Supabase for authentication and data security. Your financial data is encrypted and never shared with third parties."
             }
         }
     },
@@ -1095,10 +1095,10 @@
             "loadError": "Error loading settings",
             "loading": "Loading...",
             "disclaimer": "These settings are saved to your account (Supabase), not locally.",
-            "subscriptionTitle": "Kakebo Subscription",
-            "subscriptionDescTitle": "Manage your plan",
-            "subscriptionDescText": "Upgrade to Pro or cancel your current subscription securely.",
-            "subscriptionBtn": "View Subscription"
+            "subscriptionTitle": "Kakebo Account",
+            "subscriptionDescTitle": "Full access, free",
+            "subscriptionDescText": "Kakebo is completely free. All features are available to every registered user.",
+            "subscriptionBtn": "View Account"
         },
         "FixedExpenses": {
             "title": "Fixed Expenses",
@@ -1183,7 +1183,7 @@
         "metadata": {
             "defaultTitle": "Kakebo - Smart Expense Tracker",
             "templateTitle": "%s | Kakebo AI: Japanese Savings",
-            "description": "Track your expenses with the Japanese Kakebo method. No banks, 100% private, and AI-powered. Start your 14-day free trial today.",
+            "description": "Track your expenses with the Japanese Kakebo method. No banks, 100% private, and AI-powered. Free forever, no card required.",
             "keywords": "kakebo, savings, personal finance, expense tracker, expense app, kakebo method, save money, 50 30 20 rule, net salary calculator, salary distribution, kakebo excel, inflation calculator, cpi",
             "ogTitle": "Kakebo AI: Zen Finance",
             "ogDescription": "Master your finances with the Japanese Kakebo method powered by AI.",
