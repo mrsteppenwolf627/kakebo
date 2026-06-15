@@ -19,24 +19,6 @@ export async function GET(request: NextRequest) {
             ? searchParams.get('description')?.slice(0, 200)
             : 'Gestión financiera minimalista con Inteligencia Artificial.';
 
-        // Load fonts
-        const fontData = await fetch(
-            new URL('../../../assets/fonts/Inter-Bold.ttf', import.meta.url)
-        ).then((res) => res.arrayBuffer()).catch(() => null);
-
-        // Fallback if local font fetch fails (using standard fetch for Google Fonts in Edge)
-        // We will use a standard system font approach or fetch from CDN if needed, 
-        // but for simplicity and reliability in this environment, let's try to fetch a public font.
-        // Actually, let's use a reliable CDN for the font to avoid local file issues in edge.
-        const interSemiBold = await fetch(
-            new URL('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYAZ9hjp-Ek-_EeA.woff')
-        ).then((res) => res.arrayBuffer()).catch(() => null);
-
-        const playfairDisplay = await fetch(
-            new URL('https://fonts.gstatic.com/s/playfairdisplay/v30/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKdFvXDXbtM.woff')
-        ).then((res) => res.arrayBuffer()).catch(() => null);
-
-
         return new ImageResponse(
             (
                 <div

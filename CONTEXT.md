@@ -1,7 +1,68 @@
 # Kakebo AI Agent - Context Document
 
-**Last Updated:** 2026-05-27  
-**Version:** 3.0 - Intelligent Copilot & Growth Engine
+**Last Updated:** 2026-06-15  
+**Version:** 3.1 - Technical Pipeline Stabilization (P1.1)
+
+---
+
+## 🔧 P1.1 - Pipeline Stabilization (2026-06-15)
+
+### Estado: COMPLETADA
+
+### Diagnóstico de Vitest
+
+**Causa raíz:** El directorio `C:\Users\a.alarcon\Desktop\Cursor projects\kakebo` contiene `package.json` y todo el código fuente, pero **no tenía `node_modules`**. Los módulos estaban instalados únicamente en la subcarpeta `kakebo/kakebo/node_modules`. Al ejecutar `npm test` desde el directorio raíz, `vitest` no se encontraba en PATH.
+
+**Solución:** Ejecutar `npm install` en el directorio raíz para crear `node_modules` correctamente.
+
+### Archivos Modificados
+
+| Archivo | Cambio |
+|---------|--------|
+| `src/app/api/og/route.tsx` | Eliminado código muerto de carga de fuentes (Inter-Bold.ttf no existía, fontData/interSemiBold/playfairDisplay nunca se usaban en ImageResponse) |
+| `next.config.ts` | Eliminada opción `eslint.ignoreDuringBuilds` (no reconocida en Next.js 16 → generaba warnings) |
+
+### Validaciones Ejecutadas
+
+#### npm run build
+- **Antes:** Build pasaba, pero con warning `Module not found: Can't resolve '../../../assets/fonts/Inter-Bold.ttf'`
+- **Después:** Build pasa sin ese warning. Warnings restantes:
+  - `⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.` → deuda P1.2
+  - `⚠ Using edge runtime on a page currently disables static generation` → por diseño en `/api/og`
+  - `⚠️ OPENAI_API_KEY not found` → esperado en build, requiere .env.local
+
+#### npm run lint
+- Sin cambios: ~306 problemas (223 errors, 83 warnings) → deuda P1.2/P1.3
+
+#### npm test
+- **Antes:** 39 suites fallidas, **0 tests ejecutados** (Vitest no encontrado)
+- **Después:** 39 suites ejecutadas, **422 tests pasando / 47 fallando**, 25 suites OK / 14 con fallos
+
+Los 47 tests que fallan son **errores reales de lógica** (no de configuración):
+- Tests de API que mockean Supabase y reciben 500 en lugar del código esperado
+- Tests unitarios con fechas relativas (`calculate-whatif`, `day2-tools`, `learning-metrics`)
+- NO son fallos de path, alias ni configuración
+
+### Deuda Técnica Pendiente (P1.2+)
+
+| Problema | Impacto | Prioridad |
+|---------|---------|-----------|
+| `typescript.ignoreBuildErrors: true` | Errores TS silenciados → bugs en producción | P1.2 |
+| 223 errores ESLint | Código sin revisar → calidad incierta | P1.3 |
+| `src/middleware.ts` deprecado (→ `src/proxy.ts`) | Warning de Next.js 16 en cada build | P1.2 |
+| 47 tests fallando por lógica real | Cobertura incompleta | P1.2 |
+| Doble carpeta `kakebo/kakebo` | Confusión en workspace, instalación duplicada | P1.2 |
+
+### Plan Gradual Recomendado
+
+**P1.2:**
+1. Renombrar `src/middleware.ts` → `src/proxy.ts` (Next.js 16)
+2. Corregir los 47 tests unitarios con fallos de lógica
+3. Evaluar si `typescript.ignoreBuildErrors` puede desactivarse tras revisar errores TS
+
+**P1.3:**
+1. Reducir errores ESLint: atacar primero `@typescript-eslint/no-explicit-any` en bloque
+2. Activar lint durante CI una vez errores < 50
 
 ---
 
