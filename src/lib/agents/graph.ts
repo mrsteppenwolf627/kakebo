@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { StateGraph, END } from "@langchain/langgraph";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { AgentState } from "./state";

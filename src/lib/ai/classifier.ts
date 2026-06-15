@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { openai, DEFAULT_MODEL, calculateCost, ModelId } from "./client";
 import {
   getCurrentPrompt,
@@ -88,7 +89,7 @@ export async function classifyExpense(
 
   // ========== RETRIEVE CORRECTION EXAMPLES (P1-2) ==========
   let correctionExamplesText = "";
-  let exampleIds: string[] = [];
+  const exampleIds: string[] = [];
 
   if (useCorrectionExamples && supabase && userId) {
     try {

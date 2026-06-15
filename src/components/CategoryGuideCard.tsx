@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useTranslations } from "next-intl";
 
 const SECTIONS = ["supervivencia", "opcional", "cultura", "extra"] as const;

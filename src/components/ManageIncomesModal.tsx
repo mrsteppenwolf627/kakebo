@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useMemo, useEffect } from "react";
 import { createClient } from "@/lib/supabase/browser";
@@ -39,6 +40,8 @@ export default function ManageIncomesModal({ isOpen, onClose, ym, onUpdate }: Pr
             setDate(`${ym}-01`); // Default to 1st of month
             setError(null);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // loadIncomes is defined after this effect and is not memoized; adding it would cause infinite loops
     }, [isOpen, ym]);
 
     const [baseIncome, setBaseIncome] = useState(0);

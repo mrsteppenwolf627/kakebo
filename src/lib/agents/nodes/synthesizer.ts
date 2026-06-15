@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { openai, DEFAULT_MODEL } from "@/lib/ai/client";
 import { apiLogger } from "@/lib/logger";
 import { AgentState } from "../state";

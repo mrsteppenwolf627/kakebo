@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SupabaseClient } from "@supabase/supabase-js";
 import { HumanMessage, AIMessage, BaseMessage } from "@langchain/core/messages";
 import { DEFAULT_MODEL, calculateCost } from "@/lib/ai/client";

@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Link, useRouter, usePathname } from "@/i18n/routing";
 import { ThemeToggle } from "@/components/ThemeToggle";

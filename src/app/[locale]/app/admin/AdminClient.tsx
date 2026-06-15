@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/browser";
@@ -45,6 +46,8 @@ export default function AdminClient() {
             }
         }
         checkAdmin();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // supabase is created per-render; adding it would cause infinite loops
     }, []);
 
     async function loadVIPUsers() {

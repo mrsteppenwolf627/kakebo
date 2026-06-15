@@ -102,13 +102,13 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                                     onClick={() => sendMessage(t('suggestions.totalSpent'))}
                                     className="p-3 text-xs bg-muted/50 hover:bg-card hover:shadow-sm border border-border rounded-lg transition-all text-left text-foreground"
                                 >
-                                    "{t('suggestions.totalSpentShort')}"
+                                    &quot;{t('suggestions.totalSpentShort')}&quot;
                                 </button>
                                 <button
                                     onClick={() => sendMessage(t('suggestions.analyzeFood'))}
                                     className="p-3 text-xs bg-muted/50 hover:bg-card hover:shadow-sm border border-border rounded-lg transition-all text-left text-foreground"
                                 >
-                                    "{t('suggestions.analyzeFoodShort')}"
+                                    &quot;{t('suggestions.analyzeFoodShort')}&quot;
                                 </button>
                             </div>
                         )}

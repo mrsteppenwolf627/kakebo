@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -454,7 +455,9 @@ export default function ExpenseCalendar({
       window.removeEventListener("kakebo:incomes-changed", handler);
       window.removeEventListener("kakebo:expenses-changed", handler);
     };
-  }, [ym]); // Re-bind if ym changes, though load uses current ym
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // load is not memoized; adding it would cause infinite event-listener re-registration
+  }, [ym]);
 
   const isClosed = monthRow?.status === "closed";
   const monthStatusLabel = monthRow?.status

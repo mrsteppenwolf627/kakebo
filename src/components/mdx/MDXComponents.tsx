@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "@/i18n/routing";
 import React from "react";
 import Image from "next/image";

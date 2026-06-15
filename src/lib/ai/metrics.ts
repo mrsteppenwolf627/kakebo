@@ -99,7 +99,7 @@ export async function getAIMetrics(
     new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const endDate = options.endDate || new Date().toISOString();
 
-  let query = supabase
+  const query = supabase
     .from("ai_logs")
     .select("*")
     .eq("user_id", userId)

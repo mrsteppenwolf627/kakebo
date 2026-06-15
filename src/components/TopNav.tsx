@@ -24,6 +24,7 @@ export default function TopNav() {
 
   // Close menu on route change
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional side-effect on navigation
     setMenuOpen(false);
   }, [pathname]);
 

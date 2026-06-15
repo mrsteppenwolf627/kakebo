@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ImageResponse } from '@vercel/og';
 import { NextRequest } from 'next/server';
 

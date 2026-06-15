@@ -4,6 +4,7 @@ import { apiLogger } from "@/lib/logger";
 /**
  * Parameters for getting current cycle (none needed, uses userId)
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface GetCurrentCycleParams {
   // No parameters needed - userId is enough
 }

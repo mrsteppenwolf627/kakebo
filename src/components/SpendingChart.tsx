@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useMemo, useState, useEffect } from "react";
 import { useTheme } from "next-themes";
@@ -48,6 +49,7 @@ export default function SpendingChart({
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- standard SSR hydration pattern
     setMounted(true);
   }, []);
 

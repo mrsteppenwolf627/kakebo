@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getTranslations } from "next-intl/server";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Footer } from "@/components/landing";

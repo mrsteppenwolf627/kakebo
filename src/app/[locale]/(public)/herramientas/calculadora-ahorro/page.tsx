@@ -3,6 +3,7 @@ import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { SavingsCalculator } from "@/components/landing/tools/SavingsCalculator";
 import { getTranslations } from 'next-intl/server';
+import { Link } from "@/i18n/routing";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -113,10 +114,10 @@ export default function SavingsCalculatorPage() {
                     <h2 className="text-2xl font-bold font-serif mb-4">¿Qué te dice el resultado?</h2>
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            Los resultados que ves en pantalla no son reglas estrictas, sino un mapa de ruta ideal. Si observas que tus gastos actuales de "Supervivencia" superan con creces el presupuesto sugerido por la calculadora, acabas de localizar tu primer punto de fuga financiero.
+                            Los resultados que ves en pantalla no son reglas estrictas, sino un mapa de ruta ideal. Si observas que tus gastos actuales de &quot;Supervivencia&quot; superan con creces el presupuesto sugerido por la calculadora, acabas de localizar tu primer punto de fuga financiero.
                         </p>
                         <p>
-                            El resultado te permite cuestionar tus compras de "Opcional" o "Vicio" mensuales. Al saber exactamente cuál es tu límite sano para salir a cenar o comprar ropa, reduces la ansiedad financiera y el sentimiento de culpa, porque sabes que tu ahorro del 20% ya está asegurado.
+                            El resultado te permite cuestionar tus compras de &quot;Opcional&quot; o &quot;Vicio&quot; mensuales. Al saber exactamente cuál es tu límite sano para salir a cenar o comprar ropa, reduces la ansiedad financiera y el sentimiento de culpa, porque sabes que tu ahorro del 20% ya está asegurado.
                         </p>
                     </div>
                 </div>
@@ -138,9 +139,9 @@ export default function SavingsCalculatorPage() {
                     <p className="text-muted-foreground mb-6">
                         Sustituye el papel y el Excel por Kakebo AI. Nuestro agente registrará tus gastos y vigilará tu ahorro por ti.
                     </p>
-                    <a href="/login" className="bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-full hover:bg-primary/90 transition-colors inline-block">
+                    <Link href="/login" className="bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-full hover:bg-primary/90 transition-colors inline-block">
                         Empezar a usar la App
-                    </a>
+                    </Link>
                 </div>
             </section>
 

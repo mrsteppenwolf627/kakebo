@@ -57,7 +57,7 @@ export function ToolsSection() {
                             </h3>
                             <p className="text-stone-600 font-light leading-relaxed">
                                 El enemigo silencioso. Calcula cuánto valor real perderán tus ahorros si los dejas
-                                parados "bajo el colchón" debido al IPC.
+                                parados &quot;bajo el colchón&quot; debido al IPC.
                             </p>
 
                             <div className="pt-4 flex items-center text-sm font-medium text-stone-900 group-hover:text-red-600">

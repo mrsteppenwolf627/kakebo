@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { EmbedModal } from "./EmbedModal";
@@ -12,34 +12,16 @@ export function SavingsCalculator() {
     const [income, setIncome] = useState<number>(1500);
     const [fixedExpenses, setFixedExpenses] = useState<number>(600);
 
-    const [distribution, setDistribution] = useState({
-        survival: 0,
-        optional: 0,
-        culture: 0,
+    const idealSurvival = income * 0.5;
+    const idealWants = income * 0.3;
+    const idealSavings = income * 0.2;
+    const distribution = {
+        survival: idealSurvival,
+        optional: idealWants * 0.66,
+        culture: idealWants * 0.34,
         extra: 0,
-        savingPotential: 0,
-    });
-
-    useEffect(() => {
-        // Simple logic for the calculator
-        // Needs (Survival): 50% of Income
-        const idealSurvival = income * 0.5;
-
-        // Wants (Leisure + Culture): 30% of Income
-        const idealWants = income * 0.3;
-
-        // Savings (Extra): 20% of Income
-        const idealSavings = income * 0.2;
-
-        setDistribution({
-            survival: idealSurvival,
-            optional: idealWants * 0.66, // Split wants into Ocio
-            culture: idealWants * 0.34,  // and Cultura
-            extra: 0,
-            savingPotential: idealSavings,
-        });
-
-    }, [income, fixedExpenses]);
+        savingPotential: idealSavings,
+    };
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat("es-ES", {

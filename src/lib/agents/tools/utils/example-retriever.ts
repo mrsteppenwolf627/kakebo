@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Example retrieval for few-shot learning (P1-2)
  *

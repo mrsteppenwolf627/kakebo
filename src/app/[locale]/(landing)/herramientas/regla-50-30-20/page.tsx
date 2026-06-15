@@ -3,6 +3,7 @@ import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { Calculator503020 } from "@/components/landing/tools/Calculator503020";
 import { getTranslations } from 'next-intl/server';
+import { Link } from "@/i18n/routing";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -142,9 +143,9 @@ export default function Calculator503020Page() {
                         <p className="text-muted-foreground mb-6">
                             Saber los porcentajes es solo el principio. Únete a Kakebo AI para que nuestro asistente inteligente clasifique tus gastos diarios en estas áreas automáticamente.
                         </p>
-                        <a href="/login" className="bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-full hover:bg-primary/90 transition-colors inline-block">
+                        <Link href="/login" className="bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-full hover:bg-primary/90 transition-colors inline-block">
                             Crear cuenta en Kakebo
-                        </a>
+                        </Link>
                     </div>
                 </section>
             </main>

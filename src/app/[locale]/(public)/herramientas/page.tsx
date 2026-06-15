@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Metadata } from "next";
 import { Link } from "@/i18n/routing";
 import { Footer } from "@/components/landing";

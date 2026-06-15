@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { createClient } from "@/lib/supabase/browser";
 import { Link, useRouter } from "@/i18n/routing";

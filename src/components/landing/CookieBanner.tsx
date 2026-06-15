@@ -11,6 +11,7 @@ export function CookieBanner() {
     useEffect(() => {
         const consent = localStorage.getItem("kakebo-cookie-consent");
         if (!consent) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- must read localStorage after mount (SSR safe)
             setIsVisible(true);
         }
     }, []);
