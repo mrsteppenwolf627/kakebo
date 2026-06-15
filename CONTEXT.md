@@ -588,3 +588,67 @@ apiLogger.level = "debug";
 5. **Context-Aware:** Understands human language
 
 **Result:** A truly intelligent financial assistant that understands you better than any other app.
+## P0.4 Auditoria Final Post-Correccion (2026-06-15)
+
+### Veredicto
+- **Estado final actualizado:** `P0 NO CERRADA`
+- **Cierre funcional/documental de migracion:** no completado
+
+### Confirmaciones positivas
+1. `package.json` ya no contiene `stripe`
+2. `next.config.ts` ya no expone `js.stripe.com` y deja `frame-src 'none'`
+3. `/api/stripe/cancel`, `/api/stripe/checkout` y `/api/stripe/portal` responden `410 Gone`
+4. `/api/webhooks/stripe` ya no procesa cobros reales
+5. `src/lib/stripe/server.ts` ya no inicializa Stripe y solo exporta `null`
+
+### Hallazgos que impiden cerrar P0
+1. **CRITICO - Home publica todavia renderiza pricing**
+   - `src/app/[locale]/(public)/page.tsx` sigue importando y renderizando `PricingSection`
+   - la home mantiene `id="pricing"`
+   - el schema `SoftwareApplication` sigue publicando `price: "3.99"` y `priceCurrency: "EUR"`
+
+2. **CRITICO - SEO/copy de pago sigue activo en la home**
+   - `src/components/landing/Hero.tsx` sigue usando `stats.trial` y `stats.price`
+   - `messages/en.json` y `messages/es.json` conservan copy visible de `trial`, `pricing`, `premium`, `subscription`
+
+3. **ALTA - Dashboard sigue exponiendo navegacion de suscripcion**
+   - `src/components/TopNav.tsx` mantiene `/app/subscription` como item real del menu
+
+4. **ALTA - Rutas legacy siguen vivas con metadata SaaS**
+   - `src/app/[locale]/app/subscription/page.tsx` sigue describiendo "Gestiona tu suscripcion premium"
+   - `src/app/[locale]/app/cancel-subscription/page.tsx` sigue usando "Cancelar Suscripcion" y "Kakebo Pro"
+
+5. **ALTA - README contradice frontalmente el modelo gratuito**
+   - mantiene seccion `Pricing`
+   - documenta `Stripe (Suscripciones)`
+   - mantiene `Modelo de Suscripcion (SaaS)` y variables `STRIPE_*`
+
+### Evaluacion de rutas legacy
+| Ruta / archivo | Estado actual | Severidad | Decision |
+|---|---|---|---|
+| `/app/subscription` | Ruta real accesible con copy de plan | **ALTA** | limpiar o retirar antes de cerrar P0 |
+| `/app/cancel-subscription` | Ruta real accesible con metadata SaaS | **ALTA** | limpiar o retirar antes de cerrar P0 |
+| `/api/stripe/*` | stubs `410 Gone` | **MEDIA** | no bloquea cierre tecnico, aceptable temporalmente |
+| `/api/webhooks/stripe` | stub sin logica de cobro | **MEDIA** | deuda tecnica aceptable, no bloqueante |
+| `src/lib/stripe/server.ts` | placeholder `null` | **MEDIA** | deuda tecnica aceptable |
+
+### Lint / build / tests
+- `npm run lint` -> **FAIL** (`307 problemas`: `223 errors`, `84 warnings`)
+- `npm run build` -> **PASS con warnings**
+- `npm test` -> **FAIL** (`39 suites fallidas / 0 tests ejecutados`)
+
+### Interpretacion de calidad
+1. `lint` y `tests` parecen problemas preexistentes y no especificos de la migracion
+2. por si solos deben pasar a una **P1 tecnica separada**
+3. **no son el motivo principal** de que P0 siga abierta
+4. P0 sigue abierta por contradiccion funcional, SEO y documental del modelo gratuito
+
+### Riesgos pendientes
+1. Google y usuarios pueden seguir entendiendo el producto como freemium/de pago
+2. la home sigue estructurada como si hubiera pricing
+3. el dashboard mantiene una semantica de suscripcion que ya no deberia existir
+4. el README sigue instruyendo a configurar Stripe en un producto declarado gratuito
+5. `typescript.ignoreBuildErrors=true` y `eslint.ignoreDuringBuilds=true` siguen permitiendo publicar con calidad degradada
+6. la suite de tests sigue rota y no protege regresiones
+
+---
