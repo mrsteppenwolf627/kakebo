@@ -5,6 +5,60 @@
 
 ---
 
+## 🔧 P1.1B - Estado de Ramas Git (2026-06-15)
+
+### Diagnóstico de Divergencia
+
+**Situación:** Las ramas `main` y `master` han divergido. Son dos líneas de historia distintas desde el commit `16175be`.
+
+```
+* 7ae998c  HEAD → master, origin/master   ← P1.1 (pipeline fix)
+|
+| * 685d725  origin/main, origin/HEAD      ← P0 final (free model migration)
+| * fb4e867
+| * 1196066
+| * d805d0a
+| * 37a9485
+| * a6362c2
+| * 6404b81
+| * 4c929cf
+| * b8abded
+| * 82b8663
+|/
+* 16175be                                  ← commit raíz común (seo: inflation calculator)
+```
+
+**Resumen:**
+
+| Rama | Commit HEAD | Contiene P0 | Contiene P1.1 |
+|------|-------------|-------------|---------------|
+| `master` (local + origin) | `7ae998c` | NO | SÍ |
+| `main` (origin/HEAD) | `685d725` | SÍ | NO |
+
+**`origin/HEAD` apunta a `origin/main`** → el remote considera `main` como rama principal.
+
+### Riesgo
+
+`master` tiene el trabajo de P1.1 pero le **faltan 9 commits de P0** (la migración al modelo gratuito). Si se continúa trabajando desde `master`, se estará trabajando sobre una base que NO incluye el trabajo de P0, que es el estado correcto del producto.
+
+### Acción Recomendada
+
+**Cherry-pick de P1.1 sobre `main`:**
+
+```bash
+git checkout main
+git cherry-pick 7ae998c
+git push origin main
+```
+
+Esto aplica los 3 cambios de P1.1 (`CONTEXT.md`, `next.config.ts`, `src/app/api/og/route.tsx`) directamente sobre `main`, que ya tiene P0 completo.
+
+**Posibles conflictos:** `CONTEXT.md` fue modificado tanto en P0 como en P1.1. Se resolverá manteniendo la sección P1.1 nueva + el contenido P0 existente.
+
+**NO se ejecuta sin confirmación explícita.**
+
+---
+
 ## 🔧 P1.1 - Pipeline Stabilization (2026-06-15)
 
 ### Estado: COMPLETADA
