@@ -1,7 +1,4 @@
-import { Suspense } from "react";
 import TopNav from "@/components/TopNav";
-import StripeSuccessHandler from "@/components/saas/StripeSuccessHandler";
-import TrialBanner from "@/components/saas/TrialBanner";
 
 export const metadata = {
   robots: {
@@ -18,10 +15,6 @@ export default function AppLayout({
   return (
     <>
       <TopNav />
-      <Suspense fallback={null}>
-        <StripeSuccessHandler />
-      </Suspense>
-      <TrialBanner />
       {children}
     </>
   );

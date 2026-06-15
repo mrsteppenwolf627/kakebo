@@ -1,5 +1,42 @@
 # Changelog
 
+## [4.0.0] - 2026-06-15
+
+### CAMBIO DE MODELO DE NEGOCIO — Kakebo pasa a ser gratuito
+
+#### Eliminado
+- **Stripe**: Desactivadas todas las rutas `/api/stripe/checkout`, `/api/stripe/cancel`, `/api/stripe/portal`
+- **Webhook de Stripe**: `/api/webhooks/stripe/route.ts` desactivado (responde 200 vacío)
+- **`src/lib/stripe/server.ts`**: Instancia de Stripe ya no se usa en llamadas activas
+- **`SubscriptionGuard`**: Simplificado a pass-through (siempre renderiza los hijos)
+- **`TrialBanner`**: Eliminado visualmente (retorna null)
+- **`PremiumPrompt`**: Eliminado paywall (retorna null)
+- **`StripeSuccessHandler`**: Eliminado (retorna null)
+- **Layout de app**: Quitados `StripeSuccessHandler` y `TrialBanner`
+- **Badge PRO** en Features landing
+- **Botón de billing Stripe** en UserMenu
+- **Lógica de paywall** en `ReportButton` (PDFs ahora gratuitos)
+- **Referencias a trial de 15/14 días** en mensajes i18n (es.json, en.json)
+- **Variables de entorno Stripe** en `.env.example` (comentadas como obsoletas)
+
+#### Modificado
+- **`access-control.ts`**: `canUsePremium()` ahora retorna `true` para cualquier usuario autenticado
+- **`SubscriptionClient`**: Muestra plan gratuito sin botón de pago
+- **`CancelClient`**: Redirige a dashboard, informa que todo es gratuito
+- **i18n `Pricing`**: Texto actualizado a "Gratis. Para siempre."
+- **`CONTEXT.md`**: Actualizado con nuevo modelo de negocio
+
+#### Conservado (sin tocar)
+- **Autenticación Supabase**: Intacta
+- **Tablas de BD** (`tier`, `stripe_customer_id`, `stripe_subscription_id`): No eliminadas, solo ignoradas en lógica
+- **Dependencia `stripe` en package.json**: Mantenida temporalmente para evitar romper imports residuales
+- **Archivos de rutas Stripe**: Mantenidos (responden 410 Gone) para no romper el router de Next.js
+
+#### Riesgos detectados
+- La columna `tier` en Supabase puede quedarse en `'free'` para todos los usuarios → irrelevante porque `canUsePremium` ya no la lee
+- Si se elimina la dependencia `stripe` del `package.json` sin limpiar todos los imports residuales, el build fallaría
+- Los tests de vitest tenían un error preexistente de configuración de paths (no relacionado con este cambio)
+
 ## [3.9.1] - 2026-02-20
 
 ### Added

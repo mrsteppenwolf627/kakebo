@@ -13,18 +13,6 @@ export default function UserMenu() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Billing Portal Logic
-  async function handleBilling() {
-    try {
-      const res = await fetch('/api/stripe/portal', { method: 'POST' });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-    } catch (e) {
-      console.error("Billing error:", e);
-      alert("Error cargando el portal de facturación.");
-    }
-  }
-
   useEffect(() => {
     let mounted = true;
 
@@ -103,14 +91,6 @@ export default function UserMenu() {
               className="w-full text-left px-3 py-2 text-sm text-stone-700 hover:bg-stone-200 transition-colors"
             >
               Configuración de Cuenta
-            </button>
-
-            <button
-              onClick={handleBilling}
-              className="w-full text-left px-3 py-2 text-sm text-stone-700 hover:bg-stone-200 transition-colors flex justify-between items-center group"
-            >
-              <span>Suscripción</span>
-              <span className="text-[10px] text-stone-400 group-hover:text-stone-600">Stripe ↗</span>
             </button>
 
             <div className="h-px bg-stone-200 my-1" />

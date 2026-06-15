@@ -36,7 +36,6 @@ export function Features() {
           <FeatureCard
             title={t("cards.ai.title")}
             description={t("cards.ai.desc")}
-            isPro
           />
         </div>
       </div>
@@ -47,19 +46,11 @@ export function Features() {
 interface FeatureCardProps {
   title: string;
   description: string;
-  isPro?: boolean;
 }
 
-function FeatureCard({ title, description, isPro }: FeatureCardProps) {
+function FeatureCard({ title, description }: FeatureCardProps) {
   return (
     <div className="border border-border bg-card p-6 sm:p-8 transition-colors hover:border-primary/50">
-      {/* Pro Badge */}
-      {isPro && (
-        <span className="inline-block mb-4 border border-primary bg-primary px-3 py-1 text-xs font-light text-primary-foreground tracking-wide">
-          PRO
-        </span>
-      )}
-
       {/* Title */}
       <h3 className="mb-3 text-lg font-serif text-foreground">{title}</h3>
 

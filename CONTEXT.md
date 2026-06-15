@@ -1,7 +1,11 @@
 # Kakebo AI Agent - Context Document
 
-**Last Updated:** 2026-05-27  
-**Version:** 3.0 - Intelligent Copilot & Growth Engine
+**Last Updated:** 2026-06-15  
+**Version:** 4.0 - Herramienta Gratuita + Crecimiento SEO
+
+> **CAMBIO DE MODELO DE NEGOCIO (2026-06-15):** Kakebo ya no es una herramienta de pago.
+> Stripe, paywalls, trial de 15 días y SubscriptionGuard han sido eliminados.
+> Todo usuario autenticado tiene acceso completo. La monetización futura será por SEO, afiliación y comparativas.
 
 ---
 

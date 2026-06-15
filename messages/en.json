@@ -56,8 +56,8 @@
         "ctaSecondary": "Learn more",
         "trustSignal": "🔒 Instant registration · No card required · <bold>Total privacy</bold>",
         "stats": {
-            "trial": "14 Days",
-            "trialLabel": "Free Premium Trial",
+            "trial": "Free",
+            "trialLabel": "Forever. No card needed.",
             "price": "$0",
             "priceLabel": "No Card Required",
             "privacy": "100%",
@@ -94,7 +94,7 @@
         "resultLabel": "Monthly Savings Potential",
         "disclaimer": "*Based on the 20% Kakebo method goal",
         "cta": "Start saving today",
-        "trial": "14-day free trial. No card required."
+        "trial": "Free forever. No card required."
     },
     "Alternatives": {
         "title": "Why choose Kakebo AI?",
@@ -431,13 +431,13 @@
             }
         },
         "Pricing": {
-            "title": "One single plan. All included.",
-            "subtitle": "Enjoy the full Kakebo experience for 14 days. No commitment.",
-            "planName": "Kakebo Premium",
+            "title": "Free. Forever.",
+            "subtitle": "Kakebo is completely free. Sign up and start managing your finances today.",
+            "planName": "Kakebo Free",
             "planDesc": "AI Agent + Advanced Analysis + Unlimited Budgets",
-            "price": "€3.99",
+            "price": "€0",
             "period": "/mo",
-            "trial": "14 days free · No card",
+            "trial": "No limits · No card",
             "features": {
                 "f1": "Unlimited expense tracking",
                 "f2": "Fixed expenses and subscription management",
@@ -446,11 +446,11 @@
                 "f5": "Personal AI Finance Agent",
                 "f6": "Automatic pattern analysis",
                 "f7": "Personalized savings tips",
-                "f8": "Priority support"
+                "f8": "Email support"
             },
-            "cta": "Start 14-day free trial",
-            "note": "No credit card required to start. Cancel anytime.",
-            "footer": "💳 Payments processed by Stripe · 🔒 Encrypted data · ✓ Instant cancellation"
+            "cta": "Get started for free",
+            "note": "No credit card required. Free forever.",
+            "footer": "🔒 Encrypted data · 100% Private · No intrusive ads"
         },
         "Content": {
             "title": "Control your finances in Europe with Kakebo",

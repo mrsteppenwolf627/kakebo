@@ -56,8 +56,8 @@
         "ctaSecondary": "Más información",
         "trustSignal": "🔒 Registro instantáneo · Sin tarjeta · <bold>Privacidad total sin bancos</bold>",
         "stats": {
-            "trial": "14 días",
-            "trialLabel": "Prueba Premium Gratis",
+            "trial": "Gratis",
+            "trialLabel": "Para siempre. Sin tarjeta.",
             "price": "0€",
             "priceLabel": "Sin tarjeta requerida",
             "privacy": "100%",
@@ -94,7 +94,7 @@
         "resultLabel": "Potencial de Ahorro Mensual",
         "disclaimer": "*Basado en el objetivo del 20% del método Kakebo",
         "cta": "Empezar a ahorrar hoy",
-        "trial": "Prueba gratuita de 14 días. Sin tarjeta."
+        "trial": "Gratis para siempre. Sin tarjeta."
     },
     "Alternatives": {
         "title": "¿Por qué elegir Kakebo AI?",
@@ -431,13 +431,13 @@
             }
         },
         "Pricing": {
-            "title": "Un único plan. Todo incluido.",
-            "subtitle": "Disfruta de la experiencia completa de Kakebo durante 14 días. Sin compromiso.",
-            "planName": "Kakebo Premium",
+            "title": "Gratis. Para siempre.",
+            "subtitle": "Kakebo es completamente gratuito. Regístrate y empieza a controlar tus gastos hoy mismo.",
+            "planName": "Kakebo Gratuito",
             "planDesc": "Agente IA + Análisis avanzado + Presupuestos ilimitados",
-            "price": "3.99€",
+            "price": "0€",
             "period": "/mes",
-            "trial": "14 días gratis · Sin tarjeta",
+            "trial": "Sin límites · Sin tarjeta",
             "features": {
                 "f1": "Registro de gastos ilimitados",
                 "f2": "Gestión de gastos fijos y suscripciones",
@@ -446,11 +446,11 @@
                 "f5": "Agente IA de finanzas personal",
                 "f6": "Análisis automático de patrones",
                 "f7": "Consejos de ahorro personalizados",
-                "f8": "Soporte prioritario"
+                "f8": "Soporte por email"
             },
-            "cta": "Empezar prueba de 14 días gratis",
-            "note": "No se requiere tarjeta de crédito para empezar. Cancela cuando quieras.",
-            "footer": "💳 Pagos procesados por Stripe · 🔒 Datos encriptados · ✓ Cancelación instantánea"
+            "cta": "Empezar gratis ahora",
+            "note": "No se requiere tarjeta de crédito. Gratis para siempre.",
+            "footer": "🔒 Datos encriptados · 100% Privado · Sin publicidad intrusiva"
         },
         "Content": {
             "title": "Controla tus finanzas en España con Kakebo",
