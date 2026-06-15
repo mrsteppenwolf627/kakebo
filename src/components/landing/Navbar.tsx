@@ -125,12 +125,6 @@ export function Navbar() {
             </div>
           </div>
           <Link
-            href={getHashPath("#pricing") as any}
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            {t('pricing')}
-          </Link>
-          <Link
             href={getHashPath("#features") as any}
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
@@ -244,13 +238,6 @@ export function Navbar() {
                 </Link>
               </div>
 
-              <Link
-                href={getHashPath("#pricing") as any}
-                onClick={closeMenu}
-                className="text-lg font-medium text-foreground py-2 border-b border-border/40"
-              >
-                {t('pricing')}
-              </Link>
               <Link
                 href={getHashPath("#features") as any}
                 onClick={closeMenu}

@@ -48,7 +48,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com https://vitals.vercel-insights.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://*; font-src 'self' data:; connect-src 'self' https://*.supabase.co https://vitals.vercel-insights.com; frame-src 'self' https://js.stripe.com; object-src 'none';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com https://vitals.vercel-insights.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://*; font-src 'self' data:; connect-src 'self' https://*.supabase.co https://vitals.vercel-insights.com; frame-src 'none'; object-src 'none';",
           },
         ],
       },

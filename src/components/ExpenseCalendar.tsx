@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
-import { canUsePremium, Profile } from "@/lib/auth/access-control";
 import { Link } from "@/i18n/routing";
 import SpendingChart from "@/components/SpendingChart";
 import { useTranslations } from "next-intl";
@@ -77,9 +76,6 @@ export default function ExpenseCalendar({
 
   const [monthRow, setMonthRow] = useState<MonthRow | null>(null);
   const [closing, setClosing] = useState(false);
-
-  // Auth & Premium Logic
-  const [profile, setProfile] = useState<Profile | null>(null);
 
   const [settings, setSettings] = useState<UserSettingsRow | null>(null);
   const [settingsLoading, setSettingsLoading] = useState(true);
@@ -195,15 +191,6 @@ export default function ExpenseCalendar({
     }
   }
 
-  async function loadProfile(userId: string) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", userId)
-      .single();
-    if (data) setProfile(data as Profile);
-  }
-
   async function getMonth(userId: string) {
     const { data: months, error: mErr } = await supabase
       .from("months")
@@ -288,7 +275,6 @@ export default function ExpenseCalendar({
         loadSettings(userId),
         loadFixedTotal(userId),
         loadIncomes(userId),
-        loadProfile(userId)
       ]);
 
       const m = await getMonth(userId);
@@ -498,10 +484,6 @@ export default function ExpenseCalendar({
     }));
   }, [t]);
 
-  // Check if viewing past month and user is not premium
-  const isLocked = useMemo(() => {
-    return false; // Free model: history is unlocked for everyone
-  }, [ym, profile]);
 
   return (
     <div className="space-y-6">
@@ -688,20 +670,6 @@ export default function ExpenseCalendar({
 
         {/* Chart */}
         <div className="border border-border p-6 rounded-lg bg-card shadow-sm relative overflow-hidden">
-          {isLocked && (
-            <div className="absolute inset-0 z-10 bg-white/60 dark:bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
-              <p className="text-lg font-bold text-foreground mb-2">{t("locked.title")}</p>
-              <p className="text-sm text-muted-foreground mb-4 max-w-xs">
-                {t("locked.desc")}
-              </p>
-              <Link
-                href="/pricing"
-                className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
-              >
-                {t("locked.unlock")}
-              </Link>
-            </div>
-          )}
           <div className="font-medium text-foreground mb-4">Distribución por categorías</div>
           <SpendingChart
             title="Gasto por categoría"
@@ -741,13 +709,6 @@ export default function ExpenseCalendar({
 
         {/* Lista */}
         <div className="border border-border p-4 sm:p-6 rounded-lg bg-card shadow-sm relative overflow-hidden">
-          {isLocked && (
-            <div className="absolute inset-0 z-10 bg-white/60 dark:bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center select-none">
-              <span className="text-2xl mb-2">🔒</span>
-              <p className="font-semibold">{t("locked.premium")}</p>
-            </div>
-          )}
-
           <div className="font-medium text-foreground mb-4 text-sm sm:text-base">{t("list.title")}</div>
 
           {rows.length === 0 && !loading && (
@@ -773,7 +734,7 @@ export default function ExpenseCalendar({
 
                     <button
                       onClick={() => removeExpense(r.id)}
-                      disabled={isClosed || deletingId === r.id || isLocked}
+                      disabled={isClosed || deletingId === r.id}
                       className="text-muted-foreground hover:text-destructive disabled:opacity-30 transition-colors p-1"
                       title={isClosed ? t("status.closedMsg") : t("actions.delete")}
                     >

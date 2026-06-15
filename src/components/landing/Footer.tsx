@@ -42,14 +42,6 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="#pricing"
-                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
-                >
-                  {t('pricing')}
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="#features"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
