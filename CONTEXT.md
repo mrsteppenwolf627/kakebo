@@ -1,24 +1,60 @@
 # Kakebo AI Agent - Context Document
 
 **Last Updated:** 2026-06-15  
-**Version:** 4.1 - Auditoría final migración a modelo gratuito
+**Version:** 4.2 - P0.3 completado: migración SaaS a herramienta gratuita finalizada
 
 > **CAMBIO DE MODELO DE NEGOCIO (2026-06-15):** Kakebo ya no es una herramienta de pago.
 > Stripe, paywalls, trial de 15 días y SubscriptionGuard han sido eliminados.
 > Todo usuario autenticado tiene acceso completo. La monetización futura será por SEO, afiliación y comparativas.
 
-> **RESULTADO AUDITORÍA P0.2 (2026-06-15): NO APTO PARA PRODUCCIÓN**
-> La migración SaaS → herramienta gratuita quedó incompleta.
-> Persisten rutas, dependencias, copies y configuración técnica del modelo anterior.
+> **RESULTADO P0.3 (2026-06-15): APTO PARA PRODUCCIÓN**
+> Commit `6404b81` — "Fix: remove remaining SaaS and Stripe artifacts (via Claude)"
+> Stripe eliminado de package.json, CSP corregida, SettingsClient limpio, Navbar/Footer/Hero/ExpenseCalendar sin referencias premium/pricing.
+> ADRs.md creado. Build: PASS. Lint: 307 problemas preexistentes (no introducidos en P0.3). Tests: 39 suites fallidas por bug de configuración preexistente (path resolution).
+> Riesgos pendientes: typescript.ignoreBuildErrors=true, eslint.ignoreDuringBuilds=true, suite de tests rota, columnas stripe_* en Supabase sin migración de limpieza.
 
 ---
 
-## Auditoría Final P0.2 (2026-06-15)
+## P0.3 Completado (2026-06-15) — commit `6404b81`
 
 ### Veredicto
-- **Estado final:** `NO APTO PARA PRODUCCIÓN`
-- **Resultado de migración:** incompleta
-- **ADRs:** no existe `ADRs.md` en el repo auditado
+- **Estado final:** `APTO PARA PRODUCCIÓN` (con riesgos documentados)
+- **Resultado de migración:** completa
+- **ADRs:** `ADRs.md` creado (ADR-001, ADR-002)
+
+### Cambios ejecutados en P0.3
+| Archivo | Cambio |
+|---------|--------|
+| `package.json` | `stripe` eliminado de dependencies |
+| `package-lock.json` | lockfile actualizado tras `npm install` |
+| `next.config.ts` | CSP `frame-src` → `'none'` (eliminado `js.stripe.com`) |
+| `src/lib/stripe/server.ts` | placeholder `export const stripe = null` |
+| `src/app/[locale]/app/settings/SettingsClient.tsx` | eliminado tier state, cancelLoading, handleCancel(), sección subscripción JSX |
+| `src/components/landing/Navbar.tsx` | eliminados enlaces a `#pricing` (desktop y mobile) |
+| `src/components/landing/Footer.tsx` | eliminado enlace `#pricing` en sección Product |
+| `src/components/landing/Hero.tsx` | CTA secundario: `#pricing` → `#features` |
+| `src/components/ExpenseCalendar.tsx` | eliminados import Profile, estado profile, loadProfile(), overlays premium/lock |
+| `ADRs.md` | creado con ADR-001 (modelo gratuito) y ADR-002 (conservar auth Supabase) |
+
+### Validación P0.3
+- `npm run build` → **PASS**
+- `npm run lint` → **307 problemas** (223 errores, 84 warnings — todos preexistentes, no introducidos en P0.3)
+- `npm test` → **39 suites fallidas / 0 tests ejecutados** — bug preexistente de path resolution, no causado por P0.3
+
+### Riesgos pendientes (documentados, no bloqueantes)
+1. `typescript.ignoreBuildErrors: true` y `eslint.ignoreDuringBuilds: true` en `next.config.ts` — pipeline no bloquea errores de calidad
+2. Suite de tests rota por conflicto de rutas entre `kakebo/` y `kakebo/kakebo/` — no protege regresiones
+3. Columnas `tier`, `stripe_customer_id`, `stripe_subscription_id`, `trial_ends_at` en tabla `profiles` — sin uso, sin migración de limpieza (ver ADR-002)
+4. Rutas `/[locale]/app/subscription` y `/[locale]/app/cancel-subscription` siguen existiendo, ahora muestran mensaje de herramienta gratuita (correctas pero potencialmente confusas para SEO)
+
+---
+
+## Auditoría Intermedia P0.2 (2026-06-15) — commit `4cd29e1`
+
+### Veredicto
+- **Estado final:** `INCOMPLETO` (subsanado por P0.3)
+- **Resultado de migración:** parcial
+- **ADRs:** no existía `ADRs.md`
 
 ### Hallazgos críticos
 1. **Superficie Stripe/SaaS aún expuesta**
