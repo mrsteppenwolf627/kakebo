@@ -5,6 +5,25 @@
 
 ---
 
+## 🔧 P1.1C - Divergencia Git Resuelta (2026-06-15)
+
+### Estado: COMPLETADA
+
+**Rama operativa oficial: `main`**
+
+- `origin/HEAD → origin/main` — el remote ya apunta a `main` como rama principal.
+- P1.1 aplicado mediante cherry-pick (`3005196`) sobre `main`, que ya contenía P0 completo.
+- `origin/master` queda como rama obsoleta (contiene P1.1 pero le falta P0). No es la rama de trabajo.
+
+| Rama | Contiene P0 | Contiene P1.1 | Es operativa |
+|------|-------------|---------------|--------------|
+| `main` | SÍ | SÍ | **SÍ** |
+| `master` | NO | SÍ | NO |
+
+**Para trabajar en P1.2+:** siempre desde `main`.
+
+---
+
 ## 🔧 P1.1 - Pipeline Stabilization (2026-06-15)
 
 ### Estado: COMPLETADA
