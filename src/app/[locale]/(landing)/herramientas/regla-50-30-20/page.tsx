@@ -13,11 +13,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         title: t('title'),
         description: t('description'),
         alternates: {
-            canonical: `https://www.metodokakebo.com/${locale}/herramientas/regla-50-30-20`,
+            canonical: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/herramientas/regla-50-30-20`,
             languages: {
-                "es": "https://www.metodokakebo.com/es/herramientas/regla-50-30-20",
+                "es": "https://www.metodokakebo.com/herramientas/regla-50-30-20",
                 "en": "https://www.metodokakebo.com/en/herramientas/regla-50-30-20",
-                "x-default": "https://www.metodokakebo.com/es/herramientas/regla-50-30-20"
+                "x-default": "https://www.metodokakebo.com/herramientas/regla-50-30-20"
             }
         },
         openGraph: {
