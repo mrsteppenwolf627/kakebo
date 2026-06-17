@@ -44,11 +44,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             ],
         },
         alternates: {
-            canonical: `https://www.metodokakebo.com/${locale}/blog/${slug}`,
+            canonical: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/blog/${slug}`,
             languages: {
-                "es": `https://www.metodokakebo.com/es/blog/${slug}`,
+                "es": `https://www.metodokakebo.com/blog/${slug}`,
                 "en": `https://www.metodokakebo.com/en/blog/${slug}`,
-                "x-default": `https://www.metodokakebo.com/es/blog/${slug}`
+                "x-default": `https://www.metodokakebo.com/blog/${slug}`
             }
         },
     };
