@@ -119,7 +119,7 @@ export function Navbar() {
                   href="/herramientas/calculadora-inflacion"
                   className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors"
                 >
-                  <span className="block font-medium text-foreground text-red-600">{t('toolsInflation')}</span>
+                  <span className="block font-medium text-foreground">{t('toolsInflation')}</span>
                   <span className="block text-xs text-muted-foreground mt-0.5">{t('toolsInflationDesc')}</span>
                 </Link>
               </div>
@@ -233,7 +233,7 @@ export function Navbar() {
                 <Link
                   href="/herramientas/calculadora-inflacion"
                   onClick={closeMenu}
-                  className="pl-4 py-2 text-base text-red-600 hover:bg-muted/50 rounded-md"
+                  className="pl-4 py-2 text-base text-foreground hover:bg-muted/50 rounded-md"
                 >
                   {t('toolsInflation')}
                 </Link>

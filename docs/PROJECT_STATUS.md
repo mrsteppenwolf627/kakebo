@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-18 (UI-1.4)  
+**Última actualización:** 2026-06-18 (UI-1.5)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -169,13 +169,27 @@ Respuesta en texto plano.
 
 ---
 
+### UI-1.5 — Normalizar color de links en Navbar
+
+| Campo | Detalle |
+|---|---|
+| **Objetivo** | Eliminar `text-red-600` hardcoded del enlace "Calculadora de inflación" en el dropdown de herramientas; unificar con el sistema de tokens |
+| **Commit** | (ver abajo) — `UI-1.5: normalize navbar color states` |
+| **Archivo clave** | `src/components/landing/Navbar.tsx` |
+| **Resultado** | Dos ocurrencias eliminadas: (1) desktop dropdown `<span className="... text-red-600">` → `text-foreground` ya presente en la misma clase; (2) mobile menu `text-red-600` → `text-foreground` igual que los otros dos tool links. El resto del Navbar ya era consistente: nav links `text-muted-foreground hover:text-foreground`, dropdown items `text-foreground`, CTAs `bg-primary text-primary-foreground`. |
+
+**Auditoría completa del Navbar:**
+- Desktop nav links: `text-muted-foreground hover:text-foreground` — ✓ uniforme en todos
+- Dropdown herramientas (desktop): `text-foreground` en título, `text-muted-foreground` en descripción — ✓ uniforme (tras fix)
+- Mobile menu links: `text-foreground` — ✓ uniforme (tras fix)
+- CTA buttons: `bg-primary text-primary-foreground` — ✓ uniforme
+- Sin inconsistencias adicionales detectadas
+
+---
+
 ## Próximas tareas
 
-### UI-1.5 — Fix color tool link en Navbar
-
-El enlace a la calculadora de inflación en el Navbar usa `text-red-600` hardcoded (fuera del sistema de tokens). Debe usar `text-primary` o la clase equivalente del sistema de diseño.
-
-**Scope:** `src/components/landing/Navbar.tsx` — localizar la clase y sustituirla.
+> UI Sprint 1 completado. Pendiente definir UI Sprint 2.
 
 ---
 
