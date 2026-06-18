@@ -328,7 +328,36 @@ Respuesta en texto plano.
 
 **Validación:** `npm run build` → ✅ Compiled successfully in 7.2s, 0 errores, 29/29 páginas estáticas.
 
-> **Nota — enlaces P1 (Fase 1) NO implementados.** El subconjunto P0 de PLAN-SEO-2.3 se materializó enlace por enlace en la tabla de SEO-2.3A, pero **los 12 enlaces P1 nunca se enumeraron en ningún artefacto** (PROJECT_STATUS/DA-10 solo describe el *scope*, no la lista). Por decisión explícita, SEO-2.3B ejecutó únicamente las correcciones estructurales de la auditoría (2A/2B/2C). La enumeración formal de los 12 P1 queda pendiente antes de poder implementarlos. Ningún enlace P2 fue tocado.
+> **Nota — enlaces P1 (Fase 1) NO implementados en este paso.** El subconjunto P0 de PLAN-SEO-2.3 se materializó enlace por enlace en la tabla de SEO-2.3A, pero **los 12 enlaces P1 nunca se enumeraron en ningún artefacto** (PROJECT_STATUS/DA-10 solo describía el *scope*, no la lista). Por decisión explícita, SEO-2.3B (Fase 2) ejecutó únicamente las correcciones estructurales de la auditoría (2A/2B/2C). La enumeración formal y la implementación parcial se completaron después en **SEO-2.3B-P1** (ver sección siguiente). Ningún enlace P2 fue tocado.
+
+---
+
+### SEO-2.3B-P1 — Enlaces cross-cluster aprobados (Tier A)
+
+| Campo | Detalle |
+|---|---|
+| **Objetivo** | Enumerar los enlaces P1 (inexistentes en PLAN-SEO-2.3) e implementar el subconjunto de alto valor (Tier A) que refuerza el pillar C2 débil y conecta clusters. |
+| **Fecha** | 2026-06-18 |
+| **Plan** | Se enumeraron 12 candidatos cross-cluster (PLAN-SEO-2.3B-P1) y se aprobó implementar **solo los 7 del Tier A**; los 5 del Tier B quedan diferidos para evitar sobre-concentración de inbound y dilución. |
+| **Commit** | `SEO-2.3B-P1: implement approved cross-cluster links` |
+
+**7 enlaces Tier A implementados (anchors naturales, sin tocar FAQs/related/schema/slugs):**
+
+| # | Origen | Destino | Dir | Anchor |
+|---|--------|---------|-----|--------|
+| 1 | `metodo-kakebo-guia-definitiva` | `kakebo-online-guia-completa` | C1→C2 | "guía completa del Kakebo online" |
+| 2 | `metodo-kakebo-para-autonomos` | `kakebo-online-guia-completa` | C1→C2 | "guía completa del Kakebo online" |
+| 3 | `kakebo-vs-ynab` | `kakebo-online-guia-completa` | C4→C2 | "guía del Kakebo online" |
+| 4 | `kakebo-sueldo-minimo` | `kakebo-online-gratis` | C1→C2 | "llevar el Kakebo online gratis" |
+| 5 | `ahorro-pareja` | `como-ahorrar-dinero-cada-mes` | C1→C3 | "técnicas para ahorrar cada mes" |
+| 6 | `como-ahorrar-dinero-cada-mes` | `kakebo-online-gratis` | C3→C2 | "Kakebo online gratis" |
+| 7 | `kakebo-online-gratis` | `como-ahorrar-dinero-cada-mes` | C2→C3 | "cómo ahorrar dinero cada mes" |
+
+**Efecto sobre la arquitectura:** pillar C2 (`kakebo-online-guia-completa`) inbound contextual **3 → 6** (corrige la inversión pillar/supporting); el pillar C3 gana una salida hacia C2 (antes no tenía ninguna).
+
+**Validación:** `npm run build` → ✅ Compiled successfully in 7.0s, 0 errores, 29/29 páginas. 0 enlaces rotos, 0 `/es/blog/`.
+
+> **Tier B (5 enlaces) NO implementado.** Diferido por riesgo de sobre-concentración de inbound en `como-ahorrar` y rendimientos decrecientes; reevaluar antes de SEO-2.3C / con datos de Search Console.
 
 ---
 
@@ -342,8 +371,8 @@ Respuesta en texto plano.
 | SEO-2.2 | Añadir `related:` a 12 artículos sin RelatedPosts | ✅ Completado |
 | SEO-2.3A | Enlazado interno contextual — enlaces P0 (pillar architecture) | ✅ Completado 2026-06-18 |
 | SEO-2.3B | Correcciones estructurales (pillar C3, rescate huérfano, normalización URLs) | ✅ Completado 2026-06-18 (Fase 2A/2B/2C) |
-| SEO-2.3B-P1 | Enlazado interno contextual — enlaces P1 (cross-cluster) | Pendiente: requiere enumerar los 12 P1 (no existen en PLAN-SEO-2.3) |
-| SEO-2.3C | Enlazado interno contextual — enlaces P2 (refinamientos opcionales) | Pendiente (tras validar SEO-2.3B-P1) |
+| SEO-2.3B-P1 | Enlaces cross-cluster P1 — Tier A (7 de 12 enumerados) | ✅ Completado 2026-06-18 (Tier B diferido) |
+| SEO-2.3C | Enlazado interno contextual — enlaces P2 (refinamientos opcionales) | Pendiente (tras reevaluar Tier B y datos de Search Console) |
 | SEO-2.4 | Resolución de canibalizaciones (tras datos de Search Console) | Pendiente |
 | Content Sprint 1 | Creación de nuevos contenidos según gaps de clusters | Pendiente (tras SEO-2.x) |
 
@@ -430,8 +459,9 @@ SEO Sprint 2
 ├── SEO-2.2   RelatedPosts global (completado — 14/14 artículos ES)
 ├── SEO-2.3A  Enlazado interno P0 — pillar architecture (completado 2026-06-18)
 ├── SEO-2.3B  Correcciones estructurales — pillar C3 + huérfano + URLs (completado 2026-06-18)
-│              └ P1 cross-cluster pendiente (12 enlaces sin enumerar en PLAN-SEO-2.3)
-├── SEO-2.3C  Enlazado interno P2 — refinamientos opcionales (pendiente, tras P1)
+├── SEO-2.3B-P1  Cross-cluster Tier A — 7 enlaces, refuerzo pillar C2 (completado 2026-06-18)
+│              └ Tier B (5 enlaces) diferido
+├── SEO-2.3C  Enlazado interno P2 — refinamientos opcionales (pendiente, tras Tier B)
 └── SEO-2.4   Resolución de canibalizaciones (requiere Search Console)
 
 Content Sprint 1  (tras completar SEO Sprint 2)
