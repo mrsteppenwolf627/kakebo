@@ -77,10 +77,35 @@ function Blockquote(props: any) {
     );
 }
 
+function FaqSection(props: any) {
+    return (
+        <div
+            className="not-prose my-10 rounded-xl border border-border bg-muted/30 overflow-hidden divide-y divide-border"
+            {...props}
+        />
+    );
+}
+
+function FaqItem({ question, children }: { question: string; children: React.ReactNode }) {
+    return (
+        <div className="px-6 py-5">
+            <div className="flex items-start gap-2.5 mb-3">
+                <span className="mt-0.5 shrink-0 text-primary font-bold leading-none select-none">?</span>
+                <span className="font-serif font-semibold text-foreground text-base leading-snug">{question}</span>
+            </div>
+            <div className="pl-6 text-sm text-muted-foreground leading-relaxed [&>p]:m-0 [&_strong]:text-foreground [&_strong]:font-semibold">
+                {children}
+            </div>
+        </div>
+    );
+}
+
 export const components = {
     a: CustomLink,
     img: RoundedImage,
     Callout,
+    FaqSection,
+    FaqItem,
     table: Table,
     thead: TableHead,
     tr: TableRow,
