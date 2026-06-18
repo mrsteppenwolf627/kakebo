@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-18 (SEO-2.3A)  
+**Última actualización:** 2026-06-18 (SEO-2.3B)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -309,6 +309,29 @@ Respuesta en texto plano.
 
 ---
 
+### SEO-2.3B — Cross-cluster links + authority balancing
+
+| Campo | Detalle |
+|---|---|
+| **Objetivo** | Corregir los desequilibrios estructurales detectados en AUDIT-SEO-POST-2.3A: reforzar el pillar C3, rescatar el artículo huérfano y normalizar las URLs internas al canónico ES. |
+| **Fecha** | 2026-06-18 |
+| **Archivos** | 14 archivos `.es.mdx` en `src/content/blog/` (4 con ediciones contextuales + normalización de URLs en todos los que tenían enlaces internos) |
+| **Commit** | `SEO-2.3B: implement cross-cluster links and authority balancing` |
+
+**Alcance ejecutado — correcciones estructurales aprobadas por auditoría (Fase 2A/2B/2C):**
+
+| Fase | Acción | Resultado verificado |
+|------|--------|----------------------|
+| **2A — Reforzar pillar C3** | Enlaces contextuales adicionales (anchor exact-match `ahorrar dinero cada mes`) desde `eliminar-gastos-hormiga` y `regla-30-dias` → `como-ahorrar-dinero-cada-mes`. | Inbound contextual del pillar C3: **2 → 4**. |
+| **2B — Rescatar huérfano** | Enlaces contextuales a `libro-kakebo-pdf` desde `kakebo-online-guia-completa` (pillar C2) y `plantilla-kakebo-excel` (supporting C2). | `libro-kakebo-pdf` inbound: **0 → 2** (deja de ser huérfano). |
+| **2C — Normalizar URLs internas** | Sustitución `/es/blog/…` → `/blog/…` (canónico ES, DA-01) en todos los `.es.mdx`. | **59 → 0** enlaces `/es/blog/`. Enlaces EN (`/en/blog/`) intactos. Sin enlaces rotos. |
+
+**Validación:** `npm run build` → ✅ Compiled successfully in 7.2s, 0 errores, 29/29 páginas estáticas.
+
+> **Nota — enlaces P1 (Fase 1) NO implementados.** El subconjunto P0 de PLAN-SEO-2.3 se materializó enlace por enlace en la tabla de SEO-2.3A, pero **los 12 enlaces P1 nunca se enumeraron en ningún artefacto** (PROJECT_STATUS/DA-10 solo describe el *scope*, no la lista). Por decisión explícita, SEO-2.3B ejecutó únicamente las correcciones estructurales de la auditoría (2A/2B/2C). La enumeración formal de los 12 P1 queda pendiente antes de poder implementarlos. Ningún enlace P2 fue tocado.
+
+---
+
 ## Próximas tareas
 
 > SEO Sprint 2 en progreso.
@@ -318,8 +341,9 @@ Respuesta en texto plano.
 | SEO-2.1 | Canonical + hreflang del índice del blog + slug mismatch kakebo-online | ✅ Completado |
 | SEO-2.2 | Añadir `related:` a 12 artículos sin RelatedPosts | ✅ Completado |
 | SEO-2.3A | Enlazado interno contextual — enlaces P0 (pillar architecture) | ✅ Completado 2026-06-18 |
-| SEO-2.3B | Enlazado interno contextual — enlaces P1 (cross-cluster) | Pendiente (tras validar SEO-2.3A) |
-| SEO-2.3C | Enlazado interno contextual — enlaces P2 (refinamientos opcionales) | Pendiente (tras validar SEO-2.3B) |
+| SEO-2.3B | Correcciones estructurales (pillar C3, rescate huérfano, normalización URLs) | ✅ Completado 2026-06-18 (Fase 2A/2B/2C) |
+| SEO-2.3B-P1 | Enlazado interno contextual — enlaces P1 (cross-cluster) | Pendiente: requiere enumerar los 12 P1 (no existen en PLAN-SEO-2.3) |
+| SEO-2.3C | Enlazado interno contextual — enlaces P2 (refinamientos opcionales) | Pendiente (tras validar SEO-2.3B-P1) |
 | SEO-2.4 | Resolución de canibalizaciones (tras datos de Search Console) | Pendiente |
 | Content Sprint 1 | Creación de nuevos contenidos según gaps de clusters | Pendiente (tras SEO-2.x) |
 
@@ -405,8 +429,9 @@ SEO Sprint 2
 ├── SEO-2.1   Canonical + hreflang (completado)
 ├── SEO-2.2   RelatedPosts global (completado — 14/14 artículos ES)
 ├── SEO-2.3A  Enlazado interno P0 — pillar architecture (completado 2026-06-18)
-├── SEO-2.3B  Enlazado interno P1 — cross-cluster (pendiente, tras 2.3A)
-├── SEO-2.3C  Enlazado interno P2 — refinamientos opcionales (pendiente, tras 2.3B)
+├── SEO-2.3B  Correcciones estructurales — pillar C3 + huérfano + URLs (completado 2026-06-18)
+│              └ P1 cross-cluster pendiente (12 enlaces sin enumerar en PLAN-SEO-2.3)
+├── SEO-2.3C  Enlazado interno P2 — refinamientos opcionales (pendiente, tras P1)
 └── SEO-2.4   Resolución de canibalizaciones (requiere Search Console)
 
 Content Sprint 1  (tras completar SEO Sprint 2)
