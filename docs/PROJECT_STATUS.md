@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-18 (SEO-2.2)  
+**Última actualización:** 2026-06-18 (DOC-STRATEGY-03)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -278,7 +278,9 @@ Respuesta en texto plano.
 |-------|----------|--------|
 | SEO-2.1 | Canonical + hreflang del índice del blog + slug mismatch kakebo-online | ✅ Completado |
 | SEO-2.2 | Añadir `related:` a 12 artículos sin RelatedPosts | ✅ Completado |
-| SEO-2.3 | Arquitectura de enlazado interno basada en clusters | Pendiente |
+| SEO-2.3A | Enlazado interno contextual — enlaces P0 (pillar architecture) | Pendiente |
+| SEO-2.3B | Enlazado interno contextual — enlaces P1 (cross-cluster) | Pendiente (tras validar SEO-2.3A) |
+| SEO-2.3C | Enlazado interno contextual — enlaces P2 (refinamientos opcionales) | Pendiente (tras validar SEO-2.3B) |
 | SEO-2.4 | Resolución de canibalizaciones (tras datos de Search Console) | Pendiente |
 | Content Sprint 1 | Creación de nuevos contenidos según gaps de clusters | Pendiente (tras SEO-2.x) |
 
@@ -361,10 +363,12 @@ El blog se organiza en cuatro clusters. Cada cluster tiene un artículo **pillar
 
 ```
 SEO Sprint 2
-├── SEO-2.1  Canonical + hreflang (completado)
-├── SEO-2.2  RelatedPosts global (completado — 14/14 artículos ES)
-├── SEO-2.3  Enlazado interno por clusters
-└── SEO-2.4  Resolución de canibalizaciones (requiere Search Console)
+├── SEO-2.1   Canonical + hreflang (completado)
+├── SEO-2.2   RelatedPosts global (completado — 14/14 artículos ES)
+├── SEO-2.3A  Enlazado interno P0 — pillar architecture (pendiente)
+├── SEO-2.3B  Enlazado interno P1 — cross-cluster (pendiente, tras 2.3A)
+├── SEO-2.3C  Enlazado interno P2 — refinamientos opcionales (pendiente, tras 2.3B)
+└── SEO-2.4   Resolución de canibalizaciones (requiere Search Console)
 
 Content Sprint 1  (tras completar SEO Sprint 2)
 └── Nuevos artículos que cubran gaps de clusters
@@ -372,7 +376,7 @@ Content Sprint 1  (tras completar SEO Sprint 2)
               pillar definitivo para Cluster 4 (Comparativas)
 ```
 
-**Criterio de transición SEO Sprint 2 → Content Sprint 1:** haber completado SEO-2.1, SEO-2.2 y SEO-2.3. SEO-2.4 puede ejecutarse en paralelo con Content Sprint 1 si los datos de Search Console están disponibles.
+**Criterio de transición SEO Sprint 2 → Content Sprint 1:** haber completado SEO-2.1, SEO-2.2 y SEO-2.3A como mínimo. SEO-2.3B/C y SEO-2.4 pueden ejecutarse en paralelo con Content Sprint 1 si los datos de Search Console están disponibles.
 
 **Nota explícita:** No se fusionarán artículos hasta disponer de datos adicionales de Search Console y hasta haber completado SEO-2.1 y SEO-2.2.
 
@@ -436,3 +440,42 @@ Para las imágenes hero de posts, se usa un contenedor `relative aspect-video` c
 ### DA-05 — Convención de slugs: inmutables
 
 Los slugs de los artículos del blog (`/blog/plantilla-kakebo-excel`, etc.) son permalinks estables. **No se cambian** aunque el título del artículo cambie, aunque el contenido se reestructure completamente, o aunque se añadan FAQs o secciones. El canonical y el hreflang ya correctos dependen de la estabilidad del slug. Cambiar un slug equivale a crear una nueva URL (404 para la antigua salvo redirect explícito).
+
+---
+
+### DA-10 — Implementación escalonada de SEO-2.3
+
+SEO-2.3 se ejecuta en tres fases independientes en lugar de implementar los 35 enlaces identificados en PLAN-SEO-2.3 de una sola vez.
+
+#### Fases
+
+| Fase | Scope | Objetivo | Prerequisito |
+|------|-------|----------|-------------|
+| **SEO-2.3A** | 19 enlaces P0 | Consolidar arquitectura Pillar → Supporting. Máxima prioridad SEO. | SEO-2.2 completado ✅ |
+| **SEO-2.3B** | 12 enlaces P1 | Reforzar relaciones entre clusters. | Validación de SEO-2.3A |
+| **SEO-2.3C** | 4 enlaces P2 | Refinamientos opcionales de baja urgencia. Solo si aportan valor real tras revisar datos. | Validación de SEO-2.3B |
+
+#### Justificación
+
+- **Minimizar riesgo**: introducir 35 enlaces simultáneamente dificulta aislar la causa de cualquier efecto inesperado en rankings o UX.
+- **Facilitar validación**: cada fase tiene un scope acotado y un criterio de éxito verificable antes de continuar.
+- **Medir impacto por fases**: SEO-2.3A impacta la arquitectura de autoridad (pillar links); SEO-2.3B impacta la navegación entre clusters; SEO-2.3C son ajustes editoriales de menor impacto. Separarlos permite atribuir cambios en Search Console a la fase correcta.
+- **Detectar efectos no deseados**: si SEO-2.3A genera un comportamiento de rastreo o ranking no esperado, SEO-2.3B y SEO-2.3C pueden suspenderse sin coste.
+
+#### Alcance explícito de SEO-2.3A
+
+SEO-2.3A incluirá **únicamente** los 19 enlaces clasificados como P0 en PLAN-SEO-2.3:
+- Todo supporting enlazando a su Pillar de cluster en prose (donde no existía enlace contextual previo)
+- Todo Pillar C3 enlazando a sus Supportings en prose donde el anchor ya existe en el texto
+- C4 artículos enlazando a C1 Pillar en prose donde el método es nombrado
+
+SEO-2.3B y SEO-2.3C permanecen **pendientes de validación futura**. No se implementan hasta confirmar que SEO-2.3A no genera efectos adversos.
+
+#### Nota sobre secciones "Artículos relacionados" manuales
+
+Los artículos del blog contienen secciones manuales de "Artículos relacionados" con links markdown heredados del diseño original. Estas secciones **no se modificarán** durante SEO-2.3A ni SEO-2.3B.
+
+La posible eliminación de dichas secciones (que son visualmente redundantes con el componente RelatedPosts de frontmatter) se evaluará únicamente después de validar conjuntamente:
+- El comportamiento del componente RelatedPosts en producción
+- El enlazado contextual de SEO-2.3A y SEO-2.3B
+- Datos de comportamiento de usuario (CTR, scroll depth) si están disponibles en Search Console o Analytics
