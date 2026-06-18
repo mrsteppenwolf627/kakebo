@@ -13,6 +13,7 @@ export interface BlogPost {
         author: string;
         readingTime?: string;
         image?: string;
+        related?: string[];
         faq?: {
             question: string;
             answer: string;

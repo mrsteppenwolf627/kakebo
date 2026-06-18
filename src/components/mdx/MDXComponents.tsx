@@ -2,7 +2,6 @@
 import { Link } from "@/i18n/routing";
 import React from "react";
 import Image from "next/image";
-import { RelatedPosts } from "./RelatedPosts";
 
 function CustomLink(props: any) {
     const { href, className, ...restProps } = props;
@@ -107,7 +106,6 @@ export const components = {
     Callout,
     FaqSection,
     FaqItem,
-    RelatedPosts,
     table: Table,
     thead: TableHead,
     tr: TableRow,

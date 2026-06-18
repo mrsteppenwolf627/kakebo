@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-18 (UI-1.5)  
+**Última actualización:** 2026-06-18 (BUG-FIX: RelatedPosts crash)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -184,6 +184,21 @@ Respuesta en texto plano.
 - Mobile menu links: `text-foreground` — ✓ uniforme (tras fix)
 - CTA buttons: `bg-primary text-primary-foreground` — ✓ uniforme
 - Sin inconsistencias adicionales detectadas
+
+---
+
+---
+
+### BUG-FIX: RelatedPosts crash en producción
+
+| Campo | Detalle |
+|---|---|
+| **Síntoma** | Error boundary "Algo salió mal" en `/blog/plantilla-kakebo-excel` y `/blog/alternativas-a-app-bancarias` |
+| **Error** | `TypeError: Cannot read properties of undefined (reading 'map')` en `RelatedPosts` |
+| **Causa raíz** | `next-mdx-remote/rsc` v6 no pasa correctamente props de array literal (`slugs={[...]}`) a componentes custom desde el contexto MDX. El prop `slugs` llega `undefined`. |
+| **Fix** | Mover `RelatedPosts` fuera del contexto MDX: slugs movidos a frontmatter YAML (`related:`) y el componente se renderiza en `page.tsx` directamente después de `<MDXRemote>`. |
+| **Archivos** | `src/lib/blog.ts`, `src/components/mdx/RelatedPosts.tsx`, `src/components/mdx/MDXComponents.tsx`, `src/app/[locale]/(public)/blog/[slug]/page.tsx`, `plantilla-kakebo-excel.es.mdx`, `alternativas-a-app-bancarias.es.mdx` |
+| **Validado** | Build limpio. HTTP 200 en ambas URLs localmente. Sección "Artículos relacionados" renderiza. Sin errores en logs. |
 
 ---
 

@@ -8,6 +8,7 @@ interface RelatedPostsProps {
 }
 
 export function RelatedPosts({ slugs, locale = 'es' }: RelatedPostsProps) {
+    "use no memo";
     const posts = slugs
         .map(slug => getBlogPost(slug, locale))
         .filter((p): p is NonNullable<typeof p> => p !== null);
@@ -26,7 +27,7 @@ export function RelatedPosts({ slugs, locale = 'es' }: RelatedPostsProps) {
                         href={`/blog/${post.slug}`}
                         className="group block rounded-xl border border-border bg-card overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
                     >
-                        {post.frontmatter.image && (
+                        {post.frontmatter.image && !post.frontmatter.image.startsWith('/api/') && (
                             <div className="relative aspect-video w-full overflow-hidden bg-muted">
                                 <Image
                                     src={post.frontmatter.image}

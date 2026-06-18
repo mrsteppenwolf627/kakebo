@@ -6,6 +6,7 @@ import { Footer, Navbar } from "@/components/landing";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { components } from "@/components/mdx/MDXComponents";
+import { RelatedPosts } from "@/components/mdx/RelatedPosts";
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 
@@ -126,6 +127,10 @@ export default async function BlogPostPage({ params }: Props) {
                         }}
                     />
                 </div>
+
+                {post.frontmatter.related && post.frontmatter.related.length > 0 && (
+                    <RelatedPosts slugs={post.frontmatter.related} locale={locale} />
+                )}
 
                 {/* CTA */}
                 <div className="mt-16 rounded-2xl bg-stone-900 px-6 py-10 text-center text-white sm:px-12">
