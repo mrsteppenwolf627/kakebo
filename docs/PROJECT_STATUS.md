@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-18 (DOC-STRATEGY-03)  
+**Última actualización:** 2026-06-18 (SEO-2.3A)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -270,6 +270,45 @@ Respuesta en texto plano.
 
 ---
 
+### SEO-2.3A — Enlazado interno contextual P0 (pillar architecture)
+
+| Campo | Detalle |
+|---|---|
+| **Objetivo** | Implementar los 19 enlaces P0 de PLAN-SEO-2.3: Supporting → Pillar y cross-cluster de alta prioridad |
+| **Fecha** | 2026-06-18 |
+| **Archivos** | 14 archivos `.es.mdx` en `src/content/blog/` |
+| **Commit** | `SEO-2.3A: implement pillar-supporting contextual links` |
+
+**19 enlaces implementados:**
+
+| # | Origen | Destino | Anchor |
+|---|---|---|---|
+| 1 | `metodo-kakebo-guia-definitiva` | `kakebo-sueldo-minimo` | "guía de Kakebo con el salario mínimo" |
+| 2 | `metodo-kakebo-para-autonomos` | `metodo-kakebo-guia-definitiva` | "Método Kakebo" |
+| 3 | `kakebo-sueldo-minimo` | `metodo-kakebo-guia-definitiva` | "El Método Kakebo" |
+| 4 | `ahorro-pareja` | `metodo-kakebo-guia-definitiva` | "método japonés Kakebo" |
+| 5 | `kakebo-online-guia-completa` | `metodo-kakebo-guia-definitiva` | "método Kakebo" |
+| 6 | `kakebo-online-gratis` | `metodo-kakebo-guia-definitiva` | "método tradicional inventado por Motoko Hani" |
+| 7 | `kakebo-online-gratis` | `kakebo-online-guia-completa` | "guía completa del Kakebo online" |
+| 8 | `libro-kakebo-pdf` | `metodo-kakebo-guia-definitiva` | "método zen financiero" |
+| 9 | `libro-kakebo-pdf` | `kakebo-online-guia-completa` | "Kakebo en formato digital" |
+| 10 | `plantilla-kakebo-excel` | `metodo-kakebo-guia-definitiva` | "El método Kakebo" |
+| 11 | `plantilla-kakebo-excel` | `kakebo-online-guia-completa` | "Kakebo online" |
+| 12 | `como-ahorrar-dinero-cada-mes` | `regla-30-dias` | "La Regla de Enfriamiento de 30 Días para Caprichos" |
+| 13 | `como-ahorrar-dinero-cada-mes` | `eliminar-gastos-hormiga` | "pequeños gastos absurdos" |
+| 14 | `eliminar-gastos-hormiga` | `como-ahorrar-dinero-cada-mes` | "ahorro mensual" |
+| 15 | `regla-30-dias` | `metodo-kakebo-guia-definitiva` | "método Kakebo" |
+| 16 | `regla-30-dias` | `como-ahorrar-dinero-cada-mes` | "ahorro mensual" |
+| 17 | `kakebo-vs-ynab` | `metodo-kakebo-guia-definitiva` | "Método Kakebo" |
+| 18 | `alternativas-a-app-bancarias` | `metodo-kakebo-guia-definitiva` | "método Kakebo" |
+| 19 | `peligros-apps-ahorro-automatico` | `metodo-kakebo-guia-definitiva` | "Método Japonés Kakebo" |
+
+**Reglas seguidas:** solo anchors existentes (6 de los 19 añadieron 1 frase de referencia mínima siguiendo el patrón de cross-references ya presentes). Sin tocar `related:`, FAQs, slugs ni secciones "Artículos relacionados" manuales.
+
+**Validación:** `npm run build` → ✅ Compiled successfully, 0 errores.
+
+---
+
 ## Próximas tareas
 
 > SEO Sprint 2 en progreso.
@@ -278,7 +317,7 @@ Respuesta en texto plano.
 |-------|----------|--------|
 | SEO-2.1 | Canonical + hreflang del índice del blog + slug mismatch kakebo-online | ✅ Completado |
 | SEO-2.2 | Añadir `related:` a 12 artículos sin RelatedPosts | ✅ Completado |
-| SEO-2.3A | Enlazado interno contextual — enlaces P0 (pillar architecture) | Pendiente |
+| SEO-2.3A | Enlazado interno contextual — enlaces P0 (pillar architecture) | ✅ Completado 2026-06-18 |
 | SEO-2.3B | Enlazado interno contextual — enlaces P1 (cross-cluster) | Pendiente (tras validar SEO-2.3A) |
 | SEO-2.3C | Enlazado interno contextual — enlaces P2 (refinamientos opcionales) | Pendiente (tras validar SEO-2.3B) |
 | SEO-2.4 | Resolución de canibalizaciones (tras datos de Search Console) | Pendiente |
@@ -365,7 +404,7 @@ El blog se organiza en cuatro clusters. Cada cluster tiene un artículo **pillar
 SEO Sprint 2
 ├── SEO-2.1   Canonical + hreflang (completado)
 ├── SEO-2.2   RelatedPosts global (completado — 14/14 artículos ES)
-├── SEO-2.3A  Enlazado interno P0 — pillar architecture (pendiente)
+├── SEO-2.3A  Enlazado interno P0 — pillar architecture (completado 2026-06-18)
 ├── SEO-2.3B  Enlazado interno P1 — cross-cluster (pendiente, tras 2.3A)
 ├── SEO-2.3C  Enlazado interno P2 — refinamientos opcionales (pendiente, tras 2.3B)
 └── SEO-2.4   Resolución de canibalizaciones (requiere Search Console)
