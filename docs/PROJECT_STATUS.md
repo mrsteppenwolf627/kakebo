@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-18  
+**Última actualización:** 2026-06-18 (UI-1.4)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -142,25 +142,34 @@ Respuesta en texto plano.
 </FaqSection>
 ```
 
----
-
-## Próximas tareas
-
 ### UI-1.3 — Componente Related Posts
 
-Reemplazar las listas de `## Artículos relacionados` (actualmente listas de markdown `- [texto](url)`) por un componente visual con tarjetas o grid. Los artículos que tienen esta sección son `plantilla-kakebo-excel.es.mdx` y `alternativas-a-app-bancarias.es.mdx`.
+| Campo | Detalle |
+|---|---|
+| **Objetivo** | Reemplazar listas markdown `- [texto](url)` de "Artículos relacionados" por grid visual de tarjetas con imagen, título y excerpt |
+| **Commit** | `dde1ee2` — `feat(ui): improve related posts presentation` |
+| **Archivos clave** | `src/components/mdx/RelatedPosts.tsx` (nuevo), `MDXComponents.tsx`, `plantilla-kakebo-excel.es.mdx`, `alternativas-a-app-bancarias.es.mdx` |
+| **Resultado** | Componente `RelatedPosts` que llama `getBlogPost()` síncronamente por slug, renderiza grid 2 columnas (`sm:grid-cols-2`) con `aspect-video`, hover `scale-105`, título `font-serif` y excerpt `line-clamp-2`. Registrado en `components` de MDXComponents. |
 
-**Scope:** nuevo componente MDX `RelatedPosts` en `MDXComponents.tsx` + actualizar los dos artículos.
+**Usage en MDX:**
+```mdx
+<RelatedPosts slugs={["kakebo-online-gratis", "eliminar-gastos-hormiga", "libro-kakebo-pdf"]} />
+```
 
 ---
 
 ### UI-1.4 — Featured card en el índice del blog
 
-La página `/blog` muestra una cuadrícula de 3 columnas plana. Convertir el primer artículo (el más reciente) en una tarjeta destacada de ancho completo con imagen más grande, excerpt y jerarquía visual reforzada.
-
-**Scope:** `src/app/[locale]/(public)/blog/page.tsx` únicamente.
+| Campo | Detalle |
+|---|---|
+| **Objetivo** | Destacar el artículo más reciente como tarjeta de ancho completo en el índice `/blog`, con el resto en el grid 3-col existente |
+| **Commit** | (ver abajo) — `UI-1.4: add featured blog post card` |
+| **Archivo clave** | `src/app/[locale]/(public)/blog/page.tsx` |
+| **Resultado** | `[featured, ...rest] = posts`. Featured card: layout `flex-col md:flex-row`, imagen LCP `priority` 50% ancho desktop, badge "Artículo destacado" en `bg-primary/10 text-primary`, título `h2 text-3xl font-serif`, excerpt `line-clamp-4`. Resto en grid `md:grid-cols-2 lg:grid-cols-3` sin cambios. Helper `hasPublicImage()` reemplaza lógica `fs.existsSync` inline. |
 
 ---
+
+## Próximas tareas
 
 ### UI-1.5 — Fix color tool link en Navbar
 
