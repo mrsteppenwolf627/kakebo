@@ -7,6 +7,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { components } from "@/components/mdx/MDXComponents";
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
 
 interface Props {
     params: Promise<{
@@ -99,6 +100,19 @@ export default async function BlogPostPage({ params }: Props) {
                         <span className="text-sm font-medium">{post.frontmatter.author}</span>
                     </div>
                 </header>
+
+                {post.frontmatter.image && (
+                    <div className="relative aspect-video w-full overflow-hidden rounded-xl mb-12">
+                        <Image
+                            src={post.frontmatter.image}
+                            alt={post.frontmatter.title}
+                            fill
+                            className="object-cover"
+                            priority
+                            sizes="(max-width: 768px) 100vw, 768px"
+                        />
+                    </div>
+                )}
 
                 {/* Content */}
                 <div className="prose prose-lg prose-stone dark:prose-invert mx-auto prose-headings:font-serif prose-headings:font-bold prose-p:font-light prose-p:leading-relaxed prose-li:font-light">
