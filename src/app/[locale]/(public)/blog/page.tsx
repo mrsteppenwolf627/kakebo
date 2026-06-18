@@ -14,11 +14,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         title: t('title'),
         description: t('subtitle'),
         alternates: {
-            canonical: `/${locale}/blog`,
+            canonical: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/blog`,
             languages: {
-                "es": "/es/blog",
-                "en": "/en/blog",
-                "x-default": "/es/blog"
+                "es": "https://www.metodokakebo.com/blog",
+                "en": "https://www.metodokakebo.com/en/blog",
+                "x-default": "https://www.metodokakebo.com/blog"
             }
         },
     };

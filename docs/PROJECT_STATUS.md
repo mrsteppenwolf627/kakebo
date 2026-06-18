@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-18 (BUG-FIX: RelatedPosts crash)  
+**Última actualización:** 2026-06-18 (SEO-2.1)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -202,9 +202,40 @@ Respuesta en texto plano.
 
 ---
 
+## SEO Sprint 2 — En progreso
+
+### SEO-2.1 — Corregir canonical e hreflang rotos
+
+| Campo | Detalle |
+|---|---|
+| **Objetivo** | Resolver los dos bugs P0 de canonical/hreflang detectados en AUDIT-SEO-POST-P0 |
+| **Archivos** | `src/app/[locale]/(public)/blog/page.tsx`, `src/content/blog/kakebo-online-complete-guide.en.mdx` → renombrado |
+| **Commit** | (ver abajo) — `SEO-2.1: fix blog canonical and hreflang issues` |
+
+**Bug 1 — Blog index canonical/hreflang:**
+- Antes: `canonical: "/${locale}/blog"` → generaba `/es/blog` (relativo e incorrecto)
+- Después: `canonical: "https://www.metodokakebo.com${locale === 'es' ? '' : '/${locale}'}/blog"` (absoluto, patrón DA-01)
+- hreflang `es`/`en`/`x-default` también corregidos a URLs absolutas
+
+**Bug 2 — Slug mismatch kakebo-online:**
+- Antes: `kakebo-online-complete-guide.en.mdx` (slug EN diferente al ES) → hreflang apuntaba a 404
+- Después: renombrado a `kakebo-online-guia-completa.en.mdx` → ambos archivos comparten el mismo slug
+- `/en/blog/kakebo-online-guia-completa` retorna 200 y los hreflang son simétricos
+
+**Validación:**
+
+| URL | Canonical | hreflang es | hreflang en | x-default |
+|-----|-----------|-------------|-------------|-----------|
+| `/blog` | `metodokakebo.com/blog` ✅ | `metodokakebo.com/blog` ✅ | `metodokakebo.com/en/blog` ✅ | `metodokakebo.com/blog` ✅ |
+| `/en/blog` | `metodokakebo.com/en/blog` ✅ | `metodokakebo.com/blog` ✅ | `metodokakebo.com/en/blog` ✅ | `metodokakebo.com/blog` ✅ |
+| `/blog/kakebo-online-guia-completa` | correcto ✅ | correcto ✅ | 200 ✅ | correcto ✅ |
+| `/en/blog/kakebo-online-guia-completa` | correcto ✅ | correcto ✅ | correcto ✅ | — |
+
+---
+
 ## Próximas tareas
 
-> UI Sprint 1 completado. Pendiente definir UI Sprint 2.
+> SEO Sprint 2 en progreso. Siguiente: SEO-2.2 (añadir `related:` a 12 artículos restantes).
 
 ---
 
