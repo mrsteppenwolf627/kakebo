@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-18 (DOC-STRATEGY-01)  
+**Última actualización:** 2026-06-18 (SEO-2.2)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -234,6 +234,42 @@ Respuesta en texto plano.
 
 ---
 
+### SEO-2.2 — Related posts global (12 artículos)
+
+| Campo | Detalle |
+|---|---|
+| **Objetivo** | Extender la arquitectura `RelatedPosts` a los 12 artículos ES sin campo `related:` en frontmatter |
+| **Fecha** | 2026-06-18 |
+| **Archivos** | 12 archivos `.es.mdx` en `src/content/blog/` (ver tabla de implementación abajo) |
+| **Commit** | (ver abajo) — `SEO-2.2: implement sitewide related posts architecture` |
+
+**Tabla de implementación (slugs `related:` asignados):**
+
+| Artículo | related[0] | related[1] | related[2] | Cluster |
+|----------|-----------|-----------|-----------|---------|
+| `metodo-kakebo-guia-definitiva` | `metodo-kakebo-para-autonomos` | `kakebo-sueldo-minimo` | `ahorro-pareja` | C1 Pillar |
+| `metodo-kakebo-para-autonomos` | `metodo-kakebo-guia-definitiva` | `kakebo-sueldo-minimo` | `kakebo-online-guia-completa` | C1 Supporting |
+| `kakebo-sueldo-minimo` | `metodo-kakebo-guia-definitiva` | `ahorro-pareja` | `como-ahorrar-dinero-cada-mes` | C1 Supporting |
+| `ahorro-pareja` | `metodo-kakebo-guia-definitiva` | `kakebo-sueldo-minimo` | `metodo-kakebo-para-autonomos` | C1 Supporting |
+| `kakebo-online-guia-completa` | `kakebo-online-gratis` | `plantilla-kakebo-excel` | `libro-kakebo-pdf` | C2 Pillar |
+| `kakebo-online-gratis` | `kakebo-online-guia-completa` | `plantilla-kakebo-excel` | `metodo-kakebo-guia-definitiva` | C2 Supporting |
+| `libro-kakebo-pdf` | `kakebo-online-guia-completa` | `plantilla-kakebo-excel` | `metodo-kakebo-guia-definitiva` | C2 Supporting |
+| `como-ahorrar-dinero-cada-mes` | `eliminar-gastos-hormiga` | `regla-30-dias` | `metodo-kakebo-guia-definitiva` | C3 Pillar |
+| `eliminar-gastos-hormiga` | `como-ahorrar-dinero-cada-mes` | `regla-30-dias` | `metodo-kakebo-guia-definitiva` | C3 Supporting |
+| `regla-30-dias` | `como-ahorrar-dinero-cada-mes` | `eliminar-gastos-hormiga` | `metodo-kakebo-guia-definitiva` | C3 Supporting |
+| `kakebo-vs-ynab` | `metodo-kakebo-guia-definitiva` | `alternativas-a-app-bancarias` | `kakebo-online-gratis` | C4 |
+| `peligros-apps-ahorro-automatico` | `alternativas-a-app-bancarias` | `metodo-kakebo-guia-definitiva` | `kakebo-online-gratis` | C4 |
+
+**Validación:**
+- `git grep "^related:" src/content/blog/*.es.mdx | wc -l` → **14** (todos los artículos ES, incluidos los 2 del BUG-FIX previo)
+- `npm run build` → ✅ Compiled successfully in ~9s, 0 errores, 29/29 páginas estáticas generadas
+
+**Riesgos pendientes:**
+- **Canibalización C2** — `kakebo-online-gratis` vs `kakebo-online-guia-completa` comparten keywords similares. El enlazado refuerza la distinción pillar/supporting pero no resuelve el solapamiento de intención. Pendiente de datos de Search Console → SEO-2.4.
+- **Inconsistencia C2** — `plantilla-kakebo-excel` recibe inlinks como supporting de C2, pero su contenido se dirige más hacia comparativa de herramientas (rol C4). La jerarquía interna quedará clarificada en SEO-2.3 (enlazado interno) y será reevaluada en Content Sprint 1.
+
+---
+
 ## Próximas tareas
 
 > SEO Sprint 2 en progreso.
@@ -241,7 +277,7 @@ Respuesta en texto plano.
 | Tarea | Objetivo | Estado |
 |-------|----------|--------|
 | SEO-2.1 | Canonical + hreflang del índice del blog + slug mismatch kakebo-online | ✅ Completado |
-| SEO-2.2 | Añadir `related:` a 12 artículos sin RelatedPosts | Pendiente |
+| SEO-2.2 | Añadir `related:` a 12 artículos sin RelatedPosts | ✅ Completado |
 | SEO-2.3 | Arquitectura de enlazado interno basada en clusters | Pendiente |
 | SEO-2.4 | Resolución de canibalizaciones (tras datos de Search Console) | Pendiente |
 | Content Sprint 1 | Creación de nuevos contenidos según gaps de clusters | Pendiente (tras SEO-2.x) |
@@ -326,7 +362,7 @@ El blog se organiza en cuatro clusters. Cada cluster tiene un artículo **pillar
 ```
 SEO Sprint 2
 ├── SEO-2.1  Canonical + hreflang (completado)
-├── SEO-2.2  RelatedPosts global (12 artículos restantes)
+├── SEO-2.2  RelatedPosts global (completado — 14/14 artículos ES)
 ├── SEO-2.3  Enlazado interno por clusters
 └── SEO-2.4  Resolución de canibalizaciones (requiere Search Console)
 
