@@ -1,12 +1,13 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-18 (SEO-2.1)  
+**Última actualización:** 2026-06-18 (DOC-STRATEGY-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
-> Este documento es la fuente de verdad del SEO Sprint P0 y el UI Sprint 1.
+> Este documento es la fuente de verdad del SEO Sprint P0, UI Sprint 1 y SEO Sprint 2.
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
+> La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 
 ---
 
@@ -235,7 +236,109 @@ Respuesta en texto plano.
 
 ## Próximas tareas
 
-> SEO Sprint 2 en progreso. Siguiente: SEO-2.2 (añadir `related:` a 12 artículos restantes).
+> SEO Sprint 2 en progreso.
+
+| Tarea | Objetivo | Estado |
+|-------|----------|--------|
+| SEO-2.1 | Canonical + hreflang del índice del blog + slug mismatch kakebo-online | ✅ Completado |
+| SEO-2.2 | Añadir `related:` a 12 artículos sin RelatedPosts | Pendiente |
+| SEO-2.3 | Arquitectura de enlazado interno basada en clusters | Pendiente |
+| SEO-2.4 | Resolución de canibalizaciones (tras datos de Search Console) | Pendiente |
+| Content Sprint 1 | Creación de nuevos contenidos según gaps de clusters | Pendiente (tras SEO-2.x) |
+
+---
+
+## Estrategia de Contenido e Internacionalización
+
+> Decisiones acordadas tras la auditoría AUDIT-SEO-POST-P0 (2026-06-18).
+
+---
+
+### DA-06 — Estrategia de internacionalización
+
+| Dimensión | Decisión |
+|-----------|----------|
+| **Idioma principal** | Español — todo el esfuerzo editorial y SEO se concentra en ES |
+| **Inglés** | Mantenimiento mínimo: se conserva la infraestructura i18n existente y las URLs EN actuales, pero no se crean artículos nuevos en inglés ni se dedican sprints SEO al mercado anglófono |
+| **Infraestructura i18n** | Se mantiene `next-intl` v4 con `localePrefix: 'as-needed'` y los archivos de traducción existentes |
+| **URLs EN existentes** | No se eliminan ni redirigen. Los artículos EN actuales permanecen como están |
+| **Contenido nuevo** | Solo en español. No se traducen artículos nuevos de forma proactiva |
+| **Criterio de revisión** | Revaluar la estrategia de internacionalización cuando exista tracción real en mercados de habla inglesa (tráfico orgánico EN sostenido en Search Console) |
+
+**Justificación:** El sitio no dispone aún de datos que indiquen demanda significativa en inglés. El coste de mantener paridad de contenido ES/EN superaría el beneficio hasta que exista evidencia de tracción real. La infraestructura i18n se mantiene para no cerrar esa puerta.
+
+---
+
+### DA-07 — Arquitectura de contenido por clusters temáticos
+
+El blog se organiza en cuatro clusters. Cada cluster tiene un artículo **pillar** (máxima autoridad topical) y artículos **supporting** que lo refuerzan y enlazan a él. El enlazado interno sigue esta jerarquía: los supporting enlazan al pillar; el pillar puede enlazar a los supporting cuando es relevante.
+
+#### Cluster 1 — Metodología Kakebo
+
+| Rol | Artículo |
+|-----|----------|
+| **Pillar** | `metodo-kakebo-guia-definitiva` |
+| Supporting | `metodo-kakebo-para-autonomos` |
+| Supporting | `kakebo-sueldo-minimo` |
+| Supporting | `ahorro-pareja` |
+
+**Intención de búsqueda:** Informacional — "qué es kakebo", "cómo funciona el método kakebo", "cómo ahorrar con kakebo".
+
+#### Cluster 2 — Kakebo Digital y Herramientas
+
+| Rol | Artículo |
+|-----|----------|
+| **Pillar** | `kakebo-online-guia-completa` |
+| Supporting | `kakebo-online-gratis` |
+| Supporting | `plantilla-kakebo-excel` |
+| Supporting | `libro-kakebo-pdf` |
+
+**Intención de búsqueda:** Transaccional/Herramienta — "kakebo online", "kakebo digital", "plantilla kakebo gratis".
+
+**Nota activa:** `kakebo-online-gratis` y `kakebo-online-guia-completa` presentan solapamiento de keywords. No se fusionarán hasta disponer de datos adicionales de Search Console y hasta haber completado SEO-2.1 y SEO-2.2. La diferenciación de intención se reforzará en SEO-2.4.
+
+#### Cluster 3 — Educación Financiera y Ahorro
+
+| Rol | Artículo |
+|-----|----------|
+| **Pillar** | `como-ahorrar-dinero-cada-mes` |
+| Supporting | `eliminar-gastos-hormiga` |
+| Supporting | `regla-30-dias` |
+
+**Intención de búsqueda:** Informacional/Educacional — "cómo ahorrar dinero", "técnicas de ahorro", "gastos hormiga".
+
+#### Cluster 4 — Comparativas
+
+> Este cluster no tiene pillar definido aún. Los tres artículos son supporting de audiencias que ya conocen alternativas y comparan opciones.
+
+| Rol | Artículo |
+|-----|----------|
+| Supporting | `kakebo-vs-ynab` |
+| Supporting | `alternativas-a-app-bancarias` |
+| Supporting | `peligros-apps-ahorro-automatico` |
+
+**Intención de búsqueda:** Comparativa/Decisional — "alternativas a fintonic", "kakebo vs ynab", "peligros apps bancarias".
+
+---
+
+### DA-08 — Roadmap estratégico
+
+```
+SEO Sprint 2
+├── SEO-2.1  Canonical + hreflang (completado)
+├── SEO-2.2  RelatedPosts global (12 artículos restantes)
+├── SEO-2.3  Enlazado interno por clusters
+└── SEO-2.4  Resolución de canibalizaciones (requiere Search Console)
+
+Content Sprint 1  (tras completar SEO Sprint 2)
+└── Nuevos artículos que cubran gaps de clusters
+    Ejemplos: "kakebo para familias", "kakebo jubilación",
+              pillar definitivo para Cluster 4 (Comparativas)
+```
+
+**Criterio de transición SEO Sprint 2 → Content Sprint 1:** haber completado SEO-2.1, SEO-2.2 y SEO-2.3. SEO-2.4 puede ejecutarse en paralelo con Content Sprint 1 si los datos de Search Console están disponibles.
+
+**Nota explícita:** No se fusionarán artículos hasta disponer de datos adicionales de Search Console y hasta haber completado SEO-2.1 y SEO-2.2.
 
 ---
 
