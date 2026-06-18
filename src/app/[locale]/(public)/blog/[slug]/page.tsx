@@ -51,6 +51,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 "x-default": `https://www.metodokakebo.com/blog/${slug}`
             }
         },
+        twitter: {
+            card: "summary_large_image",
+            title: post.frontmatter.title,
+            description: post.frontmatter.excerpt,
+            images: [post.frontmatter.image || "/og-image.jpg"],
+        },
     };
 }
 
@@ -151,7 +157,7 @@ export default async function BlogPostPage({ params }: Props) {
                             },
                             mainEntityOfPage: {
                                 "@type": "WebPage",
-                                "@id": `https://www.metodokakebo.com/${locale}/blog/${slug}`
+                                "@id": `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/blog/${slug}`
                             }
                         },
                         {
@@ -161,20 +167,20 @@ export default async function BlogPostPage({ params }: Props) {
                                 {
                                     "@type": "ListItem",
                                     position: 1,
-                                    name: "Inicio",
-                                    item: `https://www.metodokakebo.com/${locale}`
+                                    name: locale === 'es' ? "Inicio" : "Home",
+                                    item: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}`
                                 },
                                 {
                                     "@type": "ListItem",
                                     position: 2,
                                     name: "Blog",
-                                    item: `https://www.metodokakebo.com/${locale}/blog`
+                                    item: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/blog`
                                 },
                                 {
                                     "@type": "ListItem",
                                     position: 3,
                                     name: post.frontmatter.title,
-                                    item: `https://www.metodokakebo.com/${locale}/blog/${slug}`
+                                    item: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/blog/${slug}`
                                 }
                             ]
                         },
