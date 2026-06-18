@@ -361,6 +361,24 @@ Respuesta en texto plano.
 
 ---
 
+## Content Sprint 1 — En preparación
+
+### RESEARCH-CS1-01 — Validación histórica Motoko Hani / origen del Kakebo
+
+| Campo | Detalle |
+|---|---|
+| **Objetivo** | Validar con fuentes los datos históricos del primer artículo de CS1 ("Origen del método Kakebo: la historia de Motoko Hani"). |
+| **Fecha** | 2026-06-18 |
+| **Estado** | ✅ Completado |
+| **Documento generado** | `docs/research/CS1-01-motoko-hani-research.md` |
+| **Commit** | `RESEARCH: validate Motoko Hani and Kakebo historical sources` |
+
+**Resultado:** datos validados con fuentes independientes (Wikipedia EN, Encyclopedia.com, National Diet Library de Japón, Red Circle Authors, fichas editoriales). Cronología confirmada: 1873 (nacimiento), 1897 (primera periodista), 1901 (boda), 1903 (revista *Katei no Tomo*), 1904 (primer Kakeibo), 1908 (renombrada *Fujin no Tomo*), 1921 (Jiyu Gakuen), 1957 (fallecimiento).
+
+**Decisión editorial sobre cronología (1904 vs 1908):** no es contradicción sino tres hitos distintos. Se **mantiene 1904** como año de origen del Kakebo (correcto y consistente con el sitio) y se **corrige la atribución de la revista**: el kakeibo de 1904 apareció en ***Katei no Tomo*** (fundada en 1903), que se **renombró *Fujin no Tomo* en 1908**. Se evita el anacronismo "Fujin no Tomo en 1904". Tarea derivada anotada: corregir esa imprecisión en `metodo-kakebo-guia-definitiva.es.mdx` (fuera del alcance de esta investigación).
+
+---
+
 ## Próximas tareas
 
 > SEO Sprint 2 en progreso.
@@ -374,7 +392,8 @@ Respuesta en texto plano.
 | SEO-2.3B-P1 | Enlaces cross-cluster P1 — Tier A (7 de 12 enumerados) | ✅ Completado 2026-06-18 (Tier B diferido) |
 | SEO-2.3C | Enlazado interno contextual — enlaces P2 (refinamientos opcionales) | Pendiente (tras reevaluar Tier B y datos de Search Console) |
 | SEO-2.4 | Resolución de canibalizaciones (tras datos de Search Console) | Pendiente |
-| Content Sprint 1 | Creación de nuevos contenidos según gaps de clusters | Pendiente (tras SEO-2.x) |
+| RESEARCH-CS1-01 | Validación histórica Motoko Hani (artículo 1 de CS1) | ✅ Completado 2026-06-18 → `docs/research/CS1-01-motoko-hani-research.md` |
+| Content Sprint 1 | Creación de nuevos contenidos según gaps de clusters | En preparación (research iniciado) |
 
 ---
 
