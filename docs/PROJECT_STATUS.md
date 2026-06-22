@@ -379,6 +379,57 @@ Respuesta en texto plano.
 
 ---
 
+## UI/UX Sprint — Páginas Públicas Indexables
+
+### UIUX-INDEXABLE-01 — Auditoría visual y UX completada
+
+| Campo | Detalle |
+|---|---|
+| **Tipo** | Etapa 1 — Auditoría. Sin implementación. |
+| **Fecha** | 2026-06-22 |
+| **Estado** | ✅ Completado |
+| **Código no modificado** | Confirmado. Cero cambios de código en esta tarea. |
+
+**Archivos auditados:** Navbar, Hero, Features, HowItWorks, Testimonials, SavingsSimulator, FAQ, SeoContent, Footer, blog/page.tsx, blog/[slug]/page.tsx, herramientas/calculadora-ahorro/page.tsx, globals.css, tailwind.config.ts.
+
+**Resumen de hallazgos críticos:**
+
+| ID | Problema | Prioridad |
+|---|---|---|
+| F1 | Max-width cambia en cada sección de home (6xl → 7xl → 5xl → 4xl) | Crítico |
+| L2 | Navbar muestra hash links a secciones de home desde artículos del blog (UX trap) | Crítico |
+| L1 | Features grid: 4 tarjetas en 3-col → card huérfana en segunda fila | Crítico |
+| T1 | H2 de sección inconsistente: serif/non-serif, normal/bold sin regla | Crítico |
+| C1 | Colores hardcoded `text-green-600 text-red-600` en HowItWorks | Crítico |
+| A2 | Testimonios con avatares emoji — credibilidad comprometida | Importante |
+| A3 | Product Hunt widget en footer — extraño al sistema visual | Importante |
+| M1 | Hover de botones inconsistente: scale vs color-change vs underline | Importante |
+| L3 | CTA del artículo atrapada dentro de max-w-3xl | Importante |
+| C2-C3 | Colores hardcoded stone-* y testimonials bg-stone | Importante |
+
+**Dirección estética recomendada:** *"Editorial financiero con identidad japonesa propia"* — resolver la tensión entre landing SaaS genérica y blog editorial de autoridad. Ver informe completo en el historial de la tarea UIUX-INDEXABLE-01.
+
+**Tareas de implementación priorizadas (Etapa 3 — pendientes de dirección aprobada):**
+
+| ID | Tarea | Impacto |
+|---|---|---|
+| UIUX-02 | Estandarizar max-width (max-w-6xl home, max-w-4xl editorial) | Muy alto |
+| UIUX-03 | Contextualizar Navbar en blog: quitar hash links home | Alto |
+| UIUX-04 | Resolver Features grid (2×2 o 5ª feature) | Alto |
+| UIUX-05 | Unificar regla tipográfica H2: `font-serif font-normal` landing | Alto |
+| UIUX-06 | Reemplazar avatares emoji en Testimonials | Alto |
+| UIUX-07 | Eliminar widget Product Hunt del footer | Medio-Alto |
+| UIUX-08 | Reemplazar hardcoded colors con semantic tokens | Medio |
+| UIUX-09 | Activar `.bg-sakura` sutilmente en una sección | Medio |
+| UIUX-10 | Añadir diferenciadores visuales a FeatureCards | Medio |
+| UIUX-11 a 15 | Refinamientos de hover, CTA, accesibilidad, blog, accent | Bajo-Medio |
+
+> Ver informe de auditoría completo en la conversación DOC-MEMORY-UIUX-01 → UIUX-INDEXABLE-01.
+
+**Siguiente en esta fase:** acordar dirección estética con el usuario (Etapa 2) antes de iniciar implementación (Etapa 3).
+
+---
+
 ## Cluster Presupuesto Personal — Sprint 1 (2026-06-22)
 
 > Apertura del nuevo cluster temático "Presupuesto Personal" como puente entre el cluster Kakebo Core y la autoridad en finanzas personales generales.
@@ -455,7 +506,8 @@ Respuesta en texto plano.
 | SEO-PILAR-01 | Artículo pilar cluster Presupuesto Personal — publicado en ES | ✅ Completado 2026-06-22 |
 | DOC-I18N-01 | Política SEO de idiomas documentada (solo español para nuevo contenido) | ✅ Completado 2026-06-22 |
 | CHECK-I18N-ROUTING-01 | Bug `Accept-Language` redirect corregido (`localeDetection: false`) | ✅ Completado 2026-06-22 |
-| **UIUX-INDEXABLE-01** | **Auditoría visual y UX de páginas públicas indexables** | **⬅ SIGUIENTE** |
+| UIUX-INDEXABLE-01 | Auditoría visual y UX de páginas públicas indexables | ✅ Completado 2026-06-22 (solo diagnóstico) |
+| **UIUX-DIRECCIÓN-01** | **Acordar dirección estética antes de implementar (Etapa 2)** | **⬅ SIGUIENTE** |
 | SEO-2.3C | Enlazado interno P2 — refinamientos opcionales | Pendiente (tras Tier B y Search Console) |
 | SEO-2.4 | Resolución de canibalizaciones | Pendiente (requiere datos de Search Console) |
 | SEO-02 | Fondo de emergencia (siguiente artículo cluster Presupuesto Personal) | Pendiente · NO iniciar antes de UIUX-INDEXABLE-01 |
