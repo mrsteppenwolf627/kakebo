@@ -428,6 +428,30 @@ Respuesta en texto plano.
 
 **Siguiente en esta fase:** acordar dirección estética con el usuario (Etapa 2) antes de iniciar implementación (Etapa 3).
 
+### UIUX-06 — Atribución editorial sobria en Testimonials
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-22 |
+| **Estado** | ✅ Completado |
+| **Archivo** | `src/components/landing/Testimonials.tsx` |
+| **Build** | ✅ Compiled successfully |
+| **Tests** | ✅ 506/506 |
+
+**Cambios aplicados (DA-12-D4):**
+
+1. **Avatares emoji eliminados** — `👩‍🎨 👨‍💻 🎓 💼 📱 👨‍🏫` sustituidos por monograma de inicial en serif.
+2. **Monograma editorial** — círculo `h-10 w-10 bg-stone-100 dark:bg-stone-800` con inicial `font-serif font-medium text-muted-foreground`. Mismo tamaño y fondo que el emoji anterior; tipografía sobria en lugar de símbolo decorativo. `aria-hidden="true"` porque la inicial es decorativa.
+3. **Semántica H2 corregida** — el eyebrow label ("Comunidad Kakebo") pasa de `<h2>` a `<p>` (elemento no-heading). El título visual ("Lo que dicen nuestros usuarios...") pasa de `<p>` a `<h2>` con `font-serif font-normal tracking-tight` (DA-12-D2). La jerarquía semántica ahora refleja la jerarquía visual.
+
+| Elemento | Antes | Después |
+|---|---|---|
+| Avatar | emoji decorativo (`text-lg`) | inicial serif (`font-serif font-medium text-muted-foreground`) |
+| Eyebrow | `<h2>` (incorrecto) | `<p>` |
+| Título visual | `<p> font-bold` | `<h2> font-serif font-normal tracking-tight` |
+
+---
+
 ### UIUX-05 — H2 de sección unificados
 
 | Campo | Detalle |
@@ -448,8 +472,8 @@ Respuesta en texto plano.
 
 **Sin cambio (ya correctos):** Features (`font-serif font-normal` ✅) · FAQ (`font-serif font-normal` ✅)
 
-**Excepciones justificadas:**
-- `Testimonials.tsx` H2: patrón eyebrow label (`text-lg text-primary`) — H2 semántico pero visualmente subordinado. No es un título de sección equivalente al resto. El `<p>` siguiente actúa como título visual. Pendiente de revisión en UIUX-06.
+**Excepciones resueltas en UIUX-06:**
+- `Testimonials.tsx` H2: corregido en UIUX-06 — eyebrow movido a `<p>`, título visual promovido a `<h2 font-serif font-normal>`.
 - `page.tsx` SEO cards H2 (`text-2xl`): sub-títulos dentro de cards bordeadas, nivel visual distinto al de los títulos de sección standalone. No son H2 equivalentes en contexto de layout.
 
 ---
@@ -632,7 +656,8 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 | UIUX-03 | Contextualizar Navbar en páginas de blog | ✅ Completado 2026-06-22 |
 | UIUX-04 | Resolver Features grid (4 tarjetas en 3-col) | ✅ Completado 2026-06-22 |
 | UIUX-05 | Unificar regla tipográfica H2 de sección (landing) | ✅ Completado 2026-06-22 |
-| **UIUX-06** | **Reemplazar avatares emoji en Testimonials** | **⬅ SIGUIENTE** |
+| UIUX-06 | Reemplazar avatares emoji en Testimonials — atribución editorial sobria | ✅ Completado 2026-06-22 |
+| **UIUX-07** | **Eliminar widget Product Hunt del footer** | **⬅ SIGUIENTE** |
 | SEO-2.3C | Enlazado interno P2 — refinamientos opcionales | Pendiente (tras Tier B y Search Console) |
 | SEO-2.4 | Resolución de canibalizaciones | Pendiente (requiere datos de Search Console) |
 | SEO-02 | Fondo de emergencia (siguiente artículo cluster Presupuesto Personal) | Pendiente · NO iniciar antes de UIUX-INDEXABLE-01 |

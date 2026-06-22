@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-22 (DOC-STATUS-01)  
-**Último commit:** `5656eef`  
+**Última actualización:** 2026-06-22 (UIUX-06)  
+**Último commit:** pendiente (UIUX-06)  
 **Rama operativa:** `main`
 
 ---
@@ -13,12 +13,19 @@
 | SEO-PILAR-01 | Artículo pilar "Cómo hacer un presupuesto personal" publicado en ES | `38c22ae` | ✅ Completado |
 | DOC-I18N-01 | Política SEO de idiomas documentada — solo español para contenido nuevo | `4b5ea7f` | ✅ Completado |
 | CHECK-I18N-ROUTING-01 | Bug `Accept-Language` redirect corregido (`localeDetection: false`) | `5656eef` | ✅ Completado |
-| **UIUX-INDEXABLE-01** | Auditoría visual y UX de páginas públicas indexables | — | **⬅ SIGUIENTE FASE** |
+| UIUX-INDEXABLE-01 | Auditoría visual y UX de páginas públicas indexables | — | ✅ Completado |
+| UIUX-02 | Estandarizar max-width parte pública | `bfde77e`..`980315a` | ✅ Completado |
+| UIUX-03 | Contextualizar Navbar en blog | `27bfcad` | ✅ Completado |
+| UIUX-04 | Features grid equilibrado (2×2) | `f7ba07f` | ✅ Completado |
+| UIUX-05 | Unificar tipografía H2 de sección (font-serif font-normal) | `827c5c6` | ✅ Completado |
+| UIUX-06 | Atribución editorial sobria en Testimonials — emojis → monograma serif | pendiente commit | ✅ Completado |
+| **UIUX-07** | **Eliminar widget Product Hunt del footer** | — | **⬅ SIGUIENTE** |
 
-**Restricciones activas para la siguiente fase:**
+**Restricciones activas:**
 - No iniciar SEO-02 (fondo de emergencia) todavía.
 - No tocar herramienta interna/dashboard.
-- Si UIUX-INDEXABLE-01 es solo auditoría, no implementar cambios visuales en esa misma tarea.
+- No tocar routing/i18n/hreflang/sitemap/middleware.
+- No añadir imágenes ni avatares externos.
 
 > Ver historial detallado de sprints SEO y decisiones arquitectónicas en `docs/PROJECT_STATUS.md`.
 
