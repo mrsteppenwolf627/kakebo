@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-22 (DOC-STATUS-01)  
+**Última actualización:** 2026-06-22 (UIUX-DIRECCIÓN-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -428,6 +428,21 @@ Respuesta en texto plano.
 
 **Siguiente en esta fase:** acordar dirección estética con el usuario (Etapa 2) antes de iniciar implementación (Etapa 3).
 
+### UIUX-DIRECCIÓN-01 — Dirección estética aprobada
+
+| Campo | Detalle |
+|---|---|
+| **Tipo** | Etapa 2 — Dirección estética. Sin implementación. |
+| **Fecha** | 2026-06-22 |
+| **Estado** | ✅ Completado |
+| **Decisión arquitectónica generada** | DA-12 — Dirección estética pública indexable |
+| **Referencias visuales** | `imagenes/modo claro paleta estilo.png` · `imagenes/modo oscuro paleta estilo.png` |
+| **Código no modificado** | Confirmado. Cero cambios de código en esta tarea. |
+
+**Dirección aprobada:** *"Editorial financiero con identidad japonesa propia"*
+
+Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo.
+
 ---
 
 ## Cluster Presupuesto Personal — Sprint 1 (2026-06-22)
@@ -506,8 +521,9 @@ Respuesta en texto plano.
 | SEO-PILAR-01 | Artículo pilar cluster Presupuesto Personal — publicado en ES | ✅ Completado 2026-06-22 |
 | DOC-I18N-01 | Política SEO de idiomas documentada (solo español para nuevo contenido) | ✅ Completado 2026-06-22 |
 | CHECK-I18N-ROUTING-01 | Bug `Accept-Language` redirect corregido (`localeDetection: false`) | ✅ Completado 2026-06-22 |
-| UIUX-INDEXABLE-01 | Auditoría visual y UX de páginas públicas indexables | ✅ Completado 2026-06-22 (solo diagnóstico) |
-| **UIUX-DIRECCIÓN-01** | **Acordar dirección estética antes de implementar (Etapa 2)** | **⬅ SIGUIENTE** |
+| UIUX-INDEXABLE-01 | Auditoría visual y UX de páginas públicas indexables | ✅ Completado 2026-06-22 |
+| UIUX-DIRECCIÓN-01 | Dirección estética aprobada — DA-12 documentada | ✅ Completado 2026-06-22 |
+| **UIUX-02** | **Estandarizar max-width de la parte pública/indexable** | **⬅ SIGUIENTE** |
 | SEO-2.3C | Enlazado interno P2 — refinamientos opcionales | Pendiente (tras Tier B y Search Console) |
 | SEO-2.4 | Resolución de canibalizaciones | Pendiente (requiere datos de Search Console) |
 | SEO-02 | Fondo de emergencia (siguiente artículo cluster Presupuesto Personal) | Pendiente · NO iniciar antes de UIUX-INDEXABLE-01 |
@@ -773,3 +789,117 @@ La posible eliminación de dichas secciones (que son visualmente redundantes con
 - El comportamiento del componente RelatedPosts en producción
 - El enlazado contextual de SEO-2.3A y SEO-2.3B
 - Datos de comportamiento de usuario (CTR, scroll depth) si están disponibles en Search Console o Analytics
+
+---
+
+### DA-12 — Dirección estética pública indexable
+
+> Decisión aprobada 2026-06-22 (UIUX-DIRECCIÓN-01). Resultado de la Etapa 2 de la metodología UI/UX indexable (DA-11).  
+> Referencias visuales aprobadas: `imagenes/modo claro paleta estilo.png` · `imagenes/modo oscuro paleta estilo.png`
+
+#### Nombre de la dirección
+
+**"Editorial financiero con identidad japonesa propia"**
+
+#### Definición
+
+MetodoKakebo.com debe sentirse como una publicación editorial seria de finanzas personales que tiene una herramienta integrada. No como una landing SaaS genérica.
+
+La referencia visual aprobada combina:
+- Revista financiera minimalista
+- Papelería japonesa de calidad
+- Calma, claridad y confianza
+- Minimalismo cálido
+- Identidad japonesa sutil pero reconocible
+- Autoridad editorial
+
+#### Principio rector
+
+> Primero estructura, coherencia y credibilidad.  
+> Después atmósfera y detalles visuales.  
+> No hacer cambios decorativos sin resolver problemas estructurales.
+
+#### Scope incluido
+
+Aplica exclusivamente a la parte pública e indexable:
+- Home (`/`)
+- Blog index (`/blog`)
+- Artículos (`/blog/[slug]`)
+- Herramientas públicas (`/herramientas/*`)
+- Navbar público
+- Footer
+- CTAs públicos
+- Experiencia de lectura
+
+#### Scope excluido
+
+- `/app/*` — herramienta interna, dashboard
+- Autenticación, lógica de negocio
+- SEO-02 y nuevos artículos (paralelo independiente)
+
+#### Decisiones visuales aprobadas
+
+**D1 — Max-width rector**
+
+| Contexto | Max-width |
+|---|---|
+| Home pública (secciones landing) | `max-w-6xl` |
+| Secciones editoriales / lectura dentro de la home | `max-w-4xl` |
+| Artículos de blog | `max-w-3xl` |
+
+Evitar variaciones arbitrarias (`max-w-7xl`, `max-w-5xl`) sin justificación explícita. El eje visual debe ser estable al hacer scroll.
+
+**D2 — Tipografía de sección**
+
+| Contexto | Regla |
+|---|---|
+| H2 de sección en landing/home | `font-serif font-normal` |
+| H2/H3 en blog/artículos | Serif con más peso editorial cuando corresponda |
+
+Prohibido mezclar serif y sans en títulos del mismo nivel jerárquico dentro de la misma página.
+
+**D3 — Navbar contextual**
+
+En páginas de lectura/blog, el Navbar no debe romper el contexto editorial con hash links a secciones de la home (`#features`, `#how-it-works`). El blog debe sentirse editorial, no como extensión forzada de la landing.
+
+**D4 — Testimonios**
+
+Eliminar avatares emoji. Sustituir por tratamiento textual sobrio: iniciales estilizadas, nombre y rol, sin fotografías. La confianza en finanzas personales es prioritaria sobre cualquier elemento decorativo.
+
+**D5 — Product Hunt**
+
+Mantener el badge únicamente en Hero si se considera relevante como señal de prueba social. Eliminar o rediseñar el widget del footer. El footer debe cerrar la web con atmósfera limpia y editorial, no con un widget de terceros con estilos inline.
+
+**D6 — Identidad japonesa**
+
+Activar `.bg-sakura` de forma sutil en una única sección pública. No sobrecargar. El objetivo es anclar visualmente el concepto Kakebo, no decorar por decorar. El overlay ya está configurado en `globals.css` al 85% en light y 92% en dark.
+
+**D7 — Modo claro y modo oscuro**
+
+| Modo | Sensación objetivo |
+|---|---|
+| Claro | Cálido, editorial, limpio — papel de arroz |
+| Oscuro | Premium, sereno, legible — piedra volcánica |
+
+Ningún cambio visual puede sacrificar contraste ni accesibilidad por estética. Los colores hardcoded (`text-green-600`, `text-red-600`, `bg-stone-900`, `bg-stone-50`) deben reemplazarse por tokens semánticos que funcionen en ambos modos.
+
+#### Restricciones de implementación
+
+- Resolver problemas estructurales (max-width, grid, navbar) antes de problemas atmosféricos (sakura, accent).
+- No hacer cambios decorativos si hay inconsistencias de layout sin resolver.
+- Cada tarea de implementación debe ser atómica: un problema → una tarea → un commit.
+- Ningún cambio visual toca `/app/*`, routing, i18n, hreflang, sitemap ni MDX de artículos.
+
+#### Orden de implementación aprobado
+
+| Prioridad | ID | Tarea |
+|---|---|---|
+| 1 | UIUX-02 | Estandarizar max-width de la parte pública |
+| 2 | UIUX-03 | Contextualizar Navbar en páginas de blog |
+| 3 | UIUX-04 | Resolver Features grid (4 tarjetas en 3-col) |
+| 4 | UIUX-05 | Unificar regla tipográfica H2 de sección |
+| 5 | UIUX-06 | Reemplazar avatares emoji en Testimonials |
+| 6 | UIUX-07 | Eliminar widget Product Hunt del footer |
+| 7 | UIUX-08 | Reemplazar hardcoded colors con tokens semánticos |
+| 8 | UIUX-09 | Activar `.bg-sakura` en una sección de la home |
+| 9+ | UIUX-10 a 15 | Refinamientos: FeatureCards, hover CTAs, CTA artículo, accesibilidad, blog index, accent |
