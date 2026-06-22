@@ -19,6 +19,7 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isHome = pathname === "/";
+  const isBlog = pathname.startsWith("/blog");
   const getHashPath = (hash: string) => isHome ? hash : `/${hash}`;
 
   useEffect(() => {
@@ -125,18 +126,22 @@ export function Navbar() {
               </div>
             </div>
           </div>
-          <Link
-            href={getHashPath("#features") as any}
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            {t('features')}
-          </Link>
-          <Link
-            href={getHashPath("#how-it-works") as any}
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            {t('howItWorks')}
-          </Link>
+          {!isBlog && (
+            <Link
+              href={getHashPath("#features") as any}
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {t('features')}
+            </Link>
+          )}
+          {!isBlog && (
+            <Link
+              href={getHashPath("#how-it-works") as any}
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {t('howItWorks')}
+            </Link>
+          )}
         </nav>
 
         {/* Desktop CTA Buttons */}
@@ -239,20 +244,24 @@ export function Navbar() {
                 </Link>
               </div>
 
-              <Link
-                href={getHashPath("#features") as any}
-                onClick={closeMenu}
-                className="text-lg font-medium text-foreground py-2 border-b border-border/40"
-              >
-                {t('features')}
-              </Link>
-              <Link
-                href={getHashPath("#how-it-works") as any}
-                onClick={closeMenu}
-                className="text-lg font-medium text-foreground py-2 border-b border-border/40"
-              >
-                {t('howItWorks')}
-              </Link>
+              {!isBlog && (
+                <Link
+                  href={getHashPath("#features") as any}
+                  onClick={closeMenu}
+                  className="text-lg font-medium text-foreground py-2 border-b border-border/40"
+                >
+                  {t('features')}
+                </Link>
+              )}
+              {!isBlog && (
+                <Link
+                  href={getHashPath("#how-it-works") as any}
+                  onClick={closeMenu}
+                  className="text-lg font-medium text-foreground py-2 border-b border-border/40"
+                >
+                  {t('howItWorks')}
+                </Link>
+              )}
             </nav>
 
             <div className="flex flex-col gap-4 mt-4">

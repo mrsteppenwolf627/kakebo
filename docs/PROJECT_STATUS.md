@@ -428,6 +428,28 @@ Respuesta en texto plano.
 
 **Siguiente en esta fase:** acordar dirección estética con el usuario (Etapa 2) antes de iniciar implementación (Etapa 3).
 
+### UIUX-03 — Navbar contextualizado para blog
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-22 |
+| **Estado** | ✅ Completado |
+| **Archivo** | `src/components/landing/Navbar.tsx` |
+| **Build** | ✅ Compiled successfully |
+| **Tests** | ✅ 506/506 |
+
+**Cambio aplicado:** `const isBlog = pathname.startsWith("/blog")` + 4 condiciones `{!isBlog && (...)}` envolviendo los links `#features` y `#how-it-works` en desktop y mobile.
+
+| Contexto | Links visibles antes | Links visibles después |
+|---|---|---|
+| Home (`/`) | Tutorial · Blog · About · Tools · Características · Cómo funciona | Sin cambio |
+| Blog index (`/blog`) | Tutorial · Blog · About · Tools · Características · Cómo funciona | Tutorial · Blog · About · Tools |
+| Artículo (`/blog/[slug]`) | Tutorial · Blog · About · Tools · Características · Cómo funciona | Tutorial · Blog · About · Tools |
+
+**Por qué funciona:** `usePathname()` de `next-intl/routing` devuelve el path sin prefijo de locale, por lo que `/en/blog/...` también retorna pathname `/blog/...`. Un solo `startsWith("/blog")` cubre ambas versiones lingüísticas.
+
+---
+
 ### UIUX-02 — Max-width estandarizado
 
 | Campo | Detalle |
@@ -562,7 +584,8 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 | UIUX-INDEXABLE-01 | Auditoría visual y UX de páginas públicas indexables | ✅ Completado 2026-06-22 |
 | UIUX-DIRECCIÓN-01 | Dirección estética aprobada — DA-12 documentada | ✅ Completado 2026-06-22 |
 | UIUX-02 | Estandarizar max-width de la parte pública/indexable | ✅ Completado 2026-06-22 |
-| **UIUX-03** | **Contextualizar Navbar en páginas de blog** | **⬅ SIGUIENTE** |
+| UIUX-03 | Contextualizar Navbar en páginas de blog | ✅ Completado 2026-06-22 |
+| **UIUX-04** | **Resolver Features grid (4 tarjetas en 3-col)** | **⬅ SIGUIENTE** |
 | SEO-2.3C | Enlazado interno P2 — refinamientos opcionales | Pendiente (tras Tier B y Search Console) |
 | SEO-2.4 | Resolución de canibalizaciones | Pendiente (requiere datos de Search Console) |
 | SEO-02 | Fondo de emergencia (siguiente artículo cluster Presupuesto Personal) | Pendiente · NO iniciar antes de UIUX-INDEXABLE-01 |
