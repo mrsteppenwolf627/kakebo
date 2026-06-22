@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-18 (SEO-2.3B)  
+**Última actualización:** 2026-06-22 (DOC-STATUS-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -379,21 +379,97 @@ Respuesta en texto plano.
 
 ---
 
+## Cluster Presupuesto Personal — Sprint 1 (2026-06-22)
+
+> Apertura del nuevo cluster temático "Presupuesto Personal" como puente entre el cluster Kakebo Core y la autoridad en finanzas personales generales.
+
+### SEO-PILAR-01 — Artículo pilar publicado
+
+| Campo | Detalle |
+|---|---|
+| **Objetivo** | Crear el artículo pilar del cluster Presupuesto Personal |
+| **Título** | "Cómo hacer un presupuesto personal paso a paso (y que dure más de dos meses)" |
+| **Slug** | `como-hacer-un-presupuesto-personal` |
+| **URL ES (producción)** | `https://www.metodokakebo.com/blog/como-hacer-un-presupuesto-personal` |
+| **Archivos** | `src/content/blog/como-hacer-un-presupuesto-personal.es.mdx` (principal) · `como-hacer-un-presupuesto-personal.en.mdx` (legacy) |
+| **Imagen hero** | `public/images/blog/como-hacer-un-presupuesto-personal.webp` |
+| **Commit** | `38c22ae` — `Feat: add pillar article SEO-PILAR-01` |
+| **Validación** | Build ✅ · Tests 506/506 ✅ · Imagen hero corregida (`.webp.png` → `.webp`) |
+| **Estado** | ✅ Completado 2026-06-22 · Indexación solicitada en Google Search Console |
+
+**Características del artículo:**
+- Sistema en 5 pasos + tabla comparativa de métodos (snippet target) + ejemplo completo de presupuesto real (María, 1.800 €)
+- 7 FAQs en frontmatter → JSON-LD FAQPage para rich snippets
+- 11 enlaces internos: 9 posts del blog + 2 herramientas (calculadora-ahorro, regla-50-30-20)
+- 2 CTAs de herramientas integrados en contexto (Paso 1 y Paso 2)
+- `related:` configurado → activa RelatedPosts component
+
+---
+
+### DOC-I18N-01 — Política SEO de idiomas formalizada
+
+| Campo | Detalle |
+|---|---|
+| **Objetivo** | Documentar explícitamente que el SEO editorial nuevo opera solo en español |
+| **Regla** | Solo se crean archivos `.es.mdx` nuevos. El inglés queda como contenido legacy. |
+| **Archivos** | `PROJECT_STATUS.md` (raíz) → sección "Política SEO de Idiomas" · `INSTRUCCIONES.md` → Regla 6 en "Reglas de Oro" |
+| **Commit** | `4b5ea7f` — `DOC: add SEO language policy` |
+| **Estado** | ✅ Completado 2026-06-22 |
+
+---
+
+### CHECK-I18N-ROUTING-01 — Bug routing i18n corregido
+
+| Campo | Detalle |
+|---|---|
+| **Síntoma** | `/blog/...` redirigía a `/en/blog/...` cuando el visitante/bot enviaba `Accept-Language: en` |
+| **Causa raíz** | `next-intl` v4 tiene `localeDetection: true` por defecto; el middleware resolvía el locale por header HTTP en lugar de por URL prefix |
+| **Fix aplicado** | `localeDetection: false` en `src/i18n/routing.ts` |
+| **Archivo** | `src/i18n/routing.ts` |
+| **Commit** | `5656eef` — `Fix: disable locale detection to prevent Accept-Language redirects` |
+| **Validación** | Build ✅ · Tests 506/506 ✅ · URL española carga en español sin redirect a `/en/` |
+| **Estado** | ✅ Completado 2026-06-22 |
+
+**Comportamiento tras el fix:**
+
+| URL | Antes del fix | Después del fix |
+|---|---|---|
+| `/blog/...` con `Accept-Language: es` | Español ✅ | Español ✅ |
+| `/blog/...` con `Accept-Language: en` | Redirect → `/en/blog/...` ❌ | Español ✅ |
+| `/en/blog/...` | Inglés ✅ | Inglés ✅ |
+
+---
+
 ## Próximas tareas
 
-> SEO Sprint 2 en progreso.
+> Último commit conocido: `5656eef` (2026-06-22)
 
 | Tarea | Objetivo | Estado |
 |-------|----------|--------|
 | SEO-2.1 | Canonical + hreflang del índice del blog + slug mismatch kakebo-online | ✅ Completado |
 | SEO-2.2 | Añadir `related:` a 12 artículos sin RelatedPosts | ✅ Completado |
 | SEO-2.3A | Enlazado interno contextual — enlaces P0 (pillar architecture) | ✅ Completado 2026-06-18 |
-| SEO-2.3B | Correcciones estructurales (pillar C3, rescate huérfano, normalización URLs) | ✅ Completado 2026-06-18 (Fase 2A/2B/2C) |
+| SEO-2.3B | Correcciones estructurales (pillar C3, rescate huérfano, normalización URLs) | ✅ Completado 2026-06-18 |
 | SEO-2.3B-P1 | Enlaces cross-cluster P1 — Tier A (7 de 12 enumerados) | ✅ Completado 2026-06-18 (Tier B diferido) |
-| SEO-2.3C | Enlazado interno contextual — enlaces P2 (refinamientos opcionales) | Pendiente (tras reevaluar Tier B y datos de Search Console) |
-| SEO-2.4 | Resolución de canibalizaciones (tras datos de Search Console) | Pendiente |
-| RESEARCH-CS1-01 | Validación histórica Motoko Hani (artículo 1 de CS1) | ✅ Completado 2026-06-18 → `docs/research/CS1-01-motoko-hani-research.md` |
-| Content Sprint 1 | Creación de nuevos contenidos según gaps de clusters | En preparación (research iniciado) |
+| RESEARCH-CS1-01 | Validación histórica Motoko Hani | ✅ Completado 2026-06-18 |
+| SEO-PILAR-01 | Artículo pilar cluster Presupuesto Personal — publicado en ES | ✅ Completado 2026-06-22 |
+| DOC-I18N-01 | Política SEO de idiomas documentada (solo español para nuevo contenido) | ✅ Completado 2026-06-22 |
+| CHECK-I18N-ROUTING-01 | Bug `Accept-Language` redirect corregido (`localeDetection: false`) | ✅ Completado 2026-06-22 |
+| **UIUX-INDEXABLE-01** | **Auditoría visual y UX de páginas públicas indexables** | **⬅ SIGUIENTE** |
+| SEO-2.3C | Enlazado interno P2 — refinamientos opcionales | Pendiente (tras Tier B y Search Console) |
+| SEO-2.4 | Resolución de canibalizaciones | Pendiente (requiere datos de Search Console) |
+| SEO-02 | Fondo de emergencia (siguiente artículo cluster Presupuesto Personal) | Pendiente · NO iniciar antes de UIUX-INDEXABLE-01 |
+| Content Sprint 1 | Nuevos contenidos según gaps de clusters | En preparación |
+
+### UIUX-INDEXABLE-01 — Definición de tarea
+
+| Campo | Detalle |
+|---|---|
+| **Nombre** | Auditoría visual y UX de páginas públicas indexables |
+| **Objetivo** | Revisar home, blog, artículos, listados, navegación, footer, CTAs y experiencia de lectura |
+| **Restricciones** | No tocar herramienta interna/dashboard · No abrir SEO-02 · No implementar cambios si la tarea es solo auditoría |
+| **Scope** | Páginas públicas indexables únicamente (`/`, `/blog`, `/blog/[slug]`, `/herramientas/*`, `/tutorial`) |
+| **Estado** | Pendiente de inicio |
 
 ---
 
@@ -408,11 +484,14 @@ Respuesta en texto plano.
 | Dimensión | Decisión |
 |-----------|----------|
 | **Idioma principal** | Español — todo el esfuerzo editorial y SEO se concentra en ES |
-| **Inglés** | Mantenimiento mínimo: se conserva la infraestructura i18n existente y las URLs EN actuales, pero no se crean artículos nuevos en inglés ni se dedican sprints SEO al mercado anglófono |
-| **Infraestructura i18n** | Se mantiene `next-intl` v4 con `localePrefix: 'as-needed'` y los archivos de traducción existentes |
-| **URLs EN existentes** | No se eliminan ni redirigen. Los artículos EN actuales permanecen como están |
-| **Contenido nuevo** | Solo en español. No se traducen artículos nuevos de forma proactiva |
-| **Criterio de revisión** | Revaluar la estrategia de internacionalización cuando exista tracción real en mercados de habla inglesa (tráfico orgánico EN sostenido en Search Console) |
+| **Inglés** | Legacy: se conserva la infraestructura i18n y los archivos `.en.mdx` existentes, pero no se crean artículos nuevos en inglés ni se dedican sprints SEO al mercado anglófono |
+| **Infraestructura i18n** | `next-intl` v4 · `localePrefix: 'as-needed'` · **`localeDetection: false`** (fix CHECK-I18N-ROUTING-01) |
+| **URLs EN existentes** | No se eliminan ni redirigen. Permanecen como contenido legacy. No se indexan manualmente. |
+| **Contenido nuevo** | Solo `.es.mdx`. No se crean `.en.mdx` nuevos salvo instrucción explícita del usuario. |
+| **Criterio de revisión** | Revaluar cuando exista tracción orgánica EN sostenida en Search Console |
+
+**`localeDetection: false` (añadido 2026-06-22 — CHECK-I18N-ROUTING-01):**  
+Sin este flag, `next-intl` v4 redirigía `/blog/...` a `/en/blog/...` cuando el visitante enviaba `Accept-Language: en`. Con `localeDetection: false`, la URL `/blog/...` siempre sirve español (defaultLocale) independientemente del idioma del navegador. El idioma solo se selecciona por prefijo de URL (`/en/...`).
 
 **Justificación:** El sitio no dispone aún de datos que indiquen demanda significativa en inglés. El coste de mantener paridad de contenido ES/EN superaría el beneficio hasta que exista evidencia de tracción real. La infraestructura i18n se mantiene para no cerrar esa puerta.
 

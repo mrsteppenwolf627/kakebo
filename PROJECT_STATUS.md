@@ -1,5 +1,27 @@
 # Estado del Proyecto Kakebo AI
 
+**Última actualización:** 2026-06-22 (DOC-STATUS-01)  
+**Último commit:** `5656eef`  
+**Rama operativa:** `main`
+
+---
+
+## Estado actual del proyecto (2026-06-22)
+
+| Tarea | Descripción | Commit | Estado |
+|---|---|---|---|
+| SEO-PILAR-01 | Artículo pilar "Cómo hacer un presupuesto personal" publicado en ES | `38c22ae` | ✅ Completado |
+| DOC-I18N-01 | Política SEO de idiomas documentada — solo español para contenido nuevo | `4b5ea7f` | ✅ Completado |
+| CHECK-I18N-ROUTING-01 | Bug `Accept-Language` redirect corregido (`localeDetection: false`) | `5656eef` | ✅ Completado |
+| **UIUX-INDEXABLE-01** | Auditoría visual y UX de páginas públicas indexables | — | **⬅ SIGUIENTE FASE** |
+
+**Restricciones activas para la siguiente fase:**
+- No iniciar SEO-02 (fondo de emergencia) todavía.
+- No tocar herramienta interna/dashboard.
+- Si UIUX-INDEXABLE-01 es solo auditoría, no implementar cambios visuales en esa misma tarea.
+
+> Ver historial detallado de sprints SEO y decisiones arquitectónicas en `docs/PROJECT_STATUS.md`.
+
 ---
 
 ## Política SEO de Idiomas
