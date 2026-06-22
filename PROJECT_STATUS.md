@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-22 (UIUX-07)  
-**Último commit:** `ef049e4` (UIUX-06)  
+**Último commit:** `55f0c8d` (UIUX-07)  
 **Rama operativa:** `main`
 
 ---
@@ -19,7 +19,7 @@
 | UIUX-04 | Features grid equilibrado (2×2) | `f7ba07f` | ✅ Completado |
 | UIUX-05 | Unificar tipografía H2 de sección (font-serif font-normal) | `827c5c6` | ✅ Completado |
 | UIUX-06 | Atribución editorial sobria en Testimonials — emojis → monograma serif | `ef049e4` | ✅ Completado |
-| UIUX-07 | Eliminar widget Product Hunt del footer | pendiente commit | ✅ Completado |
+| UIUX-07 | Eliminar widget Product Hunt del footer | `55f0c8d` | ✅ Completado |
 | **UIUX-08** | **Reemplazar hardcoded colors con tokens semánticos** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
