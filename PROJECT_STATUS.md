@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-22 (UIUX-06)  
-**Último commit:** pendiente (UIUX-06)  
+**Último commit:** `ef049e4` (UIUX-06)  
 **Rama operativa:** `main`
 
 ---
@@ -18,7 +18,7 @@
 | UIUX-03 | Contextualizar Navbar en blog | `27bfcad` | ✅ Completado |
 | UIUX-04 | Features grid equilibrado (2×2) | `f7ba07f` | ✅ Completado |
 | UIUX-05 | Unificar tipografía H2 de sección (font-serif font-normal) | `827c5c6` | ✅ Completado |
-| UIUX-06 | Atribución editorial sobria en Testimonials — emojis → monograma serif | pendiente commit | ✅ Completado |
+| UIUX-06 | Atribución editorial sobria en Testimonials — emojis → monograma serif | `ef049e4` | ✅ Completado |
 | **UIUX-07** | **Eliminar widget Product Hunt del footer** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
