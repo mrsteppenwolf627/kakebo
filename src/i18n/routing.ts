@@ -9,7 +9,13 @@ export const routing = defineRouting({
     defaultLocale: 'es',
 
     // Prefix default locale (e.g. /es/about) or not (e.g. /about)
-    localePrefix: 'as-needed'
+    localePrefix: 'as-needed',
+
+    // Disable automatic locale detection via Accept-Language header.
+    // Without this, browsers/bots with Accept-Language: en would be redirected
+    // from /blog/... to /en/blog/..., breaking Spanish canonical URLs in GSC.
+    // Language selection must be explicit via URL prefix (/en/...).
+    localeDetection: false
 });
 
 // Lightweight wrappers around Next.js' navigation APIs
