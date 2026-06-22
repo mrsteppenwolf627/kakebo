@@ -1,5 +1,54 @@
 # Estado del Proyecto Kakebo AI
 
+---
+
+## Política SEO de Idiomas
+
+**Fecha de decisión:** 2026-06-22  
+**ID tarea de referencia:** DOC-I18N-01
+
+### Regla activa
+
+**El idioma principal y único activo para la producción de nuevo contenido editorial SEO del blog es el español.**
+
+### Detalle de la política
+
+| Ámbito | Regla |
+|---|---|
+| Nuevos artículos de blog | Solo se crean en español (`.es.mdx`) |
+| Versiones `.en.mdx` nuevas | **No se crean** salvo orden explícita del usuario en la tarea |
+| Contenido inglés existente | Se conserva como contenido legacy — no se elimina |
+| Contenido inglés legacy | No se amplía, no se prioriza, no se indexa manualmente |
+| Roadmap SEO activo | Opera exclusivamente en español |
+
+### Contenido inglés legacy
+
+Los siguientes archivos `.en.mdx` existen como contenido heredado y quedan fuera del roadmap SEO activo. No se tocan salvo instrucción explícita:
+
+```
+src/content/blog/ahorro-pareja.en.mdx
+src/content/blog/alternativas-a-app-bancarias.en.mdx
+src/content/blog/como-ahorrar-dinero-cada-mes.en.mdx
+src/content/blog/como-hacer-un-presupuesto-personal.en.mdx   ← creado en SEO-PILAR-01, queda como legacy
+src/content/blog/eliminar-gastos-hormiga.en.mdx
+src/content/blog/kakebo-online-gratis.en.mdx
+src/content/blog/kakebo-online-guia-completa.en.mdx
+src/content/blog/kakebo-sueldo-minimo.en.mdx
+src/content/blog/kakebo-vs-ynab.en.mdx
+src/content/blog/libro-kakebo-pdf.en.mdx
+src/content/blog/metodo-kakebo-guia-definitiva.en.mdx
+src/content/blog/metodo-kakebo-para-autonomos.en.mdx
+src/content/blog/peligros-apps-ahorro-automatico.en.mdx
+src/content/blog/plantilla-kakebo-excel.en.mdx
+src/content/blog/regla-30-dias.en.mdx
+```
+
+### Nota para agentes
+
+Cualquier agente (Claude Code, Codex, u otro) que ejecute una tarea de creación de contenido editorial **debe crear únicamente el archivo `.es.mdx`**. Si la tarea no indica explícitamente que se requiere la versión inglesa, no se crea.
+
+---
+
 ## Decisiones Arquitectónicas
 
 ### DA-09 — Prioridad de crecimiento temático

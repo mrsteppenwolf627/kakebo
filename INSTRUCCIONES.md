@@ -131,6 +131,7 @@ Este documento define cuándo es mejor trabajar con **Claude Code (Cursor)** o c
 3. **Lee el contexto actualizado** antes de continuar trabajando
 4. **Usa Antigravity para builds** finales y validación
 5. **Usa Cursor para iteración rápida** de UI
+6. **Solo español para contenido editorial SEO** — no crear archivos `.en.mdx` nuevos salvo orden explícita (ver `PROJECT_STATUS.md` → Política SEO de Idiomas)
 
 ---
 
