@@ -20,7 +20,7 @@ export function SavingsSimulator() {
     return (
         <section className="py-16 bg-primary/5 border-y border-primary/10">
             <div className="mx-auto max-w-4xl px-6 lg:px-8 text-center">
-                <h2 className="text-3xl font-serif font-medium text-foreground mb-4">
+                <h2 className="text-3xl font-serif font-normal tracking-tight text-foreground mb-4">
                     {t("title")}
                 </h2>
                 <p className="text-muted-foreground mb-10 max-w-2xl mx-auto">

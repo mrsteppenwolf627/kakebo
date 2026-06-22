@@ -428,6 +428,32 @@ Respuesta en texto plano.
 
 **Siguiente en esta fase:** acordar dirección estética con el usuario (Etapa 2) antes de iniciar implementación (Etapa 3).
 
+### UIUX-05 — H2 de sección unificados
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-22 |
+| **Estado** | ✅ Completado |
+| **Build** | ✅ · **Tests** | ✅ 506/506 |
+
+**Regla aplicada (DA-12-D2):** `font-serif font-normal tracking-tight` en todos los H2 de sección de la landing.
+
+**3 archivos modificados — 3 líneas:**
+
+| Componente | Antes | Después |
+|---|---|---|
+| `HowItWorks.tsx` | `text-4xl font-bold tracking-tight` | `text-4xl font-serif font-normal tracking-tight` |
+| `SavingsSimulator.tsx` | `text-3xl font-serif font-medium` | `text-3xl font-serif font-normal tracking-tight` |
+| `AlternativesSection.tsx` | `text-3xl font-serif font-medium sm:text-4xl` | `text-3xl font-serif font-normal tracking-tight sm:text-4xl` |
+
+**Sin cambio (ya correctos):** Features (`font-serif font-normal` ✅) · FAQ (`font-serif font-normal` ✅)
+
+**Excepciones justificadas:**
+- `Testimonials.tsx` H2: patrón eyebrow label (`text-lg text-primary`) — H2 semántico pero visualmente subordinado. No es un título de sección equivalente al resto. El `<p>` siguiente actúa como título visual. Pendiente de revisión en UIUX-06.
+- `page.tsx` SEO cards H2 (`text-2xl`): sub-títulos dentro de cards bordeadas, nivel visual distinto al de los títulos de sección standalone. No son H2 equivalentes en contexto de layout.
+
+---
+
 ### UIUX-04 — Features grid equilibrado
 
 | Campo | Detalle |
@@ -605,7 +631,8 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 | UIUX-02 | Estandarizar max-width de la parte pública/indexable | ✅ Completado 2026-06-22 |
 | UIUX-03 | Contextualizar Navbar en páginas de blog | ✅ Completado 2026-06-22 |
 | UIUX-04 | Resolver Features grid (4 tarjetas en 3-col) | ✅ Completado 2026-06-22 |
-| **UIUX-05** | **Unificar regla tipográfica H2 de sección (landing)** | **⬅ SIGUIENTE** |
+| UIUX-05 | Unificar regla tipográfica H2 de sección (landing) | ✅ Completado 2026-06-22 |
+| **UIUX-06** | **Reemplazar avatares emoji en Testimonials** | **⬅ SIGUIENTE** |
 | SEO-2.3C | Enlazado interno P2 — refinamientos opcionales | Pendiente (tras Tier B y Search Console) |
 | SEO-2.4 | Resolución de canibalizaciones | Pendiente (requiere datos de Search Console) |
 | SEO-02 | Fondo de emergencia (siguiente artículo cluster Presupuesto Personal) | Pendiente · NO iniciar antes de UIUX-INDEXABLE-01 |
