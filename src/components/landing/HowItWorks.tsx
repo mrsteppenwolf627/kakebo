@@ -8,7 +8,7 @@ export function HowItWorks() {
       {/* Background */}
       <div className="absolute inset-0 bg-muted/30" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4">
+      <div className="relative z-10 mx-auto max-w-6xl px-4">
         {/* Section Header */}
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">

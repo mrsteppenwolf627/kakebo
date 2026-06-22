@@ -5,7 +5,7 @@ export function SeoContent() {
     const t = useTranslations('Landing.Content');
 
     return (
-        <section className="mx-auto max-w-5xl px-4 py-12 border-t border-border mt-12">
+        <section className="mx-auto max-w-6xl px-4 py-12 border-t border-border mt-12">
             <div className="prose prose-sm prose-stone dark:prose-invert max-w-none text-muted-foreground">
                 <h3 className="text-lg font-serif font-medium text-foreground mb-4">
                     {t('title')}

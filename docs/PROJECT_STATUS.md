@@ -428,6 +428,44 @@ Respuesta en texto plano.
 
 **Siguiente en esta fase:** acordar dirección estética con el usuario (Etapa 2) antes de iniciar implementación (Etapa 3).
 
+### UIUX-02 — Max-width estandarizado
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-22 |
+| **Estado** | ✅ Completado |
+| **Build** | ✅ Compiled successfully |
+| **Tests** | ✅ 506/506 |
+
+**9 archivos modificados — todos `max-w-7xl` y `max-w-5xl` en la parte pública reemplazados por `max-w-6xl`:**
+
+| Archivo | Antes | Después |
+|---|---|---|
+| `Features.tsx` | `max-w-7xl` | `max-w-6xl` |
+| `HowItWorks.tsx` | `max-w-7xl` | `max-w-6xl` |
+| `Testimonials.tsx` | `max-w-7xl` | `max-w-6xl` |
+| `AlternativesSection.tsx` | `max-w-7xl` | `max-w-6xl` |
+| `Footer.tsx` | `max-w-7xl` | `max-w-6xl` |
+| `SeoContent.tsx` | `max-w-5xl` | `max-w-6xl` |
+| `page.tsx` (home, SEO whatIs) | `max-w-5xl` | `max-w-6xl` |
+| `page.tsx` (home, SEO categories) | `max-w-5xl` | `max-w-6xl` |
+| `blog/page.tsx` | `max-w-5xl` | `max-w-6xl` |
+
+**Conservados con justificación:**
+
+| Archivo | Valor | Razón |
+|---|---|---|
+| `Navbar.tsx` | `max-w-6xl` | Ya correcto |
+| `Hero.tsx` (main) | `max-w-6xl` | Ya correcto |
+| `Hero.tsx` (subtítulo) | `max-w-3xl` | Constraint de texto dentro de columna, no layout |
+| `Hero.tsx` (stats card) | `max-w-4xl` | Bloque editorial interior — DA-12 permite 4xl para editorial |
+| `HowItWorks.tsx` (card ejemplo) | `max-w-3xl` | Bloque interior legibilidad — no es el ancho de sección |
+| `SavingsSimulator.tsx` | `max-w-4xl` | Bloque interactivo centrado — DA-12: max-w-4xl editorial |
+| `FAQ.tsx` | `max-w-4xl` | Bloque texto/editorial — DA-12: max-w-4xl para lectura |
+| `blog/[slug]/page.tsx` | `max-w-3xl` | Artículo — DA-12: max-w-3xl para lectura |
+| `herramientas/calculadora-ahorro` | `max-w-4xl`/`max-w-3xl` | Herramienta pública — editorial y contenido |
+| Todos `max-w-2xl`/`max-w-xl` internos | — | Constraints de texto, no afectan el eje de layout |
+
 ### UIUX-DIRECCIÓN-01 — Dirección estética aprobada
 
 | Campo | Detalle |
@@ -523,7 +561,8 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 | CHECK-I18N-ROUTING-01 | Bug `Accept-Language` redirect corregido (`localeDetection: false`) | ✅ Completado 2026-06-22 |
 | UIUX-INDEXABLE-01 | Auditoría visual y UX de páginas públicas indexables | ✅ Completado 2026-06-22 |
 | UIUX-DIRECCIÓN-01 | Dirección estética aprobada — DA-12 documentada | ✅ Completado 2026-06-22 |
-| **UIUX-02** | **Estandarizar max-width de la parte pública/indexable** | **⬅ SIGUIENTE** |
+| UIUX-02 | Estandarizar max-width de la parte pública/indexable | ✅ Completado 2026-06-22 |
+| **UIUX-03** | **Contextualizar Navbar en páginas de blog** | **⬅ SIGUIENTE** |
 | SEO-2.3C | Enlazado interno P2 — refinamientos opcionales | Pendiente (tras Tier B y Search Console) |
 | SEO-2.4 | Resolución de canibalizaciones | Pendiente (requiere datos de Search Console) |
 | SEO-02 | Fondo de emergencia (siguiente artículo cluster Presupuesto Personal) | Pendiente · NO iniciar antes de UIUX-INDEXABLE-01 |

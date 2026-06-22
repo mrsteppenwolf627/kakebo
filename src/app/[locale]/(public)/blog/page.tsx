@@ -40,7 +40,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
             <Navbar />
 
             <div className="pt-24 pb-16">
-                <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h1 className="text-4xl font-serif font-bold text-foreground sm:text-5xl mb-4">
                             {t('title')}

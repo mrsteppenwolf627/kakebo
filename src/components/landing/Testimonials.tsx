@@ -16,7 +16,7 @@ export function Testimonials() {
 
     return (
         <section className="py-24 bg-stone-50 dark:bg-stone-900/50">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-6xl px-6 lg:px-8">
                 <div className="mx-auto max-w-xl text-center">
                     <h2 className="text-lg font-semibold leading-8 tracking-tight text-primary">
                         {t('title')}

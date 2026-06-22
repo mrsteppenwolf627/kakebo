@@ -7,7 +7,7 @@ export function Footer() {
 
   return (
     <footer className="relative border-t border-border bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-12">
+      <div className="mx-auto max-w-6xl px-4 py-12">
         {/* Main Footer Content */}
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
