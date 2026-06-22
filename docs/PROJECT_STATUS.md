@@ -428,6 +428,24 @@ Respuesta en texto plano.
 
 **Siguiente en esta fase:** acordar dirección estética con el usuario (Etapa 2) antes de iniciar implementación (Etapa 3).
 
+### UIUX-07 — Widget Product Hunt eliminado del footer
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-22 |
+| **Estado** | ✅ Completado |
+| **Archivo** | `src/components/landing/Footer.tsx` |
+| **Build** | ✅ Compiled successfully |
+| **Tests** | ✅ 506/506 |
+
+**Cambio aplicado (DA-12-D5):** eliminado el bloque `{/* Product Hunt Widget */}` (líneas 25–37 del original) junto con el `/* eslint-disable @next/next/no-img-element */` del encabezado del archivo, que existía únicamente por el `<img>` del widget.
+
+**Bloque eliminado:** tarjeta con `style` inline (fondo blanco hardcoded `rgb(255,255,255)`, borde `rgb(224,224,224)`, botón naranja `rgb(255,97,84)`), imagen externa `ph-files.imgix.net`, enlace a producthunt.com con `utm_source=embed`.
+
+**Sin tocar:** Product Hunt badge del Hero (`/components/landing/Hero.tsx`) — sigue activo. Estructura, navegación, copyright y bottom bar del footer — sin cambios.
+
+---
+
 ### UIUX-06 — Atribución editorial sobria en Testimonials
 
 | Campo | Detalle |
@@ -657,7 +675,8 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 | UIUX-04 | Resolver Features grid (4 tarjetas en 3-col) | ✅ Completado 2026-06-22 |
 | UIUX-05 | Unificar regla tipográfica H2 de sección (landing) | ✅ Completado 2026-06-22 |
 | UIUX-06 | Reemplazar avatares emoji en Testimonials — atribución editorial sobria | ✅ Completado 2026-06-22 |
-| **UIUX-07** | **Eliminar widget Product Hunt del footer** | **⬅ SIGUIENTE** |
+| UIUX-07 | Eliminar widget Product Hunt del footer | ✅ Completado 2026-06-22 |
+| **UIUX-08** | **Reemplazar hardcoded colors con tokens semánticos** | **⬅ SIGUIENTE** |
 | SEO-2.3C | Enlazado interno P2 — refinamientos opcionales | Pendiente (tras Tier B y Search Console) |
 | SEO-2.4 | Resolución de canibalizaciones | Pendiente (requiere datos de Search Console) |
 | SEO-02 | Fondo de emergencia (siguiente artículo cluster Presupuesto Personal) | Pendiente · NO iniciar antes de UIUX-INDEXABLE-01 |
