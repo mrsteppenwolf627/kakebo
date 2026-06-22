@@ -428,6 +428,25 @@ Respuesta en texto plano.
 
 **Siguiente en esta fase:** acordar dirección estética con el usuario (Etapa 2) antes de iniciar implementación (Etapa 3).
 
+### UIUX-04 — Features grid equilibrado
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-22 |
+| **Estado** | ✅ Completado |
+| **Archivo** | `src/components/landing/Features.tsx` |
+| **Build** | ✅ · **Tests** | ✅ 506/506 |
+
+**Cambio:** `lg:grid-cols-3` → `lg:grid-cols-2`. Una sola clase modificada.
+
+| Breakpoint | Antes | Después |
+|---|---|---|
+| Mobile | 1 col | 1 col (sin cambio) |
+| Tablet (md) | 2 col | 2 col (sin cambio) |
+| Desktop (lg) | 3 col → 3+1 huérfana | 2 col → 2×2 simétrico |
+
+---
+
 ### UIUX-03 — Navbar contextualizado para blog
 
 | Campo | Detalle |
@@ -585,7 +604,8 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 | UIUX-DIRECCIÓN-01 | Dirección estética aprobada — DA-12 documentada | ✅ Completado 2026-06-22 |
 | UIUX-02 | Estandarizar max-width de la parte pública/indexable | ✅ Completado 2026-06-22 |
 | UIUX-03 | Contextualizar Navbar en páginas de blog | ✅ Completado 2026-06-22 |
-| **UIUX-04** | **Resolver Features grid (4 tarjetas en 3-col)** | **⬅ SIGUIENTE** |
+| UIUX-04 | Resolver Features grid (4 tarjetas en 3-col) | ✅ Completado 2026-06-22 |
+| **UIUX-05** | **Unificar regla tipográfica H2 de sección (landing)** | **⬅ SIGUIENTE** |
 | SEO-2.3C | Enlazado interno P2 — refinamientos opcionales | Pendiente (tras Tier B y Search Console) |
 | SEO-2.4 | Resolución de canibalizaciones | Pendiente (requiere datos de Search Console) |
 | SEO-02 | Fondo de emergencia (siguiente artículo cluster Presupuesto Personal) | Pendiente · NO iniciar antes de UIUX-INDEXABLE-01 |

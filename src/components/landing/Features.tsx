@@ -17,7 +17,7 @@ export function Features() {
         </div>
 
         {/* Features Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
           <FeatureCard
             title={t("cards.manual.title")}
             description={t("cards.manual.desc")}
