@@ -466,10 +466,60 @@ Respuesta en texto plano.
 | Campo | Detalle |
 |---|---|
 | **Nombre** | Auditoría visual y UX de páginas públicas indexables |
-| **Objetivo** | Revisar home, blog, artículos, listados, navegación, footer, CTAs y experiencia de lectura |
-| **Restricciones** | No tocar herramienta interna/dashboard · No abrir SEO-02 · No implementar cambios si la tarea es solo auditoría |
-| **Scope** | Páginas públicas indexables únicamente (`/`, `/blog`, `/blog/[slug]`, `/herramientas/*`, `/tutorial`) |
-| **Estado** | Pendiente de inicio |
+| **Objetivo** | Auditar el estado visual y UX de la parte pública de MetodoKakebo.com antes de proponer o implementar ningún cambio |
+| **Scope** | `/` · `/blog` · `/blog/[slug]` · `/herramientas/*` · Navbar · Footer · CTAs · experiencia de lectura |
+| **Excluye** | `/app/*` (herramienta interna) · lógica de negocio · autenticación |
+| **Tipo de tarea** | Etapa 1 — solo auditoría. No se implementa nada. |
+| **Estado** | ⬅ Siguiente · Pendiente de inicio |
+
+**Restricciones absolutas de UIUX-INDEXABLE-01:**
+- No tocar código visual (componentes, Tailwind, CSS).
+- No tocar herramienta interna/dashboard.
+- No abrir SEO-02 ni crear artículos nuevos.
+- No modificar routing, i18n, hreflang ni middleware.
+- No cambiar contenido SEO ni MDX de artículos.
+- No implementar rediseño en esta tarea — solo diagnóstico.
+
+**Metodología:** Ver sección `DA-11 — Metodología UI/UX indexable` más abajo y `INSTRUCCIONES.md → Metodología UI/UX indexable`.
+
+---
+
+### DA-11 — Metodología UI/UX indexable
+
+> Decisión arquitectónica añadida 2026-06-22 (DOC-MEMORY-UIUX-01). Aplica a partir de UIUX-INDEXABLE-01.
+
+#### Scope de la fase
+
+**Incluye:** `/` · `/blog` · `/blog/[slug]` · `/herramientas/*` · Navbar · Footer · CTAs · lectura.  
+**Excluye:** `/app/*` (herramienta interna/dashboard) y todo lo que requiera autenticación.
+
+#### Orden obligatorio de las etapas
+
+| Etapa | Nombre | Qué hace | Implementa código |
+|---|---|---|---|
+| 1 | Auditoría | Diagnostica el estado visual actual sin tocar nada | No |
+| 2 | Dirección estética | Define dirección visual concreta, aprobada por el usuario | No |
+| 3 | Implementación | Ejecuta los cambios aprobados en etapa 2 | Sí |
+
+UIUX-INDEXABLE-01 es **Etapa 1**. No se avanza a etapa 2 ni 3 sin que el usuario apruebe el diagnóstico.
+
+#### Dimensiones de auditoría
+
+| Dimensión | Qué evaluar |
+|---|---|
+| **Tipografía** | Jerarquía, legibilidad, peso, espaciado, coherencia serif/sans |
+| **Color** | Contraste, paleta activa vs. neutral, consistencia de tokens |
+| **Motion** | Transiciones, hover states, feedback visual, sensación de respuesta |
+| **Fondos y separación** | Textura, separación visual de secciones, `bg-muted`, espaciado vertical |
+| **Layout** | Anchura de columnas, márgenes, densidad de información, respiración |
+| **Atmósfera** | Sensación general: ¿moderno, editorial, zen, confiable, genérico? |
+
+#### Principios
+
+- Cada decisión visual debe tener razón concreta — no seguir plantillas.
+- No cambios decorativos sin propósito funcional o comunicativo.
+- No implementar antes de acordar dirección estética con el usuario.
+- Cada tarea completada de esta fase debe actualizar `docs/PROJECT_STATUS.md`.
 
 ---
 
