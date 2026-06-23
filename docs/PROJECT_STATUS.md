@@ -446,6 +446,40 @@ Respuesta en texto plano.
 
 ---
 
+### UIUX-09 — bg-sakura activado en sección editorial de la home
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivo modificado** | `src/app/[locale]/(public)/page.tsx` |
+| **Build** | ✅ Compiled successfully (0 errores TypeScript) |
+| **Tests** | ✅ 506/506 passing |
+
+**Cambio aplicado:**
+
+Sección elegida: "¿Qué es el método Kakebo?" (SEO whatIs, línea ~70 de `page.tsx`).
+
+| Antes | Después |
+|---|---|
+| `<section className="relative py-16">` + `<div className="absolute inset-0 bg-background" />` | `<section className="relative py-16 bg-sakura">` (div opaco eliminado) |
+
+**Justificación de la sección elegida:** Es la sección más directamente identitaria del método — explica el concepto Kakebo en texto editorial. Ancla la identidad japonesa donde más sentido tiene semánticamente. No es el Hero (demasiado protagonista), no es el Footer, no es el blog.
+
+**Por qué funciona:** `bg-sakura` ya existía definida en `globals.css` con overlay 85% en modo claro y 92% en modo oscuro. El asset `/public/bg-sakura.png` existe. La textura es tan sutil que no compromete legibilidad. El div `absolute inset-0 bg-background` que había antes tapaba completamente el fondo del body (que ya tenía `bg-sakura` en `layout.tsx`) — eliminarlo es suficiente para dejar ver la textura.
+
+**Compatibilidad:** Funciona en modo claro (overlay 85% blanco cálido) y modo oscuro (overlay 92% piedra oscuro). El contenido — tarjeta `bg-card` con borde `border-border` — flota sobre la textura sin que esta compita con texto o CTAs.
+
+**bg-sakura en páginas públicas tras UIUX-09:**
+- `page.tsx` (home): sección "¿Qué es el método Kakebo?" ← nuevo
+- `sobre-nosotros/page.tsx`: ya existía (preexistente, no tocado)
+- `herramientas/page.tsx`: ya existía (preexistente, no tocado)
+- `layout.tsx` body: ya existía como base global (preexistente, no tocado)
+
+**Próxima tarea recomendada:** UIUX-10 — Añadir diferenciadores visuales a FeatureCards.
+
+---
+
 ### UIUX-08 — Colores hardcoded reemplazados por tokens semánticos
 
 | Campo | Detalle |

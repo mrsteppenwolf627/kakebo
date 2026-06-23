@@ -67,8 +67,7 @@ export default async function PublicHomePage({ params }: { params: Promise<{ loc
 
 
         {/* SEO Content - Kakebo Method Explanation */}
-        <section className="relative py-16">
-          <div className="absolute inset-0 bg-background" />
+        <section className="relative py-16 bg-sakura">
           <div className="relative z-10 mx-auto w-full max-w-6xl px-4">
             <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
               <h2 className="text-2xl font-serif font-bold tracking-tight text-foreground mb-4">
