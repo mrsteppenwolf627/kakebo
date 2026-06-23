@@ -446,6 +446,51 @@ Respuesta en texto plano.
 
 ---
 
+### UIUX-12 — Accesibilidad dropdown de herramientas en Navbar
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivo modificado** | `src/components/landing/Navbar.tsx` |
+| **Build** | ✅ Compiled successfully (0 errores TypeScript) |
+| **Tests** | ✅ 506/506 passing |
+
+**Diagnóstico antes:** Dropdown controlado solo por CSS `group-hover`. El `<button>` tenía `outline-none` (foco eliminado). Sin `aria-expanded`, `aria-haspopup`, ni `aria-controls`. El panel `invisible` seguía en DOM y podía ser leído por lectores de pantalla.
+
+**Solución aplicada — mínima intervención:**
+
+| Cambio | Detalle |
+|---|---|
+| `useRef` añadido | `toolsRef` (container), `toolsButtonRef` (trigger) |
+| `isToolsOpen` state | Controla apertura vía React en lugar de solo CSS |
+| `useEffect` click-outside | Cierra dropdown al hacer click fuera del container |
+| `onMouseEnter/Leave` en container | Mantiene el comportamiento hover de ratón |
+| `onKeyDown` Escape en container | Cierra dropdown y devuelve foco al botón trigger |
+| `onClick` en botón | Toggle apertura por teclado (Enter/Space) |
+| `aria-expanded={isToolsOpen}` | Estado accesible para lectores de pantalla |
+| `aria-haspopup="true"` | Indica que el botón controla un popup |
+| `aria-controls="tools-dropdown-menu"` | Referencia explícita al panel |
+| `id="tools-dropdown-menu"` | Identifica el panel |
+| `aria-hidden="true"` en SVG chevron | Decorativo — excluido de accesibilidad |
+| Eliminado `outline-none` del botón | Sustituido por `focus-visible:ring-2 ring-primary/40` |
+| `pointer-events-none` cuando cerrado | El panel invisible no captura eventos de ratón |
+| `focus-visible:ring-inset` en links | Foco visible dentro de items del dropdown |
+| Eliminado `group`/`group-hover` CSS | Controlado por estado React en su lugar |
+
+**Comportamientos resultantes:**
+- Ratón: hover abre, hover-out cierra, click en link cierra y navega ✓
+- Teclado: Tab al botón → Enter/Space abre → Tab navega links → Escape cierra y devuelve foco ✓
+- Click outside: cierra dropdown ✓
+- Screen reader: `aria-expanded` refleja estado real, panel excluido del flujo cuando cerrado ✓
+- Mobile: no afectado (el dropdown desktop está en `hidden md:flex`) ✓
+
+**Sin tocar:** layout visual, links, textos, mobile menu, CTAs de autenticación.
+
+**Próxima tarea recomendada:** UIUX-13 o refinamientos de blog/experiencia de lectura de artículos (ver candidatos de la auditoría).
+
+---
+
 ### UIUX-11 — Hover y estados interactivos de CTAs unificados
 
 | Campo | Detalle |

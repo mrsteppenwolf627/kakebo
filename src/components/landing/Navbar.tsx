@@ -4,7 +4,7 @@
 import { Link, useRouter, usePathname } from "@/i18n/routing";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { useTranslations } from "next-intl";
 
@@ -17,6 +17,9 @@ export function Navbar() {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isToolsOpen, setIsToolsOpen] = useState(false);
+  const toolsRef = useRef<HTMLDivElement>(null);
+  const toolsButtonRef = useRef<HTMLButtonElement>(null);
 
   const isHome = pathname === "/";
   const isBlog = pathname.startsWith("/blog");
@@ -48,7 +51,18 @@ export function Navbar() {
     };
   }, [supabase]);
 
-  // Close menu on route change logic is handled by Link automatically in some setups, 
+  useEffect(() => {
+    if (!isToolsOpen) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (toolsRef.current && !toolsRef.current.contains(e.target as Node)) {
+        setIsToolsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isToolsOpen]);
+
+  // Close menu on route change logic is handled by Link automatically in some setups,
   // but let's be explicit if needed or rely on onClick.
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -93,32 +107,56 @@ export function Navbar() {
           </Link>
 
           {/* Herramientas Dropdown */}
-          <div className="relative group">
-            <button className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground py-2 outline-none">
+          <div
+            ref={toolsRef}
+            className="relative"
+            onMouseEnter={() => setIsToolsOpen(true)}
+            onMouseLeave={() => setIsToolsOpen(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" && isToolsOpen) {
+                setIsToolsOpen(false);
+                toolsButtonRef.current?.focus();
+              }
+            }}
+          >
+            <button
+              ref={toolsButtonRef}
+              onClick={() => setIsToolsOpen(prev => !prev)}
+              aria-expanded={isToolsOpen}
+              aria-haspopup="true"
+              aria-controls="tools-dropdown-menu"
+              className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
+            >
               {t('tools')}
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:rotate-180">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${isToolsOpen ? 'rotate-180' : ''}`} aria-hidden="true">
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </button>
-            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[240px]">
+            <div
+              id="tools-dropdown-menu"
+              className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 min-w-[240px] transition-all duration-200 ${isToolsOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
+            >
               <div className="bg-popover border border-border rounded-xl shadow-lg p-2 flex flex-col gap-1">
                 <Link
                   href="/herramientas/calculadora-ahorro"
-                  className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors"
+                  onClick={() => setIsToolsOpen(false)}
+                  className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
                 >
                   <span className="block font-medium text-foreground">{t('toolsSavings')}</span>
                   <span className="block text-xs text-muted-foreground mt-0.5">{t('toolsSavingsDesc')}</span>
                 </Link>
                 <Link
                   href="/herramientas/regla-50-30-20"
-                  className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors"
+                  onClick={() => setIsToolsOpen(false)}
+                  className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
                 >
                   <span className="block font-medium text-foreground">{t('tools503020')}</span>
                   <span className="block text-xs text-muted-foreground mt-0.5">{t('tools503020Desc')}</span>
                 </Link>
                 <Link
                   href="/herramientas/calculadora-inflacion"
-                  className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors"
+                  onClick={() => setIsToolsOpen(false)}
+                  className="px-4 py-3 text-sm hover:bg-muted/50 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
                 >
                   <span className="block font-medium text-foreground">{t('toolsInflation')}</span>
                   <span className="block text-xs text-muted-foreground mt-0.5">{t('toolsInflationDesc')}</span>
