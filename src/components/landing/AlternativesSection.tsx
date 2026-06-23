@@ -6,7 +6,7 @@ export function AlternativesSection() {
     const t = useTranslations("Alternatives");
 
     return (
-        <section id="alternatives" className="py-24 bg-background">
+        <section id="alternatives" className="py-16 sm:py-24 bg-background">
             <div className="mx-auto max-w-6xl px-6 lg:px-8">
                 <div className="mx-auto max-w-3xl text-center mb-16">
                     <h2 className="text-3xl font-serif font-normal tracking-tight text-foreground sm:text-4xl">

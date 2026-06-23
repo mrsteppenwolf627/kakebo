@@ -13,6 +13,34 @@
 
 ## UIUX Mobile Home — Sprint
 
+### UIUX-MOBILE-HOME-04 — Espaciado vertical mobile reducido en secciones
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivos modificados** | Features, HowItWorks, Testimonials, AlternativesSection, FAQ |
+| **Build** | ✅ Compiled successfully |
+| **Tests** | ✅ 506/506 passing |
+
+**Cambio:** `py-24` → `py-16 sm:py-24` en las 5 secciones afectadas.
+
+| Archivo | Antes | Después |
+|---|---|---|
+| `Features.tsx` | `py-24 bg-muted/30` | `py-16 sm:py-24 bg-muted/30` |
+| `HowItWorks.tsx` | `py-24` | `py-16 sm:py-24` |
+| `Testimonials.tsx` | `py-24 bg-muted/30` | `py-16 sm:py-24 bg-muted/30` |
+| `AlternativesSection.tsx` | `py-24 bg-background` | `py-16 sm:py-24 bg-background` |
+| `FAQ.tsx` | `py-24 bg-background` | `py-16 sm:py-24 bg-background` |
+
+**Sin cambio:** `SavingsSimulator` (`py-16` ya correcto), `Footer` (`py-12`), `SeoContent` (`py-12`), `ToolsSection` (fuera de scope), `page.tsx` inline SEO sections (`py-16`).
+
+**Efecto en mobile:** 5 secciones × (96−64)px ahorrados = **~320px menos de scroll vertical** en mobile (160px top + 160px bottom ahorro por sección acumulado). La cadencia entre secciones se mantiene pero no domina la pantalla.
+
+**Desktop desde sm (640px):** `sm:py-24` conserva el espaciado exactamente igual al anterior.
+
+---
+
 ### UIUX-MOBILE-HOME-03 — Hero H1 escala mobile
 
 | Campo | Detalle |

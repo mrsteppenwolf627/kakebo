@@ -6,7 +6,7 @@ export function Features() {
   const t = useTranslations("Features");
 
   return (
-    <section id="features" className="relative py-24 bg-muted/30">
+    <section id="features" className="relative py-16 sm:py-24 bg-muted/30">
       <div className="relative z-10 mx-auto max-w-6xl px-4">
         {/* Section Header */}
         <div className="mb-16 text-center">

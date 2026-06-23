@@ -14,7 +14,7 @@ export function FAQ() {
   const questions = ['q1', 'q2', 'q3', 'q4', 'q5'] as const;
 
   return (
-    <section id="faq" className="relative py-24 bg-background">
+    <section id="faq" className="relative py-16 sm:py-24 bg-background">
       <div className="relative z-10 mx-auto max-w-4xl px-4">
         {/* Section Header */}
         <div className="mb-12 text-center border-b border-border pb-8">

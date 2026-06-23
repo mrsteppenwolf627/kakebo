@@ -4,7 +4,7 @@ export function HowItWorks() {
   const t = useTranslations('Landing.HowItWorks');
 
   return (
-    <section className="relative py-24">
+    <section className="relative py-16 sm:py-24">
       {/* Background */}
       <div className="absolute inset-0 bg-muted/30" />
 

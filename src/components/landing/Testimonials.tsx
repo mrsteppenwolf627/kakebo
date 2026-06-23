@@ -15,7 +15,7 @@ export function Testimonials() {
     ];
 
     return (
-        <section className="py-24 bg-muted/30">
+        <section className="py-16 sm:py-24 bg-muted/30">
             <div className="mx-auto max-w-6xl px-6 lg:px-8">
                 <div className="mx-auto max-w-xl text-center">
                     <p className="text-lg font-semibold leading-8 tracking-tight text-primary">
