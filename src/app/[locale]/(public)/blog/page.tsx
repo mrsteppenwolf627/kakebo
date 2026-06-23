@@ -39,7 +39,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
         <main className="min-h-screen bg-background">
             <Navbar />
 
-            <div className="pt-24 pb-16">
+            <div className="pt-24 pb-24">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h1 className="text-4xl font-serif font-bold text-foreground sm:text-5xl mb-4">
@@ -52,7 +52,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
 
                     {/* Featured post — most recent article */}
                     {featured && (
-                        <article className="group flex flex-col md:flex-row overflow-hidden rounded-xl border border-border bg-card hover:shadow-lg hover:border-primary/30 transition-all duration-200 mb-10">
+                        <article className="group flex flex-col md:flex-row overflow-hidden rounded-xl border border-primary/20 bg-card hover:shadow-lg hover:border-primary/50 transition-all duration-200 mb-12">
                             <div className="relative aspect-video md:aspect-auto md:w-1/2 overflow-hidden bg-muted shrink-0">
                                 {hasPublicImage(featured.frontmatter.image) ? (
                                     <Image
@@ -97,7 +97,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                                     </Link>
                                 </h2>
 
-                                <p className="text-muted-foreground leading-relaxed mb-6 line-clamp-4">
+                                <p className="text-muted-foreground leading-relaxed mb-6 line-clamp-3">
                                     {featured.frontmatter.excerpt}
                                 </p>
 
@@ -116,6 +116,14 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
 
                     {/* Remaining posts grid */}
                     {rest.length > 0 && (
+                        <>
+                        <div className="flex items-center gap-4 mb-8">
+                            <div className="flex-1 border-t border-border/50" />
+                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest shrink-0">
+                                {locale === 'es' ? 'Todos los artículos' : 'All articles'}
+                            </p>
+                            <div className="flex-1 border-t border-border/50" />
+                        </div>
                         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                             {rest.map((post) => (
                                 <article
@@ -174,6 +182,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                                 </article>
                             ))}
                         </div>
+                        </>
                     )}
                 </div>
             </div>

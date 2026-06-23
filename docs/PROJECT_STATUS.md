@@ -446,6 +446,37 @@ Respuesta en texto plano.
 
 ---
 
+### UIUX-14 — Índice del blog refinado
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivo modificado** | `src/app/[locale]/(public)/blog/page.tsx` |
+| **Build** | ✅ Compiled successfully (0 errores TypeScript) |
+| **Tests** | ✅ 506/506 passing |
+
+**Diagnóstico antes:** Artículo destacado y grid sin separador visual. Featured card con mismo `border-border` que cards del grid (sin diferenciación base). Excerpt `line-clamp-4` demasiado denso. Poco padding inferior en la página.
+
+**Cambios aplicados:**
+
+| Elemento | Antes | Después |
+|---|---|---|
+| Outer wrapper padding inferior | `pb-16` | `pb-24` |
+| Featured card margin inferior | `mb-10` | `mb-12` |
+| Featured card borde base | `border-border` | `border-primary/20` (siempre distinguible) |
+| Featured card borde hover | `hover:border-primary/30` | `hover:border-primary/50` |
+| Featured excerpt | `line-clamp-4` | `line-clamp-3` |
+| Separador featured/grid | — (directo) | Separador con líneas laterales + label "Todos los artículos / All articles" |
+
+**Separador añadido:** `flex items-center gap-4` con `border-t border-border/50` a ambos lados y label `text-xs font-medium text-muted-foreground uppercase tracking-widest`. Inline `locale === 'es'` para ES/EN (mismo patrón ya usado para el badge "Artículo destacado").
+
+**Sin tocar:** MDX, frontmatter, imágenes, metadata, canonical, hreflang, routing, grid layout, cards del grid, hover de links, Footer, Navbar.
+
+**Próxima tarea recomendada:** Pausa de la fase UIUX-INDEXABLE para revisar datos de Search Console, o continuar con UIUX-15 (mejoras de accesibilidad en blog o refinamientos de mobile).
+
+---
+
 ### UIUX-13 — CTA final de artículos refinado
 
 | Campo | Detalle |
