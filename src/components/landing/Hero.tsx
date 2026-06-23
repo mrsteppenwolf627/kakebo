@@ -16,7 +16,7 @@ export function Hero() {
         </div>
 
         {/* Main Heading - Serif elegante */}
-        <h1 className="mb-8 text-5xl font-serif font-normal tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl">
+        <h1 className="mb-8 text-4xl font-serif font-normal tracking-tight text-foreground sm:text-5xl md:text-7xl lg:text-8xl">
           <span dangerouslySetInnerHTML={{ __html: t.raw("title") }} />
         </h1>
 

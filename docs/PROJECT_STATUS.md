@@ -13,6 +13,29 @@
 
 ## UIUX Mobile Home — Sprint
 
+### UIUX-MOBILE-HOME-03 — Hero H1 escala mobile
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivo modificado** | `src/components/landing/Hero.tsx` |
+| **Build** | ✅ Compiled successfully |
+| **Tests** | ✅ 506/506 passing |
+
+**Cambio:** `text-5xl sm:text-6xl md:text-7xl lg:text-8xl` → `text-4xl sm:text-5xl md:text-7xl lg:text-8xl`
+
+| Breakpoint | Antes | Después |
+|---|---|---|
+| Mobile (0–639px) | 48px | **36px** ← fix |
+| sm (640–767px) | 60px | 48px |
+| md (768–1023px) | 72px | 72px (sin cambio) |
+| lg (1024px+) | 96px | 96px (sin cambio) |
+
+En 360-430px el H1 pasa de ~4-6 líneas a ~3-4 líneas, liberando espacio para CTAs y contenido bajo el fold.
+
+---
+
 ### UIUX-MOBILE-HOME-02 — AlternativesSection overflow fix
 
 | Campo | Detalle |

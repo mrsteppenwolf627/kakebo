@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-23 (UIUX-MOBILE-HOME-02)  
-**Último commit:** `1162a97` (UIUX-MOBILE-HOME-02)  
+**Última actualización:** 2026-06-23 (UIUX-MOBILE-HOME-03)  
+**Último commit:** pendiente push (UIUX-MOBILE-HOME-03)  
 **Rama operativa:** `main`
 
 ---
@@ -29,7 +29,8 @@
 | UIUX-14 | Refinar índice del blog | `d238358` | ✅ Completado |
 | UIUX-MOBILE-NAV-01 | Navbar mobile y menú hamburguesa mejorado | `770b52c` | ✅ Completado |
 | UIUX-MOBILE-HOME-02 | AlternativesSection overflow fix (tabla mobile) | `1162a97` | ✅ Completado |
-| **UIUX-MOBILE-HOME-03** | **Hero H1 escala mobile (text-5xl sin base pequeña)** | — | **⬅ SIGUIENTE** |
+| UIUX-MOBILE-HOME-03 | Hero H1 escala mobile (text-5xl → text-4xl base) | pendiente push | ✅ Completado |
+| **UIUX-MOBILE-HOME-04** | **Reducir py-24 en secciones sin breakpoint mobile** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
 - No iniciar SEO-02 (fondo de emergencia) todavía.
