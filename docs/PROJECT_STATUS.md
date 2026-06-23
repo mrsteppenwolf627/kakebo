@@ -13,6 +13,35 @@
 
 ## UIUX Mobile Home — Sprint
 
+### UIUX-MOBILE-HOME-02 — AlternativesSection overflow fix
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivo modificado** | `src/components/landing/AlternativesSection.tsx` |
+| **Build** | ✅ Compiled successfully |
+| **Tests** | ✅ 506/506 passing |
+
+**Diagnóstico:** Tabla 4 columnas `whitespace-nowrap` sin scroll container. Outer `overflow-hidden` + `<main overflow-x-hidden>` = columna "Apps" invisible en 360-390px (clipeada silenciosamente).
+
+**Fix aplicado:** Añadida capa `<div className="overflow-x-auto">` entre el outer wrapper y la tabla.
+
+```
+overflow-hidden rounded-2xl  (outer — mantiene esquinas redondeadas)
+└── overflow-x-auto          (inner — scroll container local en mobile)
+    └── <table>              (sin cambios)
+```
+
+**Por qué funciona:** Nested scroll containers en CSS son independientes. El `overflow-x-auto` inner crea su propio contexto de scroll. El contenido de la tabla desborda el inner div (scroll local), no el outer ni el `<main>`. El `overflow-x-hidden` de `<main>` no interfiere con el scroll interno del `overflow-x-auto` descendiente.
+
+**En desktop:** sin cambio visual — la tabla cabe y no aparece scrollbar.
+**En mobile 360-390px:** la tabla desborda el inner div → scroll horizontal local → columna "Apps" accesible.
+
+**Navbar y Hero:** no tocados ✓
+
+---
+
 ### UIUX-MOBILE-NAV-01 — Navbar mobile y menú hamburguesa mejorados
 
 | Campo | Detalle |

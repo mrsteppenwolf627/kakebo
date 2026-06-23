@@ -18,6 +18,7 @@ export function AlternativesSection() {
                 </div>
 
                 <div className="overflow-hidden border border-border rounded-2xl shadow-sm">
+                    <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-border">
                         <thead className="bg-muted/50">
                             <tr>
@@ -94,6 +95,7 @@ export function AlternativesSection() {
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </section>
