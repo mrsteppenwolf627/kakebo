@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-23 (UIUX-13)  
-**Último commit:** pendiente push (UIUX-13)  
+**Último commit:** `626e480` (UIUX-13)  
 **Rama operativa:** `main`
 
 ---
@@ -25,7 +25,7 @@
 | UIUX-10 | Añadir diferenciadores visuales a FeatureCards | `489fdd2` | ✅ Completado |
 | UIUX-11 | Unificar hover y estados interactivos de CTAs públicos | `f5c8e70` | ✅ Completado |
 | UIUX-12 | Accesibilidad dropdown herramientas Navbar | `ce641fa` | ✅ Completado |
-| UIUX-13 | Refinar CTA final de artículos del blog | pendiente push | ✅ Completado |
+| UIUX-13 | Refinar CTA final de artículos del blog | `626e480` | ✅ Completado |
 | **UIUX-14** | **Refinamientos adicionales de blog o mobile** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
