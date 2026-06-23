@@ -133,16 +133,16 @@ export default async function BlogPostPage({ params }: Props) {
                 )}
 
                 {/* CTA */}
-                <div className="mt-16 rounded-2xl bg-stone-900 px-6 py-10 text-center text-white sm:px-12">
+                <div className="mt-16 rounded-2xl bg-foreground px-6 py-10 text-center text-background sm:px-12">
                     <div className="mb-4 text-2xl font-serif font-bold">
                         {t('cta.title')}
                     </div>
-                    <p className="mb-8 text-stone-300">
+                    <p className="mb-8 text-background/70">
                         {t('cta.text')}
                     </p>
                     <Link
                         href="/login?mode=signup"
-                        className="inline-block rounded-full bg-white px-8 py-3 text-base font-semibold text-stone-900 transition-transform hover:scale-105"
+                        className="inline-block rounded-full bg-background px-8 py-3 text-base font-semibold text-foreground transition-transform hover:scale-105"
                     >
                         {t('cta.button')}
                     </Link>

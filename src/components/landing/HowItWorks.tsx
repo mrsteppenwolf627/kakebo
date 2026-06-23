@@ -106,15 +106,15 @@ export function HowItWorks() {
           <div className="space-y-3 text-muted-foreground">
             <div className="flex justify-between border-b border-border pb-2">
               <span className="font-medium">{t('example.income')}</span>
-              <span className="font-bold text-green-600 dark:text-green-400">1.800€</span>
+              <span className="font-bold text-primary">1.800€</span>
             </div>
             <div className="flex justify-between border-b border-border pb-2">
               <span className="font-medium">{t('example.fixed')}</span>
-              <span className="font-bold text-red-600 dark:text-red-400">-950€</span>
+              <span className="font-bold text-destructive">-950€</span>
             </div>
             <div className="flex justify-between border-b border-border pb-2">
               <span className="font-medium">{t('example.variable')}</span>
-              <span className="font-bold text-red-600 dark:text-red-400">-620€</span>
+              <span className="font-bold text-destructive">-620€</span>
             </div>
             <div className="flex justify-between pt-2">
               <span className="text-lg font-bold">{t('example.remaining')}</span>

@@ -446,6 +446,45 @@ Respuesta en texto plano.
 
 ---
 
+### UIUX-08 — Colores hardcoded reemplazados por tokens semánticos
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivos modificados** | `src/components/landing/HowItWorks.tsx`, `src/components/landing/Testimonials.tsx`, `src/app/[locale]/(public)/blog/[slug]/page.tsx` |
+| **Build** | ✅ Compiled successfully (0 errores TypeScript) |
+| **Tests** | ✅ 506/506 passing |
+
+**Colores reemplazados:**
+
+| Archivo | Hardcoded antes | Token semántico después | Justificación |
+|---|---|---|---|
+| HowItWorks.tsx | `text-green-600 dark:text-green-400` (ingresos) | `text-primary` | Terracota: color positivo de marca, coherente en modo claro y oscuro |
+| HowItWorks.tsx | `text-red-600 dark:text-red-400` (gastos ×2) | `text-destructive` | Token semántico de estado negativo — `#be123c` (claro) / `#ef4444` (oscuro) |
+| Testimonials.tsx | `bg-stone-50 dark:bg-stone-900/50` (sección) | `bg-muted/30` | Igual que HowItWorks — consistencia de secciones alternas |
+| Testimonials.tsx | `ring-gray-900/5 dark:ring-white/10` (figura) | `ring-border/50` | Borde sutil usando token de borde al 50% de opacidad |
+| Testimonials.tsx | `bg-stone-100 dark:bg-stone-800` (monograma) | `bg-muted` | `muted` (#f5f5f4 / #44403c) es equivalente directo de stone-100/stone-800 |
+| blog/[slug]/page.tsx | `bg-stone-900` (CTA) | `bg-foreground` | Bloque invertido semántico: dark ink en claro, off-white en oscuro |
+| blog/[slug]/page.tsx | `text-white` (CTA) | `text-background` | Inverso de `bg-foreground` — contraste garantizado en ambos modos |
+| blog/[slug]/page.tsx | `text-stone-300` (CTA subtítulo) | `text-background/70` | Background al 70% para jerarquía visual dentro del bloque invertido |
+| blog/[slug]/page.tsx | `bg-white` (botón CTA) | `bg-background` | Inverso consistente con el bloque |
+| blog/[slug]/page.tsx | `text-stone-900` (botón CTA) | `text-foreground` | Contraste correcto sobre `bg-background` en ambos modos |
+
+**Colores hardcoded conservados (fuera de scope o justificados):**
+- `Navbar.tsx`: `bg-white/80 dark:bg-stone-950/80` — explícitamente excluido del scope.
+- `HeroCTA.tsx`: `bg-stone-900 dark:bg-stone-100` — Hero/Product Hunt excluido del scope.
+- `ToolsSection.tsx`, `Calculator*.tsx`, `sobre-nosotros`, `herramientas/page.tsx` — no estaban en los hallazgos de la auditoría UIUX-INDEXABLE-01; quedan como candidatos para una tarea futura (UIUX-08B si procede).
+
+**Compatibilidad modo claro / modo oscuro:**
+- HowItWorks: `primary` (#cf5c5c / #f87171) y `destructive` (#be123c / #ef4444) — ambos con contraste WCAG AA sobre `muted/20`.
+- Testimonials: `muted/30` actúa como fondo alterno natural. Anillos con `border/50` apenas visibles en ambos modos (mismo nivel de sutileza que los valores anteriores).
+- CTA artículo: bloque invertido `foreground/background` — ink sobre blanco en claro, blanco sobre ink en oscuro. Contraste WCAG AAA en ambos modos.
+
+**Próxima tarea recomendada:** UIUX-09 — Activar `.bg-sakura` sutilmente en una sección del home.
+
+---
+
 ### UIUX-06 — Atribución editorial sobria en Testimonials
 
 | Campo | Detalle |

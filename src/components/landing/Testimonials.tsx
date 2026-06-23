@@ -15,7 +15,7 @@ export function Testimonials() {
     ];
 
     return (
-        <section className="py-24 bg-stone-50 dark:bg-stone-900/50">
+        <section className="py-24 bg-muted/30">
             <div className="mx-auto max-w-6xl px-6 lg:px-8">
                 <div className="mx-auto max-w-xl text-center">
                     <p className="text-lg font-semibold leading-8 tracking-tight text-primary">
@@ -32,13 +32,13 @@ export function Testimonials() {
                                 key={testimonial.id}
                                 className="pt-8 sm:inline-block sm:w-full sm:px-4"
                             >
-                                <figure className="rounded-2xl bg-background p-8 text-sm leading-6 shadow-sm ring-1 ring-gray-900/5 dark:ring-white/10">
+                                <figure className="rounded-2xl bg-background p-8 text-sm leading-6 shadow-sm ring-1 ring-border/50">
                                     <blockquote className="text-foreground">
                                         <p>{`"${t(`items.${testimonial.id}.body`)}"`}</p>
                                     </blockquote>
                                     <figcaption className="mt-6 flex items-center gap-x-4">
                                         <div
-                                            className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 dark:bg-stone-800 text-sm font-serif font-medium text-muted-foreground select-none"
+                                            className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-sm font-serif font-medium text-muted-foreground select-none"
                                             aria-hidden="true"
                                         >
                                             {testimonial.initials}
