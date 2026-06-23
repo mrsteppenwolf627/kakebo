@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-23 (UIUX-12)  
-**Último commit:** pendiente push (UIUX-12)  
+**Último commit:** `ce641fa` (UIUX-12)  
 **Rama operativa:** `main`
 
 ---
@@ -24,7 +24,7 @@
 | UIUX-09 | Activar `.bg-sakura` en sección editorial de la home | `ecda521` | ✅ Completado |
 | UIUX-10 | Añadir diferenciadores visuales a FeatureCards | `489fdd2` | ✅ Completado |
 | UIUX-11 | Unificar hover y estados interactivos de CTAs públicos | `f5c8e70` | ✅ Completado |
-| UIUX-12 | Accesibilidad dropdown herramientas Navbar | pendiente push | ✅ Completado |
+| UIUX-12 | Accesibilidad dropdown herramientas Navbar | `ce641fa` | ✅ Completado |
 | **UIUX-13** | **Refinamientos de blog / experiencia de lectura** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
