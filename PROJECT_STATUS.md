@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-23 (UIUX-MOBILE-NAV-01)  
-**Último commit:** pendiente push (UIUX-MOBILE-NAV-01)  
+**Último commit:** `770b52c` (UIUX-MOBILE-NAV-01)  
 **Rama operativa:** `main`
 
 ---
@@ -27,7 +27,7 @@
 | UIUX-12 | Accesibilidad dropdown herramientas Navbar | `ce641fa` | ✅ Completado |
 | UIUX-13 | Refinar CTA final de artículos del blog | `626e480` | ✅ Completado |
 | UIUX-14 | Refinar índice del blog | `d238358` | ✅ Completado |
-| UIUX-MOBILE-NAV-01 | Navbar mobile y menú hamburguesa mejorado | pendiente push | ✅ Completado |
+| UIUX-MOBILE-NAV-01 | Navbar mobile y menú hamburguesa mejorado | `770b52c` | ✅ Completado |
 | **UIUX-MOBILE-HOME-02** | **AlternativesSection overflow fix (crítico mobile)** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
