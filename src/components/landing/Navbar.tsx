@@ -20,6 +20,7 @@ export function Navbar() {
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const toolsRef = useRef<HTMLDivElement>(null);
   const toolsButtonRef = useRef<HTMLButtonElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const isHome = pathname === "/";
   const isBlog = pathname.startsWith("/blog");
@@ -61,6 +62,18 @@ export function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isToolsOpen]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setIsMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    }
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isMenuOpen]);
 
   // Close menu on route change logic is handled by Link automatically in some setups,
   // but let's be explicit if needed or rely on onClick.
@@ -106,7 +119,7 @@ export function Navbar() {
             {t('about')}
           </Link>
 
-          {/* Herramientas Dropdown */}
+          {/* Herramientas Dropdown — UIUX-12 accessible dropdown, do not modify */}
           <div
             ref={toolsRef}
             className="relative"
@@ -215,16 +228,21 @@ export function Navbar() {
         </div>
 
         {/* Mobile Menu Toggle */}
-        <div className="flex md:hidden items-center gap-4">
+        <div className="flex md:hidden items-center gap-2">
+          <ThemeToggle />
           <button
+            ref={menuButtonRef}
+            id="mobile-menu-button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 -mr-2 text-muted-foreground hover:text-foreground relative z-50"
-            aria-label="Menu"
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+            aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            className="flex items-center justify-center w-11 h-11 -mr-2 text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
           >
             {isMenuOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 18 18" /></svg>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>
             )}
           </button>
         </div>
@@ -232,61 +250,40 @@ export function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div className="md:hidden fixed top-16 left-0 right-0 bottom-0 bg-white dark:bg-stone-950 border-t border-border z-[99] overflow-y-auto animate-in slide-in-from-top-2">
-          <div className="p-4 flex flex-col gap-6">
-            <nav className="flex flex-col gap-4">
+        <div
+          id="mobile-menu"
+          className="md:hidden fixed top-16 left-0 right-0 bottom-0 bg-background border-t border-border z-[99] overflow-y-auto overflow-x-hidden animate-in slide-in-from-top-2"
+        >
+          <div className="p-4 flex flex-col gap-5">
+            {/* Primary Navigation */}
+            <nav aria-label="Menú principal" className="flex flex-col gap-1">
               <Link
                 href="/tutorial"
                 onClick={closeMenu}
-                className="text-lg font-medium text-foreground py-2 border-b border-border/40"
+                className="text-base font-medium text-foreground py-3 border-b border-border/40 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
               >
                 {t('tutorial')}
               </Link>
               <Link
                 href="/blog"
                 onClick={closeMenu}
-                className="text-lg font-medium text-foreground py-2 border-b border-border/40"
+                className="text-base font-medium text-foreground py-3 border-b border-border/40 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
               >
                 {t('blog')}
               </Link>
               <Link
                 href="/sobre-nosotros"
                 onClick={closeMenu}
-                className="text-lg font-medium text-foreground py-2 border-b border-border/40"
+                className="text-base font-medium text-foreground py-3 border-b border-border/40 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
               >
                 {t('about')}
               </Link>
-
-              <div className="flex flex-col gap-2">
-                <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t('tools')}</span>
-                <Link
-                  href="/herramientas/calculadora-ahorro"
-                  onClick={closeMenu}
-                  className="pl-4 py-2 text-base text-foreground hover:bg-muted/50 rounded-md"
-                >
-                  {t('toolsSavings')}
-                </Link>
-                <Link
-                  href="/herramientas/regla-50-30-20"
-                  onClick={closeMenu}
-                  className="pl-4 py-2 text-base text-foreground hover:bg-muted/50 rounded-md"
-                >
-                  {t('tools503020')}
-                </Link>
-                <Link
-                  href="/herramientas/calculadora-inflacion"
-                  onClick={closeMenu}
-                  className="pl-4 py-2 text-base text-foreground hover:bg-muted/50 rounded-md"
-                >
-                  {t('toolsInflation')}
-                </Link>
-              </div>
 
               {!isBlog && (
                 <Link
                   href={getHashPath("#features") as any}
                   onClick={closeMenu}
-                  className="text-lg font-medium text-foreground py-2 border-b border-border/40"
+                  className="text-base font-medium text-foreground py-3 border-b border-border/40 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
                 >
                   {t('features')}
                 </Link>
@@ -295,14 +292,41 @@ export function Navbar() {
                 <Link
                   href={getHashPath("#how-it-works") as any}
                   onClick={closeMenu}
-                  className="text-lg font-medium text-foreground py-2 border-b border-border/40"
+                  className="text-base font-medium text-foreground py-3 border-b border-border/40 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
                 >
                   {t('howItWorks')}
                 </Link>
               )}
+
+              {/* Tools group */}
+              <div className="flex flex-col gap-1 border-t border-border/40 pt-3 mt-1">
+                <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest pb-1">{t('tools')}</span>
+                <Link
+                  href="/herramientas/calculadora-ahorro"
+                  onClick={closeMenu}
+                  className="py-3 px-3 text-sm text-foreground hover:bg-muted/50 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
+                >
+                  {t('toolsSavings')}
+                </Link>
+                <Link
+                  href="/herramientas/regla-50-30-20"
+                  onClick={closeMenu}
+                  className="py-3 px-3 text-sm text-foreground hover:bg-muted/50 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
+                >
+                  {t('tools503020')}
+                </Link>
+                <Link
+                  href="/herramientas/calculadora-inflacion"
+                  onClick={closeMenu}
+                  className="py-3 px-3 text-sm text-foreground hover:bg-muted/50 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
+                >
+                  {t('toolsInflation')}
+                </Link>
+              </div>
             </nav>
 
-            <div className="flex flex-col gap-4 mt-4">
+            {/* Account & Language */}
+            <div className="flex flex-col gap-4 border-t border-border/40 pt-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">{t('language')}</span>
                 <LanguageSwitcher />
@@ -316,7 +340,7 @@ export function Navbar() {
                   {t('goToDashboard')}
                 </button>
               ) : (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   <Link
                     href="/login"
                     onClick={closeMenu}

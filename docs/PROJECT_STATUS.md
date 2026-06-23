@@ -13,6 +13,45 @@
 
 ## UIUX Mobile Home — Sprint
 
+### UIUX-MOBILE-NAV-01 — Navbar mobile y menú hamburguesa mejorados
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivo modificado** | `src/components/landing/Navbar.tsx` |
+| **Build** | ✅ Compiled successfully (0 errores TypeScript) |
+| **Tests** | ✅ 506/506 passing |
+| **Desktop dropdown UIUX-12** | ✅ Intacto — no modificado |
+
+**Diagnóstico antes:** Hamburger sin `aria-expanded/aria-controls`, tap target ~40px, sin `focus-visible`. Overlay `bg-white dark:bg-stone-950` hardcoded. Nav links `py-2` (~34px touch target) sin `focus-visible`. Sin Escape handler. Sin ThemeToggle en mobile. Sin separadores visuales entre grupos.
+
+**Cambios aplicados:**
+
+| Área | Cambio |
+|---|---|
+| `menuButtonRef` | Nuevo ref para el botón hamburguesa |
+| Escape useEffect | Cierra menú + devuelve foco al botón al presionar Escape |
+| Hamburger button | `aria-expanded`, `aria-controls="mobile-menu"`, `aria-label` dinámico, `w-11 h-11` (44px), `focus-visible`, `aria-hidden` en SVGs |
+| ThemeToggle | Añadido al header mobile (antes del hamburguesa) — ya no es solo desktop |
+| Overlay | `id="mobile-menu"`, `bg-background` (reemplaza `bg-white dark:bg-stone-950` hardcoded), `overflow-x-hidden` |
+| Nav aria-label | `aria-label="Menú principal"` en `<nav>` del overlay |
+| Main nav links | `py-2 text-lg` → `py-3 text-base` + `hover:text-primary` + `focus-visible:ring-inset` |
+| Hash links | Mismo patrón + `focus-visible` |
+| Tools group | `border-t border-border/40 pt-3 mt-1` como separador visual; label con `tracking-widest`; links `py-3 px-3 hover:bg-muted/50 rounded-md` + `focus-visible` |
+| Bottom section | `border-t border-border/40 pt-4` como separador de grupos |
+| CTA grid | `gap-4` → `gap-3` (menor separación visual entre login/start) |
+
+**Comportamiento resultante en mobile:**
+- Hamburger: Enter/clic abre/cierra; Escape cierra y devuelve foco al botón; focus-visible visible ✓
+- ThemeToggle accesible sin abrir menú ✓
+- Touch targets mínimo 44px en todos los links y botones ✓
+- Grupos visuales claros: nav principal / herramientas / idioma+cuenta ✓
+- Menú completamente fuera del DOM cuando cerrado (no hay elementos accesibles ocultos) ✓
+- Desktop dropdown UIUX-12 intacto ✓
+
+---
+
 ### UIUX-MOBILE-HOME-01 — Auditoría home mobile
 
 | Campo | Detalle |
