@@ -446,6 +446,37 @@ Respuesta en texto plano.
 
 ---
 
+### UIUX-13 — CTA final de artículos refinado
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivo modificado** | `src/app/[locale]/(public)/blog/[slug]/page.tsx` |
+| **Build** | ✅ Compiled successfully (0 errores TypeScript) |
+| **Tests** | ✅ 506/506 passing |
+
+**Diagnóstico antes:** CTA dentro de `<article className="max-w-3xl">`. Constreñido al ancho de lectura (~768px). Padding `px-6 py-10 sm:px-12` limitado. Sin max-width propio en el párrafo de texto.
+
+**Cambios aplicados:**
+
+| Elemento | Antes | Después |
+|---|---|---|
+| Contenedor | Dentro de `<article max-w-3xl>` | Fuera del `<article>`, en `<div max-w-5xl>` propio |
+| Article padding | `py-24` | `pt-24 pb-16` (conserva respiración superior, reduce inferior) |
+| CTA padding horizontal | `px-6 sm:px-12` | `px-8 sm:px-16` |
+| CTA padding vertical | `py-10` | `py-12` |
+| Párrafo CTA | Sin max-width, sin font-light | `mx-auto max-w-md font-light leading-relaxed` |
+| Semántica | CTA dentro de `<article>` (incorrecto) | CTA fuera de `<article>` (correcto — no es contenido editorial) |
+
+**Tokens sin cambio:** `bg-foreground`, `text-background`, `text-background/70`, `bg-background`, `text-foreground`, `hover:opacity-90`, `focus-visible:ring-2 ring-primary/40` — todos conservados de UIUX-08 y UIUX-11.
+
+**Sin tocar:** MDX, metadata, canonical, hreflang, JSON-LD, routing, contenido textual del CTA.
+
+**Próxima tarea recomendada:** Pausa de fase UIUX-INDEXABLE o continuar con UIUX-14 (refinamientos adicionales del blog: índice de artículos, tipografía de prose, o experiencia mobile).
+
+---
+
 ### UIUX-12 — Accesibilidad dropdown de herramientas en Navbar
 
 | Campo | Detalle |

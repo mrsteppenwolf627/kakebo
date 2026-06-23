@@ -75,7 +75,7 @@ export default async function BlogPostPage({ params }: Props) {
         <main className="min-h-screen bg-background text-foreground">
             <Navbar />
 
-            <article className="mx-auto max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
+            <article className="mx-auto max-w-3xl px-4 pt-24 pb-16 sm:px-6 lg:px-8">
                 {/* Header */}
                 <header className="mb-12 text-center">
                     <div className="mb-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
@@ -132,12 +132,15 @@ export default async function BlogPostPage({ params }: Props) {
                     <RelatedPosts slugs={post.frontmatter.related} locale={locale} />
                 )}
 
-                {/* CTA */}
-                <div className="mt-16 rounded-2xl bg-foreground px-6 py-10 text-center text-background sm:px-12">
+            </article>
+
+            {/* CTA */}
+            <div className="mx-auto max-w-5xl px-4 pb-24 sm:px-6 lg:px-8">
+                <div className="rounded-2xl bg-foreground px-8 py-12 text-center text-background sm:px-16">
                     <div className="mb-4 text-2xl font-serif font-bold">
                         {t('cta.title')}
                     </div>
-                    <p className="mb-8 text-background/70">
+                    <p className="mx-auto mb-8 max-w-md text-background/70 font-light leading-relaxed">
                         {t('cta.text')}
                     </p>
                     <Link
@@ -147,7 +150,7 @@ export default async function BlogPostPage({ params }: Props) {
                         {t('cta.button')}
                     </Link>
                 </div>
-            </article>
+            </div>
 
             <Footer />
 
