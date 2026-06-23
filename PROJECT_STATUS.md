@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-23 (UIUX-10)  
-**Último commit:** pendiente push (UIUX-10)  
+**Último commit:** `489fdd2` (UIUX-10)  
 **Rama operativa:** `main`
 
 ---
@@ -22,7 +22,7 @@
 | UIUX-07 | Eliminar widget Product Hunt del footer | `55f0c8d` | ✅ Completado |
 | UIUX-08 | Reemplazar hardcoded colors con tokens semánticos | `d2b0315` | ✅ Completado |
 | UIUX-09 | Activar `.bg-sakura` en sección editorial de la home | `ecda521` | ✅ Completado |
-| UIUX-10 | Añadir diferenciadores visuales a FeatureCards | pendiente push | ✅ Completado |
+| UIUX-10 | Añadir diferenciadores visuales a FeatureCards | `489fdd2` | ✅ Completado |
 | **UIUX-11** | **Refinamientos de hover, CTA, accesibilidad o accent** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
