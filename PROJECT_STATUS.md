@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-23 (UIUX-10)  
-**Último commit:** `489fdd2` (UIUX-10)  
+**Última actualización:** 2026-06-23 (UIUX-11)  
+**Último commit:** pendiente push (UIUX-11)  
 **Rama operativa:** `main`
 
 ---
@@ -23,7 +23,8 @@
 | UIUX-08 | Reemplazar hardcoded colors con tokens semánticos | `d2b0315` | ✅ Completado |
 | UIUX-09 | Activar `.bg-sakura` en sección editorial de la home | `ecda521` | ✅ Completado |
 | UIUX-10 | Añadir diferenciadores visuales a FeatureCards | `489fdd2` | ✅ Completado |
-| **UIUX-11** | **Refinamientos de hover, CTA, accesibilidad o accent** | — | **⬅ SIGUIENTE** |
+| UIUX-11 | Unificar hover y estados interactivos de CTAs públicos | pendiente push | ✅ Completado |
+| **UIUX-12** | **Accesibilidad dropdown herramientas u otros refinamientos** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
 - No iniciar SEO-02 (fondo de emergencia) todavía.

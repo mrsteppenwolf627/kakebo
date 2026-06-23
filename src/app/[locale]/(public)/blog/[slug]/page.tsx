@@ -142,7 +142,7 @@ export default async function BlogPostPage({ params }: Props) {
                     </p>
                     <Link
                         href="/login?mode=signup"
-                        className="inline-block rounded-full bg-background px-8 py-3 text-base font-semibold text-foreground transition-transform hover:scale-105"
+                        className="inline-block rounded-full bg-background px-8 py-3 text-base font-semibold text-foreground transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                     >
                         {t('cta.button')}
                     </Link>

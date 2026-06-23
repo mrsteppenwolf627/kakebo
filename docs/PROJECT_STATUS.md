@@ -446,6 +446,45 @@ Respuesta en texto plano.
 
 ---
 
+### UIUX-11 — Hover y estados interactivos de CTAs unificados
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivos modificados** | `HeroCTA.tsx`, `Hero.tsx`, `Navbar.tsx`, `blog/[slug]/page.tsx`, `SavingsSimulator.tsx` |
+| **Build** | ✅ Compiled successfully (0 errores TypeScript) |
+| **Tests** | ✅ 506/506 passing |
+
+**Regla de interacción definida:**
+
+| Tipo | Patrón hover | Focus-visible |
+|---|---|---|
+| CTA primario (`bg-primary`) | `transition-colors hover:bg-primary/90` | `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background` |
+| CTA primario invertido (`bg-foreground`) | `transition-colors hover:bg-foreground/90` | ídem |
+| CTA secundario (outlined) | `transition-colors hover:border-primary/40` | ídem |
+| Link editorial | `hover:underline` | sin cambio |
+| Link navegación | `transition-colors hover:text-foreground` | sin cambio |
+
+**Cambios aplicados:**
+
+| Archivo | CTA | Cambio |
+|---|---|---|
+| `HeroCTA.tsx` | Empezar gratis / Dashboard | `stone-900/stone-100` hardcoded → `bg-foreground text-background`; `transition-opacity hover:opacity-90` → `transition-colors hover:bg-foreground/90`; añadido focus-visible |
+| `Hero.tsx` | CTA secundario (#features) | `hover:border-foreground` → `hover:border-primary/40`; añadido focus-visible |
+| `Navbar.tsx` desktop | Login link, Start, Dashboard | Añadido focus-visible a los 3 CTAs existentes |
+| `Navbar.tsx` mobile | Login, Start, Dashboard | Añadido hover (`hover:border-primary/40`, `hover:bg-primary/90`) + focus-visible a los 3 CTAs |
+| `blog/[slug]/page.tsx` | Botón "Empieza gratis" en CTA | `transition-transform hover:scale-105` → `transition-colors hover:opacity-90`; añadido focus-visible |
+| `SavingsSimulator.tsx` | CTA signup | `focus-visible:ring-1 focus-visible:ring-ring` → `focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background` |
+
+**Sin cambios (ya consistentes):** Footer links (`hover:text-foreground` ✓), blog/page.tsx editorial links (`hover:underline` ✓), Navbar desktop nav links (`hover:text-foreground` ✓), blog card hovers (son contenedores, no CTAs).
+
+**Excepción justificada:** `hover:scale-105` en imágenes de blog/page.tsx — es efecto sobre la imagen, no sobre un CTA. No se toca.
+
+**Próxima tarea recomendada:** UIUX-12 — Ver candidatos UIUX-11a a 15 de la auditoría (accesibilidad del dropdown de herramientas, refinamientos de blog o accent).
+
+---
+
 ### UIUX-10 — Diferenciadores visuales en FeatureCards
 
 | Campo | Detalle |

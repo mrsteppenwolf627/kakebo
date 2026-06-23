@@ -51,7 +51,7 @@ export function HeroCTA({ label = "Empieza gratis" }: HeroCTAProps) {
 
     if (loading) {
         return (
-            <div className="w-[140px] h-[58px] bg-stone-900/5 dark:bg-stone-100/5 animate-pulse rounded-sm" />
+            <div className="w-[140px] h-[58px] bg-foreground/5 animate-pulse rounded-sm" />
         );
     }
 
@@ -60,7 +60,7 @@ export function HeroCTA({ label = "Empieza gratis" }: HeroCTAProps) {
             <Link
                 href="/app"
                 onClick={handleDashboardClick}
-                className="inline-flex items-center justify-center border border-stone-900 bg-stone-900 dark:bg-stone-100 dark:text-stone-900 dark:border-stone-100 px-8 py-4 text-base font-normal text-white transition-opacity hover:opacity-90"
+                className="inline-flex items-center justify-center border border-foreground bg-foreground text-background px-8 py-4 text-base font-normal transition-colors hover:bg-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
             >
                 {t('goToDashboard')}
             </Link>
@@ -70,7 +70,7 @@ export function HeroCTA({ label = "Empieza gratis" }: HeroCTAProps) {
     return (
         <Link
             href="/login"
-            className="inline-flex items-center justify-center border border-stone-900 bg-stone-900 dark:bg-stone-100 dark:text-stone-900 dark:border-stone-100 px-8 py-4 text-base font-normal text-white transition-opacity hover:opacity-90"
+            className="inline-flex items-center justify-center border border-foreground bg-foreground text-background px-8 py-4 text-base font-normal transition-colors hover:bg-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
         >
             {label}
         </Link>

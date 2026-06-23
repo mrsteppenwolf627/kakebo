@@ -31,7 +31,7 @@ export function Hero() {
 
           <Link
             href="#features"
-            className="inline-flex items-center justify-center border border-border bg-card px-8 py-4 text-base font-normal text-foreground transition-colors hover:border-foreground"
+            className="inline-flex items-center justify-center border border-border bg-card px-8 py-4 text-base font-normal text-foreground transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
           >
             {t("ctaSecondary")}
           </Link>

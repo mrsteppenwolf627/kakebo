@@ -154,7 +154,7 @@ export function Navbar() {
             <Link
               href="/app"
               onClick={handleDashboardClick}
-              className="inline-flex items-center px-4 py-1.5 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm font-medium"
+              className="inline-flex items-center px-4 py-1.5 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
             >
               {t('goToDashboard')}
             </Link>
@@ -162,13 +162,13 @@ export function Navbar() {
             <>
               <Link
                 href="/login"
-                className="hidden sm:inline-flex items-center px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground font-medium transition-colors"
+                className="hidden sm:inline-flex items-center px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
               >
                 {t('login')}
               </Link>
               <Link
                 href="/login"
-                className="inline-flex items-center px-4 py-1.5 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm font-medium"
+                className="inline-flex items-center px-4 py-1.5 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
               >
                 {t('start')}
               </Link>
@@ -273,7 +273,7 @@ export function Navbar() {
               {session ? (
                 <button
                   onClick={handleDashboardClick}
-                  className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md shadow-sm text-center"
+                  className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md shadow-sm text-center transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                 >
                   {t('goToDashboard')}
                 </button>
@@ -282,14 +282,14 @@ export function Navbar() {
                   <Link
                     href="/login"
                     onClick={closeMenu}
-                    className="flex items-center justify-center py-3 border border-border bg-background text-foreground font-medium rounded-md"
+                    className="flex items-center justify-center py-3 border border-border bg-background text-foreground font-medium rounded-md transition-colors hover:border-primary/40 hover:bg-muted/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                   >
                     {t('login')}
                   </Link>
                   <Link
                     href="/login"
                     onClick={closeMenu}
-                    className="flex items-center justify-center py-3 bg-primary text-primary-foreground font-medium rounded-md shadow-sm"
+                    className="flex items-center justify-center py-3 bg-primary text-primary-foreground font-medium rounded-md shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                   >
                     {t('start')}
                   </Link>

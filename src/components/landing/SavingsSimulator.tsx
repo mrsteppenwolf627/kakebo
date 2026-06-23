@@ -67,7 +67,7 @@ export function SavingsSimulator() {
 
                     <Link
                         href="/login?mode=signup"
-                        className="inline-flex w-full sm:w-auto items-center justify-center rounded-lg bg-primary px-8 py-3 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        className="inline-flex w-full sm:w-auto items-center justify-center rounded-lg bg-primary px-8 py-3 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                     >
                         {t("cta")}
                     </Link>
