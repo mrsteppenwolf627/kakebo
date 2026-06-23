@@ -446,6 +446,35 @@ Respuesta en texto plano.
 
 ---
 
+### UIUX-10 — Diferenciadores visuales en FeatureCards
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivo modificado** | `src/components/landing/Features.tsx` |
+| **Build** | ✅ Compiled successfully (0 errores TypeScript) |
+| **Tests** | ✅ 506/506 passing |
+
+**Cambio aplicado:**
+
+Añadido icono lineal de `lucide-react` a cada FeatureCard. Contenedor `rounded-xl bg-primary/10 text-primary h-10 w-10` encima del título.
+
+| Card | Icono elegido | Justificación |
+|---|---|---|
+| Registro Manual Consciente | `PenLine` | Escritura manual — metáfora directa del acto de anotar |
+| Control de Fijos | `Receipt` | Recibo/factura — metáfora directa de gastos fijos |
+| Sin Conexión Bancaria | `ShieldCheck` | Escudo con check — privacidad y seguridad |
+| Coach Financiero IA | `Sparkles` | Inteligencia sutil — no tech-infantil, sí editorial |
+
+**Solución técnica:** `icon: ReactNode` como prop en `FeatureCardProps`. `import type { ReactNode } from "react"`. No se cambió el grid 2×2, el max-width, ni ninguna otra sección.
+
+**Compatibilidad modo claro/oscuro:** `bg-primary/10` usa el token `primary` del design system (#cf5c5c / #f87171) con 10% de opacidad — sutil terracota que funciona en ambos modos. `text-primary` aplica el mismo token al icono.
+
+**Próxima tarea recomendada:** UIUX-11 — Refinamientos de hover, CTA, accesibilidad, blog o accent (ver lista de candidatos en auditoría UIUX-INDEXABLE-01).
+
+---
+
 ### UIUX-09 — bg-sakura activado en sección editorial de la home
 
 | Campo | Detalle |
