@@ -11,6 +11,50 @@
 
 ---
 
+## UIUX Mobile Home — Sprint
+
+### UIUX-MOBILE-HOME-01 — Auditoría home mobile
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado (solo auditoría — sin cambios de código) |
+| **Código modificado** | Ninguno |
+
+**Problemas críticos detectados:**
+
+| ID | Componente | Problema |
+|---|---|---|
+| C-1 | `AlternativesSection.tsx` | Tabla 4 columnas `whitespace-nowrap` sin `overflow-x-auto`. Con `overflow-x-hidden` en `<main>`, la columna "Apps" es invisible en 360-390px. |
+| C-2 | `Hero.tsx` | `text-5xl` (48px) sin escala mobile. En 360px produce 4-6 líneas por título y domina demasiado el fold. |
+
+**Problemas importantes detectados:**
+
+| ID | Componente | Problema |
+|---|---|---|
+| I-1 | Features/HowItWorks/Testimonials/Alternatives/FAQ | `py-24` sin reducción mobile → página excesivamente larga en mobile |
+| I-2 | `Hero.tsx` Stats Card | `mt-20 p-8 sm:p-12` → pushea mucho contenido al fondo del Hero |
+| I-3 | `Testimonials.tsx` | 6 cards columna única en mobile (< 640px) → sección ~1400px de alto |
+| I-4 | `HowItWorks.tsx` | `mb-16` en header + `text-lg` en descripción → innecesariamente pesado en mobile |
+| I-5 | `SavingsSimulator.tsx` | `px-6` vs `px-4` estándar → leve inconsistencia |
+
+**Problemas secundarios:** H2 `text-4xl` en secciones (aceptable), PH badge width fija 250px, `p-8` SEO categories en mobile.
+
+**Tareas priorizadas:**
+
+| Tarea | Prioridad | Archivo |
+|---|---|---|
+| UIUX-MOBILE-HOME-02 | Crítico | AlternativesSection.tsx |
+| UIUX-MOBILE-HOME-03 | Crítico | Hero.tsx |
+| UIUX-MOBILE-HOME-04 | Importante | Features/HowItWorks/Testimonials/FAQ/Alternatives |
+| UIUX-MOBILE-HOME-05 | Importante | Hero.tsx (Stats Card) |
+| UIUX-MOBILE-HOME-06 | Importante | HowItWorks.tsx |
+| UIUX-MOBILE-HOME-07 | Importante | Testimonials.tsx |
+
+**Riesgo técnico principal:** `overflow-x-hidden` en `<main>` (page.tsx) puede entrar en conflicto con `overflow-x-auto` en AlternativesSection. Hay que aislar el fix.
+
+---
+
 ## SEO Sprint P0 — Completado
 
 ### P0.2 — Canonicals y hreflang del blog
