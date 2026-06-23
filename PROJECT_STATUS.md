@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-23 (UIUX-14)  
-**Último commit:** pendiente push (UIUX-14)  
+**Último commit:** `d238358` (UIUX-14)  
 **Rama operativa:** `main`
 
 ---
@@ -26,7 +26,7 @@
 | UIUX-11 | Unificar hover y estados interactivos de CTAs públicos | `f5c8e70` | ✅ Completado |
 | UIUX-12 | Accesibilidad dropdown herramientas Navbar | `ce641fa` | ✅ Completado |
 | UIUX-13 | Refinar CTA final de artículos del blog | `626e480` | ✅ Completado |
-| UIUX-14 | Refinar índice del blog | pendiente push | ✅ Completado |
+| UIUX-14 | Refinar índice del blog | `d238358` | ✅ Completado |
 | **UIUX-15** | **Pausa o refinamientos de mobile/accesibilidad** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
