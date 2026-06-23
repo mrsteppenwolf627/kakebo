@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-23 (UIUX-09)  
-**Último commit:** pendiente push (UIUX-09)  
+**Último commit:** `ecda521` (UIUX-09)  
 **Rama operativa:** `main`
 
 ---
@@ -21,7 +21,7 @@
 | UIUX-06 | Atribución editorial sobria en Testimonials — emojis → monograma serif | `ef049e4` | ✅ Completado |
 | UIUX-07 | Eliminar widget Product Hunt del footer | `55f0c8d` | ✅ Completado |
 | UIUX-08 | Reemplazar hardcoded colors con tokens semánticos | `d2b0315` | ✅ Completado |
-| UIUX-09 | Activar `.bg-sakura` en sección editorial de la home | pendiente push | ✅ Completado |
+| UIUX-09 | Activar `.bg-sakura` en sección editorial de la home | `ecda521` | ✅ Completado |
 | **UIUX-10** | **Añadir diferenciadores visuales a FeatureCards** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
