@@ -1,40 +1,81 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-23 (UIUX-MOBILE-HOME-04)  
-**Último commit:** `a0da677` (UIUX-MOBILE-HOME-04)  
+**Última actualización:** 2026-06-24 (DOC-FRONTEND-CLOSE-01)  
+**Último commit aceptado:** `b924649` (UIUX-GLOBAL-MOBILE-PREMIUM-01)  
 **Rama operativa:** `main`
 
 ---
 
-## Estado actual del proyecto (2026-06-22)
+## ✅ Capítulo Frontend Público/Indexable — CERRADO
+
+**Fecha de cierre:** 2026-06-24  
+**Aceptado por usuario:** sí, provisionalmente  
+**Último commit del capítulo:** `b924649` — UIUX: harden premium visual system for mobile
+
+El capítulo frontend público/indexable queda cerrado. No se harán más cambios visuales amplios sin una auditoría o incidencia concreta. Si en revisión visual futura aparece un problema concreto, se abrirá como tarea UIUX puntual.
+
+### Áreas cerradas y aceptadas
+
+| Área | Estado |
+|---|---|
+| Sistema visual premium global (tokens semánticos, MDXComponents, tailwind.config) | ✅ Cerrado |
+| Componentes MDX reutilizables (ToolCTA, SimpleCTA, ArticleCTA, DownloadCTA, HorizontalRule, Callout, Blockquote, FaqSection) | ✅ Cerrado |
+| Migración de 13 artículos .es.mdx — CTAs y bloques legacy → componentes | ✅ Cerrado |
+| Home pública (Hero, Features, HowItWorks, Testimonials, SavingsSimulator, AlternativesSection, FAQ, ToolsSection, SeoContent) | ✅ Cerrado |
+| Blog index (/blog) — featured card + grid + separador editorial | ✅ Cerrado |
+| Artículo individual (/blog/[slug]) — header editorial, prose refinada, H2/H3/HR, tablas, CTAs | ✅ Cerrado |
+| Navbar pública (desktop + mobile, dropdown herramientas, contexto blog) | ✅ Cerrado |
+| Mobile 360/390/430px — CTAs, spacing, tablas, Hero, HowItWorks | ✅ Cerrado |
+| Dark mode — tokens semánticos en todos los componentes públicos | ✅ Cerrado |
+| Analytics GA4 (MED-01) + CSP (MED-02) | ✅ Cerrado |
+| Reglas visuales documentadas para futuros artículos (INSTRUCCIONES.md Regla #8 + tabla MDXComponents) | ✅ Cerrado |
+
+### Historial de tareas completadas (capítulo frontend)
+
+| Tarea | Descripción | Commit |
+|---|---|---|
+| SEO-PILAR-01 | Artículo pilar "Cómo hacer un presupuesto personal" | `38c22ae` |
+| DOC-I18N-01 | Política SEO de idiomas | `4b5ea7f` |
+| CHECK-I18N-ROUTING-01 | Bug Accept-Language corregido | `5656eef` |
+| UIUX-02 a UIUX-14 | Sprint UI/UX completo (max-width, navbar, features, tipografía, testimonials, PH, tokens, sakura, featurecards, hover, a11y, blog CTA, blog index) | `bfde77e`..`d238358` |
+| UIUX-MOBILE-NAV-01 | Navbar mobile + hamburguesa | `770b52c` |
+| UIUX-MOBILE-HOME-02–04 | AlternativesSection, Hero H1, py-24 → py-16 en 5 secciones | `1162a97`..`a0da677` |
+| MED-01 | GA4 integrado | `3a1777b` |
+| MED-02 | CSP actualizada para GA4 | `7a08d3d` |
+| UIUX-BLOG-PROSE-01 | Tipografía y MDXComponents base | `43269b6` |
+| UIUX-PREMIUM-ARTICLE-01 | HorizontalRule, ToolCTA, ArticleCTA, página de artículo premium | `d3ea3cf` |
+| UIUX-GLOBAL-PREMIUM-01 | SimpleCTA, DownloadCTA, migración 13 MDX, ToolsSection | `5376fda` |
+| UIUX-GLOBAL-MOBILE-PREMIUM-01 | Mobile: overflow fix CTAs, HowItWorks, ToolsSection | `b924649` |
+
+---
+
+## 🔜 Siguiente bloque — SEO
+
+### SEO-DATA-PRIORITY-01 — Priorizar oportunidades según Search Console
+
+**Estado:** Pendiente de inicio  
+**Prerequisito:** Datos de Search Console actualizados para el dominio metodokakebo.com  
+**Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
+
+**No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## Estado actual del proyecto (2026-06-24)
 
 | Tarea | Descripción | Commit | Estado |
 |---|---|---|---|
-| SEO-PILAR-01 | Artículo pilar "Cómo hacer un presupuesto personal" publicado en ES | `38c22ae` | ✅ Completado |
-| DOC-I18N-01 | Política SEO de idiomas documentada — solo español para contenido nuevo | `4b5ea7f` | ✅ Completado |
-| CHECK-I18N-ROUTING-01 | Bug `Accept-Language` redirect corregido (`localeDetection: false`) | `5656eef` | ✅ Completado |
-| UIUX-INDEXABLE-01 | Auditoría visual y UX de páginas públicas indexables | — | ✅ Completado |
-| UIUX-02 | Estandarizar max-width parte pública | `bfde77e`..`980315a` | ✅ Completado |
-| UIUX-03 | Contextualizar Navbar en blog | `27bfcad` | ✅ Completado |
-| UIUX-04 | Features grid equilibrado (2×2) | `f7ba07f` | ✅ Completado |
-| UIUX-05 | Unificar tipografía H2 de sección (font-serif font-normal) | `827c5c6` | ✅ Completado |
-| UIUX-06 | Atribución editorial sobria en Testimonials — emojis → monograma serif | `ef049e4` | ✅ Completado |
-| UIUX-07 | Eliminar widget Product Hunt del footer | `55f0c8d` | ✅ Completado |
-| UIUX-08 | Reemplazar hardcoded colors con tokens semánticos | `d2b0315` | ✅ Completado |
-| UIUX-09 | Activar `.bg-sakura` en sección editorial de la home | `ecda521` | ✅ Completado |
-| UIUX-10 | Añadir diferenciadores visuales a FeatureCards | `489fdd2` | ✅ Completado |
-| UIUX-11 | Unificar hover y estados interactivos de CTAs públicos | `f5c8e70` | ✅ Completado |
-| UIUX-12 | Accesibilidad dropdown herramientas Navbar | `ce641fa` | ✅ Completado |
-| UIUX-13 | Refinar CTA final de artículos del blog | `626e480` | ✅ Completado |
-| UIUX-14 | Refinar índice del blog | `d238358` | ✅ Completado |
-| UIUX-MOBILE-NAV-01 | Navbar mobile y menú hamburguesa mejorado | `770b52c` | ✅ Completado |
-| UIUX-MOBILE-HOME-02 | AlternativesSection overflow fix (tabla mobile) | `1162a97` | ✅ Completado |
-| UIUX-MOBILE-HOME-03 | Hero H1 escala mobile (text-5xl → text-4xl base) | `54038ae` | ✅ Completado |
-| UIUX-MOBILE-HOME-04 | Reducir py-24 → py-16 sm:py-24 en 5 secciones | `a0da677` | ✅ Completado |
-| **UIUX-MOBILE-HOME-05** | **Hero Stats Card: reducir mt-20 y padding mobile** | — | **⬅ SIGUIENTE** |
+| SEO-PILAR-01 | Artículo pilar cluster Presupuesto Personal | `38c22ae` | ✅ Completado |
+| DOC-I18N-01 | Política SEO de idiomas documentada | `4b5ea7f` | ✅ Completado |
+| CHECK-I18N-ROUTING-01 | Bug `Accept-Language` corregido | `5656eef` | ✅ Completado |
+| UIUX-02 a 14 + MOBILE | Sprint UI/UX y mobile completo | `bfde77e`..`a0da677` | ✅ Completado |
+| MED-01 + MED-02 | GA4 + CSP | `3a1777b`..`7a08d3d` | ✅ Completado |
+| UIUX-BLOG-PROSE-01 + PREMIUM + GLOBAL | Sistema premium de artículos + global + mobile | `43269b6`..`b924649` | ✅ Completado |
+| **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
-- No iniciar SEO-02 (fondo de emergencia) todavía.
+- No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).
+- No hacer más cambios frontend amplios sin incidencia concreta.
 - No tocar herramienta interna/dashboard.
 - No tocar routing/i18n/hreflang/sitemap/middleware.
 - No añadir imágenes ni avatares externos.

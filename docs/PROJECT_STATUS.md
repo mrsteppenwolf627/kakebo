@@ -1,13 +1,78 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-22 (UIUX-DIRECCIÓN-01)  
+**Última actualización:** 2026-06-24 (DOC-FRONTEND-CLOSE-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
-> Este documento es la fuente de verdad del SEO Sprint P0, UI Sprint 1 y SEO Sprint 2.
+> Este documento es la fuente de verdad del SEO Sprint P0, UI Sprint 1, SEO Sprint 2 y el capítulo frontend público/indexable.
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ DOC-FRONTEND-CLOSE-01 — Cierre del capítulo frontend público/indexable
+
+| Campo | Detalle |
+|---|---|
+| **Fecha de cierre** | 2026-06-24 |
+| **Aceptado por usuario** | Sí, provisionalmente |
+| **Último commit del capítulo** | `b924649` — UIUX: harden premium visual system for mobile (UIUX-GLOBAL-MOBILE-PREMIUM-01) |
+| **Siguiente bloque** | SEO-DATA-PRIORITY-01 |
+
+### Qué queda cerrado y aceptado
+
+El capítulo frontend público/indexable cubre todas las zonas públicas de MetodoKakebo.com. No se harán más cambios visuales amplios sin incidencia concreta. Si aparece un problema específico en revisión visual, se abrirá una tarea UIUX puntual.
+
+**Sistema visual de base:**
+- `tailwind.config.ts` typography — H2 (border-bottom), H3 (accent bar primary), HR, blockquote, links, code, listas
+- `MDXComponents.tsx` — todos los elementos MDX con tokens semánticos: Table (overflow-x-auto), TableHead/Row/Header/Cell, Blockquote, Callout, RoundedImage, HorizontalRule, FaqSection/FaqItem, CustomLink
+- `globals.css` — paleta ZEN/wabi-sabi en tokens semánticos completos para claro y oscuro
+
+**Componentes MDX reutilizables (sistema completo para futuros artículos):**
+
+| Componente | Prop(s) | Uso |
+|---|---|---|
+| `<SimpleCTA>` | `href`, `cta` | CTA centrado general (fin de artículo) |
+| `<ToolCTA>` | `title`, `description`, `href`, `cta` | CTA de herramienta interna con card primary |
+| `<ArticleCTA>` | `href`, `cta`, children | CTA editorial de cierre (bg-foreground invertido) |
+| `<DownloadCTA>` | `href`, `cta` | Botón de descarga de archivo |
+| `<HorizontalRule>` | — | Override de `---` con tres puntos decorativos |
+| `<Callout>` | `emoji?`, children | Bloque destacado informativo |
+| `<FaqSection>` + `<FaqItem>` | `question` en FaqItem | Sección FAQ estructurada |
+| `<Blockquote>` | — | Override de `>` en markdown |
+| Tablas markdown | — | Sistema automático con overflow-x-auto |
+
+**Reglas activas (documentadas en INSTRUCCIONES.md Regla #8):**
+- No usar `<div className="...stone-...">` en MDX
+- No usar `href="/es/..."` en links de MDX — siempre rutas sin prefijo
+- Todo patrón visual nuevo debe implementarse como componente del sistema
+
+**Landing pública (home) cerrada:**
+- Hero, Features, HowItWorks, Testimonials, SavingsSimulator, AlternativesSection, FAQ, ToolsSection, SeoContent, Footer — todos en tokens semánticos
+- Mobile: `py-16 sm:py-24` en todas las secciones, Hero H1 `text-4xl sm:...`, AlternativesSection `overflow-x-auto`, Navbar hamburguesa
+
+**Blog index (/blog):** Featured card + grid 3-col + separador editorial — cerrado
+
+**Artículo individual (/blog/[slug]):** Header con eyebrow, separator, prose refinada, H2/H3/HR editoriales, tablas responsive, todos los CTAs MDX mobile-safe — cerrado
+
+**Analytics:** GA4 (MED-01 `3a1777b`) + CSP (MED-02 `7a08d3d`) — activos en producción. Variable de entorno `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-MTB27GMP8M` requiere estar configurada en Vercel.
+
+**Artículos MDX migrados al sistema (13):**
+`ahorro-pareja`, `alternativas-a-app-bancarias`, `como-ahorrar-dinero-cada-mes`, `eliminar-gastos-hormiga`, `kakebo-online-gratis`, `kakebo-sueldo-minimo`, `kakebo-vs-ynab`, `libro-kakebo-pdf`, `metodo-kakebo-para-autonomos`, `peligros-apps-ahorro-automatico`, `plantilla-kakebo-excel`, `regla-30-dias`, `kakebo-online-guia-completa`
+
+**Artículos sin bloques legacy pendientes** (ya tenían componentes o no tenían bloques raw): `metodo-kakebo-guia-definitiva`, `ahorro-pareja`, `como-hacer-un-presupuesto-personal` (migrado en UIUX-PREMIUM-ARTICLE-01)
+
+### Qué queda fuera del capítulo frontend (pendiente SEO)
+
+- SEO-2.3C (enlaces P2 opcionales)
+- SEO-2.4 (resolución de canibalizaciones — requiere Search Console)
+- Content Sprint 1 (nuevos artículos)
+- SEO-DATA-PRIORITY-01 (análisis de Search Console → definir SEO Sprint 3)
+
+### Nota para el próximo agente
+
+El frontend está en buen estado. No toques componentes visuales, MDX de artículos ni estilos globales sin una razón concreta documentada como tarea UIUX. El siguiente trabajo es SEO puro: analizar datos de Search Console y actuar sobre oportunidades concretas.
 
 ---
 
