@@ -96,6 +96,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
 import { CookieBanner } from "@/components/landing";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
@@ -123,6 +124,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${inter.variable} ${playfair.variable} overflow-x-hidden`} suppressHydrationWarning>
       <body className={`font-sans overflow-x-hidden max-w-[100vw] bg-sakura text-stone-900 dark:bg-stone-950 dark:text-stone-100 transition-colors duration-300 antialiased`}>
+        <GoogleAnalytics />
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider
             attribute="class"

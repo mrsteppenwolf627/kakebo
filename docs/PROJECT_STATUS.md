@@ -591,6 +591,38 @@ Respuesta en texto plano.
 
 **Siguiente en esta fase:** acordar dirección estética con el usuario (Etapa 2) antes de iniciar implementación (Etapa 3).
 
+### UIUX-08 — Colores hardcoded reemplazados por tokens semánticos
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-23 |
+| **Estado** | ✅ Completado |
+| **Archivos** | `HowItWorks.tsx` · `Testimonials.tsx` · `blog/[slug]/page.tsx` |
+| **Build** | ✅ Compiled successfully |
+| **Tests** | ✅ 506/506 |
+
+**Colores hardcoded encontrados y reemplazados (DA-12-D7):**
+
+| Archivo | Antes | Después | Justificación |
+|---|---|---|---|
+| `HowItWorks.tsx` L109 | `text-green-600 dark:text-green-400` | `text-primary` | Income destacado con el color de marca — editorial, no semáforo |
+| `HowItWorks.tsx` L113/117 | `text-red-600 dark:text-red-400` | `text-muted-foreground` | Gastos subdued — el signo `-` ya comunica negativo |
+| `Testimonials.tsx` L18 | `bg-stone-50 dark:bg-stone-900/50` | `bg-muted/30` | Token semántico · mismo sistema que HowItWorks background |
+| `Testimonials.tsx` L41 | `bg-stone-100 dark:bg-stone-800` | `bg-muted` | Token semántico · correcto en claro y oscuro |
+| `blog/[slug]/page.tsx` L136 | `bg-stone-900 text-white` | `bg-foreground text-background` | Par semántico invertido — funciona en ambos modos |
+| `blog/[slug]/page.tsx` L140 | `text-stone-300` | `text-background/70` | 70% opacity sobre foreground — contraste correcto en ambos modos |
+| `blog/[slug]/page.tsx` L145 | `bg-white text-stone-900` | `bg-background text-foreground` | Par semántico directo |
+
+**Colores hardcoded fuera del scope no tocados (con justificación):**
+- `Navbar.tsx`: `bg-white dark:bg-stone-950` — backdrop blur del navbar, comportamiento específico · fuera de scope explícito
+- `HeroCTA.tsx`: `bg-stone-900 dark:bg-stone-100` — bloque CTA del Hero · fuera de scope explícito
+- `ToolsSection.tsx`: hover states `hover:border-red-600 group-hover:bg-red-600` — motion interactivo · scope excluye "motion/hover general"
+- `CalculatorInflation.tsx`: `text-red-500 text-red-600` sobre resultado de inflación — semántico real (inflación = pérdida) · rediseño excede scope
+- `SavingsCalculator.tsx`: `bg-stone-900` interior de tarjeta de resultados · rediseño de componente complejo excede scope
+- `sobre-nosotros/page.tsx` · `herramientas/page.tsx`: no estaban en los hallazgos de UIUX-INDEXABLE-01
+
+---
+
 ### UIUX-07 — Widget Product Hunt eliminado del footer
 
 | Campo | Detalle |
@@ -1061,6 +1093,29 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 | `/blog/...` con `Accept-Language: es` | Español ✅ | Español ✅ |
 | `/blog/...` con `Accept-Language: en` | Redirect → `/en/blog/...` ❌ | Español ✅ |
 | `/en/blog/...` | Inglés ✅ | Inglés ✅ |
+
+---
+
+## Analytics
+
+### MED-01 — Integración Google Analytics 4
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-24 |
+| **Estado** | ✅ Completado |
+| **Measurement ID** | `G-MTB27GMP8M` |
+| **Archivos** | `src/components/analytics/GoogleAnalytics.tsx` (nuevo) · `src/app/[locale]/layout.tsx` · `.env.local` |
+| **Build** | ✅ Compiled successfully · 0 errores · 29/29 páginas estáticas |
+
+**Implementación:**
+- Componente `GoogleAnalytics` en `src/components/analytics/GoogleAnalytics.tsx` usando `next/script` con `strategy="afterInteractive"`.
+- El componente retorna `null` si `NEXT_PUBLIC_GA_MEASUREMENT_ID` no está definido (safe guard para entornos sin la variable).
+- Importado en `src/app/[locale]/layout.tsx` como primer elemento del `<body>`, antes de los providers.
+- Variable añadida a `.env.local`: `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-MTB27GMP8M`.
+- Sin tocar: SEO metadata, canonicals, hreflang, sitemap, robots, UI, contenido del blog.
+
+**Añadir en Vercel (producción):** `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-MTB27GMP8M` en Environment Variables del proyecto.
 
 ---
 
