@@ -35,45 +35,45 @@ function CustomLink(props: any) {
 }
 
 function RoundedImage(props: any) {
-    return <img alt={props.alt || "Blog image"} className="rounded-xl border border-stone-200 shadow-sm my-8 w-full h-auto object-cover" {...props} />;
+    return <img alt={props.alt || "Blog image"} className="rounded-xl border border-border my-8 w-full h-auto object-cover" {...props} />;
 }
 
 function Callout(props: any) {
     return (
-        <div className="flex gap-4 p-4 my-8 bg-stone-50 border border-stone-200 rounded-xl text-stone-700">
-            {props.emoji && <div className="text-xl select-none">{props.emoji}</div>}
-            <div className="flex-1">{props.children}</div>
+        <div className="flex gap-4 p-5 my-8 bg-muted/30 border border-border rounded-xl text-foreground not-prose">
+            {props.emoji && <div className="text-xl select-none shrink-0 mt-0.5">{props.emoji}</div>}
+            <div className="flex-1 text-sm leading-relaxed text-muted-foreground [&_strong]:text-foreground [&_strong]:font-semibold">{props.children}</div>
         </div>
     );
 }
 
 function Table(props: any) {
     return (
-        <div className="my-8 w-full overflow-y-auto rounded-xl border border-stone-200 shadow-sm">
+        <div className="my-8 w-full overflow-x-auto rounded-xl border border-border">
             <table className="w-full text-sm" {...props} />
         </div>
     );
 }
 
 function TableHead(props: any) {
-    return <thead className="bg-stone-50 text-stone-900 font-serif border-b border-stone-200" {...props} />;
+    return <thead className="bg-muted/50 text-foreground font-serif border-b border-border" {...props} />;
 }
 
 function TableRow(props: any) {
-    return <tr className="border-b border-stone-100 last:border-0 hover:bg-stone-50/50 transition-colors" {...props} />;
+    return <tr className="border-b border-border/60 last:border-0 hover:bg-muted/30 transition-colors" {...props} />;
 }
 
 function TableHeader(props: any) {
-    return <th className="px-4 py-3 text-left font-medium align-middle [&:has([role=checkbox])]:pr-0" {...props} />;
+    return <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide align-middle [&:has([role=checkbox])]:pr-0" {...props} />;
 }
 
 function TableCell(props: any) {
-    return <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0" {...props} />;
+    return <td className="px-4 py-3 align-middle [&:has([role=checkbox])]:pr-0" {...props} />;
 }
 
 function Blockquote(props: any) {
     return (
-        <blockquote className="my-8 border-l-4 border-primary pl-6 italic text-stone-600 bg-stone-50/50 py-4 pr-4 rounded-r-xl" {...props} />
+        <blockquote className="not-prose my-8 border-l-[3px] border-primary pl-5 py-3 pr-4 bg-muted/20 rounded-r-lg text-muted-foreground text-base leading-relaxed" {...props} />
     );
 }
 

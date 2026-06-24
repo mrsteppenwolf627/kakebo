@@ -1096,6 +1096,64 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 
 ---
 
+## UI/UX Blog — Artículos
+
+### UIUX-BLOG-PROSE-01 — Tipografía y elementos editoriales de artículos MDX
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-24 |
+| **Estado** | ✅ Completado |
+| **Archivos** | `src/components/mdx/MDXComponents.tsx` · `src/app/[locale]/(public)/blog/[slug]/page.tsx` · `tailwind.config.ts` |
+| **Build** | ✅ Compiled successfully · 0 errores · 29/29 páginas |
+| **Tests** | ✅ 506/506 |
+| **MDX tocado** | ❌ Ningún archivo .mdx modificado |
+| **SEO/routing tocado** | ❌ No |
+
+**Diagnóstico previo:**
+- `prose-stone` en el contenedor hardcodeaba la paleta stone en lugar de tokens semánticos
+- `MDXComponents.tsx` tenía 9+ valores `stone-*`/`stone-*` hardcodeados (rompe dark mode y viola DA-12-D7)
+- `Table`: usaba `overflow-y-auto` en lugar de `overflow-x-auto` (bug scroll horizontal en mobile)
+- `tailwind.config.ts` sin configuración editorial para H2, H3, HR, listas
+- `Blockquote` hardcodeado en stone-600 / stone-50
+
+**Cambios en `tailwind.config.ts` — sección `typography.DEFAULT.css`:**
+
+| Elemento | Cambio |
+|---|---|
+| `a` | `color: var(--primary)` + `text-underline-offset: 4px` + `color-mix` para decoración suave |
+| `h2` | `border-bottom: 1px solid var(--border)` + `padding-bottom: 0.5rem` + `margin-top: 2.75rem` |
+| `h3` | `margin-top: 2rem` + `margin-bottom: 0.625rem` |
+| `ul/ol > li` | `margin-bottom: 0.35rem` (mejor ritmo de lista) |
+| `hr` | `border-color: var(--border)` + márgenes `2.5rem` |
+| `blockquote` | `border-left-color: var(--primary)` + `border-left-width: 3px` + `font-style: normal` |
+| `code` | `color: inherit` + eliminación de comillas automáticas (::before/::after) |
+
+**Cambios en `MDXComponents.tsx` — 9 valores hardcodeados → tokens semánticos:**
+
+| Componente | Antes | Después |
+|---|---|---|
+| `RoundedImage` | `border-stone-200` | `border-border` |
+| `Callout` | `bg-stone-50 border-stone-200 text-stone-700` | `bg-muted/30 border-border text-muted-foreground` |
+| `Table` | `border-stone-200 overflow-y-auto` | `border-border overflow-x-auto` (bug fix mobile) |
+| `TableHead` | `bg-stone-50 text-stone-900 border-stone-200` | `bg-muted/50 text-foreground border-border` |
+| `TableRow` | `border-stone-100 hover:bg-stone-50/50` | `border-border/60 hover:bg-muted/30` |
+| `TableHeader` | `font-medium` | `text-xs font-semibold uppercase tracking-wide` (más editorial) |
+| `TableCell` | `p-4` | `px-4 py-3` (más compacto, mejor ritmo) |
+| `Blockquote` | `text-stone-600 bg-stone-50/50 italic border-l-4` | `text-muted-foreground bg-muted/20 border-l-[3px] not-prose` |
+
+**Cambios en `page.tsx` — prose container:**
+
+| Antes | Después |
+|---|---|
+| `prose-stone` | eliminado |
+| — | `prose-headings:text-foreground` añadido |
+| — | `prose-li:marker:text-primary` añadido |
+
+**Compatibilidad claro/oscuro:** ✅ Todos los cambios usan tokens semánticos que respetan `dark:prose-invert` y las CSS custom properties del tema.
+
+---
+
 ## Analytics
 
 ### MED-02 — CSP actualizada para permitir GA4

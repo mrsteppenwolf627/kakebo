@@ -116,7 +116,7 @@ export default async function BlogPostPage({ params }: Props) {
                 )}
 
                 {/* Content */}
-                <div className="prose prose-lg prose-stone dark:prose-invert mx-auto prose-headings:font-serif prose-headings:font-bold prose-p:font-light prose-p:leading-relaxed prose-li:font-light">
+                <div className="prose prose-lg dark:prose-invert mx-auto prose-headings:font-serif prose-headings:font-bold prose-headings:text-foreground prose-p:font-light prose-p:leading-relaxed prose-li:font-light prose-li:marker:text-primary">
                     <MDXRemote
                         source={post.content}
                         components={components}
