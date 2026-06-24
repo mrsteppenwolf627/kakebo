@@ -43,8 +43,21 @@ module.exports = {
             h3: {
               color: 'inherit',
               marginTop: '2rem',
-              marginBottom: '0.625rem',
+              marginBottom: '0.75rem',
               lineHeight: '1.4',
+              position: 'relative',
+              paddingLeft: '0.875rem',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                left: '0',
+                top: '0.2em',
+                bottom: '0.2em',
+                width: '2px',
+                borderRadius: '9999px',
+                backgroundColor: 'var(--primary)',
+                opacity: '0.45',
+              },
             },
             'ul > li': {
               marginBottom: '0.35rem',

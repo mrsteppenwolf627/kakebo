@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "@/i18n/routing";
 import React from "react";
-import Image from "next/image";
 
 function CustomLink(props: any) {
     const { href, className, ...restProps } = props;
@@ -77,6 +76,60 @@ function Blockquote(props: any) {
     );
 }
 
+function HorizontalRule() {
+    return (
+        <div className="not-prose my-10 flex items-center gap-3" aria-hidden="true">
+            <div className="h-px flex-1 bg-border" />
+            <div className="flex gap-1">
+                <div className="h-1.5 w-1.5 rounded-full bg-primary/30" />
+                <div className="h-1.5 w-1.5 rounded-full bg-primary/60" />
+                <div className="h-1.5 w-1.5 rounded-full bg-primary/30" />
+            </div>
+            <div className="h-px flex-1 bg-border" />
+        </div>
+    );
+}
+
+function ToolCTA({ title, description, href, cta }: {
+    title: string;
+    description: string;
+    href: string;
+    cta: string;
+}) {
+    return (
+        <div className="not-prose my-8 rounded-xl border border-primary/20 bg-primary/5 p-6">
+            <p className="mb-1.5 font-serif font-semibold text-foreground">{title}</p>
+            <p className="mb-5 text-sm leading-relaxed text-muted-foreground">{description}</p>
+            <Link
+                href={href as any}
+                className="inline-block rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            >
+                {cta}
+            </Link>
+        </div>
+    );
+}
+
+function ArticleCTA({ children, href, cta }: {
+    children: React.ReactNode;
+    href: string;
+    cta: string;
+}) {
+    return (
+        <div className="not-prose my-10 rounded-2xl bg-foreground px-8 py-10 text-center">
+            <div className="mb-6 [&_h3]:mb-3 [&_h3]:font-serif [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-background [&_p]:mt-2 [&_p]:text-sm [&_p]:leading-relaxed [&_p]:text-background/70">
+                {children}
+            </div>
+            <Link
+                href={href as any}
+                className="inline-block rounded-full bg-background px-8 py-3 text-sm font-semibold text-foreground transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-foreground"
+            >
+                {cta}
+            </Link>
+        </div>
+    );
+}
+
 function FaqSection(props: any) {
     return (
         <div
@@ -103,7 +156,10 @@ function FaqItem({ question, children }: { question: string; children: React.Rea
 export const components = {
     a: CustomLink,
     img: RoundedImage,
+    hr: HorizontalRule,
     Callout,
+    ToolCTA,
+    ArticleCTA,
     FaqSection,
     FaqItem,
     table: Table,

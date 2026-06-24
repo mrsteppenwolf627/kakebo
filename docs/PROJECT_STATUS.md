@@ -1098,6 +1098,73 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 
 ## UI/UX Blog — Artículos
 
+### UIUX-PREMIUM-ARTICLE-01 — Experiencia editorial premium en artículos del blog
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-24 |
+| **Estado** | ✅ Completado |
+| **Archivos** | `MDXComponents.tsx` · `page.tsx` · `tailwind.config.ts` · `como-hacer-un-presupuesto-personal.es.mdx` |
+| **Build** | ✅ Compiled successfully · 0 errores · 29/29 páginas |
+| **Tests** | ✅ 506/506 |
+| **MDX tocado** | Solo `como-hacer-un-presupuesto-personal.es.mdx` — estructura visual, texto sin cambiar |
+| **SEO/routing tocado** | ❌ No |
+
+**Diagnóstico de por qué UIUX-BLOG-PROSE-01 se quedó corto:**
+- El MDX contenía 3 bloques `<div>` con 12+ valores `stone-*` hardcodeados que bypasaban completamente MDXComponents y el sistema de tokens
+- Los bloques también tenían `href="/es/herramientas/..."` y `href="/es/login?mode=signup"` — bug de routing con prefijo `/es/` que no pasa por `CustomLink`
+- No había componente para `<hr>` → los separadores `---` solo eran una línea de borde
+- H3 sin diferenciación visual clara de H2
+
+**Estrategia aplicada:** combinación de estilos global (tailwind.config.ts) + nuevos componentes MDX + ajuste estructural mínimo del MDX objetivo
+
+**Nuevos componentes en `MDXComponents.tsx`:**
+
+| Componente | Propósito |
+|---|---|
+| `HorizontalRule` — `hr:` override | Separador editorial con tres puntos primary/30–60–30 centrados en una línea fina. Reemplaza todos los `---` del MDX |
+| `ToolCTA` — props-based | CTA de herramienta interna con `bg-primary/5 border-primary/20` — sin stone, sin hardcoded, corrige hrefs `/es/` |
+| `ArticleCTA` — children-based | CTA de cierre de artículo con `bg-foreground text-background` — el `bg-stone-900/white` que rompía en dark mode |
+
+**Cambios en `tailwind.config.ts` — H3 con acento lateral:**
+```css
+h3::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.2em; bottom: 0.2em;
+  width: 2px; border-radius: 9999px;
+  background-color: var(--primary);
+  opacity: 0.45;
+}
+```
+H3 ahora tiene padding-left: 0.875rem + barra terracota semitransparente a la izquierda — jerarquía visual clara sin competir con H2.
+
+**Cambios en `page.tsx`:**
+- Eyebrow editorial centrado sobre H1: líneas `bg-primary/30` + texto `"Blog"` uppercase tracking-widest
+- Separador `h-px bg-border` entre header y cuerpo del artículo
+- `pb-16 → pb-24` en el article container
+- Author: `text-muted-foreground` explícito en nombre, `text-sm select-none` en monograma
+
+**Cambios en `como-hacer-un-presupuesto-personal.es.mdx`:**
+
+| Bloque original | Reemplazado por | Justificación |
+|---|---|---|
+| `<div className="... bg-stone-50 border-stone-200">` (CTA calculadora-ahorro) | `<ToolCTA ... href="/herramientas/calculadora-ahorro">` | Stone hardcoded + URL `/es/` bug |
+| `<div className="... bg-stone-50 border-stone-200">` (CTA 50/30/20) | `<ToolCTA ... href="/herramientas/regla-50-30-20">` | Stone hardcoded + URL `/es/` bug |
+| `<div className="... bg-stone-100 dark:bg-stone-800">` (closing CTA) | `<ArticleCTA href="/login?mode=signup">` | Stone hardcoded en 8 clases + `text-white` + URL `/es/` bug |
+
+**Texto de los tres bloques: sin modificar.** Solo cambió la envoltura visual.
+
+**Mejoras visuales conseguidas:**
+- `---` → separador editorial tres-puntos con acento primary
+- H3 → barra vertical terracota sutil a la izquierda (diferenciación clara de H2)
+- ToolCTAs → `bg-primary/5` con borde `primary/20` — coherentes en claro y oscuro
+- ArticleCTA → `bg-foreground text-background` — semántico, perfecto en ambos modos
+- Header del artículo → eyebrow editorial + separador antes del body
+- URL bugs corregidos: `/es/herramientas/` y `/es/login` → paths sin prefijo
+
+---
+
 ### UIUX-BLOG-PROSE-01 — Tipografía y elementos editoriales de artículos MDX
 
 | Campo | Detalle |

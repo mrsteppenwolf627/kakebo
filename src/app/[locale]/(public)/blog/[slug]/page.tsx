@@ -75,10 +75,17 @@ export default async function BlogPostPage({ params }: Props) {
         <main className="min-h-screen bg-background text-foreground">
             <Navbar />
 
-            <article className="mx-auto max-w-3xl px-4 pt-24 pb-16 sm:px-6 lg:px-8">
+            <article className="mx-auto max-w-3xl px-4 pt-24 pb-24 sm:px-6 lg:px-8">
                 {/* Header */}
-                <header className="mb-12 text-center">
-                    <div className="mb-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <header className="mb-10 text-center">
+                    {/* Editorial eyebrow */}
+                    <div className="mb-6 flex items-center justify-center gap-3" aria-hidden="true">
+                        <div className="h-px w-8 bg-primary/30" />
+                        <span className="text-xs font-semibold uppercase tracking-widest text-primary/60">Blog</span>
+                        <div className="h-px w-8 bg-primary/30" />
+                    </div>
+
+                    <div className="mb-5 flex items-center justify-center gap-2 text-sm text-muted-foreground">
                         <time dateTime={post.frontmatter.date}>
                             {new Date(post.frontmatter.date).toLocaleDateString(locale === 'es' ? "es-ES" : "en-US", {
                                 year: "numeric",
@@ -86,21 +93,24 @@ export default async function BlogPostPage({ params }: Props) {
                                 day: "numeric",
                             })}
                         </time>
-                        <span>•</span>
+                        <span aria-hidden="true">·</span>
                         <span>{post.frontmatter.readingTime}</span>
                     </div>
 
-                    <h1 className="mb-6 text-3xl font-serif font-bold leading-tight sm:text-4xl md:text-5xl">
+                    <h1 className="mb-7 text-3xl font-serif font-bold leading-tight sm:text-4xl md:text-5xl">
                         {post.frontmatter.title}
                     </h1>
 
                     <div className="flex items-center justify-center gap-2">
-                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-serif font-bold">
+                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-serif font-bold text-sm select-none">
                             {post.frontmatter.author[0]}
                         </div>
-                        <span className="text-sm font-medium">{post.frontmatter.author}</span>
+                        <span className="text-sm font-medium text-muted-foreground">{post.frontmatter.author}</span>
                     </div>
                 </header>
+
+                {/* Separator between header and body */}
+                <div className="mb-10 h-px bg-border" aria-hidden="true" />
 
                 {post.frontmatter.image && (
                     <div className="relative aspect-video w-full overflow-hidden rounded-xl mb-12">
