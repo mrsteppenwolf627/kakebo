@@ -1098,6 +1098,71 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 
 ## UI/UX Blog — Artículos
 
+### UIUX-GLOBAL-MOBILE-PREMIUM-01 — Sistema visual premium endurecido para mobile
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-24 |
+| **Estado** | ✅ Completado |
+| **Archivos** | `MDXComponents.tsx` · `HowItWorks.tsx` · `ToolsSection.tsx` |
+| **Build** | ✅ Compiled successfully · 0 errores · 29/29 páginas |
+| **Tests** | ✅ 506/506 |
+| **Validación visual** | Estática (auditoría de clases responsive) — sin entorno de navegador local |
+
+**Diagnóstico mobile antes:**
+
+| Componente | Problema mobile real |
+|---|---|
+| `SimpleCTA` | `inline-block rounded-full px-8 py-4` — textos de 60-80 chars wrapeaban dentro de pill shape roto |
+| `DownloadCTA` | Mismo problema que SimpleCTA |
+| `ArticleCTA` button | `px-8` = 64px padding + texto "Empieza tu presupuesto hoy..." (~252px) = 316px en contenedor de 264px → **overflow real** |
+| `ToolCTA` button | `px-6` + texto "Calcular mi distribución 50/30/20 →" (300px) en contenedor 280px → overflow potencial |
+| `HowItWorks` | `space-y-12` entre pasos (48px), `mb-16` en header (64px), `p-8` en example card — pesados en 360px |
+| `ToolsSection` | `py-24` fijo sin variante mobile |
+
+**Cambios aplicados en `MDXComponents.tsx`:**
+
+| Componente | Antes | Después |
+|---|---|---|
+| `SimpleCTA` button | `inline-block rounded-full px-8 py-4` | `inline-flex w-full max-w-sm items-center justify-center rounded-2xl px-6 py-4 sm:w-auto sm:rounded-full sm:px-8` |
+| `DownloadCTA` button | `inline-block rounded-full px-8 py-4` | `inline-flex w-full max-w-sm items-center justify-center rounded-2xl px-6 py-4 sm:w-auto sm:rounded-full sm:px-8` |
+| `ToolCTA` button | `inline-block rounded-full px-6 py-2.5` | `inline-flex w-full items-center justify-center rounded-xl px-5 py-2.5 sm:w-auto sm:rounded-full sm:px-6` |
+| `ToolCTA` wrapper | `p-6` | `p-5 sm:p-6` |
+| `ArticleCTA` button | `inline-block rounded-full px-8 py-3` | `inline-flex w-full max-w-xs items-center justify-center rounded-2xl px-6 py-3 sm:w-auto sm:rounded-full sm:px-8` |
+| `ArticleCTA` wrapper | `px-8 py-10` | `px-5 py-8 sm:px-8 sm:py-10` |
+| `ArticleCTA` h3 | `text-xl` | `text-lg sm:text-xl` |
+
+**Patrón mobile aplicado a todos los CTAs:**
+- Mobile: `w-full` (o `max-w-sm/xs`) + `rounded-2xl` o `rounded-xl` + padding reducido → botón cómodo como element block
+- Desktop (`sm:`): `w-auto` + `rounded-full` + padding amplio → botón inline pill premium
+
+**Cambios en `HowItWorks.tsx`:**
+
+| Elemento | Antes | Después |
+|---|---|---|
+| Section header margin-bottom | `mb-16` | `mb-10 sm:mb-16` |
+| Steps gap | `space-y-12` | `space-y-8 sm:space-y-12` |
+| Example card padding | `mt-16 p-8` | `mt-12 sm:mt-16 p-5 sm:p-8` |
+
+**Cambios en `ToolsSection.tsx`:**
+
+| Elemento | Antes | Después |
+|---|---|---|
+| Section vertical padding | `py-24` | `py-16 sm:py-24` |
+| Cards padding | `p-8` | `p-6 sm:p-8` |
+
+**Validación de invariantes protegidas:**
+- ✅ Navbar mobile — no tocado (UIUX-MOBILE-NAV-01 intacto)
+- ✅ Hero H1 `text-4xl sm:text-5xl md:text-7xl lg:text-8xl` — no revertido
+- ✅ AlternativesSection `overflow-x-auto` — intacto
+- ✅ Tablas MDX con `overflow-x-auto` en wrapper — intactas
+- ✅ No scroll horizontal global — tablas tienen scroll local
+- ✅ Desktop no degradado — todos los cambios usan variantes `sm:` para preservar desktop
+- ✅ Dark mode — todos los cambios usan tokens semánticos
+- ✅ SEO/routing — sin tocar
+
+---
+
 ### UIUX-GLOBAL-PREMIUM-01 — Sistema visual premium unificado para toda la web pública
 
 | Campo | Detalle |

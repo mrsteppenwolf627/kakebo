@@ -10,7 +10,7 @@ export function HowItWorks() {
 
       <div className="relative z-10 mx-auto max-w-6xl px-4">
         {/* Section Header */}
-        <div className="mb-16 text-center">
+        <div className="mb-10 sm:mb-16 text-center">
           <h2 className="mb-4 text-4xl font-serif font-normal tracking-tight text-foreground sm:text-5xl">
             {t('title')}
           </h2>
@@ -29,7 +29,7 @@ export function HowItWorks() {
           {/* Connecting Line (hidden on mobile) */}
           <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-border lg:block" />
 
-          <div className="space-y-12">
+          <div className="space-y-8 sm:space-y-12">
             <Step
               number="01"
               title={t('steps.step1.title')}
@@ -101,7 +101,7 @@ export function HowItWorks() {
         </div>
 
         {/* Example Card */}
-        <div className="mx-auto mt-16 max-w-3xl rounded-sm border-2 border-primary/20 bg-muted/20 p-8 shadow-sm">
+        <div className="mx-auto mt-12 sm:mt-16 max-w-3xl rounded-sm border-2 border-primary/20 bg-muted/20 p-5 sm:p-8 shadow-sm">
           <h3 className="mb-4 text-xl font-bold text-foreground">{t('example.title')}</h3>
           <div className="space-y-3 text-muted-foreground">
             <div className="flex justify-between border-b border-border pb-2">

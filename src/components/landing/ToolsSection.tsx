@@ -3,7 +3,7 @@ import { ArrowRight, PieChart, TrendingUp } from "lucide-react";
 
 export function ToolsSection() {
     return (
-        <section id="tools" className="py-24 bg-muted/20 border-t border-border">
+        <section id="tools" className="py-16 sm:py-24 bg-muted/20 border-t border-border">
             <div className="max-w-6xl mx-auto px-4 md:px-6">
 
                 <div className="text-center mb-16 space-y-4">
@@ -21,7 +21,7 @@ export function ToolsSection() {
                     {/* 50/30/20 Calculator Card */}
                     <Link
                         href="/herramientas/regla-50-30-20"
-                        className="group relative bg-card border border-border rounded-2xl p-8 hover:border-primary/50 hover:shadow-md transition-all duration-300"
+                        className="group relative bg-card border border-border rounded-2xl p-6 sm:p-8 hover:border-primary/50 hover:shadow-md transition-all duration-300"
                     >
                         <div className="absolute top-8 right-8 bg-muted p-3 rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                             <PieChart className="w-6 h-6" />
@@ -45,7 +45,7 @@ export function ToolsSection() {
                     {/* Inflation Calculator Card */}
                     <Link
                         href="/herramientas/calculadora-inflacion"
-                        className="group relative bg-card border border-border rounded-2xl p-8 hover:border-destructive/50 hover:shadow-md transition-all duration-300"
+                        className="group relative bg-card border border-border rounded-2xl p-6 sm:p-8 hover:border-destructive/50 hover:shadow-md transition-all duration-300"
                     >
                         <div className="absolute top-8 right-8 bg-muted p-3 rounded-full group-hover:bg-destructive group-hover:text-destructive-foreground transition-colors">
                             <TrendingUp className="w-6 h-6" />
