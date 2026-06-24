@@ -19,7 +19,18 @@
       "Bash(npx kill-port:*)",
       "Bash(npx jest:*)",
       "Bash(curl:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(git pull *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Mr.steppenwolf\\\\Desktop\\\\kakebo\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(python *)",
+      "Bash(py *)",
+      "Bash(xxd \"C:/Users/Mr.steppenwolf/Desktop/Cursor projects y Antigravity projects/kakebo/src/components/landing/Testimonials.tsx\")",
+      "Bash(xxd \"C:/Users/Mr.steppenwolf/Desktop/Cursor projects y Antigravity projects/kakebo/src/components/landing/Footer.tsx\")",
+      "Bash(xxd \"C:/Users/Mr.steppenwolf/Desktop/Cursor projects y Antigravity projects/kakebo/src/components/landing/HowItWorks.tsx\")",
+      "Bash(xxd \"C:/Users/Mr.steppenwolf/Desktop/Cursor projects y Antigravity projects/kakebo/src/app/[locale]/\\(public\\)/blog/[slug]/page.tsx\")",
+      "PowerShell(cd \"C:\\\\Users\\\\Mr.steppenwolf\\\\Desktop\\\\Cursor projects y Antigravity projects\\\\kakebo\"; git diff src/app/[locale]/\\\\\\(public\\\\\\)/blog/[slug]/page.tsx 2>&1 | Select-String -Pattern \"^\\(\\\\+\\\\+\\\\+|---|<<<|===|>>>\" -SimpleMatch | Select-Object -First 30)",
+      "PowerShell(cd \"C:\\\\Users\\\\Mr.steppenwolf\\\\Desktop\\\\Cursor projects y Antigravity projects\\\\kakebo\"; git add next.config.ts docs/PROJECT_STATUS.md src/app/[locale]/\\\\\\(public\\\\\\)/blog/[slug]/page.tsx src/components/landing/HowItWorks.tsx src/components/landing/Testimonials.tsx .claude/settings.local.json)"
     ]
   },
   "hooks": {

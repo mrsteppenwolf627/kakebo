@@ -1098,6 +1098,28 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 
 ## Analytics
 
+### MED-02 — CSP actualizada para permitir GA4
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-24 |
+| **Estado** | ✅ Completado |
+| **Archivo** | `next.config.ts` → bloque `Content-Security-Policy` en `headers()` |
+| **Build** | ✅ Compiled successfully · 0 errores · 29/29 páginas estáticas |
+
+**Dominios añadidos a la CSP:**
+
+| Directiva | Dominio añadido | Motivo |
+|---|---|---|
+| `script-src` | `https://www.googletagmanager.com` | Carga del script `gtag/js` |
+| `connect-src` | `https://www.google-analytics.com` | Envío de eventos a GA4 |
+| `connect-src` | `https://region1.google-analytics.com` | Envío de eventos GA4 (región EU) |
+| `img-src` | `https://www.google-analytics.com` | Pixel de tracking (fallback) |
+
+**Reglas de seguridad no modificadas:** `frame-src 'none'`, `object-src 'none'`, `default-src 'self'`, Supabase connect, Vercel Insights, HSTS, X-Frame-Options, Referrer-Policy.
+
+---
+
 ### MED-01 — Integración Google Analytics 4
 
 | Campo | Detalle |
