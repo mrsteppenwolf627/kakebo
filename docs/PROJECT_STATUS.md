@@ -1098,6 +1098,76 @@ Ver DA-12 en la sección de Decisiones arquitectónicas para el detalle completo
 
 ## UI/UX Blog — Artículos
 
+### UIUX-GLOBAL-PREMIUM-01 — Sistema visual premium unificado para toda la web pública
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-24 |
+| **Estado** | ✅ Completado |
+| **Archivos** | `MDXComponents.tsx` · `ToolsSection.tsx` · `INSTRUCCIONES.md` · 13 archivos `.es.mdx` |
+| **Build** | ✅ Compiled successfully · 0 errores · 29/29 páginas |
+| **Tests** | ✅ 506/506 |
+| **MDX tocados** | 13 artículos (solo wrappers visuales — texto sin modificar) |
+| **SEO/routing tocado** | ❌ No |
+
+**Diagnóstico global previo (inconsistencias encontradas):**
+
+| Área | Problema | Gravedad |
+|---|---|---|
+| 12 artículos MDX | `<div class="my-10 text-center"><a href="/es">` — bug routing + sin not-prose + shadow inconsistente | Alta |
+| kakebo-sueldo-minimo | `bg-stone-100/800 border-stone-900/400` — stone hardcoded en callout | Alta |
+| kakebo-online-guia-completa | `<div>` raw sin componente, h3 recibe prose-h3 accent mal centrado | Media |
+| regla-30-dias | `bg-primary/5 border-2 border-primary/20 rounded-3xl` — tokens OK pero raw HTML, rounded-3xl inconsistente | Media |
+| plantilla-kakebo-excel | Botón descarga con `shadow-xl hover:-translate-y-1` inconsistente | Media |
+| ToolsSection.tsx | `bg-stone-50 bg-white text-stone-900 text-stone-600 border-stone-200 bg-stone-100 group-hover:bg-stone-900 hover:border-red-600` — 10+ stone/red hardcodeados | Alta |
+
+**Nuevos componentes del sistema en `MDXComponents.tsx`:**
+
+| Componente | Uso | Props |
+|---|---|---|
+| `SimpleCTA` | CTA centrado simple. Sustituye `<div class="my-10 text-center"><a href="/es">` | `href`, `cta` |
+| `DownloadCTA` | Botón de descarga con `<a download>`. Sustituye `<a href=".xlsx" download>` inline | `href`, `cta` |
+
+**Artículos migrados (13):**
+
+| Artículo | Cambio |
+|---|---|
+| ahorro-pareja | `href="/es"` CTA → `<SimpleCTA href="/">` |
+| alternativas-a-app-bancarias | `href="/es"` CTA → `<SimpleCTA href="/">` |
+| como-ahorrar-dinero-cada-mes | `href="/es"` CTA → `<SimpleCTA href="/">` |
+| eliminar-gastos-hormiga | `href="/es"` CTA → `<SimpleCTA href="/">` |
+| kakebo-online-gratis | `href="/es"` CTA → `<SimpleCTA href="/">` |
+| kakebo-sueldo-minimo | stone callout → `<ToolCTA>` + `href="/es"` CTA → `<SimpleCTA>` |
+| kakebo-vs-ynab | `href="/es"` CTA → `<SimpleCTA href="/">` |
+| libro-kakebo-pdf | `href="/es"` CTA → `<SimpleCTA href="/">` |
+| metodo-kakebo-para-autonomos | `href="/es"` CTA → `<SimpleCTA href="/">` |
+| peligros-apps-ahorro-automatico | `href="/es"` CTA → `<SimpleCTA href="/">` |
+| plantilla-kakebo-excel | `href="/es"` CTA → `<SimpleCTA>` + download button → `<DownloadCTA>` |
+| regla-30-dias | raw ToolCTA div → `<ToolCTA>` + `href="/es"` CTA → `<SimpleCTA>` |
+| kakebo-online-guia-completa | raw ArticleCTA div → `<ToolCTA>` |
+
+**`ToolsSection.tsx` — migración completa a tokens semánticos:**
+
+| Antes | Después |
+|---|---|
+| `bg-stone-50 border-stone-200` | `bg-muted/20 border-border` |
+| `text-stone-900` / `text-stone-600` | `text-foreground` / `text-muted-foreground` |
+| `bg-white border-stone-200` | `bg-card border-border` |
+| `bg-stone-100 group-hover:bg-stone-900 group-hover:text-white` | `bg-muted group-hover:bg-primary group-hover:text-primary-foreground` |
+| `hover:border-stone-900` | `hover:border-primary/50` |
+| `hover:border-red-600 group-hover:bg-red-600 group-hover:text-red-600` | `hover:border-destructive/50 group-hover:bg-destructive group-hover:text-destructive` |
+| `text-stone-900` en links | `text-primary` |
+
+**`INSTRUCCIONES.md` — nueva Regla de Oro #8 + tabla de sistema visual:**
+- Regla: "Sistema antes que parche — toda mejora visual debe implementarse como sistema reutilizable"
+- Tabla de componentes MDX disponibles para futuros artículos
+- Regla explícita: no usar `stone-*/gray-*/white/black` en MDX
+- Regla de links: usar rutas sin prefijo `/es/`
+
+**Bug corregido:** 12 artículos tenían `href="/es"` (prefijo erróneo) → corregido a `href="/"` vía `SimpleCTA`
+
+---
+
 ### UIUX-PREMIUM-ARTICLE-01 — Experiencia editorial premium en artículos del blog
 
 | Campo | Detalle |

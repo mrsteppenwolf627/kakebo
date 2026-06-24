@@ -110,6 +110,33 @@ function ToolCTA({ title, description, href, cta }: {
     );
 }
 
+function SimpleCTA({ href, cta }: { href: string; cta: string }) {
+    return (
+        <div className="not-prose my-10 text-center">
+            <Link
+                href={href as any}
+                className="inline-block rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
+            >
+                {cta}
+            </Link>
+        </div>
+    );
+}
+
+function DownloadCTA({ href, cta }: { href: string; cta: string }) {
+    return (
+        <div className="not-prose my-8 text-center">
+            <a
+                href={href}
+                download
+                className="inline-block rounded-full bg-primary px-8 py-4 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
+            >
+                {cta}
+            </a>
+        </div>
+    );
+}
+
 function ArticleCTA({ children, href, cta }: {
     children: React.ReactNode;
     href: string;
@@ -160,6 +187,8 @@ export const components = {
     Callout,
     ToolCTA,
     ArticleCTA,
+    SimpleCTA,
+    DownloadCTA,
     FaqSection,
     FaqItem,
     table: Table,

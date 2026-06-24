@@ -133,6 +133,27 @@ Este documento define cuándo es mejor trabajar con **Claude Code (Cursor)** o c
 5. **Usa Cursor para iteración rápida** de UI
 6. **Solo español para contenido editorial SEO** — no crear archivos `.en.mdx` nuevos salvo orden explícita (ver `PROJECT_STATUS.md` → Política SEO de Idiomas)
 7. **Actualiza documentación/contexto tras cada tarea** — el estado persistente del proyecto vive en los archivos del repositorio, no en el chat (ver sección "Protocolo obligatorio de memoria persistente")
+8. **Sistema antes que parche** — toda mejora visual debe implementarse como sistema reutilizable (componente, token, configuración de typography) siempre que el patrón sea aplicable a más de un lugar. No resolver artículo por artículo ni pantalla por pantalla cuando existe una solución de sistema. Ver `docs/PROJECT_STATUS.md` → UIUX-GLOBAL-PREMIUM-01 para los componentes MDX disponibles.
+
+## Sistema visual público — Componentes MDX disponibles
+
+Los artículos del blog deben usar estos componentes. **No usar divs hardcodeados con clases stone-\*/gray-\*/white/black.**
+
+| Componente | Uso | Props |
+|---|---|---|
+| `<SimpleCTA>` | CTA de texto centrado simple (final de artículo) | `href`, `cta` |
+| `<ToolCTA>` | CTA de herramienta interna con card de acento primary | `title`, `description`, `href`, `cta` |
+| `<ArticleCTA>` | CTA de cierre editorial (fondo foreground invertido) | `href`, `cta`, children |
+| `<DownloadCTA>` | Botón de descarga de archivo | `href`, `cta` |
+| `<HorizontalRule>` | Separador editorial (override automático de `---`) | ninguno |
+| `<Callout>` | Bloque destacado informativo | `emoji` (opcional), children |
+| `<FaqSection>` + `<FaqItem>` | Sección de preguntas frecuentes visual | `question` en FaqItem |
+| `<Blockquote>` | Override automático de `>` en markdown | ninguno |
+| Tablas markdown | Renderizadas automáticamente con wrapper premium | ninguno (sistema) |
+
+**Regla de artículos nuevos:** no introducir `<div className="...stone-...">` en MDX. Usar los componentes del sistema.
+
+**Regla de links internos en MDX:** usar rutas sin prefijo de locale — `/blog/slug`, `/herramientas/calculadora-ahorro`, `/login` — nunca `/es/...`.
 
 ---
 
