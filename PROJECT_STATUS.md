@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-26 (SEO-503020-CALCULADORA-01)  
-**Último commit aceptado:** `6d98a8a` (SEO-AHORRO-H1-DEDUP-01) → pendiente (SEO-503020-CALCULADORA-01)  
+**Último commit aceptado:** `bb82137` (SEO-503020-CALCULADORA-01)  
 **Rama operativa:** `main`
 
 ---
@@ -81,7 +81,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 **Archivos modificados:** `messages/es.json`, `page.tsx` (regla-50-30-20), `Calculator503020.tsx`  
 **Build:** ✅ Compiled successfully — 0 errores TypeScript  
-**Commit:** pendiente
+**Commit:** `bb82137`
 
 ---
 
@@ -274,7 +274,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-HOME-KAKEBO-APP-01** | Optimizar Home para kakebo online gratis / kakebo app | `ad9fbf5` | ✅ Completado |
 | **SEO-AHORRO-CALCULADORA-01** | Optimizar calculadora de ahorro para cuánto ahorrar al mes | `8084303` | ✅ Completado |
 | **SEO-AHORRO-H1-DEDUP-01** | Corregir H1 duplicado en calculadora de ahorro | `6d98a8a` | ✅ Completado |
-| **SEO-503020-CALCULADORA-01** | Optimizar herramienta regla 50/30/20 para calculadora 50 30 20 | pendiente | **⬅ EN CURSO** |
+| **SEO-503020-CALCULADORA-01** | Optimizar herramienta regla 50/30/20 para calculadora 50 30 20 | `bb82137` | ✅ Completado |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
