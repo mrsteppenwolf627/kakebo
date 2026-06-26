@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-26 (UI-BRAND-AUDIT-01)  
-**Último commit aceptado:** `bb82137` (SEO-503020-CALCULADORA-01) → pendiente (UI-BRAND-AUDIT-01)  
+**Último commit aceptado:** `5616816` (UI-BRAND-AUDIT-01)  
 **Rama operativa:** `main`
 
 ---
@@ -84,7 +84,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | Baja | SeoContent jerarquía H3/H4 desconectada | UI-SEOCONTENT-HIERARCHY-01 |
 | Baja | "Artículo destacado" hardcodeado (no i18n) | (tarea i18n limpieza) |
 
-**Commit:** pendiente
+**Commit:** `5616816`
 
 ---
 
@@ -302,7 +302,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-AHORRO-CALCULADORA-01** | Optimizar calculadora de ahorro para cuánto ahorrar al mes | `8084303` | ✅ Completado |
 | **SEO-AHORRO-H1-DEDUP-01** | Corregir H1 duplicado en calculadora de ahorro | `6d98a8a` | ✅ Completado |
 | **SEO-503020-CALCULADORA-01** | Optimizar herramienta regla 50/30/20 para calculadora 50 30 20 | `bb82137` | ✅ Completado |
-| **UI-BRAND-AUDIT-01** | Auditoría completa web contra brand manual (12 hallazgos) | pendiente | **⬅ EN CURSO** |
+| **UI-BRAND-AUDIT-01** | Auditoría completa web contra brand manual (12 hallazgos) | `5616816` | ✅ Completado |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
