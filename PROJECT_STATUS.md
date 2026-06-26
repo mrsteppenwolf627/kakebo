@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (SEO-503020-CALCULADORA-01)  
-**Último commit aceptado:** `bb82137` (SEO-503020-CALCULADORA-01)  
+**Última actualización:** 2026-06-26 (UI-BRAND-AUDIT-01)  
+**Último commit aceptado:** `bb82137` (SEO-503020-CALCULADORA-01) → pendiente (UI-BRAND-AUDIT-01)  
 **Rama operativa:** `main`
 
 ---
@@ -58,6 +58,33 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
 
 **No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## UI-BRAND-AUDIT-01 — Auditoría de identidad visual
+
+**Fecha:** 2026-06-26  
+**Tipo:** Solo documentación — sin cambios en código  
+**Documento:** `docs/brand/UI_BRAND_AUDIT_01.md`
+
+**Resumen:** 12 hallazgos detectados. 2 de alta prioridad (sistémicos), 4 de media, 6 de baja.
+
+| Prioridad | Hallazgo | Tarea futura |
+|---|---|---|
+| Alta | Color primario #cf5c5c ≠ #CF8C6C del brand manual | UI-COLOR-PRIMARY-ALIGN-01 |
+| Alta | Emoji `👉🏽` en 12 CTAs de artículos | UI-CTA-EMOJI-REMOVE-01 |
+| Media | Border-radius de CTAs inconsistente | UI-CTA-RADIUS-UNIFY-01 |
+| Media | Calculadora de Ahorro ausente de ToolsSection | UI-TOOLS-SECTION-COMPLETE-01 |
+| Media | Color `destructive` en inflation card | UI-TOOLS-INFLATION-COLOR-01 |
+| Media | "PASO" hardcodeado sin i18n en HowItWorks | UI-HOWITWORKS-I18N-01 |
+| Baja | Emoji 🔒 en trust signal Hero | (incluir en emoji task) |
+| Baja | Copyright "Kakebo Ahorro" legacy en Footer | UI-FOOTER-COPYRIGHT-01 |
+| Baja | Border-radius de cards inconsistente | UI-CARDS-RADIUS-SYSTEM-01 |
+| Baja | Dark mode primary demasiado vibrante | (incluir en color task) |
+| Baja | SeoContent jerarquía H3/H4 desconectada | UI-SEOCONTENT-HIERARCHY-01 |
+| Baja | "Artículo destacado" hardcodeado (no i18n) | (tarea i18n limpieza) |
+
+**Commit:** pendiente
 
 ---
 
@@ -275,6 +302,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-AHORRO-CALCULADORA-01** | Optimizar calculadora de ahorro para cuánto ahorrar al mes | `8084303` | ✅ Completado |
 | **SEO-AHORRO-H1-DEDUP-01** | Corregir H1 duplicado en calculadora de ahorro | `6d98a8a` | ✅ Completado |
 | **SEO-503020-CALCULADORA-01** | Optimizar herramienta regla 50/30/20 para calculadora 50 30 20 | `bb82137` | ✅ Completado |
+| **UI-BRAND-AUDIT-01** | Auditoría completa web contra brand manual (12 hallazgos) | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**

@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (SEO-503020-CALCULADORA-01)  
+**Última actualización:** 2026-06-26 (UI-BRAND-AUDIT-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,21 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ UI-BRAND-AUDIT-01 — Auditoría de identidad visual
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **Tipo** | Solo documentación — sin cambios en código |
+| **Documento** | `docs/brand/UI_BRAND_AUDIT_01.md` |
+
+**12 hallazgos:** 2 alta, 4 media, 6 baja  
+**Tareas derivadas de alta prioridad:**
+- `UI-COLOR-PRIMARY-ALIGN-01` — color primario #cf5c5c vs #CF8C6C del brand manual
+- `UI-CTA-EMOJI-REMOVE-01` — emoji 👉🏽 en 12 CTAs de artículos
 
 ---
 
