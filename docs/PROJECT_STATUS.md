@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (SEO-CTR-FINTONIC-01)  
+**Última actualización:** 2026-06-26 (DOC-BRAND-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ DOC-BRAND-01 — Manual de identidad visual Kakebo
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **Tipo** | Tarea documental — sin cambios en código |
+| **Ubicación** | `docs/brand/` |
+
+**Archivos:**
+- `IDENTIDAD_VISUAL_KAKEBO.md` — Fuente operativa principal de identidad visual
+- `PROMPT_VISUAL_KAKEBO.md` — Bloque reutilizable para prompts visuales
+- `identidad-kakebo-01-cover.png` a `identidad-kakebo-07-aplicaciones.png` — Referencia visual del manual
+
+**Uso futuro:** Referencia obligatoria para tareas UIUX, imágenes de blog y prompts a modelos de IA. Las imágenes son complemento visual; el markdown es la fuente operativa principal.
 
 ---
 

@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (SEO-CTR-FINTONIC-01)  
-**Último commit aceptado:** `e1f30a5` (SEO-CTR-FINTONIC-01)  
+**Última actualización:** 2026-06-26 (DOC-BRAND-01)  
+**Último commit aceptado:** `e1f30a5` (SEO-CTR-FINTONIC-01) → pendiente (DOC-BRAND-01)  
 **Rama operativa:** `main`
 
 ---
@@ -58,6 +58,32 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
 
 **No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## DOC-BRAND-01 — Manual de identidad visual Kakebo
+
+**Fecha de ejecución:** 2026-06-26  
+**Tipo:** Tarea documental — sin cambios en código
+
+**Archivos añadidos a `docs/brand/`:**
+- `IDENTIDAD_VISUAL_KAKEBO.md` — Fuente operativa principal: dirección estética, principios visuales, tipografías, paleta, uso del color, fondos, componentes, tono verbal y reglas de implementación
+- `PROMPT_VISUAL_KAKEBO.md` — Bloque reutilizable para prompts visuales a Claude, Gemini o Codex
+- `identidad-kakebo-01-cover.png` — Portada del manual visual
+- `identidad-kakebo-02-logotipo.png` — Logotipo y usos
+- `identidad-kakebo-03-paleta.png` — Paleta cromática
+- `identidad-kakebo-04-tipografia.png` — Sistema tipográfico
+- `identidad-kakebo-05-sistema-visual.png` — Sistema visual completo
+- `identidad-kakebo-06-fondos-recursos.png` — Fondos y recursos gráficos
+- `identidad-kakebo-07-aplicaciones.png` — Aplicaciones y ejemplos
+
+**Uso futuro:**
+- Referencia obligatoria antes de cualquier tarea UIUX, imagen de blog o recurso gráfico
+- El prompt de `PROMPT_VISUAL_KAKEBO.md` debe incluirse en tareas visuales a Claude Code, Gemini o Codex
+- Las imágenes son referencia visual complementaria; el markdown es la fuente operativa principal
+
+**Nota:** No se tocó código de aplicación, artículos, SEO, UI, routing ni ningún otro área.  
+**Commit:** pendiente
 
 ---
 
@@ -120,6 +146,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | UIUX-BLOG-PROSE-01 + PREMIUM + GLOBAL | Sistema premium de artículos + global + mobile | `43269b6`..`b924649` | ✅ Completado |
 | **SEO-CTR-INFLACION-01** | Optimizar CTR snippet calculadora inflación (title, description, H1) | `12b97e0` | ✅ Completado |
 | **SEO-CTR-FINTONIC-01** | Optimizar CTR artículo alternativas a Fintonic (title, excerpt, intro) | `e1f30a5` | ✅ Completado |
+| **DOC-BRAND-01** | Manual de identidad visual Kakebo en `docs/brand/` | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
