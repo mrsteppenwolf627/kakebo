@@ -36,9 +36,9 @@ export function SavingsCalculator() {
             <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-serif font-bold text-foreground sm:text-5xl mb-4">
+                    <h2 className="text-4xl font-serif font-bold text-foreground sm:text-5xl mb-4">
                         {t('header.title')}
-                    </h1>
+                    </h2>
                     <p className="text-lg text-muted-foreground font-light max-w-2xl mx-auto">
                         {t('header.subtitle')}
                     </p>

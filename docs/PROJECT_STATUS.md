@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (SEO-AHORRO-CALCULADORA-01)  
+**Última actualización:** 2026-06-26 (SEO-AHORRO-H1-DEDUP-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,18 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-AHORRO-H1-DEDUP-01 — Corrección H1 duplicado calculadora de ahorro
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **Archivo** | `src/components/landing/tools/SavingsCalculator.tsx` |
+| **Cambio** | `<h1>` → `<h2>` (2 líneas, cero impacto visual) |
+
+**Jerarquía semántica resultante:** un único `<h1>` en `page.tsx`; el heading interno del componente degradado a `<h2>`.
 
 ---
 

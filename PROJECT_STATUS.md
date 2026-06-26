@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (SEO-AHORRO-CALCULADORA-01)  
-**Último commit aceptado:** `8084303` (SEO-AHORRO-CALCULADORA-01)  
+**Última actualización:** 2026-06-26 (SEO-AHORRO-H1-DEDUP-01)  
+**Último commit aceptado:** `8084303` (SEO-AHORRO-CALCULADORA-01) → pendiente (SEO-AHORRO-H1-DEDUP-01)  
 **Rama operativa:** `main`
 
 ---
@@ -58,6 +58,31 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
 
 **No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## SEO-AHORRO-H1-DEDUP-01 — Corrección H1 duplicado en calculadora de ahorro
+
+**Fecha de ejecución:** 2026-06-26  
+**URL objetivo:** `/es/herramientas/calculadora-ahorro`  
+**Problema:** Dos elementos `<h1>` en la misma página — uno en `page.tsx`, otro en `SavingsCalculator.tsx`
+
+**Corrección aplicada:**
+- `src/components/landing/tools/SavingsCalculator.tsx` — `<h1>` → `<h2>` (2 líneas)
+- Las clases Tailwind del elemento no cambian → cero impacto visual
+- `page.tsx` conserva el único `<h1>` semántico real
+
+**Jerarquía resultante:**
+```
+<h1> Calculadora de Ahorro Mensual          (page.tsx)
+  <h2> Calculadora de Ahorro Mensual        (SavingsCalculator, degradado)
+  <h2> ¿Cómo usar esta calculadora...       (sección SEO)
+  <h2> ¿Qué te dice el resultado?           (sección SEO)
+  <h2> Preguntas frecuentes sobre ahorro    (sección SEO)
+```
+
+**Build:** ✅ Compiled successfully — 0 errores TypeScript  
+**Commit:** pendiente
 
 ---
 
@@ -224,6 +249,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-I18N-KAKEBO-ONLINE-VALIDATE-01** | Validación interferencia ES/EN kakebo-online (DUDOSO) | `0006a3d` | ✅ Completado |
 | **SEO-HOME-KAKEBO-APP-01** | Optimizar Home para kakebo online gratis / kakebo app | `ad9fbf5` | ✅ Completado |
 | **SEO-AHORRO-CALCULADORA-01** | Optimizar calculadora de ahorro para cuánto ahorrar al mes | `8084303` | ✅ Completado |
+| **SEO-AHORRO-H1-DEDUP-01** | Corregir H1 duplicado en calculadora de ahorro | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
