@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (SEO-CTR-INFLACION-01)  
-**Último commit aceptado:** `12b97e0` (SEO-CTR-INFLACION-01)  
+**Última actualización:** 2026-06-26 (SEO-CTR-FINTONIC-01)  
+**Último commit aceptado:** `12b97e0` (SEO-CTR-INFLACION-01) → pendiente (SEO-CTR-FINTONIC-01)  
 **Rama operativa:** `main`
 
 ---
@@ -61,6 +61,28 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ---
 
+## SEO-CTR-FINTONIC-01 — Detalle técnico
+
+**Fecha de ejecución:** 2026-06-26  
+**URL objetivo:** `/es/blog/alternativas-a-app-bancarias`  
+**Datos Search Console:** 310 impresiones · 2 clics · CTR 0,65% · posición media 7,95
+
+**Problema diagnosticado:**
+- `title` (77 chars) → meta title `{title} | Blog Kakebo` = 91 chars, truncado por Google (~65 max)
+- `excerpt` (175 chars) → description sobre el límite ~155, empieza con pregunta pasiva sin CTA concreto
+- Keyword "Fintonic" aparece en intro en p.2, "alternativa a Fintonic" no hasta p.4
+
+**Cambios realizados:**
+- `title` (frontmatter): `"Las 7 Alternativas a Fintonic sin Banco (2026)"` (47 chars → 61 total con suffix ✓)
+- `excerpt` (frontmatter): `"Comparativa 2026: las 7 mejores alternativas a Fintonic. Controla tus gastos sin conectar el banco ni ceder tus datos. Gratis y sin publicidad."` (143 chars, sin emoji)
+- Intro p.3: añade "Fintonic y sus alternativas bancarias" para traer el keyword al párrafo 3
+
+**Archivo modificado:** `src/content/blog/alternativas-a-app-bancarias.es.mdx`  
+**Build:** ✅ Compiled successfully — 0 errores TypeScript  
+**Commit:** pendiente
+
+---
+
 ## SEO-CTR-INFLACION-01 — Detalle técnico
 
 **Fecha de ejecución:** 2026-06-26  
@@ -97,6 +119,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | MED-01 + MED-02 | GA4 + CSP | `3a1777b`..`7a08d3d` | ✅ Completado |
 | UIUX-BLOG-PROSE-01 + PREMIUM + GLOBAL | Sistema premium de artículos + global + mobile | `43269b6`..`b924649` | ✅ Completado |
 | **SEO-CTR-INFLACION-01** | Optimizar CTR snippet calculadora inflación (title, description, H1) | `12b97e0` | ✅ Completado |
+| **SEO-CTR-FINTONIC-01** | Optimizar CTR artículo alternativas a Fintonic (title, excerpt, intro) | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**

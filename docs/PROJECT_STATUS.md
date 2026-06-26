@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (SEO-CTR-INFLACION-01)  
+**Última actualización:** 2026-06-26 (SEO-CTR-FINTONIC-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,22 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-CTR-FINTONIC-01 — Optimización CTR artículo alternativas a Fintonic
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **URL objetivo** | `/es/blog/alternativas-a-app-bancarias` |
+| **Datos Search Console** | 310 impresiones · 2 clics · CTR 0,65% · posición 7,95 |
+| **Archivo modificado** | `src/content/blog/alternativas-a-app-bancarias.es.mdx` |
+
+**Cambios SEO:**
+- `title` → `"Las 7 Alternativas a Fintonic sin Banco (2026)"` (47 chars; meta title total 61 chars ✓)
+- `excerpt` → 143 chars, sin emoji, con keywords "Fintonic", "banco", "gratis", CTA directo
+- Intro p.3 → "Fintonic y sus alternativas bancarias" aparece en párrafo 3 (antes solo en p.4)
 
 ---
 
