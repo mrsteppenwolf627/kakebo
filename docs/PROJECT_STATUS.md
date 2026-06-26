@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-24 (DOC-FRONTEND-CLOSE-01)  
+**Última actualización:** 2026-06-26 (SEO-CTR-INFLACION-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,25 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-CTR-INFLACION-01 — Optimización CTR calculadora de inflación
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **URL objetivo** | `/es/herramientas/calculadora-inflacion` |
+| **Datos Search Console** | 353 impresiones · 1 clic · CTR 0,28% · posición 7,8 |
+| **Archivo modificado** | `messages/es.json` |
+
+**Cambios SEO:**
+- `meta.title` → `"Calculadora de Inflación e IPC 2026 | ¿Cuánto pierde tu dinero?"` (65 chars, añade IPC, acción directa)
+- `meta.description` → 139 chars sin emoji, con IPC, España y CTA "Resultado inmediato y gratis, sin registro"
+- `meta.ogTitle` → simplificado para redes sociales
+- `header.title` (H1) → añade "e IPC" en el H1 visible: `"Calculadora de Inflación e IPC en España"`
+
+**Nota canónica:** canonical apunta a `/herramientas/calculadora-inflacion` (sin `/es/`); coherente con configuración i18n default locale. No se toca.
 
 ---
 

@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-24 (DOC-FRONTEND-CLOSE-01)  
-**Último commit aceptado:** `b924649` (UIUX-GLOBAL-MOBILE-PREMIUM-01)  
+**Última actualización:** 2026-06-26 (SEO-CTR-INFLACION-01)  
+**Último commit aceptado:** pendiente (SEO-CTR-INFLACION-01)  
 **Rama operativa:** `main`
 
 ---
@@ -61,7 +61,31 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ---
 
-## Estado actual del proyecto (2026-06-24)
+## SEO-CTR-INFLACION-01 — Detalle técnico
+
+**Fecha de ejecución:** 2026-06-26  
+**URL objetivo:** `/es/herramientas/calculadora-inflacion`  
+**Datos Search Console:** 353 impresiones · 1 clic · CTR 0,28% · posición media 7,8
+
+**Problema diagnosticado:**
+- Title con redacción pasiva ("¿Cuánto *valor* pierde tu dinero?") y keyword IPC al final entre paréntesis
+- Description con 164 chars (sobre el límite ~155) + emoji 📊 con riesgo de truncación
+- H1 sin referencia a "IPC" — keyword secundaria con alta búsqueda
+
+**Cambios realizados:**
+- `messages/es.json` → `Tools.Inflation.meta.title`: `"Calculadora de Inflación e IPC 2026 | ¿Cuánto pierde tu dinero?"` (65 chars)
+- `messages/es.json` → `Tools.Inflation.meta.description`: `"Calcula cuánto pierde tu dinero con la inflación en España. Introduce tus ahorros, IPC y años. Resultado inmediato y gratis, sin registro."` (139 chars, sin emoji)
+- `messages/es.json` → `Tools.Inflation.meta.ogTitle`: `"Calculadora de Inflación e IPC 2026 | Kakebo"`
+- `messages/es.json` → `Tools.Inflation.header.title`: `"Calculadora de <italic>Inflación e IPC</italic> en España"` — añade IPC al H1 visible
+
+**Nota canónica (no bloqueante, no tocada):** El canonical apunta a `https://www.metodokakebo.com/herramientas/calculadora-inflacion` (sin `/es/`), mientras Search Console indexa `/es/herramientas/calculadora-inflacion`. Esto es coherente si la ruta ES es la ruta sin prefijo en producción (configuración i18n default locale). No se toca hasta tener evidencia de error.
+
+**Build:** ✅  
+**Archivos modificados:** `messages/es.json`
+
+---
+
+## Estado actual del proyecto (2026-06-26)
 
 | Tarea | Descripción | Commit | Estado |
 |---|---|---|---|
@@ -71,6 +95,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | UIUX-02 a 14 + MOBILE | Sprint UI/UX y mobile completo | `bfde77e`..`a0da677` | ✅ Completado |
 | MED-01 + MED-02 | GA4 + CSP | `3a1777b`..`7a08d3d` | ✅ Completado |
 | UIUX-BLOG-PROSE-01 + PREMIUM + GLOBAL | Sistema premium de artículos + global + mobile | `43269b6`..`b924649` | ✅ Completado |
+| **SEO-CTR-INFLACION-01** | Optimizar CTR snippet calculadora inflación (title, description, H1) | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
