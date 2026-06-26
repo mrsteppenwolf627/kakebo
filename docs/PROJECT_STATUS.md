@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (SEO-I18N-KAKEBO-ONLINE-VALIDATE-01)  
+**Última actualización:** 2026-06-26 (SEO-HOME-KAKEBO-APP-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-HOME-KAKEBO-APP-01 — Optimización Home para kakebo online gratis
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **URL objetivo** | `/` — Home ES |
+| **Keywords** | kakebo online gratis (primaria), kakebo online, kakebo app, método kakebo |
+| **Archivo** | `messages/es.json` |
+
+**Cambios:**
+- `Landing.meta.title` → `"Kakebo Online Gratis | App de Ahorro con el Método Japonés"` (59 chars)
+- `Landing.meta.description` → 135 chars, empieza por "App Kakebo online gratis", incluye "controlar gastos", "método japonés", "sin conectar el banco"
+- `Hero.subtitle` → añade "app Kakebo online gratuita" en el subtítulo visible
+- H1 (`Hero.title`) → no modificado (ya contenía "Kakebo Online")
 
 ---
 

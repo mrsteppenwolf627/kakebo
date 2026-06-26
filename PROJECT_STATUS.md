@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (SEO-I18N-KAKEBO-ONLINE-VALIDATE-01)  
-**Último commit aceptado:** `0006a3d` (SEO-I18N-KAKEBO-ONLINE-VALIDATE-01)  
+**Última actualización:** 2026-06-26 (SEO-HOME-KAKEBO-APP-01)  
+**Último commit aceptado:** `0006a3d` (SEO-I18N-KAKEBO-ONLINE-VALIDATE-01) → pendiente (SEO-HOME-KAKEBO-APP-01)  
 **Rama operativa:** `main`
 
 ---
@@ -58,6 +58,28 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
 
 **No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## SEO-HOME-KAKEBO-APP-01 — Optimización Home para kakebo online gratis / kakebo app
+
+**Fecha de ejecución:** 2026-06-26  
+**URL objetivo:** `/` (Home ES)  
+**Keywords objetivo:** kakebo online gratis (primaria), kakebo online, kakebo app, app kakebo, método kakebo
+
+**Cambios realizados en `messages/es.json`:**
+
+| Campo | Antes | Después |
+|---|---|---|
+| `Landing.meta.title` | `"Kakebo AI: App Kakebo Online para Ahorro | Sin Banco, Con IA"` (60 chars) | `"Kakebo Online Gratis | App de Ahorro con el Método Japonés"` (59 chars) |
+| `Landing.meta.description` | `"Controla tus gastos con el método japonés..."` (109 chars) | `"App Kakebo online gratis para controlar gastos y ahorrar con el método japonés. Sin conectar el banco, 100% privada y con IA integrada."` (135 chars) |
+| `Landing.meta.ogTitle` | igual que title anterior | igual que title nuevo |
+| `Landing.meta.ogDescription` | igual que description anterior | igual que description nueva |
+| `Hero.subtitle` | `"La App de Control de Gastos basada en el Método Japonés..."` | `"La app Kakebo online gratuita para controlar gastos con el Método Japonés..."` |
+
+**H1 (`Hero.title`):** no modificado — ya contenía "Kakebo Online" en posición óptima  
+**Build:** ✅ Compiled successfully — 0 errores TypeScript  
+**Commit:** pendiente
 
 ---
 
@@ -173,6 +195,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-CTR-FINTONIC-01** | Optimizar CTR artículo alternativas a Fintonic (title, excerpt, intro) | `e1f30a5` | ✅ Completado |
 | **DOC-BRAND-01** | Manual de identidad visual Kakebo en `docs/brand/` | `5249c37` | ✅ Completado |
 | **SEO-I18N-KAKEBO-ONLINE-VALIDATE-01** | Validación interferencia ES/EN kakebo-online (DUDOSO) | `0006a3d` | ✅ Completado |
+| **SEO-HOME-KAKEBO-APP-01** | Optimizar Home para kakebo online gratis / kakebo app | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
