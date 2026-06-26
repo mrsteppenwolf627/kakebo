@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-26 (SEO-AHORRO-CALCULADORA-01)  
-**Último commit aceptado:** `ad9fbf5` (SEO-HOME-KAKEBO-APP-01) → pendiente (SEO-AHORRO-CALCULADORA-01)  
+**Último commit aceptado:** `8084303` (SEO-AHORRO-CALCULADORA-01)  
 **Rama operativa:** `main`
 
 ---
@@ -84,7 +84,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 **Archivos modificados:** `messages/es.json`, `src/app/[locale]/(public)/herramientas/calculadora-ahorro/page.tsx`  
 **Build:** ✅ Compiled successfully — 0 errores TypeScript  
-**Commit:** pendiente
+**Commit:** `8084303`
 
 ---
 
@@ -223,7 +223,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **DOC-BRAND-01** | Manual de identidad visual Kakebo en `docs/brand/` | `5249c37` | ✅ Completado |
 | **SEO-I18N-KAKEBO-ONLINE-VALIDATE-01** | Validación interferencia ES/EN kakebo-online (DUDOSO) | `0006a3d` | ✅ Completado |
 | **SEO-HOME-KAKEBO-APP-01** | Optimizar Home para kakebo online gratis / kakebo app | `ad9fbf5` | ✅ Completado |
-| **SEO-AHORRO-CALCULADORA-01** | Optimizar calculadora de ahorro para cuánto ahorrar al mes | pendiente | **⬅ EN CURSO** |
+| **SEO-AHORRO-CALCULADORA-01** | Optimizar calculadora de ahorro para cuánto ahorrar al mes | `8084303` | ✅ Completado |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
