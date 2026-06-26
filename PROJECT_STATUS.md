@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-26 (SEO-I18N-KAKEBO-ONLINE-VALIDATE-01)  
-**Último commit aceptado:** `5249c37` (DOC-BRAND-01) → pendiente (SEO-I18N-KAKEBO-ONLINE-VALIDATE-01)  
+**Último commit aceptado:** `0006a3d` (SEO-I18N-KAKEBO-ONLINE-VALIDATE-01)  
 **Rama operativa:** `main`
 
 ---
@@ -82,7 +82,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | Canibalización interna ES | DESCARTADO — intención diferenciada |
 
 **Próxima tarea propuesta:** SEO-I18N-EN-SLUG-FIX-01 (pendiente de datos adicionales de GSC)  
-**Commit:** pendiente
+**Commit:** `0006a3d`
 
 ---
 
@@ -172,7 +172,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-CTR-INFLACION-01** | Optimizar CTR snippet calculadora inflación (title, description, H1) | `12b97e0` | ✅ Completado |
 | **SEO-CTR-FINTONIC-01** | Optimizar CTR artículo alternativas a Fintonic (title, excerpt, intro) | `e1f30a5` | ✅ Completado |
 | **DOC-BRAND-01** | Manual de identidad visual Kakebo en `docs/brand/` | `5249c37` | ✅ Completado |
-| **SEO-I18N-KAKEBO-ONLINE-VALIDATE-01** | Validación interferencia ES/EN kakebo-online (DUDOSO) | pendiente | **⬅ EN CURSO** |
+| **SEO-I18N-KAKEBO-ONLINE-VALIDATE-01** | Validación interferencia ES/EN kakebo-online (DUDOSO) | `0006a3d` | ✅ Completado |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
