@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-26 (UI-COLOR-PRIMARY-ALIGN-01)  
-**Último commit aceptado:** `5616816` (UI-BRAND-AUDIT-01) → pendiente (UI-COLOR-PRIMARY-ALIGN-01)  
+**Último commit aceptado:** `1d3800d` (UI-COLOR-PRIMARY-ALIGN-01)  
 **Rama operativa:** `main`
 
 ---
@@ -86,7 +86,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Nota de contraste:** `primary-foreground` actualizado de `#fafaf9` (blanco, 2.6:1 con nuevo primary) a `#1c1917` (piedra oscura, 6.6:1 con nuevo primary) para cumplir WCAG AA. El dark mode ya usaba `#1c1917` — se unifica el sistema.
 
 **Build:** ✅ Compiled successfully — 0 errores TypeScript  
-**Commit:** pendiente
+**Commit:** `1d3800d`
 
 ---
 
@@ -332,7 +332,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-AHORRO-H1-DEDUP-01** | Corregir H1 duplicado en calculadora de ahorro | `6d98a8a` | ✅ Completado |
 | **SEO-503020-CALCULADORA-01** | Optimizar herramienta regla 50/30/20 para calculadora 50 30 20 | `bb82137` | ✅ Completado |
 | **UI-BRAND-AUDIT-01** | Auditoría completa web contra brand manual (12 hallazgos) | `5616816` | ✅ Completado |
-| **UI-COLOR-PRIMARY-ALIGN-01** | Alinear color primario #cf5c5c→#cf8c6c (brand manual) | pendiente | **⬅ EN CURSO** |
+| **UI-COLOR-PRIMARY-ALIGN-01** | Alinear color primario #cf5c5c→#cf8c6c (brand manual) | `1d3800d` | ✅ Completado |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
