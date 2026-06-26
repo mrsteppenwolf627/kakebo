@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-26 (SEO-AHORRO-H1-DEDUP-01)  
-**Último commit aceptado:** `8084303` (SEO-AHORRO-CALCULADORA-01) → pendiente (SEO-AHORRO-H1-DEDUP-01)  
+**Último commit aceptado:** `6d98a8a` (SEO-AHORRO-H1-DEDUP-01)  
 **Rama operativa:** `main`
 
 ---
@@ -82,7 +82,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ```
 
 **Build:** ✅ Compiled successfully — 0 errores TypeScript  
-**Commit:** pendiente
+**Commit:** `6d98a8a`
 
 ---
 
@@ -249,7 +249,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-I18N-KAKEBO-ONLINE-VALIDATE-01** | Validación interferencia ES/EN kakebo-online (DUDOSO) | `0006a3d` | ✅ Completado |
 | **SEO-HOME-KAKEBO-APP-01** | Optimizar Home para kakebo online gratis / kakebo app | `ad9fbf5` | ✅ Completado |
 | **SEO-AHORRO-CALCULADORA-01** | Optimizar calculadora de ahorro para cuánto ahorrar al mes | `8084303` | ✅ Completado |
-| **SEO-AHORRO-H1-DEDUP-01** | Corregir H1 duplicado en calculadora de ahorro | pendiente | **⬅ EN CURSO** |
+| **SEO-AHORRO-H1-DEDUP-01** | Corregir H1 duplicado en calculadora de ahorro | `6d98a8a` | ✅ Completado |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
