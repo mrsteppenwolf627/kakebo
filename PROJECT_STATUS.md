@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (UI-BRAND-AUDIT-01)  
-**Último commit aceptado:** `5616816` (UI-BRAND-AUDIT-01)  
+**Última actualización:** 2026-06-26 (UI-COLOR-PRIMARY-ALIGN-01)  
+**Último commit aceptado:** `5616816` (UI-BRAND-AUDIT-01) → pendiente (UI-COLOR-PRIMARY-ALIGN-01)  
 **Rama operativa:** `main`
 
 ---
@@ -58,6 +58,35 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
 
 **No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## UI-COLOR-PRIMARY-ALIGN-01 — Alineación color primario con brand manual
+
+**Fecha:** 2026-06-26  
+**Cambio:** `#cf5c5c` / `#f87171` → `#cf8c6c` (terracota cálida brand manual)
+
+**Tokens actualizados en `src/app/globals.css`:**
+
+| Token | Antes (light) | Después | Antes (dark) | Después |
+|---|---|---|---|---|
+| `--primary` | `#cf5c5c` | `#cf8c6c` | `#f87171` | `#cf8c6c` |
+| `--primary-foreground` | `#fafaf9` | `#1c1917` | `#1c1917` | sin cambio |
+| `--ring` | `#cf5c5c` | `#cf8c6c` | `#f87171` | `#cf8c6c` |
+| `--chart-1` | `#cf5c5c` | `#cf8c6c` | `#f87171` | `#cf8c6c` |
+| `--sidebar-primary` | `#cf5c5c` | `#cf8c6c` | `#f87171` | `#cf8c6c` |
+| `--sidebar-primary-foreground` | `#fafaf9` | `#1c1917` | `#1c1917` | sin cambio |
+| `--sidebar-ring` | `#cf5c5c` | `#cf8c6c` | `#f87171` | `#cf8c6c` |
+
+**Hardcodes actualizados:**
+- `src/components/reports/ReportPDF.tsx` (×2) — componente interno
+- `src/app/api/og/route.tsx` (×1) — gradiente decorativo OG
+- `src/components/AIMetricsChart.tsx` (×1) — array de colores de chart interno
+
+**Nota de contraste:** `primary-foreground` actualizado de `#fafaf9` (blanco, 2.6:1 con nuevo primary) a `#1c1917` (piedra oscura, 6.6:1 con nuevo primary) para cumplir WCAG AA. El dark mode ya usaba `#1c1917` — se unifica el sistema.
+
+**Build:** ✅ Compiled successfully — 0 errores TypeScript  
+**Commit:** pendiente
 
 ---
 
@@ -303,6 +332,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-AHORRO-H1-DEDUP-01** | Corregir H1 duplicado en calculadora de ahorro | `6d98a8a` | ✅ Completado |
 | **SEO-503020-CALCULADORA-01** | Optimizar herramienta regla 50/30/20 para calculadora 50 30 20 | `bb82137` | ✅ Completado |
 | **UI-BRAND-AUDIT-01** | Auditoría completa web contra brand manual (12 hallazgos) | `5616816` | ✅ Completado |
+| **UI-COLOR-PRIMARY-ALIGN-01** | Alinear color primario #cf5c5c→#cf8c6c (brand manual) | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**

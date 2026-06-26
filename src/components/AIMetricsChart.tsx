@@ -33,7 +33,7 @@ interface AIMetricsChartProps {
 }
 
 const DEFAULT_COLORS = [
-  "#cf5c5c", // Terracota
+  "#cf8c6c", // Terracota
   "#818cf8", // Índigo
   "#84cc16", // Matcha
   "#c084fc", // Wisteria

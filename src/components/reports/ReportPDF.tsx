@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginBottom: 20,
         borderBottomWidth: 1,
-        borderBottomColor: "#cf5c5c",
+        borderBottomColor: "#cf8c6c",
         paddingBottom: 10,
     },
     title: {
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     },
     brand: {
         fontSize: 14,
-        color: "#cf5c5c",
+        color: "#cf8c6c",
         fontFamily: "Helvetica-Bold",
     },
     section: {

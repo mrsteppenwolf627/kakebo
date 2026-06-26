@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (UI-BRAND-AUDIT-01)  
+**Última actualización:** 2026-06-26 (UI-COLOR-PRIMARY-ALIGN-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,18 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ UI-COLOR-PRIMARY-ALIGN-01 — Alineación color primario
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **Cambio** | `#cf5c5c` / `#f87171` → `#cf8c6c` (brand manual terracota cálida) |
+| **Archivos** | `globals.css`, `ReportPDF.tsx`, `og/route.tsx`, `AIMetricsChart.tsx` |
+
+**`primary-foreground`** actualizado de blanco a `#1c1917` (piedra oscura) para contraste WCAG AA (6.6:1) con el nuevo terracota. Unifica light y dark mode en el mismo sistema de contraste.
 
 ---
 

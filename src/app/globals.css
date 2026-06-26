@@ -31,9 +31,9 @@ body {
   --popover: #ffffff;
   --popover-foreground: #1c1917;
 
-  /* Primary: Terracota Suave (Arcilla) - Reemplaza al rojo agresivo */
-  --primary: #cf5c5c;
-  --primary-foreground: #fafaf9;
+  /* Primary: Terracota Cálida (Adobe) - #CF8C6C alineado con brand manual */
+  --primary: #cf8c6c;
+  --primary-foreground: #1c1917;
 
   /* Secondary: Gris Piedra (Zen Garden) */
   --secondary: #78716c;
@@ -50,10 +50,10 @@ body {
   /* Un rojo más rosado/oscuro para errores */
   --border: #e7e5e4;
   --input: #e7e5e4;
-  --ring: #cf5c5c;
+  --ring: #cf8c6c;
 
   /* Chart Colors (Zen Nature) */
-  --chart-1: #cf5c5c;
+  --chart-1: #cf8c6c;
   /* Terracota (Supervivencia) */
   --chart-2: #818cf8;
   /* Índigo (Opcional/Vicio) */
@@ -69,12 +69,12 @@ body {
 
   --sidebar: #ffffff;
   --sidebar-foreground: #1c1917;
-  --sidebar-primary: #cf5c5c;
-  --sidebar-primary-foreground: #fafaf9;
+  --sidebar-primary: #cf8c6c;
+  --sidebar-primary-foreground: #1c1917;
   --sidebar-accent: #f5f5f4;
   --sidebar-accent-foreground: #1c1917;
   --sidebar-border: #e7e5e4;
-  --sidebar-ring: #cf5c5c;
+  --sidebar-ring: #cf8c6c;
 }
 
 .dark {
@@ -91,8 +91,8 @@ body {
   --popover: #292524;
   --popover-foreground: #fafaf9;
 
-  /* Primary: Terracota luminoso (Brasa) */
-  --primary: #f87171;
+  /* Primary: Terracota Cálida (Adobe) - igual que light mode, brand manual #CF8C6C */
+  --primary: #cf8c6c;
   --primary-foreground: #1c1917;
 
   /* Secondary: Gris plomo */
@@ -111,10 +111,10 @@ body {
 
   --border: #44403c;
   --input: #44403c;
-  --ring: #f87171;
+  --ring: #cf8c6c;
 
   /* Chart Colors (Dark Zen) */
-  --chart-1: #f87171;
+  --chart-1: #cf8c6c;
   /* Terracota Brasa */
   --chart-2: #818cf8;
   /* Índigo */
@@ -127,12 +127,12 @@ body {
 
   --sidebar: #1c1917;
   --sidebar-foreground: #fafaf9;
-  --sidebar-primary: #f87171;
+  --sidebar-primary: #cf8c6c;
   --sidebar-primary-foreground: #1c1917;
   --sidebar-accent: #292524;
   --sidebar-accent-foreground: #fafaf9;
   --sidebar-border: #44403c;
-  --sidebar-ring: #f87171;
+  --sidebar-ring: #cf8c6c;
 }
 
 @theme inline {

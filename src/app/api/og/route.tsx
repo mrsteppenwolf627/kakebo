@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
                             width: '40%',
                             height: '40%',
                             borderRadius: '50%',
-                            background: 'linear-gradient(135deg, #cf5c5c 0%, rgba(207, 92, 92, 0) 70%)',
+                            background: 'linear-gradient(135deg, #cf8c6c 0%, rgba(207, 140, 108, 0) 70%)',
                             opacity: 0.1,
                             filter: 'blur(80px)',
                         }}
