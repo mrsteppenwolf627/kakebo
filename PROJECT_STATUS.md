@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-26 (UI-TYPOGRAPHY-BRAND-ALIGN-01)  
-**Último commit aceptado:** `45bab2c` (UI-CTA-EMOJI-REMOVE-01) → pendiente (UI-TYPOGRAPHY-BRAND-ALIGN-01)  
+**Último commit aceptado:** `a62b440` (UI-TYPOGRAPHY-BRAND-ALIGN-01)  
 **Rama operativa:** `main`
 
 ---
@@ -82,7 +82,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 **Tarjetas/radios/bordes/sombras:** no tocados.  
 **Build:** ✅ Compiled successfully — 0 errores TypeScript  
-**Commit:** pendiente
+**Commit:** `a62b440`
 
 ---
 
@@ -390,7 +390,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **UI-BRAND-AUDIT-01** | Auditoría completa web contra brand manual (12 hallazgos) | `5616816` | ✅ Completado |
 | **UI-COLOR-PRIMARY-ALIGN-01** | Alinear color primario #cf5c5c→#cf8c6c (brand manual) | `1d3800d` | ✅ Completado |
 | **UI-CTA-EMOJI-REMOVE-01** | Eliminar emojis de CTAs en 12 artículos + Hero trust signal | `45bab2c` | ✅ Completado |
-| **UI-TYPOGRAPHY-BRAND-ALIGN-01** | Alinear tipografía: prose h2/h3 fontFamily + HowItWorks H3 serif | pendiente | **⬅ EN CURSO** |
+| **UI-TYPOGRAPHY-BRAND-ALIGN-01** | Alinear tipografía: prose h2/h3 fontFamily + HowItWorks H3 serif | `a62b440` | ✅ Completado |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
