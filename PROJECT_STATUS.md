@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-26 (SEO-HOME-KAKEBO-APP-01)  
-**Último commit aceptado:** `0006a3d` (SEO-I18N-KAKEBO-ONLINE-VALIDATE-01) → pendiente (SEO-HOME-KAKEBO-APP-01)  
+**Último commit aceptado:** `ad9fbf5` (SEO-HOME-KAKEBO-APP-01)  
 **Rama operativa:** `main`
 
 ---
@@ -79,7 +79,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 **H1 (`Hero.title`):** no modificado — ya contenía "Kakebo Online" en posición óptima  
 **Build:** ✅ Compiled successfully — 0 errores TypeScript  
-**Commit:** pendiente
+**Commit:** `ad9fbf5`
 
 ---
 
@@ -195,7 +195,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-CTR-FINTONIC-01** | Optimizar CTR artículo alternativas a Fintonic (title, excerpt, intro) | `e1f30a5` | ✅ Completado |
 | **DOC-BRAND-01** | Manual de identidad visual Kakebo en `docs/brand/` | `5249c37` | ✅ Completado |
 | **SEO-I18N-KAKEBO-ONLINE-VALIDATE-01** | Validación interferencia ES/EN kakebo-online (DUDOSO) | `0006a3d` | ✅ Completado |
-| **SEO-HOME-KAKEBO-APP-01** | Optimizar Home para kakebo online gratis / kakebo app | pendiente | **⬅ EN CURSO** |
+| **SEO-HOME-KAKEBO-APP-01** | Optimizar Home para kakebo online gratis / kakebo app | `ad9fbf5` | ✅ Completado |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
