@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (SEO-HOME-KAKEBO-APP-01)  
+**Última actualización:** 2026-06-26 (SEO-AHORRO-CALCULADORA-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-AHORRO-CALCULADORA-01 — Optimización calculadora de ahorro
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **URL** | `/es/herramientas/calculadora-ahorro` |
+| **Archivos** | `messages/es.json`, `page.tsx` (calculadora-ahorro) |
+
+**Cambios:**
+- `meta.title` → `"Calculadora de Ahorro Mensual: ¿Cuánto Ahorrar al Mes?"` (55 chars)
+- `meta.description` → 141 chars, empieza "Calcula cuánto ahorrar al mes", incluye "plan de ahorro mensual"
+- `header.title` (H1 interno) → `"Calculadora de Ahorro Mensual"` (añade keyword "mensual")
+- `header.subtitle` → pregunta directa "¿Cuánto puedes ahorrar al mes?"
+- H1 + subtítulo hardcodeados en `page.tsx` → actualizados con misma intención keyword
 
 ---
 

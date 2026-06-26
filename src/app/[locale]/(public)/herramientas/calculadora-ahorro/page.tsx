@@ -85,10 +85,10 @@ export default function SavingsCalculatorPage() {
 
             <div className="pt-32 pb-12 px-6 max-w-4xl mx-auto text-center">
                 <h1 className="text-4xl md:text-5xl font-bold font-serif text-foreground mb-6">
-                    Calculadora de Ahorro Kakebo
+                    Calculadora de Ahorro Mensual
                 </h1>
                 <p className="text-lg text-muted-foreground">
-                    Descubre tu potencial de ahorro mensual aplicando el método japonés.
+                    ¿Cuánto deberías ahorrar cada mes? Planifica tu ahorro mensual y obtén tu distribución ideal con el método Kakebo.
                 </p>
             </div>
 

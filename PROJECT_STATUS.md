@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (SEO-HOME-KAKEBO-APP-01)  
-**Último commit aceptado:** `ad9fbf5` (SEO-HOME-KAKEBO-APP-01)  
+**Última actualización:** 2026-06-26 (SEO-AHORRO-CALCULADORA-01)  
+**Último commit aceptado:** `ad9fbf5` (SEO-HOME-KAKEBO-APP-01) → pendiente (SEO-AHORRO-CALCULADORA-01)  
 **Rama operativa:** `main`
 
 ---
@@ -58,6 +58,33 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
 
 **No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## SEO-AHORRO-CALCULADORA-01 — Optimización calculadora de ahorro
+
+**Fecha de ejecución:** 2026-06-26  
+**URL objetivo:** `/es/herramientas/calculadora-ahorro`  
+**Datos Search Console:** 39 impresiones · 14 clics · CTR 35,9% · posición 8,97  
+**Keywords objetivo:** calculadora ahorro (primaria), calculadora de ahorro, cuánto ahorrar al mes, simulador de ahorro mensual, plan de ahorro mensual
+
+**Cambios realizados:**
+
+| Campo | Antes | Después |
+|---|---|---|
+| `Tools.Savings.meta.title` | `"Calculadora de Ahorro Kakebo: Distribuye tu sueldo"` (50 chars) | `"Calculadora de Ahorro Mensual: ¿Cuánto Ahorrar al Mes?"` (55 chars) |
+| `Tools.Savings.meta.description` | 153 chars — enfocada en distribución de ingresos | 141 chars — empieza "Calcula cuánto ahorrar al mes", añade "plan de ahorro mensual" |
+| `Tools.Savings.meta.ogTitle` | `"Calculadora de Ahorro Kakebo: Tu sueldo ideal"` | `"Calculadora de Ahorro Mensual | Simula tu Plan de Ahorro"` |
+| `Tools.Savings.header.title` (H1 interno) | `"Calculadora de Ahorro Kakebo"` | `"Calculadora de Ahorro Mensual"` — keyword "mensual" |
+| `Tools.Savings.header.subtitle` | `"Descubre cómo deberías distribuir tu sueldo..."` | `"¿Cuánto puedes ahorrar al mes? Calcula tu plan..."` — intención directa |
+| H1 page.tsx (hardcodeado) | `"Calculadora de Ahorro Kakebo"` | `"Calculadora de Ahorro Mensual"` |
+| Subtítulo page.tsx (hardcodeado) | `"Descubre tu potencial de ahorro mensual..."` | `"¿Cuánto deberías ahorrar cada mes? Planifica tu ahorro mensual..."` |
+
+**Nota técnica (pre-existing):** La página tiene dos elementos `<h1>` — uno hardcodeado en `page.tsx` y otro dentro del componente `SavingsCalculator`. No se corrige la estructura en esta tarea.
+
+**Archivos modificados:** `messages/es.json`, `src/app/[locale]/(public)/herramientas/calculadora-ahorro/page.tsx`  
+**Build:** ✅ Compiled successfully — 0 errores TypeScript  
+**Commit:** pendiente
 
 ---
 
@@ -196,6 +223,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **DOC-BRAND-01** | Manual de identidad visual Kakebo en `docs/brand/` | `5249c37` | ✅ Completado |
 | **SEO-I18N-KAKEBO-ONLINE-VALIDATE-01** | Validación interferencia ES/EN kakebo-online (DUDOSO) | `0006a3d` | ✅ Completado |
 | **SEO-HOME-KAKEBO-APP-01** | Optimizar Home para kakebo online gratis / kakebo app | `ad9fbf5` | ✅ Completado |
+| **SEO-AHORRO-CALCULADORA-01** | Optimizar calculadora de ahorro para cuánto ahorrar al mes | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**

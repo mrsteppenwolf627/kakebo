@@ -240,14 +240,14 @@
         },
         "Savings": {
             "meta": {
-                "title": "Calculadora de Ahorro Kakebo: Distribuye tu sueldo",
-                "description": "Descubre la distribución ideal de tus ingresos según el método japonés Kakebo. Calcula cuánto deberías gastar en supervivencia, ocio, cultura y ahorro.",
-                "ogTitle": "Calculadora de Ahorro Kakebo: Tu sueldo ideal",
-                "ogDescription": "Distribuye tu nómina con el método japonés: 50% Supervivencia, 20% Ocio, 10% Cultura, 20% Ahorro."
+                "title": "Calculadora de Ahorro Mensual: ¿Cuánto Ahorrar al Mes?",
+                "description": "Calcula cuánto ahorrar al mes con nuestra calculadora de ahorro gratuita. Plan de ahorro mensual personalizado con el método japonés Kakebo.",
+                "ogTitle": "Calculadora de Ahorro Mensual | Simula tu Plan de Ahorro",
+                "ogDescription": "Calcula cuánto deberías ahorrar al mes según tus ingresos. Simulador de ahorro gratuito basado en el método Kakebo."
             },
             "header": {
-                "title": "Calculadora de Ahorro Kakebo",
-                "subtitle": "Descubre cómo deberías distribuir tu sueldo para ahorrar sin esfuerzo usando el método japonés."
+                "title": "Calculadora de Ahorro Mensual",
+                "subtitle": "¿Cuánto puedes ahorrar al mes? Calcula tu plan de ahorro con el método japonés Kakebo."
             },
             "inputs": {
                 "title": "Tus números mensuales",
