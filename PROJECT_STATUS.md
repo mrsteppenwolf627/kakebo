@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-26 (UI-CTA-EMOJI-REMOVE-01)  
-**Último commit aceptado:** `1d3800d` (UI-COLOR-PRIMARY-ALIGN-01) → pendiente (UI-CTA-EMOJI-REMOVE-01)  
+**Último commit aceptado:** `45bab2c` (UI-CTA-EMOJI-REMOVE-01)  
 **Rama operativa:** `main`
 
 ---
@@ -88,7 +88,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 - 3 copies simplificados eliminando openers que funcionaban como hook del emoji ("Olvídate de…", "Olvida…", "Suelta…")
 
 **Build:** ✅ Compiled successfully — 0 errores TypeScript  
-**Commit:** pendiente
+**Commit:** `45bab2c`
 
 ---
 
@@ -364,7 +364,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-503020-CALCULADORA-01** | Optimizar herramienta regla 50/30/20 para calculadora 50 30 20 | `bb82137` | ✅ Completado |
 | **UI-BRAND-AUDIT-01** | Auditoría completa web contra brand manual (12 hallazgos) | `5616816` | ✅ Completado |
 | **UI-COLOR-PRIMARY-ALIGN-01** | Alinear color primario #cf5c5c→#cf8c6c (brand manual) | `1d3800d` | ✅ Completado |
-| **UI-CTA-EMOJI-REMOVE-01** | Eliminar emojis de CTAs en 12 artículos + Hero trust signal | pendiente | **⬅ EN CURSO** |
+| **UI-CTA-EMOJI-REMOVE-01** | Eliminar emojis de CTAs en 12 artículos + Hero trust signal | `45bab2c` | ✅ Completado |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
