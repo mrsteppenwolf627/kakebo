@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (UI-CTA-EMOJI-REMOVE-01)  
+**Última actualización:** 2026-06-26 (UI-TYPOGRAPHY-BRAND-ALIGN-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,21 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ UI-TYPOGRAPHY-BRAND-ALIGN-01 — Alineación tipográfica
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **Archivos** | `tailwind.config.ts`, `HowItWorks.tsx` |
+
+**Cambios:**
+- `tailwind.config.ts`: `fontFamily: 'var(--font-playfair), serif'` en h2 y h3 del bloque `typography`. Aplica Playfair globalmente a todo bloque `.prose` sin necesidad de modificador por uso.
+- `HowItWorks.tsx`: `font-serif` añadido al H3 del step card (títulos de pasos = H3 destacados per brand manual).
+
+Sistema tipográfico validado: Playfair Display en H1/H2/H3 destacados, Inter en cuerpo/UI/microcopy. Tarjetas/radios/bordes/sombras: no tocados.
 
 ---
 

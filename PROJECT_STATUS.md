@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (UI-CTA-EMOJI-REMOVE-01)  
-**Último commit aceptado:** `45bab2c` (UI-CTA-EMOJI-REMOVE-01)  
+**Última actualización:** 2026-06-26 (UI-TYPOGRAPHY-BRAND-ALIGN-01)  
+**Último commit aceptado:** `45bab2c` (UI-CTA-EMOJI-REMOVE-01) → pendiente (UI-TYPOGRAPHY-BRAND-ALIGN-01)  
 **Rama operativa:** `main`
 
 ---
@@ -58,6 +58,31 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
 
 **No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## UI-TYPOGRAPHY-BRAND-ALIGN-01 — Alineación tipográfica con brand manual
+
+**Fecha:** 2026-06-26  
+**Tipo:** Correcciones tipográficas mínimas y globales
+
+**Diagnóstico previo a la tarea:**
+- Hero, Features, FAQ, SavingsSimulator, AlternativesSection, ToolsSection, Footer, Navbar: `font-serif` correctamente aplicado en todos los H1/H2/H3 ✅
+- Blog articles: `prose-headings:font-serif` en el layout del artículo ✅
+- Calculadoras: `font-serif` en H1 y secciones editoriales ✅
+- Único problema encontrado: HowItWorks step card H3 sin `font-serif` + tailwind typography prose sin `fontFamily` global
+
+**Cambios aplicados:**
+
+1. `tailwind.config.ts` — Añadido `fontFamily: 'var(--font-playfair), serif'` a los selectores `h2` y `h3` de la configuración `typography`. Garantiza que cualquier bloque `.prose` use Playfair en H2/H3 globalmente, sin depender del modificador `prose-headings:font-serif` en cada uso.
+
+2. `src/components/landing/HowItWorks.tsx` — Añadido `font-serif` al H3 del step card (`Step` component). Los títulos de pasos son "H3 destacados" según el brand manual.
+
+**Zonas validadas:** Home, Blog index, artículos, herramientas, CTAs, navbar, footer, MDXComponents — tipografía coherente en todas.
+
+**Tarjetas/radios/bordes/sombras:** no tocados.  
+**Build:** ✅ Compiled successfully — 0 errores TypeScript  
+**Commit:** pendiente
 
 ---
 
@@ -365,6 +390,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **UI-BRAND-AUDIT-01** | Auditoría completa web contra brand manual (12 hallazgos) | `5616816` | ✅ Completado |
 | **UI-COLOR-PRIMARY-ALIGN-01** | Alinear color primario #cf5c5c→#cf8c6c (brand manual) | `1d3800d` | ✅ Completado |
 | **UI-CTA-EMOJI-REMOVE-01** | Eliminar emojis de CTAs en 12 artículos + Hero trust signal | `45bab2c` | ✅ Completado |
+| **UI-TYPOGRAPHY-BRAND-ALIGN-01** | Alinear tipografía: prose h2/h3 fontFamily + HowItWorks H3 serif | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**

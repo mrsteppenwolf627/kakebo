@@ -156,7 +156,7 @@ function Step({ number, title, description, icon, side }: StepProps) {
           >
             PASO {number}
           </div>
-          <h3 className="mb-2 text-2xl font-bold text-foreground">{title}</h3>
+          <h3 className="mb-2 text-2xl font-serif font-bold text-foreground">{title}</h3>
           <p className="text-muted-foreground leading-relaxed">{description}</p>
         </div>
       </div>

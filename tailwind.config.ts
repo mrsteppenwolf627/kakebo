@@ -32,6 +32,7 @@ module.exports = {
               fontWeight: '600',
             },
             h2: {
+              fontFamily: 'var(--font-playfair), serif',
               color: 'inherit',
               marginTop: '2.75rem',
               marginBottom: '0.875rem',
@@ -41,6 +42,7 @@ module.exports = {
               lineHeight: '1.35',
             },
             h3: {
+              fontFamily: 'var(--font-playfair), serif',
               color: 'inherit',
               marginTop: '2rem',
               marginBottom: '0.75rem',
