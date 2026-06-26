@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (DOC-BRAND-01)  
+**Última actualización:** 2026-06-26 (SEO-I18N-KAKEBO-ONLINE-VALIDATE-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,26 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-I18N-KAKEBO-ONLINE-VALIDATE-01 — Validación interferencia ES/EN
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **Tipo** | Validación documental — sin cambios en código |
+| **Documento** | `docs/seo/SEO_I18N_KAKEBO_ONLINE_VALIDATE_01.md` |
+
+**Hallazgos:**
+- Redirect 301 `/es/*` → `/*` confirmado en `next.config.ts` ✅
+- Canonical y hreflang correctos en el layout del blog ✅
+- Sitemap ES/EN sin prefijo `/es/` ✅
+- No hay links internos que generen `/es/...` ✅
+- Señales GSC bajo `/es/blog/...`: artefacto histórico, 301 en su lugar
+- EN artículo superando ES: **DUDOSO** — slug EN contiene keyword española "gratis"
+
+**Próxima tarea propuesta:** SEO-I18N-EN-SLUG-FIX-01 (pendiente decisión tras nuevos datos GSC)
 
 ---
 

@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (DOC-BRAND-01)  
-**Último commit aceptado:** `5249c37` (DOC-BRAND-01)  
+**Última actualización:** 2026-06-26 (SEO-I18N-KAKEBO-ONLINE-VALIDATE-01)  
+**Último commit aceptado:** `5249c37` (DOC-BRAND-01) → pendiente (SEO-I18N-KAKEBO-ONLINE-VALIDATE-01)  
 **Rama operativa:** `main`
 
 ---
@@ -58,6 +58,31 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
 
 **No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## SEO-I18N-KAKEBO-ONLINE-VALIDATE-01 — Validación interferencia ES/EN
+
+**Fecha:** 2026-06-26  
+**Tipo:** Validación documental — sin cambios en código ni contenido  
+**Documento:** `docs/seo/SEO_I18N_KAKEBO_ONLINE_VALIDATE_01.md`
+
+**URLs revisadas:**
+- `/blog/kakebo-online-gratis` — canónica ES (sin prefijo)
+- `/es/blog/kakebo-online-gratis` — redirect 301 confirmado en `next.config.ts`
+- `/en/blog/kakebo-online-gratis` — versión EN, supera en señales a ES
+- `/es/blog/kakebo-online-guia-completa` — redirect 301 confirmado
+
+**Resultado:**
+
+| Interferencia | Clasificación |
+|---|---|
+| `/es/*` interfiriendo con `/blog/*` | DESCARTADO — 301 en su lugar |
+| EN artículo superando ES en señales | DUDOSO — slug EN contiene keyword española "gratis" |
+| Canibalización interna ES | DESCARTADO — intención diferenciada |
+
+**Próxima tarea propuesta:** SEO-I18N-EN-SLUG-FIX-01 (pendiente de datos adicionales de GSC)  
+**Commit:** pendiente
 
 ---
 
@@ -147,6 +172,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-CTR-INFLACION-01** | Optimizar CTR snippet calculadora inflación (title, description, H1) | `12b97e0` | ✅ Completado |
 | **SEO-CTR-FINTONIC-01** | Optimizar CTR artículo alternativas a Fintonic (title, excerpt, intro) | `e1f30a5` | ✅ Completado |
 | **DOC-BRAND-01** | Manual de identidad visual Kakebo en `docs/brand/` | `5249c37` | ✅ Completado |
+| **SEO-I18N-KAKEBO-ONLINE-VALIDATE-01** | Validación interferencia ES/EN kakebo-online (DUDOSO) | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
