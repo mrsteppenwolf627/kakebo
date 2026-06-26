@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (UI-COLOR-PRIMARY-ALIGN-01)  
+**Última actualización:** 2026-06-26 (UI-CTA-EMOJI-REMOVE-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,18 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ UI-CTA-EMOJI-REMOVE-01 — Eliminación de emojis en CTAs
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **Emojis eliminados** | 14 (12 × `👉🏽` + 1 × `📥` + 1 × `🔒`) |
+| **Archivos** | 12 artículos `.es.mdx` + `messages/es.json` |
+
+Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "Olvídate", "Suelta", copy excesivamente largo). Intención de conversión mantenida.
 
 ---
 

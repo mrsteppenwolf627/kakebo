@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (UI-COLOR-PRIMARY-ALIGN-01)  
-**Último commit aceptado:** `1d3800d` (UI-COLOR-PRIMARY-ALIGN-01)  
+**Última actualización:** 2026-06-26 (UI-CTA-EMOJI-REMOVE-01)  
+**Último commit aceptado:** `1d3800d` (UI-COLOR-PRIMARY-ALIGN-01) → pendiente (UI-CTA-EMOJI-REMOVE-01)  
 **Rama operativa:** `main`
 
 ---
@@ -58,6 +58,37 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
 
 **No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## UI-CTA-EMOJI-REMOVE-01 — Eliminación de emojis en CTAs editoriales
+
+**Fecha:** 2026-06-26  
+**Emojis eliminados:** 14 total (12 × `👉🏽` en SimpleCTA, 1 × `📥` en DownloadCTA, 1 × `🔒` en Hero trust signal)
+
+**Artículos modificados (12):**
+- `ahorro-pareja.es.mdx`
+- `alternativas-a-app-bancarias.es.mdx`
+- `como-ahorrar-dinero-cada-mes.es.mdx`
+- `eliminar-gastos-hormiga.es.mdx`
+- `kakebo-online-gratis.es.mdx`
+- `kakebo-sueldo-minimo.es.mdx`
+- `kakebo-vs-ynab.es.mdx`
+- `libro-kakebo-pdf.es.mdx`
+- `metodo-kakebo-para-autonomos.es.mdx`
+- `peligros-apps-ahorro-automatico.es.mdx`
+- `plantilla-kakebo-excel.es.mdx` (SimpleCTA + DownloadCTA)
+- `regla-30-dias.es.mdx`
+
+**`messages/es.json`:** `Hero.trustSignal` — eliminado `🔒`
+
+**Ajustes de copy (donde el texto dependía del gesto del emoji):**
+- `peligros-apps-ahorro-automatico`: "Destruye…refugio" → "Cierra tus conexiones Open Banking y únete a Kakebo AI"
+- `regla-30-dias`: copy de 100 chars + "dieta extrema" → "Empieza gratis con Kakebo AI y toma el control de tus gastos"
+- 3 copies simplificados eliminando openers que funcionaban como hook del emoji ("Olvídate de…", "Olvida…", "Suelta…")
+
+**Build:** ✅ Compiled successfully — 0 errores TypeScript  
+**Commit:** pendiente
 
 ---
 
@@ -333,6 +364,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-503020-CALCULADORA-01** | Optimizar herramienta regla 50/30/20 para calculadora 50 30 20 | `bb82137` | ✅ Completado |
 | **UI-BRAND-AUDIT-01** | Auditoría completa web contra brand manual (12 hallazgos) | `5616816` | ✅ Completado |
 | **UI-COLOR-PRIMARY-ALIGN-01** | Alinear color primario #cf5c5c→#cf8c6c (brand manual) | `1d3800d` | ✅ Completado |
+| **UI-CTA-EMOJI-REMOVE-01** | Eliminar emojis de CTAs en 12 artículos + Hero trust signal | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
