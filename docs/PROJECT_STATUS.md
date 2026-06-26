@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (SEO-AHORRO-H1-DEDUP-01)  
+**Última actualización:** 2026-06-26 (SEO-503020-CALCULADORA-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-503020-CALCULADORA-01 — Optimización herramienta regla 50/30/20
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **URL** | `/herramientas/regla-50-30-20` |
+| **Archivos** | `messages/es.json`, `page.tsx` (regla-50-30-20), `Calculator503020.tsx` |
+
+**Cambios:**
+- `meta.title` → `"Calculadora 50/30/20 Gratis | Necesidades, Deseos y Ahorro"` (58 chars ✓)
+- `meta.description` → 151 chars, empieza "Calculadora 50/30/20 gratis para dividir tu sueldo"
+- H1 page.tsx → `"Calculadora 50/30/20 Gratis"` — añade "Gratis" y keyword directa
+- Subtítulo page.tsx → "Divide tu sueldo mensual entre necesidades, deseos y ahorro..."
+- `Calculator503020.tsx`: `<h1>` → `<h2>` (H1 duplicado corregido, mismo patrón que SEO-AHORRO-H1-DEDUP-01)
 
 ---
 

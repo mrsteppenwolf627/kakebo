@@ -87,10 +87,10 @@ export default function Calculator503020Page() {
             <main className="pt-32 pb-20 px-6">
                 <div className="max-w-4xl mx-auto text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold font-serif text-foreground mb-6">
-                        Calculadora Regla 50/30/20
+                        Calculadora 50/30/20 Gratis
                     </h1>
                     <p className="text-lg text-muted-foreground">
-                        Descubre tu sueldo ideal distribuyéndolo entre necesidades, caprichos y ahorro.
+                        Divide tu sueldo mensual entre necesidades, deseos y ahorro. Calcula tu presupuesto con la regla 50/30/20.
                     </p>
                 </div>
 

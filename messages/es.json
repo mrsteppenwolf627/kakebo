@@ -283,14 +283,14 @@
         },
         "Rule503020": {
             "meta": {
-                "title": "Calculadora 50/30/20: Tu Sueldo Ideal en 1 Clic (Plantilla Gratis)",
-                "description": "No hagas números. Esta calculadora aplica la regla 50/30/20 a tu nómina neta al instante. Descubre cuánto deberías gastar en alquiler, ocio y ahorro.",
-                "ogTitle": "Calculadora 50/30/20: Distribuye tu Nómina en 1 Clic",
-                "ogDescription": "La herramienta definitiva para organizar tus finanzas. 50% Necesidades, 30% Caprichos, 20% Ahorro. Gratis y sin registro."
+                "title": "Calculadora 50/30/20 Gratis | Necesidades, Deseos y Ahorro",
+                "description": "Calculadora 50/30/20 gratis para dividir tu sueldo entre necesidades, deseos y ahorro. Introduce tu salario y obtén tu presupuesto mensual al instante.",
+                "ogTitle": "Calculadora 50/30/20 | Tu Presupuesto Mensual Gratis",
+                "ogDescription": "Divide tu sueldo entre necesidades (50%), deseos (30%) y ahorro (20%). Calculadora gratuita de presupuesto mensual basada en la regla 50/30/20."
             },
             "header": {
                 "title": "Calculadora <italic>50/30/20</italic>",
-                "subtitle": "Descubre cuánto deberías ahorrar, gastar en básicos y dedicar a caprichos según tu sueldo. La regla de oro de las finanzas personales."
+                "subtitle": "Divide tu sueldo mensual entre necesidades, deseos y ahorro. La regla de oro de las finanzas personales."
             },
             "inputs": {
                 "income": "Tu Ingreso Mensual Neto"

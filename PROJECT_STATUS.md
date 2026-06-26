@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (SEO-AHORRO-H1-DEDUP-01)  
-**Último commit aceptado:** `6d98a8a` (SEO-AHORRO-H1-DEDUP-01)  
+**Última actualización:** 2026-06-26 (SEO-503020-CALCULADORA-01)  
+**Último commit aceptado:** `6d98a8a` (SEO-AHORRO-H1-DEDUP-01) → pendiente (SEO-503020-CALCULADORA-01)  
 **Rama operativa:** `main`
 
 ---
@@ -58,6 +58,30 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
 
 **No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## SEO-503020-CALCULADORA-01 — Optimización herramienta regla 50/30/20
+
+**Fecha de ejecución:** 2026-06-26  
+**URL objetivo:** `/herramientas/regla-50-30-20`  
+**Keywords objetivo:** calculadora 50 30 20 (primaria), 50 30 20 calculadora, calculadora presupuesto, calculadora gastos mensuales, necesidades deseos y ahorro
+
+**Cambios realizados:**
+
+| Campo | Antes | Después |
+|---|---|---|
+| `Rule503020.meta.title` | `"Calculadora 50/30/20: Tu Sueldo Ideal en 1 Clic (Plantilla Gratis)"` (67 chars) | `"Calculadora 50/30/20 Gratis | Necesidades, Deseos y Ahorro"` (58 chars ✓) |
+| `Rule503020.meta.description` | 153 chars, empieza "No hagas números" | 151 chars, empieza "Calculadora 50/30/20 gratis para dividir tu sueldo" |
+| `Rule503020.meta.ogTitle` | "Distribuye tu Nómina en 1 Clic" | "Tu Presupuesto Mensual Gratis" |
+| `Rule503020.header.subtitle` | "Descubre cuánto deberías ahorrar..." | "Divide tu sueldo mensual entre necesidades, deseos y ahorro..." |
+| H1 page.tsx (hardcodeado) | `"Calculadora Regla 50/30/20"` | `"Calculadora 50/30/20 Gratis"` |
+| Subtítulo page.tsx (hardcodeado) | "Descubre tu sueldo ideal distribuyéndolo..." | "Divide tu sueldo mensual entre necesidades, deseos y ahorro..." |
+| H1 duplicado Calculator503020.tsx | `<h1>` | `<h2>` (mismo fix que SEO-AHORRO-H1-DEDUP-01) |
+
+**Archivos modificados:** `messages/es.json`, `page.tsx` (regla-50-30-20), `Calculator503020.tsx`  
+**Build:** ✅ Compiled successfully — 0 errores TypeScript  
+**Commit:** pendiente
 
 ---
 
@@ -250,6 +274,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-HOME-KAKEBO-APP-01** | Optimizar Home para kakebo online gratis / kakebo app | `ad9fbf5` | ✅ Completado |
 | **SEO-AHORRO-CALCULADORA-01** | Optimizar calculadora de ahorro para cuánto ahorrar al mes | `8084303` | ✅ Completado |
 | **SEO-AHORRO-H1-DEDUP-01** | Corregir H1 duplicado en calculadora de ahorro | `6d98a8a` | ✅ Completado |
+| **SEO-503020-CALCULADORA-01** | Optimizar herramienta regla 50/30/20 para calculadora 50 30 20 | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**

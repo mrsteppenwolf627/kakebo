@@ -36,11 +36,11 @@ export function Calculator503020() {
 
             {/* Header */}
             <div className="text-center space-y-6">
-                <h1 className="text-5xl md:text-6xl font-serif text-foreground leading-[1.1]">
+                <h2 className="text-5xl md:text-6xl font-serif text-foreground leading-[1.1]">
                     {t.rich('header.title', {
                         italic: (chunks) => <span className="italic text-muted-foreground">{chunks}</span>
                     })}
-                </h1>
+                </h2>
                 <p className="text-xl text-muted-foreground font-light max-w-2xl mx-auto">
                     {t('header.subtitle')}
                 </p>
