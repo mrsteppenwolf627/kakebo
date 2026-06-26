@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-26 (DOC-BRAND-01)  
-**Último commit aceptado:** `e1f30a5` (SEO-CTR-FINTONIC-01) → pendiente (DOC-BRAND-01)  
+**Último commit aceptado:** `5249c37` (DOC-BRAND-01)  
 **Rama operativa:** `main`
 
 ---
@@ -83,7 +83,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 - Las imágenes son referencia visual complementaria; el markdown es la fuente operativa principal
 
 **Nota:** No se tocó código de aplicación, artículos, SEO, UI, routing ni ningún otro área.  
-**Commit:** pendiente
+**Commit:** `5249c37`
 
 ---
 
@@ -146,7 +146,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | UIUX-BLOG-PROSE-01 + PREMIUM + GLOBAL | Sistema premium de artículos + global + mobile | `43269b6`..`b924649` | ✅ Completado |
 | **SEO-CTR-INFLACION-01** | Optimizar CTR snippet calculadora inflación (title, description, H1) | `12b97e0` | ✅ Completado |
 | **SEO-CTR-FINTONIC-01** | Optimizar CTR artículo alternativas a Fintonic (title, excerpt, intro) | `e1f30a5` | ✅ Completado |
-| **DOC-BRAND-01** | Manual de identidad visual Kakebo en `docs/brand/` | pendiente | **⬅ EN CURSO** |
+| **DOC-BRAND-01** | Manual de identidad visual Kakebo en `docs/brand/` | `5249c37` | ✅ Completado |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
