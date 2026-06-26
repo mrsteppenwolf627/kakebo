@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-06-26 (UI-TYPOGRAPHY-BRAND-ALIGN-01)  
+**Última actualización:** 2026-06-26 (UI-CARDS-BRAND-ALIGN-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,21 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ UI-CARDS-BRAND-ALIGN-01 — Alineación sistema de tarjetas
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-26 |
+| **Archivos** | `SavingsCalculator.tsx`, `HowItWorks.tsx` |
+
+**Correcciones:**
+- `SavingsCalculator`: tip box orange→muted, emoji 💡 eliminado, shadow-xl→sm, progress bars blue/purple/yellow → primary/accent/amber-400 (paleta brand)
+- `HowItWorks`: timeline icon shadow-lg→shadow-sm
+
+**13 componentes de tarjeta auditados.** 3 niveles de radius identificados como sistema intencional (editorial/componente/container). No tocados.
 
 ---
 

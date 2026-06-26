@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (UI-TYPOGRAPHY-BRAND-ALIGN-01)  
-**Último commit aceptado:** `a62b440` (UI-TYPOGRAPHY-BRAND-ALIGN-01)  
+**Última actualización:** 2026-06-26 (UI-CARDS-BRAND-ALIGN-01)  
+**Último commit aceptado:** `a62b440` (UI-TYPOGRAPHY-BRAND-ALIGN-01) → pendiente (UI-CARDS-BRAND-ALIGN-01)  
 **Rama operativa:** `main`
 
 ---
@@ -58,6 +58,39 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 **Descripción:** Analizar rendimiento actual por query, identificar páginas con impresiones altas y CTR bajo, detectar keywords en posiciones 5-20 candidatas a optimización, y establecer prioridades de SEO Sprint 3 basadas en datos reales, no en estimaciones.
 
 **No iniciar** ningún nuevo artículo SEO ni tarea técnica SEO sin haber ejecutado primero SEO-DATA-PRIORITY-01.
+
+---
+
+## UI-CARDS-BRAND-ALIGN-01 — Alineación sistema de tarjetas con brand manual
+
+**Fecha:** 2026-06-26
+
+**Inventario completo auditado:** Features, ToolsSection, SavingsSimulator, Testimonials, FAQ, HowItWorks, AlternativesSection, Blog index, RelatedPosts, MDXComponents, SavingsCalculator, Calculator503020, CalculatorInflation.
+
+**Inconsistencias corregidas (2 archivos):**
+
+| Archivo | Inconsistencia | Corrección |
+|---|---|---|
+| `SavingsCalculator.tsx` | Tip box `bg-orange-50/border-orange-100` (fuera de paleta) | `bg-muted/50 border-border` (tokens brand) |
+| `SavingsCalculator.tsx` | Emoji `💡` en tip box (brand manual: sin emojis) | Eliminado |
+| `SavingsCalculator.tsx` | Result card `shadow-xl` (excesiva) | `shadow-sm` (sutil) |
+| `SavingsCalculator.tsx` | Progress bar `bg-blue-500` (fuera paleta) | `bg-primary` (terracota brand) |
+| `SavingsCalculator.tsx` | Progress bar `bg-purple-500` (fuera paleta) | `bg-accent` (índigo brand) |
+| `SavingsCalculator.tsx` | Progress bar `bg-yellow-500` (fuera paleta) | `bg-amber-400` (ámbar, chart-5 del sistema) |
+| `HowItWorks.tsx` | Timeline icon `shadow-lg` (único shadow agresivo del sistema) | `shadow-sm` |
+
+**Validado como coherente (no tocado):**
+- Sistema de radios en 3 niveles: editorial (sin radius/rounded-sm), componentes (rounded-xl), containers (rounded-2xl) — es intencional
+- CalculatorInflation: colores red/stone en stat cards contextuales (pérdida = rojo, real = neutro) — semánticamente correctos
+- Calculator503020: colores amber/emerald en legend items — contextualmente apropiados y en paleta cálida
+- ToolsSection inflation card usando `destructive` — tarea separada pendiente (`UI-TOOLS-INFLATION-COLOR-01`)
+- RelatedPosts `hover:-translate-y-0.5` — sutil, no agresivo
+- Blog index `hover:shadow-lg` en featured — diferenciación intencional
+
+**Tipografías globales:** no tocadas.  
+**Textos/SEO:** no tocados.  
+**Build:** ✅ Compiled successfully — 0 errores TypeScript  
+**Commit:** pendiente
 
 ---
 
@@ -391,6 +424,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **UI-COLOR-PRIMARY-ALIGN-01** | Alinear color primario #cf5c5c→#cf8c6c (brand manual) | `1d3800d` | ✅ Completado |
 | **UI-CTA-EMOJI-REMOVE-01** | Eliminar emojis de CTAs en 12 artículos + Hero trust signal | `45bab2c` | ✅ Completado |
 | **UI-TYPOGRAPHY-BRAND-ALIGN-01** | Alinear tipografía: prose h2/h3 fontFamily + HowItWorks H3 serif | `a62b440` | ✅ Completado |
+| **UI-CARDS-BRAND-ALIGN-01** | Alinear tarjetas: orange→muted, shadow-xl→sm, progress bars→palette | pendiente | **⬅ EN CURSO** |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**

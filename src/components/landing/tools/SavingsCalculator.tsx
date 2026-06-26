@@ -86,22 +86,19 @@ export function SavingsCalculator() {
                         </div>
 
                         {/* Tips */}
-                        <div className="rounded-lg bg-orange-50 dark:bg-orange-900/10 p-4 border border-orange-100 dark:border-orange-900/20">
-                            <div className="flex items-start gap-3">
-                                <span className="text-xl">💡</span>
-                                <div>
-                                    <h4 className="font-semibold text-orange-900 dark:text-orange-100 text-sm">{t('tips.title')}</h4>
-                                    <p className="text-sm text-orange-800 dark:text-orange-200/80 mt-1">
-                                        {t('tips.desc')}
-                                    </p>
-                                </div>
+                        <div className="rounded-lg bg-muted/50 p-4 border border-border">
+                            <div>
+                                <h4 className="font-semibold text-foreground text-sm">{t('tips.title')}</h4>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                    {t('tips.desc')}
+                                </p>
                             </div>
                         </div>
                     </div>
 
                     {/* RESULTS */}
                     <div className="space-y-8">
-                        <div className="rounded-2xl bg-stone-900 p-8 text-white shadow-xl">
+                        <div className="rounded-2xl bg-stone-900 p-8 text-white shadow-sm">
                             <h3 className="text-xl font-serif font-semibold mb-6 text-stone-100">
                                 {t('results.title')}
                             </h3>
@@ -129,7 +126,7 @@ export function SavingsCalculator() {
                                                 <span className="text-sm font-medium text-stone-100">{formatCurrency(distribution.survival)}</span>
                                             </div>
                                             <div className="h-2 rounded-full bg-stone-800 overflow-hidden">
-                                                <div className="h-full bg-blue-500 rounded-full w-[50%]"></div>
+                                                <div className="h-full bg-primary rounded-full w-[50%]"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -141,7 +138,7 @@ export function SavingsCalculator() {
                                                 <span className="text-sm font-medium text-stone-100">{formatCurrency(distribution.optional)}</span>
                                             </div>
                                             <div className="h-2 rounded-full bg-stone-800 overflow-hidden">
-                                                <div className="h-full bg-purple-500 rounded-full w-[20%]"></div>
+                                                <div className="h-full bg-accent rounded-full w-[20%]"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -153,7 +150,7 @@ export function SavingsCalculator() {
                                                 <span className="text-sm font-medium text-stone-100">{formatCurrency(distribution.culture)}</span>
                                             </div>
                                             <div className="h-2 rounded-full bg-stone-800 overflow-hidden">
-                                                <div className="h-full bg-yellow-500 rounded-full w-[10%]"></div>
+                                                <div className="h-full bg-amber-400 rounded-full w-[10%]"></div>
                                             </div>
                                         </div>
                                     </div>

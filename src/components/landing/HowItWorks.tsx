@@ -163,7 +163,7 @@ function Step({ number, title, description, icon, side }: StepProps) {
 
       {/* Center Icon (hidden on mobile) */}
       <div className="absolute left-1/2 hidden -translate-x-1/2 lg:flex">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-card bg-foreground text-card shadow-lg">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-card bg-foreground text-card shadow-sm">
           {icon}
         </div>
       </div>
