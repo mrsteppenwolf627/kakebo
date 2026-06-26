@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
 **Última actualización:** 2026-06-26 (SEO-CTR-FINTONIC-01)  
-**Último commit aceptado:** `12b97e0` (SEO-CTR-INFLACION-01) → pendiente (SEO-CTR-FINTONIC-01)  
+**Último commit aceptado:** `e1f30a5` (SEO-CTR-FINTONIC-01)  
 **Rama operativa:** `main`
 
 ---
@@ -79,7 +79,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 **Archivo modificado:** `src/content/blog/alternativas-a-app-bancarias.es.mdx`  
 **Build:** ✅ Compiled successfully — 0 errores TypeScript  
-**Commit:** pendiente
+**Commit:** `e1f30a5`
 
 ---
 
@@ -119,7 +119,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | MED-01 + MED-02 | GA4 + CSP | `3a1777b`..`7a08d3d` | ✅ Completado |
 | UIUX-BLOG-PROSE-01 + PREMIUM + GLOBAL | Sistema premium de artículos + global + mobile | `43269b6`..`b924649` | ✅ Completado |
 | **SEO-CTR-INFLACION-01** | Optimizar CTR snippet calculadora inflación (title, description, H1) | `12b97e0` | ✅ Completado |
-| **SEO-CTR-FINTONIC-01** | Optimizar CTR artículo alternativas a Fintonic (title, excerpt, intro) | pendiente | **⬅ EN CURSO** |
+| **SEO-CTR-FINTONIC-01** | Optimizar CTR artículo alternativas a Fintonic (title, excerpt, intro) | `e1f30a5` | ✅ Completado |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
