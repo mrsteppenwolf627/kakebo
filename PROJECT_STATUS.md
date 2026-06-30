@@ -51,6 +51,33 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-GEO-TERMINOLOGY-01 — Glosario canónico SEO/GEO
+
+**Estado:** ✅ Completado (2026-06-30)  
+**Tipo:** Solo documentación estratégica — sin cambios en código ni contenido  
+**Documento:** `docs/seo/SEO_GEO_TERMINOLOGY_01.md`
+
+**14 términos definidos:** Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakebo online · Plantilla Kakebo Excel · Herramientas gratuitas · Calculadora de ahorro mensual · Calculadora de inflación e IPC · Calculadora 50/30/20 · Regla 50/30/20 · Presupuesto personal · Gastos mensuales
+
+**Ambigüedades principales detectadas:**
+- "Kakebo" solo es ambiguo entre método histórico y producto digital
+- "Kakebo Online" no es un nombre propio — es un descriptor
+- "Opcional o Vicio" y "Extra" son nombres incorrectos de categorías (canon: "Ocio/Vicio" y "Extras")
+- MetodoKakebo.com apenas aparece como entidad en el contenido actual
+
+**Reglas canónicas más importantes:**
+- Método Kakebo = sistema japonés 1904 (Motoko Hani) — NO el producto digital
+- Kakebo AI = nombre oficial del producto de MetodoKakebo.com
+- MetodoKakebo.com = la plataforma/organización como entidad
+- Categorías: Supervivencia / Ocio/Vicio / Cultura / Extras (solo estas formas)
+- En schema `Organization.name`: "MetodoKakebo.com" o "Kakebo AI", nunca solo "Kakebo"
+
+**Frases definicionales citables incluidas** (6 frases — para usar en `SEO-GEO-ENTITY-DEFINITION-01`)
+
+**Próximas tareas que deben usar este documento:** `SEO-GEO-ENTITY-DEFINITION-01`, `SEO-SCHEMA-HOME-01`, `SEO-SCHEMA-AHORRO-SYNC-01`, `SEO-EXCEL-TITLE-01`, `SEO-INTERNAL-LINKING-V1-01`, `SEO-BLOG-INFLACION-01`, `SEO-BLOG-503020-01`
+
+---
+
 ### SEO-KAKEBO-ONLINE-CANIB-FIX-01 — Implementar noindex en artículo EN
 
 **Estado:** ✅ Completado (2026-06-30)  
@@ -612,7 +639,8 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-ROADMAP-V1-01** | Roadmap SEO/GEO priorizado — 26 tareas en 7 bloques | — | ✅ Completado (2026-06-30) |
 | **SEO-DATA-PRIORITY-01** | Snapshot GSC (Last 3m) + priorización por datos reales | — | ✅ Completado (2026-06-30) |
 | **SEO-KAKEBO-ONLINE-CANIB-01** | Auditoría canibalización EN/ES kakebo-online-gratis — CONFIRMADA | — | ✅ Completado (2026-06-30) |
-| **SEO-KAKEBO-ONLINE-CANIB-FIX-01** | noindex en EN kakebo-online-gratis + exclusión de sitemap | — | ✅ Completado (2026-06-30) |
+| **SEO-KAKEBO-ONLINE-CANIB-FIX-01** | noindex en EN kakebo-online-gratis + exclusión de sitemap | `cba3fd0` | ✅ Completado (2026-06-30) |
+| **SEO-GEO-TERMINOLOGY-01** | Glosario canónico SEO/GEO — 14 términos definidos | — | ✅ Completado (2026-06-30) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

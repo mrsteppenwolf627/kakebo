@@ -180,6 +180,38 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-GEO-TERMINOLOGY-01 — Glosario canónico SEO/GEO
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-30 |
+| **Tipo** | Solo documentación estratégica — sin cambios en código ni contenido |
+| **Documento** | `docs/seo/SEO_GEO_TERMINOLOGY_01.md` |
+
+**14 términos definidos con tabla canónica completa:**  
+Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakebo online · Plantilla Kakebo Excel · Herramientas gratuitas · Calculadora de ahorro mensual · Calculadora de inflación e IPC · Calculadora 50/30/20 · Regla 50/30/20 · Presupuesto personal · Gastos mensuales
+
+**Estructura del documento:**
+- Tabla canónica (8 columnas: término, significado, usar para, no usar para, entidad, página, ejemplo, riesgo)
+- Variantes aceptadas y términos a evitar
+- Árbol de entidades (método → MetodoKakebo.com → Kakebo AI → herramientas → plantilla)
+- 4 nombres canónicos de categorías Kakebo
+- Uso recomendado por tipo de página (Home, pilar, soporte, herramientas, legal, GEO)
+- Uso recomendado por elemento SEO (title, meta, H1, FAQ, schema, ancla, CTA)
+- 6 frases definicionales citables para `SEO-GEO-ENTITY-DEFINITION-01`
+- Ejemplos de copy correcto e incorrecto
+- Reglas para prompts a modelos de IA
+- 7 tareas que deben usar el glosario
+
+**Ambigüedades principales resueltas:**
+- "Kakebo" solo → método histórico (con contexto) o abreviatura controlada
+- "Kakebo Online" → descriptor en minúsculas, no nombre propio
+- "Opcional o Vicio" → corregido a "Ocio/Vicio"
+- "Extra" → corregido a "Extras"
+- MetodoKakebo.com → entidad que debe aparecer en contenido y schema
+
+---
+
 ## ✅ SEO-KAKEBO-ONLINE-CANIB-FIX-01 — Noindex en artículo EN kakebo-online-gratis
 
 | Campo | Detalle |
