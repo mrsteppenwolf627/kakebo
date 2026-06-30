@@ -47,3 +47,7 @@ estrategia frontend.txt
 test-agent-endpoint.ps1
 test-openai.mjs
 test_agent.ps1
+
+# GSC raw exports (no commitear datos de Search Console)
+docs/seo/gsc_*/
+docs/seo/*.zip
