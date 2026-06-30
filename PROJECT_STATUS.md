@@ -51,6 +51,32 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-KAKEBO-ONLINE-CANIB-FIX-01 — Implementar noindex en artículo EN
+
+**Estado:** ✅ Completado (2026-06-30)  
+**URL afectada:** `/en/blog/kakebo-online-gratis` → ahora con `noindex`  
+**Build:** ✅ Compiled successfully
+
+**Implementación:**
+- No existía patrón de `noindex` en el sistema — se creó mecanismo mínimo y reutilizable
+- `src/lib/blog.ts` — añadido `noindex?: boolean` al tipo `BlogPost['frontmatter']`
+- `src/app/[locale]/(public)/blog/[slug]/page.tsx` — `generateMetadata` aplica `robots: { index: false, follow: false }` cuando `frontmatter.noindex === true`
+- `src/app/sitemap.ts` — filtra posts con `noindex: true` para excluirlos del sitemap
+- `src/content/blog/kakebo-online-gratis.en.mdx` — añadido `noindex: true` en frontmatter
+
+**Verificaciones:**
+- `/en/blog/kakebo-online-gratis`: noindex aplicado ✅
+- `/blog/kakebo-online-gratis` (ES): sin noindex, sigue indexable ✅
+- Canonical y hreflang: no modificados ✅
+- Versión española del artículo: no tocada ✅
+- robots.txt: no tocado ✅
+- Otros artículos EN: no tocados ✅
+- Home `/`: no tocada ✅
+
+**Validación en GSC:** Revisar en 2-4 semanas que la URL EN muestre noindex en "Inspect URL". En 6-8 semanas, confirmar que la ES canonical gana impresiones.
+
+---
+
 ### SEO-KAKEBO-ONLINE-CANIB-01 — Auditoría canibalización EN/ES kakebo-online-gratis
 
 **Estado:** ✅ Completado (2026-06-30)  
@@ -586,7 +612,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-ROADMAP-V1-01** | Roadmap SEO/GEO priorizado — 26 tareas en 7 bloques | — | ✅ Completado (2026-06-30) |
 | **SEO-DATA-PRIORITY-01** | Snapshot GSC (Last 3m) + priorización por datos reales | — | ✅ Completado (2026-06-30) |
 | **SEO-KAKEBO-ONLINE-CANIB-01** | Auditoría canibalización EN/ES kakebo-online-gratis — CONFIRMADA | — | ✅ Completado (2026-06-30) |
-| **SEO-KAKEBO-ONLINE-CANIB-FIX-01** | **Implementar noindex en artículo EN kakebo-online-gratis** | — | **⬅ SIGUIENTE (P0)** |
+| **SEO-KAKEBO-ONLINE-CANIB-FIX-01** | noindex en EN kakebo-online-gratis + exclusión de sitemap | — | ✅ Completado (2026-06-30) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

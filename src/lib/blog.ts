@@ -14,6 +14,7 @@ export interface BlogPost {
         readingTime?: string;
         image?: string;
         related?: string[];
+        noindex?: boolean;
         faq?: {
             question: string;
             answer: string;

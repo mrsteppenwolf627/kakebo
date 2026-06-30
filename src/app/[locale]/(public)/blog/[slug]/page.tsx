@@ -31,6 +31,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
         title: `${post.frontmatter.title} | Blog Kakebo`,
         description: post.frontmatter.excerpt,
+        ...(post.frontmatter.noindex && {
+            robots: { index: false, follow: false },
+        }),
         openGraph: {
             title: post.frontmatter.title,
             description: post.frontmatter.excerpt,

@@ -180,6 +180,39 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-KAKEBO-ONLINE-CANIB-FIX-01 — Noindex en artículo EN kakebo-online-gratis
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-30 |
+| **URL afectada** | `/en/blog/kakebo-online-gratis` |
+| **Build** | ✅ Compiled successfully — 0 errores TypeScript |
+
+**Archivos modificados:**
+
+| Archivo | Cambio |
+|---|---|
+| `src/lib/blog.ts` | Añadido `noindex?: boolean` al tipo `BlogPost['frontmatter']` |
+| `src/app/[locale]/(public)/blog/[slug]/page.tsx` | `generateMetadata` aplica `robots: { index: false, follow: false }` cuando `frontmatter.noindex === true` |
+| `src/app/sitemap.ts` | Filtra posts con `noindex: true` en la generación del sitemap |
+| `src/content/blog/kakebo-online-gratis.en.mdx` | Añadido `noindex: true` en frontmatter |
+
+**Implementación:** No existía patrón previo de `noindex` en el sistema de blog. Se creó el mecanismo mínimo y reutilizable via campo frontmatter opcional. Cualquier artículo futuro puede usar `noindex: true` con el mismo mecanismo.
+
+**Confirmaciones:**
+- `/en/blog/kakebo-online-gratis`: `robots: { index: false, follow: false }` aplicado en metadata ✅
+- `/blog/kakebo-online-gratis` (ES canonical): sin noindex, completamente indexable ✅
+- `kakebo-online-gratis.es.mdx`: no tiene campo `noindex` — intacto ✅
+- Canonical y hreflang: no modificados ✅
+- robots.txt: no tocado ✅
+- Otros artículos EN: no tocados ✅
+- Home `/`: no tocada ✅
+- `.claude/settings.local.json`: no incluido ✅
+
+**Próximo paso:** Verificar en GSC a 2-4 semanas que `/en/blog/kakebo-online-gratis` muestra noindex en "Inspect URL". A 6-8 semanas, confirmar que `/blog/kakebo-online-gratis` (ES canonical) gana impresiones.
+
+---
+
 ## ✅ SEO-KAKEBO-ONLINE-CANIB-01 — Auditoría canibalización EN/ES kakebo-online-gratis
 
 | Campo | Detalle |

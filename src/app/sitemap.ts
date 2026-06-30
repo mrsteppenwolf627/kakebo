@@ -43,8 +43,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         });
     });
 
-    // Add localized blog posts
-    posts.forEach((post) => {
+    // Add localized blog posts (skip noindex posts)
+    posts.filter((post) => !post.frontmatter.noindex).forEach((post) => {
         locales.forEach((locale) => {
             const path = locale === 'es' ? `/blog/${post.slug}` : `/${locale}/blog/${post.slug}`;
             sitemapEntries.push({
