@@ -51,6 +51,32 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-GEO-DEEP-AUDIT-01 — Auditoría profunda SEO técnico, semántico y GEO
+
+**Estado:** ✅ Completado (2026-06-30)  
+**Tipo:** Solo documentación — sin cambios en código ni contenido  
+**Documento:** `docs/seo/SEO_GEO_DEEP_AUDIT_01.md`
+
+**32 hallazgos** (12 técnicos · 9 semánticos · 11 GEO)  
+**2 riesgos críticos · 7 medios · 8 bajos**
+
+**Hallazgos clave:**
+- Problemas P0 del mapa anterior ya RESUELTOS en código (canonical, robots, canonicals herramientas)
+- `dateModified` JSON-LD congelado en todos los posts (T-03/T-04)
+- Home sin schema `Organization` + `WebSite` (T-07)
+- Schema `calculadora-ahorro` desalineado del contenido optimizado (T-05)
+- Ambigüedad terminológica crítica: "Kakebo AI" vs "método Kakebo" vs "app" (S-06 + G-02)
+- Sin definición factual citable del método o producto en ninguna página (G-01 + G-05)
+- 3 herramientas sin artículo editorial de respaldo (S-04)
+- Canibalización kakebo-online sin resolver (S-01 + S-02)
+
+**Tareas futuras priorizadas (18 en total):**  
+`SEO-EXCEL-TITLE-01` · `SEO-TECHNICAL-DATEMODIFIED-01` · `SEO-TECHNICAL-SITEMAP-01` · `SEO-SCHEMA-HOME-01` · `SEO-GEO-ENTITY-DEFINITION-01` · `SEO-GEO-TERMINOLOGY-01` · `SEO-KAKEBO-ONLINE-CANIB-01` · `SEO-BLOG-INFLACION-01` · `SEO-BLOG-503020-01` · `SEO-INTERNAL-LINKING-V1-01` · `SEO-GA4-EVENTS-01` + más
+
+**Prerequisito bloqueante:** `SEO-DATA-PRIORITY-01` (snapshot GSC actualizado)
+
+---
+
 ### SEO-MAP-V1-AUDIT-01 — Mapa maestro SEO V1
 
 **Estado:** ✅ Completado (2026-06-30)  
@@ -469,6 +495,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **UI-CARDS-BRAND-ALIGN-01** | Alinear tarjetas: orange→muted, shadow-xl→sm, progress bars→palette | `4781ad0` | ✅ Completado |
 | **SEO-PILLAR-EXCEL-AUDIT-01** | Auditoría página pilar `/blog/plantilla-kakebo-excel` como activo SEO orgánico principal | — | ✅ Completado (2026-06-30) |
 | **SEO-MAP-V1-AUDIT-01** | Mapa maestro SEO — inventario completo de URLs, clusters, prioridades y estado | — | ✅ Completado (2026-06-30) |
+| **SEO-GEO-DEEP-AUDIT-01** | Auditoría profunda SEO técnico, semántico y GEO — 32 hallazgos | — | ✅ Completado (2026-06-30) |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**

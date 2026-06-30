@@ -180,6 +180,57 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-GEO-DEEP-AUDIT-01 — Auditoría profunda SEO técnico, semántico y GEO
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-30 |
+| **Tipo** | Solo documentación — sin cambios en código ni contenido |
+| **Documento** | `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` |
+| **Fuentes revisadas** | 15 archivos (sitemap.ts, robots.ts, next.config.ts, layout.tsx, 3 herramientas page.tsx, blog/[slug]/page.tsx, plantilla-kakebo-excel.es.mdx + docs SEO) |
+
+**32 hallazgos totales: 12 técnicos · 9 semánticos · 11 GEO**
+
+**Riesgos críticos (2):**
+- RC-01: Dependencia de una sola URL tractora (`plantilla-kakebo-excel`)
+- RC-02: Sin datos reales de GSC actualizados para la mayoría de URLs
+
+**Riesgos medios (7):**
+- RM-01: Canibalización kakebo-online no resuelta
+- RM-02: `dateModified` congelado en JSON-LD y sitemap
+- RM-03: Home sin schema JSON-LD
+- RM-04: Ambigüedad terminológica Kakebo AI vs método Kakebo
+- RM-05: Entidad MetodoKakebo.com sin definición clara
+- RM-06: hreflang `kakebo-online-guia-completa` puede apuntar a 404 EN
+- RM-07: `metodo-kakebo-guia-definitiva` infraconectado
+
+**Hallazgos técnicos activos relevantes:**
+- T-01: `/herramientas` hub ausente del sitemap
+- T-03/T-04: `lastModified` y `dateModified` congelados en fecha de publicación original
+- T-05: Schema `calculadora-ahorro` desalineado del contenido optimizado (nombre/descripción no actualizados en SEO-AHORRO-CALCULADORA-01)
+- T-06: `siteName` inconsistente entre páginas ("Kakebo AI" vs "Kakebo")
+- T-07: Home sin schema `Organization` + `WebSite` + SearchAction
+- T-09: hreflang `kakebo-online-guia-completa` puede apuntar a 404 EN por slug diferente
+
+**Hallazgos técnicos ya RESUELTOS (vs mapa anterior 2026-06-17):**
+- Canonical de blog posts ES: ✅ Corregido
+- robots.txt `/app/` y `/auth/`: ✅ Corregido
+- Canonical de herramientas: ✅ Corregido
+
+**Hallazgos GEO prioritarios:**
+- G-01: Sin definición citable del método Kakebo al inicio de ninguna página
+- G-02: Terminología inconsistente entre páginas (Kakebo AI / método Kakebo / app Kakebo)
+- G-07: Artículos mezclan método histórico (1904) con producto (MetodoKakebo.com)
+- GEO positivo: `plantilla-kakebo-excel` + `calculadora-inflacion` tienen la mejor estructura GEO del sitio
+
+**18 tareas futuras propuestas:**  
+Bloque inmediato: `SEO-EXCEL-TITLE-01` · `SEO-TECHNICAL-DATEMODIFIED-01` · `SEO-TECHNICAL-SITEMAP-01` · `SEO-SCHEMA-HOME-01` · `SEO-EXCEL-H3-FIX-01` · `SEO-EXCEL-INTERNAL-LINKS-01`  
+Bloque GEO: `SEO-GEO-ENTITY-DEFINITION-01` · `SEO-GEO-TERMINOLOGY-01` · `SEO-SCHEMA-AHORRO-SYNC-01` · `SEO-GEO-AUTHORSHIP-01`  
+Bloque contenido: `SEO-KAKEBO-ONLINE-CANIB-01` · `SEO-BLOG-INFLACION-01` · `SEO-BLOG-503020-01` · `SEO-INTERNAL-LINKING-V1-01` · `SEO-HREFLANG-KAKEBO-ONLINE-01`  
+Bloque medición: `SEO-DATA-PRIORITY-01` (PREREQUISITO) · `SEO-GA4-EVENTS-01`
+
+---
+
 ## ✅ SEO-MAP-V1-AUDIT-01 — Mapa maestro SEO V1
 
 | Campo | Detalle |
