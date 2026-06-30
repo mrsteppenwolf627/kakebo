@@ -51,6 +51,23 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-PILLAR-EXCEL-AUDIT-01 — Auditoría página pilar plantilla-kakebo-excel
+
+**Estado:** ✅ Completado (2026-06-30)  
+**Tipo:** Solo documentación — sin cambios en código ni contenido  
+**Documento:** `docs/seo/SEO_PILLAR_EXCEL_AUDIT_01.md`  
+**URL auditada:** `/blog/plantilla-kakebo-excel`
+
+**Hallazgos clave:**
+- 12 fortalezas SEO identificadas (JSON-LD SoftwareApplication único, keyword exacta en H1, recurso descargable real, FAQPage con 5 preguntas, hreflang/canonical correctos)
+- 10 riesgos SEO identificados (meta title truncado ~93 chars, H3 antes de primer H2, dateModified congelado, enlazado interno insuficiente hacia herramientas)
+- 8 oportunidades de enlazado interno identificadas (hacia /herramientas/regla-50-30-20, /herramientas/calculadora-inflacion, desde /blog/como-hacer-un-presupuesto-personal, y más)
+- 8 tareas futuras propuestas (SEO-EXCEL-TITLE-01, SEO-EXCEL-H3-FIX-01, SEO-EXCEL-DATE-01, SEO-EXCEL-INTERNAL-LINKS-01, SEO-EXCEL-INBOUND-PILAR-01, y más)
+
+**Restricción activa:** No tocar slug, H1, estructura narrativa, hreflang/canonical, imágenes ni contenido EN legacy.
+
+---
+
 ### SEO-DATA-PRIORITY-01 — Priorizar oportunidades según Search Console
 
 **Estado:** Pendiente de inicio  
@@ -425,6 +442,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **UI-CTA-EMOJI-REMOVE-01** | Eliminar emojis de CTAs en 12 artículos + Hero trust signal | `45bab2c` | ✅ Completado |
 | **UI-TYPOGRAPHY-BRAND-ALIGN-01** | Alinear tipografía: prose h2/h3 fontFamily + HowItWorks H3 serif | `a62b440` | ✅ Completado |
 | **UI-CARDS-BRAND-ALIGN-01** | Alinear tarjetas: orange→muted, shadow-xl→sm, progress bars→palette | `4781ad0` | ✅ Completado |
+| **SEO-PILLAR-EXCEL-AUDIT-01** | Auditoría página pilar `/blog/plantilla-kakebo-excel` como activo SEO orgánico principal | — | ✅ Completado (2026-06-30) |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**

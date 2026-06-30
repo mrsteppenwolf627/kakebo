@@ -180,6 +180,52 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-PILLAR-EXCEL-AUDIT-01 — Auditoría página pilar plantilla-kakebo-excel
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-30 |
+| **Tipo** | Solo documentación — sin cambios en código ni contenido |
+| **URL auditada** | `/blog/plantilla-kakebo-excel` |
+| **Documento** | `docs/seo/SEO_PILLAR_EXCEL_AUDIT_01.md` |
+
+**Contexto:** Página identificada como principal landing orgánica en GA4 y concentradora de clics en GSC. Keywords posicionadas: `kakebo excel`, `kakebo excel gratis`, `plantilla kakebo excel`, `plantilla kakebo excel gratis`.
+
+**Fortalezas identificadas (12):**
+- Keyword exacta en H1
+- JSON-LD `SoftwareApplication` específico para este slug (único en el sitio)
+- FAQPage JSON-LD con 5 preguntas (frontmatter `faq`)
+- Recurso descargable real (`.xlsx`) en primer tercio del artículo
+- Canonical y hreflang correctamente configurados
+- Tabla comparativa (potencial featured snippet)
+- Narrativa de conversión integrada (descarga → fricción → alternativa app)
+- Compatibilidad Google Sheets mencionada (amplía cobertura semántica)
+
+**Riesgos identificados (10):**
+- Meta title ~93 chars — truncado en SERP (límite ~65), impacto en CTR
+- H3 antes del primer H2 (jerarquía de headings rota)
+- `dateModified` congelado en `datePublished` (no refleja actualizaciones)
+- Imagen duplicada hero + body (mismo fichero, oportunidad visual desaprovechada)
+- Sin enlace a `/herramientas/regla-50-30-20` ni `/herramientas/calculadora-inflacion`
+- SimpleCTA a `/` posicionado antes de FAQ (puede interrumpir flujo de lectura)
+- Canibalización potencial Home ↔ artículo (no confirmada, monitorizar)
+- Versión EN legacy activa sin validación GSC
+
+**Oportunidades de enlazado interno (8):**
+- Añadir link a `/herramientas/regla-50-30-20` en sección Pestaña de Previsión
+- Añadir segundo link a `/herramientas/calculadora-ahorro` en body (no solo FAQ)
+- Enlace entrante desde `/blog/como-hacer-un-presupuesto-personal` (pilar cluster presupuesto)
+- Enlace entrante desde `/blog/kakebo-online-gratis`
+- Enlace entrante desde `/blog/regla-30-dias`, `/blog/kakebo-vs-ynab`, `/blog/metodo-kakebo-para-autonomos`
+- Tarjeta en `ToolsSection` de la Home
+
+**Tareas futuras propuestas (8):**
+`SEO-EXCEL-TITLE-01` · `SEO-EXCEL-H3-FIX-01` · `SEO-EXCEL-DATE-01` · `SEO-EXCEL-INTERNAL-LINKS-01` · `SEO-EXCEL-INBOUND-PILAR-01` · `SEO-EXCEL-FAQ-FRONTMATTER-01` · `SEO-EXCEL-EN-VALIDATE-01` · `SEO-EXCEL-CTA-REORDER-01`
+
+**Restricción activa:** No tocar slug, H1, JSON-LD SoftwareApplication, estructura narrativa, hreflang/canonical, imágenes ni contenido EN legacy.
+
+---
+
 ## ✅ SEO-CTR-FINTONIC-01 — Optimización CTR artículo alternativas a Fintonic
 
 | Campo | Detalle |
