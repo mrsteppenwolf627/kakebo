@@ -51,6 +51,29 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-KAKEBO-ONLINE-CANIB-01 — Auditoría canibalización EN/ES kakebo-online-gratis
+
+**Estado:** ✅ Completado (2026-06-30)  
+**Tipo:** Solo auditoría y documentación — sin cambios en código ni contenido  
+**Documento:** `docs/seo/SEO_KAKEBO_ONLINE_CANIB_01.md`
+
+**Veredicto:** Interferencia EN→ES **CONFIRMADA** por datos reales de GSC
+
+**Causa raíz:** Cross-language URL contamination — el slug `kakebo-online-gratis` contiene la palabra española "gratis" en la URL inglesa `/en/blog/kakebo-online-gratis`. Google asocia esta URL EN con búsquedas españolas y la muestra por encima del ES canonical.
+
+**Datos clave:**
+- `/en/blog/kakebo-online-gratis`: 15 clics · 208 imp · pos 6,86
+- `/blog/kakebo-online-gratis` (ES canonical): 1 clic · 6 imp · pos 6,0
+- Ratio ES:EN = 1:34 en impresiones (anomalía para audiencia 62,6% española)
+- Todos los clics EN son de usuarios españoles (queries en español, `kakebo online gratis`)
+
+**Solución recomendada:**  
+`noindex` en `kakebo-online-gratis.en.mdx` → eliminar del índice de Google → toda la autoridad migra al ES canonical. Complementar con refuerzo de señales internas hacia `/blog/kakebo-online-gratis`.
+
+**Tarea fix propuesta:** `SEO-KAKEBO-ONLINE-CANIB-FIX-01` ⬅ siguiente P0
+
+---
+
 ### SEO-DATA-PRIORITY-01 — Snapshot GSC y priorización SEO por datos reales
 
 **Estado:** ✅ Completado (2026-06-30)  
@@ -562,7 +585,8 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-GEO-DEEP-AUDIT-01** | Auditoría profunda SEO técnico, semántico y GEO — 32 hallazgos | — | ✅ Completado (2026-06-30) |
 | **SEO-ROADMAP-V1-01** | Roadmap SEO/GEO priorizado — 26 tareas en 7 bloques | — | ✅ Completado (2026-06-30) |
 | **SEO-DATA-PRIORITY-01** | Snapshot GSC (Last 3m) + priorización por datos reales | — | ✅ Completado (2026-06-30) |
-| **SEO-KAKEBO-ONLINE-CANIB-01** | **Resolver canibalización EN/ES en kakebo-online-gratis** | — | **⬅ SIGUIENTE (P0)** |
+| **SEO-KAKEBO-ONLINE-CANIB-01** | Auditoría canibalización EN/ES kakebo-online-gratis — CONFIRMADA | — | ✅ Completado (2026-06-30) |
+| **SEO-KAKEBO-ONLINE-CANIB-FIX-01** | **Implementar noindex en artículo EN kakebo-online-gratis** | — | **⬅ SIGUIENTE (P0)** |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

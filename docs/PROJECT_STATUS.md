@@ -180,6 +180,47 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-KAKEBO-ONLINE-CANIB-01 — Auditoría canibalización EN/ES kakebo-online-gratis
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-30 |
+| **Tipo** | Solo auditoría y documentación — sin cambios en código ni contenido |
+| **Documento** | `docs/seo/SEO_KAKEBO_ONLINE_CANIB_01.md` |
+| **Antecedente** | `SEO_I18N_KAKEBO_ONLINE_VALIDATE_01.md` (clasificó como "DUDOSO" el 2026-06-26) |
+| **Fuente de datos** | `SEO_DATA_PRIORITY_01.md` (GSC Last 3m confirmó el problema) |
+
+**Veredicto:** Interferencia EN→ES **CONFIRMADA** (ya no es hipótesis)
+
+**Datos GSC que confirman el problema:**
+
+| URL | Clics | Imp | CTR | Pos |
+|---|---|---|---|---|
+| `/en/blog/kakebo-online-gratis` | 15 | 208 | 7,21% | 6,86 |
+| `/es/blog/kakebo-online-gratis` | 0 | 12 | 0% | 20,42 |
+| `/blog/kakebo-online-gratis` (ES canonical) | 1 | 6 | 16,67% | 6,0 |
+
+**Causa raíz identificada:** Cross-language URL contamination. El slug `kakebo-online-gratis` contiene "gratis" (español) en la URL inglesa. Google asigna la URL EN a queries españolas ignorando el hreflang porque la EN tiene más autoridad acumulada. El hreflang y canonical están técnicamente correctos — el problema es de señales, no de configuración.
+
+**4 hipótesis analizadas:**
+1. Cross-language URL contamination (slug ES en URL EN) → **CONFIRMADA** como causa raíz
+2. Autoridad acumulada asimétrica → **CONFIRMADA** como factor contribuyente
+3. Fallo de hreflang para slugs compartidos → PARCIAL
+4. Canibalización con Home → DESCARTADA como causa principal
+
+**Solución recomendada:** Opción B — `noindex` en artículo EN
+- Añadir `noindex: true` en frontmatter de `kakebo-online-gratis.en.mdx`
+- Actualizar `blog/[slug]/page.tsx` para leer el campo y aplicar `robots: { index: false }`
+- Validar en GSC a 6-8 semanas
+- Complementar con refuerzo de señales internas al ES canonical (Opción E)
+
+**6 opciones de solución evaluadas:**  
+A (monitorizar) → descartada · **B (noindex EN) → RECOMENDADA** · C (redirect EN→ES) → segunda opción · D (cambiar slug EN) → ideal a largo plazo · E (reforzar ES, complementaria) · F (canonical EN→ES) → descartada (mala práctica)
+
+**Tarea fix siguiente:** `SEO-KAKEBO-ONLINE-CANIB-FIX-01` — implementar noindex en artículo EN
+
+---
+
 ## ✅ SEO-DATA-PRIORITY-01 — Snapshot GSC y priorización SEO por datos reales
 
 | Campo | Detalle |
