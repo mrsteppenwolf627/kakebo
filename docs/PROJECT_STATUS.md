@@ -180,6 +180,30 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-SCHEMA-HOME-01 — Schema Organization + WebSite + SoftwareApplication en Home
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-30 |
+| **Archivo** | `src/app/[locale]/(public)/page.tsx` |
+| **Build** | ✅ Compiled successfully — 0 errores TypeScript |
+
+**Schemas implementados en `@graph` unificado:**
+
+| Schema | @id | Campos principales |
+|---|---|---|
+| `Organization` | `#organization` | name "MetodoKakebo.com", url, logo `/logo.png`, sameAs `x.com/kakebo_ai`, description factual |
+| `WebSite` | `#website` | name "MetodoKakebo.com", url, inLanguage "es", publisher→`#organization` |
+| `SoftwareApplication` | `#app` | name "Kakebo AI", applicationCategory, operatingSystem, offers (0 EUR), description factual, publisher→`#organization`, featureList |
+
+**Datos inventados eliminados:** `aggregateRating` (ratingValue: 4.8, ratingCount: 24) que existía en el `SoftwareApplication` anterior — eliminados por no estar documentados en ninguna fuente real del proyecto.
+
+**No añadido:** SearchAction (sin búsqueda interna real), sameAs adicionales no documentados, dirección, teléfono, reviewCount, descargas.
+
+**FAQPage:** mantenido sin cambios en script separado.
+
+---
+
 ## ✅ SEO-GEO-ENTITY-DEFINITION-01 — Definiciones factuales citables
 
 | Campo | Detalle |

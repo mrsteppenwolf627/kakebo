@@ -51,6 +51,29 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-SCHEMA-HOME-01 — Schema Organization + WebSite + SoftwareApplication en Home
+
+**Estado:** ✅ Completado (2026-06-30)  
+**URL afectada:** `/` (Home)  
+**Archivo:** `src/app/[locale]/(public)/page.tsx`  
+**Build:** ✅ Compiled successfully
+
+**Implementación:**
+- El `SoftwareApplication` existente tenía `aggregateRating` con datos inventados (4.8/24) — **eliminado**
+- El `SoftwareApplication` existente y el nuevo `Organization` + `WebSite` se unificaron en un único bloque `@graph`
+- Se usó `@id` para referencias cruzadas entre entidades
+
+**Schemas en `@graph`:**
+- `Organization` (`#organization`): name "MetodoKakebo.com", url, logo (`/logo.png`), sameAs `https://x.com/kakebo_ai`, description factual
+- `WebSite` (`#website`): name "MetodoKakebo.com", url, inLanguage "es", publisher → `#organization`, description factual
+- `SoftwareApplication` (`#app`): name "Kakebo AI", applicationCategory, operatingSystem, offers (price 0 EUR), description factual, publisher → `#organization`, featureList
+
+**FAQPage (existente):** mantenido sin cambios en script separado
+
+**No añadido:** SearchAction (no hay búsqueda interna real), aggregateRating, sameAs sin documentar, dirección, teléfono, datos legales
+
+---
+
 ### SEO-GEO-ENTITY-DEFINITION-01 — Definiciones factuales citables
 
 **Estado:** ✅ Completado (2026-06-30)  
@@ -663,7 +686,8 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-KAKEBO-ONLINE-CANIB-01** | Auditoría canibalización EN/ES kakebo-online-gratis — CONFIRMADA | — | ✅ Completado (2026-06-30) |
 | **SEO-KAKEBO-ONLINE-CANIB-FIX-01** | noindex en EN kakebo-online-gratis + exclusión de sitemap | `cba3fd0` | ✅ Completado (2026-06-30) |
 | **SEO-GEO-TERMINOLOGY-01** | Glosario canónico SEO/GEO — 14 términos definidos | `168165f` | ✅ Completado (2026-06-30) |
-| **SEO-GEO-ENTITY-DEFINITION-01** | Definiciones factuales citables — 14 entidades, bloques reutilizables | — | ✅ Completado (2026-06-30) |
+| **SEO-GEO-ENTITY-DEFINITION-01** | Definiciones factuales citables — 14 entidades, bloques reutilizables | `96183cc` | ✅ Completado (2026-06-30) |
+| **SEO-SCHEMA-HOME-01** | Schema Organization + WebSite + SoftwareApplication en Home | — | ✅ Completado (2026-06-30) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

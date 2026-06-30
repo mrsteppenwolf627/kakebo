@@ -126,32 +126,52 @@ export default async function PublicHomePage({ params }: { params: Promise<{ loc
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              "name": "Kakebo AI",
-              "url": "https://www.metodokakebo.com",
-              "applicationCategory": "FinanceApplication",
-              "operatingSystem": "Web, PWA, iOS, Android",
-              "inLanguage": locale,
-              "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "EUR",
-                "availability": "https://schema.org/InStock"
-              },
-              "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.8",
-                "ratingCount": "24",
-                "bestRating": "5"
-              },
-              "description": t('meta.description'),
-              "screenshot": "https://www.metodokakebo.com/api/og",
-              "featureList": [
-                "Registro manual consciente de gastos",
-                "Agente IA financiero personal",
-                "Sin conexión bancaria",
-                "Categorías Kakebo nativas",
-                "Historial y exportación"
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://www.metodokakebo.com/#organization",
+                  "name": "MetodoKakebo.com",
+                  "url": "https://www.metodokakebo.com",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.metodokakebo.com/logo.png"
+                  },
+                  "sameAs": ["https://x.com/kakebo_ai"],
+                  "description": "Plataforma web gratuita de herramientas y artículos para aplicar el método Kakebo de ahorro personal en formato digital, sin conectar cuentas bancarias."
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://www.metodokakebo.com/#website",
+                  "name": "MetodoKakebo.com",
+                  "url": "https://www.metodokakebo.com",
+                  "inLanguage": "es",
+                  "publisher": { "@id": "https://www.metodokakebo.com/#organization" },
+                  "description": "Herramientas gratuitas y guías para aplicar el método Kakebo de ahorro personal en español."
+                },
+                {
+                  "@type": "SoftwareApplication",
+                  "@id": "https://www.metodokakebo.com/#app",
+                  "name": "Kakebo AI",
+                  "url": "https://www.metodokakebo.com",
+                  "applicationCategory": "FinanceApplication",
+                  "operatingSystem": "Web, PWA, iOS, Android",
+                  "inLanguage": locale,
+                  "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "EUR",
+                    "availability": "https://schema.org/InStock"
+                  },
+                  "description": "Aplicación web gratuita de MetodoKakebo.com para registrar gastos y planificar el ahorro mensual con el método Kakebo japonés y asistencia de inteligencia artificial.",
+                  "publisher": { "@id": "https://www.metodokakebo.com/#organization" },
+                  "featureList": [
+                    "Registro manual consciente de gastos",
+                    "Agente IA financiero personal",
+                    "Sin conexión bancaria",
+                    "Categorías Kakebo nativas",
+                    "Historial y exportación"
+                  ]
+                }
               ]
             })
           }}
