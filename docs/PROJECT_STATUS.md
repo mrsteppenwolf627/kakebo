@@ -180,6 +180,39 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-ROADMAP-V1-01 — Roadmap SEO/GEO priorizado
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-30 |
+| **Tipo** | Solo documentación estratégica — sin cambios en código ni contenido |
+| **Documento** | `docs/seo/SEO_ROADMAP_V1.md` |
+| **Fuentes** | SEO_MAP_V1.md + SEO_GEO_DEEP_AUDIT_01.md + SEO_PILLAR_EXCEL_AUDIT_01.md + PLAN_SEO_GEO_METODOKAKEBO.md |
+
+**26 tareas priorizadas en 7 bloques:**
+- P0 (2 tareas): medición y estabilidad — `SEO-DATA-PRIORITY-01`, `SEO-GA4-EVENTS-01`
+- P1 (4 tareas): GEO estructural de bajo riesgo — `SEO-GEO-TERMINOLOGY-01`, `SEO-GEO-ENTITY-DEFINITION-01`, `SEO-SCHEMA-HOME-01`, `SEO-TECHNICAL-DATEMODIFIED-01`
+- P2 (8 tareas): optimización URL por URL — `SEO-EXCEL-TITLE-01`, `SEO-EXCEL-H3-FIX-01`, `SEO-KAKEBO-ONLINE-CANIB-01`, `SEO-CALCULADORA-AHORRO-AUDIT-01`, `SEO-HREFLANG-KAKEBO-ONLINE-01`, `SEO-EXCEL-EN-VALIDATE-01`, `SEO-TECHNICAL-TUTORIAL-01`, `SEO-GEO-SOBRE-NOSOTROS-01`
+- P3 (3 tareas): schema — `SEO-TECHNICAL-SITEMAP-01`, `SEO-SCHEMA-AHORRO-SYNC-01`, `SEO-SCHEMA-BLOG-INDEX-01`
+- P4 (5 tareas): enlazado interno — `SEO-EXCEL-INTERNAL-LINKS-01`, `SEO-EXCEL-INBOUND-PILAR-01`, `SEO-INTERNAL-LINKING-V1-01`, `SEO-EXCEL-FAQ-FRONTMATTER-01`, `SEO-EXCEL-CTA-REORDER-01`
+- P5 (2 tareas): expansión contenido — `SEO-BLOG-INFLACION-01`, `SEO-BLOG-503020-01`
+- P6 (2 tareas): medición iterativa — `SEO-GEO-AUTHORSHIP-01`, `SEO-GEO-FAQ-PAGE-01`, `SEO-MEDICION-ITERATIVA-01`
+
+**Próximas 5 tareas en orden estricto:**
+1. `SEO-DATA-PRIORITY-01` — snapshot GSC (prerequisito que desbloquea P2 y P5)
+2. `SEO-GEO-TERMINOLOGY-01` — glosario canónico (paralelo, no necesita GSC)
+3. `SEO-GEO-ENTITY-DEFINITION-01` — definición factual en metodo-kakebo-guia-definitiva
+4. `SEO-SCHEMA-HOME-01` — schema Organization + WebSite + SearchAction en Home
+5. `SEO-TECHNICAL-DATEMODIFIED-01` — campo updatedDate + dateModified real
+
+**URLs protegidas:** `/blog/plantilla-kakebo-excel`, `/herramientas/calculadora-ahorro`, `/blog/como-hacer-un-presupuesto-personal`
+
+**Tareas bloqueadas hasta GSC:** 12 (todo P2 excepto T2-05/07/08, todo P5)
+
+**Ventana de revisión:** Crear `SEO_ROADMAP_V2.md` a las 12 semanas con datos reales
+
+---
+
 ## ✅ SEO-GEO-DEEP-AUDIT-01 — Auditoría profunda SEO técnico, semántico y GEO
 
 | Campo | Detalle |

@@ -51,6 +51,32 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-ROADMAP-V1-01 — Roadmap SEO/GEO priorizado
+
+**Estado:** ✅ Completado (2026-06-30)  
+**Tipo:** Solo documentación estratégica — sin cambios en código ni contenido  
+**Documento:** `docs/seo/SEO_ROADMAP_V1.md`
+
+**26 tareas priorizadas** en 7 bloques (P0→P6)  
+**5 tareas ejecutables inmediatamente** (sin necesidad de datos GSC)  
+**12 tareas bloqueadas** hasta tener `SEO-DATA-PRIORITY-01` completado
+
+**Próximas 5 tareas en orden estricto:**
+1. `SEO-DATA-PRIORITY-01` — Snapshot GSC completo (prerequisito crítico)
+2. `SEO-GEO-TERMINOLOGY-01` — Glosario canónico + siteName + categorías (paralelo)
+3. `SEO-GEO-ENTITY-DEFINITION-01` — Definición factual método + producto
+4. `SEO-SCHEMA-HOME-01` — Schema Organization + WebSite en Home
+5. `SEO-TECHNICAL-DATEMODIFIED-01` — updatedDate + dateModified real
+
+**Tareas P0 (inmediatas):** `SEO-DATA-PRIORITY-01`, `SEO-GA4-EVENTS-01`  
+**Tareas P1 (paralelo):** `SEO-GEO-TERMINOLOGY-01`, `SEO-GEO-ENTITY-DEFINITION-01`, `SEO-SCHEMA-HOME-01`, `SEO-TECHNICAL-DATEMODIFIED-01`
+
+**URLs protegidas:** `/blog/plantilla-kakebo-excel` (solo cambios quirúrgicos), `/herramientas/calculadora-ahorro` (no tocar hasta entender CTR 35,9%), `/blog/como-hacer-un-presupuesto-personal` (dejar madurar)
+
+**Ventana de revisión del roadmap:** 12 semanas → crear `SEO_ROADMAP_V2.md` basado en datos reales
+
+---
+
 ### SEO-GEO-DEEP-AUDIT-01 — Auditoría profunda SEO técnico, semántico y GEO
 
 **Estado:** ✅ Completado (2026-06-30)  
@@ -496,7 +522,8 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-PILLAR-EXCEL-AUDIT-01** | Auditoría página pilar `/blog/plantilla-kakebo-excel` como activo SEO orgánico principal | — | ✅ Completado (2026-06-30) |
 | **SEO-MAP-V1-AUDIT-01** | Mapa maestro SEO — inventario completo de URLs, clusters, prioridades y estado | — | ✅ Completado (2026-06-30) |
 | **SEO-GEO-DEEP-AUDIT-01** | Auditoría profunda SEO técnico, semántico y GEO — 32 hallazgos | — | ✅ Completado (2026-06-30) |
-| **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
+| **SEO-ROADMAP-V1-01** | Roadmap SEO/GEO priorizado — 26 tareas en 7 bloques | — | ✅ Completado (2026-06-30) |
+| **SEO-DATA-PRIORITY-01** | **Snapshot GSC + Priorizar con datos reales** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).
