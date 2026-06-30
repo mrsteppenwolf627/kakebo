@@ -51,6 +51,44 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-DATA-PRIORITY-01 — Snapshot GSC y priorización SEO por datos reales
+
+**Estado:** ✅ Completado (2026-06-30)  
+**Tipo:** Solo análisis y documentación — sin cambios en código ni contenido  
+**Documento:** `docs/seo/SEO_DATA_PRIORITY_01.md`  
+**Export:** GSC Last 3 months — 2026-03-29 → 2026-06-28
+
+**Métricas del periodo:**
+- 222 clics · 3.079 impresiones · CTR 7,21% · 92 días
+- Últimos 28 días: 120 clics / 1.355 imp / CTR 8,85%
+- Últimos 7 días: 32 clics / 329 imp / CTR 9,73%
+- Últimos 3 días: 15 clics / 128 imp / CTR 11,72% / pos 6,35
+
+**Hallazgos clave:**
+- `plantilla-kakebo-excel` acumula 125 clics combinados (ES + canónica) — 56% del total
+- Home: 51 clics, 892 impresiones, CTR 5,72%
+- `calculadora-ahorro` CTR 34,88% confirmado (15 clics, 43 imp, pos 10,7)
+- **CONFIRMADO:** `/en/blog/kakebo-online-gratis` captura 15 clics mientras `/es/` tiene 0
+- **CONFIRMADO:** `app kakebo` (pos 5,87) y `metodo kakebo app` (pos 8,49) tienen 0 clics
+- `calculadora-inflacion`: 300 impresiones, 1 clic, CTR 0,33% — mayor desperdicio del sitio
+- España = 62,6% de clics; LatAm = 27%; EEUU = 427 imp (0,47% CTR)
+- Desktop = 61% de clics (audiencia en modo investigación)
+- Sin rich results confirmados en Search Appearance
+
+**Cambio de prioridad en roadmap:**
+- `SEO-KAKEBO-ONLINE-CANIB-01` sube de P2 a **P0** — canibalización confirmada por datos
+- `SEO-EXCEL-TITLE-01` se mantiene P0 confirmado
+- `SEO-HREFLANG-KAKEBO-ONLINE-01` sube urgencia a P1
+
+**Próximas 5 tareas en orden:**
+1. `SEO-KAKEBO-ONLINE-CANIB-01` — resolver canibalización EN/ES confirmada
+2. `SEO-EXCEL-TITLE-01` — meta title <65 chars en URL principal
+3. `SEO-GEO-TERMINOLOGY-01` — glosario + correcciones siteName
+4. `SEO-SCHEMA-HOME-01` — schema Organization + WebSite en Home
+5. `SEO-CALCULADORA-AHORRO-AUDIT-01` — entender patrón CTR 34,88%
+
+---
+
 ### SEO-ROADMAP-V1-01 — Roadmap SEO/GEO priorizado
 
 **Estado:** ✅ Completado (2026-06-30)  
@@ -523,7 +561,8 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-MAP-V1-AUDIT-01** | Mapa maestro SEO — inventario completo de URLs, clusters, prioridades y estado | — | ✅ Completado (2026-06-30) |
 | **SEO-GEO-DEEP-AUDIT-01** | Auditoría profunda SEO técnico, semántico y GEO — 32 hallazgos | — | ✅ Completado (2026-06-30) |
 | **SEO-ROADMAP-V1-01** | Roadmap SEO/GEO priorizado — 26 tareas en 7 bloques | — | ✅ Completado (2026-06-30) |
-| **SEO-DATA-PRIORITY-01** | **Snapshot GSC + Priorizar con datos reales** | — | **⬅ SIGUIENTE** |
+| **SEO-DATA-PRIORITY-01** | Snapshot GSC (Last 3m) + priorización por datos reales | — | ✅ Completado (2026-06-30) |
+| **SEO-KAKEBO-ONLINE-CANIB-01** | **Resolver canibalización EN/ES en kakebo-online-gratis** | — | **⬅ SIGUIENTE (P0)** |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

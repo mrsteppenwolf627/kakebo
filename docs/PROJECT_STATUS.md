@@ -180,6 +180,59 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-DATA-PRIORITY-01 — Snapshot GSC y priorización SEO por datos reales
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-30 |
+| **Tipo** | Solo análisis y documentación — sin cambios en código ni contenido |
+| **Documento** | `docs/seo/SEO_DATA_PRIORITY_01.md` |
+| **Export** | GSC Last 3 months · 2026-03-29 → 2026-06-28 · 92 días |
+
+**Métricas del periodo completo:** 222 clics · 3.079 impresiones · CTR 7,21%  
+**Últimos 28 días:** 120 clics / 1.355 imp / CTR 8,85%  
+**Últimos 7 días:** 32 / 329 / CTR 9,73% / pos 7,76  
+**Últimos 3 días:** 15 / 128 / CTR 11,72% / pos 6,35
+
+**Hallazgos por páginas:**
+
+| URL | Clics | Imp | CTR | Pos | Observación |
+|---|---|---|---|---|---|
+| `/es/blog/plantilla-kakebo-excel` | 115 | 824 | 13,96% | 6,14 | Principal activo — Google indexa `/es/` |
+| `/` (Home) | 51 | 892 | 5,72% | 8,2 | Segundo por clics |
+| `/en/blog/kakebo-online-gratis` | 15 | 208 | 7,21% | 6,86 | **EN capturando tráfico ES — confirmado** |
+| `/es/herramientas/calculadora-ahorro` | 15 | 43 | 34,88% | 10,7 | CTR anómalo confirmado |
+| `/es/herramientas/calculadora-inflacion` | 1 | 300 | 0,33% | 8,94 | Mayor desperdicio: 300 imp, 1 clic |
+| `/es/blog/alternativas-a-app-bancarias` | 2 | 284 | 0,7% | 8,49 | 284 imp, CTR muy bajo |
+
+**Hallazgos por queries:**
+
+| Query | Clics | Imp | CTR | Pos | Prioridad |
+|---|---|---|---|---|---|
+| `kakebo excel` | 18 | 108 | 16,67% | 5,59 | Top ganadora |
+| `kakebo app` | 12 | 151 | 7,95% | 6,32 | Intención app |
+| `app kakebo` | 0 | 30 | 0% | 5,87 | **Pos 5,87, 0 clics — CTR falla** |
+| `kakebo` | 2 | 168 | 1,19% | 13,74 | Marca en pos 14 |
+| `alternativas a fintonic` | 0 | 41 | 0% | 10,1 | Justo fuera top 10 |
+
+**Hallazgos geográficos:** España 62,6% · LatAm 27% · EEUU 427 imp / CTR 0,47% (EN legacy)  
+**Dispositivos:** Desktop 61,7% · Mobile 36,5% — audiencia en modo investigación
+
+**Cambios al roadmap:**
+- `SEO-KAKEBO-ONLINE-CANIB-01` → escala a **P0** (canibalización confirmada por datos)
+- `SEO-HREFLANG-KAKEBO-ONLINE-01` → escala a P1
+- `SEO-EXCEL-TITLE-01` → P0 confirmado
+- Tareas de enlazado y contenido nuevo → mantienen bloqueo
+
+**Próximas 5 tareas en orden:**
+1. `SEO-KAKEBO-ONLINE-CANIB-01` — canibalización EN/ES confirmada
+2. `SEO-EXCEL-TITLE-01` — meta title plantilla-kakebo-excel
+3. `SEO-GEO-TERMINOLOGY-01` — glosario + siteName
+4. `SEO-SCHEMA-HOME-01` — schema Home
+5. `SEO-CALCULADORA-AHORRO-AUDIT-01` — entender patrón CTR
+
+---
+
 ## ✅ SEO-ROADMAP-V1-01 — Roadmap SEO/GEO priorizado
 
 | Campo | Detalle |
