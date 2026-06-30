@@ -51,6 +51,28 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-GEO-ENTITY-DEFINITION-01 — Definiciones factuales citables
+
+**Estado:** ✅ Completado (2026-06-30)  
+**Tipo:** Solo documentación estratégica semántica/GEO — sin cambios en código ni contenido  
+**Documento:** `docs/seo/SEO_GEO_ENTITY_DEFINITIONS_01.md`
+
+**14 entidades definidas** (corta ≤25 palabras + ampliada ≤80 palabras + uso + schema + FAQ + primer párrafo + ejemplos):  
+Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakebo online · Plantilla Kakebo Excel · Herramientas gratuitas · Calculadora de ahorro mensual · Calculadora de inflación e IPC · Calculadora 50/30/20 · Presupuesto personal · Gastos mensuales · Finanzas personales
+
+**Bloques reutilizables creados:**
+- 6 bloques por tipo de página (Home, artículo método, plantilla-excel, kakebo-online, herramienta, sobre-nosotros)
+- 3 bloques schema (Organization, WebSite, SoftwareApplication Kakebo AI)
+- 4 bloques FAQ (método, MetodoKakebo.com, Kakebo AI, diferencia app/plantilla)
+- 3 bloques de primer párrafo listos para insertar (metodo-kakebo-guia-definitiva, sobre-nosotros, Home)
+
+**11 frases prohibidas documentadas** (claims exagerados, superlativos, promesas financieras, confusión método/producto)
+
+**Próximas tareas que deben usar este documento:**  
+`SEO-GEO-ENTITY-DEFINITION-01` (implementación) · `SEO-SCHEMA-HOME-01` · `SEO-SCHEMA-AHORRO-SYNC-01` · `SEO-EXCEL-TITLE-01` · `SEO-BLOG-INFLACION-01` · `SEO-BLOG-503020-01` · `SEO-INTERNAL-LINKING-V1-01`
+
+---
+
 ### SEO-GEO-TERMINOLOGY-01 — Glosario canónico SEO/GEO
 
 **Estado:** ✅ Completado (2026-06-30)  
@@ -640,7 +662,8 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **SEO-DATA-PRIORITY-01** | Snapshot GSC (Last 3m) + priorización por datos reales | — | ✅ Completado (2026-06-30) |
 | **SEO-KAKEBO-ONLINE-CANIB-01** | Auditoría canibalización EN/ES kakebo-online-gratis — CONFIRMADA | — | ✅ Completado (2026-06-30) |
 | **SEO-KAKEBO-ONLINE-CANIB-FIX-01** | noindex en EN kakebo-online-gratis + exclusión de sitemap | `cba3fd0` | ✅ Completado (2026-06-30) |
-| **SEO-GEO-TERMINOLOGY-01** | Glosario canónico SEO/GEO — 14 términos definidos | — | ✅ Completado (2026-06-30) |
+| **SEO-GEO-TERMINOLOGY-01** | Glosario canónico SEO/GEO — 14 términos definidos | `168165f` | ✅ Completado (2026-06-30) |
+| **SEO-GEO-ENTITY-DEFINITION-01** | Definiciones factuales citables — 14 entidades, bloques reutilizables | — | ✅ Completado (2026-06-30) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

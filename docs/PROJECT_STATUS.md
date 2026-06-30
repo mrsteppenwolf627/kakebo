@@ -180,6 +180,35 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-GEO-ENTITY-DEFINITION-01 — Definiciones factuales citables
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-30 |
+| **Tipo** | Solo documentación estratégica semántica/GEO — sin cambios en código ni contenido |
+| **Documento** | `docs/seo/SEO_GEO_ENTITY_DEFINITIONS_01.md` |
+| **Depende de** | `SEO_GEO_TERMINOLOGY_01.md` |
+
+**14 entidades definidas** con formato: definición corta (≤25 palabras) · definición ampliada (≤80 palabras) · uso recomendado · schema · FAQ · primer párrafo · ejemplos correcto/incorrecto · riesgo.
+
+**Bloques listos para implementar:**
+
+| Tipo de bloque | Cantidad |
+|---|---|
+| Bloques por tipo de página | 6 (Home, artículo método, plantilla-excel, kakebo-online, herramienta ahorro, sobre-nosotros) |
+| Bloques schema JSON-LD | 3 (Organization, WebSite, SoftwareApplication Kakebo AI) |
+| Bloques FAQ | 4 (método, MetodoKakebo.com, Kakebo AI, diferencia app/plantilla) |
+| Bloques primer párrafo | 3 (metodo-kakebo-guia-definitiva, sobre-nosotros, Home) |
+
+**Frases prohibidas:** 11 documentadas (superlativos, promesas financieras, confusión método/producto, claims no verificables)
+
+**Regla principal:** Nunca confundir el método Kakebo (1904, Motoko Hani, concepto histórico) con Kakebo AI (producto digital de MetodoKakebo.com).
+
+**Próximas tareas:**  
+`SEO-GEO-ENTITY-DEFINITION-01` implementación · `SEO-SCHEMA-HOME-01` · `SEO-SCHEMA-AHORRO-SYNC-01` · `SEO-BLOG-INFLACION-01` · `SEO-BLOG-503020-01`
+
+---
+
 ## ✅ SEO-GEO-TERMINOLOGY-01 — Glosario canónico SEO/GEO
 
 | Campo | Detalle |
