@@ -180,6 +180,55 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-MAP-V1-AUDIT-01 — Mapa maestro SEO V1
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-06-30 |
+| **Tipo** | Solo documentación — sin cambios en código ni contenido |
+| **Documento** | `docs/seo/SEO_MAP_V1.md` |
+| **Sustituye a** | `SEO_MAP_V1.md` (raíz, 2026-06-17, commit `1841721`) |
+
+**Inventario completo:**
+- 27 URLs ES indexables (15 blog + 4 herramientas + 5 principales + 3 legales)
+- 16 URLs EN legacy catalogadas
+- ~13 rutas de app no indexables documentadas
+- 1 recurso descargable (`.xlsx`) catalogado
+- ~82 URLs totales inventariadas
+
+**Clusters SEO mapeados (10):**
+Kakebo Excel · Kakebo Online/App · Herramientas de Ahorro · Presupuesto Personal · Inflación/IPC · Regla 50/30/20 · Alternativas/Fintonic · Finanzas Personales Generales · Legal/Institucional · Legacy EN
+
+**Tabla maestra:** 27 URLs ES con columnas de indexabilidad, canonical esperado, intención, keyword, cluster, GSC/GA4 conocido, prioridad, riesgo y decisión.
+
+**URLs con tracción documentada:**
+
+| URL | Dato GSC/GA4 |
+|---|---|
+| `/blog/plantilla-kakebo-excel` | Principal landing orgánica GA4 + mayor concentración clics GSC |
+| `/herramientas/calculadora-ahorro` | CTR 35,9% · pos 8,97 · 39 impresiones |
+| `/herramientas/calculadora-inflacion` | 353 impresiones · 1 clic · CTR 0,28% · pos 7,8 |
+| `/blog/alternativas-a-app-bancarias` | 310 impresiones · 2 clics · CTR 0,65% · pos 7,95 |
+
+**Riesgos activos detectados (7):**
+- Meta title `/blog/plantilla-kakebo-excel` truncado (~93 chars)
+- H3 antes de primer H2 en `/blog/plantilla-kakebo-excel`
+- `robots.txt` no bloquea `/app/*` ni `/auth/*` (flagged desde 2026-06-17, sin resolver)
+- Canonical herramientas (`calculadora-ahorro`, `regla-50-30-20`) pendiente verificar `/es/` residual
+- Posible canibalización `kakebo-online-gratis` vs `kakebo-online-guia-completa`
+- Posible interferencia EN en `kakebo-online-gratis` (DUDOSO)
+- hreflang `kakebo-online-guia-completa` puede apuntar a URL 404 EN
+
+**Gaps críticos:**
+- Sin artículo editorial de respaldo para `calculadora-inflacion` (alta prioridad)
+- Sin artículo editorial de respaldo para `regla-50-30-20` (alta prioridad)
+- Sin schema JSON-LD en home ni en blog index
+
+**Próximas tareas priorizadas:**
+`SEO-EXCEL-TITLE-01` (P0) · `SEO-ROBOTS-01` (P0) · `SEO-DATA-PRIORITY-01` (prerequisito) · `SEO-EXCEL-INTERNAL-LINKS-01` (P1) · `SEO-INFLACION-BLOG-01` (P1) · `SEO-5030-BLOG-01` (P1)
+
+---
+
 ## ✅ SEO-PILLAR-EXCEL-AUDIT-01 — Auditoría página pilar plantilla-kakebo-excel
 
 | Campo | Detalle |

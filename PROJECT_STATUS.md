@@ -51,6 +51,31 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-MAP-V1-AUDIT-01 — Mapa maestro SEO V1
+
+**Estado:** ✅ Completado (2026-06-30)  
+**Tipo:** Solo documentación — sin cambios en código ni contenido  
+**Documento:** `docs/seo/SEO_MAP_V1.md` (sustituye a `SEO_MAP_V1.md` de raíz, 2026-06-17)
+
+**Inventario:**
+- 27 URLs ES indexables auditadas
+- ~16 URLs EN legacy catalogadas
+- ~13 rutas de app (no indexables) listadas
+- 1 recurso descargable catalogado
+- ~82 URLs totales inventariadas
+
+**Clusters identificados:** 10 (Kakebo Excel, Kakebo Online/App, Herramientas de Ahorro, Presupuesto Personal, Inflación/IPC, Regla 50/30/20, Alternativas/Fintonic, Finanzas Generales, Legal/Institucional, Legacy EN)
+
+**URLs con tracción real documentada:** 4 (`/blog/plantilla-kakebo-excel`, `/herramientas/calculadora-ahorro`, `/herramientas/calculadora-inflacion`, `/blog/alternativas-a-app-bancarias`)
+
+**Riesgos activos:** 7 (title truncado en URL pilar, H3 antes de H2, robots.txt sin `/app/`, canonical herramientas pendiente verificar, canibalización kakebo-online, interferencia EN legacy)
+
+**Gaps críticos:** Sin artículo editorial de respaldo para calculadora-inflacion, regla-50-30-20 y calculadora-ahorro
+
+**Próximas tareas prioritarias:** `SEO-EXCEL-TITLE-01`, `SEO-ROBOTS-01`, `SEO-DATA-PRIORITY-01`
+
+---
+
 ### SEO-PILLAR-EXCEL-AUDIT-01 — Auditoría página pilar plantilla-kakebo-excel
 
 **Estado:** ✅ Completado (2026-06-30)  
@@ -443,6 +468,7 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 | **UI-TYPOGRAPHY-BRAND-ALIGN-01** | Alinear tipografía: prose h2/h3 fontFamily + HowItWorks H3 serif | `a62b440` | ✅ Completado |
 | **UI-CARDS-BRAND-ALIGN-01** | Alinear tarjetas: orange→muted, shadow-xl→sm, progress bars→palette | `4781ad0` | ✅ Completado |
 | **SEO-PILLAR-EXCEL-AUDIT-01** | Auditoría página pilar `/blog/plantilla-kakebo-excel` como activo SEO orgánico principal | — | ✅ Completado (2026-06-30) |
+| **SEO-MAP-V1-AUDIT-01** | Mapa maestro SEO — inventario completo de URLs, clusters, prioridades y estado | — | ✅ Completado (2026-06-30) |
 | **SEO-DATA-PRIORITY-01** | **Priorizar con datos reales de Search Console** | — | **⬅ SIGUIENTE** |
 
 **Restricciones activas:**
