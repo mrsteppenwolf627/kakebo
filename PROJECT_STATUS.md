@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-PELIGROS-APPS-AHORRO-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-AHORRAR-DINERO-CADA-MES-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,30 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-SUPPORT-AHORRAR-DINERO-CADA-MES-01 — Optimización SEO/GEO artículo como-ahorrar-dinero-cada-mes
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/como-ahorrar-dinero-cada-mes.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- `updatedDate: '2026-07-01'` añadido
+- `title`: eliminado "que sí funcionan" (clickbait); añadido "presupuesto" al subtítulo
+- `excerpt` actualizado: incluye "presupuesto personal", "control de gastos", "método Kakebo", "gastos fijos y gastos hormiga"
+- FAQ Q1, Q2, Q3 mejoradas: terminología canónica correcta (método Kakebo, Kakebo AI, MetodoKakebo.com); Q3 menciona explícitamente Kakebo AI
+- Intro reescrita: explica directamente el proceso de ahorro mensual (4 pasos: registrar ingresos, clasificar gastos, revisar patrones, definir cantidad realista)
+- H2 principales renombrados: "Domando la Psicología del Ahorro" → "Estrategias de base: presupuesto y registro de gastos"; "Tácticas de Trinchera" → "Reducción de gastos fijos y variables"
+- Sección 3 (método Kakebo): "infalible" eliminado; "magia del Kakebo" eliminado; añadida definición factual del método Kakebo; añadida descripción de Kakebo AI con terminología canónica
+- Sección 4: "enemigo letal", "maldita compra impulsiva", "irrefrenable" eliminados; tono factual
+- Sección 5: "extenuante semana 52", "sorprendente cifra", "casi sin darte ni cuenta" eliminados; redacción directa
+- Sección 8: "La tarjeta Contactless es peligrosa" → descripción factual del efecto de visibilidad del gasto
+- Sección 10: "Tu oscura compañía de luz", lenguaje dramático eliminado; redacción factual
+- Sección 11: TEXTO COMPLETAMENTE CORRUPTO (repetición aleatoria de adjetivos) → reescrita con descripción factual del redondeo automático
+- Sección 12: TEXTO COMPLETAMENTE INCOHERENTE (repetición aleatoria, ilegible) → reescrita con descripción factual del coste por uso
+- Sección 15: "IAs conversacionales que apliquen la filosofía del Kakebo" → terminología canónica correcta: Kakebo AI (MetodoKakebo.com), registro activo vs categorización automática
+
+---
 
 ### SEO-GEO-SUPPORT-PELIGROS-APPS-AHORRO-01 — Optimización SEO/GEO artículo peligros-apps-ahorro-automatico
 

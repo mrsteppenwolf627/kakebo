@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-PELIGROS-APPS-AHORRO-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-AHORRAR-DINERO-CADA-MES-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SUPPORT-AHORRAR-DINERO-CADA-MES-01 — Optimización SEO/GEO como-ahorrar-dinero-cada-mes
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/como-ahorrar-dinero-cada-mes.es.mdx` |
+
+**Cambios principales:**
+- `updatedDate: '2026-07-01'` añadido; title y excerpt actualizados
+- Intro directa: 4 pasos del ahorro mensual (registrar, clasificar, revisar, definir cantidad)
+- FAQ mejorada con terminología canónica (método Kakebo, Kakebo AI, MetodoKakebo.com)
+- Secciones 11 y 12 **completamente reescritas** (texto corrupto/incoherente en original)
+- Sección 3 con definición factual del método Kakebo y descripción de Kakebo AI
+- Eliminadas frases alarmistas, superlatiivos vacíos y estadísticas sin fuente
 
 ---
 
