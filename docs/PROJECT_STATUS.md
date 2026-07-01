@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-REGLA-30-DIAS-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-ELIMINAR-GASTOS-HORMIGA-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,29 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SUPPORT-ELIMINAR-GASTOS-HORMIGA-01 — Optimización SEO/GEO artículo eliminar-gastos-hormiga
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/eliminar-gastos-hormiga.es.mdx` |
+
+**Cambios principales:**
+- `updatedDate: '2026-07-01'`, `description` añadidos al frontmatter
+- `title`: "El método japonés infalible" → "Cómo eliminar los gastos hormiga con el método Kakebo"
+- `excerpt`: "sin esfuerzo" eliminado → descripción factual
+- FAQ: "Ocio y Vicio" → "Ocio/Vicio"; "drásticamente" y "choque de consciencia" eliminados
+- Intro: "antídoto perfecto" y lenguaje dramático eliminados → explicación directa
+- Emojis en lista de ejemplos eliminados
+- H3/H2 dramáticos reescritos con títulos factuales
+- Porcentaje sin fuente ("90% de los gastos hormiga") eliminado
+- Primera persona comercial ("nosotros hemos creado la solución definitiva") → terminología canónica
+- "consciencia budista" eliminado; "la tecnología más punta" eliminado
+- Feature claim no verificado ("te manda el aviso") eliminado
+- `Ocio y Vicio` → `Ocio/Vicio` en todo el artículo
 
 ---
 

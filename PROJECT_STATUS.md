@@ -1,8 +1,42 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-REGLA-30-DIAS-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-ELIMINAR-GASTOS-HORMIGA-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-GEO-SUPPORT-ELIMINAR-GASTOS-HORMIGA-01 — Optimización SEO/GEO artículo eliminar-gastos-hormiga
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/eliminar-gastos-hormiga.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- `updatedDate: '2026-07-01'` añadido
+- `description` añadido
+- `title`: "El método japonés infalible" eliminado → "Cómo eliminar los gastos hormiga con el método Kakebo"
+- `excerpt`: "sin esfuerzo" eliminado → descripción factual del contenido
+- FAQ Q1: ampliada para incluir ejemplos concretos y efecto acumulado
+- FAQ Q2: "Ocio y Vicio" → "Ocio/Vicio" (terminología canónica); "drásticamente" eliminado; "choque de consciencia" → "tomar consciencia"
+- Intro: "antídoto perfecto" y "silencioso y destructivo" eliminados → explicación directa
+- Emojis en lista de ejemplos (☕🍫💳📺🛒) eliminados
+- H3: "Las matemáticas mortales detrás del 'Factor Latte'" → "El impacto acumulado del gasto pequeño diario"
+- "verdaderamente devastador" eliminado
+- H2: "La solución japonesa: Kakebo contra la colmena" → "El método Kakebo para detectar gastos hormiga"
+- "El secreto ancestral para destruir" eliminado
+- H3: "La suma de la vergüenza (y la liberación)" → "Revisar el total de Ocio/Vicio al cierre del mes"
+- "absolutamente curativo" eliminado
+- "90% de los gastos hormiga" (porcentaje sin fuente) eliminado
+- H2: "Kakebo AI: Destruyendo gastos hormiga en 2026" → "Kakebo AI para el registro de gastos hormiga"
+- "nosotros hemos creado la solución definitiva" → terminología canónica (Kakebo AI / MetodoKakebo.com)
+- "consciencia budista del método original" eliminado
+- "la tecnología más punta del momento" eliminado
+- Emoji 💬 eliminado del body
+- "destructiva categoría de 'Ocio y Vicio'" → "categoría Ocio/Vicio"
+- "te manda el aviso" (feature claim no verificado) eliminado
+- "informe exacto, forense y detallado" → "informe mensual por categoría"
+- "consulta nuestra guía completa" (primera persona) → referencia factual
 
 ---
 
