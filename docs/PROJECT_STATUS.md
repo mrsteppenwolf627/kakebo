@@ -180,6 +180,29 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-GEO-TOOL-AHORRO-COPY-01 — /herramientas/calculadora-ahorro copy GEO
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **URL** | `/herramientas/calculadora-ahorro` |
+| **Archivo** | `src/app/[locale]/(public)/herramientas/calculadora-ahorro/page.tsx` |
+| **Build** | ✅ Compiled successfully |
+
+**Cambios en copy hardcodeado (3 bloques editados en el TSX):**
+
+| Sección | Cambio |
+|---|---|
+| "¿Cómo usar?" p.1 | "Nuestra calculadora" → "La calculadora de ahorro mensual de MetodoKakebo.com" |
+| "¿Cómo usar?" p.2 | "del Kakebo: ...Opcional..." → "del método Kakebo: ...Ocio/Vicio..." |
+| "¿Cómo usar?" p.3 | Lenguaje de estimación en lugar de promesa ("podrías destinar", no "deberías guardar") |
+| "¿Qué te dice?" | "Opcional" o "Vicio" → "Ocio/Vicio" · "ya está asegurado" → "ya está planificado" |
+| CTA final | "registrará tus gastos y vigilará tu ahorro por ti" → lenguaje de apoyo sin promesa de automatización |
+
+**No modificado:** metadata, schema (ya correcto desde SEO-SCHEMA-AHORRO-SYNC-01), routing, links, lógica de cálculo, diseño
+
+---
+
 ## ✅ SEO-GEO-APP-ENTITY-COPY-01 — Dashboard /app terminología canónica
 
 | Campo | Detalle |

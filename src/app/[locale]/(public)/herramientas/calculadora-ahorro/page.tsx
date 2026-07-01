@@ -100,13 +100,13 @@ export default function SavingsCalculatorPage() {
                     <h2 className="text-2xl font-bold font-serif mb-4">¿Cómo usar esta calculadora de ahorro?</h2>
                     <div className="space-y-4 text-muted-foreground">
                         <p>
-                            El método Kakebo no trata solo de apuntar en qué te gastas el dinero, sino de ser consciente del presupuesto que tienes antes de gastarlo. Nuestra <strong>calculadora de ahorro mensual</strong> te ayuda a dar el primer paso crucial: la planificación técnica.
+                            El método Kakebo no trata solo de apuntar en qué te gastas el dinero, sino de ser consciente del presupuesto que tienes antes de gastarlo. La <strong>calculadora de ahorro mensual</strong> de MetodoKakebo.com te ayuda a dar el primer paso: la planificación mensual.
                         </p>
                         <p>
-                            Para empezar, simplemente introduce tu ingreso mensual neto (lo que llega a tu cuenta bancaria después de impuestos). La calculadora automáticamente distribuirá ese monto en las cuatro grandes categorías del Kakebo: Supervivencia, Opcional, Cultura y Extras.
+                            Para empezar, introduce tu ingreso mensual neto (lo que llega a tu cuenta bancaria después de impuestos). La calculadora distribuirá ese monto en las cuatro categorías del método Kakebo: Supervivencia, Ocio/Vicio, Cultura y Extras.
                         </p>
                         <p>
-                            El objetivo principal de esta herramienta es mostrarte al instante cuánto deberías guardar para poder alcanzar al menos un 20% de ahorro sólido cada mes, sin sacrificar tu calidad de vida.
+                            El objetivo de esta herramienta es mostrarte al instante cuánto podrías destinar al ahorro cada mes, tomando como referencia el objetivo del 20% del método Kakebo, sin sacrificar tu calidad de vida.
                         </p>
                     </div>
                 </div>
@@ -118,7 +118,7 @@ export default function SavingsCalculatorPage() {
                             Los resultados que ves en pantalla no son reglas estrictas, sino un mapa de ruta ideal. Si observas que tus gastos actuales de &quot;Supervivencia&quot; superan con creces el presupuesto sugerido por la calculadora, acabas de localizar tu primer punto de fuga financiero.
                         </p>
                         <p>
-                            El resultado te permite cuestionar tus compras de &quot;Opcional&quot; o &quot;Vicio&quot; mensuales. Al saber exactamente cuál es tu límite sano para salir a cenar o comprar ropa, reduces la ansiedad financiera y el sentimiento de culpa, porque sabes que tu ahorro del 20% ya está asegurado.
+                            El resultado te permite revisar tus gastos de &quot;Ocio/Vicio&quot; mensuales. Al saber cuál es el margen disponible para salir a cenar o comprar ropa, puedes tomar decisiones más conscientes, sabiendo que el objetivo del 20% de ahorro ya está planificado.
                         </p>
                     </div>
                 </div>
@@ -138,7 +138,7 @@ export default function SavingsCalculatorPage() {
                 <div className="text-center pt-8 border-t border-border">
                     <h3 className="text-2xl font-bold mb-4">¿Listo para aplicar esta teoría a la realidad?</h3>
                     <p className="text-muted-foreground mb-6">
-                        Sustituye el papel y el Excel por Kakebo AI. Nuestro agente registrará tus gastos y vigilará tu ahorro por ti.
+                        Kakebo AI, la app gratuita de MetodoKakebo.com, te ayuda a registrar gastos y hacer seguimiento de tu ahorro mensual con el método Kakebo.
                     </p>
                     <Link href="/login" className="bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-full hover:bg-primary/90 transition-colors inline-block">
                         Empezar a usar la App

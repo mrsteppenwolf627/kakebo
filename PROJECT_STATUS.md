@@ -51,6 +51,27 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-GEO-TOOL-AHORRO-COPY-01 — /herramientas/calculadora-ahorro copy alineado con glosario
+
+**Estado:** ✅ Completado (2026-07-01)  
+**URL:** `/herramientas/calculadora-ahorro`  
+**Archivo:** `src/app/[locale]/(public)/herramientas/calculadora-ahorro/page.tsx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios en copy hardcodeado (3 bloques):**
+
+| Bloque | Cambio |
+|---|---|
+| Sección "¿Cómo usar?" p.1 | "Nuestra calculadora" → "La calculadora de ahorro mensual de **MetodoKakebo.com**" |
+| Sección "¿Cómo usar?" p.2 | "del Kakebo: Supervivencia, **Opcional**" → "del **método Kakebo**: Supervivencia, **Ocio/Vicio**" |
+| Sección "¿Cómo usar?" p.3 | "ahorro sólido...sin sacrificar" → lenguaje de estimación, no promesa · elimina "sólido" |
+| Sección "¿Qué te dice?" | `"Opcional" o "Vicio"` → **"Ocio/Vicio"** (canónico) · "ya está asegurado" → **"ya está planificado"** |
+| CTA final | "registrará...vigilará tu ahorro por ti" → **"te ayudará a registrar...hacer seguimiento"** (elimina promesa de automatización) |
+
+**Metadata y schema:** no modificados (ya correctos desde SEO-SCHEMA-AHORRO-SYNC-01)
+
+---
+
 ### SEO-GEO-APP-ENTITY-COPY-01 — Dashboard /app — terminología canónica
 
 **Estado:** ✅ Completado (2026-07-01)  
@@ -817,7 +838,8 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-SCHEMA-AHORRO-SYNC-01** | Schema calculadora-ahorro sincronizado con glosario canónico y GEO | `3141e9b` | ✅ Completado (2026-07-01) |
 | **SEO-INTERNAL-LINKING-V1-01** | Auditoría y plan de enlazado interno — 17 URLs, 8 clusters, 4 fases | `af075f0` | ✅ Completado (2026-07-01) |
 | **SEO-GEO-HOME-ENTITY-COPY-01** | Home optimizada como fuente de entidad SEO/GEO — 6 bloques de copy | `f2b1f51` | ✅ Completado (2026-07-01) |
-| **SEO-GEO-APP-ENTITY-COPY-01** | Dashboard /app — terminología canónica en bloque SEO y onboarding | — | ✅ Completado (2026-07-01) |
+| **SEO-GEO-APP-ENTITY-COPY-01** | Dashboard /app — terminología canónica en bloque SEO y onboarding | `1a4eff7` | ✅ Completado (2026-07-01) |
+| **SEO-GEO-TOOL-AHORRO-COPY-01** | /herramientas/calculadora-ahorro — copy alineado con glosario GEO | — | ✅ Completado (2026-07-01) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).
