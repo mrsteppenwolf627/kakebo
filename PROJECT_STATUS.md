@@ -51,6 +51,32 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-TECHNICAL-DATEMODIFIED-01 — Soporte updatedDate y dateModified real
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Build:** ✅ Compiled successfully
+
+**Archivos modificados:**
+- `src/lib/blog.ts` — añadido `updatedDate?: string` al tipo `BlogPost['frontmatter']`
+- `src/app/[locale]/(public)/blog/[slug]/page.tsx` — `dateModified` usa `updatedDate ?? date`
+- `src/app/sitemap.ts` — `lastModified` de blog posts usa `updatedDate ?? date`
+
+**Comportamiento resultante:**
+- `datePublished` → siempre `post.frontmatter.date` (sin cambios)
+- `dateModified` → `post.frontmatter.updatedDate ?? post.frontmatter.date` (nuevo)
+- `lastModified` sitemap → `new Date(post.frontmatter.updatedDate ?? post.frontmatter.date)` (nuevo)
+- Artículos sin `updatedDate`: comportamiento idéntico al anterior (fallback a `date`)
+
+**Uso futuro:** Para señalizar una actualización real de un artículo, añadir al frontmatter:
+```
+updatedDate: 'YYYY-MM-DD'
+```
+No inventar fechas. Solo usar cuando el contenido realmente se haya actualizado.
+
+**No se añadió `updatedDate` a ningún artículo.** La infraestructura queda lista.
+
+---
+
 ### SEO-SCHEMA-HOME-01 — Schema Organization + WebSite + SoftwareApplication en Home
 
 **Estado:** ✅ Completado (2026-06-30)  
@@ -687,7 +713,8 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-KAKEBO-ONLINE-CANIB-FIX-01** | noindex en EN kakebo-online-gratis + exclusión de sitemap | `cba3fd0` | ✅ Completado (2026-06-30) |
 | **SEO-GEO-TERMINOLOGY-01** | Glosario canónico SEO/GEO — 14 términos definidos | `168165f` | ✅ Completado (2026-06-30) |
 | **SEO-GEO-ENTITY-DEFINITION-01** | Definiciones factuales citables — 14 entidades, bloques reutilizables | `96183cc` | ✅ Completado (2026-06-30) |
-| **SEO-SCHEMA-HOME-01** | Schema Organization + WebSite + SoftwareApplication en Home | — | ✅ Completado (2026-06-30) |
+| **SEO-SCHEMA-HOME-01** | Schema Organization + WebSite + SoftwareApplication en Home | `16653ca` | ✅ Completado (2026-06-30) |
+| **SEO-TECHNICAL-DATEMODIFIED-01** | Soporte `updatedDate` en frontmatter + `dateModified` real en JSON-LD y sitemap | — | ✅ Completado (2026-07-01) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

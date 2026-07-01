@@ -177,7 +177,7 @@ export default async function BlogPostPage({ params }: Props) {
                             headline: post.frontmatter.title,
                             image: [post.frontmatter.image || "https://www.metodokakebo.com/og-image.jpg"],
                             datePublished: post.frontmatter.date,
-                            dateModified: post.frontmatter.date,
+                            dateModified: post.frontmatter.updatedDate ?? post.frontmatter.date,
                             author: [{
                                 "@type": "Person",
                                 name: post.frontmatter.author,

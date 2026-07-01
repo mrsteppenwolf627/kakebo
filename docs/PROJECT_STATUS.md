@@ -180,6 +180,33 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-TECHNICAL-DATEMODIFIED-01 — Soporte updatedDate y dateModified real
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Build** | ✅ Compiled successfully — 0 errores TypeScript |
+
+**Archivos modificados (3):**
+
+| Archivo | Cambio |
+|---|---|
+| `src/lib/blog.ts` | `updatedDate?: string` añadido al tipo `BlogPost['frontmatter']` |
+| `src/app/[locale]/(public)/blog/[slug]/page.tsx` | `dateModified: post.frontmatter.updatedDate ?? post.frontmatter.date` |
+| `src/app/sitemap.ts` | `lastModified: new Date(post.frontmatter.updatedDate ?? post.frontmatter.date)` |
+
+**Comportamiento:**
+- `datePublished` → `post.frontmatter.date` (sin cambios) ✅
+- `dateModified` → `updatedDate` si existe, `date` como fallback ✅
+- `lastModified` sitemap → ídem ✅
+- Artículos sin `updatedDate`: comportamiento idéntico al anterior ✅
+- No se añadió `updatedDate` a ningún artículo ✅
+- No se inventaron fechas ✅
+
+**Uso futuro:** Al actualizar contenido real de un artículo, añadir `updatedDate: 'YYYY-MM-DD'` al frontmatter del `.es.mdx` correspondiente.
+
+---
+
 ## ✅ SEO-SCHEMA-HOME-01 — Schema Organization + WebSite + SoftwareApplication en Home
 
 | Campo | Detalle |

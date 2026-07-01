@@ -15,6 +15,7 @@ export interface BlogPost {
         image?: string;
         related?: string[];
         noindex?: boolean;
+        updatedDate?: string;
         faq?: {
             question: string;
             answer: string;

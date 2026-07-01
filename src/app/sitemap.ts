@@ -49,7 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             const path = locale === 'es' ? `/blog/${post.slug}` : `/${locale}/blog/${post.slug}`;
             sitemapEntries.push({
                 url: `${baseUrl}${path}`,
-                lastModified: new Date(post.frontmatter.date),
+                lastModified: new Date(post.frontmatter.updatedDate ?? post.frontmatter.date),
                 changeFrequency: 'monthly',
                 priority: 0.7,
                 alternates: {
