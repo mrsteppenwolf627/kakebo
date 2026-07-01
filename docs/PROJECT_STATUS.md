@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-PILLAR-PRESUPUESTO-PERSONAL-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-METODO-KAKEBO-GUIA-IMAGE-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,19 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-BLOG-METODO-KAKEBO-GUIA-IMAGE-01 — Imagen portada metodo-kakebo-guia-definitiva
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivos** | `public/images/blog/metodo-kakebo-guia-definitiva.png` · `src/content/blog/metodo-kakebo-guia-definitiva.es.mdx` |
+
+**Cambios:**
+- Imagen estática añadida (~2.4 MB). Frontmatter `image`: `/api/og?...` → `/images/blog/metodo-kakebo-guia-definitiva.png`.
+- Activa portada visual en artículo, OG image estática, Twitter card y JSON-LD BlogPosting image.
 
 ---
 

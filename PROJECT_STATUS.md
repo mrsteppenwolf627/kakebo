@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-PILLAR-PRESUPUESTO-PERSONAL-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-METODO-KAKEBO-GUIA-IMAGE-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,19 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-BLOG-METODO-KAKEBO-GUIA-IMAGE-01 — Imagen portada metodo-kakebo-guia-definitiva
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivos:** `public/images/blog/metodo-kakebo-guia-definitiva.png` · `src/content/blog/metodo-kakebo-guia-definitiva.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios (2):**
+- Imagen añadida a `public/images/blog/metodo-kakebo-guia-definitiva.png` (~2.4 MB)
+- Frontmatter `image`: `/api/og?title=Método Kakebo: Guía Definitiva&description=...` → **`/images/blog/metodo-kakebo-guia-definitiva.png`** (imagen estática real)
+- Activa: portada visual en artículo, OG image, Twitter card, JSON-LD BlogPosting image
+
+---
 
 ### SEO-GEO-PILLAR-PRESUPUESTO-PERSONAL-01 — /blog/como-hacer-un-presupuesto-personal
 
