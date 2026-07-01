@@ -51,6 +51,25 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-GEO-PILLAR-METODO-KAKEBO-GUIA-01 — Artículo pilar método Kakebo
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/metodo-kakebo-guia-definitiva.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios aplicados (6):**
+
+| Elemento | Cambio |
+|---|---|
+| `excerpt` | Elimina "hasta un 35% de tu sueldo" (promesa cuantitativa) → descripción factual |
+| `updatedDate` | Añadido `2026-07-01` — activa dateModified real en JSON-LD y sitemap |
+| FAQ Q1 answer | "necesidades, deseos, cultura y extras" → **"Supervivencia, Ocio/Vicio, Cultura y Extras"** (canónico) |
+| Primer párrafo | "es mucho más que una simple técnica" → definición factual GEO-citeable con 家計簿 + MetodoKakebo.com |
+| Categoría 3 | "**Cultura (Extra)**" → "**Cultura**" (paréntesis confuso eliminado) |
+| Cierre | "garantiza" → "puede ayudarte" · añade "en MetodoKakebo.com" |
+
+---
+
 ### SEO-GEO-TOOL-503020-COPY-01 — /herramientas/regla-50-30-20 copy canónico
 
 **Estado:** ✅ Completado (2026-07-01)  
@@ -879,7 +898,8 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-GEO-APP-ENTITY-COPY-01** | Dashboard /app — terminología canónica en bloque SEO y onboarding | `1a4eff7` | ✅ Completado (2026-07-01) |
 | **SEO-GEO-TOOL-AHORRO-COPY-01** | /herramientas/calculadora-ahorro — copy alineado con glosario GEO | `aa2432a` | ✅ Completado (2026-07-01) |
 | **SEO-GEO-TOOL-INFLACION-COPY-01** | /herramientas/calculadora-inflacion — schema + cta copy alineados | `09f08a8` | ✅ Completado (2026-07-01) |
-| **SEO-GEO-TOOL-503020-COPY-01** | /herramientas/regla-50-30-20 — schema + copy Kakebo AI canónico | — | ✅ Completado (2026-07-01) |
+| **SEO-GEO-TOOL-503020-COPY-01** | /herramientas/regla-50-30-20 — schema + copy Kakebo AI canónico | `ac80f84` | ✅ Completado (2026-07-01) |
+| **SEO-GEO-PILLAR-METODO-KAKEBO-GUIA-01** | /blog/metodo-kakebo-guia-definitiva — definición GEO, categorías canónicas, excerpt sin promesa | — | ✅ Completado (2026-07-01) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

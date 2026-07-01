@@ -180,6 +180,18 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-GEO-PILLAR-METODO-KAKEBO-GUIA-01 — Artículo pilar método Kakebo
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/metodo-kakebo-guia-definitiva.es.mdx` |
+| **Build** | ✅ Compiled successfully |
+
+**6 cambios en el MDX:** excerpt sin promesa cuantitativa · `updatedDate` añadido · FAQ Q1 con categorías canónicas · primer párrafo con definición factual + MetodoKakebo.com · "Cultura (Extra)" → "Cultura" · cierre sin "garantiza" + MetodoKakebo.com
+
+---
+
 ## ✅ SEO-GEO-TOOL-503020-COPY-01 — /herramientas/regla-50-30-20
 
 | Campo | Detalle |
