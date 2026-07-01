@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-AUTONOMOS-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-ONLINE-GUIA-COMPLETA-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,30 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-SUPPORT-KAKEBO-ONLINE-GUIA-COMPLETA-01 — Optimización SEO/GEO artículo kakebo-online-guia-completa
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/kakebo-online-guia-completa.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- `updatedDate: '2026-07-01'`, `readingTime` y `faq` añadidos al frontmatter
+- `title` y `description` actualizados: sin "método japonés" suelto; descriptivos
+- `excerpt` mejorado: factual
+- `faq` frontmatter añadido (Q3: sin "categorías japonesas básicas")
+- **Categorías corregidas en todo el artículo:** "Opcional" → "Ocio/Vicio"; "Extra" → "Extras" (aparecía 4 veces en el artículo)
+- Intro: "filosofía milenaria" → eliminado; "método japonés creado en 1904 por Motoko Hani" como descripción correcta
+- "la magia de verdad" → eliminado
+- Primera persona: "¿Nuestra recomendación?" → eliminado; "nuestro simulador interactivo de asistente artificial" → descripción factual en ToolCTA
+- "Copiloto Financiero personal" → eliminado
+- "mata la filosofía del Kakebo" → explicación factual del porqué
+- "comodidades exponenciales" → eliminado
+- "la consciencia plena del método japonés" → "el mecanismo central del método Kakebo"
+- JSON-LD `description`: actualizado con terminología canónica correcta
+- Sección "Kakebo online con IA" reescrita: sin narrativa "Imagina que...", sin "máxima expresión"; factual
+
+---
 
 ### SEO-GEO-SUPPORT-KAKEBO-AUTONOMOS-01 — Optimización SEO/GEO artículo metodo-kakebo-para-autonomos
 

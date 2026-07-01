@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-AUTONOMOS-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-ONLINE-GUIA-COMPLETA-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SUPPORT-KAKEBO-ONLINE-GUIA-COMPLETA-01 — Optimización SEO/GEO kakebo-online-guia-completa
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/kakebo-online-guia-completa.es.mdx` |
+
+**Cambios principales:**
+- `updatedDate: '2026-07-01'`, `readingTime`, `faq` añadidos al frontmatter
+- Categorías corregidas en todo el artículo: "Opcional" → "Ocio/Vicio"; "Extra" → "Extras"
+- Terminología: "filosofía milenaria" eliminado; "Copiloto Financiero personal" eliminado; "la magia de verdad" eliminado
+- Primera persona eliminada: "Nuestra recomendación", "nuestro simulador"
+- Sección Kakebo AI reescrita: sin narrativa "Imagina que...", sin "máxima expresión"
+- ToolCTA y JSON-LD actualizados con terminología canónica
 
 ---
 
