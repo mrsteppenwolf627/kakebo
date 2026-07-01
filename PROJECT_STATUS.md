@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-LIBRO-KAKEBO-PDF-IMAGE-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-KAKEBO-AUTONOMOS-IMAGE-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,18 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-BLOG-KAKEBO-AUTONOMOS-IMAGE-01 — Imagen portada metodo-kakebo-para-autonomos
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `public/images/blog/kakebo-autonomos.png`  
+**Build:** ✅ Compiled successfully
+
+**Cambios (1):**
+- Imagen añadida a `public/images/blog/kakebo-autonomos.png` (~2.4 MB)
+- MDX no modificado: el frontmatter ya declaraba `image: '/images/blog/kakebo-autonomos.png'` correctamente
+
+---
 
 ### SEO-GEO-BLOG-LIBRO-KAKEBO-PDF-IMAGE-01 — Imagen portada libro-kakebo-pdf
 
