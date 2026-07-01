@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-AHORRAR-DINERO-IMAGE-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-KAKEBO-VS-YNAB-IMAGE-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,19 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-BLOG-KAKEBO-VS-YNAB-IMAGE-01 — Imagen portada kakebo-vs-ynab
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `public/images/blog/kakebo-vs-ynab.png`  
+**Build:** ✅ Compiled successfully
+
+**Cambios (1):**
+- Imagen añadida a `public/images/blog/kakebo-vs-ynab.png` (~2.3 MB)
+- Nota: archivo fuente en `imagenes/blog/` tenía extensión doble (`kakebo-vs-ynab.png.png`) — copiado con nombre correcto
+- MDX no modificado: el frontmatter ya declaraba `image: '/images/blog/kakebo-vs-ynab.png'` correctamente
+
+---
 
 ### SEO-GEO-BLOG-AHORRAR-DINERO-IMAGE-01 — Imagen portada como-ahorrar-dinero-cada-mes
 
