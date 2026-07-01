@@ -180,6 +180,20 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-GEO-TOOL-503020-COPY-01 — /herramientas/regla-50-30-20
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivos** | `regla-50-30-20/page.tsx` + `messages/es.json` |
+| **Build** | ✅ Compiled successfully |
+
+**Cambios en page.tsx:** `SCHEMA.name` → "Calculadora 50/30/20" · `SCHEMA.description` con MetodoKakebo.com · `publisher` añadido · CTA button "Kakebo AI" · CTA texto sin promesa implícita
+
+**Cambios en messages/es.json:** `cta.text` y `cta.button` usan Kakebo AI · `content.whatText2` nombra Kakebo AI y MetodoKakebo.com
+
+---
+
 ## ✅ SEO-GEO-TOOL-INFLACION-COPY-01 — /herramientas/calculadora-inflacion
 
 | Campo | Detalle |

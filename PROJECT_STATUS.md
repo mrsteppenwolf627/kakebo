@@ -51,6 +51,26 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-GEO-TOOL-503020-COPY-01 — /herramientas/regla-50-30-20 copy canónico
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivos:** `regla-50-30-20/page.tsx` + `messages/es.json`  
+**Build:** ✅ Compiled successfully
+
+**Cambios en `page.tsx`:**
+- `SCHEMA.name`: "Calculadora Regla 50/30/20 Kakebo" → **"Calculadora 50/30/20"** (canónico D-11)
+- `SCHEMA.description`: "caprichos" → "deseos" + añade "MetodoKakebo.com"
+- `SCHEMA`: añade `publisher → #organization`
+- CTA text: elimina promesa de automatización implícita → "Kakebo AI, la app gratuita de MetodoKakebo.com, puede ayudarte"
+- CTA button: "Crear cuenta en Kakebo" → **"Crear cuenta en Kakebo AI"**
+
+**Cambios en `messages/es.json` (Rule503020):**
+- `cta.text`: "Kakebo clasifica" → "**Kakebo AI** clasifica" · "caprichos" → "deseos"
+- `cta.button`: "Empezar gratis con Kakebo" → "Empezar gratis con **Kakebo AI**"
+- `content.whatText2`: `<bold>Kakebo</bold>` → `<bold>Kakebo AI</bold>` con referencia a MetodoKakebo.com
+
+---
+
 ### SEO-GEO-TOOL-INFLACION-COPY-01 — /herramientas/calculadora-inflacion schema + cta copy
 
 **Estado:** ✅ Completado (2026-07-01)  
@@ -858,7 +878,8 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-GEO-HOME-ENTITY-COPY-01** | Home optimizada como fuente de entidad SEO/GEO — 6 bloques de copy | `f2b1f51` | ✅ Completado (2026-07-01) |
 | **SEO-GEO-APP-ENTITY-COPY-01** | Dashboard /app — terminología canónica en bloque SEO y onboarding | `1a4eff7` | ✅ Completado (2026-07-01) |
 | **SEO-GEO-TOOL-AHORRO-COPY-01** | /herramientas/calculadora-ahorro — copy alineado con glosario GEO | `aa2432a` | ✅ Completado (2026-07-01) |
-| **SEO-GEO-TOOL-INFLACION-COPY-01** | /herramientas/calculadora-inflacion — schema + cta copy alineados | — | ✅ Completado (2026-07-01) |
+| **SEO-GEO-TOOL-INFLACION-COPY-01** | /herramientas/calculadora-inflacion — schema + cta copy alineados | `09f08a8` | ✅ Completado (2026-07-01) |
+| **SEO-GEO-TOOL-503020-COPY-01** | /herramientas/regla-50-30-20 — schema + copy Kakebo AI canónico | — | ✅ Completado (2026-07-01) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

@@ -317,13 +317,13 @@
             },
             "cta": {
                 "title": "¿Quieres aplicar esta regla automáticamente?",
-                "text": "Kakebo clasifica tus gastos por ti y te avisa si te estás pasando del 30% en caprichos o si no llegas al 20% de ahorro.",
-                "button": "Empezar gratis con Kakebo"
+                "text": "Kakebo AI clasifica tus gastos y te ayuda a identificar si te estás pasando del 30% en deseos o si no llegas al 20% de ahorro.",
+                "button": "Empezar gratis con Kakebo AI"
             },
             "content": {
                 "whatTitle": "¿Qué es la regla 50/30/20?",
                 "whatText1": "Popularizada por la senadora estadounidense Elizabeth Warren en su libro 'All Your Worth: The Ultimate Lifetime Money Plan', la regla 50/30/20 es el método más sencillo y eficaz para gestionar tus finanzas personales si odias los presupuestos complicados.",
-                "whatText2": "La premisa es simple: no necesitas trackear cada céntimo obsesivamente (aunque <bold>Kakebo</bold> te ayuda a hacerlo fácil), sino dividir tu ingreso neto mensual en tres grandes cubos:",
+                "whatText2": "La premisa es simple: no necesitas trackear cada céntimo obsesivamente (aunque <bold>Kakebo AI</bold>, la app de MetodoKakebo.com, puede ayudarte), sino dividir tu ingreso neto mensual en tres grandes cubos:",
                 "needsTitle": "Necesidades",
                 "needsDesc": "Gastos fijos y esenciales. Si perdieras tu trabajo, estos son los gastos que seguirías teniendo que pagar.",
                 "wantsTitle": "Deseos",

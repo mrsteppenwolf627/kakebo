@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 const SCHEMA = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Calculadora Regla 50/30/20 Kakebo",
+    "name": "Calculadora 50/30/20",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Web",
     "offers": {
@@ -47,7 +47,8 @@ const SCHEMA = {
         "price": "0",
         "priceCurrency": "EUR"
     },
-    "description": "Calculadora gratuita para distribuir tu sueldo mensual según la regla 50/30/20: 50% necesidades, 30% caprichos y 20% ahorro."
+    "description": "Calculadora gratuita de MetodoKakebo.com para distribuir el sueldo mensual según la regla 50/30/20: 50% necesidades, 30% deseos y 20% ahorro.",
+    "publisher": { "@id": "https://www.metodokakebo.com/#organization" }
 };
 
 const HOW_TO_SCHEMA = {
@@ -141,10 +142,10 @@ export default function Calculator503020Page() {
                     <div className="text-center pt-8 border-t border-border">
                         <h3 className="text-2xl font-bold mb-4">Lleva esta regla a un nivel superior</h3>
                         <p className="text-muted-foreground mb-6">
-                            Saber los porcentajes es solo el principio. Únete a Kakebo AI para que nuestro asistente inteligente clasifique tus gastos diarios en estas áreas automáticamente.
+                            Saber los porcentajes es solo el principio. Kakebo AI, la app gratuita de MetodoKakebo.com, puede ayudarte a registrar y clasificar tus gastos diarios con el método Kakebo.
                         </p>
                         <Link href="/login" className="bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-full hover:bg-primary/90 transition-colors inline-block">
-                            Crear cuenta en Kakebo
+                            Crear cuenta en Kakebo AI
                         </Link>
                     </div>
                 </section>
