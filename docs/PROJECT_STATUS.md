@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-AHORRO-PAREJA-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-VS-YNAB-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,22 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SUPPORT-KAKEBO-VS-YNAB-01 — Optimización SEO/GEO kakebo-vs-ynab
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/kakebo-vs-ynab.es.mdx` |
+
+**Cambios principales:**
+- `updatedDate: '2026-07-01'`, title y excerpt actualizados
+- Secciones YNAB y Kakebo reescritas: factuales, sin dramatismo
+- Tabla comparativa completamente reescrita (celdas originales incoherentes)
+- "Veredicto Final" (texto corrupto con repetición masiva) reemplazado por "Para quién es mejor cada uno" — 3 perfiles claros
+- Sección Kakebo AI con terminología canónica correcta
 
 ---
 

@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-AHORRO-PAREJA-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-VS-YNAB-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,27 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-SUPPORT-KAKEBO-VS-YNAB-01 — Optimización SEO/GEO artículo kakebo-vs-ynab
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/kakebo-vs-ynab.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- `updatedDate: '2026-07-01'` añadido
+- `title` actualizado: describe diferencias reales (registro consciente vs. presupuesto base cero)
+- `excerpt` actualizado: describe el contenido comparativo con terminología canónica
+- FAQ Q1 y Q2 mejoradas: terminología canónica correcta, respuestas factuales
+- Intro reescrita: directa sobre el objetivo comparativo
+- Sección YNAB: reescrita con ventajas/limitaciones factuales (eliminadas frases como "sagrada y suprema", "curva estresante")
+- Sección Kakebo: renombrada "Qué es el método Kakebo" (eliminado "El contendiente nipón"); definición factual del método Kakebo con D-01; terminología canónica correcta
+- Sección Wallet/apps: tono factual (eliminadas frases como "destrozan silenciosamente toda la vital intención reflexiva")
+- Tabla comparativa: COMPLETAMENTE REESCRITA — los 5 contenidos de celdas originales eran incoherentes ("Proactivo Ansioso: Vives mentalmente en el futuro, asignando neuróticamente euros", etc.)
+- **"Veredicto Final" (líneas 115-128): TEXTO COMPLETAMENTE CORRUPTO** — tres párrafos y tres perfiles con repetición masiva de adjetivos aleatorios — reemplazado por sección "Para quién es mejor cada uno" con tres perfiles claros y factuales
+- Sección Kakebo AI: mejorada con terminología canónica explícita (Kakebo AI / método Kakebo / MetodoKakebo.com diferenciados)
+
+---
 
 ### SEO-GEO-SUPPORT-AHORRO-PAREJA-01 — Optimización SEO/GEO artículo ahorro-pareja
 
