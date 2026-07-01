@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 const SCHEMA = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Calculadora de Ahorro Kakebo",
+    "name": "Calculadora de Ahorro Mensual",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Web",
     "offers": {
@@ -40,7 +40,8 @@ const SCHEMA = {
         "price": "0",
         "priceCurrency": "EUR"
     },
-    "description": "Calculadora gratuita para distribuir tu nómina mensual basada en el método japonés Kakebo: Supervivencia, Ocio, Cultura y Ahorro."
+    "description": "Herramienta web gratuita de MetodoKakebo.com para calcular cuánto dinero puedes ahorrar al mes según tus ingresos y los porcentajes del método Kakebo.",
+    "publisher": { "@id": "https://www.metodokakebo.com/#organization" }
 };
 
 const FAQ_SCHEMA = {
@@ -60,7 +61,7 @@ const FAQ_SCHEMA = {
             "name": "¿Cuáles son las 4 categorías del Kakebo?",
             "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Al aplicar el método Kakebo divides tus gastos en: Supervivencia (alquiler, luz, comida básica), Opcional o Vicio (restaurantes, ropa, caprichos), Cultura (libros, cursos, museos) y Extra (reparaciones, regalos)."
+                "text": "Al aplicar el método Kakebo divides tus gastos en: Supervivencia (alquiler, luz, comida básica), Ocio/Vicio (restaurantes, ropa, caprichos), Cultura (libros, cursos, museos) y Extras (reparaciones, regalos)."
             }
         },
         {

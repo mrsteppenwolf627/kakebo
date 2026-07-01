@@ -51,6 +51,29 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-SCHEMA-AHORRO-SYNC-01 — Schema calculadora-ahorro sincronizado con glosario
+
+**Estado:** ✅ Completado (2026-07-01)  
+**URL:** `/herramientas/calculadora-ahorro`  
+**Archivo:** `src/app/[locale]/(public)/herramientas/calculadora-ahorro/page.tsx`  
+**Build:** ✅ Compiled successfully
+
+**Schema antes:**
+- `SCHEMA.name`: "Calculadora de Ahorro Kakebo" (incorrecto per glosario)
+- `SCHEMA.description`: usaba "Ocio, Cultura y Ahorro" (nombres de categorías incorrectos); sin MetodoKakebo.com
+- `FAQ_SCHEMA` Q2 answer: "Opcional o Vicio" y "Extra" (nombres incorrectos por glosario)
+- Sin `publisher`
+
+**Schema después:**
+- `SCHEMA.name`: **"Calculadora de Ahorro Mensual"** (canónico per D-09 y glosario)
+- `SCHEMA.description`: factual, menciona MetodoKakebo.com, alineada con D-09
+- `SCHEMA.publisher`: `{ "@id": "https://www.metodokakebo.com/#organization" }` (consistente con SEO-SCHEMA-HOME-01)
+- `FAQ_SCHEMA` Q2 answer: **"Ocio/Vicio"** y **"Extras"** (canónico per glosario)
+
+**Nota sobre FAQ_SCHEMA:** Los textos de las FAQ se renderizan como contenido visible desde el objeto `FAQ_SCHEMA`. La corrección de "Opcional o Vicio" → "Ocio/Vicio" y "Extra" → "Extras" es un cambio de terminología mínimo justificado por el glosario canónico (hallazgo G-09 de SEO_GEO_DEEP_AUDIT_01.md). No se tocó estructura, lógica ni copy fuera de estos dos términos.
+
+---
+
 ### SEO-TECHNICAL-DATEMODIFIED-01 — Soporte updatedDate y dateModified real
 
 **Estado:** ✅ Completado (2026-07-01)  
@@ -714,7 +737,8 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-GEO-TERMINOLOGY-01** | Glosario canónico SEO/GEO — 14 términos definidos | `168165f` | ✅ Completado (2026-06-30) |
 | **SEO-GEO-ENTITY-DEFINITION-01** | Definiciones factuales citables — 14 entidades, bloques reutilizables | `96183cc` | ✅ Completado (2026-06-30) |
 | **SEO-SCHEMA-HOME-01** | Schema Organization + WebSite + SoftwareApplication en Home | `16653ca` | ✅ Completado (2026-06-30) |
-| **SEO-TECHNICAL-DATEMODIFIED-01** | Soporte `updatedDate` en frontmatter + `dateModified` real en JSON-LD y sitemap | — | ✅ Completado (2026-07-01) |
+| **SEO-TECHNICAL-DATEMODIFIED-01** | Soporte `updatedDate` en frontmatter + `dateModified` real en JSON-LD y sitemap | `c77d160` | ✅ Completado (2026-07-01) |
+| **SEO-SCHEMA-AHORRO-SYNC-01** | Schema calculadora-ahorro sincronizado con glosario canónico y GEO | — | ✅ Completado (2026-07-01) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

@@ -180,6 +180,36 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-SCHEMA-AHORRO-SYNC-01 — Schema calculadora-ahorro sincronizado con glosario
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **URL** | `/herramientas/calculadora-ahorro` |
+| **Archivo** | `src/app/[locale]/(public)/herramientas/calculadora-ahorro/page.tsx` |
+| **Build** | ✅ Compiled successfully |
+
+**Cambios en `SCHEMA`:**
+
+| Campo | Antes | Después |
+|---|---|---|
+| `name` | "Calculadora de Ahorro Kakebo" | **"Calculadora de Ahorro Mensual"** |
+| `description` | "distribuir tu nómina...Ocio, Cultura y Ahorro" | Descripción factual con MetodoKakebo.com y el concepto correcto de ahorro mensual |
+| `publisher` | ausente | `{ "@id": "https://www.metodokakebo.com/#organization" }` |
+
+**Cambios en `FAQ_SCHEMA` Q2:**
+
+| Campo | Antes | Después |
+|---|---|---|
+| Nombre categoría | "Opcional o Vicio" | **"Ocio/Vicio"** (canónico) |
+| Nombre categoría | "Extra" | **"Extras"** (canónico) |
+
+*Nota: los textos FAQ se renderizan como contenido visible. La corrección es estrictamente terminológica, justificada por el hallazgo G-09 de SEO_GEO_DEEP_AUDIT_01.md y el glosario SEO_GEO_TERMINOLOGY_01.md.*
+
+**No modificado:** `FAQPage` mantenida (FAQs visibles existen en la página). Sin aggregateRating, ratings, reviews, SearchAction ni datos inventados.
+
+---
+
 ## ✅ SEO-TECHNICAL-DATEMODIFIED-01 — Soporte updatedDate y dateModified real
 
 | Campo | Detalle |
