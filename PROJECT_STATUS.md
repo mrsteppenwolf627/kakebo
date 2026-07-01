@@ -51,6 +51,28 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-GEO-APP-ENTITY-COPY-01 — Dashboard /app — terminología canónica
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `messages/es.json`  
+**Build:** ✅ Compiled successfully
+
+**Hallazgo crítico:** `/app` tiene `robots: { index: false, follow: false }` en `app/layout.tsx`. Es una página autenticada noindex — sin impacto SEO directo. Los cambios aplican por coherencia con el glosario para los usuarios autenticados.
+
+**Cambios aplicados en `Dashboard` namespace:**
+
+| Clave | Cambio |
+|---|---|
+| `Dashboard.SEO.title` | Añade "el" → "con el método Kakebo" |
+| `Dashboard.SEO.p1` | "Kakebo es tu herramienta definitiva" → **"Kakebo AI es la herramienta de MetodoKakebo.com"** · "Ocio" → **"Ocio/Vicio"** |
+| `Dashboard.SEO.p2` | "El método japonés Kakebo" → **"El método Kakebo"** (término canónico) |
+| `Dashboard.SEO.p3` | "alcanza la libertad financiera" → **"toma mejores decisiones sobre tu dinero"** (elimina promesa financiera) |
+| `Dashboard.Onboarding.done.desc` | "tomar control absoluto" → **"la constancia es la clave del método Kakebo"** (elimina superlativo) |
+
+**No modificado:** metadata (ya noindex), schema, routing, Home, artículos, herramientas, lógica app, auth, Supabase, APIs
+
+---
+
 ### SEO-GEO-HOME-ENTITY-COPY-01 — Home optimizada como fuente de entidad SEO/GEO
 
 **Estado:** ✅ Completado (2026-07-01)  
@@ -794,7 +816,8 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-TECHNICAL-DATEMODIFIED-01** | Soporte `updatedDate` en frontmatter + `dateModified` real en JSON-LD y sitemap | `c77d160` | ✅ Completado (2026-07-01) |
 | **SEO-SCHEMA-AHORRO-SYNC-01** | Schema calculadora-ahorro sincronizado con glosario canónico y GEO | `3141e9b` | ✅ Completado (2026-07-01) |
 | **SEO-INTERNAL-LINKING-V1-01** | Auditoría y plan de enlazado interno — 17 URLs, 8 clusters, 4 fases | `af075f0` | ✅ Completado (2026-07-01) |
-| **SEO-GEO-HOME-ENTITY-COPY-01** | Home optimizada como fuente de entidad SEO/GEO — 6 bloques de copy | — | ✅ Completado (2026-07-01) |
+| **SEO-GEO-HOME-ENTITY-COPY-01** | Home optimizada como fuente de entidad SEO/GEO — 6 bloques de copy | `f2b1f51` | ✅ Completado (2026-07-01) |
+| **SEO-GEO-APP-ENTITY-COPY-01** | Dashboard /app — terminología canónica en bloque SEO y onboarding | — | ✅ Completado (2026-07-01) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

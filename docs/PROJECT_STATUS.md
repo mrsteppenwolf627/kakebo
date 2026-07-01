@@ -180,6 +180,28 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-GEO-APP-ENTITY-COPY-01 — Dashboard /app terminología canónica
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `messages/es.json` (namespace Dashboard) |
+| **Build** | ✅ Compiled successfully |
+
+**Hallazgo:** `/app` tiene `robots: { index: false, follow: false }` — página autenticada noindex. Sin impacto SEO directo. Cambios aplicados por coherencia de glosario para usuarios autenticados.
+
+**Cambios en Dashboard namespace (5 claves):**
+
+| Clave | Antes | Después |
+|---|---|---|
+| `Dashboard.SEO.title` | "con método Kakebo" | "con el método Kakebo" |
+| `Dashboard.SEO.p1` | "Kakebo es tu herramienta definitiva...Ocio, Cultura y Extras" | Kakebo AI + MetodoKakebo.com + Ocio/Vicio |
+| `Dashboard.SEO.p2` | "El método japonés Kakebo" | "El método Kakebo" (canónico) |
+| `Dashboard.SEO.p3` | "alcanza la libertad financiera" | "toma mejores decisiones sobre tu dinero" |
+| `Dashboard.Onboarding.done.desc` | "tomar control absoluto de tu dinero" | "la constancia es la clave del método Kakebo" |
+
+---
+
 ## ✅ SEO-GEO-HOME-ENTITY-COPY-01 — Home optimizada como fuente de entidad SEO/GEO
 
 | Campo | Detalle |

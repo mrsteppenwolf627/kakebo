@@ -533,7 +533,7 @@
             },
             "done": {
                 "title": "¡Todo Listo!",
-                "desc": "Tus ajustes básicos están guardados. Recuerda registrar cada céntimo que gastes para tomar control absoluto de tu dinero.",
+                "desc": "Tus ajustes básicos están guardados. Recuerda registrar cada gasto cuando ocurra: la constancia es la clave del método Kakebo.",
                 "start": "Ir a mi Dashboard"
             },
             "common": {
@@ -555,10 +555,10 @@
             "generateReport": "Generar Informe"
         },
         "SEO": {
-            "title": "Control de gastos mensual con método Kakebo",
-            "p1": "<bold>Kakebo</bold> es tu herramienta definitiva para la <bold>gestión de gastos personales</bold>. A diferencia de un Excel complicado, Kakebo te ayuda a clasificar tus finanzas en 4 categorías esenciales: Supervivencia, Ocio, Cultura y Extras.",
-            "p2": "El método japonés Kakebo fomenta el <bold>ahorro consciente</bold>. No se trata de recortar por recortar, sino de entender a dónde va tu dinero para tomar mejores decisiones cada mes.",
-            "p3": "Visualiza tu progreso con gráficos claros, establece objetivos de ahorro realistas y alcanza la libertad financiera paso a paso."
+            "title": "Control de gastos mensual con el método Kakebo",
+            "p1": "<bold>Kakebo AI</bold> es la herramienta de <bold>MetodoKakebo.com</bold> para registrar gastos mensuales, clasificarlos en cuatro categorías y revisar los hábitos de consumo. Las cuatro categorías del método Kakebo son: Supervivencia, <bold>Ocio/Vicio</bold>, Cultura y Extras.",
+            "p2": "El <bold>método Kakebo</bold> fomenta el <bold>ahorro consciente</bold>. No se trata de recortar por recortar, sino de entender a dónde va tu dinero para tomar mejores decisiones cada mes.",
+            "p3": "Visualiza tu progreso con gráficos claros, establece objetivos de ahorro realistas y toma mejores decisiones sobre tu dinero mes a mes."
         },
         "MonthSelector": {
             "today": "Ir a hoy",
