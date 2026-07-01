@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-METODO-KAKEBO-GUIA-IMAGE-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-AHORRAR-DINERO-IMAGE-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,18 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-BLOG-AHORRAR-DINERO-IMAGE-01 — Imagen portada como-ahorrar-dinero-cada-mes
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `public/images/blog/ahorrar-dinero.png`  
+**Build:** ✅ Compiled successfully
+
+**Cambios (1):**
+- Imagen añadida a `public/images/blog/ahorrar-dinero.png` (~2.3 MB)
+- MDX no modificado: el frontmatter ya declaraba `image: '/images/blog/ahorrar-dinero.png'` correctamente
+
+---
 
 ### SEO-GEO-BLOG-METODO-KAKEBO-GUIA-IMAGE-01 — Imagen portada metodo-kakebo-guia-definitiva
 
