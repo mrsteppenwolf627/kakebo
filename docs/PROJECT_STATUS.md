@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-KAKEBO-ONLINE-IMAGE-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-PILLAR-PRESUPUESTO-PERSONAL-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-PILLAR-PRESUPUESTO-PERSONAL-01 — /blog/como-hacer-un-presupuesto-personal
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/como-hacer-un-presupuesto-personal.es.mdx` |
+
+**Cambios (7):**
+- `updatedDate: '2026-07-01'` añadido
+- Párrafo de definición factual GEO-citable al inicio del cuerpo (D-12 de SEO_GEO_ENTITY_DEFINITIONS_01)
+- FAQ frontmatter Q2: `"calculadora de ahorro de MetodoKakebo"` → `"calculadora de ahorro mensual de MetodoKakebo.com"`
+- `"el método japonés"` → `"el método Kakebo"` (anchor text en sección gastos hormiga)
+- Anchor text calculadora ahorro → `"calculadora de ahorro mensual"` + `de MetodoKakebo.com` (2 instancias)
+- ArticleCTA: `"MetodoKakebo"` → `"Kakebo AI, la app gratuita de MetodoKakebo.com"`
 
 ---
 

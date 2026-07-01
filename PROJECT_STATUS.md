@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-KAKEBO-ONLINE-IMAGE-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-PILLAR-PRESUPUESTO-PERSONAL-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,23 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-PILLAR-PRESUPUESTO-PERSONAL-01 — /blog/como-hacer-un-presupuesto-personal
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/como-hacer-un-presupuesto-personal.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios (7):**
+- `updatedDate: '2026-07-01'` añadido — activa dateModified en JSON-LD y sitemap
+- Intro: párrafo de definición factual GEO-citable ("Un presupuesto personal es...") antes del hook existente — basado en D-12
+- FAQ frontmatter Q2: `"calculadora de ahorro de MetodoKakebo"` → **"calculadora de ahorro mensual de MetodoKakebo.com"**
+- Línea 111: `"el método japonés"` (ambiguo) → **"el método Kakebo"** (canónico)
+- Línea 207: anchor text `"calculadora de ahorro"` → **"calculadora de ahorro mensual"** + `de MetodoKakebo.com`
+- FAQ body: mismo fix para anchor text de calculadora de ahorro
+- ArticleCTA: `"MetodoKakebo: un diario de gastos digital construido sobre el método japonés"` → **"Kakebo AI, la app gratuita de MetodoKakebo.com, basada en el método Kakebo japonés"**
+
+---
 
 ### SEO-GEO-BLOG-KAKEBO-ONLINE-IMAGE-01 — Imagen portada kakebo-online-gratis
 
