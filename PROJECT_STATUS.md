@@ -51,6 +51,30 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-GEO-HOME-ENTITY-COPY-01 — Home optimizada como fuente de entidad SEO/GEO
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `messages/es.json`  
+**Build:** ✅ Compiled successfully
+
+**6 bloques de copy ajustados en `messages/es.json`:**
+
+| Clave | Cambio |
+|---|---|
+| `Landing.SEO.whatIs.title` | "Qué es Kakebo y para qué sirve" → "Qué es el método Kakebo y MetodoKakebo.com" |
+| `Landing.SEO.whatIs.p1` | Añade definición factual del método Kakebo (1904) + MetodoKakebo.com como plataforma gratuita |
+| `Landing.SEO.categories` (4 cards) | "Gastos fijos" eliminado · Categorías canónicas: Supervivencia / **Ocio/Vicio** / **Cultura** / **Extras** |
+| `Landing.SEO.faqSchema.a2` | "Ocio, Cultura, Extra" → "**Ocio/Vicio**, Cultura y **Extras**" |
+| `Landing.Content.article1.p` | Separa método histórico de MetodoKakebo.com como plataforma. Elimina "Kakebo adapta este método" (claim ambiguo) |
+| `Landing.Content.article2.p` | "nuestra plataforma" → **Kakebo AI** + **MetodoKakebo.com**. "Extra" → **Extras** |
+| `HowItWorks.steps.step3.desc` | "supervivencia, fijos, ocio, cultura" → categorías canónicas completas |
+
+**Metadata y schema:** no modificados (ya correctos desde tareas anteriores)
+
+**No añadido:** enlaces internos nuevos, claims exagerados, ratings, reviews, datos de empresa
+
+---
+
 ### SEO-INTERNAL-LINKING-V1-01 — Auditoría y plan de enlazado interno
 
 **Estado:** ✅ Completado (2026-07-01)  
@@ -769,7 +793,8 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-SCHEMA-HOME-01** | Schema Organization + WebSite + SoftwareApplication en Home | `16653ca` | ✅ Completado (2026-06-30) |
 | **SEO-TECHNICAL-DATEMODIFIED-01** | Soporte `updatedDate` en frontmatter + `dateModified` real en JSON-LD y sitemap | `c77d160` | ✅ Completado (2026-07-01) |
 | **SEO-SCHEMA-AHORRO-SYNC-01** | Schema calculadora-ahorro sincronizado con glosario canónico y GEO | `3141e9b` | ✅ Completado (2026-07-01) |
-| **SEO-INTERNAL-LINKING-V1-01** | Auditoría y plan de enlazado interno — 17 URLs, 8 clusters, 4 fases | — | ✅ Completado (2026-07-01) |
+| **SEO-INTERNAL-LINKING-V1-01** | Auditoría y plan de enlazado interno — 17 URLs, 8 clusters, 4 fases | `af075f0` | ✅ Completado (2026-07-01) |
+| **SEO-GEO-HOME-ENTITY-COPY-01** | Home optimizada como fuente de entidad SEO/GEO — 6 bloques de copy | — | ✅ Completado (2026-07-01) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

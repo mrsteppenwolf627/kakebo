@@ -180,6 +180,30 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-GEO-HOME-ENTITY-COPY-01 — Home optimizada como fuente de entidad SEO/GEO
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `messages/es.json` |
+| **Build** | ✅ Compiled successfully — 0 errores TypeScript |
+
+**Cambios aplicados (6 bloques, solo copy en `messages/es.json`):**
+
+| Clave | Antes | Después |
+|---|---|---|
+| `Landing.SEO.whatIs.title` | "Qué es Kakebo y para qué sirve" | "Qué es el método Kakebo y MetodoKakebo.com" |
+| `Landing.SEO.whatIs.p1` | "Kakebo es un método japonés..." (ambiguo) | Definición factual con fecha 1904 + MetodoKakebo.com como plataforma |
+| `Landing.SEO.categories` | "Gastos fijos" (no es categoría Kakebo) | 4 categorías canónicas: Supervivencia / Ocio/Vicio / Cultura / Extras |
+| `Landing.SEO.faqSchema.a2` | "Ocio, Cultura, Extra" | "Ocio/Vicio, Cultura y Extras" |
+| `Landing.Content.article1.p` | "Kakebo adapta este método" (mezcla método/plataforma) | Método Kakebo histórico vs MetodoKakebo.com como plataforma, separados claramente |
+| `Landing.Content.article2.p` | "nuestra plataforma...Extra" | Kakebo AI + MetodoKakebo.com + "Extras" |
+| `HowItWorks.steps.step3.desc` | "supervivencia, fijos, ocio, cultura" | Categorías canónicas completas con Ocio/Vicio y Extras |
+
+**No modificado:** metadata, schema, routing, sitemap, robots, hreflang, inglés legacy, artículos, herramientas, diseño, estilos, links existentes
+
+---
+
 ## ✅ SEO-INTERNAL-LINKING-V1-01 — Auditoría y plan de enlazado interno
 
 | Campo | Detalle |

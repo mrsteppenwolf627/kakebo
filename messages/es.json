@@ -364,35 +364,35 @@
         },
         "SEO": {
             "whatIs": {
-                "title": "Qué es Kakebo y para qué sirve",
-                "p1": "<bold>Kakebo</bold> es un método japonés de ahorro basado en registrar tus gastos y revisar el mes con intención. No va de gráficos espectaculares, va de ver lo obvio: en qué se te va el dinero y qué puedes ajustar sin vivir como un ermitaño.",
+                "title": "Qué es el método Kakebo y MetodoKakebo.com",
+                "p1": "El <bold>método Kakebo</bold> es un sistema japonés de ahorro personal creado en 1904. Se basa en registrar tus gastos, clasificarlos en cuatro categorías y reflexionar mensualmente para ajustar los hábitos de gasto. <bold>MetodoKakebo.com</bold> es la plataforma gratuita para aplicarlo online, sin conectar el banco.",
                 "p2": "En la práctica, funciona porque te obliga a hacer tres cosas que la mayoría evita: <bold>anotar</bold>, <bold>clasificar</bold> y <bold>revisar</bold>. Si eres constante, mejoras tu control del gasto casi sin darte cuenta.",
                 "p3": "Puedes calcular tu potencial de ahorro con nuestra <a href=\"/es/herramientas/calculadora-ahorro\" class=\"text-primary font-medium hover:underline\">calculadora de ahorro</a>, leer en profundidad nuestro <a href=\"/es/tutorial\" class=\"text-primary font-medium hover:underline\">tutorial Kakebo paso a paso</a>, o descubrir más trucos en el <a href=\"/es/blog\" class=\"text-primary font-medium hover:underline\">blog oficial</a>."
             },
             "categories": {
-                "title": "Categorías típicas del Kakebo (y cómo usarlas)",
+                "title": "Las 4 categorías del método Kakebo",
                 "survival": {
                     "title": "Supervivencia",
-                    "desc": "Comida, transporte básico, farmacia, suministros esenciales."
+                    "desc": "Alquiler, suministros, alimentación básica, transporte y gastos fijos del hogar."
                 },
                 "fixed": {
-                    "title": "Gastos fijos",
-                    "desc": "Alquiler, luz, internet, suscripciones necesarias, seguros."
+                    "title": "Ocio/Vicio",
+                    "desc": "Restaurantes, salidas, caprichos, entretenimiento y compras no esenciales."
                 },
                 "leisure": {
-                    "title": "Ocio",
-                    "desc": "Restaurantes, salidas, caprichos, compras impulsivas (sí, esas)."
+                    "title": "Cultura",
+                    "desc": "Libros, formación, museos, actividades culturales y hobbies de enriquecimiento personal."
                 },
                 "culture": {
-                    "title": "Cultura y crecimiento",
-                    "desc": "Libros, formación, hobbies, actividades que suman a largo plazo."
+                    "title": "Extras",
+                    "desc": "Imprevistos, reparaciones, regalos y cualquier gasto no planificado del mes."
                 }
             },
             "faqSchema": {
                 "q1": "¿Es gratis usar Kakebo?",
                 "a1": "Sí, Kakebo tiene un plan gratuito para siempre que te permite gestionar tus gastos mensuales sin coste. Ideal para empezar con el método Kakebo.",
                 "q2": "¿Cómo funciona el método Kakebo?",
-                "a2": "Se basa en registrar gastos manualmente, categorizarlos en 4 grupos (Supervivencia, Ocio, Cultura, Extra) y reflexionar sobre ellos a final de mes. Es más consciente que una app bancaria automática.",
+                "a2": "Se basa en registrar gastos manualmente, categorizarlos en 4 grupos (Supervivencia, Ocio/Vicio, Cultura y Extras) y reflexionar sobre ellos a final de mes. Es más consciente que una app bancaria automática.",
                 "q3": "¿Es mejor que un Excel de gastos?",
                 "a3": "Kakebo te da lo bueno del Excel (privacidad, control) pero con una interfaz móvil rápida, análisis automático y categorías inteligentes predefinidas."
             }
@@ -412,7 +412,7 @@
                 },
                 "step3": {
                     "title": "Clasifica por categorías",
-                    "desc": "Separa tus gastos: supervivencia, fijos, ocio, cultura. Detecta dónde se te va el dinero."
+                    "desc": "Clasifica cada gasto en una de las cuatro categorías del método Kakebo: Supervivencia, Ocio/Vicio, Cultura y Extras. Detecta dónde se te va el dinero."
                 },
                 "step4": {
                     "title": "Revisa y ajusta",
@@ -432,11 +432,11 @@
             "title": "Controla tus finanzas en España con Kakebo",
             "article1": {
                 "title": "¿Qué es el método Kakebo?",
-                "p": "El <bold>Kakebo</bold> (pronunciado \"kah-keh-boh\") es el arte japonés de ahorrar dinero. No es solo una app de control de gastos; es una filosofía que te invita a reflexionar sobre tus hábitos de consumo. Kakebo adapta este método centenario a la era digital para usuarios en <bold>España</bold> y la zona euro."
+                "p": "El <bold>método Kakebo</bold> (pronunciado \"kah-keh-boh\") es un sistema japonés de gestión financiera personal publicado en 1904. No va de automatización bancaria: va de anotar, clasificar y reflexionar mensualmente sobre tus hábitos de gasto. <bold>MetodoKakebo.com</bold> aplica este método en formato digital gratuito para usuarios en <bold>España</bold> y la zona euro."
             },
             "article2": {
                 "title": "Ahorro inteligente en Euros",
-                "p": "Diseñada específicamente para la gestión económica en <bold>euros (€)</bold>, nuestra plataforma te permite categorizar gastos vitales (Supervivencia), disfrutar de la vida (Ocio y Vicio), cultivar tu mente (Cultura) y prever imprevistos (Extra). Es la herramienta ideal para quienes buscan una <bold>app de finanzas personales gratuita</bold> y efectiva."
+                "p": "Diseñada para la gestión en <bold>euros (€)</bold>, <bold>Kakebo AI</bold> permite registrar gastos en las cuatro categorías del método: Supervivencia, Ocio/Vicio, Cultura y Extras. Es la herramienta gratuita de <bold>MetodoKakebo.com</bold> para quienes buscan controlar sus gastos sin conectar el banco."
             },
             "table": {
                 "title": "¿Por qué usar Kakebo vs Excel?",
