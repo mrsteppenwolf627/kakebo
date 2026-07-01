@@ -51,6 +51,24 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-GEO-TOOL-INFLACION-COPY-01 — /herramientas/calculadora-inflacion schema + cta copy
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivos:** `src/app/[locale]/(landing)/herramientas/calculadora-inflacion/page.tsx` + `messages/es.json`  
+**Build:** ✅ Compiled successfully
+
+**Cambios en `page.tsx` (schema + metadata):**
+- `openGraph.siteName`: "Kakebo" → "MetodoKakebo.com"
+- Schema `SoftwareApplication.name`: "Calculadora de Inflación Kakebo 2026" → **"Calculadora de Inflación e IPC"** (canónico D-10, sin año hardcodeado)
+- Schema `SoftwareApplication.description`: añade "MetodoKakebo.com"
+- Schema `SoftwareApplication.author.name`: "Kakebo" → "MetodoKakebo.com"
+- Schema `SoftwareApplication`: añade `publisher → #organization` (consistencia con Home y calculadora-ahorro)
+
+**Cambios en `messages/es.json`:**
+- `Tools.Inflation.cta.text`: "Kakebo es tu herramienta para lograrlo" → "**Kakebo AI**, la herramienta gratuita de **MetodoKakebo.com**, puede ayudarte." (elimina "Kakebo" solo + promesa implícita "lograrlo")
+
+---
+
 ### SEO-GEO-TOOL-AHORRO-COPY-01 — /herramientas/calculadora-ahorro copy alineado con glosario
 
 **Estado:** ✅ Completado (2026-07-01)  
@@ -839,7 +857,8 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-INTERNAL-LINKING-V1-01** | Auditoría y plan de enlazado interno — 17 URLs, 8 clusters, 4 fases | `af075f0` | ✅ Completado (2026-07-01) |
 | **SEO-GEO-HOME-ENTITY-COPY-01** | Home optimizada como fuente de entidad SEO/GEO — 6 bloques de copy | `f2b1f51` | ✅ Completado (2026-07-01) |
 | **SEO-GEO-APP-ENTITY-COPY-01** | Dashboard /app — terminología canónica en bloque SEO y onboarding | `1a4eff7` | ✅ Completado (2026-07-01) |
-| **SEO-GEO-TOOL-AHORRO-COPY-01** | /herramientas/calculadora-ahorro — copy alineado con glosario GEO | — | ✅ Completado (2026-07-01) |
+| **SEO-GEO-TOOL-AHORRO-COPY-01** | /herramientas/calculadora-ahorro — copy alineado con glosario GEO | `aa2432a` | ✅ Completado (2026-07-01) |
+| **SEO-GEO-TOOL-INFLACION-COPY-01** | /herramientas/calculadora-inflacion — schema + cta copy alineados | — | ✅ Completado (2026-07-01) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

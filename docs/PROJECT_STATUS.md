@@ -180,6 +180,29 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-GEO-TOOL-INFLACION-COPY-01 — /herramientas/calculadora-inflacion
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivos** | `calculadora-inflacion/page.tsx` + `messages/es.json` |
+| **Build** | ✅ Compiled successfully |
+
+**Cambios en schema (page.tsx):**
+
+| Campo | Antes | Después |
+|---|---|---|
+| `openGraph.siteName` | "Kakebo" | "MetodoKakebo.com" |
+| `SoftwareApplication.name` | "Calculadora de Inflación Kakebo 2026" | "Calculadora de Inflación e IPC" |
+| `SoftwareApplication.description` | sin MetodoKakebo.com | con "MetodoKakebo.com" |
+| `SoftwareApplication.author.name` | "Kakebo" | "MetodoKakebo.com" |
+| `SoftwareApplication.publisher` | ausente | `{ "@id": ".../#organization" }` |
+
+**Cambio en messages/es.json:**
+- `Tools.Inflation.cta.text`: "Kakebo es tu herramienta para lograrlo" → "Kakebo AI, la herramienta gratuita de MetodoKakebo.com, puede ayudarte"
+
+---
+
 ## ✅ SEO-GEO-TOOL-AHORRO-COPY-01 — /herramientas/calculadora-ahorro copy GEO
 
 | Campo | Detalle |

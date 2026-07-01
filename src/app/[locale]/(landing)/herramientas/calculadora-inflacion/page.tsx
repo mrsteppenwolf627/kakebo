@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             type: "website",
             title: t('ogTitle'),
             description: t('ogDescription'),
-            siteName: "Kakebo",
+            siteName: "MetodoKakebo.com",
             locale: locale === 'es' ? "es_ES" : "en_US",
             images: [
                 {
@@ -49,7 +49,7 @@ const SCHEMA = {
     "@graph": [
         {
             "@type": "SoftwareApplication",
-            "name": "Calculadora de Inflación Kakebo 2026",
+            "name": "Calculadora de Inflación e IPC",
             "applicationCategory": "FinanceApplication",
             "operatingSystem": "Web",
             "offers": {
@@ -57,12 +57,13 @@ const SCHEMA = {
                 "price": "0",
                 "priceCurrency": "EUR"
             },
-            "description": "Herramienta online para calcular la pérdida de poder adquisitivo del dinero en función del IPC y la inflación estimada.",
+            "description": "Herramienta online gratuita de MetodoKakebo.com para calcular la pérdida de poder adquisitivo del dinero en función del IPC y la inflación estimada.",
             "featureList": "Cálculo de valor real, proyección de inflación, gráfico de pérdida de valor",
             "author": {
                 "@type": "Organization",
-                "name": "Kakebo"
-            }
+                "name": "MetodoKakebo.com"
+            },
+            "publisher": { "@id": "https://www.metodokakebo.com/#organization" }
         },
         {
             "@type": "FAQPage",
