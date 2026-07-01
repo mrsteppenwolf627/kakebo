@@ -1,8 +1,41 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-ONLINE-GUIA-COMPLETA-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-REGLA-30-DIAS-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-GEO-SUPPORT-REGLA-30-DIAS-01 — Optimización SEO/GEO artículo regla-30-dias
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/regla-30-dias.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- `updatedDate: '2026-07-01'` añadido
+- `title` actualizado: eliminado "El escudo definitivo" → descriptivo y factual
+- `description` añadido: describe el contenido con terminología canónica
+- `excerpt` actualizado: eliminado "curar tu adicción" y "miles de euros" → descripción factual
+- FAQ Q1: ampliada para mayor completitud (incluye el "si sí / si no" del resultado)
+- FAQ Q2: eliminado "neocórtex racional" (pseudocientífico) y "80% de los casos" (estadística sin fuente) → explicación conductual factual
+- Intro: eliminada narrativa ficticia ("Lunes por la tarde", "¡ALTO! Congela la tarjeta", "antivirus más potente jamás creado") → explicación directa de la regla
+- H2 "La Trampa Dopaminérgica" → "Por qué las compras impulsivas son difíciles de evitar"
+- Eliminado framing médico: "Para entender cómo curar la enfermedad, primero hay que entender el diagnóstico"
+- Eliminado blockquote pseudocientífico: "diseñado quirúrgicamente para hackear tu sistema de recompensa animal"
+- Eliminado "estadísticamente imposible" (sin fuente)
+- Eliminados superlatiivos: "soberanamente efectiva, absolutamente gratuita", "desarmantemente simple"
+- Paso 2: "romper el bucle dopaminérgico" → descripción factual del objetivo
+- Paso 4: "80% de los casos según estudios de psicología del consumo" → "Si la urgencia ha desaparecido" (sin porcentaje sin fuente)
+- `Ocio y Vicio` → `Ocio/Vicio` (terminología canónica)
+- ToolCTA: eliminado emoji `💡` del título; description actualizada (factual)
+- H2: "La Fusión Definitiva" → "La regla de los 30 días y el método Kakebo"
+- Eliminado "la eficacia se multiplica considerablemente" (sin fuente)
+- Eliminado "la mayoría de usuarios que aplican ambos sistemas juntos reportan..." (afirmación sin fuente)
+- Eliminado "consulta nuestra guía" (primera persona) → "La guía de ahorro mensual explica..."
+- Obstáculo 2: eliminado "La compra emocional es uno de los mayores destructores de la salud financiera"
+- Sección Kakebo AI: terminología canónica explícita (Kakebo AI / MetodoKakebo.com diferenciados)
+- Anchor text en artículos relacionados: "el método japonés infalible" → eliminado; título simple
 
 ---
 

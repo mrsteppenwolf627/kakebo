@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-ONLINE-GUIA-COMPLETA-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-REGLA-30-DIAS-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,30 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SUPPORT-REGLA-30-DIAS-01 — Optimización SEO/GEO artículo regla-30-dias
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/regla-30-dias.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios principales:**
+- `updatedDate: '2026-07-01'` añadido
+- `title`: eliminado "El escudo definitivo" → factual
+- `description` añadido
+- `excerpt`: eliminado "curar tu adicción" y "miles de euros"
+- FAQ Q2: eliminado "neocórtex racional" + "80% de los casos" (sin fuente) → explicación conductual factual
+- Intro: eliminada narrativa ficticia; reemplazada por explicación directa de la regla
+- H2: "La Trampa Dopaminérgica" → "Por qué las compras impulsivas son difíciles de evitar"
+- Eliminado framing médico, blockquote pseudocientífico, superlatiivos
+- Paso 4: eliminado "80% de los casos según estudios" → condicional factual
+- `Ocio y Vicio` → `Ocio/Vicio` (terminología canónica)
+- ToolCTA: eliminado emoji `💡`; description factual
+- H2 "La Fusión Definitiva" → "La regla de los 30 días y el método Kakebo"
+- Eliminadas afirmaciones sin fuente sobre comportamiento de usuarios
+- Kakebo AI y MetodoKakebo.com con terminología canónica diferenciada
 
 ---
 
