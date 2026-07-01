@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-KAKEBO-AUTONOMOS-IMAGE-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-KAKEBO-ONLINE-GUIA-IMAGE-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,19 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-BLOG-KAKEBO-ONLINE-GUIA-IMAGE-01 — Imagen portada kakebo-online-guia-completa
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivos:** `public/images/blog/kakebo-online-guia.png` · `src/content/blog/kakebo-online-guia-completa.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios (2):**
+- Imagen añadida a `public/images/blog/kakebo-online-guia.png` (~2.4 MB)
+- Frontmatter `image`: `"/images/blog/kakebo-online-guia.jpg"` → `"/images/blog/kakebo-online-guia.png"` (corrige ruta rota + formato incorrecto)
+- Otros issues del artículo (H1 duplicado, `description:`, `tags:`) no tocados — fuera de alcance de esta tarea
+
+---
 
 ### SEO-GEO-BLOG-KAKEBO-AUTONOMOS-IMAGE-01 — Imagen portada metodo-kakebo-para-autonomos
 
