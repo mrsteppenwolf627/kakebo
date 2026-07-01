@@ -51,6 +51,36 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-INTERNAL-LINKING-V1-01 — Auditoría y plan de enlazado interno
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Tipo:** Solo documentación estratégica — sin cambios en código ni enlaces  
+**Documento:** `docs/seo/SEO_INTERNAL_LINKING_V1_01.md`
+
+**17 URLs analizadas · 8 clusters · 4 fases · 7 tareas derivadas**
+
+**URLs que más necesitan autoridad entrante:**
+1. `/blog/metodo-kakebo-guia-definitiva` — hub semántico con solo 2 fuentes confirmadas
+2. `/herramientas/calculadora-ahorro` — CTR 34,88% pero solo 2 fuentes (ambas en FAQ)
+3. `/herramientas/calculadora-inflacion` — 300 imp, 1 clic, 0 enlaces de blog
+4. `/herramientas/regla-50-30-20` — 6 imp, 0 clics, 0 enlaces de blog
+
+**Anchors recomendados principales:**
+- "el método Kakebo" → `/blog/metodo-kakebo-guia-definitiva`
+- "calculadora de ahorro mensual" → `/herramientas/calculadora-ahorro`
+- "calculadora de inflación e IPC" → `/herramientas/calculadora-inflacion`
+- "plantilla Kakebo Excel gratis" → `/blog/plantilla-kakebo-excel`
+
+**Fases propuestas:**
+- Fase 1: Enlazado mínimo de mayor impacto (plantilla-excel → herramientas, cluster → metodo-kakebo)
+- Fase 2: Refuerzo kakebo-online/app y presupuesto personal (esperar GSC post-noindex)
+- Fase 3: Enlazado hacia calculadora-inflacion (tras crear artículo editorial)
+- Fase 4: Revisión y auditoría de impacto
+
+**Tareas derivadas:** `SEO-EXCEL-INTERNAL-LINKS-01` · `SEO-CLUSTER-KAKEBO-CORE-LINKS-01` · `SEO-AHORRO-INBOUND-01` · `SEO-PRESUPUESTO-INBOUND-01` · `SEO-INFLACION-INBOUND-01` · `SEO-503020-INBOUND-01` · `SEO-INTERNAL-LINKING-AUDIT-01`
+
+---
+
 ### SEO-SCHEMA-AHORRO-SYNC-01 — Schema calculadora-ahorro sincronizado con glosario
 
 **Estado:** ✅ Completado (2026-07-01)  
@@ -738,7 +768,8 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-GEO-ENTITY-DEFINITION-01** | Definiciones factuales citables — 14 entidades, bloques reutilizables | `96183cc` | ✅ Completado (2026-06-30) |
 | **SEO-SCHEMA-HOME-01** | Schema Organization + WebSite + SoftwareApplication en Home | `16653ca` | ✅ Completado (2026-06-30) |
 | **SEO-TECHNICAL-DATEMODIFIED-01** | Soporte `updatedDate` en frontmatter + `dateModified` real en JSON-LD y sitemap | `c77d160` | ✅ Completado (2026-07-01) |
-| **SEO-SCHEMA-AHORRO-SYNC-01** | Schema calculadora-ahorro sincronizado con glosario canónico y GEO | — | ✅ Completado (2026-07-01) |
+| **SEO-SCHEMA-AHORRO-SYNC-01** | Schema calculadora-ahorro sincronizado con glosario canónico y GEO | `3141e9b` | ✅ Completado (2026-07-01) |
+| **SEO-INTERNAL-LINKING-V1-01** | Auditoría y plan de enlazado interno — 17 URLs, 8 clusters, 4 fases | — | ✅ Completado (2026-07-01) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

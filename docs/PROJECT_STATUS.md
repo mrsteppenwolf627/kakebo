@@ -180,6 +180,35 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-INTERNAL-LINKING-V1-01 — Auditoría y plan de enlazado interno
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Tipo** | Solo documentación estratégica — sin cambios en código ni enlaces |
+| **Documento** | `docs/seo/SEO_INTERNAL_LINKING_V1_01.md` |
+
+**17 URLs analizadas · 8 clusters · 4 fases · 7 tareas derivadas**
+
+**Hallazgos principales:**
+- `metodo-kakebo-guia-definitiva` solo recibe enlaces confirmados de 2 artículos — debe ser el hub del sitio
+- `calculadora-ahorro` solo recibe desde FAQ (2 fuentes) — CTR anómalo (34,88%) podría mejorar posición con más señales entrantes
+- `calculadora-inflacion` y `regla-50-30-20` tienen 0 enlaces de blog
+- `plantilla-kakebo-excel` no enlaza a `regla-50-30-20` ni a `calculadora-ahorro` en body (solo en FAQ)
+
+**Plan por fases:**
+
+| Fase | Objetivo | Riesgo | Prerequisito |
+|---|---|---|---|
+| Fase 1 | Enlazar plantilla-excel→calculadoras, cluster→metodo-kakebo | Bajo | Esta auditoría aprobada |
+| Fase 2 | Kakebo-online/app y presupuesto personal | Medio | GSC post-noindex 6-8 semanas |
+| Fase 3 | Calculadora-inflacion (con artículo editorial) | Bajo | Artículo SEO-BLOG-INFLACION-01 |
+| Fase 4 | Revisión y audit de impacto | Muy bajo | GSC snapshot 8-12 semanas post-Fase 1 |
+
+**7 tareas derivadas:** `SEO-EXCEL-INTERNAL-LINKS-01` · `SEO-CLUSTER-KAKEBO-CORE-LINKS-01` · `SEO-AHORRO-INBOUND-01` · `SEO-PRESUPUESTO-INBOUND-01` · `SEO-INFLACION-INBOUND-01` · `SEO-503020-INBOUND-01` · `SEO-INTERNAL-LINKING-AUDIT-01`
+
+---
+
 ## ✅ SEO-SCHEMA-AHORRO-SYNC-01 — Schema calculadora-ahorro sincronizado con glosario
 
 | Campo | Detalle |
