@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-VS-YNAB-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-LIBRO-KAKEBO-PDF-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SUPPORT-LIBRO-KAKEBO-PDF-01 — Optimización SEO/GEO libro-kakebo-pdf
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/libro-kakebo-pdf.es.mdx` |
+
+**Cambios principales:**
+- `updatedDate: '2026-07-01'`, title y excerpt actualizados
+- Intro reescrita: sin primera persona comercial, sin narrativa asumida al lector
+- Terminología: "magia del Kakebo", "método milenario", "asistente neuronal artificial" → eliminados
+- Estadística no verificada "85% abandona" → eliminada
+- Tabla comparativa reescrita: celdas factuales
+- Cierre reescrito: sin "milimétricamente", "eliminamos quirúrgicamente"; terminología canónica correcta
 
 ---
 

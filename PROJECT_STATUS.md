@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-VS-YNAB-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-LIBRO-KAKEBO-PDF-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,29 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-SUPPORT-LIBRO-KAKEBO-PDF-01 — Optimización SEO/GEO artículo libro-kakebo-pdf
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/libro-kakebo-pdf.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- `updatedDate: '2026-07-01'` añadido
+- `title` actualizado: descriptivo ("formatos disponibles, limitaciones prácticas y alternativas digitales")
+- `excerpt` actualizado: sin "la mayoría lo abandona"
+- FAQ Q4: eliminado "potente estructura psicológica" y "inmenso valor"; tono factual
+- Intro reescrita: sin primera persona comercial ("tenemos que contarte", "te desvelaremos"), sin narrativa asumida
+- Link "método zen financiero" → link correcto al método Kakebo
+- Terminología: "magia del Kakebo" → eliminado; "método milenario" → eliminado (1904 no es milenario); "asistente neuronal artificial" → "agente de IA"
+- Afirmación "el 85% de los usuarios acaban abandonando" → eliminada (no verificada)
+- Lenguaje sensacionalista: "en qué demonios", "embriagante romanticismo", "indudablemente infalible", "burdas fotocopias" → tono factual
+- Sección "Las 3 trampas" → "Las limitaciones del formato PDF e impreso"
+- Sección "Las ediciones" reorganizada: ventajas/limitaciones concretas por formato
+- Tabla comparativa: celdas reescritas ("Sufrido a pulmón" → factual; "Crónicamente lento" → factual; "Copiloto proactivo protector" → factual; "quiebra" → eliminado; "asistente neuronal artificial" → "asistida por IA")
+- Cierre: eliminado "milimétricamente", "eliminamos quirúrgicamente", "vibrante e intachable", primera persona; tono factual sobre Kakebo AI con terminología canónica
+
+---
 
 ### SEO-GEO-SUPPORT-KAKEBO-VS-YNAB-01 — Optimización SEO/GEO artículo kakebo-vs-ynab
 
