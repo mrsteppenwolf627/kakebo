@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-KAKEBO-ONLINE-GUIA-COMPLETA-IMAGE-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-ALTERNATIVAS-APP-BANCARIAS-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SUPPORT-ALTERNATIVAS-APP-BANCARIAS-01 — Optimización SEO/GEO alternativas-a-app-bancarias
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/alternativas-a-app-bancarias.es.mdx` |
+
+**Cambios principales:**
+- `updatedDate: '2026-07-01'` añadido
+- `title` y `excerpt` actualizados para reflejar "alternativas a apps bancarias" (no solo Fintonic)
+- Intro reescrita: explica directamente el problema del artículo
+- Secciones de modelo de negocio y automatización: tono factual, eliminado lenguaje alarmista
+- Sección Kakebo AI: depersonalizada, terminología canónica correcta
+- FAQ cuerpo: "método Kakebo" y "Kakebo AI" diferenciados correctamente
 
 ---
 

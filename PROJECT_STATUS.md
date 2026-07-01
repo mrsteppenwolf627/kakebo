@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-KAKEBO-ONLINE-GUIA-COMPLETA-IMAGE-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-ALTERNATIVAS-APP-BANCARIAS-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,27 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-SUPPORT-ALTERNATIVAS-APP-BANCARIAS-01 — Optimización SEO/GEO artículo alternativas-a-app-bancarias
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/alternativas-a-app-bancarias.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- `updatedDate: '2026-07-01'` añadido al frontmatter
+- `title` actualizado: "Las 7 Alternativas a Fintonic sin Banco (2026)" → "Alternativas a Apps Bancarias para Controlar Gastos sin Conectar el Banco (2026)" (alinea con slug y semántica del artículo)
+- `excerpt` actualizado: incluye "alternativas a apps bancarias", "controlar gastos", "Kakebo AI"
+- FAQ frontmatter: Q2 y Q5 mejoradas para incluir "Kakebo AI" y "MetodoKakebo.com" con terminología canónica
+- Intro reescrita: explica directamente el problema (controlar gastos sin conectar el banco), elimina lenguaje alarmista
+- Sección "El oscuro modelo de negocio" → renombrada "El modelo de negocio de las apps financieras gratuitas", tono más prudente y factual; eliminadas frases como "comisiones abusivas", "intereses usurarios", "obsceno Data Brokerage", cita exagerada
+- Sección "El gran cisma: La Automatización Inconsciente" → renombrada "Automatización frente a registro consciente", tono factual, terminología corregida ("método Kakebo" + "Kakebo AI" diferenciados)
+- Sección "Kakebo AI" → depersonalizada (eliminado "hemos creado desde cero", "jamás te pediremos", "nuestro sistema", "¿Cómo narices"); descripción factual del producto como herramienta de MetodoKakebo.com
+- Sección "El falso dilema" → renombrada "Privacidad frente a comodidad: no son excluyentes", tono más directo y sin superlatiivos; termina con principio del método Kakebo
+- Párrafo de transición: "el método Kakebo potenciado con IA" → "Kakebo AI — la app gratuita de MetodoKakebo.com basada en el método Kakebo" (terminología canónica)
+- FAQ cuerpo: respuestas ajustadas para incluir "método Kakebo" y "Kakebo AI" con distinción correcta
+
+---
 
 ### SEO-GEO-BLOG-KAKEBO-ONLINE-GUIA-COMPLETA-IMAGE-01 — Imagen portada kakebo-online-guia-completa (imagen definitiva)
 
