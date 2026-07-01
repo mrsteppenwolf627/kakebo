@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-AHORRAR-DINERO-CADA-MES-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-AHORRO-PAREJA-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SUPPORT-AHORRO-PAREJA-01 — Optimización SEO/GEO ahorro-pareja
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/ahorro-pareja.es.mdx` |
+
+**Cambios principales:**
+- `updatedDate: '2026-07-01'`, title y excerpt actualizados
+- Intro reescrita: práctica y directa, sin afirmaciones sobre estadísticas de divorcio sin fuente
+- H2/H3 renombrados: tono factual (sin "Mortales", "magia", "nipón")
+- Terminología canónica correcta: "el método Kakebo" en lugar de "el Kakebo nipón", "método organizativo nipón", etc.
+- Sección Kakebo AI: nombrada explícitamente como app de MetodoKakebo.com
+- Sección deudas: simplificada y factual
 
 ---
 

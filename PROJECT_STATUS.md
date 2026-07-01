@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-AHORRAR-DINERO-CADA-MES-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-AHORRO-PAREJA-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,35 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-SUPPORT-AHORRO-PAREJA-01 — Optimización SEO/GEO artículo ahorro-pareja
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/ahorro-pareja.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- `updatedDate: '2026-07-01'` añadido
+- `title` actualizado: añade "presupuesto compartido, gastos comunes y método Kakebo"
+- `excerpt` actualizado: descripción factual directa (sin "El dinero es la principal causa de divorcio")
+- FAQ Q1: respuesta ligeramente mejorada
+- FAQ Q2: "la pestaña de reflexión del método Kakebo" → "el paso de reflexión del método Kakebo"
+- Intro reescrita: directa sobre el problema práctico que resuelve el artículo, sin afirmación sobre "principal causa de divorcio a nivel mundial" (sin fuente verificable)
+- H2 "Los 3 Errores Mortales" → "Los 3 errores habituales al gestionar el dinero en pareja"
+- Sección 1: "brutal asimetría" → "asimetría de información"; tono factual
+- Sección 2: "estúpidamente al 50/50" → "a partes iguales al 50/50"
+- Sección 3: "ocultismo económico" mantenido como concepto; redacción más factual
+- Modelos: "Existen rotundamente tres" → eliminado "rotundamente"; "(El Recomendado por Psicólogos de Pareja)" sin fuente eliminado
+- Caso práctico Ana/Luis: mantenido, con "deprimentes 500€" corregido
+- Deudas: sección reestructurada, eliminadas frases dramáticas ("transparencia dolorosa", "exactitud milimétrica", "dinámicas tóxicas del tipo Salvador vs. Rescatado")
+- H2 "Aplicando la magia del Kakebo" → "Aplicando el método Kakebo en pareja"
+- "método organizativo nipón (Kakebo)" → "el método Kakebo"
+- "gran palabra mágica redentora" → "cuarto paso del método Kakebo"
+- "el Kakebo nipón impone pacíficamente" → "el método Kakebo propone"
+- Diálogos: mantenidos (útiles y bien construidos); framing ligeramente ajustado
+- Sección "Kakebo AI": explícitamente nombrada como "app gratuita de MetodoKakebo.com"; terminología canónica correcta (método Kakebo / Kakebo AI / MetodoKakebo.com diferenciados)
+
+---
 
 ### SEO-GEO-SUPPORT-AHORRAR-DINERO-CADA-MES-01 — Optimización SEO/GEO artículo como-ahorrar-dinero-cada-mes
 
