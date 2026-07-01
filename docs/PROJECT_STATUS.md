@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-ALTERNATIVAS-APP-BANCARIAS-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-PELIGROS-APPS-AHORRO-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SUPPORT-PELIGROS-APPS-AHORRO-01 — Optimización SEO/GEO peligros-apps-ahorro-automatico
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/peligros-apps-ahorro-automatico.es.mdx` |
+
+**Cambios principales:**
+- `updatedDate: '2026-07-01'` añadido
+- `excerpt` y FAQ frontmatter actualizados (factual, sin alarmismo)
+- Intro directa: explica los tres aspectos cubiertos sin sensacionalismo
+- H2 renombrados a terminología factual
+- Peligros 1/2/3: eliminadas frases alarmistas, especulativas y términos no establecidos
+- Sección Kakebo AI depersonalizada; terminología canónica correcta
 
 ---
 

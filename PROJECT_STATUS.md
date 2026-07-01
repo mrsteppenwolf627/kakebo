@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-ALTERNATIVAS-APP-BANCARIAS-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-PELIGROS-APPS-AHORRO-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,26 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-SUPPORT-PELIGROS-APPS-AHORRO-01 — Optimización SEO/GEO artículo peligros-apps-ahorro-automatico
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/peligros-apps-ahorro-automatico.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- `updatedDate: '2026-07-01'` añadido
+- `excerpt` actualizado: eliminado "graves riesgos" y "manipulación psicológica"; reemplazado por descripción factual de los tres aspectos cubiertos
+- FAQ frontmatter Q2: "¿Por qué no recomiendan usar apps de ahorro automático?" → "¿Qué limitaciones tienen las apps de ahorro automático?" (elimina el framing de recomendación negativa); respuesta reescrita de forma factual y equilibrada
+- Intro reescrita: explica directamente los tres aspectos que trata el artículo, sin alarmismo
+- H2 renombrados: "El Panóptico Bancario Permanente" → "Privacidad y acceso a datos bancarios"; "La Desconexión Neuronal" → "Automatización y consciencia del gasto"; "El fuego cruzado publicitario" → "Publicidad y ofertas personalizadas"
+- Peligro 1: eliminadas frases como "algo siniestro", "fatídico instante", "devastadoramente personal"; cita especulativa sobre partido político y moteles eliminada; sustituida por descripción factual de qué refleja un historial bancario
+- Peligro 2: eliminado "gravísimo", "dictador robótico", "Ceguera Automática Neuronal" (término no establecido); sustituido por explicación factual del principio de registro activo y el método Kakebo
+- Peligro 3: eliminado "créditos vampíricos", "cobradores de comisiones más efectivos e inquietantes"; sustituido por descripción factual del modelo de negocio de comisiones por referidos
+- Sección Kakebo AI: depersonalizada ("nunca te pediremos" → "Kakebo AI no solicita"); terminología canónica correcta (método Kakebo / Kakebo AI / MetodoKakebo.com diferenciados)
+- Sección "El falso mito": renombrada "El equilibrio entre comodidad y control activo"; eliminadas frases absolutistas ("trampa mortal", "cedes el poder a sistemas diseñados para maximizar su beneficio corporativo", estadística sin fuente); reemplazada por análisis factual de para qué sirve cada enfoque
+
+---
 
 ### SEO-GEO-SUPPORT-ALTERNATIVAS-APP-BANCARIAS-01 — Optimización SEO/GEO artículo alternativas-a-app-bancarias
 
