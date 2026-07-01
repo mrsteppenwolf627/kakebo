@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-LIBRO-KAKEBO-PDF-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-AUTONOMOS-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SUPPORT-KAKEBO-AUTONOMOS-01 — Optimización SEO/GEO metodo-kakebo-para-autonomos
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/metodo-kakebo-para-autonomos.es.mdx` |
+
+**Cambios principales:**
+- `updatedDate: '2026-07-01'`, title, excerpt y FAQ actualizados
+- Terminología: "método japonés" → "método Kakebo", "4 Pilares Nipones" → "Las 4 categorías", "disciplina nipona" → eliminado
+- Lenguaje sensacionalista eliminado: "bipolar", "Error mortal", "sagrados", "apocalíptica avalancha"
+- "Los japoneses inventaron" → "creado por Motoko Hani en 1904"
+- Bug corregido: "urgentes necesidades urgentes"
+- Sección IVA reescrita con tono factual y procedimiento claro
 
 ---
 

@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-LIBRO-KAKEBO-PDF-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-KAKEBO-AUTONOMOS-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,28 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-SUPPORT-KAKEBO-AUTONOMOS-01 — Optimización SEO/GEO artículo metodo-kakebo-para-autonomos
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/metodo-kakebo-para-autonomos.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- `updatedDate: '2026-07-01'` añadido
+- `title` y `excerpt` actualizados: descriptivos y factuales
+- FAQ Q1 y Q2: terminología canónica correcta, sin "de hecho es vital"
+- Intro reescrita: sin primera persona "te enseñaremos a domesticar", directa sobre el problema
+- Sección "El ciclo de gasto": títulos reescritos (sin "Euforia/Pánico"); eliminado "comportamiento financiero bipolar", "asesino de la tranquilidad", lenguaje dramático
+- figcaption: sin "la frontera que separa el éxito del fracaso"
+- Sección estrategia: título sin "a prueba de balas"; "Los japoneses inventaron" → "creado por Motoko Hani en 1904"; eliminado "La Magia", "el milagro", "Error mortal autónomo", "milimétricamente", "1.500€ sagrados", "genuina magia de la disciplina nipona"
+- Tabla: celdas factuales (sin "¡Mes Excelente!", "guardados a fuego", "Sequía total")
+- Post-tabla: eliminado "dramática", "ni para pipas", "funcionario del Estado"
+- Sección IVA: título sin "El monstruo trimestral"; eliminado "terrorífico", "sudores fríos nocturnos", "Retención Quirúrgica Inmediata", "religiosamente", "polvorienta subcuenta", "apocalíptica avalancha contable"; corregido bug "las urgentes necesidades urgentes"
+- Sección categorías: título sin "Nipones"; eliminado "famosas"
+- Sección Kakebo AI: sin cambios significativos; terminología canónica mantenida
+
+---
 
 ### SEO-GEO-SUPPORT-LIBRO-KAKEBO-PDF-01 — Optimización SEO/GEO artículo libro-kakebo-pdf
 
