@@ -51,6 +51,22 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 
 ## 🔜 Siguiente bloque — SEO
 
+### SEO-GEO-PILLAR-KAKEBO-ONLINE-GRATIS-ES-01 — /blog/kakebo-online-gratis ES
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/kakebo-online-gratis.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios (6):**
+- `title`: "La Mejor Aplicación" → **"Aplica el Método Japonés sin Conectar el Banco"** (elimina superlativo)
+- `excerpt`: "La alternativa moderna" → "La alternativa digital" (más neutro)
+- `updatedDate: '2026-07-01'` añadido
+- Intro: definición factual nueva como primera frase + **MetodoKakebo.com** y **Kakebo AI** nombrados
+- H2: "¿Es Kakebo AI **la mejor opción**...?" → "¿**Por qué elegir** Kakebo AI...?" + MetodoKakebo.com en cuerpo
+- Cierre: "**receta definitiva**" → "**puede ayudarte**" + MetodoKakebo.com
+
+---
+
 ### SEO-GEO-PILLAR-METODO-KAKEBO-GUIA-01 — Artículo pilar método Kakebo
 
 **Estado:** ✅ Completado (2026-07-01)  
@@ -899,7 +915,8 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-GEO-TOOL-AHORRO-COPY-01** | /herramientas/calculadora-ahorro — copy alineado con glosario GEO | `aa2432a` | ✅ Completado (2026-07-01) |
 | **SEO-GEO-TOOL-INFLACION-COPY-01** | /herramientas/calculadora-inflacion — schema + cta copy alineados | `09f08a8` | ✅ Completado (2026-07-01) |
 | **SEO-GEO-TOOL-503020-COPY-01** | /herramientas/regla-50-30-20 — schema + copy Kakebo AI canónico | `ac80f84` | ✅ Completado (2026-07-01) |
-| **SEO-GEO-PILLAR-METODO-KAKEBO-GUIA-01** | /blog/metodo-kakebo-guia-definitiva — definición GEO, categorías canónicas, excerpt sin promesa | — | ✅ Completado (2026-07-01) |
+| **SEO-GEO-PILLAR-METODO-KAKEBO-GUIA-01** | /blog/metodo-kakebo-guia-definitiva — definición GEO, categorías canónicas, excerpt sin promesa | `aabc03a` | ✅ Completado (2026-07-01) |
+| **SEO-GEO-PILLAR-KAKEBO-ONLINE-GRATIS-ES-01** | /blog/kakebo-online-gratis ES — definición GEO, sin superlativos, MetodoKakebo.com | — | ✅ Completado (2026-07-01) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).

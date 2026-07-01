@@ -180,6 +180,18 @@ Copies ajustados donde el texto dependía del gesto emoji (openers "Destruye", "
 
 ---
 
+## ✅ SEO-GEO-PILLAR-KAKEBO-ONLINE-GRATIS-ES-01 — /blog/kakebo-online-gratis ES
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/kakebo-online-gratis.es.mdx` |
+| **Build** | ✅ Compiled successfully |
+
+**6 cambios:** title sin superlativo · excerpt neutral · `updatedDate` · definición GEO en intro + MetodoKakebo.com · H2 sin "la mejor opción" + Kakebo AI identificado · cierre sin "receta definitiva" + MetodoKakebo.com
+
+---
+
 ## ✅ SEO-GEO-PILLAR-METODO-KAKEBO-GUIA-01 — Artículo pilar método Kakebo
 
 | Campo | Detalle |
