@@ -1,7 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-06-26 (UI-CARDS-BRAND-ALIGN-01)  
-**Último commit aceptado:** `4781ad0` (UI-CARDS-BRAND-ALIGN-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-KAKEBO-ONLINE-IMAGE-01)  
+**Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
 ---
@@ -50,6 +50,19 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-BLOG-KAKEBO-ONLINE-IMAGE-01 — Imagen portada kakebo-online-gratis
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `public/images/blog/kakebo-online-gratis.png`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- Imagen añadida a `public/images/blog/kakebo-online-gratis.png` (~2 MB)
+- El frontmatter ya declaraba `image: '/images/blog/kakebo-online-gratis.png'` — sin cambios en MDX
+- Activa: OG image, Twitter card, JSON-LD BlogPosting image, y portada `<Image>` en el artículo
+
+---
 
 ### SEO-GEO-PILLAR-KAKEBO-ONLINE-GRATIS-ES-01 — /blog/kakebo-online-gratis ES
 
