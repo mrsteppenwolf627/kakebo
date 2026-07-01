@@ -1,6 +1,6 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-KAKEBO-VS-YNAB-IMAGE-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-BLOG-AHORRO-PAREJA-IMAGE-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
 
@@ -50,6 +50,18 @@ El capítulo frontend público/indexable queda cerrado. No se harán más cambio
 ---
 
 ## 🔜 Siguiente bloque — SEO
+
+### SEO-GEO-BLOG-AHORRO-PAREJA-IMAGE-01 — Imagen portada ahorro-pareja
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `public/images/blog/ahorro-pareja.png`  
+**Build:** ✅ Compiled successfully
+
+**Cambios (1):**
+- Imagen añadida a `public/images/blog/ahorro-pareja.png` (~2.4 MB)
+- MDX no modificado: el frontmatter ya declaraba `image: '/images/blog/ahorro-pareja.png'` correctamente
+
+---
 
 ### SEO-GEO-BLOG-KAKEBO-VS-YNAB-IMAGE-01 — Imagen portada kakebo-vs-ynab
 
