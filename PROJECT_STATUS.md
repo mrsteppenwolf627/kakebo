@@ -1,8 +1,38 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-02 (SEO-URL-CANONICAL-ES-01)  
+**Última actualización:** 2026-07-02 (SEO-BLOG-INFLACION-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-BLOG-INFLACION-01 — Optimiza snippet calculadora de inflación
+
+**Estado:** ✅ Completado (2026-07-02)
+
+**Hallazgo GSC usado:** `/es/herramientas/calculadora-inflacion` — 300 imp / pos 8.94 / CTR 0.33% (snapshot 2026-03-29 → 2026-06-28)
+
+**Archivo modificado:** `messages/es.json` — namespace `Tools.Inflation.meta`
+
+| Campo | Antes | Después |
+|---|---|---|
+| `title` | `Calculadora de Inflación e IPC 2026 \| ¿Cuánto pierde tu dinero?` | `Calculadora de Inflación e IPC \| Pérdida de Poder Adquisitivo` |
+| `description` | `Calcula cuánto pierde tu dinero con la inflación en España. Introduce tus ahorros, IPC y años. Resultado inmediato y gratis, sin registro.` | `Calcula cuánto ha perdido valor tu dinero con la inflación acumulada. Introduce importe, IPC y años: resultado inmediato. Gratis y sin registro.` |
+| `ogTitle` | `Calculadora de Inflación e IPC 2026 \| Kakebo` | `Calculadora de Inflación e IPC \| Pérdida de Poder Adquisitivo` |
+| `ogDescription` | `Descubre cuánto dinero pierdes por el IPC acumulado. Herramienta de cálculo de inflación para proteger tus ahorros.` | `Descubre cuánto ha perdido valor tu dinero por el IPC acumulado. Calcula la pérdida de poder adquisitivo real. Herramienta gratuita de MetodoKakebo.com.` |
+
+**Justificación de cambios:**
+- Eliminado `2026` del title: evita envejecimiento sin actualización anual
+- `Pérdida de Poder Adquisitivo` sustituye a `¿Cuánto pierde tu dinero?`: captura mejor la intención de búsqueda financiera específica
+- Eliminado `en España` de la description: la herramienta acepta cualquier IPC, no solo español
+- Sustituido `tus ahorros` por `importe`: la herramienta sirve para cualquier cantidad monetaria
+- Añadido `inflación acumulada` en description: captura queries de cola larga
+- Añadido `MetodoKakebo.com` en ogDescription: señal de entidad para motores generativos
+- Lógica de cálculo: no tocada
+- `/blog/plantilla-kakebo-excel`: no tocado
+- `.claude/settings.local.json`: no tocado
+
+**Validación:** `npm run build` limpio · diff solo en `messages/es.json`
 
 ---
 

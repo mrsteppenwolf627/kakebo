@@ -154,10 +154,10 @@
         },
         "Inflation": {
             "meta": {
-                "title": "Calculadora de Inflación e IPC 2026 | ¿Cuánto pierde tu dinero?",
-                "description": "Calcula cuánto pierde tu dinero con la inflación en España. Introduce tus ahorros, IPC y años. Resultado inmediato y gratis, sin registro.",
-                "ogTitle": "Calculadora de Inflación e IPC 2026 | Kakebo",
-                "ogDescription": "Descubre cuánto dinero pierdes por el IPC acumulado. Herramienta de cálculo de inflación para proteger tus ahorros."
+                "title": "Calculadora de Inflación e IPC | Pérdida de Poder Adquisitivo",
+                "description": "Calcula cuánto ha perdido valor tu dinero con la inflación acumulada. Introduce importe, IPC y años: resultado inmediato. Gratis y sin registro.",
+                "ogTitle": "Calculadora de Inflación e IPC | Pérdida de Poder Adquisitivo",
+                "ogDescription": "Descubre cuánto ha perdido valor tu dinero por el IPC acumulado. Calcula la pérdida de poder adquisitivo real. Herramienta gratuita de MetodoKakebo.com."
             },
             "header": {
                 "title": "Calculadora de <italic>Inflación e IPC</italic> en España",

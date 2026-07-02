@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-02 (SEO-URL-CANONICAL-ES-01)  
+**Última actualización:** 2026-07-02 (SEO-BLOG-INFLACION-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,21 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-BLOG-INFLACION-01 — Optimiza snippet calculadora de inflación
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-02 |
+| **Archivo** | `messages/es.json` — namespace `Tools.Inflation.meta` |
+| **GSC base** | 300 imp / pos 8.94 / CTR 0.33% (snapshot 2026-03-29 → 2026-06-28) |
+
+**Title:** `Calculadora de Inflación e IPC 2026 | ¿Cuánto pierde tu dinero?` → `Calculadora de Inflación e IPC | Pérdida de Poder Adquisitivo`  
+**Description:** Eliminado "en España" y "tus ahorros"; añadido "inflación acumulada" y "importe".  
+**ogDescription:** Añadido `MetodoKakebo.com` como señal de entidad.  
+**Build:** Limpio. Lógica de cálculo no tocada.
 
 ---
 
