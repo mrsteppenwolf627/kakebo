@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-02 (SEO-GEO-CALCULADORA-AHORRO-SCHEMA-TERMINOLOGY-01)  
+**Última actualización:** 2026-07-02 (SEO-GEO-SAVINGS-CONTENT-FIX-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,19 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SAVINGS-CONTENT-FIX-01 — Corrección explicación ahorro/Kakebo en SavingsCalculator
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-02 |
+| **Tarea** | `SEO-GEO-SAVINGS-CONTENT-FIX-01` |
+| **Archivo** | `messages/es.json` (clave `Tools.Savings.content.whyText1`) |
+| **Build** | ✅ Compiled successfully |
+
+**Cambio:** Eliminado "ahorro (Extra)" — asociación incorrecta del objetivo de ahorro con la categoría Kakebo "Extras". Corregido "Ocio + Cultura" → "Ocio/Vicio y Cultura". El ahorro se describe ahora como objetivo mensual, separado de las categorías de gasto.
 
 ---
 

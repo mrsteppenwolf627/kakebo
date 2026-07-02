@@ -1,8 +1,32 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-02 (SEO-GEO-CALCULADORA-AHORRO-SCHEMA-TERMINOLOGY-01)  
+**Última actualización:** 2026-07-02 (SEO-GEO-SAVINGS-CONTENT-FIX-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-GEO-SAVINGS-CONTENT-FIX-01 — Corrección explicación ahorro/Kakebo en SavingsCalculator
+
+**Estado:** ✅ Completado (2026-07-02)  
+**Build:** ✅ Compiled successfully  
+
+**Objetivo:** Eliminar la asociación incorrecta "ahorro (Extra)" en el texto explicativo de la calculadora de ahorro y usar terminología canónica.
+
+**Clave modificada en `messages/es.json`:**
+
+`Tools.Savings.content.whyText1`
+
+**Texto anterior:**  
+"…el 30% a deseos (Ocio + Cultura) y el 20% a ahorro (Extra)."
+
+**Texto nuevo:**  
+"…el 30% a gastos no esenciales (Ocio/Vicio y Cultura) y fijar el 20% restante como objetivo de ahorro mensual, separado de las categorías de gasto del método Kakebo."
+
+**Errores corregidos:**
+- "ahorro (Extra)" → eliminado: "Extras" en Kakebo son gastos imprevistos, no el objetivo de ahorro
+- "Ocio + Cultura" → "Ocio/Vicio y Cultura" (terminología canónica)
+- El ahorro pasa a describirse como objetivo del presupuesto, no como categoría de gasto
 
 ---
 
