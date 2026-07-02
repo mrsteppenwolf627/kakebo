@@ -1,8 +1,32 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-SUELDO-MINIMO-01)  
+**Última actualización:** 2026-07-01 (SEO-TECHNICAL-SITEMAP-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECHNICAL-SITEMAP-01 — Ajuste sitemap: herramientas y login
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/app/sitemap.ts`  
+**Build:** ✅ Compiled successfully
+
+**Auditoría:**
+- `/herramientas/calculadora-ahorro` — ✅ ya presente (prioridad 0.9)
+- `/herramientas/calculadora-inflacion` — ✅ ya presente (prioridad 0.9)
+- `/herramientas/regla-50-30-20` — ✅ ya presente (prioridad 0.9)
+- `/login` — prioridad 0.8 → **0.1**; changeFrequency `monthly` → `yearly`
+
+**Cambios realizados:**
+- `/login`: prioridad 0.8 → 0.1; changeFrequency `monthly` → `yearly`
+
+**No modificado (ya correcto):**
+- Las tres herramientas públicas ya estaban incluidas con prioridad 0.9
+- Blog posts usan `updatedDate ?? date` para `lastModified` (patrón correcto, ya implementado en SEO-TECHNICAL-DATEMODIFIED-01)
+- Home con prioridad 1.0 — correcto
+
+**Nota técnica:** Las páginas estáticas (core routes) usan `lastModified: new Date()` que marca siempre la fecha actual. Es el patrón existente del repo y no fue modificado en esta tarea.
 
 ---
 

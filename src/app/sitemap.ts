@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/herramientas/regla-50-30-20', priority: 0.9, changeFrequency: 'weekly' as const },
         { path: '/herramientas/calculadora-inflacion', priority: 0.9, changeFrequency: 'weekly' as const },
         { path: '/herramientas/calculadora-ahorro', priority: 0.9, changeFrequency: 'weekly' as const },
-        { path: '/login', priority: 0.8, changeFrequency: 'monthly' as const },
+        { path: '/login', priority: 0.1, changeFrequency: 'yearly' as const },
         { path: '/privacy', priority: 0.5, changeFrequency: 'yearly' as const },
         { path: '/terms', priority: 0.5, changeFrequency: 'yearly' as const },
         { path: '/cookies', priority: 0.5, changeFrequency: 'yearly' as const },

@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-SUELDO-MINIMO-01)  
+**Última actualización:** 2026-07-01 (SEO-TECHNICAL-SITEMAP-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-TECHNICAL-SITEMAP-01 — Ajuste sitemap: herramientas y login
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/app/sitemap.ts` |
+
+**Auditoría de URLs:**
+- `/herramientas/calculadora-ahorro` ✅ ya presente (prioridad 0.9)
+- `/herramientas/calculadora-inflacion` ✅ ya presente (prioridad 0.9)
+- `/herramientas/regla-50-30-20` ✅ ya presente (prioridad 0.9)
+- `/login` → prioridad 0.8 → **0.1**; changeFrequency `monthly` → `yearly`
+
+**Cambio único:** `/login` priority 0.8 → 0.1, changeFrequency monthly → yearly
 
 ---
 
