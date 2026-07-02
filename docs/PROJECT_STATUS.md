@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-02 (SEO-GEO-TUTORIAL-TERMINOLOGY-FIX-01)  
+**Última actualización:** 2026-07-02 (SEO-GEO-CALCULADORA-AHORRO-SCHEMA-TERMINOLOGY-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,21 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-CALCULADORA-AHORRO-SCHEMA-TERMINOLOGY-01 — Auditoría schema/FAQ calculadora-ahorro
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-02 |
+| **Tarea** | `SEO-GEO-CALCULADORA-AHORRO-SCHEMA-TERMINOLOGY-01` |
+| **Resultado** | Auditoría — sin cambios necesarios |
+| **Target** | `src/app/[locale]/(public)/herramientas/calculadora-ahorro/page.tsx` |
+
+**Hallazgo:** El `FAQ_SCHEMA` de `calculadora-ahorro/page.tsx` ya usa "Ocio/Vicio" y "Extras" correctamente. No hubo deuda en el scope objetivo.
+
+**Pendiente (futura tarea):** `Tools.Savings.content.whyText1` usa "(Extra)" para el 20% de ahorro — confusión conceptual y forma no canónica; requiere reescritura controlada de ese párrafo explicativo en la página de calculadora-ahorro.
 
 ---
 

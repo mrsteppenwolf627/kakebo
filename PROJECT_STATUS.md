@@ -1,8 +1,32 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-02 (SEO-GEO-TUTORIAL-TERMINOLOGY-FIX-01)  
+**Última actualización:** 2026-07-02 (SEO-GEO-CALCULADORA-AHORRO-SCHEMA-TERMINOLOGY-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-GEO-CALCULADORA-AHORRO-SCHEMA-TERMINOLOGY-01 — Auditoría schema/FAQ calculadora-ahorro
+
+**Estado:** ✅ Auditado — sin cambios necesarios (2026-07-02)  
+**Build:** sin cambios en código  
+
+**Objetivo:** Verificar y corregir terminología no canónica en el FAQ_SCHEMA y JSON-LD de `calculadora-ahorro/page.tsx`.
+
+**Resultado de la auditoría:**
+
+El `FAQ_SCHEMA` y el contenido visible del schema en `calculadora-ahorro/page.tsx` **ya usan terminología canónica correcta**:
+- FAQ pregunta 2 (`¿Cuáles son las 4 categorías del Kakebo?`): "Supervivencia", "**Ocio/Vicio**", "Cultura", "**Extras**" ✅
+- Párrafos visibles (líneas 106, 121): "Supervivencia, Ocio/Vicio, Cultura y Extras" ✅
+- `SCHEMA` (SoftwareApplication): sin nombres de categorías — sin problema ✅
+
+**Hallazgos fuera del alcance de esta tarea (para futura tarea):**
+- `Tools.Savings.content.whyText1` (línea 277): "(Extra)" usado para el 20% de ahorro en contexto 50/30/20 — confusión conceptual (Extra en Kakebo es para imprevistos, no ahorro) + forma no canónica; requiere reescritura de ese párrafo explicativo.
+- `Tools.Savings.content.whyText2` (línea 278): `'Ocio'` en pregunta retórica — shorthand aceptable según glosario si el contexto ya establecido.
+- Dashboard app (líneas 645-649, 985-988, 1043-1046): `"opcional": "Opcional"` y `"extra": "Extra"` — son etiquetas internas del /app/ que mapean claves de base de datos; fuera de alcance.
+- `Tools.Rule503020.legend.wants.label` (línea 310): "30% Deseos (Opcional)" — herramienta diferente, contexto 50/30/20 no Kakebo.
+
+**Archivos NO modificados:** ninguno (auditoría confirmó estado correcto del target).
 
 ---
 
