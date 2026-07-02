@@ -1,8 +1,27 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-02 (SEO-TECHNICAL-LEGAL-PAGES-01)  
+**Última actualización:** 2026-07-02 (HOTFIX-BLOG-ARTICLE-ERROR-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## HOTFIX-BLOG-ARTICLE-ERROR-01 — Corrige error "Algo salió mal" en artículos blog
+
+**Estado:** ✅ Completado (2026-07-02)  
+**Build:** ✅ Compiled successfully  
+
+**Causa raíz:** El commit 800bd32 (SEO-GA4-EVENTS-01) añadió `"use client"` a `MDXComponents.tsx`. Esto convirtió todo el módulo en un client boundary. Cuando `BlogPostPage` (RSC) pasa el objeto `components` exportado desde ese módulo a `MDXRemote` de `next-mdx-remote/rsc` (también RSC), Next.js App Router lanza un error de serialización que el error boundary `[locale]/error.tsx` captura mostrando "Algo salió mal" en todos los artículos.
+
+**Fix aplicado:**
+- Eliminado `"use client"` e `import { analytics }` de `MDXComponents.tsx`
+- Creado `src/components/mdx/MDXClientCTAs.tsx` con `"use client"` que contiene solo los 4 CTAs con tracking (ToolCTA, SimpleCTA, DownloadCTA, ArticleCTA)
+- `MDXComponents.tsx` importa los CTAs desde `MDXClientCTAs.tsx` — patrón correcto de Next.js App Router
+- Todos los eventos GA4 conservados sin cambios
+
+**Archivos modificados:**
+- `src/components/mdx/MDXComponents.tsx` — removido "use client" y CTAs inline
+- `src/components/mdx/MDXClientCTAs.tsx` — nuevo archivo cliente con los 4 CTAs + analytics
 
 ---
 

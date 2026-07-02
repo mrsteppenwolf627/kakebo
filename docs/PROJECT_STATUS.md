@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-02 (SEO-TECHNICAL-LEGAL-PAGES-01)  
+**Última actualización:** 2026-07-02 (HOTFIX-BLOG-ARTICLE-ERROR-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,19 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ HOTFIX-BLOG-ARTICLE-ERROR-01 — Corrige error "Algo salió mal" en artículos blog
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-02 |
+| **Tarea** | `HOTFIX-BLOG-ARTICLE-ERROR-01` |
+| **Build** | ✅ Compiled successfully |
+
+**Causa raíz:** `"use client"` en `MDXComponents.tsx` (commit 800bd32) creó un client boundary cuyo export `components` pasado a `MDXRemote` (RSC) provoca error de serialización en Next.js App Router.  
+**Fix:** Extraídos los 4 CTAs con analytics a `MDXClientCTAs.tsx` (`"use client"`). `MDXComponents.tsx` los importa sin ser client component. GA4 intacto.
 
 ---
 
