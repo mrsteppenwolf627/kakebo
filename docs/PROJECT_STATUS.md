@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-ELIMINAR-GASTOS-HORMIGA-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-SUELDO-MINIMO-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,29 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SUPPORT-SUELDO-MINIMO-01 — Optimización SEO/GEO artículo kakebo-sueldo-minimo
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/content/blog/kakebo-sueldo-minimo.es.mdx` |
+
+**Cambios principales:**
+- `updatedDate: '2026-07-01'`, `description` añadidos al frontmatter
+- `title`: actualizado con terminología canónica, sin claims absolutos
+- `excerpt`: "el Método Kakebo es perfecto" eliminado → descripción factual
+- FAQ: "Ocio y Vicio" → "Ocio/Vicio"; "linterna financiera", "Rotundamente sí", "Extra" (singular) corregidos
+- Intro: "gurús financieros americanos", "jubilarse joven en Bali" eliminados → explicación directa
+- H2s dramáticos reescritos con títulos factuales
+- Estadística sin fuente ("el 99% de las metodologías") eliminada
+- Tabla: categorías separadas correctamente (Cultura 5% + Extras 5%); "Ocio/Vicio" canónico
+- ToolCTA: emoji "📥" eliminado
+- Lenguaje condescendiente con ingresos bajos eliminado ("miserables", "tristes")
+- "terapéutico", "red neuronal", "armazón invencible" eliminados
+- `Ocio y Vicio` → `Ocio/Vicio` en todo el artículo
 
 ---
 

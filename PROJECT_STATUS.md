@@ -1,8 +1,41 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-ELIMINAR-GASTOS-HORMIGA-01)  
+**Última actualización:** 2026-07-01 (SEO-GEO-SUPPORT-SUELDO-MINIMO-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-GEO-SUPPORT-SUELDO-MINIMO-01 — Optimización SEO/GEO artículo kakebo-sueldo-minimo
+
+**Estado:** ✅ Completado (2026-07-01)  
+**Archivo:** `src/content/blog/kakebo-sueldo-minimo.es.mdx`  
+**Build:** ✅ Compiled successfully
+
+**Cambios:**
+- `updatedDate: '2026-07-01'` añadido
+- `description` añadido
+- `title`: actualizado a "Cómo ahorrar con el salario mínimo: método Kakebo para ingresos ajustados"
+- `excerpt`: "el Método Kakebo es perfecto" → descripción factual; "parece imposible" eliminado
+- FAQ Q2: "bueno" → "útil"; "no te juzga" → explicación factual; "Ocio y Vicio" → "Ocio/Vicio"; "tu poco dinero" eliminado
+- FAQ Q4: "Rotundamente sí" eliminado; "linterna financiera" eliminado; "Vicio" → "Ocio/Vicio"; "Extra" → "Extras"
+- Intro: "gurús financieros americanos", "jubilarse joven en Bali", "nadie se digna a responder" eliminados → explicación directa
+- H2: "El gravísimo error occidental" → "Por qué el porcentaje importa más que la cantidad"
+- H2: "La salvación Kakebo: Santificar primero tu Hábito. Importar un rábano tu cuota." → "El enfoque del método Kakebo con ingresos ajustados"
+- "el 99% de las metodologías americanas" (estadística sin fuente) eliminado
+- "letal sentimiento", "precipicio económico familiar" eliminados
+- "El as bajo la manga de la mentalidad nipona" eliminado
+- "saldo bajo la sombra del reflejo de tu cuenta del BBVA" (marca concreta) eliminado
+- Tabla: "Ocio y Vicio" → "Ocio/Vicio"; "Cultura / Extras" (combinados) → filas separadas Cultura 5% + Extras 5%
+- ToolCTA: emoji "📥" eliminado del título
+- "drásticamente" eliminado
+- H2: "Adaptación Extrema: El Kakebo para Estudiantes con Beca o Precariedad" → "Adaptación para estudiantes y situaciones de mayor precariedad"
+- "sorprendentemente efectivo, y hasta terapéutico" (lenguaje médico) eliminado
+- "miserables euros", "tristes 300€", "burla para un adulto de 40 años" (condescendiente) eliminados
+- "compleja red neuronal", "armazón invencible", "cimentando el muro de carga" (pseudociencia/metáforas extremas) eliminados
+- `Ocio y Vicio` → `Ocio/Vicio` en todo el artículo
+- Figcaption: texto poético → descripción factual del método
+- Alt text de imagen: mejorado para SEO y accesibilidad
 
 ---
 
