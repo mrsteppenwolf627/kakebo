@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-02 (SEO-SCHEMA-BLOG-INDEX-01)  
+**Última actualización:** 2026-07-02 (SEO-TECHNICAL-LEGAL-PAGES-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,19 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-TECHNICAL-LEGAL-PAGES-01 — Canonical, hreflang y sitemap en páginas legales
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-02 |
+| **Tarea** | `SEO-TECHNICAL-LEGAL-PAGES-01` |
+| **Páginas auditadas** | `/privacy`, `/terms`, `/cookies` |
+| **Build** | ✅ Compiled successfully |
+
+**Cambios:** Canonical + hreflang (es/en/x-default) añadidos a las 3 páginas. Prioridad sitemap 0.5→0.1. No se aplicó noindex — páginas permanecen indexables.
 
 ---
 

@@ -9,6 +9,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: t("title"),
         description: t("description"),
+        alternates: {
+            canonical: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/privacy`,
+            languages: {
+                "es": "https://www.metodokakebo.com/privacy",
+                "en": "https://www.metodokakebo.com/en/privacy",
+                "x-default": "https://www.metodokakebo.com/privacy"
+            }
+        },
     };
 }
 

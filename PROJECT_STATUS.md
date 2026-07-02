@@ -1,8 +1,30 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-02 (SEO-SCHEMA-BLOG-INDEX-01)  
+**Última actualización:** 2026-07-02 (SEO-TECHNICAL-LEGAL-PAGES-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECHNICAL-LEGAL-PAGES-01 — Canonical, hreflang y sitemap en páginas legales
+
+**Estado:** ✅ Completado (2026-07-02)  
+**Build:** ✅ Compiled successfully  
+
+**Objetivo:** Añadir canonical/hreflang explícitos y corregir prioridad en sitemap para `/privacy`, `/terms`, `/cookies`.
+
+**Auditoría previa:**
+- Canonical: ❌ Ausente en las 3 páginas → ✅ Añadido
+- Hreflang: ❌ Ausente → ✅ Añadido (es, en, x-default)
+- Sitemap prioridad: ❌ 0.5 → ✅ Reducida a 0.1 (igual que /login)
+- noindex: no aplicado — páginas permanecen indexables para confianza/legalidad
+- robots.ts: sin cambios necesarios
+
+**Archivos modificados:**
+- `src/app/[locale]/privacy/page.tsx` — canonical + hreflang
+- `src/app/[locale]/terms/page.tsx` — canonical + hreflang
+- `src/app/[locale]/cookies/page.tsx` — canonical + hreflang
+- `src/app/sitemap.ts` — prioridad 0.5 → 0.1
 
 ---
 
