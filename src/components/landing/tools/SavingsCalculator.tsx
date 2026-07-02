@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { EmbedModal } from "./EmbedModal";
+import { analytics } from "@/lib/analytics";
 
 export function SavingsCalculator() {
     const t = useTranslations("Tools.Savings");
@@ -11,6 +12,11 @@ export function SavingsCalculator() {
     const [isEmbedOpen, setIsEmbedOpen] = useState(false);
     const [income, setIncome] = useState<number>(1500);
     const [fixedExpenses, setFixedExpenses] = useState<number>(600);
+    const hasTrackedUse = useRef(false);
+
+    useEffect(() => {
+        analytics.track("tool_viewed", { tool_name: "calculadora_ahorro" });
+    }, []);
 
     const idealSurvival = income * 0.5;
     const idealWants = income * 0.3;
@@ -21,6 +27,13 @@ export function SavingsCalculator() {
         culture: idealWants * 0.34,
         extra: 0,
         savingPotential: idealSavings,
+    };
+
+    const trackFirstUse = () => {
+        if (!hasTrackedUse.current) {
+            hasTrackedUse.current = true;
+            analytics.track("use_savings_calculator", { tool_name: "calculadora_ahorro" });
+        }
     };
 
     const formatCurrency = (amount: number) => {
@@ -60,7 +73,7 @@ export function SavingsCalculator() {
                                         <input
                                             type="number"
                                             value={income}
-                                            onChange={(e) => setIncome(Number(e.target.value))}
+                                            onChange={(e) => { setIncome(Number(e.target.value)); trackFirstUse(); }}
                                             className="w-full rounded-md border border-input bg-background pl-8 py-2 text-foreground focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                                         />
                                     </div>
@@ -76,7 +89,7 @@ export function SavingsCalculator() {
                                         <input
                                             type="number"
                                             value={fixedExpenses}
-                                            onChange={(e) => setFixedExpenses(Number(e.target.value))}
+                                            onChange={(e) => { setFixedExpenses(Number(e.target.value)); trackFirstUse(); }}
                                             className="w-full rounded-md border border-input bg-background pl-8 py-2 text-foreground focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                                         />
                                     </div>
@@ -163,6 +176,7 @@ export function SavingsCalculator() {
                                 </p>
                                 <Link
                                     href="/login?mode=signup"
+                                    onClick={() => analytics.track("click_tool_to_app", { tool_name: "calculadora_ahorro", cta_location: "calculator_results" })}
                                     className="block w-full rounded-lg bg-white py-3 text-center text-sm font-bold text-stone-900 hover:bg-stone-100 transition-colors"
                                 >
                                     {t('results.ctaButton')}

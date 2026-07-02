@@ -1,7 +1,19 @@
+declare global {
+    interface Window {
+        gtag?: (...args: unknown[]) => void;
+    }
+}
+
 type EventName =
     | "tool_viewed"
     | "tool_interaction"
-    | "signup_click";
+    | "signup_click"
+    | "download_template"
+    | "click_cta_login"
+    | "click_tool_to_app"
+    | "use_savings_calculator"
+    | "use_inflation_calculator"
+    | "use_503020_calculator";
 
 type EventProperties = Record<string, string | number | boolean>;
 
@@ -21,16 +33,12 @@ class Analytics {
     }
 
     public track(name: EventName, properties: EventProperties = {}) {
-        // 1. Log to Console in Development
         if (this.isDev) {
             console.log(`[Analytics] ${name}`, properties);
         }
-
-        // 2. Future: Send to Supabase 'events' table
-        // await supabase.from('events').insert({ name, properties, user_id: ... })
-
-        // 3. Future: Send to Google Analytics / Plausible
-        // if (window.gtag) window.gtag('event', name, properties);
+        if (typeof window !== "undefined" && typeof window.gtag === "function") {
+            window.gtag("event", name, properties);
+        }
     }
 }
 

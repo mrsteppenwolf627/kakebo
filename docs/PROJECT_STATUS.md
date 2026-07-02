@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-TECHNICAL-TUTORIAL-01)  
+**Última actualización:** 2026-07-02 (SEO-GA4-EVENTS-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,27 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GA4-EVENTS-01 — Eventos GA4 para conversiones SEO
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-02 |
+| **Tarea** | `SEO-GA4-EVENTS-01` |
+| **Build** | ✅ Compiled successfully |
+| **Archivos** | `analytics.ts`, `SavingsCalculator.tsx`, `CalculatorInflation.tsx`, `Calculator503020.tsx`, `MDXComponents.tsx` |
+
+**Eventos GA4 activados:**
+- `tool_viewed` — montaje de cada calculadora
+- `use_savings_calculator` / `use_inflation_calculator` / `use_503020_calculator` — primera interacción con inputs (ref guard, no se repite)
+- `click_tool_to_app` — CTA de herramientas hacia /login
+- `click_cta_login` — SimpleCTA, ArticleCTA, ToolCTA→login en artículos de blog
+- `download_template` — DownloadCTA en artículos
+- `tool_interaction` — cross-sell desde CalculatorInflation
+
+**Privacidad:** Sin datos personales. Solo pathname, nombre de herramienta, texto del CTA, ubicación. Fallo silencioso si gtag no está disponible.
 
 ---
 

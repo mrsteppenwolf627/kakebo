@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "@/i18n/routing";
 import {
     AreaChart,
@@ -22,10 +22,18 @@ export function CalculatorInflation() {
     const [savings, setSavings] = useState(10000);
     const [inflationRate, setInflationRate] = useState(3);
     const [years, setYears] = useState(10);
+    const hasTrackedUse = useRef(false);
 
     useEffect(() => {
-        analytics.track("tool_viewed", { tool: "inflation_calculator" });
+        analytics.track("tool_viewed", { tool_name: "calculadora_inflacion" });
     }, []);
+
+    const trackFirstUse = () => {
+        if (!hasTrackedUse.current) {
+            hasTrackedUse.current = true;
+            analytics.track("use_inflation_calculator", { tool_name: "calculadora_inflacion" });
+        }
+    };
 
     // Generate data for the chart
     const data = Array.from({ length: years + 1 }, (_, i) => {
@@ -85,7 +93,7 @@ export function CalculatorInflation() {
                                     min="0"
                                     step="1000"
                                     value={savings}
-                                    onChange={(e) => setSavings(Number(e.target.value))}
+                                    onChange={(e) => { setSavings(Number(e.target.value)); trackFirstUse(); }}
                                     className="w-full text-3xl font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-foreground"
                                 />
                                 <span className="absolute right-0 top-3 text-muted-foreground font-serif">€</span>
@@ -104,7 +112,7 @@ export function CalculatorInflation() {
                                     max="50"
                                     step="0.1"
                                     value={inflationRate}
-                                    onChange={(e) => setInflationRate(Number(e.target.value))}
+                                    onChange={(e) => { setInflationRate(Number(e.target.value)); trackFirstUse(); }}
                                     className="w-full text-3xl font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-red-500 dark:text-red-400"
                                 />
                                 <span className="absolute right-0 top-3 text-muted-foreground font-serif">%</span>
@@ -129,7 +137,7 @@ export function CalculatorInflation() {
                                     max="40"
                                     step="1"
                                     value={years}
-                                    onChange={(e) => setYears(Number(e.target.value))}
+                                    onChange={(e) => { setYears(Number(e.target.value)); trackFirstUse(); }}
                                     className="w-full h-2 bg-stone-100 dark:bg-stone-800 rounded-lg appearance-none cursor-pointer accent-stone-900 dark:accent-stone-100"
                                 />
                             </div>
@@ -255,14 +263,14 @@ export function CalculatorInflation() {
                             <div className="flex flex-col sm:flex-row gap-6 justify-center">
                                 <Link
                                     href="/login?source=calculator_inflation"
-                                    onClick={() => analytics.track("signup_click", { source: "calculator_inflation", type: "primary" })}
+                                    onClick={() => analytics.track("click_tool_to_app", { tool_name: "calculadora_inflacion", cta_location: "calculator_cta" })}
                                     className="inline-block bg-white text-stone-900 px-10 py-4 rounded-full font-bold hover:bg-stone-100 dark:hover:bg-stone-200 transition-all hover:scale-105"
                                 >
                                     {t('cta.buttonPrimary')}
                                 </Link>
                                 <Link
                                     href="/herramientas/regla-50-30-20"
-                                    onClick={() => analytics.track("tool_interaction", { tool: "inflation_calculator", action: "cross_sell" })}
+                                    onClick={() => analytics.track("tool_interaction", { tool_name: "calculadora_inflacion", action: "cross_sell" })}
                                     className="inline-block border border-stone-700 text-stone-300 px-10 py-4 rounded-full font-bold hover:bg-stone-800 transition-all"
                                 >
                                     {t('cta.buttonSecondary')}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "@/i18n/routing";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
@@ -13,10 +13,18 @@ export function Calculator503020() {
     const tCommon = useTranslations("Tools.Common.embed");
     const [isEmbedOpen, setIsEmbedOpen] = useState(false);
     const [income, setIncome] = useState(2000);
+    const hasTrackedUse = useRef(false);
 
     useEffect(() => {
-        analytics.track("tool_viewed", { tool: "503020_calculator" });
+        analytics.track("tool_viewed", { tool_name: "regla_50_30_20" });
     }, []);
+
+    const trackFirstUse = () => {
+        if (!hasTrackedUse.current) {
+            hasTrackedUse.current = true;
+            analytics.track("use_503020_calculator", { tool_name: "regla_50_30_20" });
+        }
+    };
 
     const needs = income * 0.5;
     const wants = income * 0.3;
@@ -66,7 +74,7 @@ export function Calculator503020() {
                             max="10000"
                             step="50"
                             value={income}
-                            onChange={(e) => setIncome(Number(e.target.value))}
+                            onChange={(e) => { setIncome(Number(e.target.value)); trackFirstUse(); }}
                             className="w-full h-2 bg-stone-200 dark:bg-stone-700/80 rounded-lg appearance-none cursor-pointer accent-stone-900 dark:accent-stone-100"
                             aria-label="Selector de ingresos mensuales netos"
                         />
@@ -159,7 +167,7 @@ export function Calculator503020() {
                     </p>
                     <Link
                         href="/login?source=calculator_503020"
-                        onClick={() => analytics.track("signup_click", { source: "calculator_503020", type: "primary" })}
+                        onClick={() => analytics.track("click_tool_to_app", { tool_name: "regla_50_30_20", cta_location: "calculator_cta" })}
                         className="inline-block bg-white text-stone-900 px-8 py-3 rounded-full font-medium hover:bg-stone-100 dark:hover:bg-stone-200 transition-colors"
                     >
                         {t('cta.button')}

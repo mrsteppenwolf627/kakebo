@@ -1,8 +1,46 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-TECHNICAL-TUTORIAL-01)  
+**Última actualización:** 2026-07-02 (SEO-GA4-EVENTS-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-GA4-EVENTS-01 — Eventos GA4 para conversiones SEO
+
+**Estado:** ✅ Completado (2026-07-02)  
+**Build:** ✅ Compiled successfully
+
+**Objetivo:** Implementar eventos GA4 para medir conversiones SEO reales sin tocar diseño, copy, rutas ni SEO técnico.
+
+**Eventos implementados:**
+
+| Evento GA4 | Trigger | Archivos | Parámetros |
+|---|---|---|---|
+| `tool_viewed` | Montaje de cada calculadora | `SavingsCalculator.tsx`, `CalculatorInflation.tsx`, `Calculator503020.tsx` | `tool_name` |
+| `use_savings_calculator` | Primera interacción con inputs de `SavingsCalculator` | `SavingsCalculator.tsx` | `tool_name: calculadora_ahorro` |
+| `use_inflation_calculator` | Primera interacción con inputs de `CalculatorInflation` | `CalculatorInflation.tsx` | `tool_name: calculadora_inflacion` |
+| `use_503020_calculator` | Primera interacción con slider de `Calculator503020` | `Calculator503020.tsx` | `tool_name: regla_50_30_20` |
+| `click_tool_to_app` | Clic en CTA de herramientas hacia /login | `SavingsCalculator.tsx`, `CalculatorInflation.tsx`, `Calculator503020.tsx` | `tool_name`, `cta_location` |
+| `click_cta_login` | Clic en SimpleCTA, ArticleCTA, ToolCTA (→login) en artículos | `MDXComponents.tsx` | `source_page`, `cta_label`, `cta_location` |
+| `download_template` | Clic en DownloadCTA en artículos | `MDXComponents.tsx` | `template_type: excel`, `source_page`, `location` |
+| `tool_interaction` | Clic en cross-sell desde CalculatorInflation | `CalculatorInflation.tsx` | `tool_name`, `action: cross_sell` |
+
+**Archivos modificados:**
+- `src/lib/analytics.ts` — Nuevos tipos de evento añadidos; `window.gtag` activado con safety check (`typeof window !== 'undefined' && typeof window.gtag === 'function'`)
+- `src/components/landing/tools/SavingsCalculator.tsx` — `analytics` import, `tool_viewed` on mount, `use_savings_calculator` on first input, `click_tool_to_app` on CTA
+- `src/components/landing/tools/CalculatorInflation.tsx` — `useRef` añadido, `use_inflation_calculator` on first input, estandarización `signup_click` → `click_tool_to_app`
+- `src/components/landing/tools/Calculator503020.tsx` — `useRef` añadido, `use_503020_calculator` on first slider, estandarización `signup_click` → `click_tool_to_app`
+- `src/components/mdx/MDXComponents.tsx` — `"use client"` añadido, `analytics` import, eventos en `SimpleCTA`, `DownloadCTA`, `ArticleCTA`, `ToolCTA` (solo cuando href → login/app)
+
+**Eventos NO implementados (pendiente):**
+- CTA inline en `calculadora-ahorro/page.tsx` (botón "Empezar a usar la App" en sección inferior) — es JSX inline de servidor, requiere extraer a un Client Component separado; riesgo > beneficio en esta tarea.
+- Tracking de `click_cta_login` en CTA del bloque final del `tutorial/page.tsx` — mismo motivo.
+
+**Principios de privacidad:**
+- No se envían datos personales (nombres, emails, importes concretos).
+- Solo se envían: nombre de herramienta, página de origen (pathname), nombre del botón (texto del CTA), ubicación del CTA.
+- Todos los eventos fallan silenciosamente si GA4 no está cargado.
 
 ---
 
