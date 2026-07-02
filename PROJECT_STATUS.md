@@ -1,8 +1,29 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-02 (HOTFIX-BLOG-ARTICLE-ERROR-01)  
+**Última actualización:** 2026-07-02 (SEO-DATA-PRIORITY-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-DATA-PRIORITY-01 — Análisis snapshot GSC 2026-06-30
+
+**Estado:** ✅ Completado (2026-07-02)  
+
+**Fuente:** `docs/seo/gsc_2026_06_30/` (Queries, Pages, Chart, Countries, Devices — Last 3 months)  
+**Análisis completo:** `docs/seo/GSC_PRIORITY_ANALYSIS_01.md`
+
+**Resumen ejecutivo:**
+- 222 clics / 3,079 impresiones / CTR 7.2% / Pos media 7.7
+- España 62.6% del tráfico / Desktop 61.7%
+- Artículo tractor: `plantilla-kakebo-excel` (125 clics, 861 imp combinados)
+
+**Hallazgo crítico — URL Fragmentation:**  
+El 52% de los clics van a URLs `/es/blog/...` no canónicas. `plantilla-kakebo-excel` recibe 115 clics en `/es/` vs 10 en la URL canónica. Google ha indexado las URLs con prefijo `/es/`. Se requiere nueva tarea `SEO-URL-CANONICAL-ES-01`.
+
+**Mayor oportunidad de CTR:** `calculadora-inflacion` — 300 imp, pos 8.94, CTR 0.33%. → `SEO-BLOG-INFLACION-01`
+
+**Siguiente tarea recomendada:** `SEO-BLOG-INFLACION-01`
 
 ---
 

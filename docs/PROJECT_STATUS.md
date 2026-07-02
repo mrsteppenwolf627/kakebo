@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-02 (HOTFIX-BLOG-ARTICLE-ERROR-01)  
+**Última actualización:** 2026-07-02 (SEO-DATA-PRIORITY-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,21 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-DATA-PRIORITY-01 — Análisis snapshot GSC 2026-06-30
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-02 |
+| **Fuente** | `docs/seo/gsc_2026_06_30/` — Queries, Pages, Chart, Countries, Devices |
+| **Período** | 2026-03-29 → 2026-06-28 (92 días) |
+| **Análisis** | `docs/seo/GSC_PRIORITY_ANALYSIS_01.md` |
+
+**Hallazgo crítico:** URL Fragmentation — 52% de clics en URLs `/es/` no canónicas. Nueva tarea necesaria: `SEO-URL-CANONICAL-ES-01`.  
+**Mayor oportunidad de CTR:** `calculadora-inflacion` — 300 imp / pos 8.94 / CTR 0.33%.  
+**Siguiente tarea:** `SEO-BLOG-INFLACION-01`.
 
 ---
 
