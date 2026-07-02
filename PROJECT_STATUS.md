@@ -1,8 +1,30 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-02 (SEO-GA4-EVENTS-01)  
+**Última actualización:** 2026-07-02 (SEO-GEO-SOBRE-NOSOTROS-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-GEO-SOBRE-NOSOTROS-01 — Optimización GEO/E-E-A-T de /sobre-nosotros
+
+**Estado:** ✅ Completado (2026-07-02)  
+**Build:** pendiente validación  
+
+**Objetivo:** Eliminar superlativos no verificables, terminología no canónica e implicaciones de asesoramiento financiero del namespace `About` en `messages/es.json`. Sin tocar schema, diseño, rutas ni inglés.
+
+**Cambios en `messages/es.json` (About namespace):**
+
+| Campo | Problema | Cambio |
+|---|---|---|
+| `meta.description` | "mi misión de devolverte el control financiero" + "Sin humo" (1ª persona comercial, coloquial) | Reemplazado por descripción factual de MetodoKakebo.com |
+| `meta.ogDescription` | "la app de Kakebo más privada y segura del mercado, diseñada para la tranquilidad mental" (superlativo no verificable, claim subjetivo) | Reemplazado por descripción factual sin superlativos |
+| `story.p2` | "(Mindful Spending)" (etiqueta inventada en inglés) + "la solución definitiva" (superlativo) + "avalada por más de un siglo de eficacia empírica" (claim exagerado) | Eliminados; añadida referencia histórica factual (1904, Motoko Hani) y disclaimer de herramienta educativa |
+| `values.v2.desc` | "Ocio" (nombre no canónico; falta "/Vicio" y "Extras") | Corregido a "Ocio/Vicio, Cultura y Extras" según glosario |
+| `values.v3.desc` | "coach financiero" + "consejos reales y accionables" (implica asesoramiento financiero personalizado) | Reemplazado por descripción factual de qué hace la IA según el método Kakebo |
+| `team.desc` | "la mejor herramienta metodológica" (superlativo) | "la mejor" → "una" |
+
+**Archivos NO tocados (confirmado):** `sobre-nosotros/page.tsx` (schema válido), `messages/en.json`, diseño, rutas, imágenes.
 
 ---
 

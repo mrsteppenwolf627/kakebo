@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-02 (SEO-GA4-EVENTS-01)  
+**Última actualización:** 2026-07-02 (SEO-GEO-SOBRE-NOSOTROS-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,25 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GEO-SOBRE-NOSOTROS-01 — Optimización GEO/E-E-A-T de /sobre-nosotros
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-02 |
+| **Tarea** | `SEO-GEO-SOBRE-NOSOTROS-01` |
+| **Archivo** | `messages/es.json` (namespace About) |
+| **Schema** | ✅ No tocado (`sobre-nosotros/page.tsx` válido) |
+
+**Cambios en About namespace:**
+- `meta.description` — reemplazado por descripción factual (eliminado "mi misión" + "Sin humo")
+- `meta.ogDescription` — eliminado "la app de Kakebo más privada y segura del mercado"
+- `story.p2` — eliminados "(Mindful Spending)", "la solución definitiva", "eficacia empírica"; añadida ref. histórica (1904, Motoko Hani) + disclaimer educativo
+- `values.v2.desc` — corregido "Ocio" → "Ocio/Vicio, Cultura y Extras" (canónico)
+- `values.v3.desc` — eliminado "coach financiero" + "consejos accionables" (implicaba asesoramiento financiero)
+- `team.desc` — "la mejor herramienta" → "una herramienta"
 
 ---
 
