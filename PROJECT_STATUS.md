@@ -1,8 +1,27 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-02 (SEO-GEO-SOBRE-NOSOTROS-01)  
+**Última actualización:** 2026-07-02 (SEO-GEO-TUTORIAL-TERMINOLOGY-FIX-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-GEO-TUTORIAL-TERMINOLOGY-FIX-01 — Corrección terminología categorías en /tutorial
+
+**Estado:** ✅ Completado (2026-07-02)  
+**Build:** ✅ Compiled successfully  
+
+**Objetivo:** Sustituir nombres de categorías Kakebo no canónicos en el namespace `Tutorial` de `messages/es.json`.
+
+**Claves modificadas en `messages/es.json` (Tutorial namespace):**
+
+| Clave | Antes | Después |
+|---|---|---|
+| `content.s2.c2` | `<bold>Opcional:</bold>` | `<bold>Ocio/Vicio:</bold>` |
+| `content.s2.c4` | `<bold>Extra:</bold>` | `<bold>Extras:</bold>` |
+| `images.img2.alt` | "…Supervivencia, Opcional, Cultura y Extra" | "…Supervivencia, Ocio/Vicio, Cultura y Extras" |
+
+**Archivos NO tocados:** `tutorial/page.tsx` (schema válido), Home, herramientas, blog, inglés.
 
 ---
 

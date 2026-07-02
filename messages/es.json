@@ -1142,9 +1142,9 @@
                 "title": "Las 4 Categorías de Gasto",
                 "intro": "Para que el método funcione, debes asignar un presupuesto máximo a 4 grandes apartados, y registrar los gastos en ellos:",
                 "c1": "<bold>Supervivencia:</bold> Gastos ineludibles. Alquiler, hipoteca, agua, luz, supermercado o gasolina para ir a trabajar.",
-                "c2": "<bold>Opcional:</bold> Aquello que mejora tu vida pero no es estricto. Tomar algo en un bar, ropa nueva, restaurantes o salir de cañas.",
+                "c2": "<bold>Ocio/Vicio:</bold> Aquello que mejora tu vida pero no es estricto. Tomar algo en un bar, ropa nueva, restaurantes o salir de cañas.",
                 "c3": "<bold>Cultura:</bold> Todo lo que te aporta conocimiento o bienestar emocional continuado. Libros, museos, cursos, Netflix o Spotify.",
-                "c4": "<bold>Extra:</bold> Gastos imprevistos o puntuales. Regalos de cumpleaños, reparaciones del coche, vacaciones o averías."
+                "c4": "<bold>Extras:</bold> Gastos imprevistos o puntuales. Regalos de cumpleaños, reparaciones del coche, vacaciones o averías."
             },
             "s3": {
                 "title": "Cómo usar el Dashboard",
@@ -1166,7 +1166,7 @@
                 "title": "Comienza a controlar tus gastos en el panel principal"
             },
             "img2": {
-                "alt": "Distribución de gastos según las 4 categorías Kakebo: Supervivencia, Opcional, Cultura y Extra",
+                "alt": "Distribución de gastos según las 4 categorías Kakebo: Supervivencia, Ocio/Vicio, Cultura y Extras",
                 "title": "Aprende a dividir tus gastos mensuales eficientemente"
             },
             "img3": {
