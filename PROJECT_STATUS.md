@@ -1,8 +1,37 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-01 (SEO-TECHNICAL-SITEMAP-01)  
+**Última actualización:** 2026-07-01 (SEO-TECHNICAL-TUTORIAL-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECHNICAL-TUTORIAL-01 — Auditoría /tutorial: canonical y hreflang
+
+**Estado:** ✅ Completado con cambios (2026-07-01)  
+**Archivo:** `src/app/[locale]/(public)/tutorial/page.tsx`  
+**Build:** ✅ Compiled successfully
+
+**Auditoría de contenido:**
+- Clasificación: **A — Mantener indexable**
+- Contenido: 4 secciones (qué es Kakebo, 4 categorías, dashboard, agente IA), imágenes de producto, TOC lateral
+- Intención SEO: navegacional/informacional para usuarios que buscan "tutorial Kakebo" o "cómo usar Kakebo"
+- No thin content per se — es tutorial de producto con imágenes reales de la app
+- No compite directamente con artículos del blog (foco en interfaz del producto, no en el método en general)
+
+**Bug técnico encontrado y corregido:**
+- `canonical` apuntaba a `https://www.metodokakebo.com/es/tutorial` (URL con prefijo `/es/` que redirige o no existe)
+- `hreflang "es"` y `"x-default"` apuntaban a `/es/tutorial` en lugar de `/tutorial`
+- Patrón correcto: `locale === 'es' ? '' : `/${locale}`` (igual que `sobre-nosotros` y artículos del blog)
+
+**Cambios:**
+- `canonical`: `/${locale}/tutorial` → `${locale === 'es' ? '' : `/${locale}`}/tutorial`
+- `hreflang "es"`: `/es/tutorial` → `/tutorial`
+- `hreflang "x-default"`: `/es/tutorial` → `/tutorial`
+
+**Nota técnica (fuera de alcance, para tarea futura):** `messages/es.json` usa "Opcional" y "Extra" como nombres de categoría en la sección de tutorial — terminología no canónica (debería ser "Ocio/Vicio" y "Extras"). Pendiente de corrección en una tarea de contenido separada.
+
+**Sitemap:** `/tutorial` permanece con prioridad 0.8 — correcto para página de onboarding de producto.
 
 ---
 

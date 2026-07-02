@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-01 (SEO-TECHNICAL-SITEMAP-01)  
+**Última actualización:** 2026-07-01 (SEO-TECHNICAL-TUTORIAL-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,23 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-TECHNICAL-TUTORIAL-01 — Auditoría /tutorial: canonical y hreflang
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-01 |
+| **Archivo** | `src/app/[locale]/(public)/tutorial/page.tsx` |
+
+**Clasificación de contenido:** A — Mantener indexable (tutorial de producto con imágenes reales, intención navegacional específica)
+
+**Bug técnico corregido:**
+- `canonical` ES apuntaba a `/es/tutorial` → corregido a `/tutorial` (sin prefijo, como marca `localePrefix: 'as-needed'`)
+- `hreflang "es"` y `"x-default"` corregidos al mismo patrón
+
+**Pendiente para futura tarea:** `messages/es.json` usa "Opcional"/"Extra" en lugar de "Ocio/Vicio"/"Extras" en el texto del tutorial
 
 ---
 
