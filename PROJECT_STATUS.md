@@ -1,8 +1,42 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-02 (SEO-DATA-PRIORITY-01)  
+**Última actualización:** 2026-07-02 (SEO-URL-CANONICAL-ES-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-URL-CANONICAL-ES-01 — Redirección URLs /es/ a canónicas
+
+**Estado:** ✅ Auditado y verificado — sin código nuevo (implementación preexistente confirmada)
+
+**Causa raíz:** `next-intl` con `localePrefix: 'as-needed'` sirve contenido ES tanto en `/blog/...` como en `/es/blog/...`. Google indexó históricamente las URLs `/es/` antes de que se desplegaran los redirects.
+
+**Hallazgo:** Los redirects permanentes ya estaban implementados en `next.config.ts` desde el commit `bed1fd1` (2026-03-21), antes del período del snapshot GSC (2026-03-29 — 2026-06-28). La fragmentación en GSC es un lag de consolidación de Google, no un problema de código activo.
+
+**Comportamiento verificado (308 Permanent Redirect):**
+
+| URL solicitada | Código | Destino |
+|---|---|---|
+| `/es` | 308 | `/` |
+| `/es/blog/plantilla-kakebo-excel` | 308 | `/blog/plantilla-kakebo-excel` |
+| `/es/herramientas/calculadora-ahorro` | 308 | `/herramientas/calculadora-ahorro` |
+| `/es/herramientas/calculadora-inflacion` | 308 | `/herramientas/calculadora-inflacion` |
+| `/es/tutorial` | 308 | `/tutorial` |
+| `/es/privacy` | 308 | `/privacy` |
+| `/es/sobre-nosotros` | 308 | `/sobre-nosotros` |
+| `/es/blog/...?utm_source=test` | 308 | `/blog/...?utm_source=test` (QS preservado) |
+| `/en/blog/plantilla-kakebo-excel` | 200 | Sin redirect (correcto) |
+| `/api/health` | 200 | Sin redirect (correcto) |
+
+**Sitemap:** Sin URLs `/es/` — limpio.  
+**Build:** Limpio (`npm run build` sin errores).  
+**Tipo de redirect:** 308 (Next.js convierte `permanent: true` en redirects() → 308 en App Router).  
+**Archivos modificados:** Solo PROJECT_STATUS.md y docs/PROJECT_STATUS.md (sin cambios de código).  
+**`.claude/settings.local.json`:** No tocado.  
+**`/blog/plantilla-kakebo-excel`:** No modificado.
+
+**Expectativa SEO:** Google consolidará las URLs `/es/` hacia las canónicas a medida que recrawlee el sitio en las próximas semanas/meses. Los clicks reportados en GSC contra `/es/...` son atribución al URL indexado (redirect source), no al URL servido.
 
 ---
 

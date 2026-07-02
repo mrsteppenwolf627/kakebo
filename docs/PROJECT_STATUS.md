@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-02 (SEO-DATA-PRIORITY-01)  
+**Última actualización:** 2026-07-02 (SEO-URL-CANONICAL-ES-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,29 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-URL-CANONICAL-ES-01 — Redirección /es/ a canónicas
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-02 |
+| **Estado** | Auditado y verificado — sin cambios de código |
+| **Redirect en prod desde** | 2026-03-21 (commit `bed1fd1`) |
+| **Tipo redirect** | 308 Permanent (`permanent: true` en next.config.ts redirects()) |
+| **Sitemap** | Sin URLs /es/ — limpio |
+| **Build** | Limpio |
+
+**Reglas activas en `next.config.ts`:**
+```ts
+{ source: "/es", destination: "/", permanent: true }
+{ source: "/es/:path*", destination: "/:path*", permanent: true }
+```
+
+**Comportamiento verificado:** `/es/blog/...` → 308 → `/blog/...` | `/es/herramientas/...` → 308 → `/herramientas/...` | query strings preservados | `/en/*` no afectado | `/api/*` no afectado.
+
+**Por qué GSC sigue mostrando /es/ con clics:** Google atribuye el click al URL indexado (redirect source), no al URL final. A medida que recrawlee el site, consolidará el índice hacia las URLs canónicas.
 
 ---
 
