@@ -1,8 +1,37 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-02 (SEO-GEO-SAVINGS-CONTENT-FIX-01)  
+**Última actualización:** 2026-07-02 (SEO-SCHEMA-BLOG-INDEX-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-SCHEMA-BLOG-INDEX-01 — Schema CollectionPage + ItemList en /blog
+
+**Estado:** ✅ Completado (2026-07-02)  
+**Build:** ✅ Compiled successfully  
+
+**Objetivo:** Añadir schema JSON-LD a `/blog` para reforzar su función como índice editorial.
+
+**Schema añadido en `src/app/[locale]/(public)/blog/page.tsx`:**
+
+- Tipo principal: `CollectionPage`
+- `mainEntity`: `ItemList` con `ListItem` por cada artículo indexable
+- Generado dinámicamente en el server component a partir de `getBlogPosts(locale)`
+- Posts con `noindex: true` excluidos del ItemList
+- URLs absolutas correctas: `https://www.metodokakebo.com/blog/[slug]` (ES) / `https://www.metodokakebo.com/en/blog/[slug]` (EN)
+
+**Campos por artículo:**
+- `position` (1, 2, 3…)
+- `name` (título del artículo)
+- `description` (excerpt)
+- `url` (URL absoluta locale-aware)
+
+**Publisher:** `{ "@type": "Organization", "name": "MetodoKakebo.com" }`
+
+**Artículos ES incluidos:** 15 (todos los `.es.mdx` publicados sin noindex)
+
+**No duplica:** el schema `BlogPosting` de artículos individuales — `CollectionPage` representa el índice, no los artículos.
 
 ---
 

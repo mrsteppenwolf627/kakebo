@@ -35,9 +35,38 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
     const posts = getBlogPosts(locale);
     const [featured, ...rest] = posts;
 
+    const baseUrl = `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}`;
+    const indexablePosts = posts.filter(p => !p.frontmatter.noindex);
+    const blogSchema = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": t('title'),
+        "description": t('subtitle'),
+        "url": `${baseUrl}/blog`,
+        "publisher": {
+            "@type": "Organization",
+            "name": "MetodoKakebo.com",
+            "url": "https://www.metodokakebo.com"
+        },
+        "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": indexablePosts.map((post, index) => ({
+                "@type": "ListItem",
+                "position": index + 1,
+                "name": post.frontmatter.title,
+                "description": post.frontmatter.excerpt,
+                "url": `${baseUrl}/blog/${post.slug}`
+            }))
+        }
+    };
+
     return (
         <main className="min-h-screen bg-background">
             <Navbar />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+            />
 
             <div className="pt-24 pb-24">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
