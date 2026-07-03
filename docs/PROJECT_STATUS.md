@@ -1122,6 +1122,8 @@ A (monitorizar) → descartada · **B (noindex EN) → RECOMENDADA** · C (redir
 
 **Tarea fix siguiente:** `SEO-KAKEBO-ONLINE-CANIB-FIX-01` — implementar noindex en artículo EN
 
+**Actualización 2026-07-03 — Scope ampliado:** Auditoría extendida al resto de URLs del sitio (Home, `/blog/kakebo-online-guia-completa`, herramientas, tutorial, blog index). Resultado: ningún par adicional muestra canibalización confirmada. Solo la interferencia EN→ES ya documentada es accionable. Apéndice A1-A5 añadido a `docs/seo/SEO_KAKEBO_ONLINE_CANIB_01.md`.
+
 ---
 
 ## ✅ SEO-DATA-PRIORITY-01 — Snapshot GSC y priorización SEO por datos reales

@@ -439,3 +439,167 @@ La tarea fix recomendada es `SEO-KAKEBO-ONLINE-CANIB-FIX-01`.
 *Causa raíz: Cross-language URL contamination (slug español en URL inglesa)*  
 *Solución recomendada: noindex en artículo EN + refuerzo de señales ES (complementario)*  
 *Sin cambios en código, contenido ni configuración SEO.*
+
+---
+
+## APÉNDICE — Auditoría de scope ampliado (2026-07-03)
+
+**Ejecutado en:** Tarea `SEO-KAKEBO-ONLINE-CANIB-01`  
+**Fuente GSC:** `GSC_PRIORITY_ANALYSIS_01.md` (snapshot 2026-03-29 → 2026-06-28)  
+**Objetivo:** Verificar si existen otras canibalizaciones más allá de la ya documentada (EN/ES `kakebo-online-gratis`), incluyendo Home, `kakebo-online-guia-completa`, herramientas, tutorial y blog index.
+
+---
+
+### A1. Mapa de intención por URL
+
+| URL | Intención primaria | Keyword objetivo | Cluster |
+|---|---|---|---|
+| `/` (Home) | Navegacional/transaccional — registro en app | "kakebo online", "kakebo app", "kakebo" | Kakebo Online / App |
+| `/blog/kakebo-online-gratis` (ES) | Transaccional-informacional — buscar app kakebo gratuita | "kakebo online gratis", "app kakebo" | Kakebo Online / App |
+| `/blog/kakebo-online-guia-completa` | Informacional — cómo usar el método en digital | "kakebo online", "método kakebo online" | Kakebo Online / App |
+| `/blog/metodo-kakebo-guia-definitiva` | Informacional pilar — qué es el método Kakebo | "método kakebo", "kakebo" | Kakebo Core |
+| `/herramientas/calculadora-ahorro` | Transaccional herramienta — calcular plan de ahorro | "calculadora ahorro mensual" | Control de Gastos |
+| `/herramientas/calculadora-inflacion` | Transaccional herramienta — calcular pérdida poder adquisitivo | "calculadora inflación", "calculadora IPC" | Inflación / IPC |
+| `/herramientas/regla-50-30-20` | Transaccional herramienta — dividir sueldo 50/30/20 | "calculadora 50 30 20" | Regla 50/30/20 |
+| `/tutorial` | Navegacional onboarding — uso de la app | "tutorial kakebo" (sin datos) | App |
+| `/blog` | Hub navegacional — índice de artículos | "blog kakebo" (sin datos) | Hub |
+
+---
+
+### A2. Clasificación de solapamientos
+
+#### A2.1 — Home vs cluster "kakebo online"
+
+| URL | GSC (3 meses) | Intención | Overlap |
+|---|---|---|---|
+| `/` | 892 imp / 51 clics / pos 8.2 | App — registro, transaccional | "kakebo online", "kakebo app" (ambos van a Home) |
+| `/en/blog/kakebo-online-gratis` | 208 imp / 15 clics / pos 6.86 | "Buscar app gratis" — transaccional-informacional | "kakebo online gratis", "kakebo online" |
+| `/blog/kakebo-online-guia-completa` | 37 imp / 3 clics / pos 8.32 | "Cómo usar el método en digital" — informacional | "kakebo online" genérico |
+
+**Veredicto:** **SOLAPAMIENTO NORMAL — sin canibalización confirmada.**
+
+La Home y `kakebo-online-gratis` pueden compartir algunas impresiones de "kakebo online" pero responden intenciones distintas:
+- Home: usuario que ya conoce la marca, busca acceso a la app.
+- `kakebo-online-gratis`: usuario que busca comparar opciones de kakebo gratuito online.
+- `kakebo-online-guia-completa`: usuario que quiere guía de cómo usar el método en digital.
+
+Google parece discriminarlas correctamente: las cifras no muestran que una URL esté quitando impresiones a la otra de forma anómala. La Home tiene 892 imp a pos 8.2 para queries de marca/app; el artículo EN tiene 208 imp a pos 6.86 para queries de "kakebo gratis". El artículo guia-completa tiene 37 imp a pos 8.32.
+
+**Acción:** No tocar.
+
+---
+
+#### A2.2 — kakebo-online-gratis vs kakebo-online-guia-completa (ES entre sí)
+
+| URL | Intención | Keyword diferenciadora |
+|---|---|---|
+| `/blog/kakebo-online-gratis` | Transaccional: "dame la mejor app kakebo gratis" | "kakebo online **gratis**", "app kakebo" |
+| `/blog/kakebo-online-guia-completa` | Informacional: "enséñame a usar kakebo en digital" | "**guía** kakebo online", "método kakebo online" |
+
+**Veredicto:** **DATO INSUFICIENTE — no confirmada, riesgo bajo.**
+
+Las intenciones están diferenciadas a nivel de frontmatter y contenido:
+- `kakebo-online-gratis`: título apunta a "La Mejor Aplicación" (transaccional comparativa).
+- `kakebo-online-guia-completa`: título apunta a "guía completa del método Kakebo en formato digital" (informacional).
+
+En GSC: `kakebo-online-guia-completa` tiene solo 37 imp en 3 meses — volumen insuficiente para confirmar canibalización. No hay queries compartidas visibles en el top de Queries.csv.
+
+**Riesgo latente:** Si el artículo `kakebo-online-guia-completa` crece en autoridad (actualmente muy bajo tráfico), podría empezar a competir con `kakebo-online-gratis` por la query genérica "kakebo online". En ese caso, la diferenciación de intención en el title de cada artículo sería el amortiguador natural.
+
+**Acción:** Esperar. Monitorizar en próximo snapshot GSC. No tocar ninguno de los dos artículos.
+
+---
+
+#### A2.3 — "kakebo" (brand query) → pos 13.74, CTR 1.19%
+
+| Query | Clics | Imp | CTR | Pos | URL que lo captura (probable) |
+|---|---|---|---|---|---|
+| kakebo | 2 | 168 | 1.19% | 13.74 | `/` (Home) |
+
+**Veredicto:** **NO CANIBALIZACIÓN — problema de autoridad de marca.**
+
+La query "kakebo" no está siendo canibalizada por varias páginas del sitio. El problema es que la Home aparece en pos 13.74 (página 2) para su propia keyword de marca. Esto indica falta de autoridad de dominio para la query de marca, no canibalización interna.
+
+Posibles causas:
+1. El dominio `metodokakebo.com` no contiene la palabra "kakebo" sola → menor señal de marca
+2. `metodokakebo.com` compite con el Wikipedia de "kakebo", libros, artículos de prensa, etc.
+3. No hay schema `Organization + WebSite` en la Home (el schema ayudaría a la señal de entidad)
+
+**Acción:** `SEO-SCHEMA-HOME-01` (fuera del alcance de esta tarea — no ejecutar aquí).
+
+---
+
+#### A2.4 — "método kakebo" → metodo-kakebo-guia-definitiva
+
+| Query | Clics | Imp | CTR | Pos |
+|---|---|---|---|---|
+| metodo kakebo | 0 | 5 | 0% | 33.4 |
+| método kakebo | 0 | 1 | 0% | 23 |
+
+**Veredicto:** **DATO INSUFICIENTE — sin canibalización detectable.**
+
+Con solo 6 impresiones combinadas para "método kakebo" en 92 días, no hay datos para confirmar ni descartar canibalización. La posición media de 23-33 indica que el artículo no está en top-10 para esta query aún. No hay evidencia de que otras URLs del sitio compitan por esta query.
+
+**Acción:** Esperar datos. El artículo `/blog/metodo-kakebo-guia-definitiva` necesita más autoridad entrante (señal de enlazado interno).
+
+---
+
+#### A2.5 — Herramientas vs artículos de blog
+
+Las herramientas (`calculadora-ahorro`, `calculadora-inflacion`, `regla-50-30-20`) tienen keywords muy específicas que no solapan con artículos de blog:
+- "calculadora de ahorro mensual" ≠ "cómo ahorrar cada mes"
+- "calculadora de inflación e IPC" ≠ "inflación y ahorro"
+- "calculadora 50 30 20" ≠ "regla 50/30/20"
+
+**Veredicto:** **NO CANIBALIZACIÓN — segmentación correcta.**
+
+**Acción:** No tocar.
+
+---
+
+### A3. Mapa resumen — URL correcta por intención
+
+| Intención / Query | URL principal correcta | URL que actualmente domina | Estado |
+|---|---|---|---|
+| "kakebo online gratis" | `/blog/kakebo-online-gratis` (ES) | `/en/blog/kakebo-online-gratis` | 🔴 CANIBALIZACIÓN CONFIRMADA (sección 8) |
+| "kakebo online" (genérico) | Home + kakebo-online-gratis | Home + EN article | 🟡 Solapamiento normal |
+| "kakebo online guía completa" | `/blog/kakebo-online-guia-completa` | `/es/blog/kakebo-online-guia-completa` | 🟡 URL /es/ → canónica (redirect OK) |
+| "kakebo" (marca) | `/` (Home) | `/` pero pos 13.74 | 🟡 Falta autoridad de marca — no canibalización |
+| "método kakebo" | `/blog/metodo-kakebo-guia-definitiva` | Sin datos suficientes | ⚪ Dato insuficiente |
+| "calculadora ahorro mensual" | `/herramientas/calculadora-ahorro` | `/herramientas/calculadora-ahorro` | 🟢 Correcto |
+| "plantilla kakebo" | `/blog/plantilla-kakebo-excel` | `/blog/plantilla-kakebo-excel` | 🟢 Correcto |
+| "calculadora inflación IPC" | `/herramientas/calculadora-inflacion` | `/herramientas/calculadora-inflacion` | 🟢 Correcto |
+
+---
+
+### A4. Riesgos detectados
+
+| Riesgo | Gravedad | Acción |
+|---|---|---|
+| **EN/ES canibalización `kakebo-online-gratis`** — tráfico ES va a artículo EN | 🔴 Alta | `SEO-KAKEBO-ONLINE-CANIB-FIX-01` (ya propuesta) |
+| **Pos 13.74 para "kakebo"** — marca no rankea en top-10 | 🟡 Media | `SEO-SCHEMA-HOME-01` (esquema Organization + WebSite) |
+| **`kakebo-online-guia-completa`** puede solapar con `kakebo-online-gratis` cuando crezca | 🟡 Baja-Media | Monitorizar — diferenciación de intención en titles es suficiente por ahora |
+| **`metodo-kakebo-guia-definitiva`** sin tráfico visible aún para "método kakebo" | 🟡 Media | Refuerzo de enlazado entrante (bloqueado hasta P4) |
+
+---
+
+### A5. Única siguiente tarea recomendada
+
+**`SEO-KAKEBO-ONLINE-CANIB-FIX-01`**
+
+La única canibalización CONFIRMADA y ACCIONABLE de bajo riesgo en todo el sitio es la interferencia EN→ES en `kakebo-online-gratis`. Todo lo demás es solapamiento normal o dato insuficiente.
+
+**Acciones de la tarea fix:**
+1. Añadir `noindex: true` en el frontmatter de `kakebo-online-gratis.en.mdx`
+2. Leer el campo `noindex` en `blog/[slug]/page.tsx` → `generateMetadata` y emitir `robots: { index: false, follow: false }` cuando sea `true`
+3. Verificar build limpio
+4. Commit + push
+5. Monitorizar en GSC a las 6-8 semanas: impressiones EN deben caer, impresiones ES deben crecer
+
+**Riesgo de la tarea fix:** Muy bajo. No hay tráfico anglófono real que perder. Los 15 clics actuales son de usuarios españoles llegando a contenido EN.
+
+---
+
+*Apéndice añadido 2026-07-03 — Tarea SEO-KAKEBO-ONLINE-CANIB-01*  
+*Scope extendido: Home, kakebo-online-guia-completa, herramientas, tutorial, blog index*  
+*Resultado: solo la interferencia EN/ES ya documentada es CONFIRMADA*

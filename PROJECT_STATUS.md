@@ -1,8 +1,31 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-03 (SEO-CALCULADORA-AHORRO-AUDIT-01)  
+**Última actualización:** 2026-07-03 (SEO-KAKEBO-ONLINE-CANIB-01 scope ampliado)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-KAKEBO-ONLINE-CANIB-01 — Auditoría canibalización (scope ampliado, 2026-07-03)
+
+**Estado:** ✅ Completado — scope extendido a todas las URLs del sitio
+
+**Contexto:** Tarea originalmente completada el 2026-06-30 (solo canibalización EN/ES en `kakebo-online-gratis`). En la sesión de 2026-07-03 se extendió el scope al resto de URLs relacionadas con "kakebo", "método kakebo", Home, herramientas, tutorial y blog index.
+
+**Resultado del scope ampliado:**
+
+| Par de URLs / Query | Estado | Veredicto |
+|---|---|---|
+| `/en/blog/kakebo-online-gratis` vs `/blog/kakebo-online-gratis` (ES) | 15 clics EN / 1 clic ES | 🔴 CANIBALIZACIÓN CONFIRMADA — ya documentada |
+| Home (`/`) vs cluster "kakebo online" | 892 imp Home / 208 imp EN | 🟡 Solapamiento normal — sin acción |
+| `/blog/kakebo-online-gratis` vs `/blog/kakebo-online-guia-completa` | 37 imp guia-completa | 🟡 Dato insuficiente — intenciones diferenciadas |
+| "kakebo" brand query → Home pos 13.74 | 2 clics / 168 imp | 🟡 Falta autoridad de marca — no canibalización |
+| "método kakebo" → metodo-kakebo-guia-definitiva | 6 imp combinadas | ⚪ Dato insuficiente |
+| Herramientas vs artículos blog | Sin overlap | 🟢 Segmentación correcta |
+
+**Única acción recomendada:** `SEO-KAKEBO-ONLINE-CANIB-FIX-01` (ya implementado — commit `cba3fd0`)
+
+**Documento:** `docs/seo/SEO_KAKEBO_ONLINE_CANIB_01.md` — apéndice A1-A5 añadido
 
 ---
 
@@ -1688,7 +1711,7 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 | **SEO-GEO-DEEP-AUDIT-01** | Auditoría profunda SEO técnico, semántico y GEO — 32 hallazgos | — | ✅ Completado (2026-06-30) |
 | **SEO-ROADMAP-V1-01** | Roadmap SEO/GEO priorizado — 26 tareas en 7 bloques | — | ✅ Completado (2026-06-30) |
 | **SEO-DATA-PRIORITY-01** | Snapshot GSC (Last 3m) + priorización por datos reales | — | ✅ Completado (2026-06-30) |
-| **SEO-KAKEBO-ONLINE-CANIB-01** | Auditoría canibalización EN/ES kakebo-online-gratis — CONFIRMADA | — | ✅ Completado (2026-06-30) |
+| **SEO-KAKEBO-ONLINE-CANIB-01** | Auditoría canibalización EN/ES kakebo-online-gratis — CONFIRMADA + scope ampliado todas las URLs (2026-07-03) | — | ✅ Completado (2026-07-03) |
 | **SEO-KAKEBO-ONLINE-CANIB-FIX-01** | noindex en EN kakebo-online-gratis + exclusión de sitemap | `cba3fd0` | ✅ Completado (2026-06-30) |
 | **SEO-GEO-TERMINOLOGY-01** | Glosario canónico SEO/GEO — 14 términos definidos | `168165f` | ✅ Completado (2026-06-30) |
 | **SEO-GEO-ENTITY-DEFINITION-01** | Definiciones factuales citables — 14 entidades, bloques reutilizables | `96183cc` | ✅ Completado (2026-06-30) |
