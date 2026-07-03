@@ -1,8 +1,38 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-03 (SEO-KAKEBO-ONLINE-CANIB-01 scope ampliado)  
+**Última actualización:** 2026-07-03 (SEO-HOME-BRAND-ENTITY-COPY-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-HOME-BRAND-ENTITY-COPY-01 — Refuerzo entidad de marca Home
+
+**Estado:** ✅ Completado (2026-07-03) — metadata quirúrgica
+
+**GSC base:** `/` — 892 imp / pos 8.2 / CTR 5.72% · "kakebo" brand query pos 13.74 (snapshot 2026-03-29 → 2026-06-28)
+
+**Problema identificado:** El title "Kakebo Online Gratis | App de Ahorro con el Método Japonés" targetaba la query "kakebo online gratis" (territorio del artículo /blog/kakebo-online-gratis), y la description no incluía señal de entidad de marca ("MetodoKakebo.com" ni "método Kakebo" explícito).
+
+**Cambio aplicado — `messages/es.json` namespace `Landing.meta`:**
+
+| Campo | Antes | Después |
+|---|---|---|
+| `title` | `Kakebo Online Gratis \| App de Ahorro con el Método Japonés` | `Kakebo AI \| App Gratis del Método Kakebo` |
+| `description` | `App Kakebo online gratis para controlar gastos y ahorrar con el método japonés. Sin conectar el banco, 100% privada y con IA integrada.` | `MetodoKakebo.com es la herramienta gratuita para aplicar el método Kakebo online. Controla gastos, organiza tu presupuesto mensual y mejora el ahorro. Sin banco, 100% privada.` |
+| `ogTitle` | Igual al title anterior | Igual al title nuevo |
+| `ogDescription` | Igual a description anterior | Igual a description nueva |
+
+**Justificación:**
+- `Kakebo AI` reemplaza a `Kakebo Online Gratis` en el title: usa el nombre oficial del producto y evita conflicto con /blog/kakebo-online-gratis
+- `del Método Kakebo` en el title: señal de relación entre el producto y el método
+- Description inicia con `MetodoKakebo.com es la herramienta gratuita...`: señal de entidad de marca explícita
+- `el método Kakebo online` en description: keyword exacta en lugar de "el método japonés" (genérico)
+- `messages/en.json`: no tocado (título EN ya estructura correcta: "Kakebo AI: Online Kakebo Savings App")
+
+**Archivos modificados:** `messages/es.json` (4 líneas)  
+**Build:** Limpio · Sin cambios en schema, diseño, calculadoras, `/blog/plantilla-kakebo-excel`  
+**`.claude/settings.local.json`:** No tocado
 
 ---
 

@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-03 (SEO-CALCULADORA-AHORRO-AUDIT-01)  
+**Última actualización:** 2026-07-03 (SEO-HOME-BRAND-ENTITY-COPY-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,27 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-HOME-BRAND-ENTITY-COPY-01 — Refuerzo entidad de marca Home
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-03 |
+| **Tipo** | Metadata quirúrgica — solo `messages/es.json` namespace `Landing.meta` |
+| **GSC base** | `/` — 892 imp / pos 8.2 / CTR 5.72% · "kakebo" brand query pos 13.74 |
+
+**Cambios en `messages/es.json`:**
+
+| Campo | Antes | Después |
+|---|---|---|
+| `title` | `Kakebo Online Gratis \| App de Ahorro con el Método Japonés` | `Kakebo AI \| App Gratis del Método Kakebo` |
+| `description` | `App Kakebo online gratis para controlar gastos y ahorrar con el método japonés...` | `MetodoKakebo.com es la herramienta gratuita para aplicar el método Kakebo online...` |
+| `ogTitle` / `ogDescription` | Igual al title/description anteriores | Igual a title/description nuevos |
+
+**Señales mejoradas:** nombre oficial producto (Kakebo AI) · señal de entidad MetodoKakebo.com en description · "método Kakebo" explícito · eliminado "Online Gratis" del title (territorio de /blog/kakebo-online-gratis)  
+**No tocado:** EN metadata · schema Home · calculadoras · `/blog/plantilla-kakebo-excel`
 
 ---
 
