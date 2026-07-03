@@ -1,8 +1,29 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-INVENTORY-DECISION-01)  
+**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-NOINDEX-BATCH-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-LEGACY-EN-NOINDEX-BATCH-01 — noindex batch 7 artículos EN legacy
+
+**Estado:** ✅ Completado (2026-07-03)
+
+**Artículos marcados con `noindex: true`:**
+1. `ahorro-pareja.en.mdx` → `/en/blog/ahorro-pareja`
+2. `kakebo-sueldo-minimo.en.mdx` → `/en/blog/kakebo-sueldo-minimo`
+3. `libro-kakebo-pdf.en.mdx` → `/en/blog/libro-kakebo-pdf`
+4. `metodo-kakebo-para-autonomos.en.mdx` → `/en/blog/metodo-kakebo-para-autonomos`
+5. `regla-30-dias.en.mdx` → `/en/blog/regla-30-dias`
+6. `kakebo-online-guia-completa.en.mdx` → `/en/blog/kakebo-online-guia-completa` ← prioridad por cross-language risk
+7. `peligros-apps-ahorro-automatico.en.mdx` → `/en/blog/peligros-apps-ahorro-automatico`
+
+**Acumulado noindex EN:** 10/15 artículos EN ahora excluidos del índice y del sitemap.  
+**Excluidos del batch (según decisión):** `como-ahorrar-dinero-cada-mes` · `eliminar-gastos-hormiga` · `metodo-kakebo-guia-definitiva` (dudosos) · `como-hacer-un-presupuesto-personal` (mantener) · `plantilla-kakebo-excel` (protegido).
+
+**Cambio por archivo:** 1 línea `noindex: true` en frontmatter. Cuerpo intacto. Sin tocar `.es.mdx`, Home, herramientas, `sitemap.ts` ni Excel.  
+**Build:** Limpio.
 
 ---
 

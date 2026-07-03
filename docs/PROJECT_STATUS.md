@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-INVENTORY-DECISION-01)  
+**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-NOINDEX-BATCH-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,19 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-LEGACY-EN-NOINDEX-BATCH-01 — noindex batch 7 artículos EN legacy
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-03 |
+| **Tipo** | Frontmatter — `noindex: true` en 7 `.en.mdx` candidatos |
+| **Mecanismo** | Reutilizado de `cba3fd0` — exclusión automática de índice y sitemap |
+
+**URLs excluidas del índice:** `/en/blog/ahorro-pareja` · `/en/blog/kakebo-sueldo-minimo` · `/en/blog/libro-kakebo-pdf` · `/en/blog/metodo-kakebo-para-autonomos` · `/en/blog/regla-30-dias` · `/en/blog/kakebo-online-guia-completa` · `/en/blog/peligros-apps-ahorro-automatico`  
+**Acumulado:** 10/15 artículos EN con noindex. `sitemap.ts`, `.es.mdx`, Home, herramientas, Excel: no tocados.
 
 ---
 
