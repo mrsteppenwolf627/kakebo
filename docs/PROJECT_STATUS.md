@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-03 (SEO-REGLA-503020-SNIPPET-GEO-01)  
+**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-NOINDEX-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,22 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-LEGACY-EN-NOINDEX-01 — noindex artículos EN legacy
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-03 |
+| **Tipo** | Frontmatter — 1 línea por archivo, sin tocar cuerpo |
+| **Mecanismo** | Reutilizado de `cba3fd0` — `noindex: true` → robots noindex + exclusión sitemap |
+
+**Artículos afectados:**
+- `alternativas-a-app-bancarias.en.mdx` → `noindex: true` (/en/blog/alternativas-a-app-bancarias)
+- `kakebo-vs-ynab.en.mdx` → `noindex: true` (/en/blog/kakebo-vs-ynab)
+
+**No tocado:** `kakebo-online-gratis.en.mdx` (ya tenía noindex desde cba3fd0) · versiones ES · Home · herramientas · Excel · `sitemap.ts`
 
 ---
 

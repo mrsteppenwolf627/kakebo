@@ -1,8 +1,28 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-03 (SEO-REGLA-503020-SNIPPET-GEO-01)  
+**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-NOINDEX-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-LEGACY-EN-NOINDEX-01 — noindex artículos EN legacy
+
+**Estado:** ✅ Completado (2026-07-03)
+
+**Artículos EN revisados (15 total):**
+
+| Archivo | Estado previo | Acción |
+|---|---|---|
+| `kakebo-online-gratis.en.mdx` | `noindex: true` (cba3fd0) | No tocado ✅ |
+| `alternativas-a-app-bancarias.en.mdx` | Indexable | `noindex: true` añadido |
+| `kakebo-vs-ynab.en.mdx` | Indexable | `noindex: true` añadido |
+| 12 restantes (.en.mdx) | Sin cambio | No estaban en scope GSC — no tocados |
+
+**Mecanismo reutilizado:** frontmatter `noindex: true` → `robots: { index: false, follow: false }` en `blog/[slug]/page.tsx` → exclusión automática de `sitemap.ts`. Implementado en `cba3fd0`. `sitemap.ts` no modificado en esta tarea.
+
+**Archivos modificados:** 2 — solo frontmatter de `.en.mdx`, sin tocar cuerpo, versiones ES, Home, herramientas ni Excel.  
+**Build:** Limpio.
 
 ---
 
