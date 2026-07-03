@@ -1,8 +1,29 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-03 (SEO-KAKEBO-ONLINE-GUIA-SNIPPET-01)  
+**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-INVENTORY-DECISION-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-LEGACY-EN-INVENTORY-DECISION-01 — Inventario artículos EN legacy
+
+**Estado:** ✅ Completado (2026-07-03) — solo documentación
+
+**Resultado:** 15 artículos `.en.mdx` clasificados. Ver `docs/seo/SEO_LEGACY_EN_INVENTORY_DECISION_01.md`.
+
+| Decisión | N | Artículos |
+|---|---|---|
+| ✅ Ya noindex | 3 | kakebo-online-gratis · alternativas-a-app-bancarias · kakebo-vs-ynab |
+| 🟢 Mantener indexable | 1 | `como-hacer-un-presupuesto-personal` (2026-06-22 — más reciente, keyword EN real) |
+| 🟡 Dudoso / esperar GSC | 3 | `como-ahorrar-dinero-cada-mes` · `eliminar-gastos-hormiga` · `metodo-kakebo-guia-definitiva` |
+| 🔴 Candidatos a noindex | 7 | `ahorro-pareja` · `kakebo-sueldo-minimo` · `libro-kakebo-pdf` · `metodo-kakebo-para-autonomos` · `regla-30-dias` · `kakebo-online-guia-completa` · `peligros-apps-ahorro-automatico` |
+| ⚪ No tocar | 1 | `plantilla-kakebo-excel` (protegido) |
+
+**Próxima tarea propuesta:** `SEO-LEGACY-EN-NOINDEX-BATCH-01` — noindex en bloque de los 7 candidatos
+
+**Archivo creado:** `docs/seo/SEO_LEGACY_EN_INVENTORY_DECISION_01.md`  
+**Sin cambios en frontmatter** — solo documentación.
 
 ---
 

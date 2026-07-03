@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-03 (SEO-KAKEBO-ONLINE-GUIA-SNIPPET-01)  
+**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-INVENTORY-DECISION-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,19 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-LEGACY-EN-INVENTORY-DECISION-01 — Inventario artículos EN legacy
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-03 |
+| **Tipo** | Solo documentación — sin cambios en frontmatter |
+| **Documento** | `docs/seo/SEO_LEGACY_EN_INVENTORY_DECISION_01.md` |
+
+**Clasificación:** 3 ya noindex · 1 mantener · 3 dudosos · 7 candidatos · 1 protegido (Excel).  
+**Próxima tarea propuesta:** `SEO-LEGACY-EN-NOINDEX-BATCH-01` (7 artículos candidatos en un commit).
 
 ---
 
