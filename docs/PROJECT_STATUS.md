@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-NOINDEX-01)  
+**Última actualización:** 2026-07-03 (SEO-KAKEBO-ONLINE-GUIA-SNIPPET-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,18 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-KAKEBO-ONLINE-GUIA-SNIPPET-01 — Snippet /blog/kakebo-online-guia-completa
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-03 |
+| **Tipo** | Frontmatter — `title` y `excerpt` en `.es.mdx` |
+| **URL** | `/blog/kakebo-online-guia-completa` |
+
+**Cambios:** `title` recortado (73→53 chars, elimina "en formato digital" redundante) · `excerpt` inicia con "Guía de MetodoKakebo.com" (señal de entidad + intención informativa). Cuerpo, schema, EN, Home, herramientas y Excel: no tocados.
 
 ---
 

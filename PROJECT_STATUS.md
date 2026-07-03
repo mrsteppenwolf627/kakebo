@@ -1,8 +1,32 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-NOINDEX-01)  
+**Última actualización:** 2026-07-03 (SEO-KAKEBO-ONLINE-GUIA-SNIPPET-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-KAKEBO-ONLINE-GUIA-SNIPPET-01 — Snippet /blog/kakebo-online-guia-completa
+
+**Estado:** ✅ Completado (2026-07-03) — title y excerpt optimizados
+
+**Archivo modificado:** `src/content/blog/kakebo-online-guia-completa.es.mdx` (frontmatter, 3 líneas)
+
+| Campo | Antes | Después |
+|---|---|---|
+| `title` | `Kakebo online: guía completa del método Kakebo en formato digital (2026)` (73 chars) | `Kakebo online: guía completa del método Kakebo (2026)` (53 chars) |
+| `excerpt` | `Cómo usar el método Kakebo en formato digital: qué herramienta elegir, cómo empezar paso a paso y los errores más comunes...` | `Guía de MetodoKakebo.com para usar el método Kakebo en formato digital: qué herramienta elegir, cómo empezar paso a paso y los errores más habituales...` |
+| `updatedDate` | `2026-07-01` | `2026-07-03` |
+
+**Nota técnica:** `description` en frontmatter no se usa en SERP (el sistema de blog usa `excerpt` para meta description y OG). Solo `title` y `excerpt` afectan al snippet.
+
+**Justificación:**
+- `title`: "en formato digital" eliminado (redundante con "online") — reduce longitud de 73→53 chars, evitando truncado al añadir " | Blog Kakebo"
+- `excerpt`: añadido "Guía de MetodoKakebo.com" al inicio — señal de entidad de marca + señal de intención informativa ("guía")
+- Intención informativa mantenida: no cannibaliza Home ("App Gratis") ni Excel ("plantilla")
+- Cuerpo del artículo: no tocado · EN no tocado · herramientas: no tocadas
+
+**Build:** Limpio
 
 ---
 
