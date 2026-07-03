@@ -43,9 +43,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
         });
     });
 
-    // Add localized blog posts (skip noindex posts)
+    // Build set of EN slugs that have noindex: true in their EN frontmatter
+    const enPosts = getBlogPosts('en');
+    const enNoindexSlugs = new Set(
+        enPosts.filter((p) => p.frontmatter.noindex).map((p) => p.slug)
+    );
+
+    // Add localized blog posts (skip noindex posts per locale)
     posts.filter((post) => !post.frontmatter.noindex).forEach((post) => {
         locales.forEach((locale) => {
+            if (locale === 'en' && enNoindexSlugs.has(post.slug)) return;
+
             const path = locale === 'es' ? `/blog/${post.slug}` : `/${locale}/blog/${post.slug}`;
             sitemapEntries.push({
                 url: `${baseUrl}${path}`,
@@ -54,6 +62,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
                 priority: 0.7,
                 alternates: {
                     languages: locales.reduce((acc, l) => {
+                        if (l === 'en' && enNoindexSlugs.has(post.slug)) return acc;
                         const lPath = l === 'es' ? `/blog/${post.slug}` : `/${l}/blog/${post.slug}`;
                         acc[l] = `${baseUrl}${lPath}`;
                         return acc;

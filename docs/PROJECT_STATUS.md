@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-NOINDEX-BATCH-01)  
+**Última actualización:** 2026-07-03 (SEO-NOINDEX-SITEMAP-SMOKE-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,20 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-NOINDEX-SITEMAP-SMOKE-01 — Validación noindex + sitemap fix
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-03 |
+| **Tipo** | Bug fix — `sitemap.ts` excluye URLs EN noindex |
+
+**Bug corregido:** El sitemap solo leía posts ES → las 10 URLs `/en/blog/...` con `noindex: true` en frontmatter EN seguían apareciendo en el sitemap. Fix: `getBlogPosts('en')` + dos guards por locale. hreflang `alternates` también corregidos.  
+**`page.tsx` robots:** Confirmado correcto — sin cambios.  
+**`blog.ts` tipo:** Confirmado correcto — `noindex?: boolean` tipado.  
+**Artículos noindex verificados:** 10/10 con `noindex: true` ✅ · **Artículos excluidos verificados:** 5/5 sin noindex ✅
 
 ---
 

@@ -1,8 +1,23 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-03 (SEO-LEGACY-EN-NOINDEX-BATCH-01)  
+**Última actualización:** 2026-07-03 (SEO-NOINDEX-SITEMAP-SMOKE-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-NOINDEX-SITEMAP-SMOKE-01 — Validación técnica noindex + sitemap
+
+**Estado:** ✅ Completado (2026-07-03)
+
+**Bug detectado y corregido en `sitemap.ts`:**
+- `getBlogPosts()` sin argumento → solo lee `.es.mdx` → noindex EN ignorado por el sitemap
+- Resultado: las 10 URLs `/en/blog/...` con `noindex: true` EN aparecían igualmente en el sitemap (señal contradictoria)
+- Fix: `getBlogPosts('en')` para construir `enNoindexSlugs` y dos guards `if (locale === 'en' && enNoindexSlugs.has(post.slug)) return` — uno al generar la entrada, otro en hreflang `alternates`
+
+**Mecanismo `robots` (page.tsx):** Correcto — `post.frontmatter.noindex && { robots: { index: false, follow: false } }` ✅  
+**Mecanismo `sitemap.ts`:** Corregido en este commit. Ahora los 10 slugs EN noindex no generan entrada EN en el sitemap ni en `alternates`.  
+**Build:** Limpio.
 
 ---
 
