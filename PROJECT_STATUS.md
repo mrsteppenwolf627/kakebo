@@ -1,8 +1,19 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-03 (SEO-NOINDEX-SITEMAP-SMOKE-01)  
-**Último commit aceptado:** pendiente push  
+**Última actualización:** 2026-07-03 (SEO-GSC-ANNOTATION-CHANGELOG-01)  
+**Último commit aceptado:** d8971ae  
 **Rama operativa:** `main`
+
+---
+
+## SEO-GSC-ANNOTATION-CHANGELOG-01 — Changelog GSC sprint
+
+**Estado:** ✅ Completado (2026-07-03)
+
+Documento de trazabilidad creado: `docs/seo/GSC_CHANGELOG_2026_07_03.md`  
+Registra 7 commits del sprint, baseline GSC, métricas a revisar y decisiones vigentes.  
+**Próximo snapshot:** entre 2026-07-17 y 2026-07-31.  
+Sin cambios en `src/` ni en contenido.
 
 ---
 

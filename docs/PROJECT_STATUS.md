@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-03 (SEO-NOINDEX-SITEMAP-SMOKE-01)  
+**Última actualización:** 2026-07-03 (SEO-GSC-ANNOTATION-CHANGELOG-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,20 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-GSC-ANNOTATION-CHANGELOG-01 — Changelog GSC sprint 2026-07-03
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-03 |
+| **Tipo** | Documentación — trazabilidad de 7 commits para medición en GSC |
+| **Documento** | `docs/seo/GSC_CHANGELOG_2026_07_03.md` |
+
+Cubre: baseline GSC (Home 48c/884i/5.43%/8.24 · "kakebo" pos 13.91) · 7 commits con URL afectada, señal, hipótesis y ventana mínima · métricas a revisar · decisiones vigentes (Excel protegido, enlazado suspendido, 3 dudosos EN en espera).  
+**Próximo snapshot GSC:** 2026-07-17 a 2026-07-31.  
+Sin cambios en `src/`.
 
 ---
 
