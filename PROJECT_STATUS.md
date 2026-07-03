@@ -1,8 +1,32 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-03 (SEO-HOME-BRAND-ENTITY-COPY-01)  
+**Última actualización:** 2026-07-03 (SEO-REGLA-503020-SNIPPET-GEO-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-REGLA-503020-SNIPPET-GEO-01 — Snippet y señal GEO /herramientas/regla-50-30-20
+
+**Estado:** ✅ Completado (2026-07-03) — description y ogDescription optimizados
+
+**Cambio aplicado — `messages/es.json` namespace `Tools.Rule503020.meta`:**
+
+| Campo | Antes | Después |
+|---|---|---|
+| `description` | `Calculadora 50/30/20 gratis para dividir tu sueldo entre necesidades, deseos y ahorro. Introduce tu salario y obtén tu presupuesto mensual al instante.` | `Calcula tu presupuesto mensual con la regla 50/30/20. Divide tus ingresos entre necesidades (50%), deseos (30%) y ahorro o deuda (20%). Herramienta gratuita de MetodoKakebo.com.` |
+| `ogDescription` | `Divide tu sueldo entre necesidades (50%), deseos (30%) y ahorro (20%). Calculadora gratuita de presupuesto mensual basada en la regla 50/30/20.` | `Aplica la regla 50/30/20 a tus ingresos mensuales: 50% para necesidades, 30% para deseos y 20% para ahorro o deuda. Calculadora gratuita de MetodoKakebo.com.` |
+
+**Justificación:**
+- `tu sueldo` → `tus ingresos (mensuales)`: herramienta válida para cualquier ingreso, no solo salario
+- `regla 50/30/20` explícita en description (antes ausente)
+- `ahorro o deuda (20%)`: el 20% sirve también para cancelar deuda — mayor fidelidad a la regla original
+- `MetodoKakebo.com` en description y ogDescription: señal de entidad de marca
+- `title` y `ogTitle`: sin cambios (ya bien estructurados)
+- Schema (SoftwareApplication + HowTo), lógica de cálculo, Home, Excel: no tocados
+
+**Archivos modificados:** `messages/es.json` (2 líneas)  
+**Build:** Limpio
 
 ---
 

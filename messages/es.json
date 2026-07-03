@@ -284,9 +284,9 @@
         "Rule503020": {
             "meta": {
                 "title": "Calculadora 50/30/20 Gratis | Necesidades, Deseos y Ahorro",
-                "description": "Calculadora 50/30/20 gratis para dividir tu sueldo entre necesidades, deseos y ahorro. Introduce tu salario y obtén tu presupuesto mensual al instante.",
+                "description": "Calcula tu presupuesto mensual con la regla 50/30/20. Divide tus ingresos entre necesidades (50%), deseos (30%) y ahorro o deuda (20%). Herramienta gratuita de MetodoKakebo.com.",
                 "ogTitle": "Calculadora 50/30/20 | Tu Presupuesto Mensual Gratis",
-                "ogDescription": "Divide tu sueldo entre necesidades (50%), deseos (30%) y ahorro (20%). Calculadora gratuita de presupuesto mensual basada en la regla 50/30/20."
+                "ogDescription": "Aplica la regla 50/30/20 a tus ingresos mensuales: 50% para necesidades, 30% para deseos y 20% para ahorro o deuda. Calculadora gratuita de MetodoKakebo.com."
             },
             "header": {
                 "title": "Calculadora <italic>50/30/20</italic>",
