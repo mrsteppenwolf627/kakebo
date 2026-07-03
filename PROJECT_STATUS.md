@@ -1,8 +1,32 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-02 (SEO-BLOG-INFLACION-01)  
+**Última actualización:** 2026-07-03 (SEO-CALCULADORA-AHORRO-AUDIT-01)  
 **Último commit aceptado:** pendiente push  
 **Rama operativa:** `main`
+
+---
+
+## SEO-CALCULADORA-AHORRO-AUDIT-01 — Auditoría calculadora-ahorro
+
+**Estado:** ✅ Completado (2026-07-03) — auditoría + un fix quirúrgico
+
+**GSC base:** `/es/herramientas/calculadora-ahorro` — 15 clics / 43 imp / CTR 34.88% / pos 10.7 (snapshot 2026-03-29 → 2026-06-28)
+
+**Hallazgos:**
+
+| Hallazgo | Estado | Acción |
+|---|---|---|
+| `layout.tsx` con metadata de la calculadora 50/30/20 (error de copy-paste) | CONFIRMADO — error técnico | Fix: eliminado export `metadata` del layout |
+| `keywords` incorrectas en HTML (consecuencia del layout erróneo) | CONFIRMADO | Resuelto al fix anterior |
+| Snippet ya convierte: CTR 34.88% excepcional | DESCARTADO para cambio | No tocado |
+| Pos 10.7 — oportunidad si sube a top-7 | ESPERAR DATOS | Próximo snapshot GSC |
+| Schema sin campo `author` (presente en calculadora-inflacion) | DESCARTADO (impacto mínimo) | Deuda menor pendiente |
+
+**Fix aplicado:** Eliminado export `metadata` estático de `layout.tsx` que describía la calculadora 50/30/20 en lugar de la calculadora de ahorro. La metadata real ya la gestiona el `generateMetadata` de `page.tsx`. El layout queda como shell puro (`<>{children}</>`).
+
+**Archivos modificados:** `src/app/[locale]/(public)/herramientas/calculadora-ahorro/layout.tsx`  
+**Build:** Limpio. Sin cambios en snippet, lógica, diseño, content ni schema.  
+**`.claude/settings.local.json`:** No tocado. `/blog/plantilla-kakebo-excel`: no tocado.
 
 ---
 

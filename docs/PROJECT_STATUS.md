@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-02 (SEO-BLOG-INFLACION-01)  
+**Última actualización:** 2026-07-03 (SEO-CALCULADORA-AHORRO-AUDIT-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,21 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-CALCULADORA-AHORRO-AUDIT-01 — Auditoría calculadora-ahorro
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-03 |
+| **GSC base** | 15 clics / 43 imp / CTR 34.88% / pos 10.7 |
+| **Fix** | Eliminado export `metadata` erróneo de `layout.tsx` (describía la 50/30/20) |
+| **Archivos** | `src/app/[locale]/(public)/herramientas/calculadora-ahorro/layout.tsx` |
+
+**Hallazgo principal:** layout.tsx tenía metadata estática de copy-paste de la calculadora 50/30/20 (título, description, keywords y OG incorrectos). La page.tsx ya gestiona metadata correctamente con `generateMetadata`. Fix: eliminar el export `metadata` del layout para que no contamine el HTML con keywords irrelevantes.
+
+**Snippet:** No tocado — CTR 34.88% ya es excepcional para pos 10.7.
 
 ---
 
