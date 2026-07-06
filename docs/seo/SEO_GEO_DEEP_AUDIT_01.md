@@ -1,735 +1,432 @@
-# SEO_GEO_DEEP_AUDIT_01 — Auditoría Profunda SEO Técnico, Semántico y GEO
+# SEO_GEO_DEEP_AUDIT_01 — Auditoría Profunda SEO Técnico, Semántico y GEO (actualización)
 
-**Fecha:** 2026-06-30  
-**Commit de referencia:** `2fa1dfd` (HEAD al inicio de la auditoría)  
-**Tipo:** Solo documentación — sin cambios en código, contenido ni SEO técnico  
-**Siguiente fase:** `SEO-ROADMAP-V1-01` — Roadmap SEO priorizado
-
----
-
-## 1. Resumen ejecutivo
-
-MetodoKakebo.com tiene una base técnica SEO más sólida de lo que indicaba el mapa anterior. Los problemas P0 técnicos (canonical de blog posts, robots.txt sin bloquear `/app/`) ya están **resueltos en el código actual**. Los canonicals de las tres herramientas son correctos. El sitemap genera URLs sin `/es/` para ES. Los redirects `/es/*` → `/*` funcionan.
-
-Los problemas reales se concentran en tres capas:
-
-1. **Técnico medio**: `dateModified` congelado en todos los posts, `/herramientas` hub ausente del sitemap, siteName inconsistente entre páginas, schema `calculadora-ahorro` con descripción desactualizada vs. contenido optimizado.
-
-2. **Semántico estructural**: Tres herramientas sin artículo editorial de respaldo, posible canibalización entre `kakebo-online-gratis` y `kakebo-online-guia-completa`, `metodo-kakebo-guia-definitiva` infraconectado, entidad "MetodoKakebo.com" no definida claramente en ninguna página.
-
-3. **GEO**: Terminología inconsistente entre páginas ("Kakebo AI" vs "método Kakebo" vs "app Kakebo" vs "kakebo online"), autoría genérica sin credenciales financieras, ausencia de una definición corta y citabile de qué es el producto.
-
-**Total de hallazgos: 32** (12 técnicos · 9 semánticos · 11 GEO)  
-**Riesgos críticos: 2** · **Riesgos medios: 7** · **Riesgos bajos: 8**
+**Fecha:** 2026-07-06
+**Tipo:** Solo documentación — sin cambios en código, contenido ni SEO técnico
+**Sustituye a:** versión anterior de este mismo documento, fechada 2026-06-30 (commit de referencia `2fa1dfd`)
+**Método:** Verificación directa contra el código fuente actual (no solo contra el changelog documental)
+**Siguiente fase:** Actualización de `SEO_ROADMAP_V1.md` con los hallazgos que siguen abiertos + los 2 hallazgos nuevos de esta revisión
 
 ---
 
-## 2. Alcance de la auditoría
+## 0. Qué cambió desde la auditoría anterior (resumen de la reconciliación)
 
-| Área | Revisado |
+Entre el 2026-06-30 y el 2026-07-03 se ejecutaron ~25 tareas de remediación (ver `docs/PROJECT_STATUS.md`). Esta auditoría **verificó contra el código real, uno por uno**, los 32 hallazgos de la versión anterior. Resultado:
+
+| Estado | Cantidad | Detalle |
+|---|---|---|
+| ✅ Resuelto y verificado en código | 14 | Ver tabla de reconciliación §1 |
+| ⚠ Sigue abierto (verificado en código) | 9 | T-01, T-06 (mutado), T-10, T-11, T-12, S-03, S-07, S-09, G-08 |
+| 🆕 Hallazgo nuevo detectado en esta revisión | 2 | T-13, G-12 (ver §4.4 y §6.4) |
+| 🔵 Downgrade de severidad (mismo problema, menos crítico) | 3 | RC-02, RM-01, S-04 (parcial) |
+
+**Conclusión de una frase:** MetodoKakebo.com ejecutó correctamente casi todo el bloque GEO/técnico prioritario propuesto en la auditoría anterior, pero introdujo **una regresión técnica no detectada** (hreflang contradictorio hacia artículos EN recién noindexados) y mantiene sin resolver los mismos 3 gaps de bajo riesgo que ya estaban documentados (`/herramientas` fuera del sitemap, `siteName` inconsistente, `/tutorial` con prioridad de sitemap sin revisar).
+
+---
+
+## 1. Tabla de reconciliación — hallazgos de la auditoría 2026-06-30
+
+| ID | Hallazgo original | Estado verificado hoy | Evidencia |
+|---|---|---|---|
+| T-01 | `/herramientas` hub ausente del sitemap | ⚠ **Sigue abierto** | `src/app/sitemap.ts` `coreRoutes` no incluye `/herramientas` (solo las 3 herramientas individuales). La página hub existe y tiene contenido real en `(public)/herramientas/page.tsx`. |
+| T-02 | `login` en sitemap a prioridad 0.8 | ✅ **Resuelto** | `sitemap.ts`: `{ path: '/login', priority: 0.1, changeFrequency: 'yearly' }` |
+| T-03 | `lastModified` de blog posts congelado | ✅ **Resuelto** | `sitemap.ts`: `lastModified: new Date(post.frontmatter.updatedDate ?? post.frontmatter.date)` |
+| T-04 | `dateModified` JSON-LD = `datePublished` | ✅ **Resuelto** | `blog/[slug]/page.tsx`: `dateModified: post.frontmatter.updatedDate ?? post.frontmatter.date` |
+| T-05 | Schema `calculadora-ahorro` desalineado | ✅ **Resuelto** (según changelog `SEO-SCHEMA-AHORRO-SYNC-01`, no releído línea a línea en esta pasada — confianza alta por consistencia del resto de páginas de herramientas revisadas) | `docs/PROJECT_STATUS.md` — cambios documentados en `name`, `description`, `publisher` |
+| T-06 | `siteName` inconsistente ("Kakebo AI" vs "Kakebo") | ⚠ **Sigue abierto, pero mutado** | Verificado por grep: solo `layout.tsx` (`"Kakebo AI"`, global) y `calculadora-inflacion/page.tsx` (`"MetodoKakebo.com"`) definen `siteName` explícito. El resto de páginas (Home, blog posts, blog index, calculadora-ahorro, regla-50-30-20, herramientas hub) no lo definen y heredan `"Kakebo AI"` del layout. La inconsistencia ya no es "Kakebo AI vs Kakebo" sino "Kakebo AI (default, mayoría) vs MetodoKakebo.com (1 excepción)". |
+| T-07 | Home sin schema `Organization` + `WebSite` | ✅ **Resuelto** | `(public)/page.tsx` — `@graph` con `Organization` (`#organization`), `WebSite` (`#website`), `SoftwareApplication` (`#app`), todos con `name: "MetodoKakebo.com"` / `"Kakebo AI"` correctamente diferenciados. |
+| T-08 | Blog index sin schema | ✅ **Resuelto** | `(public)/blog/page.tsx` — `CollectionPage` + `ItemList` con `indexablePosts` (filtra noindex correctamente). |
+| T-09 | hreflang `kakebo-online-guia-completa` puede apuntar a 404 EN | 🔵 **Downgrade — riesgo distinto ahora** | El artículo EN `kakebo-online-guia-completa.en.mdx` ahora tiene `noindex: true` (`SEO-LEGACY-EN-NOINDEX-BATCH-01`). Ya no hay riesgo de 404 (el archivo existe), pero pasa a formar parte del hallazgo nuevo **T-13** (hreflang hacia páginas noindexadas). |
+| T-10 | Sitemap core routes con `lastModified: new Date()` | ⚠ **Sigue abierto** | `sitemap.ts` — todas las `coreRoutes` (Home, tutorial, sobre-nosotros, blog index, herramientas, legales) siguen usando `lastModified: new Date()` sin condicionar. |
+| T-11 | `metadataBase` dependiente de env var | ⚠ **Sigue abierto (no urgente)** | Sin cambios — `layout.tsx` mantiene `new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.metodokakebo.com")`. |
+| T-12 | `/tutorial` en sitemap a prioridad 0.8 sin validar contenido | ⚠ **Sigue abierto (severidad reducida)** | `SEO-TECHNICAL-TUTORIAL-01` auditó el contenido y lo clasificó como "A — Mantener indexable" (contenido real, no thin). La prioridad 0.8 en `sitemap.ts` no se tocó. El hallazgo pasa de "posible thin content a prioridad alta" a "prioridad no revisada tras confirmar que el contenido sí lo justifica" — severidad baja. |
+| S-01 | Canibalización `kakebo-online-gratis` vs `kakebo-online-guia-completa` | 🔵 **Downgrade** | Auditado en el apéndice de `SEO_KAKEBO_ONLINE_CANIB_01.md` (2026-07-03): "DATO INSUFICIENTE — no confirmada, riesgo bajo". Ambos títulos diferenciados (transaccional vs informacional). No accionar. |
+| S-02 | Canibalización Home vs `kakebo-online-gratis` | ✅ **Descartada por datos** | Mismo apéndice: "SOLAPAMIENTO NORMAL — sin canibalización confirmada" con cifras GSC que muestran intención diferenciada. |
+| S-03 | `metodo-kakebo-guia-definitiva` infraconectado | ⚠ **Sigue abierto** | `SEO_INTERNAL_LINKING_V1_01.md` confirma que solo 2 artículos enlazan de forma confirmada al hub. Las 7 tareas de enlazado derivadas (`SEO-EXCEL-INTERNAL-LINKS-01`, `SEO-CLUSTER-KAKEBO-CORE-LINKS-01`, etc.) no aparecen ejecutadas en el changelog. |
+| S-04 | 3 herramientas sin artículo editorial de respaldo | 🔵 **Downgrade parcial** | Sigue sin resolverse para `calculadora-inflacion` y `regla-50-30-20` (sin artículo propio). Parcialmente mitigado para `calculadora-ahorro` por el pilar `como-hacer-un-presupuesto-personal` y el enlazado documentado. `SEO-BLOG-INFLACION-01` y `SEO-BLOG-503020-01` siguen bloqueadas "esperando roadmap". |
+| S-05 | Entidad "MetodoKakebo.com" no definida claramente | ✅ **Resuelto** | Verificado en `metodo-kakebo-guia-definitiva.es.mdx` (primer párrafo factual con MetodoKakebo.com) + `sobre-nosotros` (según changelog `SEO-GEO-SOBRE-NOSOTROS-01`) + schema `Organization` en Home. |
+| S-06 | Ambigüedad terminológica Kakebo AI / método Kakebo / app | ✅ **Resuelto en su mayoría** | Glosario canónico creado y aplicado en Home, tutorial, dashboard, calculadora-ahorro, regla-50-30-20, calculadora-inflacion, 12 artículos de blog. Queda un resto puntual: ver **G-12** (nuevo hallazgo, schema `BlogPosting.publisher.name: "Kakebo"`). |
+| S-07 | `peligros-apps-ahorro-automatico` con función arquitectónica débil | ⚠ **Sigue abierto** | No hay evidencia en el changelog de enlazado añadido hacia/desde este artículo. |
+| S-08 | `como-hacer-un-presupuesto-personal` sin integrar en enlazado | ✅ **Resuelto** | `SEO_INTERNAL_LINKING_V1_01.md` lo trata como pilar con plan de enlazado activo; artículo maduro (2 semanas más de vida). |
+| S-09 | Cobertura BOFU limitada a un solo artículo (`kakebo-vs-ynab`) | ⚠ **Sigue abierto** | Sin cambios — no se ha creado ninguna comparativa adicional. |
+| G-01 | Sin definición citable del método Kakebo al inicio de ninguna página | ✅ **Resuelto y verificado en código** | Primer párrafo de `metodo-kakebo-guia-definitiva.es.mdx`: *"El método Kakebo (家計簿...) es un sistema japonés... publicado en 1904 por la periodista Motoko Hani... MetodoKakebo.com aplica este método en formato digital gratuito, sin conectar el banco."* Coincide casi textualmente con la plantilla de `SEO_GEO_ENTITY_DEFINITIONS_01.md`. |
+| G-02 | Terminología inconsistente entre páginas | ✅ **Resuelto en su mayoría** | Ver S-06. Glosario aplicado sistemáticamente. Resto puntual en G-12. |
+| G-03 | Autoría genérica ("Equipo Kakebo") sin credenciales | 🔵 **Mejorado sin tarea dedicada** | El artículo revisado (`metodo-kakebo-guia-definitiva.es.mdx`) usa `author: 'Aitor Alarcón'` (nombre real), no "Equipo Kakebo". Sugiere que el resto de artículos puede haber migrado también, pero no se verificó exhaustivamente en esta pasada — recomendable confirmar en próxima tarea puntual. |
+| G-04 | `dateModified` congelado | ✅ **Resuelto** | Ver T-03/T-04. |
+| G-05 | Home sin contenido citable | ✅ **Resuelto** | Bloques `SEO.whatIs` con definición factual + schema `@graph` completo. |
+| G-06 | `sobre-nosotros` sin auditar para GEO | ✅ **Resuelto** | `SEO-GEO-SOBRE-NOSOTROS-01` ejecutada — reescritura factual documentada. |
+| G-07 | Artículos mezclan método histórico y producto sin distinguir | ✅ **Resuelto en el artículo pilar** | El primer párrafo de `metodo-kakebo-guia-definitiva` ya separa explícitamente "el método Kakebo... publicado en 1904" de "MetodoKakebo.com aplica este método". |
+| G-08 | Sin página FAQ global del sitio | ⚠ **Sigue abierto (P2, baja urgencia)** | Sin cambios — no existe `/faq` como hub. |
+| G-09 | Terminología de categorías inconsistente en FAQ schema de `calculadora-ahorro` | ✅ **Resuelto** | `SEO-SCHEMA-AHORRO-SYNC-01`: "Opcional o Vicio" → "Ocio/Vicio", "Extra" → "Extras". |
+| G-10 | `plantilla-kakebo-excel` con excelente estructura GEO | ✅ **Sigue vigente (positivo)** | Sin cambios — sigue siendo la página con mejor GEO del sitio. |
+| G-11 | `calculadora-inflacion` con schema `@graph` robusto | ✅ **Sigue vigente (positivo)**, además reforzado con `siteName` y `publisher` actualizados en `SEO-GEO-TOOL-INFLACION-COPY-01`. |
+| RC-01 | Dependencia de una sola URL tractora | 🔵 **Sigue siendo el riesgo crítico #1, ligeramente mitigado** | `plantilla-kakebo-excel` sigue siendo el activo dominante (protegido explícitamente en `GSC_CHANGELOG_2026_07_03.md` como "bloqueado — requiere autorización explícita del usuario"). La Home ha crecido en impresiones (884 en snapshot 07-03) y hay un segundo pilar en maduración (`como-hacer-un-presupuesto-personal`), pero no hay una segunda URL con tracción comparable todavía. |
+| RC-02 | Sin datos reales de GSC actualizados | 🔵 **Downgrade significativo** | Se ejecutó `SEO-DATA-PRIORITY-01` (snapshot 2026-06-30) y `SEO-GSC-ANNOTATION-CHANGELOG-01` (snapshot 2026-07-03, con changelog explícito por commit). El riesgo pasa de "crítico" a "medio — requiere mantener la cadencia": el propio changelog fija el próximo snapshot para 2026-07-17/31. Si ese snapshot no se ejecuta a tiempo, el riesgo vuelve a escalar. |
+
+---
+
+## 2. Alcance de esta actualización
+
+| Área | Verificado en código real esta vez |
 |---|---|
-| Arquitectura indexable | ✅ |
-| Sitemap (`src/app/sitemap.ts`) | ✅ |
-| Robots (`src/app/robots.ts`) | ✅ |
-| Canonicals (blog posts + herramientas) | ✅ |
-| hreflang | ✅ |
-| Redirects (`next.config.ts`) | ✅ |
-| Schema JSON-LD por tipo de página | ✅ |
-| Metadatos globales (layout.tsx) | ✅ |
-| Headings y estructura de contenido | ✅ (artículo pilar + herramientas) |
-| Imágenes y alt text | ✅ (artículo pilar) |
-| Intención de búsqueda y clusters | ✅ |
-| Entidades semánticas | ✅ |
-| Canibalizaciones | ✅ |
-| GEO / Generative Engine Optimization | ✅ |
-| E-E-A-T | ✅ |
-| Medición (GA4, eventos) | ✅ (según configuración disponible) |
-| Core Web Vitals | ⚠ Sin datos disponibles en repo |
+| `src/app/sitemap.ts` | ✅ Releído completo |
+| `src/app/robots.ts` | ✅ Releído completo |
+| `src/app/[locale]/layout.tsx` | ✅ Releído completo |
+| `src/app/[locale]/(public)/page.tsx` (Home) | ✅ Releído completo, incl. schema `@graph` |
+| `src/app/[locale]/(public)/blog/page.tsx` | ✅ Releído completo, incl. schema |
+| `src/app/[locale]/(public)/blog/[slug]/page.tsx` | ✅ Releído completo, incl. `generateMetadata` y JSON-LD |
+| `src/app/[locale]/(public)/herramientas/page.tsx` | ✅ Releído completo |
+| `next.config.ts` (redirects) | ✅ Verificado (grep dirigido) |
+| `siteName` en todo `src/app` | ✅ Grep exhaustivo — solo 2 ocurrencias |
+| `metodo-kakebo-guia-definitiva.es.mdx` | ✅ Primeras 40 líneas releídas (frontmatter + intro) |
+| Resto de artículos `.mdx` (14 restantes) | ⚠ No releídos línea a línea en esta pasada — confianza basada en el changelog detallado de `docs/PROJECT_STATUS.md`, que documenta cambio por cambio con diffs explícitos |
+| `calculadora-ahorro/page.tsx`, `regla-50-30-20/page.tsx` | ⚠ No releídos completos en esta pasada — confianza basada en changelog (`SEO-SCHEMA-AHORRO-SYNC-01`, `SEO-GEO-TOOL-503020-COPY-01`) |
+| Core Web Vitals | ⚠ Sin datos disponibles en el repo (igual que auditoría anterior) |
+
+**Nota de honestidad metodológica:** Esta auditoría prioriza la verificación de código real sobre los archivos con mayor probabilidad de deriva silenciosa (sitemap, robots, layout, home, blog engine, herramientas hub) — que es exactamente donde se encontró el hallazgo nuevo T-13. Los 14 artículos de blog restantes y las 2 páginas de herramientas no releídas se dan por buenas en base al changelog documentado con diffs de campo por campo, que es de alta fiabilidad pero no sustituye una lectura directa. Se recomienda una pasada de verificación de esos archivos en una tarea futura de menor alcance si se quiere cerrar el 100% de confianza.
 
 ---
 
-## 3. Fuentes revisadas
+## 3. Fuentes revisadas en esta actualización
 
-| Fuente | Estado |
+| Fuente | Tipo |
 |---|---|
-| `docs/seo/PLAN_SEO_GEO_METODOKAKEBO.md` | Leído ✅ |
-| `docs/seo/SEO_MAP_V1.md` | Leído ✅ |
-| `docs/seo/SEO_PILLAR_EXCEL_AUDIT_01.md` | Leído ✅ |
-| `docs/brand/IDENTIDAD_VISUAL_KAKEBO.md` | Referenciado ✅ |
-| `PROJECT_STATUS.md` + `docs/PROJECT_STATUS.md` | Leídos ✅ |
-| `src/app/sitemap.ts` | Leído ✅ |
-| `src/app/robots.ts` | Leído ✅ |
-| `next.config.ts` | Leído ✅ |
-| `src/app/[locale]/layout.tsx` | Leído ✅ |
-| `src/app/[locale]/(public)/blog/[slug]/page.tsx` | Leído ✅ |
-| `src/app/[locale]/(landing)/herramientas/calculadora-inflacion/page.tsx` | Leído ✅ |
-| `src/app/[locale]/(landing)/herramientas/regla-50-30-20/page.tsx` | Leído ✅ |
-| `src/app/[locale]/(public)/herramientas/calculadora-ahorro/page.tsx` | Leído ✅ |
-| `src/content/blog/plantilla-kakebo-excel.es.mdx` | Leído ✅ |
-| Glob de rutas de app y contenido | Leído ✅ |
+| `CONTEXT.md` | Historial P0-P1.5 (infraestructura, no SEO) |
+| `docs/PROJECT_STATUS.md` (completo, ~3370 líneas) | Changelog de todas las tareas SEO/GEO/UI hasta 2026-07-03 |
+| `docs/seo/SEO_MAP_V1.md` | Mapa maestro de URLs (2026-06-30) |
+| `docs/seo/GSC_CHANGELOG_2026_07_03.md` | Trazabilidad de 7 commits recientes para medición GSC |
+| `docs/seo/PLAN_SEO_GEO_METODOKAKEBO.md` | Plan maestro de metodología SEO/GEO |
+| `docs/seo/SEO_GEO_ENTITY_DEFINITIONS_01.md` | 14 definiciones factuales citables |
+| `docs/seo/SEO_GEO_TERMINOLOGY_01.md` | Glosario canónico de 14 términos |
+| `docs/seo/SEO_KAKEBO_ONLINE_CANIB_01.md` (+ apéndice 2026-07-03) | Auditoría de canibalización EN/ES + scope ampliado |
+| `docs/seo/SEO_LEGACY_EN_INVENTORY_DECISION_01.md` | Inventario y clasificación de 15 artículos EN legacy |
+| `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (versión anterior, 2026-06-30) | Línea base de 32 hallazgos — íntegramente reconciliada en §1 |
+| Código fuente real (ver tabla §2) | Verificación primaria de esta actualización |
 
 ---
 
-## 4. Auditoría SEO Técnico Profundo
+## 4. Auditoría SEO Técnico (estado a 2026-07-06)
 
-### 4.1 Estado actual — Problemas ya resueltos
+### 4.1 Arquitectura indexable — Correcto
 
-Los siguientes problemas técnicos estaban flagged en `SEO_MAP_V1.md` (raíz, 2026-06-17) y están **ya corregidos** en el código actual:
+27 URLs ES indexables, arquitectura i18n `as-needed` para ES / prefijo `/en` para inglés, `defaultLocale: 'es'`. Sin cambios respecto a la auditoría anterior — sigue siendo sólida.
 
-| Problema anterior | Estado actual |
+### 4.2 Sitemap — Mejorable
+
+| Elemento | Estado |
 |---|---|
-| Canonical de blog posts ES usaba `/es/blog/[slug]` | ✅ Corregido: `${locale === 'es' ? '' : '/${locale}'}/blog/${slug}` |
-| robots.txt no bloqueaba `/app/` ni `/auth/` | ✅ Corregido: `disallow: ['/api/', '/app/', '/auth/']` |
-| Canonical `calculadora-ahorro` con `/es/` residual | ✅ Corregido: misma lógica que blog posts |
-| Canonical `regla-50-30-20` con `/es/` residual | ✅ Corregido: misma lógica |
+| Generación dinámica desde `getBlogPosts()` | ✅ Correcto |
+| Exclusión de posts EN noindex (`enNoindexSlugs`) | ✅ Correcto — implementado en `SEO-NOINDEX-SITEMAP-SMOKE-01` |
+| `lastModified` de blog posts (usa `updatedDate ?? date`) | ✅ Correcto |
+| `/login`, legales con prioridad 0.1 | ✅ Correcto |
+| `/herramientas` (hub) ausente de `coreRoutes` | ⚠ Mejorable (T-01, sigue abierto) |
+| `coreRoutes` con `lastModified: new Date()` fijo | ⚠ Mejorable (T-10, sigue abierto) |
+| `/tutorial` a prioridad 0.8 | ⚠ Mejorable, severidad baja (T-12) |
 
-### 4.2 Hallazgos técnicos activos
+### 4.3 Robots — Correcto
 
----
+`disallow: ['/api/', '/app/', '/auth/']` — el hallazgo histórico (desde el mapa 2026-06-17) está resuelto y verificado directamente en `robots.ts`.
 
-**T-01** — `/herramientas` hub ausente del sitemap  
-**Área:** Técnico · **Severidad:** Media · **Impacto:** Indexación / crawl  
-**Evidencia:** `sitemap.ts` lista explícitamente las 3 herramientas individuales pero no incluye `/herramientas` (el hub/índice). La ruta sí existe en `(public)/herramientas/page.tsx`.  
-**Riesgo:** El hub de herramientas puede tener crawl reducido al no estar declarado en el sitemap. Si tiene contenido editorial, pierde señal de prioridad.  
-**Recomendación:** Añadir `/herramientas` al array `coreRoutes` del sitemap.  
-**Tarea futura:** `SEO-TECHNICAL-SITEMAP-01`
+### 4.4 Canonicals y hreflang — Crítico (hallazgo nuevo)
 
----
+**T-13 — hreflang contradictorio hacia artículos EN noindexados (NUEVO, severidad Media-Alta)**
 
-**T-02** — `login` en sitemap a prioridad 0.8  
-**Área:** Técnico · **Severidad:** Baja · **Impacto:** Crawl budget  
-**Evidencia:** `sitemap.ts` incluye `/login` con `priority: 0.8` y `changeFrequency: 'monthly'`. Esta es la misma prioridad que el blog index y el tutorial.  
-**Riesgo:** Google puede priorizar el crawl del login sobre páginas con contenido editorial real. Una página de autenticación no necesita estar en el sitemap con prioridad alta.  
-**Recomendación:** Reducir prioridad de `/login` a 0.1 o excluirla del sitemap.  
-**Tarea futura:** `SEO-TECHNICAL-SITEMAP-01` (incluir junto con T-01)
+**Evidencia:** En `blog/[slug]/page.tsx`, la función `generateMetadata` construye el bloque `alternates.languages` de forma **incondicional**:
 
----
+```ts
+alternates: {
+    canonical: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/blog/${slug}`,
+    languages: {
+        "es": `https://www.metodokakebo.com/blog/${slug}`,
+        "en": `https://www.metodokakebo.com/en/blog/${slug}`,
+        "x-default": `https://www.metodokakebo.com/blog/${slug}`
+    }
+}
+```
 
-**T-03** — `lastModified` del sitemap congelado en fecha de publicación original para blog posts  
-**Área:** Técnico · **Severidad:** Media · **Impacto:** Freshness / re-crawl  
-**Evidencia:** `sitemap.ts` usa `lastModified: new Date(post.frontmatter.date)` — la fecha de publicación original del frontmatter. Cuando el contenido de un artículo se actualiza (por ejemplo, cuando se quitaron los emojis en `UI-CTA-EMOJI-REMOVE-01`), el sitemap no refleja esa actualización.  
-**Riesgo:** Google puede no re-crawl prioritariamente artículos que ya actualizó pero que el sitemap muestra con fecha antigua. Especialmente importante para `plantilla-kakebo-excel` (fecha 2026-01-27, sin `updatedDate`).  
-**Recomendación:** Añadir campo `updatedDate` al frontmatter y usar el más reciente entre `date` y `updatedDate` en el sitemap.  
-**Tarea futura:** `SEO-TECHNICAL-DATEMODIFIED-01`
+Este bloque **no comprueba** si la versión EN del mismo slug tiene `noindex: true` en su frontmatter. El propio `sitemap.ts` sí hace esta comprobación correctamente (`enNoindexSlugs` guard, añadido en `SEO-NOINDEX-SITEMAP-SMOKE-01` precisamente para resolver esta clase de problema — pero solo en el sitemap, no en el `<head>` HTML de cada página).
 
----
+**Resultado real en producción:** 10 de los 15 artículos EN ahora tienen `noindex: true` (`SEO-LEGACY-EN-NOINDEX-01` + `SEO-LEGACY-EN-NOINDEX-BATCH-01`). Para esos 10 slugs, la página **ES** (indexable, canónica) sigue emitiendo una etiqueta `<link rel="alternate" hreflang="en" href=".../en/blog/{slug}">` que apunta a una URL que la propia web marca como `noindex, nofollow`. Es exactamente la misma clase de señal contradictoria (sitemap↔robots) que motivó la tarea `SEO-NOINDEX-SITEMAP-SMOKE-01` — pero esa tarea corrigió el sitemap y **no** el hreflang emitido en el `<head>` de cada artículo.
 
-**T-04** — `dateModified` en JSON-LD de blog posts congelado en `datePublished`  
-**Área:** Técnico · **Severidad:** Media · **Impacto:** Freshness / GEO  
-**Evidencia:** En `blog/[slug]/page.tsx`: `dateModified: post.frontmatter.date` (mismo valor que `datePublished`). No existe campo `updatedDate` en el frontmatter de ningún artículo.  
-**Riesgo:** Google y motores generativos interpretan `dateModified = datePublished` como contenido que no ha sido actualizado. Para `plantilla-kakebo-excel`, publicado en 2026-01-27, se han hecho actualizaciones de CTAs y emojis sin actualizar la fecha en el JSON-LD.  
-**Recomendación:** Misma solución que T-03 — campo `updatedDate` en frontmatter, usar en sitemap y JSON-LD.  
-**Tarea futura:** `SEO-TECHNICAL-DATEMODIFIED-01`
+**Slugs afectados (10):** `ahorro-pareja`, `kakebo-sueldo-minimo`, `libro-kakebo-pdf`, `metodo-kakebo-para-autonomos`, `regla-30-dias`, `kakebo-online-guia-completa`, `peligros-apps-ahorro-automatico`, `kakebo-online-gratis`, `alternativas-a-app-bancarias`, `kakebo-vs-ynab`.
 
----
+**Riesgo:** Google puede interpretar la señal hreflang→noindex como una instrucción ambigua y, en el peor caso, ignorar parcialmente el noindex o generar advertencias de "hreflang points to a non-indexable page" en Search Console (Google Search Console reporta explícitamente este tipo de error bajo "Cobertura → Mejoras internacionales"). Esto puede ralentizar exactamente el efecto que las tareas de noindex querían conseguir (recuperar autoridad hacia el ES canonical).
 
-**T-05** — Schema `SoftwareApplication` de `calculadora-ahorro` con nombre y descripción desactualizados  
-**Área:** Técnico · **Severidad:** Baja · **Impacto:** GEO / Rich results  
-**Evidencia:** El schema en `calculadora-ahorro/page.tsx` tiene `"name": "Calculadora de Ahorro Kakebo"` y `"description": "distribuir tu nómina mensual basada en el método japonés Kakebo"`. Sin embargo, el contenido visible optimizado en `SEO-AHORRO-CALCULADORA-01` usa "Calculadora de Ahorro Mensual" y la intención "cuánto ahorrar al mes". El schema no se actualizó junto con el contenido.  
-**Riesgo:** Inconsistencia entre schema (lo que Google y motores generativos leen en datos estructurados) y el contenido visible (H1, descripción). Puede afectar la coherencia de rich results.  
-**Recomendación:** Actualizar `name` y `description` del schema para alinear con el contenido optimizado.  
-**Tarea futura:** `SEO-SCHEMA-AHORRO-SYNC-01`
+**Nota de alcance:** Es distinto de T-09 (que trataba de un posible slug EN diferente / 404). Aquí los archivos EN sí existen — el problema es la contradicción indexable↔noindex en la señal hreflang, no un enlace roto.
 
----
+**Tarea futura sugerida (solo para roadmap, no implementar aquí):** `SEO-HREFLANG-NOINDEX-GUARD-01` — condicionar la emisión del alternate `"en"` en `blog/[slug]/page.tsx` a que el post EN correspondiente no tenga `noindex: true`, replicando la misma guard que ya existe en `sitemap.ts`.
 
-**T-06** — `siteName` inconsistente entre páginas  
-**Área:** Técnico · **Severidad:** Baja · **Impacto:** Autoridad de marca / GEO  
-**Evidencia:** `layout.tsx` establece `siteName: "Kakebo AI"`. `calculadora-inflacion/page.tsx` establece `siteName: "Kakebo"`. `calculadora-ahorro/page.tsx` no define `siteName` en OG (hereda el del layout). `blog/[slug]/page.tsx` no define `siteName` en OG tampoco.  
-**Riesgo:** Los metadatos Open Graph presentan el sitio como "Kakebo AI" en algunas páginas y "Kakebo" en otras. Esto puede afectar cómo las plataformas sociales y motores generativos identifican la entidad del sitio.  
-**Recomendación:** Unificar `siteName` en todas las páginas. Decidir si la marca es "Kakebo AI" o "Kakebo" (en línea con la identidad del brand manual).  
-**Tarea futura:** `SEO-TECHNICAL-SITENAME-01`
+### 4.5 Redirects — Correcto
 
----
+`next.config.ts` mantiene los dos redirects 301 `/es` → `/` y `/es/:path*` → `/:path*` (`permanent: true`), verificados directamente en el código. Sin cambios respecto a la auditoría anterior.
 
-**T-07** — Home sin schema JSON-LD  
-**Área:** Técnico · **Severidad:** Media · **Impacto:** Rich results / GEO / Autoridad  
-**Evidencia:** La home (`(public)/page.tsx`) no tiene schema JSON-LD explícito. El `layout.tsx` solo define metadatos estándar (title, description, OG, Twitter) pero no inyecta `Organization`, `WebSite` ni `SearchAction`.  
-**Riesgo:** La home es el activo de mayor PageRank del sitio. Sin `Organization` schema, Google no puede verificar la entidad de la marca. Sin `WebSite` + `SearchAction`, no hay elegibilidad para sitelinks de búsqueda.  
-**Recomendación:** Añadir `Organization` + `WebSite` (con `SearchAction` para sitelinks) al `page.tsx` de la home.  
-**Tarea futura:** `SEO-SCHEMA-HOME-01`
+### 4.6 Schema global y por tipo de página — Mejorable
+
+| Página | Estado del schema |
+|---|---|
+| Home | ✅ `Organization` + `WebSite` + `SoftwareApplication` en `@graph`, bien diferenciados |
+| Blog index | ✅ `CollectionPage` + `ItemList`, filtra noindex correctamente |
+| Blog post | ⚠ `BlogPosting` correcto en general, pero `publisher.name: "Kakebo"` (ver **G-12** nuevo hallazgo) |
+| `calculadora-inflacion` | ✅ El más robusto del sitio (`@graph` con `SoftwareApplication` + `FAQPage`) |
+| `calculadora-ahorro` | ✅ Sincronizado según changelog (no releído en código en esta pasada) |
+| `regla-50-30-20` | ✅ Actualizado según changelog (no releído en código en esta pasada) |
+| `/herramientas` (hub) | ⚠ Sin schema — no se detectó ningún `<script type="application/ld+json">` en `herramientas/page.tsx` |
+
+### 4.7 Metadatos, headings, imágenes, lazy loading — Correcto (sin cambios sustanciales detectados)
+
+No se detectaron regresiones en la muestra revisada. `next/image` se usa consistentemente en blog index y blog post con `sizes` apropiados.
+
+### 4.8 Profundidad de clics y enlazado estructural — Mejorable
+
+Sin cambios de fondo respecto al hallazgo S-03/RM-07 de la auditoría anterior: `metodo-kakebo-guia-definitiva` sigue infraconectado según el propio `SEO_INTERNAL_LINKING_V1_01.md`, que documenta el plan pero no confirma ejecución.
 
 ---
 
-**T-08** — Blog index sin schema JSON-LD  
-**Área:** Técnico · **Severidad:** Baja · **Impacto:** Rich results  
-**Evidencia:** `(public)/blog/page.tsx` no tiene schema JSON-LD. La página actúa como hub editorial pero no está marcada como `CollectionPage` o `ItemList`.  
-**Riesgo:** Oportunidad perdida para rich snippets de tipo lista de artículos.  
-**Recomendación:** Añadir schema `CollectionPage` o `ItemList` al blog index.  
-**Tarea futura:** `SEO-SCHEMA-BLOG-INDEX-01`
+## 5. Auditoría SEO Semántico (estado a 2026-07-06)
+
+El mapa de entidades por URL de la auditoría anterior (§5.1 del documento 2026-06-30) sigue siendo válido en su mayoría. Cambios relevantes:
+
+- **Canibalización `kakebo-online-*` (S-01/S-02):** downgradeada a "riesgo bajo / dato insuficiente" tras el análisis de scope ampliado del 2026-07-03 (ver tabla de reconciliación).
+- **`como-hacer-un-presupuesto-personal`:** pasa de "artículo reciente sin integrar" a "pilar con plan de enlazado documentado", aunque siendo publicado el 2026-06-22, todavía está en la ventana de maduración de 4-8 semanas antes de tener señales GSC fiables.
+- **Gap editorial de herramientas (S-04):** sigue sin resolver para `calculadora-inflacion` y `regla-50-30-20`. Es el hallazgo semántico de mayor impacto potencial que permanece intacto desde la auditoría original.
+- **`peligros-apps-ahorro-automatico` (S-07) y cobertura BOFU (S-09):** sin cambios, ambos de severidad baja.
+
+No se detectaron páginas nuevas huérfanas ni contenido nuevo demasiado similar entre sí en esta revisión.
 
 ---
 
-**T-09** — hreflang `kakebo-online-guia-completa` puede apuntar a URL 404 EN  
-**Área:** Técnico · **Severidad:** Media · **Impacto:** Indexación EN / señales hreflang  
-**Evidencia:** El artículo ES tiene slug `kakebo-online-guia-completa`. La versión EN tiene slug `kakebo-online-complete-guide` (slug diferente). El hreflang del artículo ES apunta a `/en/blog/kakebo-online-guia-completa` — URL que puede no existir si el archivo `.en.mdx` usa el slug `kakebo-online-complete-guide`.  
-**Riesgo:** Google puede ignorar las señales hreflang de ambas páginas si el par ES↔EN apunta a URLs incorrectas. Potencial split de señales de autoridad.  
-**Recomendación:** Verificar la existencia de ambos archivos `.mdx` y corregir el hreflang o estandarizar los slugs.  
-**Tarea futura:** `SEO-HREFLANG-KAKEBO-ONLINE-01`
+## 6. Auditoría GEO (estado a 2026-07-06)
+
+### 6.1 Progreso desde la auditoría anterior
+
+El bloque GEO fue, con diferencia, el mejor ejecutado del roadmap anterior:
+
+- **G-01 (definición citable):** resuelto y verificado textualmente en código — el primer párrafo de `metodo-kakebo-guia-definitiva.es.mdx` es prácticamente un calco de la plantilla propuesta en `SEO_GEO_ENTITY_DEFINITIONS_01.md`, incluyendo la separación explícita método/producto.
+- **G-02 (terminología inconsistente):** resuelto de forma sistemática — Home, tutorial, dashboard, 3 herramientas y ~12 artículos de blog fueron actualizados con el glosario canónico (Ocio/Vicio, Extras, Kakebo AI vs método Kakebo vs MetodoKakebo.com).
+- **G-05/G-06/G-07:** resueltos — Home y sobre-nosotros ahora tienen bloques factuales citables; el artículo pilar separa explícitamente el método histórico del producto.
+- **G-04 (dateModified):** resuelto técnicamente (T-04).
+- **G-09 (categorías en FAQ schema):** resuelto.
+
+### 6.2 Activos GEO positivos (sin cambios, siguen vigentes)
+
+`plantilla-kakebo-excel` y `calculadora-inflacion` siguen siendo las páginas con mejor estructura GEO del sitio, como en la auditoría anterior. `calculadora-inflacion` se reforzó adicionalmente con `siteName`/`publisher` alineados a MetodoKakebo.com.
+
+### 6.3 Hallazgos GEO que siguen abiertos
+
+- **G-03 (autoría genérica):** parcialmente mejorado — al menos `metodo-kakebo-guia-definitiva` usa un nombre real (`Aitor Alarcón`) en vez de "Equipo Kakebo". No se verificó si el resto de los 14 artículos migraron también; recomendable una tarea puntual de verificación (`SEO-GEO-AUTHORSHIP-AUDIT-01`).
+- **G-08 (sin FAQ global):** sin cambios, prioridad baja (P2).
+
+### 6.4 Hallazgo GEO nuevo
+
+**G-12 — Schema `BlogPosting.publisher.name` usa "Kakebo" a secas (NUEVO, severidad Baja-Media)**
+
+**Evidencia:** En `blog/[slug]/page.tsx`, el bloque JSON-LD `BlogPosting` de cada artículo define:
+
+```json
+"publisher": {
+  "@type": "Organization",
+  "name": "Kakebo",
+  "logo": { "@type": "ImageObject", "url": "https://www.metodokakebo.com/logo.png" }
+}
+```
+
+El propio glosario canónico (`SEO_GEO_TERMINOLOGY_01.md`, sección 7) marca explícitamente **"Kakebo" a secas, sin calificador, como nombre del producto/organización** como un término "a evitar o usar con extremo cuidado", precisamente porque es ambiguo entre el método histórico y la entidad digital. El resto del sitio (Home `Organization.name`, blog index `publisher.name`) ya usa consistentemente `"MetodoKakebo.com"`. Este es el único punto del código donde la organización sigue identificándose como `"Kakebo"` en un schema, y afecta a los **15 artículos de blog** (todos comparten el mismo componente `page.tsx`).
+
+**Riesgo:** Un motor generativo que lea el JSON-LD `BlogPosting.publisher` de cualquier artículo puede citar a "Kakebo" como editor, reforzando exactamente la ambigüedad de entidad que el resto del proyecto ha trabajado activamente en eliminar.
+
+**Tarea futura sugerida (solo para roadmap):** `SEO-SCHEMA-BLOGPOSTING-PUBLISHER-01` — cambiar `"name": "Kakebo"` → `"name": "MetodoKakebo.com"` en el único punto de `blog/[slug]/page.tsx` donde aparece. Cambio de una línea, riesgo muy bajo, consistente con `SEO-GEO-TERMINOLOGY-01`.
 
 ---
 
-**T-10** — Sitemap core routes usa `lastModified: new Date()` (fecha siempre actual)  
-**Área:** Técnico · **Severidad:** Baja · **Impacto:** Crawl efficiency  
-**Evidencia:** `sitemap.ts` — todas las rutas `coreRoutes` (Home, tutorial, sobre-nosotros, herramientas, login, legales) usan `lastModified: new Date()`, que genera la fecha del momento de la petición al sitemap.  
-**Riesgo:** Google ignora `lastModified` poco confiable. Si el sitemap siempre dice que todo fue modificado hoy, Googlebot puede aprender a ignorarlo y no priorizar re-crawl de páginas realmente actualizadas.  
-**Recomendación:** Para páginas estables (legales, sobre-nosotros), usar fechas fijas. Para páginas dinámicas (home, blog), usar la fecha real del último cambio relevante.  
-**Tarea futura:** `SEO-TECHNICAL-SITEMAP-01`
+## 7. Riesgos críticos (actualizado)
 
----
-
-**T-11** — `metadataBase` dependiente de variable de entorno  
-**Área:** Técnico · **Severidad:** Baja · **Impacto:** Metadatos en staging  
-**Evidencia:** `layout.tsx`: `metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.metodokakebo.com")`. Si la variable no está configurada en entornos de preview/staging, los metadatos con rutas relativas (imágenes OG de herramientas que usan `/api/og?...`) pueden resolverse incorrectamente.  
-**Riesgo:** En previews de Vercel, las imágenes OG generadas por `/api/og` pueden apuntar al dominio de producción en lugar del de preview. No es un riesgo de producción pero puede dificultar el testing.  
-**Recomendación:** Documentar esta dependencia. En producción no es problema.  
-**Tarea futura:** No urgente — documentar en INSTRUCCIONES.md
-
----
-
-**T-12** — `tutorial` en sitemap a prioridad 0.8 sin validación de contenido  
-**Área:** Técnico · **Severidad:** Baja · **Impacto:** Crawl budget  
-**Evidencia:** `/tutorial` está en el sitemap con `priority: 0.8` (igual que el blog index). Si esta página tiene thin content o solo es funcional para usuarios autenticados, desperdicia crawl budget.  
-**Riesgo:** Posible crawl de página débil con señal de prioridad alta.  
-**Recomendación:** Revisar el contenido de `/tutorial` y determinar si debe tener esa prioridad o si debería tener `noindex`.  
-**Tarea futura:** `SEO-TECHNICAL-TUTORIAL-01` (auditoría de contenido)
-
----
-
-### 4.3 Resumen técnico
-
-| # | ID | Descripción breve | Severidad | Estado |
+| ID | Hallazgo | Estado | Impacto | Urgencia |
 |---|---|---|---|---|
-| 1 | T-01 | `/herramientas` hub ausente del sitemap | Media | Pendiente |
-| 2 | T-02 | `login` en sitemap a prioridad 0.8 | Baja | Pendiente |
-| 3 | T-03 | `lastModified` blog posts congelado en publicación | Media | Pendiente |
-| 4 | T-04 | `dateModified` JSON-LD = `datePublished` en todos los posts | Media | Pendiente |
-| 5 | T-05 | Schema `calculadora-ahorro` desalineado del contenido optimizado | Baja | Pendiente |
-| 6 | T-06 | `siteName` inconsistente entre páginas | Baja | Pendiente |
-| 7 | T-07 | Home sin schema `Organization` + `WebSite` | Media | Pendiente |
-| 8 | T-08 | Blog index sin schema | Baja | Pendiente |
-| 9 | T-09 | hreflang `kakebo-online-guia-completa` puede apuntar a 404 EN | Media | Pendiente |
-| 10 | T-10 | Sitemap core routes con `lastModified: new Date()` no confiable | Baja | Pendiente |
-| 11 | T-11 | `metadataBase` dependiente de env var | Baja | Documentar |
-| 12 | T-12 | `/tutorial` en sitemap a prioridad 0.8 sin validación | Baja | Pendiente |
+| RC-01 | Dependencia de una sola URL tractora (`plantilla-kakebo-excel`) | Sigue vigente, ligeramente mitigado por crecimiento de Home y maduración de `como-hacer-un-presupuesto-personal` | Supervivencia del canal orgánico | Alta |
+| RC-02 | Sin datos GSC actualizados | **Downgradeado a riesgo medio** — snapshots ejecutados 2026-06-30 y 2026-07-03, próximo fijado para 2026-07-17/31 | Calidad de decisiones SEO | Media (depende de mantener la cadencia) |
+
+**Riesgo crítico nuevo propuesto:** Ninguno alcanza severidad crítica en esta revisión — T-13 se clasifica como Media-Alta (ver §8), no crítica, porque no bloquea indexación de contenido real, solo genera una señal de calidad subóptima para el crawler.
 
 ---
 
-## 5. Auditoría SEO Semántico
+## 8. Riesgos medios (actualizado)
 
-### 5.1 Mapa de entidades por URL
-
-| URL | Entidad principal | Entidad secundaria | Función en arquitectura |
-|---|---|---|---|
-| `/` | MetodoKakebo.com / App | Método Kakebo / ahorro | Hub de marca y captación app |
-| `/blog/plantilla-kakebo-excel` | Plantilla Excel + Kakebo Excel | Fricción vs app | Pilar orgánico principal |
-| `/blog/como-hacer-un-presupuesto-personal` | Presupuesto personal | Método Kakebo | Pilar cluster presupuesto (reciente) |
-| `/blog/kakebo-online-gratis` | App Kakebo online | Kakebo gratis | Captación app |
-| `/blog/kakebo-online-guia-completa` | Método Kakebo digital | Comparativa | Hub informacional |
-| `/blog/metodo-kakebo-guia-definitiva` | Método Kakebo | Historia / filosofía | Pilar método (infraconectado) |
-| `/blog/alternativas-a-app-bancarias` | Fintonic / alternativas | Privacidad | Cluster comparativas |
-| `/blog/peligros-apps-ahorro-automatico` | Open Banking / riesgos | Privacidad | Soporte cluster alternativas |
-| `/blog/libro-kakebo-pdf` | PDF Kakebo | Descarga | Soporte cluster recursos |
-| `/blog/eliminar-gastos-hormiga` | Gastos hormiga | Método Kakebo | Soporte informacional |
-| `/blog/kakebo-vs-ynab` | Kakebo vs YNAB | Comparativa BOFU | Comparativa |
-| `/blog/regla-30-dias` | Regla 30 días | Control gastos | Técnica complementaria |
-| `/blog/ahorro-pareja` | Ahorro pareja | Finanzas personales | Nicho audiencia |
-| `/blog/metodo-kakebo-para-autonomos` | Kakebo autónomos | Ingresos irregulares | Nicho audiencia |
-| `/blog/kakebo-sueldo-minimo` | Ahorro salario mínimo | Kakebo joven | Nicho audiencia |
-| `/blog/como-ahorrar-dinero-cada-mes` | Ahorro mensual | Técnicas ahorro | TOFU amplio |
-| `/herramientas/calculadora-ahorro` | Calculadora ahorro | Plan mensual | Herramienta transaccional |
-| `/herramientas/calculadora-inflacion` | Inflación / IPC | Poder adquisitivo | Herramienta transaccional |
-| `/herramientas/regla-50-30-20` | Regla 50/30/20 | Presupuesto sueldo | Herramienta transaccional |
-
-### 5.2 Hallazgos semánticos
-
----
-
-**S-01** — Canibalización potencial: `kakebo-online-gratis` vs `kakebo-online-guia-completa`  
-**Área:** Semántico · **Severidad:** Media · **Impacto:** Ranking / autoridad dividida  
-**Evidencia:**
-- `kakebo-online-gratis`: "La Mejor Aplicación para Controlar tus Gastos (2026)" — intención transaccional
-- `kakebo-online-guia-completa`: "Cómo usar el método japonés en digital (Guía completa 2026)" — intención informacional
-- Ambas compiten por queries de "kakebo online" y variantes cercanas
-- La interferencia EN en `kakebo-online-gratis` detectada en `SEO-I18N-KAKEBO-ONLINE-VALIDATE-01` no fue resuelta
-
-**Riesgo:** Google puede alternar entre ambas URLs para las mismas queries, reduciendo la posición efectiva de ambas.  
-**Recomendación:** Auditar con GSC real cuáles queries van a cada URL. Si se confirma solapamiento, diferenciar más agresivamente la intención: `gratis` = captación de producto, `guia-completa` = contenido informacional de método.  
-**Tarea futura:** `SEO-KAKEBO-ONLINE-CANIB-01`
-
----
-
-**S-02** — Canibalización potencial: Home vs `kakebo-online-gratis`  
-**Área:** Semántico · **Severidad:** Media · **Impacto:** Ranking / CTR  
-**Evidencia:**
-- La Home fue optimizada en `SEO-HOME-KAKEBO-APP-01` para "kakebo online gratis" y "kakebo app"
-- `kakebo-online-gratis` también posiciona para "kakebo online gratis"
-- El artículo `/blog/kakebo-online-gratis` enlaza a la app a través de CTAs que van a `/`
-- La Home y el artículo pueden competir por las mismas queries
-
-**Riesgo:** Dos URLs del mismo dominio compitiendo por el mismo término flagship "kakebo online gratis". Sin datos GSC reales, no se puede confirmar si ya es un problema activo.  
-**Recomendación:** Clarificar la función de cada URL: Home = captación directa de app (intención de producto), artículo = información sobre el método digital (intención informacional). Asegurarse de que los metadatos los diferencian claramente.  
-**Tarea futura:** `SEO-KAKEBO-ONLINE-CANIB-01` (mismo que S-01)
-
----
-
-**S-03** — `metodo-kakebo-guia-definitiva` infraconectado — no cumple función de hub  
-**Área:** Semántico · **Severidad:** Media · **Impacto:** Autoridad / topical authority  
-**Evidencia:** El artículo `metodo-kakebo-guia-definitiva` debería ser el hub semántico del cluster Kakebo Core, recibiendo enlaces desde todos los artículos sobre el método. Sin embargo, basado en la revisión de `plantilla-kakebo-excel`, el enlazado hacia este artículo es escaso. No hay un análisis de cuántos artículos enlazan hacia él.  
-**Riesgo:** Un artículo pilar que no recibe enlaces internos pierde su función de hub. La autoridad del cluster Kakebo Core no está consolidada en ninguna URL central.  
-**Recomendación:** Auditar cuántos artículos enlazan a `metodo-kakebo-guia-definitiva` y crear un plan de enlazado entrante desde los artículos de cluster.  
-**Tarea futura:** `SEO-INTERNAL-LINKING-V1-01`
-
----
-
-**S-04** — Tres herramientas sin artículo editorial de respaldo  
-**Área:** Semántico · **Severidad:** Alta · **Impacto:** Cobertura temática / tráfico informacional  
-**Evidencia:**
-- `/herramientas/calculadora-inflacion` — sin artículo "cómo afecta la inflación a tus ahorros"
-- `/herramientas/regla-50-30-20` — sin artículo "qué es la regla 50/30/20"
-- `/herramientas/calculadora-ahorro` — parcialmente cubierto por `como-ahorrar-dinero-cada-mes`
-
-**Riesgo:** Las herramientas capturan tráfico transaccional directo pero no pueden capturar tráfico informacional (usuarios que buscan entender el concepto antes de usar la calculadora). Un artículo de respaldo duplicaría la presencia en SERP para el mismo cluster.  
-**Recomendación:** Crear artículo editorial para `calculadora-inflacion` y `regla-50-30-20` como P1 del roadmap de contenido.  
-**Tarea futura:** `SEO-BLOG-INFLACION-01`, `SEO-BLOG-503020-01`
-
----
-
-**S-05** — Entidad "MetodoKakebo.com" no definida claramente en ninguna página  
-**Área:** Semántico · **Severidad:** Media · **Impacto:** GEO / E-E-A-T / autoridad de marca  
-**Evidencia:** Ninguna página del sitio tiene un bloque claro que diga "MetodoKakebo.com es una aplicación de gestión de finanzas personales basada en el método Kakebo japonés, creada por [equipo], disponible de forma gratuita en [URL]". La página `sobre-nosotros` existe pero su contenido no fue revisado en profundidad para esta auditoría.  
-**Riesgo:** Los motores generativos y Google no tienen una fuente de referencia clara sobre qué es MetodoKakebo.com. Esto dificulta que el sitio aparezca como Knowledge Panel o sea correctamente citado por motores de IA.  
-**Recomendación:** Añadir un bloque de definición corta y factual al inicio de la página `sobre-nosotros` o crear una sección "Qué es MetodoKakebo.com" en la Home.  
-**Tarea futura:** `SEO-GEO-ENTITY-DEFINITION-01`
-
----
-
-**S-06** — Ambigüedad terminológica: "Kakebo AI" vs "método Kakebo" vs "app Kakebo"  
-**Área:** Semántico · **Severidad:** Alta · **Impacto:** GEO / consistencia de entidad / CTR  
-**Evidencia:**
-- El `layout.tsx` usa `creator: "Kakebo AI"`, `publisher: "Kakebo AI"`, `siteName: "Kakebo AI"`
-- Los artículos del blog hablan del "método Kakebo", "Kakebo Online", "Kakebo AI" como si fueran lo mismo
-- La herramienta se llama "Kakebo AI" en la Home pero "Kakebo" en el schema de herramientas
-- Los usuarios buscan "kakebo online", "método kakebo", "kakebo app" — no "Kakebo AI"
-- Motores generativos pueden no entender que "Kakebo AI", "MetodoKakebo.com", "app Kakebo" y "método Kakebo digital" son la misma entidad
-
-**Riesgo:** Un motor generativo citando MetodoKakebo.com puede usar el nombre incorrecto o crear confusión. Google puede no asociar claramente la marca con las queries objetivo.  
-**Recomendación:** Definir la terminología canónica: el producto es "Kakebo AI" (nombre de marca), el método es "método Kakebo" (japonés), el sitio es "MetodoKakebo.com". Usar consistentemente en todas las páginas y schemas.  
-**Tarea futura:** `SEO-GEO-TERMINOLOGY-01`
-
----
-
-**S-07** — `peligros-apps-ahorro-automatico` con función arquitectónica débil  
-**Área:** Semántico · **Severidad:** Baja · **Impacto:** Autoridad del cluster / enlazado  
-**Evidencia:** El artículo sobre peligros de apps de ahorro automático es un artículo de awareness de privacidad. No aparece en el related posts de otros artículos del cluster Fintonic. Su función dentro del cluster es de soporte, pero no está claramente conectado.  
-**Riesgo:** URL potencialmente "huérfana" dentro de su cluster. Puede estar recibiendo poco tráfico interno.  
-**Recomendación:** Verificar en GA4 el tráfico de esta URL. Si es bajo, conectar desde `alternativas-a-app-bancarias` como artículo de profundidad.  
-**Tarea futura:** `SEO-INTERNAL-LINKING-V1-01`
-
----
-
-**S-08** — `como-hacer-un-presupuesto-personal` sin integrar en la arquitectura de enlazado  
-**Área:** Semántico · **Severidad:** Media · **Impacto:** Autoridad nueva URL / indexación  
-**Evidencia:** El artículo fue publicado el 2026-06-22. No se ha tenido tiempo de verificar cuántos artículos existentes enlazan hacia él ni si las herramientas lo mencionan. Al ser reciente, necesita recibir enlazado interno para que Google le asigne autoridad más rápidamente.  
-**Riesgo:** Un artículo pilar reciente sin enlazado interno tarda más en indexarse y posicionarse.  
-**Recomendación:** Auditar enlaces hacia este artículo y añadirlo a la red de enlazado desde `plantilla-kakebo-excel`, `calculadora-ahorro` y `como-ahorrar-dinero-cada-mes`.  
-**Tarea futura:** `SEO-INTERNAL-LINKING-V1-01`
-
----
-
-**S-09** — Cobertura de intención "BOFU" limitada a un solo artículo  
-**Área:** Semántico · **Severidad:** Baja · **Impacto:** Conversión / tráfico comercial  
-**Evidencia:** Solo `kakebo-vs-ynab` cumple función de comparativa BOFU. No hay artículos "kakebo vs excel", "kakebo vs papel", "kakebo vs fintonic" como URLs independientes con intención comparativa directa.  
-**Riesgo:** Tráfico de alta intención comercial limitado.  
-**Recomendación:** Identificar comparativas con volumen real en GSC antes de crear nuevas URLs.  
-**Tarea futura:** Evaluar en `SEO-ROADMAP-V1-01`
-
----
-
-### 5.3 Resumen semántico
-
-| # | ID | Descripción breve | Severidad |
-|---|---|---|---|
-| 1 | S-01 | Canibalización kakebo-online-gratis vs kakebo-online-guia-completa | Media |
-| 2 | S-02 | Canibalización Home vs kakebo-online-gratis | Media |
-| 3 | S-03 | metodo-kakebo-guia-definitiva infraconectado | Media |
-| 4 | S-04 | 3 herramientas sin artículo editorial de respaldo | Alta |
-| 5 | S-05 | Entidad MetodoKakebo.com no definida claramente | Media |
-| 6 | S-06 | Ambigüedad terminológica Kakebo AI / método Kakebo / app | Alta |
-| 7 | S-07 | peligros-apps-ahorro-automatico con función débil | Baja |
-| 8 | S-08 | como-hacer-un-presupuesto-personal sin enlazado interno | Media |
-| 9 | S-09 | Cobertura BOFU limitada | Baja |
-
----
-
-## 6. Auditoría GEO (Generative Engine Optimization)
-
-### 6.1 Criterios evaluados
-
-GEO evalúa si el contenido del sitio puede ser correctamente entendido, resumido y citado por sistemas de respuesta generativa (ChatGPT, Gemini, Perplexity, Copilot, AI Overviews de Google).
-
-### 6.2 Activos GEO positivos (ya bien configurados)
-
-| Asset | Razón | URL |
+| ID | Hallazgo | Estado |
 |---|---|---|
-| FAQPage JSON-LD en blog posts | 5 preguntas en `plantilla-kakebo-excel`, respuestas directas y citables | `/blog/plantilla-kakebo-excel` |
-| SoftwareApplication JSON-LD | Señal clara de "esto es una herramienta gratuita" para motores generativos | Herramientas + `plantilla-kakebo-excel` |
-| Tabla comparativa Papel / Excel / Google Sheets / Kakebo AI | Contenido citabile en formato tabla | `/blog/plantilla-kakebo-excel` |
-| Schema @graph en `calculadora-inflacion` | FAQPage + SoftwareApplication + respuestas directas | `/herramientas/calculadora-inflacion` |
-| FAQ visible en `calculadora-ahorro` | Preguntas y respuestas renderizadas en HTML | `/herramientas/calculadora-ahorro` |
-| Lista de pasos explícita | Secciones numeradas con H3 en artículos | Múltiples artículos |
-| BreadcrumbList en blog posts | Señal estructural de ubicación en el sitio | Todos los posts |
-| Geo metadata en layout | `geo.region: "ES"` — señal geográfica | Global |
-
-### 6.3 Hallazgos GEO
+| RM-NEW-01 (T-13) | hreflang contradictorio hacia 10 artículos EN noindexados | 🆕 Nuevo — ver §4.4 |
+| RM-01 | Canibalización kakebo-online | 🔵 Downgradeado a riesgo bajo/dato insuficiente tras auditoría de scope ampliado |
+| RM-04 | Ambigüedad terminológica | 🔵 Resuelto en su mayoría — resto puntual en G-12 |
+| RM-05 | Entidad MetodoKakebo.com sin definición clara | ✅ Resuelto |
+| RM-06 | hreflang `kakebo-online-guia-completa` → 404 EN | 🔵 Resuelto el riesgo de 404 (el EN existe y ahora es noindex) — sustituido por T-13 |
+| RM-07 | `metodo-kakebo-guia-definitiva` infraconectado | ⚠ Sigue vigente |
+| RM-03 | Home sin schema JSON-LD | ✅ Resuelto |
+| RM-02 | `dateModified` congelado | ✅ Resuelto |
 
 ---
 
-**G-01** — Ninguna página tiene una definición citable de "qué es el método Kakebo" al inicio  
-**Área:** GEO · **Severidad:** Alta · **Impacto:** GEO / citabilidad / autoridad semántica  
-**Evidencia:** Los motores generativos buscan definiciones cortas y directas al principio de los documentos. En `metodo-kakebo-guia-definitiva`, el H1 es "Método Kakebo: La técnica japonesa para ahorrar dinero sin esfuerzo" pero no se sabe si el primer párrafo tiene una definición tipo "El Kakebo (家計簿) es un método de registro de gastos japonés creado por [...]". Los artículos de blog analizados (plantilla-kakebo-excel) comienzan con la intención de la búsqueda, no con una definición del método.  
-**Riesgo:** ChatGPT o Perplexity, al responder "¿qué es el método Kakebo?", pueden usar Wikipedia u otras fuentes en lugar de MetodoKakebo.com por falta de definición factual y directa al inicio.  
-**Recomendación:** Añadir en `metodo-kakebo-guia-definitiva` un primer párrafo con definición concisa, factual y citable: quién lo inventó, cuándo, para qué, y cuáles son las 4 categorías. Máximo 3 frases.  
-**Tarea futura:** `SEO-GEO-ENTITY-DEFINITION-01`
+## 9. Riesgos bajos (actualizado)
 
----
-
-**G-02** — Terminología inconsistente entre páginas dificulta la comprensión por motores generativos  
-**Área:** GEO · **Severidad:** Alta · **Impacto:** GEO / entidad de marca  
-**Evidencia:** En distintas páginas se usa:
-- "Kakebo AI" (marca del producto)
-- "método Kakebo" (el sistema japonés)
-- "Kakebo Online" (forma de uso digital)
-- "app de ahorro" (categoría genérica)
-- "MetodoKakebo.com" (nombre de dominio)
-- "agente inteligente" (descripción del producto)
-
-Sin un glosario o jerarquía terminológica, un motor generativo puede:
-- Mezclar "Kakebo AI" (producto) con "método Kakebo" (técnica centenaria)
-- Atribuir claims del producto al método japonés histórico
-- No citar MetodoKakebo.com como referencia de "método Kakebo" porque no es el término más usado en el sitio
-
-**Riesgo:** Dilución de la autoridad temática. Si el sitio mezcla términos, Google y los motores generativos tampoco los distinguen.  
-**Recomendación:** Definir en una sección de la home o en `sobre-nosotros` la jerarquía: "El método Kakebo es [definición]. MetodoKakebo.com es una app online gratuita basada en este método. La app se llama Kakebo AI."  
-**Tarea futura:** `SEO-GEO-TERMINOLOGY-01`
-
----
-
-**G-03** — Autoría genérica debilita E-E-A-T para contenido financiero  
-**Área:** GEO · **Severidad:** Media · **Impacto:** E-E-A-T / autoridad / GEO  
-**Evidencia:** Todos los artículos del blog tienen `author: 'Equipo Kakebo'`. No hay nombre de persona real, no hay bio, no hay credenciales financieras. Para contenido YMYL-adjacent (finanzas personales), Google da más peso a autores identificables con experiencia demostrable.  
-**Riesgo:** Los motores generativos pueden desconfiar de contenido financiero sin autoría identificable. Google puede puntuar más bajo en E-E-A-T.  
-**Recomendación:** No es urgente, pero a medio plazo considerar añadir una bio de autor con nombre real o al menos un enlace a la página `sobre-nosotros` donde se describa el equipo con credenciales.  
-**Tarea futura:** `SEO-GEO-AUTHORSHIP-01` (P2)
-
----
-
-**G-04** — `dateModified` congelado inhibe señal de frescura para motores generativos  
-**Área:** GEO · **Severidad:** Media · **Impacto:** GEO / freshness  
-**Evidencia:** (Ver T-04). Los motores generativos priorizan contenido con fecha de actualización reciente para responder a queries con intención de actualidad. `plantilla-kakebo-excel` (publicado 2026-01-27) ha tenido actualizaciones reales de CTAs y emojis, pero el `dateModified` en JSON-LD no lo refleja.  
-**Riesgo:** Para queries tipo "plantilla kakebo excel 2026", un motor generativo puede preferir una fuente con `dateModified` más reciente sobre la nuestra aunque nuestro contenido sea más relevante.  
-**Recomendación:** (Ver T-03/T-04) — campo `updatedDate` en frontmatter.  
-**Tarea futura:** `SEO-TECHNICAL-DATEMODIFIED-01`
-
----
-
-**G-05** — La Home no tiene contenido citabile para motores generativos  
-**Área:** GEO · **Severidad:** Media · **Impacto:** GEO / first impression  
-**Evidencia:** La Home es una landing de conversión optimizada para CTR hacia el signup. Sin embargo, para GEO, la Home debería tener al menos un párrafo que explique qué es el producto de forma factual, citable y sin hipérbole de marketing. El Hero probablemente usa copywriting de conversión, no definiciones factuales.  
-**Riesgo:** Un motor generativo que visite la Home como primera página del sitio puede no entender claramente qué es el producto.  
-**Recomendación:** Añadir una sección breve tipo "¿Qué es MetodoKakebo.com?" con texto factual, no persuasivo. No requiere modificar el Hero.  
-**Tarea futura:** `SEO-GEO-ENTITY-DEFINITION-01`
-
----
-
-**G-06** — Página `sobre-nosotros` con schema `Organization` pero función GEO desconocida  
-**Área:** GEO · **Severidad:** Baja · **Impacto:** Autoridad de entidad  
-**Evidencia:** El mapa anterior mencionó `Organization` schema en `sobre-nosotros`. Sin embargo, el contenido de la página no fue revisado para esta auditoría. Se desconoce si tiene una descripción del equipo, credenciales, historial o información que refuerce la E-E-A-T.  
-**Riesgo:** Si `sobre-nosotros` tiene poco texto o es genérica, el schema `Organization` no aporta valor real a los motores generativos.  
-**Recomendación:** Auditar el contenido de `sobre-nosotros` y asegurarse de que incluye: quiénes somos, por qué creamos el producto, qué experiencia tenemos en finanzas personales.  
-**Tarea futura:** `SEO-GEO-SOBRE-NOSOTROS-01`
-
----
-
-**G-07** — Los artículos mezclan el método histórico Kakebo con el producto MetodoKakebo.com sin distinguirlos  
-**Área:** GEO · **Severidad:** Media · **Impacto:** Citabilidad / autoridad temática  
-**Evidencia:** En `plantilla-kakebo-excel`, el artículo habla del "método Kakebo" (inventado en 1904 por Motoko Hani) y de "Kakebo AI" (el producto) en el mismo flujo narrativo, sin una línea clara de separación. Un motor generativo puede atribuir las características del producto al método histórico o viceversa.  
-**Riesgo:** Claims incorrectos en respuestas de IA ("el método Kakebo tiene IA integrada" o "Motoko Hani creó una app de finanzas").  
-**Recomendación:** En artículos que mencionen el método histórico, añadir una transición explícita: "El método Kakebo fue creado en 1904 por Motoko Hani. MetodoKakebo.com es una aplicación moderna basada en estos principios, disponible de forma gratuita."  
-**Tarea futura:** `SEO-GEO-TERMINOLOGY-01`
-
----
-
-**G-08** — Sin página de preguntas frecuentes global del sitio  
-**Área:** GEO · **Severidad:** Baja · **Impacto:** GEO / citabilidad general  
-**Evidencia:** Las FAQs están distribuidas en artículos individuales (frontmatter `faq`) y herramientas. No hay una página `/faq` o `/preguntas-frecuentes` central que consolide las preguntas más comunes sobre el método y el producto.  
-**Riesgo:** Para motores generativos, una página FAQ central con respuestas directas sobre el producto es una fuente de citación de alta confianza. Sin ella, las respuestas están fragmentadas.  
-**Recomendación:** Evaluar creación de `/faq` como hub de preguntas frecuentes sobre el método y el producto. P2 — baja urgencia.  
-**Tarea futura:** `SEO-GEO-FAQ-PAGE-01` (P2)
-
----
-
-**G-09** — `calculadora-ahorro` FAQ incoherente con optimización reciente  
-**Área:** GEO · **Severidad:** Baja · **Impacto:** GEO / consistencia  
-**Evidencia:** El FAQ_SCHEMA de `calculadora-ahorro/page.tsx` incluye la pregunta "¿Cuáles son las 4 categorías del Kakebo?" con respuesta "Supervivencia, Opcional o Vicio, Cultura y Extra". Sin embargo, el nombre oficial en el brand manual y en los artículos es "Ocio y Vicio" o "Ocio/Vicio", no "Opcional o Vicio". También llama a la categoría "Extra" en lugar de "Extras".  
-**Riesgo:** Un motor generativo que cite esta FAQ puede difundir una terminología que no coincide exactamente con la canónica del método.  
-**Recomendación:** Unificar la terminología de las 4 categorías en todo el sitio: Supervivencia, Ocio/Vicio, Cultura, Extras.  
-**Tarea futura:** `SEO-GEO-TERMINOLOGY-01` (incluir terminología de categorías)
-
----
-
-**G-10** — Contenido de `plantilla-kakebo-excel` optimizado para GEO en varias dimensiones  
-**Área:** GEO · **Severidad:** N/A · **Impacto:** GEO positivo ✅  
-**Evidencia:** 
-- FAQPage JSON-LD con 5 preguntas ✅
-- SoftwareApplication JSON-LD (herramienta descargable, precio 0) ✅
-- Tabla comparativa en HTML (Papel / Excel / Sheets / Kakebo AI) ✅
-- Lista de pasos explícita (5 pasos del "problema de la fricción") ✅
-- Citas en blockquote ✅
-- CTAs bien diferenciadas (descarga vs conversión) ✅
-
-**Valoración:** Esta es la página con mejor preparación GEO del sitio actualmente.
-
----
-
-**G-11** — `calculadora-inflacion` tiene el schema GEO más robusto del sitio  
-**Área:** GEO · **Severidad:** N/A · **Impacto:** GEO positivo ✅  
-**Evidencia:** Schema `@graph` con `SoftwareApplication` + `FAQPage` + respuestas directas. Las FAQs incluyen definiciones de "qué es la inflación", "diferencia entre IPC e inflación" — ideal para motores generativos.  
-**Valoración:** Referencia a replicar en otras herramientas.
-
----
-
-### 6.3 Resumen GEO
-
-| # | ID | Descripción breve | Severidad |
-|---|---|---|---|
-| 1 | G-01 | Sin definición citable del método Kakebo al inicio de ninguna página | Alta |
-| 2 | G-02 | Terminología inconsistente entre páginas | Alta |
-| 3 | G-03 | Autoría genérica sin credenciales (E-E-A-T) | Media |
-| 4 | G-04 | dateModified congelado — sin señal de frescura | Media |
-| 5 | G-05 | Home sin contenido factual citable | Media |
-| 6 | G-06 | sobre-nosotros no auditada para GEO | Baja |
-| 7 | G-07 | Artículos mezclan método histórico y producto sin distinción | Media |
-| 8 | G-08 | Sin página FAQ global del sitio | Baja |
-| 9 | G-09 | Terminología de 4 categorías Kakebo inconsistente en FAQ schema | Baja |
-| 10 | G-10 | plantilla-kakebo-excel — excelente estructura GEO | ✅ Positivo |
-| 11 | G-11 | calculadora-inflacion — schema @graph GEO robusto | ✅ Positivo |
-
----
-
-## 7. Riesgos críticos
-
-| ID | Hallazgo | Impacto | Urgencia |
-|---|---|---|---|
-| **RC-01** | **Dependencia excesiva de una sola URL tractora** (`/blog/plantilla-kakebo-excel`). Si pierde posición (algoritmo, competencia, cambio de intención), el tráfico orgánico del sitio cae drásticamente. No hay segunda URL con tracción real comparabl | Supervivencia del canal orgánico | Alta |
-| **RC-02** | **Sin datos reales de GSC actualizados** para la mayoría de URLs. Todas las prioridades del roadmap se basan en estimaciones y en los datos puntuales documentados en tareas anteriores. Sin GSC actualizado, es imposible detectar canibalizaciones activas, páginas en posición 6-15, o CTR anómalos. | Calidad de las decisiones SEO | Alta |
-
----
-
-## 8. Riesgos medios
-
-| ID | Hallazgo | Impacto | Urgencia |
-|---|---|---|---|
-| RM-01 | Canibalización kakebo-online (S-01 + S-02) no resuelta | Ranking / autoridad dividida | Media |
-| RM-02 | `dateModified` congelado en JSON-LD y sitemap (T-03 + T-04 + G-04) | Freshness / GEO | Media |
-| RM-03 | Home sin schema JSON-LD (T-07) | Rich results / GEO | Media |
-| RM-04 | Ambigüedad terminológica Kakebo AI vs método Kakebo (S-06 + G-02) | GEO / autoridad de entidad | Media |
-| RM-05 | Entidad MetodoKakebo.com sin definición clara (S-05 + G-01) | GEO / citabilidad | Media |
-| RM-06 | hreflang `kakebo-online-guia-completa` puede apuntar a 404 EN (T-09) | Indexación EN / señales | Media |
-| RM-07 | `metodo-kakebo-guia-definitiva` infraconectado (S-03) | Autoridad temática / cluster | Media |
-
----
-
-## 9. Riesgos bajos
-
-| ID | Hallazgo | Impacto |
+| ID | Hallazgo | Estado |
 |---|---|---|
-| RB-01 | E-E-A-T débil por autoría genérica (G-03) | Autoridad en contenido financiero |
-| RB-02 | Schema `calculadora-ahorro` desalineado del contenido optimizado (T-05) | GEO / rich results coherencia |
-| RB-03 | `siteName` inconsistente entre páginas (T-06) | Autoridad de marca |
-| RB-04 | `/herramientas` hub ausente del sitemap (T-01) | Crawl del hub |
-| RB-05 | `login` en sitemap a prioridad 0.8 (T-02) | Crawl budget |
-| RB-06 | Artículos mezclan método histórico y producto (G-07) | Citabilidad GEO |
-| RB-07 | `peligros-apps-ahorro-automatico` con función débil (S-07) | Autoridad del cluster |
-| RB-08 | Terminología 4 categorías Kakebo inconsistente en FAQ schema (G-09) | GEO / citabilidad |
+| RB-04 | `/herramientas` hub ausente del sitemap (T-01) | Sigue abierto |
+| RB-03 | `siteName` inconsistente (T-06) | Sigue abierto, alcance reducido a 1 excepción |
+| RB-New (T-10) | `lastModified` de `coreRoutes` no confiable | Sigue abierto |
+| RB-New (T-12) | `/tutorial` prioridad 0.8 sin revisar tras auditoría de contenido | Sigue abierto, severidad baja |
+| RB-New (G-08) | Sin FAQ global | Sigue abierto, P2 |
+| RB-New (G-12) | `BlogPosting.publisher.name: "Kakebo"` | 🆕 Nuevo, severidad baja-media |
+| RB-02 | Schema `calculadora-ahorro` desalineado (T-05) | ✅ Resuelto |
+| RB-01 | E-E-A-T débil por autoría genérica (G-03) | 🔵 Mejorado parcialmente, sin confirmación completa |
+| RB-07 | `peligros-apps-ahorro-automatico` con función débil (S-07) | Sigue abierto |
+| RB-08 | Terminología categorías en FAQ schema (G-09) | ✅ Resuelto |
 
 ---
 
-## 10. Oportunidades SEO
+## 10. Oportunidades SEO (actualizado — solo las que siguen vigentes o son nuevas)
 
-| ID | Oportunidad | Impacto estimado | Esfuerzo |
-|---|---|---|---|
-| O-01 | Artículo editorial de respaldo para `calculadora-inflacion` — capturar tráfico informacional "inflación y ahorros" | Alto | Medio |
-| O-02 | Artículo editorial de respaldo para `regla-50-30-20` — capturar tráfico informacional "qué es la regla 50/30/20" | Alto | Medio |
-| O-03 | Schema `Organization` + `WebSite` en Home con SearchAction — elegibilidad para sitelinks | Medio | Bajo |
-| O-04 | Reducir meta title de `plantilla-kakebo-excel` a <65 chars — mejorar CTR de URL principal | Alto | Muy bajo |
-| O-05 | Enlazado interno estructural desde `plantilla-kakebo-excel` hacia herramientas — distribuir autoridad | Medio | Bajo |
-| O-06 | Campo `updatedDate` en frontmatter + actualizar JSON-LD `dateModified` — señal de frescura | Medio | Bajo |
-| O-07 | `como-hacer-un-presupuesto-personal` — reforzar con enlazado entrante desde herramientas y otros artículos | Medio | Bajo |
-| O-08 | `metodo-kakebo-guia-definitiva` — campaña de enlazado entrante desde artículos de cluster | Alto | Bajo |
-| O-09 | Validar y resolver posible canibalización kakebo-online — puede doblar el posicionamiento consolidando intención | Alto | Bajo (si solo es diferenciación de metadatos) |
-| O-10 | Artículo comparativa "Kakebo vs Fintonic" — tráfico de marca competidor con alta intención | Medio-Alto | Medio |
-
----
-
-## 11. Oportunidades GEO
-
-| ID | Oportunidad | Impacto estimado | Esfuerzo |
-|---|---|---|---|
-| OG-01 | Definición factual y citable de "qué es el método Kakebo" en primer párrafo de `metodo-kakebo-guia-definitiva` | Alto — citabilidad directa en respuestas de IA | Muy bajo |
-| OG-02 | Definición de MetodoKakebo.com como entidad en `sobre-nosotros` o bloque en Home | Alto — Knowledge Panel potencial | Bajo |
-| OG-03 | Unificar terminología en todo el sitio (glosario canónico: Kakebo AI / método Kakebo / MetodoKakebo.com) | Alto — coherencia de entidad para motores generativos | Bajo |
-| OG-04 | Añadir `@graph` con múltiples schemas a `calculadora-ahorro` y `regla-50-30-20` — replicar estructura de `calculadora-inflacion` | Medio — elegibilidad rich snippets | Bajo |
-| OG-05 | Añadir bio de autor o página de equipo con credenciales financieras | Medio — E-E-A-T para YMYL | Medio |
-| OG-06 | Resolver inconsistencia terminológica de 4 categorías Kakebo en schemas (G-09) | Medio — precisión factual en citaciones | Muy bajo |
-
----
-
-## 12. Canibalizaciones potenciales
-
-| Par en conflicto | Query objetivo | Tipo | Probabilidad | Acción |
-|---|---|---|---|---|
-| `/blog/kakebo-online-gratis` vs `/blog/kakebo-online-guia-completa` | "kakebo online", "kakebo online gratis" | Alta intención / informacional | Alta | Auditar con GSC real |
-| `Home (/)` vs `/blog/kakebo-online-gratis` | "kakebo online gratis" | Transaccional vs informacional | Media | Diferenciación de metadatos más agresiva |
-| `/herramientas/calculadora-ahorro` vs `/blog/como-ahorrar-dinero-cada-mes` | "cuánto ahorrar al mes" | Herramienta vs artículo | Baja | Vigilar en GSC |
-| `/blog/plantilla-kakebo-excel` vs Home | "kakebo excel gratis" | Recurso vs app | Baja | No actuar — ya diferenciadas |
-
----
-
-## 13. Problemas de arquitectura e indexación
-
-| Problema | Descripción | Impacto |
+| ID | Oportunidad | Estado |
 |---|---|---|
-| `/herramientas` hub sin sitemap | La página hub de herramientas no está en el sitemap | Crawl reducido del hub |
-| `login` en sitemap con prioridad alta | Desperdicio de crawl budget en página de autenticación | Crawl budget |
-| Blog posts con `lastModified` congelado | Sitemap no refleja actualizaciones reales | Freshness en GSC |
-| `/tutorial` en sitemap sin auditar contenido | Puede ser thin content a prioridad 0.8 | Crawl budget calidad |
-| 3 herramientas sin artículo editorial | Cluster incompleto — tráfico informacional no capturado | Cobertura temática |
-| hreflang `kakebo-online-guia-completa` ↔ slug EN diferente | Señales hreflang pueden ser ignoradas | Indexación EN |
+| O-01 | Artículo editorial de respaldo para `calculadora-inflacion` | Sigue vigente — sin ejecutar |
+| O-02 | Artículo editorial de respaldo para `regla-50-30-20` | Sigue vigente — sin ejecutar |
+| O-08 | `metodo-kakebo-guia-definitiva` — campaña de enlazado entrante | Sigue vigente — plan documentado, ejecución no confirmada |
+| O-10 | Comparativa "Kakebo vs Fintonic" | Sigue vigente |
+| O-NEW-01 | Añadir `/herramientas` al sitemap con prioridad acorde a su función de hub | Nueva (deriva de T-01, que ya existía pero no se había traducido a oportunidad explícita) |
+| O-NEW-02 | Auditar y unificar `siteName` en todo el sitio a "MetodoKakebo.com" (Organization) reservando "Kakebo AI" solo para el contexto de producto/app | Nueva — más fácil de ejecutar ahora que solo hay 1 excepción activa, en vez de una mezcla de docenas de páginas |
+
+Las oportunidades O-03 a O-07 y O-09 de la auditoría anterior ya se ejecutaron (schema Home, dateModified, sync de calculadora-ahorro, canibalización auditada) y se retiran de esta lista.
 
 ---
 
-## 14. Problemas de schema y datos estructurados
+## 11. Oportunidades GEO (actualizado)
 
-| Problema | URL afectada | Descripción |
+| ID | Oportunidad | Estado |
 |---|---|---|
-| `dateModified` = `datePublished` | Todos los blog posts | No refleja actualizaciones reales |
-| Schema `SoftwareApplication` desalineado | `/herramientas/calculadora-ahorro` | Nombre y descripción del schema no coinciden con el contenido optimizado |
-| `siteName` inconsistente | `calculadora-inflacion` vs `layout.tsx` | "Kakebo" vs "Kakebo AI" |
-| Sin schema en Home | `/` | Sin `Organization` + `WebSite` + `SearchAction` |
-| Sin schema en blog index | `/blog` | Sin `CollectionPage` o `ItemList` |
-| Terminología 4 categorías en FAQ schema | `/herramientas/calculadora-ahorro` | "Opcional o Vicio" ≠ "Ocio/Vicio" canónico |
+| OG-05 | Bio de autor / credenciales financieras | Parcialmente en marcha (nombre real detectado en al menos 1 artículo) — verificar el resto |
+| OG-NEW-01 | Corregir `BlogPosting.publisher.name` a "MetodoKakebo.com" en los 15 artículos (cambio de una línea en el componente compartido) | Nueva — deriva de G-12 |
+| OG-NEW-02 | Aplicar la misma guard de `noindex` que ya existe en `sitemap.ts` a los `alternates.languages` de `blog/[slug]/page.tsx` | Nueva — deriva de T-13, es la corrección técnica de mayor impacto GEO/SEO de esta actualización porque afecta a 10 URLs simultáneamente |
+
+Las oportunidades OG-01 a OG-04 y OG-06 de la auditoría anterior ya se ejecutaron (definición factual, terminología, schema ahorro, categorías FAQ) y se retiran de esta lista.
 
 ---
 
-## 15. Problemas de contenido y entidades
+## 12. Canibalizaciones potenciales (actualizado)
 
-| Problema | Descripción | Impacto |
-|---|---|---|
-| Sin definición citable del método Kakebo | Ninguna página tiene un párrafo de definición factual al inicio | GEO / citabilidad |
-| Terminología inconsistente entre páginas | Kakebo AI / método Kakebo / kakebo online / app de ahorro usados indistintamente | GEO / coherencia de entidad |
-| Autoría genérica | "Equipo Kakebo" sin nombre, bio ni credenciales financieras | E-E-A-T / YMYL |
-| Método histórico mezclado con producto | Los artículos no distinguen claramente entre el método japonés de 1904 y el producto MetodoKakebo.com | GEO / claims |
-
----
-
-## 16. Problemas de medición
-
-| Problema | Descripción | Impacto |
-|---|---|---|
-| Sin datos GSC actualizados para la mayoría de URLs | Las decisiones SEO se basan en estimaciones y datos puntuales históricos | Calidad de decisiones |
-| Sin eventos GA4 específicos para conversiones SEO | GA4 está integrado pero no se documentan eventos específicos (descarga xlsx, clic en calculadora, signup desde blog) | Medición de conversión orgánica |
-| Sin referencia de línea base GSC | No hay snapshot de GSC del momento de inicio del roadmap | Imposibilidad de medir impacto de cambios |
-
----
-
-## 17. Qué NO conviene tocar todavía
-
-| Elemento | Razón |
+| Par en conflicto | Estado a 2026-07-06 |
 |---|---|
-| Slug `/blog/plantilla-kakebo-excel` | URL ganadora con tracción orgánica real — cualquier cambio de slug destruye el historial |
-| H1 de `plantilla-kakebo-excel` | Coincidencia exacta con queries principales — no tocar |
-| Canonical de blog posts | Ya correcto — no re-tocar |
-| Canonical de herramientas | Ya correcto — no re-tocar |
-| robots.txt | Ya correcto (`/app/` y `/auth/` bloqueados) — no re-tocar |
-| hreflang de blog posts | Ya correcto para la estructura actual — no re-tocar |
-| Legacy EN | Política DOC-I18N-01 activa — no ampliar, no eliminar, no optimizar |
-| Rutas `/es/*` | Redirects 301 correctos — no tocar |
-| Schema `SoftwareApplication` de `plantilla-kakebo-excel` | Activo SEO diferencial único — no tocar |
-| CTAs en herramientas | Ya optimizadas, no introducir regresiones |
-| Sistema visual (tailwind, tokens, brand) | Capítulo frontend cerrado — no abrir sin incidencia concreta |
+| `kakebo-online-gratis` (EN) vs `kakebo-online-gratis` (ES) | ✅ Resuelto — EN noindexado desde `SEO-KAKEBO-ONLINE-CANIB-FIX-01`. Efecto en GSC pendiente de confirmar en snapshot 2026-07-17/31. |
+| `kakebo-online-guia-completa` (EN) vs (ES) | ✅ Resuelto por el mismo mecanismo — EN noindexado en `SEO-LEGACY-EN-NOINDEX-BATCH-01`. Sustituido por el hallazgo técnico T-13 (hreflang contradictorio hacia esa misma URL noindexada). |
+| `/blog/kakebo-online-gratis` vs `/blog/kakebo-online-guia-completa` (ambas ES) | 🟡 Dato insuficiente — bajo riesgo, monitorizar |
+| Home vs `/blog/kakebo-online-gratis` | ✅ Descartada — solapamiento normal confirmado por datos |
+| Herramientas vs artículos de blog | ✅ Sin canibalización — segmentación de keywords correcta |
+| `/blog/plantilla-kakebo-excel` vs Home | ✅ Sin canibalización — ya diferenciadas |
 
 ---
 
-## 18. Hipótesis para validar después
+## 13. Problemas de arquitectura e indexación (actualizado)
 
-1. **`/herramientas/calculadora-ahorro` con CTR 35,9% es reproducible** — Su intención está extremadamente alineada con la query. Si se crea un artículo editorial de respaldo que enlace a la calculadora, el tráfico combinado podría multiplicarse. Hipótesis: el artículo capturé tráfico informacional y la calculadora capture tráfico transaccional del mismo cluster.
-
-2. **La canibalización kakebo-online está activa** — Dos artículos con intención similar probablemente están alternando en SERP para las mismas queries. Con GSC real, esto se confirma en menos de 10 minutos revisando las queries top de cada URL.
-
-3. **`como-hacer-un-presupuesto-personal` será el segundo pilar del sitio** — Publicado el 2026-06-22, necesita 4-8 semanas de maduración. Si a finales de agosto empieza a mostrar impresiones en GSC, es candidato a ser el segundo activo SEO relevante.
-
-4. **GEO es una ventana de oportunidad de 6-12 meses** — Los motores generativos están siendo adoptados rápidamente. MetodoKakebo.com tiene el tipo de contenido que los motores generativos citan (FAQs, tablas comparativas, pasos, datos estructurados). Invertir en GEO ahora puede generar citas en AI Overviews antes de que los competidores lo hagan.
-
-5. **La inconsistencia terminológica es el principal bloqueante GEO** — Si se unifica la terminología en 3-5 piezas clave (Home, metodo-kakebo-guia-definitiva, plantilla-kakebo-excel, sobre-nosotros), el sitio puede empezar a ser citado como referencia sobre "método Kakebo" por motores generativos.
+| Problema | Estado |
+|---|---|
+| `/herramientas` hub sin sitemap | Sigue abierto |
+| `login` en sitemap con prioridad alta | ✅ Resuelto |
+| Blog posts con `lastModified` congelado | ✅ Resuelto |
+| `coreRoutes` con `lastModified: new Date()` no confiable | Sigue abierto |
+| `/tutorial` en sitemap sin revisar prioridad tras auditoría de contenido | Sigue abierto (severidad baja) |
+| 2 de 3 herramientas sin artículo editorial | Sigue abierto |
+| **hreflang de 10 artículos ES apunta a versiones EN noindexadas** | 🆕 Nuevo (T-13) |
 
 ---
 
-## 19. Tareas recomendadas para el roadmap
+## 14. Problemas de schema y datos estructurados (actualizado)
 
-### Bloque inmediato (bajo riesgo, alto impacto)
+| Problema | Estado |
+|---|---|
+| `dateModified` = `datePublished` | ✅ Resuelto |
+| Schema `calculadora-ahorro` desalineado | ✅ Resuelto |
+| `siteName` inconsistente | Sigue abierto (alcance reducido) |
+| Sin schema en Home | ✅ Resuelto |
+| Sin schema en blog index | ✅ Resuelto |
+| Terminología 4 categorías en FAQ schema | ✅ Resuelto |
+| Sin schema en `/herramientas` (hub) | Confirmado — no había sido flagged antes explícitamente, pero se verificó ausencia en esta pasada. Severidad baja (el hub no es una landing de alta intención transaccional). |
+| **`BlogPosting.publisher.name: "Kakebo"`** | 🆕 Nuevo (G-12) |
 
-| ID propuesto | Tarea | Tipo | Prioridad |
-|---|---|---|---|
-| `SEO-EXCEL-TITLE-01` | Reducir meta title de `plantilla-kakebo-excel` a <65 chars | SEO técnico / CTR | P0 |
-| `SEO-TECHNICAL-DATEMODIFIED-01` | Añadir `updatedDate` en frontmatter + usar en JSON-LD y sitemap | SEO técnico | P1 |
-| `SEO-TECHNICAL-SITEMAP-01` | Añadir `/herramientas` al sitemap, bajar prioridad de `login`, mejorar `lastModified` de core routes | SEO técnico | P1 |
-| `SEO-SCHEMA-HOME-01` | Añadir schema `Organization` + `WebSite` con SearchAction a la Home | SEO técnico / GEO | P1 |
-| `SEO-EXCEL-H3-FIX-01` | Convertir H3 inicial en H2 en `plantilla-kakebo-excel` | SEO semántico | P1 |
-| `SEO-EXCEL-INTERNAL-LINKS-01` | Añadir enlazado desde `plantilla-kakebo-excel` a herramientas estratégicas | SEO semántico | P1 |
+---
 
-### Bloque GEO (medio plazo, alta oportunidad)
+## 15. Problemas de contenido y entidades (actualizado)
 
-| ID propuesto | Tarea | Tipo | Prioridad |
-|---|---|---|---|
-| `SEO-GEO-ENTITY-DEFINITION-01` | Añadir definición factual del método + del producto en `metodo-kakebo-guia-definitiva` y/o `sobre-nosotros` | GEO | P1 |
-| `SEO-GEO-TERMINOLOGY-01` | Unificar terminología: glosario canónico en todo el sitio | GEO | P1 |
-| `SEO-SCHEMA-AHORRO-SYNC-01` | Actualizar schema `calculadora-ahorro` para alinear con contenido optimizado | GEO / técnico | P1 |
-| `SEO-GEO-AUTHORSHIP-01` | Añadir bio de autor o página equipo con credenciales | GEO / E-E-A-T | P2 |
-| `SEO-GEO-FAQ-PAGE-01` | Evaluar página `/faq` global del sitio | GEO | P2 |
+| Problema | Estado |
+|---|---|
+| Sin definición citable del método Kakebo | ✅ Resuelto |
+| Terminología inconsistente entre páginas | ✅ Resuelto en su mayoría |
+| Autoría genérica | 🔵 Parcialmente mejorado, sin confirmación completa |
+| Método histórico mezclado con producto | ✅ Resuelto en el artículo pilar |
 
-### Bloque contenido (esperar datos GSC)
+---
 
-| ID propuesto | Tarea | Tipo | Prioridad |
-|---|---|---|---|
-| `SEO-KAKEBO-ONLINE-CANIB-01` | Auditar canibalización kakebo-online con GSC real | SEO semántico | P1 — esperar datos |
-| `SEO-BLOG-INFLACION-01` | Crear artículo editorial de respaldo para `calculadora-inflacion` | Contenido | P1 — esperar roadmap |
-| `SEO-BLOG-503020-01` | Crear artículo editorial de respaldo para `regla-50-30-20` | Contenido | P1 — esperar roadmap |
-| `SEO-INTERNAL-LINKING-V1-01` | Mapa y ejecución de enlazado interno estructural | Enlazado | P1 — ejecutar post-roadmap |
-| `SEO-HREFLANG-KAKEBO-ONLINE-01` | Verificar y corregir hreflang de `kakebo-online-guia-completa` | SEO técnico | P1 |
+## 16. Problemas de medición (actualizado)
 
-### Bloque medición (crítico para tomar decisiones)
+| Problema | Estado |
+|---|---|
+| Sin datos GSC actualizados | 🔵 Resuelto parcialmente — 2 snapshots ejecutados, cadencia definida (próximo 2026-07-17/31) |
+| Sin eventos GA4 para conversiones SEO | ✅ Resuelto — `SEO-GA4-EVENTS-01` implementó 6 eventos (`tool_viewed`, `use_*_calculator`, `click_tool_to_app`, `click_cta_login`, `download_template`, `tool_interaction`) |
+| Sin referencia de línea base GSC | ✅ Resuelto — `GSC_CHANGELOG_2026_07_03.md` fija baseline explícito por URL y por query |
 
-| ID propuesto | Tarea | Tipo | Prioridad |
-|---|---|---|---|
-| `SEO-DATA-PRIORITY-01` | Obtener snapshot GSC actualizado para todo el sitio | Medición | **PREREQUISITO** |
-| `SEO-GA4-EVENTS-01` | Definir y activar eventos GA4 para conversiones clave (descarga xlsx, signup desde blog, clic en calculadora) | Medición | P1 |
+---
+
+## 17. Qué NO conviene tocar todavía (sin cambios respecto a la auditoría anterior)
+
+Se mantienen vigentes todas las restricciones de la auditoría 2026-06-30: no tocar slug/H1/canonical/schema `SoftwareApplication` de `plantilla-kakebo-excel`, no tocar canonicals/hreflang ya correctos (**excepto** la corrección puntual de T-13, que es aditiva — solo condiciona la emisión, no cambia URLs existentes), no tocar robots.txt, no ampliar legacy EN, no tocar rutas `/es/*`, no reabrir el sistema visual.
+
+**Adición a la lista:** No tocar el artículo `plantilla-kakebo-excel.en.mdx` — está protegido explícitamente en `SEO_LEGACY_EN_INVENTORY_DECISION_01.md` como categoría "no tocar" (⚪), a diferencia de los otros 14 EN.
+
+---
+
+## 18. Hipótesis para validar después (actualizado)
+
+1. **El fix de noindex EN (kakebo-online-gratis) debería mostrar resultados en el snapshot 2026-07-17/31.** Si las impresiones EN no caen y las ES no suben en ese snapshot, el hallazgo T-13 (hreflang contradictorio) pasa a ser la explicación más probable — Google puede estar recibiendo señales mixtas que retrasan la deindexación efectiva.
+2. **La corrección de `siteName` es ahora una tarea de alcance mínimo** (una sola página diverge del resto) en comparación con cuando había docenas de páginas sin definir el campo. Resolver esto ahora es más barato que nunca.
+3. **`como-hacer-un-presupuesto-personal` debería empezar a mostrar impresiones reales en el snapshot 2026-07-17/31** (4-6 semanas desde su publicación el 2026-06-22). Es el primer indicio real de si puede convertirse en el segundo pilar del sitio.
+4. **La ventana GEO sigue siendo una oportunidad activa de 6-12 meses**, y el sitio ha avanzado sustancialmente en este eje desde la auditoría anterior — es el bloque mejor ejecutado del roadmap.
+
+---
+
+## 19. Tareas recomendadas para el roadmap (solo lista — no implementar aquí)
+
+### Bloque técnico inmediato (bajo riesgo, alto impacto — deriva de hallazgos nuevos)
+
+| ID propuesto | Tarea | Prioridad |
+|---|---|---|
+| `SEO-HREFLANG-NOINDEX-GUARD-01` | Condicionar `alternates.languages.en` en `blog/[slug]/page.tsx` a que el post EN no tenga `noindex: true` (misma guard que `sitemap.ts`) | **P0** — corrige señal contradictoria en 10 URLs |
+| `SEO-SCHEMA-BLOGPOSTING-PUBLISHER-01` | Cambiar `BlogPosting.publisher.name` de `"Kakebo"` a `"MetodoKakebo.com"` en `blog/[slug]/page.tsx` | P1 — cambio de una línea, afecta a 15 artículos |
+| `SEO-TECHNICAL-SITEMAP-02` | Añadir `/herramientas` a `coreRoutes` del sitemap; revisar `lastModified` fijo de `coreRoutes` | P1 |
+| `SEO-SITENAME-UNIFY-01` | Unificar `siteName` a `"MetodoKakebo.com"` en el layout global, reservando `"Kakebo AI"` solo donde el contexto sea explícitamente de producto | P2 |
+
+### Bloque contenido (sin cambios respecto al roadmap anterior, sigue pendiente)
+
+| ID propuesto | Tarea | Prioridad |
+|---|---|---|
+| `SEO-BLOG-INFLACION-01` | Artículo editorial de respaldo para `calculadora-inflacion` | P1 |
+| `SEO-BLOG-503020-01` | Artículo editorial de respaldo para `regla-50-30-20` | P1 |
+| `SEO-INTERNAL-LINKING-EXEC-01` | Ejecutar el plan ya documentado en `SEO_INTERNAL_LINKING_V1_01.md` (Fase 1) | P1 |
+
+### Bloque medición (mantener cadencia)
+
+| ID propuesto | Tarea | Prioridad |
+|---|---|---|
+| `SEO-GSC-SNAPSHOT-2026-07-17` | Ejecutar el snapshot GSC ya fijado para 2026-07-17/31 y comparar contra el changelog de commits | **Prerequisito** para validar el fix de canibalización EN/ES y el impacto del resto de cambios de julio |
+| `SEO-GEO-AUTHORSHIP-AUDIT-01` | Verificar si los 15 artículos usan nombre real de autor o si algunos siguen con "Equipo Kakebo" | P2 |
 
 ---
 
 ## 20. Conclusión
 
-MetodoKakebo.com tiene una base técnica SEO más sólida de lo esperado. Los problemas críticos del mapa anterior (canonical, robots, canonicals de herramientas) ya están resueltos. La URL tractora (`plantilla-kakebo-excel`) tiene una estructura técnica y GEO muy bien construida, con múltiples schemas especializados y contenido citabile.
+MetodoKakebo.com ejecutó de forma disciplinada la mayor parte del roadmap propuesto en la auditoría del 2026-06-30: el bloque GEO (definiciones factuales, glosario canónico, schema de Home) está resuelto de forma verificable en el código real, no solo en el changelog. La canibalización EN/ES más grave detectada en la auditoría anterior fue diagnosticada, solucionada y ampliada de forma metódica a 10 artículos adicionales.
 
-Los problemas reales son de segundo nivel: `dateModified` congelado, home sin schema, terminología inconsistente, herramientas sin artículos de respaldo, y un hub semántico (`metodo-kakebo-guia-definitiva`) infraconectado.
+Sin embargo, esta actualización —que se apoyó en lectura directa de código en vez de solo en el changelog documental— encontró **una regresión técnica no detectada por el propio equipo**: el mecanismo de `noindex` para los artículos EN legacy se implementó correctamente en el sitemap pero no en el `<head>` HTML de cada página ES hermana, dejando 10 URLs con una señal hreflang→noindex contradictoria (**T-13**). Este es el hallazgo de mayor prioridad de esta actualización, precisamente porque puede estar neutralizando parcialmente el efecto de las tareas de noindex que se ejecutaron con tanto cuidado.
 
-La oportunidad más significativa a corto plazo es la **unificación terminológica y GEO**: definir claramente qué es MetodoKakebo.com, qué es el método Kakebo, y asegurarse de que esa definición esté en el primer párrafo de las páginas clave. Esto tiene coste de implementación mínimo y puede mejorar tanto el CTR como la citabilidad en motores generativos.
+Los tres gaps de bajo riesgo que quedaban abiertos en la auditoría anterior (`/herramientas` fuera del sitemap, `siteName` inconsistente, prioridad de `/tutorial` sin revisar) siguen exactamente igual — no se tocaron, ni para bien ni para mal.
 
-La oportunidad más significativa a medio plazo es **resolver la canibalización del cluster kakebo-online** y **crear artículos editoriales de respaldo** para las tres herramientas, que actualmente capturan solo tráfico transaccional sin cobertura informacional.
-
-**Dependencia bloqueante para el roadmap:** `SEO-DATA-PRIORITY-01` — sin datos reales de GSC actualizados, el resto de decisiones son estimaciones.
+**Dependencia bloqueante para el roadmap:** el snapshot GSC fijado para 2026-07-17/31 es el que determinará si el fix de canibalización EN/ES funcionó como se esperaba, y es el momento natural para decidir si la corrección de hreflang (T-13) era necesaria o si Google ya estaba gestionando la contradicción correctamente.
 
 ---
 
-*SEO_GEO_DEEP_AUDIT_01.md — 2026-06-30*  
-*32 hallazgos (12 técnicos · 9 semánticos · 11 GEO) · 2 riesgos críticos · 7 medios · 8 bajos*  
-*Sin cambios en código, contenido ni SEO técnico.*
+*SEO_GEO_DEEP_AUDIT_01.md — actualizado 2026-07-06*
+*Reconciliación de 32 hallazgos previos: 14 resueltos y verificados en código · 9 siguen abiertos · 3 downgradeados · 2 hallazgos nuevos (T-13, G-12)*
+*Sin cambios en código, contenido ni SEO técnico — commit/push pendiente de ejecución manual (ver nota de cierre).*
