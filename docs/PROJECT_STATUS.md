@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-07 (feat(seo): normalize author identity — SEO-AUTHOR-NORMALIZATION-01)  
+**Última actualización:** 2026-07-07 (docs: close SEO Technical Sprint V1 — SEO-TECHNICAL-V1-CLOSE-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,24 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-TECHNICAL-V1-CLOSE-01 — Cierre oficial del Sprint SEO Técnico V1
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-07 |
+| **Tipo** | Documentación de cierre de fase — sin cambios en código, contenido ni configuración SEO |
+| **Documento** | `docs/seo/SEO_TECHNICAL_V1_COMPLETED.md` |
+
+**El Sprint SEO Técnico V1 queda oficialmente cerrado.** Cubre desde el mapa maestro de URLs (`SEO_MAP_V1.md`) hasta la normalización de autoría (`SEO-AUTHOR-NORMALIZATION-01`), pasando por la corrección de hreflang (T-13), unificación de `publisher` en schema (G-12), inclusión del hub `/herramientas` en sitemap y schema (T-01), corrección de `lastModified` (T-10), eliminación de enlaces internos `/es/` residuales, y la Fase 1 de enlazado interno sin tocar `plantilla-kakebo-excel`. La base SEO técnica del proyecto se considera **estable**.
+
+**Decisión de entidad fijada para todo el proyecto:** Persona = **Aitor Alarcón** (autor) · Organización = **MetodoKakebo.com** (publisher).
+
+**Se declara el inicio oficial del Sprint Contenido V1** — objetivo: incrementar la autoridad temática mediante contenido de alta calidad y ampliar la cobertura semántica del sitio. Quedan fuera del SEO técnico (y pasan a este nuevo sprint): creación de artículos nuevos, crecimiento de clusters, afiliación, estrategia editorial, LinkedIn y monetización.
+
+**Próximo hito de medición:** snapshot GSC del 2026-07-17/31 (ya fijado en `GSC_CHANGELOG_2026_07_03.md`), que valida el efecto conjunto de todo el sprint técnico antes de iniciar creación de contenido nuevo.
 
 ---
 
