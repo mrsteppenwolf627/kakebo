@@ -90,11 +90,12 @@ Estos principios no son opcionales. Cualquier tarea que los rompa debe partirse 
 
 ---
 
-### `SEO-SITEMAP-HERRAMIENTAS-01`
+### `SEO-SITEMAP-HERRAMIENTAS-01` — ✅ COMPLETADA 2026-07-07
 
 | Campo | Detalle |
 |---|---|
 | **ID** | SEO-SITEMAP-HERRAMIENTAS-01 |
+| **Estado** | ✅ Completada — commit `fix(seo): include tools hub in sitemap`. Ver `docs/PROJECT_STATUS.md` para el detalle de la corrección y `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (T-01 marcado como resuelto en su parte de sitemap; el schema del hub sigue pendiente en `SEO-SCHEMA-HERRAMIENTAS-HUB-01`). |
 | **Título** | Añadir el hub `/herramientas` a `coreRoutes` del sitemap |
 | **Descripción** | Incluir `/herramientas` en el array `coreRoutes` de `sitemap.ts` con una prioridad acorde a su función de hub (entre la de Home y la de las herramientas individuales) |
 | **Objetivo** | Cerrar el hallazgo T-01 — el hub deja de estar ausente del sitemap |

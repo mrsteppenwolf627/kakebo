@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-07 (fix(seo): unify BlogPosting publisher entity — G-12)  
+**Última actualización:** 2026-07-07 (fix(seo): include tools hub in sitemap — T-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,29 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ T-01 — Incorporación del hub /herramientas al sitemap
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-07 |
+| **Tarea** | `T-01` (roadmap `docs/seo/SEO_ROADMAP_V1.md`, tarea `SEO-SITEMAP-HERRAMIENTAS-01`) |
+| **Origen** | Hallazgo T-01 de `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` |
+| **Archivo** | `src/app/sitemap.ts` |
+| **Build** | ✅ `npm run build` — Compiled successfully, sin errores nuevos |
+
+**Causa raíz:** el array `coreRoutes` de `sitemap.ts` incluía las 3 herramientas individuales (`regla-50-30-20`, `calculadora-inflacion`, `calculadora-ahorro`) pero no el hub `/herramientas` que las agrupa, pese a ser una página indexable con contenido real. `/blog` (el otro hub del sitio) sí estaba correctamente incluido.
+
+**Fix aplicado:** se añadió una única entrada `{ path: '/herramientas', priority: 0.8, changeFrequency: 'weekly' as const }` a `coreRoutes`, justo antes de las 3 herramientas individuales. Prioridad y `changeFrequency` replican exactamente el patrón ya usado para `/blog` (el hub equivalente), quedando entre la prioridad de Home (1) y la de las herramientas individuales (0.9), coherente con su función de hub. No se ha tocado `lastModified` (deuda independiente, ver T-10 en el roadmap) ni ninguna otra ruta.
+
+**Verificado:**
+- `git diff` confirma una única línea añadida en `src/app/sitemap.ts`.
+- `npm run build` genera `/sitemap.xml` como ruta estática sin errores.
+- Inspección directa de `.next/server/app/sitemap.xml.body` tras el build: aparecen `<loc>.../herramientas</loc>` y `<loc>.../en/herramientas</loc>`, junto con las 3 herramientas individuales (ES y EN) ya existentes — ninguna URL previa desapareció (44 `<loc>` totales en el sitemap generado).
+
+**No tocado:** el resto de `coreRoutes`, `lastModified` de ninguna ruta, `robots.ts`, cualquier página o schema.
 
 ---
 
