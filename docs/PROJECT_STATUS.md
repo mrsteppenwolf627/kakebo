@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-07 (fix(seo): include tools hub in sitemap — T-01)  
+**Última actualización:** 2026-07-07 (fix(seo): improve sitemap lastModified strategy — T-10)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,36 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ T-10 — Corrección de `lastModified` en las coreRoutes del sitemap
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-07 |
+| **Tarea** | `T-10` (roadmap `docs/seo/SEO_ROADMAP_V1.md`, tarea `SEO-SITEMAP-LASTMODIFIED-01`) |
+| **Origen** | Hallazgo T-10 de `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` |
+| **Archivo** | `src/app/sitemap.ts` |
+| **Build** | ✅ `npm run build` — Compiled successfully, sin errores nuevos |
+
+**Causa raíz:** el bloque que genera las 12 `coreRoutes` (Home, tutorial, sobre-nosotros, blog index, herramientas hub + 3 individuales, login, legales) usaba `lastModified: new Date()`, evaluado en cada build. Esto marcaba las 12 rutas como "modificadas hoy" en cada despliegue, independientemente de si su contenido había cambiado — una señal de frescura falsa para Google.
+
+**Solución aplicada:** se sustituyó `new Date()` por una única constante de módulo, `CORE_ROUTES_LAST_MODIFIED`, declarada una sola vez y reutilizada para las 12 `coreRoutes`. La fecha se actualiza manualmente solo cuando el contenido real de alguna de esas páginas cambia (documentado con un comentario explícito en el propio código para que quede claro el criterio a futuros commits).
+
+**Por qué esta solución y no otra:**
+- **Descartada:** una fecha hardcodeada por ruta (12 constantes) — añade mantenimiento sin beneficio real, ya que ninguna de las 12 páginas tiene una cadencia de actualización diferenciada conocida hoy.
+- **Descartada:** derivar `lastModified` de la fecha de modificación del archivo fuente (`fs.statSync` sobre cada `page.tsx`) — introduce acoplamiento entre rutas URL y rutas de archivo, y una dependencia de sistema de archivos en tiempo de build que no aporta valor proporcional a la complejidad para páginas mayormente estáticas.
+- **Elegida:** una única constante compartida — es la solución más simple posible, no hardcodea decenas de fechas (solo una), no introduce ninguna dependencia ni lógica nueva, y es coherente con la arquitectura actual (el mismo patrón de "constante que se actualiza a mano" ya lo usa el proyecto para otros metadatos). El coste de mantenimiento es mínimo: bumpear una fecha cuando de verdad cambie contenido de una core route.
+
+**Los artículos de blog no se han tocado** — siguen usando `lastModified: new Date(post.frontmatter.updatedDate ?? post.frontmatter.date)`, verificado sin cambios en el sitemap generado (ej. `plantilla-kakebo-excel` sigue mostrando `2026-01-27`, su fecha real).
+
+**Verificado:**
+- `git diff` confirma que el cambio se limita a añadir la constante y sustituir `new Date()` por `CORE_ROUTES_LAST_MODIFIED` en el bloque de `coreRoutes`.
+- `npm run build` genera `/sitemap.xml` sin errores.
+- Inspección directa de `.next/server/app/sitemap.xml.body`: `/herramientas` (core route) muestra `<lastmod>2026-07-07T00:00:00.000Z</lastmod>` (la constante); `/blog/plantilla-kakebo-excel` (post) muestra `<lastmod>2026-01-27T00:00:00.000Z</lastmod>` (su `updatedDate`/`date` real, sin cambios); total de 44 `<loc>` en el sitemap, igual que antes del cambio.
+
+**No tocado:** `robots.ts`, la lógica de blog posts, `enNoindexSlugs`, prioridades o `changeFrequency` de ninguna ruta.
 
 ---
 

@@ -111,11 +111,12 @@ Estos principios no son opcionales. Cualquier tarea que los rompa debe partirse 
 
 ---
 
-### `SEO-SITEMAP-LASTMODIFIED-01`
+### `SEO-SITEMAP-LASTMODIFIED-01` — ✅ COMPLETADA 2026-07-07
 
 | Campo | Detalle |
 |---|---|
 | **ID** | SEO-SITEMAP-LASTMODIFIED-01 |
+| **Estado** | ✅ Completada — commit `fix(seo): improve sitemap lastModified strategy`. Solución elegida: constante compartida `CORE_ROUTES_LAST_MODIFIED` (no fecha por ruta, no lectura de filesystem). Ver `docs/PROJECT_STATUS.md` para el detalle y justificación, y `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (T-10 marcado como resuelto). |
 | **Título** | Usar fechas fijas de `lastModified` para `coreRoutes` estables |
 | **Descripción** | Sustituir `lastModified: new Date()` por una fecha fija (o derivada de un campo real de última edición) para las rutas núcleo que no cambian en cada build: Home, tutorial, sobre-nosotros, blog index, herramientas, legales |
 | **Objetivo** | Cerrar el hallazgo T-10 — dejar de enviar una señal de "modificado hoy" falsa en cada build |

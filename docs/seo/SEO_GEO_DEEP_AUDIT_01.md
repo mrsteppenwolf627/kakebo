@@ -211,7 +211,7 @@ No se detectó contenido duplicado entre artículos ES. `/tutorial` fue auditado
 | T-13 | ✅ **RESUELTO 2026-07-07** — Hreflang contradictorio hacia 10 URLs EN noindexadas. Corregido en `blog/[slug]/page.tsx` condicionando `alternates.languages.en` al `noindex` real del post EN (ver `docs/PROJECT_STATUS.md`). | Media-Alta (histórica) |
 | RM-07 | `metodo-kakebo-guia-definitiva` infraconectado como hub de cluster | Media |
 | T-01 | ✅ **RESUELTO (parte sitemap) 2026-07-07** — Hub `/herramientas` ausente del sitemap. Añadido a `coreRoutes` en `src/app/sitemap.ts` (ver `docs/PROJECT_STATUS.md`). La ausencia de schema JSON-LD en el hub sigue abierta bajo `SEO-SCHEMA-HERRAMIENTAS-HUB-01` (P2). | Baja (sitemap cerrado) |
-| T-10 | `lastModified` de `coreRoutes` no fiable (`new Date()` fijo) | Baja |
+| T-10 | ✅ **RESUELTO 2026-07-07** — `lastModified` de `coreRoutes` no fiable (`new Date()` fijo). Sustituido por una constante compartida `CORE_ROUTES_LAST_MODIFIED` en `src/app/sitemap.ts` (ver `docs/PROJECT_STATUS.md`). | Baja (histórica) |
 | RB-03 | `siteName` inconsistente (1 excepción activa) | Baja |
 
 ### 11.2 Riesgos GEO
@@ -256,7 +256,7 @@ No se detectó contenido duplicado entre artículos ES. `/tutorial` fue auditado
 | RM-07 | `metodo-kakebo-guia-definitiva` infraconectado como hub de cluster | Alto | Media | Media | Arquitectura / contenido |
 | S-EJEC-01 | Ejecutar el plan de enlazado interno ya documentado (`SEO_INTERNAL_LINKING_V1_01.md`) | Alto | Media | Media | Arquitectura |
 | T-01 | ✅ RESUELTO (parte sitemap) 2026-07-07 — Hub `/herramientas` ya está en el sitemap. Pendiente: schema JSON-LD del hub (ver `SEO-SCHEMA-HERRAMIENTAS-HUB-01`) | Bajo | ~~Baja~~ Cerrado (sitemap) | Baja | SEO técnico |
-| T-10 | `lastModified` de `coreRoutes` no fiable | Bajo | Baja | Baja | SEO técnico |
+| T-10 | ✅ RESUELTO 2026-07-07 — `lastModified` de `coreRoutes` no fiable | Bajo | ~~Baja~~ Cerrado | Baja | SEO técnico |
 | RB-03 | `siteName` inconsistente en 1 página | Bajo | Baja | Muy baja | SEO técnico |
 | S-04 | Gap editorial: `calculadora-inflacion` y `regla-50-30-20` sin artículo de respaldo | Alto (potencial) | Baja (bloqueado por datos) | Media | Contenido |
 | S-09 | Cobertura BOFU limitada a un único comparativo (`kakebo-vs-ynab`) | Medio | Baja | Media | Contenido |

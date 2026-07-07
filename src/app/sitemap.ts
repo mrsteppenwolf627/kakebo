@@ -2,6 +2,12 @@ import { MetadataRoute } from 'next'
 import { getBlogPosts } from '@/lib/blog';
 import { routing } from '@/i18n/routing';
 
+// Shared lastModified for static core routes (Home, tutorial, herramientas, legales, etc.).
+// Bump this date manually whenever the actual content of one of those pages changes —
+// do NOT replace with `new Date()`, which falsely marks every core route as "modified today"
+// on every build regardless of whether anything changed.
+const CORE_ROUTES_LAST_MODIFIED = new Date('2026-07-07');
+
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.metodokakebo.com';
     const posts = getBlogPosts();
@@ -30,7 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             const path = route.path === '' && locale === 'es' ? '' : (locale === 'es' ? route.path : `/${locale}${route.path}`);
             sitemapEntries.push({
                 url: `${baseUrl}${path}`,
-                lastModified: new Date(),
+                lastModified: CORE_ROUTES_LAST_MODIFIED,
                 changeFrequency: route.changeFrequency,
                 priority: route.priority,
                 alternates: {
