@@ -214,11 +214,12 @@ Estos principios no son opcionales. Cualquier tarea que los rompa debe partirse 
 
 ## Bloque arquitectura / enlazado interno
 
-### `SEO-INTERNAL-LINKING-EXEC-METODO-01`
+### `SEO-INTERNAL-LINKING-EXEC-METODO-01` — ✅ COMPLETADA (Fase 1) 2026-07-07
 
 | Campo | Detalle |
 |---|---|
 | **ID** | SEO-INTERNAL-LINKING-EXEC-METODO-01 |
+| **Estado** | ✅ Completada para el alcance de Fase 1 — commit `feat(seo): execute internal linking phase 1`. Hallazgo: el enlazado hacia `metodo-kakebo-guia-definitiva` ya estaba resuelto (12/13 artículos del cluster ya enlazaban, ejecutado como efecto colateral del sprint de terminología). El gap real ejecutado fue `SEO-AHORRO-INBOUND-01` (enlaces desde `como-ahorrar-dinero-cada-mes` y `regla-30-dias` hacia `calculadora-ahorro`). Ver `docs/PROJECT_STATUS.md` para el detalle completo. Los enlaces salientes desde `plantilla-kakebo-excel` (`SEO-INTERNAL-LINKING-EXEC-EXCEL-01`) siguen bloqueados, sin tocar esa URL. |
 | **Título** | Ejecutar el enlazado entrante hacia `metodo-kakebo-guia-definitiva` documentado en el plan |
 | **Descripción** | `SEO_INTERNAL_LINKING_V1_01.md` ya diseñó qué artículos deben enlazar al hub de cluster "Kakebo Core". Esta tarea ejecuta únicamente esos enlaces, uno por artículo origen, en el orden que defina el propio plan |
 | **Objetivo** | Redistribuir autoridad interna hacia el hub semántico del sitio (RM-07) |

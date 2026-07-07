@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-07 (fix(seo): improve sitemap lastModified strategy — T-10)  
+**Última actualización:** 2026-07-07 (feat(seo): execute internal linking phase 1 — S-EJEC-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,36 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ S-EJEC-01 (Fase 1) — Ejecución de enlazado interno, sin tocar `plantilla-kakebo-excel`
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-07 |
+| **Tarea** | `S-EJEC-01` (roadmap `docs/seo/SEO_ROADMAP_V1.md`, tarea `SEO-INTERNAL-LINKING-EXEC-METODO-01`) — Fase 1 del plan `docs/seo/SEO_INTERNAL_LINKING_V1_01.md`, excluyendo explícitamente `/blog/plantilla-kakebo-excel` (URL protegida, en espera del próximo snapshot GSC) |
+| **Archivos** | `src/content/blog/como-ahorrar-dinero-cada-mes.es.mdx`, `src/content/blog/regla-30-dias.es.mdx` |
+| **Build** | ✅ `npm run build` — Compiled successfully, sin errores nuevos |
+
+**Verificación previa del estado real del enlazado (antes de tocar nada):** el plan `SEO_INTERNAL_LINKING_V1_01.md` (2026-07-01) documentaba que solo 2 artículos enlazaban al hub `metodo-kakebo-guia-definitiva`. Al revisar el código actual, se confirmó que esa parte del plan **ya está resuelta**: 12 de los 13 artículos ES del cluster (todos excepto `como-hacer-un-presupuesto-personal`, que ya tiene 1 enlace aunque con prefijo `/es/` no canónico) enlazan en el body a `/blog/metodo-kakebo-guia-definitiva` con anchors correctos según el glosario ("el método Kakebo", "método Kakebo"). Este refuerzo del hub se ejecutó como efecto colateral de los commits de terminología/GEO de la semana del 2026-07-01 (`SEO-GEO-SUPPORT-*`), aunque no se documentó explícitamente como tarea de enlazado interno. **No se ha añadido ningún enlace nuevo hacia el hub en esta tarea porque ya no hace falta.**
+
+**Gap real identificado y ejecutado — `SEO-AHORRO-INBOUND-01`:** `/herramientas/calculadora-ahorro` (CTR 34,88% en su snapshot GSC, la señal más fuerte de alineación intención/contenido del sitio) solo recibía enlaces desde `plantilla-kakebo-excel` (FAQ) y `como-hacer-un-presupuesto-personal`. El plan documentaba explícitamente añadir enlaces desde `como-ahorrar-dinero-cada-mes` y `regla-30-dias` — ambos artículos hablan directamente de cuánto ahorrar cada mes, contexto ideal para la herramienta.
+
+**Enlaces añadidos (2 en total, 1 por artículo):**
+1. `src/content/blog/como-ahorrar-dinero-cada-mes.es.mdx` → `/herramientas/calculadora-ahorro`, anchor "calculadora de ahorro mensual" (anchor canónico del glosario), insertado en la sección "1. Págate a ti primero (pre-ahorro)", justo donde el texto habla de decidir qué cantidad ahorrar.
+2. `src/content/blog/regla-30-dias.es.mdx` → `/herramientas/calculadora-ahorro`, mismo anchor canónico, insertado en el "Paso 4" (evaluación tras los 30 días), a continuación de la frase que ya enlazaba a `como-ahorrar-dinero-cada-mes` — refuerza el flujo natural "evitaste el gasto → ahora decide cuánto ahorrar".
+
+**Por qué no se tocó `plantilla-kakebo-excel`:** instrucción explícita del usuario para esta tarea. Los dos enlaces que el plan asigna a ese artículo (`SEO-EXCEL-INTERNAL-LINKS-01`: → `calculadora-ahorro` en body, → `regla-50-30-20` en sección de previsión) quedan pendientes para una tarea futura posterior al próximo snapshot GSC (2026-07-17/31).
+
+**Verificado:**
+- `git diff` confirma 1 línea modificada por archivo — cada una añade una única frase con un enlace, sin tocar headings, FAQ, schema ni frontmatter.
+- Anchor "calculadora de ahorro mensual" usado como máximo 1 vez por artículo (dentro del límite de 2 del plan).
+- Ningún párrafo supera los 3 enlaces internos permitidos por el plan.
+- La ruta destino `/herramientas/calculadora-ahorro` existe en el código (`src/app/[locale]/(public)/herramientas/calculadora-ahorro/page.tsx`).
+- `npm run build` compila sin errores.
+
+**No tocado:** `plantilla-kakebo-excel` (protegido), metadata, títulos, schema, sitemap, y ningún otro artículo del cluster.
 
 ---
 
