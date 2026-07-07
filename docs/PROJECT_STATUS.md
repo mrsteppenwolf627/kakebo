@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-07 (feat(seo): execute internal linking phase 1 — S-EJEC-01)  
+**Última actualización:** 2026-07-07 (fix(seo): canonicalize remaining internal /es link — SEO-INTERNAL-LINK-CANONICAL-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,28 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-INTERNAL-LINK-CANONICAL-01 — Canonicalización de enlaces internos con prefijo /es/
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-07 |
+| **Tarea** | `SEO-INTERNAL-LINK-CANONICAL-01` — detectada durante la ejecución de `S-EJEC-01` (Fase 1 de enlazado interno) |
+| **Archivos** | `src/content/blog/como-hacer-un-presupuesto-personal.es.mdx`, `messages/es.json` |
+| **Build** | ✅ `npm run build` — Compiled successfully, sin errores nuevos |
+
+**Causa raíz:** durante `S-EJEC-01` se detectó un enlace interno con prefijo `/es/` en lugar de la URL canónica sin prefijo (la app usa locale `as-needed` para ES, por lo que `/es/...` es una ruta legacy que solo funciona vía redirect 301, no la URL canónica). Al ampliar la búsqueda a todo el contenido público se confirmó que el problema no era un enlace aislado: `como-hacer-un-presupuesto-personal.es.mdx` tenía **14 enlaces** con prefijo `/es/` (hacia `eliminar-gastos-hormiga`, `metodo-kakebo-guia-definitiva`, `kakebo-vs-ynab`, `calculadora-ahorro` ×2, `plantilla-kakebo-excel`, `metodo-kakebo-para-autonomos`, `kakebo-sueldo-minimo`, y los 5 enlaces de la sección "Artículos relacionados"), y `messages/es.json` (bloque `Landing.SEO.whatIs.p3`, renderizado en la Home) tenía **3 enlaces** más con el mismo prefijo (`calculadora-ahorro`, `tutorial`, `blog`).
+
+**Solución aplicada:** sustitución exclusiva del prefijo `](/es/` → `](/` en el artículo (14 ocurrencias) y `href=\"/es/` → `href=\"/` en `messages/es.json` (3 ocurrencias). Ningún anchor text, contenido, estructura del artículo ni ningún otro enlace se ha modificado — el cambio es únicamente la eliminación del prefijo `/es/` en cada URL destino ya existente.
+
+**Verificado:**
+- `git diff` confirma que cada línea modificada solo elimina el prefijo `/es/`; el texto del anchor y el resto de cada línea permanecen idénticos.
+- `npm run build` compila sin errores.
+- Búsqueda exhaustiva final en todo el contenido público confirmando cero coincidencias restantes: `grep -rn '](/es/' src/content/blog/*.mdx` (ES y EN), `grep -rn '"/es/' messages/*.json`, `grep -rn 'href="/es/' src/app/[locale]/(public) src/app/[locale]/(landing)`, `grep -rn '"/es/' src/components` — las cuatro búsquedas devuelven "sin coincidencias".
+
+**No tocado:** anchor text, títulos, metadata, schema, sitemap, cualquier otro enlace o artículo.
 
 ---
 

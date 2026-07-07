@@ -235,6 +235,24 @@ Estos principios no son opcionales. Cualquier tarea que los rompa debe partirse 
 
 ---
 
+### `SEO-INTERNAL-LINK-CANONICAL-01` — ✅ COMPLETADA 2026-07-07
+
+| Campo | Detalle |
+|---|---|
+| **ID** | SEO-INTERNAL-LINK-CANONICAL-01 |
+| **Título** | Corregir enlaces internos con prefijo `/es/` por su URL canónica |
+| **Descripción** | Detectada durante `S-EJEC-01`: 14 enlaces internos en `como-hacer-un-presupuesto-personal.es.mdx` y 3 en `messages/es.json` (bloque `Landing.SEO.whatIs.p3`) usaban el prefijo `/es/` en lugar de la URL canónica sin prefijo |
+| **Estado** | ✅ Completada — commit `fix(seo): canonicalize remaining internal /es link`. Sustitución exclusiva del prefijo en las 17 ocurrencias; anchor text y resto del contenido intactos. Búsqueda exhaustiva posterior en todo el contenido público (`.mdx` ES/EN, `messages/*.json`, `src/app/[locale]/(public)`, `src/app/[locale]/(landing)`, `src/components`) confirma cero coincidencias restantes de `/es/` en enlaces internos. Ver `docs/PROJECT_STATUS.md` para el detalle. |
+| **Impacto SEO** | Bajo-medio — elimina un salto de redirect 301 innecesario en 17 enlaces internos, coherente con el resto del sitio (ya sin URLs `/es/` en sitemap ni canonicals) |
+| **Impacto GEO** | Ninguno |
+| **Dificultad** | Muy baja |
+| **Riesgo** | Muy bajo |
+| **Dependencias** | Ninguna |
+| **Archivos afectados** | `src/content/blog/como-hacer-un-presupuesto-personal.es.mdx`, `messages/es.json` |
+| **Prioridad** | **P1** (ejecutada de forma reactiva al detectarse durante S-EJEC-01) |
+
+---
+
 ### `SEO-INTERNAL-LINKING-EXEC-EXCEL-01`
 
 | Campo | Detalle |

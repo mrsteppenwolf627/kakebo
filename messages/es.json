@@ -367,7 +367,7 @@
                 "title": "Qué es el método Kakebo y MetodoKakebo.com",
                 "p1": "El <bold>método Kakebo</bold> es un sistema japonés de ahorro personal creado en 1904. Se basa en registrar tus gastos, clasificarlos en cuatro categorías y reflexionar mensualmente para ajustar los hábitos de gasto. <bold>MetodoKakebo.com</bold> es la plataforma gratuita para aplicarlo online, sin conectar el banco.",
                 "p2": "En la práctica, funciona porque te obliga a hacer tres cosas que la mayoría evita: <bold>anotar</bold>, <bold>clasificar</bold> y <bold>revisar</bold>. Si eres constante, mejoras tu control del gasto casi sin darte cuenta.",
-                "p3": "Puedes calcular tu potencial de ahorro con nuestra <a href=\"/es/herramientas/calculadora-ahorro\" class=\"text-primary font-medium hover:underline\">calculadora de ahorro</a>, leer en profundidad nuestro <a href=\"/es/tutorial\" class=\"text-primary font-medium hover:underline\">tutorial Kakebo paso a paso</a>, o descubrir más trucos en el <a href=\"/es/blog\" class=\"text-primary font-medium hover:underline\">blog oficial</a>."
+                "p3": "Puedes calcular tu potencial de ahorro con nuestra <a href=\"/herramientas/calculadora-ahorro\" class=\"text-primary font-medium hover:underline\">calculadora de ahorro</a>, leer en profundidad nuestro <a href=\"/tutorial\" class=\"text-primary font-medium hover:underline\">tutorial Kakebo paso a paso</a>, o descubrir más trucos en el <a href=\"/blog\" class=\"text-primary font-medium hover:underline\">blog oficial</a>."
             },
             "categories": {
                 "title": "Las 4 categorías del método Kakebo",
