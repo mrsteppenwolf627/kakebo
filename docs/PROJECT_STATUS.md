@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-07 (fix(seo): canonicalize remaining internal /es link — SEO-INTERNAL-LINK-CANONICAL-01)  
+**Última actualización:** 2026-07-07 (feat(seo): add structured data for tools hub — SEO-SCHEMA-HERRAMIENTAS-HUB-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,53 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-SCHEMA-HERRAMIENTAS-HUB-01 — Datos estructurados para el hub /herramientas
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-07 |
+| **Tarea** | `SEO-SCHEMA-HERRAMIENTAS-HUB-01` (roadmap `docs/seo/SEO_ROADMAP_V1.md`) |
+| **Origen** | Parte pendiente del hallazgo T-01 de `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (el sitemap ya se corrigió en una tarea anterior; faltaba el schema) |
+| **Archivo** | `src/app/[locale]/(public)/herramientas/page.tsx` |
+| **Build** | ✅ `npm run build` — Compiled successfully, sin errores nuevos |
+
+**Causa raíz:** el hub `/herramientas` no tenía ningún bloque `<script type="application/ld+json">`, a diferencia del resto de páginas de mayor tráfico del sitio (Home, blog index, herramientas individuales), todas con schema estructurado.
+
+**Patrón reutilizado:** el mismo patrón ya implementado en el blog index (`src/app/[locale]/(public)/blog/page.tsx`): `CollectionPage` con `publisher` (Organization inline) y `mainEntity: ItemList`, donde cada elemento de la lista es un `ListItem` con `position`, `name`, `description` y `url`. No se ha inventado ningún tipo de schema nuevo — es una copia estructural exacta, solo cambiando la fuente de datos (artículos de blog → array `tools` ya existente en el propio componente).
+
+**Por qué este patrón es el correcto:** `/herramientas` cumple exactamente el mismo rol que `/blog` — una página hub que lista un conjunto de elementos indexables del sitio (artículos vs. herramientas). Google y los motores generativos ya reconocen ese patrón `CollectionPage` + `ItemList` en `/blog` sin errores; replicarlo tal cual en `/herramientas` mantiene la coherencia semántica del sitio sin introducir un tipo de schema adicional que aprender/validar. El `publisher` usa el mismo valor de entidad (`MetodoKakebo.com`) ya consistente en el resto del proyecto tras la corrección de G-12.
+
+**Schema implementado:**
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Herramientas Kakebo: Calculadoras de Ahorro e Inflación",
+  "description": "Calculadoras gratuitas para gestionar tus finanzas: Regla 50/30/20, Calculadora de Inflación IPC y simuladores de ahorro.",
+  "url": "https://www.metodokakebo.com/herramientas",
+  "publisher": { "@type": "Organization", "name": "MetodoKakebo.com", "url": "https://www.metodokakebo.com" },
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Calculadora Ahorro", "description": "Distribuye tu sueldo", "url": ".../herramientas/calculadora-ahorro" },
+      { "@type": "ListItem", "position": 2, "name": "Regla 50/30/20", "description": "Calculadora de presupuestos", "url": ".../herramientas/regla-50-30-20" },
+      { "@type": "ListItem", "position": 3, "name": "Calculadora Inflación", "description": "Pérdida de poder adquisitivo", "url": ".../herramientas/calculadora-inflacion" }
+    ]
+  }
+}
+```
+`name`/`description` reutilizan las traducciones ya existentes `Tools.Index.meta.title`/`.description` (las mismas que ya usaba `generateMetadata`, sin copy nuevo). Los 3 `ListItem` reutilizan el array `tools` ya definido en el componente (título, descripción y href de cada herramienta), sin datos inventados.
+
+**Verificado:**
+- `git diff` confirma que el cambio es puramente aditivo: 31 líneas insertadas, 0 eliminadas — no se ha tocado ni una línea de metadata, título, copy o JSX existente.
+- `git diff` sobre `blog/page.tsx` → sin cambios (0 líneas), confirmando que el schema del blog no se ha tocado.
+- `npm run build` compila sin errores.
+- Simulación directa en Node del objeto de schema exacto que generará el componente, usando los datos reales de `messages/es.json` (`Tools.Index.meta` + `Navigation.tools*`) — confirma la estructura `CollectionPage` + `ItemList` con las 3 herramientas y URLs absolutas correctas.
+
+**No tocado:** metadata (`generateMetadata` sin cambios), títulos, contenido visible, copy, sitemap, enlazado interno, y el schema del blog index.
 
 ---
 

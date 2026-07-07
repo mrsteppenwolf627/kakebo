@@ -26,6 +26,7 @@ export default async function ToolsIndexPage({ params }: { params: Promise<{ loc
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Tools.Index" });
   const tNav = await getTranslations({ locale, namespace: "Navigation" });
+  const tMeta = await getTranslations({ locale, namespace: "Tools.Index.meta" });
 
   const tools = [
     {
@@ -48,8 +49,38 @@ export default async function ToolsIndexPage({ params }: { params: Promise<{ loc
     }
   ];
 
+  // Same pattern as the blog index (`src/app/[locale]/(public)/blog/page.tsx`):
+  // CollectionPage + inline Organization publisher + mainEntity ItemList.
+  const baseUrl = `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}`;
+  const toolsSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": tMeta('title'),
+    "description": tMeta('description'),
+    "url": `${baseUrl}/herramientas`,
+    "publisher": {
+      "@type": "Organization",
+      "name": "MetodoKakebo.com",
+      "url": "https://www.metodokakebo.com"
+    },
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": tools.map((tool, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": tool.title,
+        "description": tool.description,
+        "url": `${baseUrl}${tool.href}`
+      }))
+    }
+  };
+
   return (
     <div className="min-h-screen bg-sakura">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(toolsSchema) }}
+      />
       <main className="pt-32 pb-20 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16 space-y-4">

@@ -152,11 +152,12 @@ Estos principios no son opcionales. Cualquier tarea que los rompa debe partirse 
 
 ---
 
-### `SEO-SCHEMA-HERRAMIENTAS-HUB-01`
+### `SEO-SCHEMA-HERRAMIENTAS-HUB-01` — ✅ COMPLETADA 2026-07-07
 
 | Campo | Detalle |
 |---|---|
 | **ID** | SEO-SCHEMA-HERRAMIENTAS-HUB-01 |
+| **Estado** | ✅ Completada — commit `feat(seo): add structured data for tools hub`. Patrón reutilizado exactamente del blog index (`CollectionPage` + `publisher` Organization + `mainEntity: ItemList`), sin inventar schema nuevo. T-01 queda cerrado por completo (sitemap + schema). Ver `docs/PROJECT_STATUS.md` y `docs/seo/SEO_GEO_DEEP_AUDIT_01.md`. |
 | **Título** | Añadir schema `CollectionPage`/`ItemList` al hub `/herramientas` |
 | **Descripción** | Replicar en `herramientas/page.tsx` el mismo patrón de schema ya implementado y validado en el blog index (`CollectionPage` con `mainEntity: ItemList` de las 3 herramientas) |
 | **Objetivo** | Dotar al hub de la misma elegibilidad de rich results que ya tiene el blog index |
