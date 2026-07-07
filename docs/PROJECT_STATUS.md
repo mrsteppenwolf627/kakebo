@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-03 (SEO-GSC-ANNOTATION-CHANGELOG-01)  
+**Última actualización:** 2026-07-07 (fix(seo): resolve hreflang contradiction for EN noindex posts — T-13)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,29 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ T-13 — Corrección hreflang contradictorio en artículos EN noindex
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-07 |
+| **Tarea** | `T-13` (roadmap `docs/seo/SEO_ROADMAP_V1.md`, tarea `SEO-HREFLANG-NOINDEX-GUARD-01`) |
+| **Origen** | Hallazgo T-13 de `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` |
+| **Archivo** | `src/app/[locale]/(public)/blog/[slug]/page.tsx` (`generateMetadata`) |
+| **Build** | ✅ `npm run build` — Compiled successfully, sin errores nuevos |
+
+**Causa raíz:** `generateMetadata` construía el bloque `alternates.languages` de forma incondicional, emitiendo siempre `hreflang="en"` para cada artículo ES, sin comprobar si la versión EN correspondiente tenía `noindex: true` en su frontmatter. `sitemap.ts` sí hacía esa comprobación (`enNoindexSlugs`, vía `SEO-NOINDEX-SITEMAP-SMOKE-01`), pero solo en el sitemap XML, no en el `<head>` HTML de cada página ES.
+
+**Fix aplicado:** Antes de construir `alternates.languages`, se llama a `getBlogPost(slug, 'en')` (la misma fuente de verdad — frontmatter del `.en.mdx`, vía `src/lib/blog.ts` — que ya usa `sitemap.ts`) y se calcula `enIsIndexable = !!enPost && !enPost.frontmatter.noindex`. La clave `"en"` del objeto `languages` solo se incluye si `enIsIndexable` es `true`. No se creó ninguna lista nueva ni se hardcodeó ningún slug — es la misma lectura de frontmatter que ya hacía el sitemap, reutilizada en el punto donde faltaba.
+
+**Verificado:**
+- 10 slugs con EN `noindex: true` (`ahorro-pareja`, `alternativas-a-app-bancarias`, `kakebo-online-gratis`, `kakebo-online-guia-completa`, `kakebo-sueldo-minimo`, `kakebo-vs-ynab`, `libro-kakebo-pdf`, `metodo-kakebo-para-autonomos`, `peligros-apps-ahorro-automatico`, `regla-30-dias`) → `alternates.languages` ya **no** incluye `"en"`.
+- 5 slugs con EN indexable (`como-ahorrar-dinero-cada-mes`, `como-hacer-un-presupuesto-personal`, `eliminar-gastos-hormiga`, `metodo-kakebo-guia-definitiva`, `plantilla-kakebo-excel`) → `alternates.languages` mantiene `"en"` exactamente igual que antes.
+- Canonical, `x-default` y el resto de metadata (title, description, OpenGraph, Twitter, robots) no se han tocado.
+
+**No tocado:** `sitemap.ts`, `robots.ts`, cualquier archivo `.mdx`, cualquier otro schema JSON-LD.
 
 ---
 

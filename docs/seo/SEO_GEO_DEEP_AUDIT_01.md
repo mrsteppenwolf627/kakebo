@@ -208,7 +208,7 @@ No se detectó contenido duplicado entre artículos ES. `/tutorial` fue auditado
 | ID | Riesgo | Severidad |
 |---|---|---|
 | RC-01 | Dependencia de una sola URL tractora (`plantilla-kakebo-excel`) sin segunda fuente consolidada | Alta |
-| T-13 | Hreflang contradictorio hacia 10 URLs EN noindexadas | Media-Alta |
+| T-13 | ✅ **RESUELTO 2026-07-07** — Hreflang contradictorio hacia 10 URLs EN noindexadas. Corregido en `blog/[slug]/page.tsx` condicionando `alternates.languages.en` al `noindex` real del post EN (ver `docs/PROJECT_STATUS.md`). | Media-Alta (histórica) |
 | RM-07 | `metodo-kakebo-guia-definitiva` infraconectado como hub de cluster | Media |
 | T-01 | Hub `/herramientas` ausente del sitemap | Baja |
 | T-10 | `lastModified` de `coreRoutes` no fiable (`new Date()` fijo) | Baja |
@@ -251,7 +251,7 @@ No se detectó contenido duplicado entre artículos ES. `/tutorial` fue auditado
 
 | ID | Descripción | Impacto | Urgencia | Dificultad | Tipo |
 |---|---|---|---|---|---|
-| T-13 | Hreflang contradictorio hacia 10 artículos EN noindexados | Alto | Alta | Muy baja | SEO técnico |
+| T-13 | ✅ RESUELTO 2026-07-07 — Hreflang contradictorio hacia 10 artículos EN noindexados | Alto | ~~Alta~~ Cerrado | Muy baja | SEO técnico |
 | G-12 | `BlogPosting.publisher.name` usa "Kakebo" en lugar de "MetodoKakebo.com" | Medio | Media | Muy baja | GEO |
 | RM-07 | `metodo-kakebo-guia-definitiva` infraconectado como hub de cluster | Alto | Media | Media | Arquitectura / contenido |
 | S-EJEC-01 | Ejecutar el plan de enlazado interno ya documentado (`SEO_INTERNAL_LINKING_V1_01.md`) | Alto | Media | Media | Arquitectura |

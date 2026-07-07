@@ -28,6 +28,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         return {};
     }
 
+    // Single source of truth for EN indexability: the `noindex` frontmatter
+    // flag on the EN post itself, read via the same lib/blog.ts helper that
+    // sitemap.ts uses to build `enNoindexSlugs`. No separate slug list here.
+    const enPost = getBlogPost(slug, 'en');
+    const enIsIndexable = !!enPost && !enPost.frontmatter.noindex;
+
     return {
         title: `${post.frontmatter.title} | Blog Kakebo`,
         description: post.frontmatter.excerpt,
@@ -52,7 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             canonical: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/blog/${slug}`,
             languages: {
                 "es": `https://www.metodokakebo.com/blog/${slug}`,
-                "en": `https://www.metodokakebo.com/en/blog/${slug}`,
+                ...(enIsIndexable && { "en": `https://www.metodokakebo.com/en/blog/${slug}` }),
                 "x-default": `https://www.metodokakebo.com/blog/${slug}`
             }
         },

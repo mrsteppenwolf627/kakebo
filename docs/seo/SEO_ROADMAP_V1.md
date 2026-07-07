@@ -48,11 +48,12 @@ Estos principios no son opcionales. Cualquier tarea que los rompa debe partirse 
 
 ## Bloque técnico
 
-### `SEO-HREFLANG-NOINDEX-GUARD-01`
+### `SEO-HREFLANG-NOINDEX-GUARD-01` — ✅ COMPLETADA 2026-07-07
 
 | Campo | Detalle |
 |---|---|
 | **ID** | SEO-HREFLANG-NOINDEX-GUARD-01 |
+| **Estado** | ✅ Completada — commit `fix(seo): resolve hreflang contradiction for EN noindex posts`. Ver `docs/PROJECT_STATUS.md` para el detalle de la corrección y `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (T-13 marcado como resuelto). |
 | **Título** | Condicionar el hreflang EN al estado noindex del post |
 | **Descripción** | En `blog/[slug]/page.tsx`, el bloque `alternates.languages` construye la entrada `"en"` de forma incondicional. Debe omitirse (o apuntar a la versión ES) cuando el post EN correspondiente tenga `noindex: true` en su frontmatter, replicando la guard `enNoindexSlugs` ya existente en `sitemap.ts`. |
 | **Objetivo** | Eliminar la señal hreflang→noindex contradictoria en 10 URLs (T-13 de la auditoría) |
