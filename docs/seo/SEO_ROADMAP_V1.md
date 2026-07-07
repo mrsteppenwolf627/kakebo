@@ -1,753 +1,481 @@
-# SEO_ROADMAP_V1 — Roadmap SEO/GEO Priorizado
+# SEO_ROADMAP_V1 — Roadmap Oficial de Ejecución SEO/GEO
 
-**Versión:** 1.0  
-**Fecha:** 2026-06-30  
-**Commit de referencia:** `db35559` (SEO-GEO-DEEP-AUDIT-01)  
-**Tipo:** Solo documentación estratégica — sin cambios en código ni contenido  
-**Siguiente fase operativa:** `SEO-DATA-PRIORITY-01` (bloquea todo lo demás)
-
----
-
-## 1. Resumen ejecutivo
-
-Este roadmap convierte los hallazgos de `SEO_MAP_V1.md` y `SEO_GEO_DEEP_AUDIT_01.md` en una secuencia clara de **26 tareas ejecutables**, organizadas en 7 bloques con dependencias explícitas.
-
-La decisión más importante del roadmap es que **nada del bloque de optimización URL por URL ni de expansión de contenido puede ejecutarse bien sin antes tener datos reales de GSC**. Cualquier acción que se tome antes es intuición, no estrategia.
-
-Los dos únicos bloques que pueden empezar de inmediato sin datos GSC son:
-- **P0 Medición**: obtener los datos que desbloquean todo lo demás
-- **P1 GEO estructural**: cambios editoriales de bajo riesgo que no requieren validación de tráfico para justificarse
-
-**Total de tareas priorizadas: 26**  
-**Tareas P0 (inmediatas): 2**  
-**Tareas P1 (pueden iniciar en paralelo): 4**  
-**Tareas bloqueadas hasta tener GSC: 12**
+**Fecha:** 2026-07-07
+**Tarea:** SEO-ROADMAP-V1-01
+**Tipo:** Solo documentación estratégica — sin cambios en código, contenido ni configuración SEO
+**Sustituye a:** `SEO_ROADMAP_V1.md` anterior (2026-06-30, commit de referencia `db35559`)
+**Basado en:** `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (2026-07-07), `docs/seo/SEO_MAP_V1.md` (2026-06-30), `docs/seo/GSC_CHANGELOG_2026_07_03.md`, `docs/PROJECT_STATUS.md`, `CONTEXT.md`, `PLAN_SEO_GEO_METODOKAKEBO.md`
+**Estado:** Única referencia vigente para priorizar el trabajo SEO/GEO a partir de hoy
 
 ---
 
-## 2. Estado actual del proyecto SEO/GEO
+# 1. Resumen ejecutivo
 
-| Dimensión | Estado | Fuente |
-|---|---|---|
-| Base técnica | Sólida — P0 técnicos anteriores resueltos | SEO_GEO_DEEP_AUDIT_01 |
-| Canonical blog posts | ✅ Correcto | SEO_GEO_DEEP_AUDIT_01 T-01 (resuelto) |
-| robots.txt | ✅ Correcto (`/app/`, `/auth/` bloqueados) | SEO_GEO_DEEP_AUDIT_01 T (resuelto) |
-| Canonical herramientas | ✅ Correcto | SEO_GEO_DEEP_AUDIT_01 (resuelto) |
-| Schema herramientas | Parcial — `calculadora-ahorro` desalineado | SEO_GEO_DEEP_AUDIT_01 T-05 |
-| Schema home | ❌ Sin `Organization` + `WebSite` | SEO_GEO_DEEP_AUDIT_01 T-07 |
-| dateModified JSON-LD | ❌ Congelado en datePublished | SEO_GEO_DEEP_AUDIT_01 T-04 |
-| Terminología GEO | ❌ Inconsistente entre páginas | SEO_GEO_DEEP_AUDIT_01 G-02 |
-| Definición entidad producto | ❌ Sin definición factual citable | SEO_GEO_DEEP_AUDIT_01 G-01 |
-| Datos GSC actualizados | ❌ No disponibles en repo | RC-02 riesgo crítico |
-| Eventos GA4 conversión SEO | ❌ Sin eventos específicos documentados | SEO_GEO_DEEP_AUDIT_01 sección 16 |
-| URL tractora orgánica | `/blog/plantilla-kakebo-excel` — activo principal | GA4 + GSC documentados |
-| Segunda URL con tracción real | `/herramientas/calculadora-ahorro` — CTR 35,9% | GSC SEO-AHORRO-CALCULADORA-01 |
-| Canibalización kakebo-online | Sin confirmar — pendiente datos GSC | SEO_GEO_DEEP_AUDIT_01 S-01/S-02 |
+## Estado actual del proyecto
 
----
+MetodoKakebo.com tiene la base técnica y GEO más sólida de su historia: definición factual del método Kakebo verificada en código, glosario terminológico aplicado de forma sistemática, schema robusto en Home/blog index/herramientas de mayor tráfico, y una disciplina de medición GSC/GA4 real y documentada. La auditoría `SEO_GEO_DEEP_AUDIT_01.md` (2026-07-07) confirma que no hay hallazgos nuevos desde el 2026-07-06 porque no ha habido commits de código en ese intervalo.
 
-## 3. Principios de priorización
+Persisten, sin embargo, dos tipos de deuda muy distintos:
 
-1. **Sin datos, no hay roadmap real.** `SEO-DATA-PRIORITY-01` es el prerrequisito que desbloquea todo el bloque de optimización URL por URL. Ejecutar optimizaciones sin GSC actualizado es trabajar a ciegas.
+1. **Deuda de ejecución de bajo riesgo y alto impacto** — correcciones ya diagnosticadas, triviales de aplicar, que llevan días documentadas sin ejecutarse (hreflang contradictorio, entidad de marca en schema, hub de herramientas fuera del sitemap).
+2. **Deuda estructural de fondo** — dependencia de una sola URL tractora, enlazado interno diseñado pero no ejecutado, y dos huecos editoriales en el cluster de herramientas.
 
-2. **Proteger antes de optimizar.** La URL `/blog/plantilla-kakebo-excel` es el activo orgánico principal. Cualquier modificación debe ser quirúrgica, aislada y con riesgo explícitamente evaluado.
+Ninguna de estas dos deudas requiere más auditoría. Requiere secuencia y disciplina de ejecución.
 
-3. **GEO primero cuando el riesgo es bajo.** Las mejoras GEO de terminología y definición de entidad son cambios editoriales sin impacto en indexación. Pueden ejecutarse sin esperar GSC.
+## Objetivos de este roadmap
 
-4. **Una tarea, un objetivo, un commit.** No mezclar tipos de tarea en el mismo commit. No optimizar tres URLs en una sola tarea.
-
-5. **No crear contenido sin hueco estratégico confirmado.** Los artículos de respaldo para herramientas esperan hasta después de tener el roadmap de contenido validado con datos.
-
-6. **El enlazado interno va después de definir la función de cada URL.** No enlazar antes de que cada URL tenga su intención claramente definida y estabilizada.
+1. Convertir los 13 hallazgos priorizados de la auditoría en tareas ejecutables, pequeñas, verificables e independientes.
+2. Ordenar la ejecución no solo por impacto, sino por riesgo, dependencias y tiempo de espera real (recrawl de Google, maduración de contenido).
+3. Dejar explícito qué no debe tocarse todavía y qué evento concreto lo desbloqueará.
+4. Servir como única fuente de verdad para decidir "qué toca ahora" en cada sesión de trabajo futura, sustituyendo la improvisación tarea a tarea.
 
 ---
 
-## 4. Dependencias entre fases
+# 2. Principios de ejecución
 
-```
-SEO-DATA-PRIORITY-01 (P0)
-│
-├── SEO-GA4-EVENTS-01 (P0)
-│
-├── [Desbloquea] Bloque P2: Optimización URL por URL
-│   ├── SEO-EXCEL-TITLE-01
-│   ├── SEO-KAKEBO-ONLINE-CANIB-01
-│   ├── SEO-CALCULADORA-AHORRO-AUDIT-01
-│   └── SEO-EXCEL-H3-FIX-01
-│
-└── [Desbloquea] Bloque P5: Expansión de contenido
-    ├── SEO-BLOG-INFLACION-01
-    └── SEO-BLOG-503020-01
+Estos principios no son opcionales. Cualquier tarea que los rompa debe partirse en tareas más pequeñas antes de ejecutarse.
 
-SEO-GEO-TERMINOLOGY-01 (P1 — no depende de GSC)
-│
-└── [Habilita] SEO-GEO-ENTITY-DEFINITION-01
-    │
-    └── [Habilita] SEO-SCHEMA-HOME-01 (con entidad definida)
-
-Bloque P2 (URLs optimizadas)
-│
-└── [Habilita] Bloque P4: Enlazado interno
-    └── SEO-INTERNAL-LINKING-V1-01
-```
-
-**Regla**: Ninguna tarea de contenido nuevo (P5) debe iniciarse si los bloques P0, P1 y P2 no están cerrados.
+1. **Una tarea, un commit.** Ninguna tarea de este roadmap debe requerir más de un commit para completarse. Si una tarea parece necesitar dos commits, es que en realidad son dos tareas.
+2. **Un objetivo por tarea.** No mezclar corrección técnica + contenido, ni SEO + GEO, ni dos URLs distintas, en la misma tarea.
+3. **Una validación explícita por tarea.** Cada tarea define de antemano cómo se comprueba que funcionó (build, lectura de código, Rich Results Test, snapshot GSC posterior, etc.). Si no se puede definir la validación, la tarea no está lista para ejecutarse.
+4. **Una actualización documental por tarea.** Cada commit debe reflejarse en `docs/PROJECT_STATUS.md` con el mismo formato que las ~40 tareas anteriores (campo, detalle, cambios, validación).
+5. **Un push por tarea.** No acumular varias tareas completadas sin pushear — cada tarea cerrada se sube a `origin/main` antes de empezar la siguiente.
+6. **No romper este flujo aunque la tarea parezca trivial.** Las correcciones de una línea (como T-13 o G-12) siguen el mismo proceso completo: commit propio, documentación propia, push propio. La disciplina de proceso es la que ha mantenido este proyecto libre de regresiones no detectadas — perderla por "es solo una línea" es exactamente el tipo de atajo que ya causó la regresión T-13 en el sprint anterior.
 
 ---
 
-## 5. Roadmap por bloques
+# 3. Backlog priorizado
 
----
+## Bloque técnico
 
-### Bloque P0 — Medición, estabilidad y riesgos críticos
-
-**Objetivo:** Obtener los datos que hacen posible tomar decisiones SEO reales. Sin P0, el resto del roadmap es un plan de intenciones, no de acciones basadas en evidencia.
-
-**Estado:** Ejecutar inmediatamente.
-
-#### P0-01 — `SEO-DATA-PRIORITY-01`
+### `SEO-HREFLANG-NOINDEX-GUARD-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Snapshot GSC actualizado para todo el sitio |
-| **Fase** | P0 |
-| **Prioridad** | CRÍTICA — prerequisito de todo lo demás |
-| **Impacto esperado** | Habilita decisiones basadas en evidencia real |
-| **Riesgo** | Ninguno — solo lectura de datos |
-| **Esfuerzo** | Bajo (exportar y documentar) |
-| **Dependencia** | Ninguna |
-| **URL / Zona** | Todo el sitio |
-| **Tipo** | Medición |
-| **Acción concreta** | Exportar desde GSC: queries top 100, páginas top 50, CTR por URL, posición media por URL, clics por URL. Documentar snapshot en `docs/seo/GSC_SNAPSHOT_YYYYMMDD.md` |
-| **Validación** | Documento con datos numéricos reales de GSC disponible en el repo |
-| **Decisión** | **Ejecutar ahora** |
+| **ID** | SEO-HREFLANG-NOINDEX-GUARD-01 |
+| **Título** | Condicionar el hreflang EN al estado noindex del post |
+| **Descripción** | En `blog/[slug]/page.tsx`, el bloque `alternates.languages` construye la entrada `"en"` de forma incondicional. Debe omitirse (o apuntar a la versión ES) cuando el post EN correspondiente tenga `noindex: true` en su frontmatter, replicando la guard `enNoindexSlugs` ya existente en `sitemap.ts`. |
+| **Objetivo** | Eliminar la señal hreflang→noindex contradictoria en 10 URLs (T-13 de la auditoría) |
+| **Impacto SEO** | Alto — corrige un error que Search Console puede reportar explícitamente en "Mejoras internacionales" y que puede retrasar la deindexación efectiva de los 10 artículos EN legacy |
+| **Impacto GEO** | Medio — mejora la fiabilidad de la señal de idioma/URL canónica que un motor generativo podría cruzar |
+| **Dificultad** | Muy baja — una condición sobre un objeto ya existente |
+| **Riesgo** | Bajo — solo condiciona la emisión, no cambia ninguna URL activa ni afecta a las 5 URLs EN que sí siguen indexadas |
+| **Dependencias** | Ninguna |
+| **Archivos afectados** | `src/app/[locale]/(public)/blog/[slug]/page.tsx` |
+| **Validación necesaria** | Renderizar `generateMetadata` para los 10 slugs afectados y confirmar que `alternates.languages.en` no aparece (o apunta a ES); confirmar que los 5 slugs EN indexables mantienen su hreflang correcto; build sin errores |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md` (nueva entrada), `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (marcar T-13 como resuelto en la próxima actualización) |
+| **Prioridad** | **P0** |
 
 ---
 
-#### P0-02 — `SEO-GA4-EVENTS-01`
+### `SEO-SCHEMA-BLOGPOSTING-PUBLISHER-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Definir y activar eventos GA4 para conversiones SEO clave |
-| **Fase** | P0 |
-| **Prioridad** | Alta |
-| **Impacto esperado** | Permite medir el valor real de cada URL orgánica (no solo clics, sino qué hace el usuario después) |
-| **Riesgo** | Bajo (solo añadir eventos, no afecta UI ni SEO) |
-| **Esfuerzo** | Bajo-Medio |
-| **Dependencia** | GA4 ya integrado (MED-01) |
-| **URL / Zona** | GA4 + `GoogleAnalytics.tsx` + blog + herramientas |
-| **Tipo** | Medición |
-| **Acción concreta** | Definir y documentar eventos a trackear: descarga `.xlsx` (clic en DownloadCTA), clic en SimpleCTA hacia login desde blog, uso de calculadoras (submit), signup completado desde blog. Implementar en los componentes relevantes. |
-| **Validación** | Eventos visibles en tiempo real de GA4 al probar las acciones |
-| **Decisión** | **Ejecutar ahora** (puede hacerse en paralelo con P0-01) |
+| **ID** | SEO-SCHEMA-BLOGPOSTING-PUBLISHER-01 |
+| **Título** | Corregir `publisher.name` en el schema BlogPosting |
+| **Descripción** | Cambiar `"name": "Kakebo"` por `"name": "MetodoKakebo.com"` en el bloque JSON-LD `BlogPosting` de `blog/[slug]/page.tsx`, alineando con el resto del sitio y con el glosario canónico del proyecto |
+| **Objetivo** | Eliminar la única fuga de ambigüedad de entidad que queda en schema (G-12 de la auditoría) |
+| **Impacto SEO** | Bajo-medio — coherencia de entidad para Google |
+| **Impacto GEO** | Medio — afecta a los 15 artículos de blog simultáneamente; reduce el riesgo de que un motor generativo cite "Kakebo" a secas como editor |
+| **Dificultad** | Muy baja — cambio de un valor de string |
+| **Riesgo** | Muy bajo |
+| **Dependencias** | Ninguna |
+| **Archivos afectados** | `src/app/[locale]/(public)/blog/[slug]/page.tsx` |
+| **Validación necesaria** | Inspeccionar el JSON-LD renderizado de al menos 2 artículos y confirmar `publisher.name: "MetodoKakebo.com"`; Google Rich Results Test sin errores |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md`, `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (marcar G-12 como resuelto) |
+| **Prioridad** | **P0** |
 
 ---
 
-### Bloque P1 — GEO estructural de bajo riesgo
-
-**Objetivo:** Mejorar la comprensión del sitio por parte de motores generativos sin tocar lo que ya funciona orgánicamente. Estos cambios son editoriales/técnicos de mínimo riesgo y máximo impacto GEO.
-
-**Estado:** Puede iniciarse en paralelo con P0.
-
-#### P1-01 — `SEO-GEO-TERMINOLOGY-01`
+### `SEO-SITEMAP-HERRAMIENTAS-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Unificación terminológica — glosario canónico en todo el sitio |
-| **Fase** | P1 |
-| **Prioridad** | Alta |
-| **Impacto esperado** | Coherencia de entidad para motores generativos. Citabilidad en AI Overviews, Perplexity, ChatGPT |
-| **Riesgo** | Muy bajo — cambios editoriales en copy, no en estructura |
-| **Esfuerzo** | Bajo |
-| **Dependencia** | Ninguna (no requiere GSC) |
-| **URL / Zona** | Global: artículos clave, herramientas, Home, schema JSON-LD |
-| **Tipo** | GEO / semántico |
-| **Acción concreta** | (1) Definir glosario canónico: "el método Kakebo" = técnica japonesa 1904; "Kakebo AI" = nombre de marca del producto; "MetodoKakebo.com" = dominio/plataforma; "app Kakebo" = forma coloquial aceptada. (2) Corregir inconsistencia en schema `siteName` ("Kakebo AI" en todas). (3) Resolver inconsistencia de terminología 4 categorías: "Ocio/Vicio" (no "Opcional o Vicio"), "Extras" (no "Extra"). (4) Documentar glosario en `docs/seo/GLOSARIO_TERMINOLOGICO.md` |
-| **Validación** | Documento de glosario creado. Inconsistencias en schema corregidas en el código. |
-| **Decisión** | **Ejecutar ahora** |
+| **ID** | SEO-SITEMAP-HERRAMIENTAS-01 |
+| **Título** | Añadir el hub `/herramientas` a `coreRoutes` del sitemap |
+| **Descripción** | Incluir `/herramientas` en el array `coreRoutes` de `sitemap.ts` con una prioridad acorde a su función de hub (entre la de Home y la de las herramientas individuales) |
+| **Objetivo** | Cerrar el hallazgo T-01 — el hub deja de estar ausente del sitemap |
+| **Impacto SEO** | Bajo-medio — mejora la señal de indexación de una página que agrupa las 3 herramientas de mejor rendimiento relativo |
+| **Impacto GEO** | Bajo |
+| **Dificultad** | Muy baja |
+| **Riesgo** | Muy bajo |
+| **Dependencias** | Ninguna |
+| **Archivos afectados** | `src/app/sitemap.ts` |
+| **Validación necesaria** | `/sitemap.xml` generado localmente incluye `/herramientas` (y su variante `/en/herramientas`) con la prioridad esperada |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md`, `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (marcar T-01 como resuelto) |
+| **Prioridad** | **P1** |
 
 ---
 
-#### P1-02 — `SEO-GEO-ENTITY-DEFINITION-01`
+### `SEO-SITEMAP-LASTMODIFIED-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Definición factual citable de método + producto en páginas clave |
-| **Fase** | P1 |
-| **Prioridad** | Alta |
-| **Impacto esperado** | Elegibilidad para Knowledge Panel. Citabilidad directa en respuestas de IA para "qué es el método Kakebo" |
-| **Riesgo** | Muy bajo — añadir un párrafo al inicio de páginas existentes |
-| **Esfuerzo** | Muy bajo |
-| **Dependencia** | `SEO-GEO-TERMINOLOGY-01` (P1-01) debería ejecutarse antes para tener el glosario canónico |
-| **URL / Zona** | `/blog/metodo-kakebo-guia-definitiva` (primer párrafo) y `/sobre-nosotros` o sección de Home |
-| **Tipo** | GEO / contenido editorial |
-| **Acción concreta** | Añadir en `metodo-kakebo-guia-definitiva` un primer párrafo con: "El Kakebo (家計簿) es un método de registro de finanzas personales creado en 1904 por la periodista japonesa Motoko Hani. Consiste en registrar y categorizar todos los gastos en cuatro grupos (Supervivencia, Ocio/Vicio, Cultura y Extras) y reflexionar mensualmente sobre el patrón de gasto. MetodoKakebo.com es una aplicación gratuita basada en este método." Máximo 3-4 frases, al inicio del artículo. |
-| **Validación** | El párrafo es legible sin contexto previo y responde a "qué es el método Kakebo" de forma directa y factual |
-| **Decisión** | **Ejecutar** (tras P1-01) |
+| **ID** | SEO-SITEMAP-LASTMODIFIED-01 |
+| **Título** | Usar fechas fijas de `lastModified` para `coreRoutes` estables |
+| **Descripción** | Sustituir `lastModified: new Date()` por una fecha fija (o derivada de un campo real de última edición) para las rutas núcleo que no cambian en cada build: Home, tutorial, sobre-nosotros, blog index, herramientas, legales |
+| **Objetivo** | Cerrar el hallazgo T-10 — dejar de enviar una señal de "modificado hoy" falsa en cada build |
+| **Impacto SEO** | Bajo — mejora la utilidad de la señal de frescura para priorización de crawl |
+| **Impacto GEO** | Ninguno |
+| **Dificultad** | Baja |
+| **Riesgo** | Muy bajo |
+| **Dependencias** | Ninguna |
+| **Archivos afectados** | `src/app/sitemap.ts` |
+| **Validación necesaria** | `sitemap.xml` generado en dos builds consecutivos sin cambios de contenido muestra el mismo `lastModified` para las `coreRoutes` |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md`, `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (marcar T-10 como resuelto) |
+| **Prioridad** | **P1** |
 
 ---
 
-#### P1-03 — `SEO-SCHEMA-HOME-01`
+### `SEO-SITENAME-UNIFY-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Añadir schema `Organization` + `WebSite` con SearchAction a la Home |
-| **Fase** | P1 |
-| **Prioridad** | Alta |
-| **Impacto esperado** | Elegibilidad para sitelinks de búsqueda. Señal de entidad para Google. Autoridad de marca |
-| **Riesgo** | Muy bajo — añadir JSON-LD a `page.tsx` de la home, sin tocar UI |
-| **Esfuerzo** | Muy bajo |
-| **Dependencia** | `SEO-GEO-TERMINOLOGY-01` (para usar el nombre canónico de la organización en el schema) |
-| **URL / Zona** | `/` — `src/app/[locale]/(public)/page.tsx` |
-| **Tipo** | Técnico / GEO |
-| **Acción concreta** | Añadir bloque `<script type="application/ld+json">` con: `Organization` (name: "Kakebo AI", url, sameAs si hay redes sociales, description factual) + `WebSite` (name, url, `SearchAction` con `query-input`) |
-| **Validación** | Schema válido en Google Rich Results Test. No errores en Search Console |
-| **Decisión** | **Ejecutar** (tras P1-01) |
-
----
-
-#### P1-04 — `SEO-TECHNICAL-DATEMODIFIED-01`
-
-| Campo | Detalle |
-|---|---|
-| **Nombre** | Campo `updatedDate` en frontmatter + `dateModified` real en JSON-LD y sitemap |
-| **Fase** | P1 |
-| **Prioridad** | Media |
-| **Impacto esperado** | Señal de frescura para Google y motores generativos. Mejora crawl prioritario post-actualización |
-| **Riesgo** | Muy bajo — añadir campo opcional al frontmatter y actualizar lógica de sitemap/page |
-| **Esfuerzo** | Bajo |
-| **Dependencia** | Ninguna |
-| **URL / Zona** | Todos los artículos `.es.mdx` + `sitemap.ts` + `blog/[slug]/page.tsx` |
-| **Tipo** | Técnico |
-| **Acción concreta** | (1) Añadir campo `updatedDate` (opcional) al frontmatter de artículos. (2) En `blog/[slug]/page.tsx`: usar `post.frontmatter.updatedDate || post.frontmatter.date` en `dateModified` del JSON-LD. (3) En `sitemap.ts`: usar `updatedDate || date` en `lastModified` de blog posts. (4) Actualizar `plantilla-kakebo-excel.es.mdx` con `updatedDate: '2026-06-30'` (ha tenido múltiples cambios). |
-| **Validación** | JSON-LD de `plantilla-kakebo-excel` muestra `dateModified` distinto de `datePublished` en producción |
-| **Decisión** | **Ejecutar** |
-
----
-
-### Bloque P2 — Optimización URL por URL
-
-**Objetivo:** Optimizar cada URL importante individualmente con intención clara, basándose en datos GSC reales.
-
-**Estado:** BLOQUEADO hasta tener `SEO-DATA-PRIORITY-01` completado.
-
-**Regla:** No iniciar ninguna tarea de este bloque sin el snapshot GSC del sitio completo. El orden dentro del bloque puede ajustarse según los datos.
-
-#### P2-01 — `SEO-EXCEL-TITLE-01`
-
-| Campo | Detalle |
-|---|---|
-| **Nombre** | Reducir meta title de `plantilla-kakebo-excel` a menos de 65 chars |
-| **Fase** | P2 |
-| **Prioridad** | Alta |
-| **Impacto esperado** | Mejora de CTR en la URL con mayor tracción orgánica. Meta title actual ~93 chars se trunca en SERP |
-| **Riesgo** | Bajo — solo reducir longitud preservando keywords exactas |
-| **Esfuerzo** | Muy bajo |
-| **Dependencia** | `SEO-DATA-PRIORITY-01` (confirmar que es la URL con más clics) |
-| **URL / Zona** | `/blog/plantilla-kakebo-excel` — frontmatter `title` |
-| **Tipo** | SEO técnico / CTR |
-| **Acción concreta** | Reformular el `title` del frontmatter en <65 chars preservando "plantilla kakebo excel gratis" como keyword exacta. Ejemplo: `"Plantilla Kakebo Excel Gratis 2026: Guía y Descarga"` (52 chars). No cambiar H1 (que sigue usando el title). No cambiar slug. |
-| **Validación** | Meta title visible en SERP sin truncación. Google Search Console confirma cambio tras 2-4 semanas |
-| **Decisión** | **Ejecutar tras GSC** |
-
----
-
-#### P2-02 — `SEO-EXCEL-H3-FIX-01`
-
-| Campo | Detalle |
-|---|---|
-| **Nombre** | Convertir H3 inicial en H2 en `plantilla-kakebo-excel` |
-| **Fase** | P2 |
-| **Prioridad** | Media |
-| **Impacto esperado** | Corrección de jerarquía de headings (H3 antes de primer H2). Mejora elegibilidad para featured snippets de lista |
-| **Riesgo** | Muy bajo — cambio de una sola etiqueta de heading |
-| **Esfuerzo** | Muy bajo |
-| **Dependencia** | `SEO-DATA-PRIORITY-01` (ejecutar junto a P2-01) |
-| **URL / Zona** | `/blog/plantilla-kakebo-excel` — sección "¿Qué incluye la plantilla Kakebo Excel gratuita?" |
-| **Tipo** | SEO técnico / semántico |
-| **Acción concreta** | Cambiar `### ¿Qué incluye la plantilla Kakebo Excel gratuita?` por `## ¿Qué incluye la plantilla Kakebo Excel gratuita?` |
-| **Validación** | La jerarquía H1→H2→H3 es correcta en el DOM renderizado |
-| **Decisión** | **Ejecutar junto con P2-01** |
-
----
-
-#### P2-03 — `SEO-KAKEBO-ONLINE-CANIB-01`
-
-| Campo | Detalle |
-|---|---|
-| **Nombre** | Auditar y resolver canibalización entre `kakebo-online-gratis` y `kakebo-online-guia-completa` |
-| **Fase** | P2 |
-| **Prioridad** | Alta |
-| **Impacto esperado** | Consolidar autoridad del cluster "kakebo online" en las URLs correctas. Evitar que Google alterne entre ellas para las mismas queries |
-| **Riesgo** | Medio — cualquier cambio de intención puede afectar posicionamiento existente |
-| **Esfuerzo** | Bajo (si es solo diferenciación de metadatos) / Medio (si requiere ajuste de contenido) |
-| **Dependencia** | `SEO-DATA-PRIORITY-01` — sin datos GSC no se puede confirmar si la canibalización es real |
-| **URL / Zona** | `/blog/kakebo-online-gratis` + `/blog/kakebo-online-guia-completa` |
-| **Tipo** | SEO semántico |
-| **Acción concreta** | (1) Revisar en GSC qué queries van a cada URL. (2) Si se confirma solapamiento: diferenciar `kakebo-online-gratis` como landing de captación de producto (metadatos y H1 orientados a la app) y `kakebo-online-guia-completa` como artículo informacional del método digital (metadatos y H1 orientados al cómo/por qué). (3) Revisar si Home también compite por las mismas queries. |
-| **Validación** | Cada URL tiene queries diferentes y sin solapamiento según GSC |
-| **Decisión** | **Bloquear hasta tener GSC** |
-
----
-
-#### P2-04 — `SEO-CALCULADORA-AHORRO-AUDIT-01`
-
-| Campo | Detalle |
-|---|---|
-| **Nombre** | Auditoría detallada de `calculadora-ahorro` — entender el CTR anómalo del 35,9% |
-| **Fase** | P2 |
-| **Prioridad** | Media |
-| **Impacto esperado** | Identificar qué hace que esta URL tenga CTR excepcional y replicar el patrón en otras herramientas |
-| **Riesgo** | Ninguno — solo auditoría |
-| **Esfuerzo** | Bajo |
-| **Dependencia** | `SEO-DATA-PRIORITY-01` (datos actualizados para confirmar el CTR) |
-| **URL / Zona** | `/herramientas/calculadora-ahorro` |
-| **Tipo** | SEO técnico / medición |
-| **Acción concreta** | Revisar en GSC: queries exactas que generan ese CTR, posición media, dispositivo, país. Crear documento `docs/seo/CALCULADORA_AHORRO_AUDIT_01.md` con hallazgos |
-| **Validación** | Documento con hipótesis sobre por qué el CTR es tan alto |
-| **Decisión** | **Bloquear hasta tener GSC** |
-
----
-
-#### P2-05 — `SEO-HREFLANG-KAKEBO-ONLINE-01`
-
-| Campo | Detalle |
-|---|---|
-| **Nombre** | Verificar y corregir hreflang de `kakebo-online-guia-completa` con slug EN diferente |
-| **Fase** | P2 |
-| **Prioridad** | Media |
-| **Impacto esperado** | Evitar que Google ignore las señales hreflang del par ES↔EN por URL EN incorrecta |
+| **ID** | SEO-SITENAME-UNIFY-01 |
+| **Título** | Unificar `siteName` a "MetodoKakebo.com" |
+| **Descripción** | Corregir la única página que diverge (`calculadora-inflacion/page.tsx` usa `"MetodoKakebo.com"`, el resto hereda `"Kakebo AI"` de `layout.tsx`) para que todo el sitio use el mismo valor de `siteName`, reservando "Kakebo AI" solo donde el contexto sea explícitamente de producto/app (a decidir en la propia tarea cuál de los dos valores debe prevalecer como global) |
+| **Objetivo** | Cerrar el hallazgo RB-03 |
+| **Impacto SEO** | Bajo |
+| **Impacto GEO** | Bajo-medio — coherencia de entidad de marca |
+| **Dificultad** | Muy baja — ahora que solo hay una excepción activa |
 | **Riesgo** | Bajo |
-| **Esfuerzo** | Bajo |
-| **Dependencia** | Ninguna técnica, pero lógicamente va con P2-03 |
-| **URL / Zona** | `/blog/kakebo-online-guia-completa` — hreflang EN apunta a `/en/blog/kakebo-online-guia-completa` pero el archivo `.en.mdx` puede tener slug `kakebo-online-complete-guide` |
-| **Tipo** | SEO técnico |
-| **Acción concreta** | Verificar existencia de ambos archivos. Si el slug EN es diferente, corregir el hreflang en `page.tsx` o estandarizar los slugs. Comprobar también en Search Console si hay errores de hreflang |
-| **Validación** | Sin errores de hreflang en GSC para esta URL |
-| **Decisión** | **Ejecutar** (no requiere GSC) |
+| **Dependencias** | Ninguna |
+| **Archivos afectados** | `src/app/[locale]/layout.tsx` y/o `src/app/[locale]/(landing)/herramientas/calculadora-inflacion/page.tsx` |
+| **Validación necesaria** | Grep de `siteName` en `src/app` confirma un único valor consistente en todo el sitio |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md`, `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (marcar RB-03 como resuelto) |
+| **Prioridad** | **P1** |
 
 ---
 
-#### P2-06 — `SEO-EXCEL-EN-VALIDATE-01`
+### `SEO-SCHEMA-HERRAMIENTAS-HUB-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Validar si versión EN de `plantilla-kakebo-excel` interfiere con posicionamiento ES |
-| **Fase** | P2 |
-| **Prioridad** | Baja |
-| **Impacto esperado** | Confirmar o descartar interferencia EN→ES en la URL de mayor tracción |
-| **Riesgo** | Ninguno — solo análisis de datos |
-| **Esfuerzo** | Muy bajo |
-| **Dependencia** | `SEO-DATA-PRIORITY-01` |
-| **URL / Zona** | `/en/blog/plantilla-kakebo-excel` vs `/blog/plantilla-kakebo-excel` |
-| **Tipo** | SEO técnico / i18n |
-| **Acción concreta** | En GSC: comparar señales de ambas URLs. Si EN tiene más autoridad que ES para queries en español, crear tarea específica de corrección (análogo a SEO-I18N-KAKEBO-ONLINE-VALIDATE-01) |
-| **Validación** | Documento con conclusión clara: interferencia confirmada / descartada |
-| **Decisión** | **Bloquear hasta tener GSC** |
-
----
-
-#### P2-07 — `SEO-TECHNICAL-TUTORIAL-01`
-
-| Campo | Detalle |
-|---|---|
-| **Nombre** | Auditar `/tutorial` para thin content y prioridad en sitemap |
-| **Fase** | P2 |
-| **Prioridad** | Baja |
-| **Impacto esperado** | Evitar que página de onboarding app desperdicie crawl budget a prioridad 0.8 |
-| **Riesgo** | Ninguno — solo auditoría |
-| **Esfuerzo** | Muy bajo |
-| **Dependencia** | Ninguna |
-| **URL / Zona** | `/tutorial` |
-| **Tipo** | SEO técnico |
-| **Acción concreta** | Revisar contenido de `/tutorial`. Si es thin content o solo funcional para usuarios autenticados, reducir prioridad en sitemap a 0.3 o añadir `noindex` |
-| **Validación** | Decisión documentada sobre la indexabilidad de la página |
-| **Decisión** | **Ejecutar** (no requiere GSC) |
-
----
-
-#### P2-08 — `SEO-GEO-SOBRE-NOSOTROS-01`
-
-| Campo | Detalle |
-|---|---|
-| **Nombre** | Auditar `/sobre-nosotros` para GEO y E-E-A-T |
-| **Fase** | P2 |
-| **Prioridad** | Baja |
-| **Impacto esperado** | Fortalecer señal de E-E-A-T y entidad de marca para Google y motores generativos |
-| **Riesgo** | Ninguno — solo auditoría |
-| **Esfuerzo** | Muy bajo |
-| **Dependencia** | `SEO-GEO-TERMINOLOGY-01` (para saber el lenguaje canónico a usar) |
-| **URL / Zona** | `/sobre-nosotros` |
-| **Tipo** | GEO / E-E-A-T |
-| **Acción concreta** | Leer el contenido de `/sobre-nosotros`. Evaluar si incluye: quiénes somos, por qué creamos el producto, experiencia en finanzas personales. Crear tarea de mejora si falta información factual |
-| **Validación** | Documento con evaluación de E-E-A-T de la página |
-| **Decisión** | **Ejecutar** (no requiere GSC) |
-
----
-
-### Bloque P3 — Schema y datos estructurados
-
-**Objetivo:** Completar y sincronizar el sistema de schemas para mejorar la elegibilidad de rich results y la coherencia GEO.
-
-**Estado:** Puede iniciarse en paralelo con P2 (no requiere GSC para los items de sincronización).
-
-#### P3-01 — `SEO-TECHNICAL-SITEMAP-01`
-
-| Campo | Detalle |
-|---|---|
-| **Nombre** | Corregir sitemap: añadir hub herramientas, bajar prioridad login, mejorar lastModified core routes |
-| **Fase** | P3 |
-| **Prioridad** | Media |
-| **Impacto esperado** | Crawl budget optimizado. Hub herramientas recibe señal de indexación |
+| **ID** | SEO-SCHEMA-HERRAMIENTAS-HUB-01 |
+| **Título** | Añadir schema `CollectionPage`/`ItemList` al hub `/herramientas` |
+| **Descripción** | Replicar en `herramientas/page.tsx` el mismo patrón de schema ya implementado y validado en el blog index (`CollectionPage` con `mainEntity: ItemList` de las 3 herramientas) |
+| **Objetivo** | Dotar al hub de la misma elegibilidad de rich results que ya tiene el blog index |
+| **Impacto SEO** | Bajo-medio |
+| **Impacto GEO** | Bajo-medio — mejora la estructura de conocimiento del hub |
+| **Dificultad** | Baja — patrón ya existente y probado en el blog index, solo hay que reutilizarlo |
 | **Riesgo** | Muy bajo |
-| **Esfuerzo** | Bajo |
-| **Dependencia** | Ninguna |
-| **URL / Zona** | `src/app/sitemap.ts` |
-| **Tipo** | SEO técnico |
-| **Acción concreta** | (1) Añadir `/herramientas` a `coreRoutes` con `priority: 0.7`. (2) Reducir prioridad de `/login` a `0.1`. (3) Para páginas estables (privacy, terms, cookies, sobre-nosotros), usar fechas fijas en `lastModified` en lugar de `new Date()`. |
-| **Validación** | `sitemap.xml` incluye `/herramientas`. `/login` aparece con priority 0.1. |
-| **Decisión** | **Ejecutar** |
+| **Dependencias** | Ninguna (independiente de `SEO-SITEMAP-HERRAMIENTAS-01`, aunque conceptualmente relacionada) |
+| **Archivos afectados** | `src/app/[locale]/(public)/herramientas/page.tsx` |
+| **Validación necesaria** | Google Rich Results Test sin errores; schema no duplica el `SoftwareApplication` de cada herramienta individual |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md`, `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` |
+| **Prioridad** | **P2** |
 
 ---
 
-#### P3-02 — `SEO-SCHEMA-AHORRO-SYNC-01`
+### `SEO-TECHNICAL-TUTORIAL-PRIORITY-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Actualizar schema `calculadora-ahorro` para alinear con contenido optimizado |
-| **Fase** | P3 |
-| **Prioridad** | Baja |
-| **Impacto esperado** | Coherencia entre schema (datos estructurados) y contenido visible. Mejor citabilidad GEO |
+| **ID** | SEO-TECHNICAL-TUTORIAL-PRIORITY-01 |
+| **Título** | Revisar la prioridad de sitemap de `/tutorial` tras la auditoría de contenido ya realizada |
+| **Descripción** | `SEO-TECHNICAL-TUTORIAL-01` (ejecutada) clasificó `/tutorial` como contenido real, no thin — pero la prioridad de sitemap (0.8) nunca se ajustó a esa conclusión. Decidir y aplicar la prioridad definitiva coherente con su función de onboarding, no de captación SEO principal |
+| **Objetivo** | Cerrar el hallazgo T-12 (severidad baja) |
+| **Impacto SEO** | Bajo |
+| **Impacto GEO** | Ninguno |
+| **Dificultad** | Muy baja |
 | **Riesgo** | Muy bajo |
-| **Esfuerzo** | Muy bajo |
-| **Dependencia** | `SEO-GEO-TERMINOLOGY-01` (para usar nombre canónico) |
-| **URL / Zona** | `/herramientas/calculadora-ahorro` — `SCHEMA` en `page.tsx` |
-| **Tipo** | Técnico / GEO |
-| **Acción concreta** | Actualizar `SCHEMA.name` de "Calculadora de Ahorro Kakebo" a "Calculadora de Ahorro Mensual". Actualizar `SCHEMA.description` para reflejar "cuánto ahorrar al mes" en lugar de "distribuir tu nómina mensual". Actualizar terminología "Opcional o Vicio" → "Ocio/Vicio" en `FAQ_SCHEMA`. |
-| **Validación** | Schema del JSON-LD alineado con H1 y contenido visible de la página |
-| **Decisión** | **Ejecutar** (tras P1-01) |
+| **Dependencias** | Ninguna |
+| **Archivos afectados** | `src/app/sitemap.ts` |
+| **Validación necesaria** | `sitemap.xml` refleja la nueva prioridad para `/tutorial` |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md` |
+| **Prioridad** | **P2** |
 
 ---
 
-#### P3-03 — `SEO-SCHEMA-BLOG-INDEX-01`
+### `SEO-BREADCRUMB-AUDIT-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Añadir schema `CollectionPage` o `ItemList` al blog index |
-| **Fase** | P3 |
-| **Prioridad** | Baja |
-| **Impacto esperado** | Elegibilidad para rich snippets de tipo lista de artículos |
-| **Riesgo** | Muy bajo |
-| **Esfuerzo** | Bajo |
-| **Dependencia** | Ninguna |
-| **URL / Zona** | `/blog` — `src/app/[locale]/(public)/blog/page.tsx` |
-| **Tipo** | Técnico / GEO |
-| **Acción concreta** | Añadir `ItemList` con los artículos más relevantes del blog o `CollectionPage` con el número de items |
-| **Validación** | Schema válido en Google Rich Results Test |
-| **Decisión** | **Ejecutar** (P3, no urgente) |
+| **ID** | SEO-BREADCRUMB-AUDIT-01 |
+| **Título** | Auditar la presencia y corrección de `BreadcrumbList` en el sitio |
+| **Descripción** | La auditoría no pudo confirmar si existe schema `BreadcrumbList` en las páginas de blog/herramientas. Esta tarea es solo de auditoría: verificar qué existe y documentar si falta |
+| **Objetivo** | Cerrar la incertidumbre documentada en la sección de estructura HTML de la auditoría |
+| **Impacto SEO** | Bajo (auditoría) / medio si se detecta ausencia total y se prioriza como tarea futura |
+| **Impacto GEO** | Bajo |
+| **Dificultad** | Muy baja |
+| **Riesgo** | Ninguno — solo lectura |
+| **Dependencias** | Ninguna |
+| **Archivos afectados** | Ninguno (solo lectura) |
+| **Validación necesaria** | Documento con conclusión clara: existe / no existe / parcial, con archivos concretos |
+| **Documentación a actualizar** | `docs/seo/SEO_BREADCRUMB_AUDIT_01.md` (nuevo, si se detectan hallazgos que lo justifiquen) |
+| **Prioridad** | **P3** |
 
 ---
 
-### Bloque P4 — Enlazado interno
+## Bloque arquitectura / enlazado interno
 
-**Objetivo:** Conectar el sitio cuando cada URL ya tenga su función bien definida. No enlazar antes de que la arquitectura esté estabilizada.
-
-**Estado:** BLOQUEADO hasta completar P0 y al menos las optimizaciones críticas de P2.
-
-#### P4-01 — `SEO-EXCEL-INTERNAL-LINKS-01`
+### `SEO-INTERNAL-LINKING-EXEC-METODO-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Enlazado saliente desde `plantilla-kakebo-excel` hacia herramientas estratégicas |
-| **Fase** | P4 |
-| **Prioridad** | Media |
-| **Impacto esperado** | Distribución de autoridad desde la URL tractora hacia herramientas. Mejora de engagement |
-| **Riesgo** | Muy bajo |
-| **Esfuerzo** | Muy bajo |
-| **Dependencia** | P2 estabilizado — herramientas optimizadas y con intención definida |
-| **URL / Zona** | `/blog/plantilla-kakebo-excel` → herramientas |
-| **Tipo** | Enlazado |
-| **Acción concreta** | Añadir link textual a `/herramientas/regla-50-30-20` en la sección "Pestaña de Previsión" (al mencionar el 20% de ahorro). Añadir segundo link a `/herramientas/calculadora-ahorro` en el body (no solo en FAQ). Anchor text natural. |
-| **Validación** | Links funcionan. No introducen keyword stuffing |
-| **Decisión** | **Bloquear hasta P2 estabilizado** |
+| **ID** | SEO-INTERNAL-LINKING-EXEC-METODO-01 |
+| **Título** | Ejecutar el enlazado entrante hacia `metodo-kakebo-guia-definitiva` documentado en el plan |
+| **Descripción** | `SEO_INTERNAL_LINKING_V1_01.md` ya diseñó qué artículos deben enlazar al hub de cluster "Kakebo Core". Esta tarea ejecuta únicamente esos enlaces, uno por artículo origen, en el orden que defina el propio plan |
+| **Objetivo** | Redistribuir autoridad interna hacia el hub semántico del sitio (RM-07) |
+| **Impacto SEO** | Alto — es el cambio de arquitectura con mayor potencial de impacto pendiente de ejecutar |
+| **Impacto GEO** | Medio — refuerza la autoridad temática del artículo con la definición factual más citable del sitio |
+| **Dificultad** | Media — requiere revisar cada artículo origen y añadir el enlace con anchor text natural |
+| **Riesgo** | Bajo si se sigue el plan ya documentado; medio si se enlaza sin criterio |
+| **Dependencias** | Ninguna técnica; se recomienda ejecutar después del bloque técnico (P0/P1) para no mezclar tipos de cambio en la misma ventana de medición |
+| **Archivos afectados** | Los archivos `.es.mdx` de los artículos origen identificados en `SEO_INTERNAL_LINKING_V1_01.md` — **un commit por artículo origen**, no un commit para todos |
+| **Validación necesaria** | Los enlaces son verificables (no rotos), el anchor text es natural y contextual, no hay sobreoptimización |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md` (una entrada por commit/artículo) |
+| **Prioridad** | **P1** |
 
 ---
 
-#### P4-02 — `SEO-EXCEL-INBOUND-PILAR-01`
+### `SEO-INTERNAL-LINKING-EXEC-EXCEL-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Enlazado entrante hacia `plantilla-kakebo-excel` desde artículos relacionados |
-| **Fase** | P4 |
-| **Prioridad** | Media |
-| **Impacto esperado** | Refuerza la autoridad de la URL tractora desde el resto del blog |
-| **Riesgo** | Muy bajo |
-| **Esfuerzo** | Bajo |
-| **Dependencia** | P2 — artículos origen deben tener su función definida |
-| **URL / Zona** | `/blog/como-hacer-un-presupuesto-personal`, `/blog/kakebo-online-gratis`, `/blog/metodo-kakebo-guia-definitiva` → `/blog/plantilla-kakebo-excel` |
-| **Tipo** | Enlazado |
-| **Acción concreta** | Añadir link textual en contexto natural desde los tres artículos mencionados. El link debe fluir orgánicamente desde el tema del artículo origen |
-| **Validación** | Links presentes y naturales. No sobreoptimizados |
-| **Decisión** | **Bloquear hasta P2 estabilizado** |
+| **ID** | SEO-INTERNAL-LINKING-EXEC-EXCEL-01 |
+| **Título** | Enlazado saliente desde `plantilla-kakebo-excel` hacia herramientas relacionadas |
+| **Descripción** | Añadir un enlace textual desde `plantilla-kakebo-excel` hacia `/herramientas/regla-50-30-20` (sección donde se menciona el 20% de ahorro) y, si no existe ya, un segundo enlace en el cuerpo hacia `/herramientas/calculadora-ahorro` |
+| **Objetivo** | Distribuir autoridad desde la URL tractora hacia herramientas estratégicas sin tocar el resto del artículo |
+| **Impacto SEO** | Medio |
+| **Impacto GEO** | Bajo |
+| **Dificultad** | Muy baja |
+| **Riesgo** | Bajo — el artículo está protegido, por lo que el cambio debe ser mínimo y quirúrgico (solo añadir enlaces, no tocar slug/H1/estructura/schema) |
+| **Dependencias** | Requiere confirmación explícita del usuario antes de tocar `plantilla-kakebo-excel`, por la política de protección vigente (`GSC_CHANGELOG_2026_07_03.md`: "bloqueado — requiere autorización explícita") |
+| **Archivos afectados** | `src/content/blog/plantilla-kakebo-excel.es.mdx` |
+| **Validación necesaria** | Los enlaces funcionan, no se modifica ningún otro elemento del artículo, build limpio |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md` |
+| **Prioridad** | **P1 — condicionada a autorización explícita del usuario antes de ejecutar** |
 
 ---
 
-#### P4-03 — `SEO-INTERNAL-LINKING-V1-01`
+### `SEO-GEO-AUTHORSHIP-AUDIT-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Mapa y ejecución de enlazado interno estructural completo |
-| **Fase** | P4 |
-| **Prioridad** | Alta (pero tardía en secuencia) |
-| **Impacto esperado** | Autoridad distribuida correctamente entre URLs. Cluster Kakebo Core con hub bien conectado |
-| **Riesgo** | Medio (si se hace antes de definir bien cada URL) |
-| **Esfuerzo** | Medio |
-| **Dependencia** | P2 completado — cada URL con función definida y metadatos estabilizados |
-| **URL / Zona** | Todo el sitio — hub→clusters→herramientas |
-| **Tipo** | Enlazado |
-| **Acción concreta** | Crear `docs/seo/INTERNAL_LINKING_MAP_V1.md` con el mapa de enlaces. Ejecutar cambios URL por URL, un commit por URL |
-| **Validación** | Cada URL recibe al menos 2-3 links contextuales desde páginas relevantes |
-| **Decisión** | **Bloquear hasta P2 completado** |
+| **ID** | SEO-GEO-AUTHORSHIP-AUDIT-01 |
+| **Título** | Verificar la autoría real en los 14 artículos de blog no revisados |
+| **Descripción** | Solo se ha confirmado que `metodo-kakebo-guia-definitiva` usa un nombre real de autor (Aitor Alarcón). Revisar el frontmatter `author` de los 14 artículos restantes y documentar cuáles siguen con "Equipo Kakebo" u otro valor genérico |
+| **Objetivo** | Cerrar el hallazgo G-03 — confirmar el alcance real del problema antes de decidir si migrar autoría |
+| **Impacto SEO** | Bajo |
+| **Impacto GEO** | Medio — E-E-A-T |
+| **Dificultad** | Muy baja (auditoría) |
+| **Riesgo** | Ninguno — solo lectura |
+| **Dependencias** | Ninguna |
+| **Archivos afectados** | Ninguno (solo lectura en esta tarea; la migración de autoría, si procede, sería una tarea posterior separada) |
+| **Validación necesaria** | Documento con tabla de los 15 artículos y su valor actual de `author` |
+| **Documentación a actualizar** | `docs/seo/SEO_GEO_AUTHORSHIP_AUDIT_01.md` (nuevo) |
+| **Prioridad** | **P2** |
 
 ---
 
-### Bloque P5 — Expansión de contenido
+## Bloque contenido (bloqueado hasta cumplir condiciones — ver sección 6)
 
-**Objetivo:** Crear contenido nuevo solo donde existe un hueco estratégico real confirmado por datos.
-
-**Estado:** BLOQUEADO hasta completar P0 (datos GSC) y P4 (enlazado).
-
-#### P5-01 — `SEO-BLOG-INFLACION-01`
+### `SEO-BLOG-INFLACION-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Crear artículo editorial de respaldo para `calculadora-inflacion` |
-| **Fase** | P5 |
-| **Prioridad** | Alta (cuando se desbloquee) |
-| **Impacto esperado** | Doblar presencia en SERP para el cluster inflación. Capturar tráfico informacional |
-| **Riesgo** | Ninguno — URL nueva |
-| **Esfuerzo** | Medio |
-| **Dependencia** | P0 (confirmar volumen de búsqueda), P4 (tener estructura de enlazado lista) |
-| **URL / Zona** | `/blog/inflacion-y-ahorros` (URL nueva) → enlaza a `/herramientas/calculadora-inflacion` |
-| **Tipo** | Contenido |
-| **Acción concreta** | Artículo sobre "cómo afecta la inflación a tus ahorros" con definición factual, ejemplos numéricos y CTA a la calculadora. FAQPage JSON-LD. |
-| **Validación** | Artículo indexado. Primera posición en GSC para queries informacionales de inflación dentro de 8-12 semanas |
-| **Decisión** | **Bloquear hasta P0 + P4** |
+| **ID** | SEO-BLOG-INFLACION-01 |
+| **Título** | Crear artículo editorial de respaldo para `calculadora-inflacion` |
+| **Descripción** | Artículo nuevo sobre cómo la inflación afecta al ahorro, con definición factual, ejemplo numérico y CTA hacia la calculadora |
+| **Objetivo** | Cerrar el gap editorial S-04 en el cluster Inflación/IPC |
+| **Impacto SEO** | Alto (potencial, no confirmado) |
+| **Impacto GEO** | Medio — nueva pieza citable con estructura FAQ |
+| **Dificultad** | Media |
+| **Riesgo** | Ninguno (URL nueva, no toca contenido existente) |
+| **Dependencias** | Snapshot GSC 2026-07-17/31 (confirmar volumen de búsqueda) + enlazado interno del bloque anterior ya ejecutado |
+| **Archivos afectados** | Nuevo `.es.mdx` en `src/content/blog/` |
+| **Validación necesaria** | Artículo indexado sin errores; FAQPage schema válido; enlace funcional hacia la calculadora |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md`, `docs/seo/SEO_MAP_V1.md` (nueva URL en el inventario) |
+| **Prioridad** | **P2 — bloqueada (ver sección 6)** |
 
 ---
 
-#### P5-02 — `SEO-BLOG-503020-01`
+### `SEO-BLOG-503020-01`
 
 | Campo | Detalle |
 |---|---|
-| **Nombre** | Crear artículo editorial de respaldo para `regla-50-30-20` |
-| **Fase** | P5 |
-| **Prioridad** | Alta (cuando se desbloquee) |
-| **Impacto esperado** | Doblar presencia en SERP para el cluster 50/30/20 |
-| **Riesgo** | Ninguno — URL nueva |
-| **Esfuerzo** | Medio |
-| **Dependencia** | P0 (confirmar volumen), P4 (enlazado) |
-| **URL / Zona** | `/blog/regla-50-30-20` (URL nueva) → enlaza a `/herramientas/regla-50-30-20` |
-| **Tipo** | Contenido |
-| **Acción concreta** | Artículo explicando qué es la regla 50/30/20, cómo aplicarla, con tabla ejemplo y CTA a la calculadora |
-| **Validación** | Indexado. Impresiones en GSC dentro de 4-8 semanas |
-| **Decisión** | **Bloquear hasta P0 + P4** |
-
----
-
-### Bloque P6 — Medición iterativa
-
-**Objetivo:** Revisar impacto de los cambios aplicados y ajustar prioridades.
-
-**Estado:** Continuo — activar después de cada bloque completado.
-
-#### P6-01 — `SEO-MEDICION-ITERATIVA-01`
-
-| Campo | Detalle |
-|---|---|
-| **Nombre** | Revisión iterativa de GSC + GA4 tras cada bloque completado |
-| **Fase** | P6 |
-| **Prioridad** | Permanente |
-| **Impacto esperado** | Detección temprana de regresiones y confirmación de mejoras |
+| **ID** | SEO-BLOG-503020-01 |
+| **Título** | Crear artículo editorial de respaldo para `regla-50-30-20` |
+| **Descripción** | Artículo nuevo explicando la regla 50/30/20 con tabla ejemplo y CTA hacia la calculadora |
+| **Objetivo** | Cerrar el gap editorial S-04 en el cluster Regla 50/30/20 |
+| **Impacto SEO** | Alto (potencial, no confirmado) |
+| **Impacto GEO** | Medio |
+| **Dificultad** | Media |
 | **Riesgo** | Ninguno |
-| **Esfuerzo** | Bajo (30-60 min por revisión) |
-| **Dependencia** | `SEO-GA4-EVENTS-01` completado (P0-02) |
-| **URL / Zona** | Todo el sitio |
-| **Tipo** | Medición |
-| **Acción concreta** | Snapshot GSC cada 4 semanas. Comparar CTR, posición, clics por URL afectada. Documentar en `docs/seo/GSC_SNAPSHOT_YYYYMMDD.md` |
-| **Validación** | Documento de snapshot actualizado con comentario de cambios vs. anterior |
-| **Decisión** | **Ejecutar de forma continua desde P0** |
+| **Dependencias** | Igual que `SEO-BLOG-INFLACION-01` |
+| **Archivos afectados** | Nuevo `.es.mdx` en `src/content/blog/` |
+| **Validación necesaria** | Artículo indexado sin errores; enlace funcional hacia la calculadora |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md`, `docs/seo/SEO_MAP_V1.md` |
+| **Prioridad** | **P2 — bloqueada (ver sección 6)** |
 
 ---
 
-## 6. Tabla maestra de tareas
+### `SEO-KAKEBO-VS-FINTONIC-01`
 
-| ID | Nombre | Fase | Prioridad | Impacto | Riesgo | Esfuerzo | Dependencia | URL / Zona | Tipo | Decisión |
-|---|---|---|---|---|---|---|---|---|---|---|
-| `SEO-DATA-PRIORITY-01` | Snapshot GSC completo | P0 | Crítica | Alto | Ninguno | Bajo | Ninguna | Todo el sitio | Medición | **Ejecutar ahora** |
-| `SEO-GA4-EVENTS-01` | Eventos GA4 conversiones SEO | P0 | Alta | Alto | Bajo | Bajo-Medio | GA4 integrado | Blog + herramientas | Medición | **Ejecutar ahora** |
-| `SEO-GEO-TERMINOLOGY-01` | Glosario canónico + siteName + categorías | P1 | Alta | Alto | Muy bajo | Bajo | Ninguna | Global | GEO / técnico | **Ejecutar ahora** |
-| `SEO-GEO-ENTITY-DEFINITION-01` | Definición factual método + producto | P1 | Alta | Alto | Muy bajo | Muy bajo | P1-01 | `metodo-kakebo-guia-definitiva` + `sobre-nosotros` | GEO / contenido | **Ejecutar** (tras P1-01) |
-| `SEO-SCHEMA-HOME-01` | Schema Organization + WebSite Home | P1 | Alta | Medio-Alto | Muy bajo | Muy bajo | P1-01 | `/` | Técnico / GEO | **Ejecutar** (tras P1-01) |
-| `SEO-TECHNICAL-DATEMODIFIED-01` | updatedDate + dateModified real | P1 | Media | Medio | Muy bajo | Bajo | Ninguna | Todos los posts + sitemap | Técnico | **Ejecutar** |
-| `SEO-EXCEL-TITLE-01` | Meta title <65 chars | P2 | Alta | Alto | Bajo | Muy bajo | GSC | `/blog/plantilla-kakebo-excel` | SEO técnico / CTR | **Tras GSC** |
-| `SEO-EXCEL-H3-FIX-01` | H3→H2 en primer heading | P2 | Media | Medio | Muy bajo | Muy bajo | GSC | `/blog/plantilla-kakebo-excel` | SEO semántico | **Junto a P2-01** |
-| `SEO-KAKEBO-ONLINE-CANIB-01` | Auditar canibalización kakebo-online | P2 | Alta | Alto | Medio | Bajo-Medio | GSC | kakebo-online-gratis + guia-completa | SEO semántico | **Tras GSC** |
-| `SEO-CALCULADORA-AHORRO-AUDIT-01` | Auditoría CTR anómalo calculadora | P2 | Media | Medio | Ninguno | Bajo | GSC | `/herramientas/calculadora-ahorro` | Medición | **Tras GSC** |
-| `SEO-HREFLANG-KAKEBO-ONLINE-01` | Verificar hreflang guia-completa | P2 | Media | Medio | Bajo | Bajo | Ninguna | `/blog/kakebo-online-guia-completa` | Técnico | **Ejecutar** |
-| `SEO-EXCEL-EN-VALIDATE-01` | Validar interferencia EN en plantilla-excel | P2 | Baja | Medio | Ninguno | Muy bajo | GSC | `/en/blog/plantilla-kakebo-excel` | SEO técnico / i18n | **Tras GSC** |
-| `SEO-TECHNICAL-TUTORIAL-01` | Auditar `/tutorial` thin content | P2 | Baja | Bajo | Ninguno | Muy bajo | Ninguna | `/tutorial` | SEO técnico | **Ejecutar** |
-| `SEO-GEO-SOBRE-NOSOTROS-01` | Auditar sobre-nosotros para GEO | P2 | Baja | Medio | Ninguno | Muy bajo | P1-01 | `/sobre-nosotros` | GEO / E-E-A-T | **Ejecutar** (tras P1-01) |
-| `SEO-TECHNICAL-SITEMAP-01` | Corregir sitemap (hub, login, lastModified) | P3 | Media | Medio | Muy bajo | Bajo | Ninguna | `sitemap.ts` | Técnico | **Ejecutar** |
-| `SEO-SCHEMA-AHORRO-SYNC-01` | Sincronizar schema calculadora-ahorro | P3 | Baja | Bajo | Muy bajo | Muy bajo | P1-01 | `calculadora-ahorro/page.tsx` | Técnico / GEO | **Ejecutar** (tras P1-01) |
-| `SEO-SCHEMA-BLOG-INDEX-01` | Schema CollectionPage blog index | P3 | Baja | Bajo | Muy bajo | Bajo | Ninguna | `/blog` | Técnico / GEO | **Ejecutar** |
-| `SEO-EXCEL-INTERNAL-LINKS-01` | Enlazado saliente desde plantilla-excel | P4 | Media | Medio | Muy bajo | Muy bajo | P2 estabilizado | `/blog/plantilla-kakebo-excel` | Enlazado | **Tras P2** |
-| `SEO-EXCEL-INBOUND-PILAR-01` | Enlazado entrante hacia plantilla-excel | P4 | Media | Medio | Muy bajo | Bajo | P2 estabilizado | 3 artículos → plantilla-excel | Enlazado | **Tras P2** |
-| `SEO-INTERNAL-LINKING-V1-01` | Enlazado interno estructural completo | P4 | Alta | Alto | Medio | Medio | P2 completado | Todo el sitio | Enlazado | **Tras P2** |
-| `SEO-EXCEL-FAQ-FRONTMATTER-01` | FAQ pareja al frontmatter de plantilla-excel | P4 | Baja | Bajo | Ninguno | Muy bajo | P2 | `/blog/plantilla-kakebo-excel` | GEO | **Tras P2** |
-| `SEO-EXCEL-CTA-REORDER-01` | Mover SimpleCTA al final del artículo | P4 | Baja | Bajo | Muy bajo | Muy bajo | P2 | `/blog/plantilla-kakebo-excel` | Conversión | **Tras P2** |
-| `SEO-BLOG-INFLACION-01` | Artículo respaldo calculadora-inflacion | P5 | Alta | Alto | Ninguno | Medio | P0 + P4 | `/blog/inflacion-y-ahorros` (nueva) | Contenido | **Tras P0 + P4** |
-| `SEO-BLOG-503020-01` | Artículo respaldo regla-50-30-20 | P5 | Alta | Alto | Ninguno | Medio | P0 + P4 | `/blog/regla-50-30-20` (nueva) | Contenido | **Tras P0 + P4** |
-| `SEO-GEO-AUTHORSHIP-01` | Bio de autor con credenciales financieras | P6 | Baja | Medio | Ninguno | Medio | Ninguna | Blog posts / sobre-nosotros | GEO / E-E-A-T | **Revisar luego** |
-| `SEO-GEO-FAQ-PAGE-01` | Página /faq global del sitio | P6 | Baja | Bajo | Ninguno | Medio | P5 | `/faq` (nueva) | GEO | **Revisar luego** |
-| `SEO-MEDICION-ITERATIVA-01` | Revisión iterativa GSC + GA4 | P6 | Permanente | Alto | Ninguno | Bajo | P0-02 | Todo el sitio | Medición | **Continuo** |
-
----
-
-## 7. Próximas 5 tareas recomendadas en orden estricto
-
-**Estas 5 tareas pueden ejecutarse con la información actual, sin esperar datos GSC externos.**
-
-### Tarea 1 — `SEO-DATA-PRIORITY-01`
-
-**Qué:** Exportar snapshot completo de Google Search Console.  
-**Por qué primero:** Sin este dato, las decisiones de optimización URL por URL son estimaciones. Bloquea el 60% del roadmap.  
-**Cuándo:** Esta semana.  
-**Entregable:** `docs/seo/GSC_SNAPSHOT_YYYYMMDD.md` con queries, páginas, CTR, posición y clics reales.
-
----
-
-### Tarea 2 — `SEO-GEO-TERMINOLOGY-01`
-
-**Qué:** Unificar terminología en todo el sitio. Crear glosario canónico. Corregir `siteName` inconsistente. Corregir terminología de 4 categorías Kakebo en schemas.  
-**Por qué segundo:** No requiere datos GSC. Alto impacto GEO y coherencia de entidad. Bajo riesgo. Habilita las tareas GEO siguientes.  
-**Cuándo:** Esta semana, en paralelo con Tarea 1.  
-**Entregable:** `docs/seo/GLOSARIO_TERMINOLOGICO.md` + correcciones de `siteName` y terminología en código.
-
----
-
-### Tarea 3 — `SEO-GEO-ENTITY-DEFINITION-01`
-
-**Qué:** Añadir párrafo de definición factual del método Kakebo y del producto MetodoKakebo.com al inicio de `metodo-kakebo-guia-definitiva`.  
-**Por qué tercero:** Depende de tener el glosario (Tarea 2). Máximo impacto GEO con mínimo esfuerzo. Habilita la citabilidad del sitio por motores generativos.  
-**Cuándo:** Inmediatamente después de Tarea 2.  
-**Entregable:** Primer párrafo actualizado en `metodo-kakebo-guia-definitiva`.
-
----
-
-### Tarea 4 — `SEO-SCHEMA-HOME-01`
-
-**Qué:** Añadir schema `Organization` + `WebSite` con SearchAction a la Home.  
-**Por qué cuarto:** Requiere tener definida la entidad (Tarea 3). Bajo riesgo, alto impacto en elegibilidad para sitelinks y señal de marca.  
-**Cuándo:** Inmediatamente después de Tarea 3.  
-**Entregable:** JSON-LD en `/(public)/page.tsx`. Validado en Rich Results Test.
-
----
-
-### Tarea 5 — `SEO-TECHNICAL-DATEMODIFIED-01`
-
-**Qué:** Añadir campo `updatedDate` al frontmatter de artículos. Usar en `dateModified` del JSON-LD y `lastModified` del sitemap.  
-**Por qué quinto:** No requiere datos GSC. Mejora señal de frescura para todos los artículos. Esfuerzo mínimo, impacto acumulado en todos los posts.  
-**Cuándo:** Puede hacerse en paralelo con Tareas 2-4.  
-**Entregable:** Cambios en `blog/[slug]/page.tsx` + `sitemap.ts` + `updatedDate: '2026-06-30'` en `plantilla-kakebo-excel.es.mdx`.
-
----
-
-## 8. Tareas que NO deben hacerse todavía
-
-| Tarea | Razón para esperar |
+| Campo | Detalle |
 |---|---|
-| Cambiar slug de cualquier URL del blog | Riesgo de perder posicionamiento histórico — solo con datos GSC claros |
-| Enlazado interno masivo (`SEO-INTERNAL-LINKING-V1-01`) | Va después de que cada URL tenga su función definida (post P2) |
-| Crear artículos de blog nuevos (`SEO-BLOG-INFLACION-01`, `SEO-BLOG-503020-01`) | Requieren datos GSC + enlazado estructurado previo |
-| Modificar agresivamente `/blog/plantilla-kakebo-excel` | Es el activo orgánico principal — solo cambios quirúrgicos uno a uno |
-| Tocar el legacy EN | Política DOC-I18N-01 activa — sin auditoría específica y datos |
-| Crear página `/faq` global | P6 — baja urgencia, requiere tener el resto del contenido estabilizado |
-| Cambiar el H1 de ninguna URL | Solo si hay evidencia de que el H1 actual perjudica la intención |
-| Fusionar `kakebo-online-gratis` y `kakebo-online-guia-completa` | Solo si GSC confirma canibalización real — merging tiene riesgo de 301 |
+| **ID** | SEO-KAKEBO-VS-FINTONIC-01 |
+| **Título** | Crear segunda comparativa BOFU: "Kakebo vs Fintonic" |
+| **Descripción** | Ampliar la cobertura BOFU (hoy limitada a `kakebo-vs-ynab`) con una comparativa dirigida a la audiencia que ya usa o considera apps bancarias con Open Banking |
+| **Objetivo** | Cerrar el hallazgo S-09 (cobertura BOFU limitada) |
+| **Impacto SEO** | Medio |
+| **Impacto GEO** | Medio — tabla comparativa citable |
+| **Dificultad** | Media |
+| **Riesgo** | Ninguno |
+| **Dependencias** | Snapshot GSC 2026-07-17/31 + enlazado interno ejecutado; menor prioridad que los dos artículos de herramientas porque no tiene una herramienta esperando detrás |
+| **Archivos afectados** | Nuevo `.es.mdx` en `src/content/blog/` |
+| **Validación necesaria** | Artículo indexado; tabla comparativa correctamente estructurada; sin claims sin fuente (según el estándar ya aplicado en `kakebo-vs-ynab`) |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md`, `docs/seo/SEO_MAP_V1.md` |
+| **Prioridad** | **P3 — bloqueada (ver sección 6)** |
 
 ---
 
-## 9. URLs que deben protegerse
+### `SEO-GEO-FAQ-PAGE-01`
 
-Estas URLs tienen tracción real o función crítica y no deben modificarse de forma agresiva:
+| Campo | Detalle |
+|---|---|
+| **ID** | SEO-GEO-FAQ-PAGE-01 |
+| **Título** | Crear página `/faq` global del sitio |
+| **Descripción** | Hub de preguntas frecuentes agregando las FAQ ya existentes en distintas páginas, con schema `FAQPage` propio |
+| **Objetivo** | Cerrar el hallazgo G-08 |
+| **Impacto SEO** | Bajo |
+| **Impacto GEO** | Bajo-medio |
+| **Dificultad** | Media |
+| **Riesgo** | Ninguno |
+| **Dependencias** | Ninguna técnica; prioridad baja por diseño (P6 en el plan maestro) |
+| **Archivos afectados** | Nueva ruta `src/app/[locale]/(public)/faq/page.tsx` |
+| **Validación necesaria** | Página indexada, schema `FAQPage` válido, sin duplicar contenido de FAQ ya indexado en otras páginas de forma que genere canibalización |
+| **Documentación a actualizar** | `docs/PROJECT_STATUS.md`, `docs/seo/SEO_MAP_V1.md` |
+| **Prioridad** | **P3 — no ejecutar hasta que el resto del contenido esté estabilizado** |
 
-| URL | Razón | Restricción |
+---
+
+## Bloque medición
+
+### `SEO-GSC-SNAPSHOT-2026-07-17`
+
+| Campo | Detalle |
+|---|---|
+| **ID** | SEO-GSC-SNAPSHOT-2026-07-17 |
+| **Título** | Ejecutar el snapshot GSC ya fijado para 2026-07-17/31 |
+| **Descripción** | Exportar de Search Console las mismas métricas documentadas en `GSC_CHANGELOG_2026_07_03.md` (Home, queries clave, las 10 URLs EN noindex, `regla-50-30-20`, `kakebo-online-guia-completa`) y compararlas contra el baseline del 2026-07-03 |
+| **Objetivo** | Validar si el sprint de canibalización EN/ES y las optimizaciones de snippet de julio funcionaron |
+| **Impacto SEO** | Crítico — es el prerrequisito de todo el bloque P2 de optimización URL por URL y de contenido |
+| **Impacto GEO** | Ninguno directo, pero condiciona si se prioriza más trabajo GEO o más trabajo de captación clásica |
+| **Dificultad** | Baja (exportar y documentar) |
+| **Riesgo** | Ninguno — solo lectura de datos |
+| **Dependencias** | Ninguna, salvo la fecha (no ejecutar antes del 2026-07-17) |
+| **Archivos afectados** | Ninguno (solo documentación) |
+| **Validación necesaria** | Documento con datos numéricos reales, comparación explícita contra el baseline de `GSC_CHANGELOG_2026_07_03.md` |
+| **Documentación a actualizar** | `docs/seo/GSC_SNAPSHOT_2026_07_17.md` (nuevo), `docs/PROJECT_STATUS.md` |
+| **Prioridad** | **P0 — programada, no ejecutar antes de la fecha** |
+
+---
+
+# 4. Orden recomendado
+
+El orden no es solo por impacto: prioriza primero lo que no tiene coste de espera ni riesgo, deja para después lo que depende de fechas o de autorización, y dejar al final lo que requiere que el paso anterior esté consolidado.
+
+1. **`SEO-HREFLANG-NOINDEX-GUARD-01`** — P0, cero dependencias, corrige una regresión activa. Ejecutar primero.
+2. **`SEO-SCHEMA-BLOGPOSTING-PUBLISHER-01`** — P0, cero dependencias, mismo tipo de archivo que la tarea anterior (agrupable en la misma sesión de trabajo, pero commits separados).
+3. **`SEO-SITEMAP-HERRAMIENTAS-01`** — P1, cero dependencias, bajo riesgo.
+4. **`SEO-SITEMAP-LASTMODIFIED-01`** — P1, mismo archivo que la tarea 3 (ejecutar en la misma sesión, commits separados para no mezclar dos objetivos en el sitemap).
+5. **`SEO-SITENAME-UNIFY-01`** — P1, cero dependencias.
+6. **`SEO-SCHEMA-HERRAMIENTAS-HUB-01`** — P2, sin dependencias técnicas, pero tiene sentido ejecutarla después de que el hub ya esté en el sitemap (orden lógico, no bloqueante).
+7. **`SEO-TECHNICAL-TUTORIAL-PRIORITY-01`** — P2, trivial, puede ejecutarse en cualquier momento del bloque técnico.
+8. **`SEO-BREADCRUMB-AUDIT-01`** — P3, auditoría pura, sin urgencia.
+9. **`SEO-GEO-AUTHORSHIP-AUDIT-01`** — P2, auditoría pura, puede ejecutarse en paralelo con el bloque técnico porque no toca los mismos archivos.
+10. **`SEO-INTERNAL-LINKING-EXEC-METODO-01`** — P1, ejecutar después de cerrar el bloque técnico para no mezclar ventanas de medición de cambios técnicos con cambios de enlazado en el mismo periodo.
+11. **`SEO-INTERNAL-LINKING-EXEC-EXCEL-01`** — P1, condicionada a autorización explícita; solicitar esa autorización en paralelo con el punto 10, ejecutar cuando se conceda.
+12. **`SEO-GSC-SNAPSHOT-2026-07-17`** — P0 programada; se ejecuta en su fecha con independencia del resto del roadmap, y sus resultados son los que desbloquean el bloque de contenido.
+13. **`SEO-BLOG-INFLACION-01`** — P2, bloqueada hasta el punto 12 + puntos 10-11 completados.
+14. **`SEO-BLOG-503020-01`** — P2, misma condición que la anterior.
+15. **`SEO-KAKEBO-VS-FINTONIC-01`** — P3, después de los dos artículos de herramientas.
+16. **`SEO-GEO-FAQ-PAGE-01`** — P3, al final, sin urgencia.
+
+**Regla de secuencia:** no iniciar el punto 13 en adelante sin haber cerrado los puntos 1-12.
+
+---
+
+# 5. Hitos
+
+## Bloque 1 — Correcciones técnicas pequeñas
+`SEO-HREFLANG-NOINDEX-GUARD-01` · `SEO-SCHEMA-BLOGPOSTING-PUBLISHER-01` · `SEO-SITEMAP-HERRAMIENTAS-01` · `SEO-SITEMAP-LASTMODIFIED-01` · `SEO-SITENAME-UNIFY-01` · `SEO-TECHNICAL-TUTORIAL-PRIORITY-01`
+
+**Objetivo del bloque:** cerrar toda la deuda técnica ya diagnosticada y de bajo riesgo antes de tocar nada más. Puede completarse en días, no en semanas.
+
+## Bloque 2 — Arquitectura
+`SEO-SCHEMA-HERRAMIENTAS-HUB-01` · `SEO-BREADCRUMB-AUDIT-01` · `SEO-GEO-AUTHORSHIP-AUDIT-01`
+
+**Objetivo del bloque:** completar las piezas de arquitectura e infraestructura de contenido que no dependen de datos externos.
+
+## Bloque 3 — Enlazado interno
+`SEO-INTERNAL-LINKING-EXEC-METODO-01` · `SEO-INTERNAL-LINKING-EXEC-EXCEL-01`
+
+**Objetivo del bloque:** redistribuir autoridad interna hacia el hub semántico y reforzar la conexión desde la URL tractora, cerrando el mayor cuello de botella arquitectónico identificado en la auditoría.
+
+## Bloque 4 — Contenido
+`SEO-BLOG-INFLACION-01` · `SEO-BLOG-503020-01` · `SEO-KAKEBO-VS-FINTONIC-01` · `SEO-GEO-FAQ-PAGE-01`
+
+**Objetivo del bloque:** cerrar los gaps editoriales confirmados, solo después de que los bloques 1-3 estén cerrados y el snapshot GSC lo valide.
+
+## Bloque 5 — Medición
+`SEO-GSC-SNAPSHOT-2026-07-17`
+
+**Objetivo del bloque:** validar con datos reales el impacto de todo lo anterior y decidir si el Bloque 4 se ejecuta tal como está planteado o se ajusta.
+
+**Nota de secuencia real:** aunque se numera como Bloque 5, `SEO-GSC-SNAPSHOT-2026-07-17` debe ejecutarse en su fecha natural (2026-07-17/31), que probablemente coincide con la ejecución de los Bloques 1-3. Es el hito que desbloquea el Bloque 4, no el último en ejecutarse cronológicamente.
+
+---
+
+# 6. Tareas bloqueadas
+
+| Tarea | Qué dato falta | Qué evento la desbloquea |
 |---|---|---|
-| `/blog/plantilla-kakebo-excel` | Principal activo orgánico del sitio | Solo cambios quirúrgicos: title (P2-01), H3→H2 (P2-02), links salientes (P4-01). No cambiar slug, H1, estructura narrativa, schema SoftwareApplication, hreflang ni canonical |
-| `/herramientas/calculadora-ahorro` | CTR 35,9% — señal de alineación excepcional | No cambiar contenido hasta entender qué genera ese CTR (P2-04) |
-| `/blog/como-hacer-un-presupuesto-personal` | Artículo pilar reciente — necesita madurar | No optimizar hasta tener primeros datos GSC (8+ semanas post-publicación) |
+| `SEO-BLOG-INFLACION-01` | Volumen de búsqueda confirmado y enlazado interno estabilizado | Snapshot GSC 2026-07-17/31 ejecutado + Bloque 3 completado |
+| `SEO-BLOG-503020-01` | Igual que la anterior | Igual que la anterior |
+| `SEO-KAKEBO-VS-FINTONIC-01` | Confirmación de que el cluster Alternativas/Fintonic tiene tracción suficiente para justificar una tercera pieza | Snapshot GSC 2026-07-17/31 + resultados de los dos artículos de herramientas ya publicados |
+| `SEO-INTERNAL-LINKING-EXEC-EXCEL-01` | Autorización explícita del usuario para tocar `plantilla-kakebo-excel` | Confirmación directa del usuario (política vigente desde `GSC_CHANGELOG_2026_07_03.md`) |
+| `SEO-GEO-FAQ-PAGE-01` | Ninguno crítico, pero es P3 por diseño — no debe competir por atención con el resto del roadmap | Cierre completo de los Bloques 1-4 |
+| Cualquier optimización adicional de `como-hacer-un-presupuesto-personal` (no listada como tarea aún — solo monitorización) | Impresiones reales en GSC | Publicado el 2026-06-22; primeras señales fiables esperadas a partir de 2026-08-17 (8 semanas) |
+| Cualquier decisión sobre los 3 artículos EN "dudosos" (`como-ahorrar-dinero-cada-mes`, `eliminar-gastos-hormiga`, `metodo-kakebo-guia-definitiva` en su versión EN) | Posición y tracción en GSC | Snapshot GSC 2026-07-17/31 |
 
 ---
 
-## 10. URLs que deben auditarse antes de tocarse
+# 7. Riesgos del roadmap
 
-Estas URLs necesitan una auditoría específica antes de cualquier modificación:
-
-| URL | Tipo de auditoría necesaria | Tarea |
-|---|---|---|
-| `/blog/kakebo-online-gratis` + `/blog/kakebo-online-guia-completa` | Canibalización con datos GSC reales | `SEO-KAKEBO-ONLINE-CANIB-01` |
-| `/herramientas/calculadora-ahorro` | Análisis de CTR anómalo para entender el patrón | `SEO-CALCULADORA-AHORRO-AUDIT-01` |
-| `/tutorial` | Thin content / indexabilidad | `SEO-TECHNICAL-TUTORIAL-01` |
-| `/sobre-nosotros` | E-E-A-T y GEO | `SEO-GEO-SOBRE-NOSOTROS-01` |
-| `/en/blog/plantilla-kakebo-excel` | Interferencia EN→ES en URL tractora | `SEO-EXCEL-EN-VALIDATE-01` |
-
----
-
-## 11. Hipótesis de medición
-
-Estas hipótesis deben validarse con datos GSC/GA4 tras aplicar los cambios:
-
-| Hipótesis | Cambio que la genera | Ventana de validación |
-|---|---|---|
-| Reducir meta title de `plantilla-kakebo-excel` a <65 chars aumenta CTR | `SEO-EXCEL-TITLE-01` | 3-5 semanas post-deploy |
-| Añadir schema `Organization` + `WebSite` a Home activa sitelinks de búsqueda | `SEO-SCHEMA-HOME-01` | 4-8 semanas |
-| Unificar terminología GEO mejora citabilidad en AI Overviews | `SEO-GEO-TERMINOLOGY-01` | Difícil de medir directo — vigilar apariciones en AI Overviews |
-| `como-hacer-un-presupuesto-personal` genera primeras impresiones | — | 4-8 semanas desde publicación (2026-06-22) → revisar agosto 2026 |
-| El CTR anómalo de `calculadora-ahorro` es reproducible con artículo editorial | `SEO-BLOG-INFLACION-01` / `SEO-BLOG-503020-01` | 8-12 semanas post-publicación artículos |
-| La canibalización kakebo-online está activa y Google alterna entre ambas URLs | — | Confirmar con snapshot GSC en P0 |
+| Qué puede salir mal | Cómo evitarlo |
+|---|---|
+| Ejecutar varias tareas del Bloque 1 en el mismo commit "porque son pequeñas" | Mantener la disciplina de un commit por tarea aunque el cambio sea de una línea — es exactamente el tipo de atajo que causó la regresión T-13 |
+| Empezar el Bloque 4 (contenido) antes de que el snapshot GSC lo confirme, por presión de avanzar | Bloquear explícitamente esas tareas en el backlog (sección 6) y no permitir su ejecución sin el evento desbloqueante documentado |
+| Tocar `plantilla-kakebo-excel` sin la autorización explícita del usuario | La tarea `SEO-INTERNAL-LINKING-EXEC-EXCEL-01` queda marcada como condicionada; no ejecutar sin confirmación expresa |
+| Que el snapshot GSC del 2026-07-17/31 no se ejecute a tiempo | Tratarlo como tarea P0 programada igual que cualquier otra tarea del roadmap, no como una nota informal |
+| Interpretar los resultados del snapshot antes de tiempo (fluctuaciones diarias, muestras pequeñas) | Aplicar las mismas reglas de interpretación ya documentadas en `GSC_CHANGELOG_2026_07_03.md` sección 5 |
+| Que el enlazado interno del Bloque 3 se ejecute sin seguir el plan ya documentado en `SEO_INTERNAL_LINKING_V1_01.md`, introduciendo enlaces no naturales | Cada tarea de enlazado debe citar explícitamente qué parte del plan ejecuta y no improvisar enlaces fuera de ese documento |
+| Acumular tareas completadas sin push, perdiendo trazabilidad | Seguir el principio 5 de la sección 2 sin excepción |
+| Que una tarea de "solo auditoría" (`SEO-BREADCRUMB-AUDIT-01`, `SEO-GEO-AUTHORSHIP-AUDIT-01`) derive en cambios de código sin planificarlo como tarea nueva | Cerrar la tarea de auditoría con su documento de hallazgos y, si hace falta acción, crear una tarea nueva independiente en una próxima revisión de este roadmap |
 
 ---
 
-## 12. Ventanas de revisión recomendadas
+# 8. Criterios para dar una tarea por completada
 
-| Ventana | Qué revisar | Acción |
-|---|---|---|
-| **Inmediata (esta semana)** | GSC snapshot + iniciar P1 GEO | Ejecutar P0-01 + P1-01 |
-| **2 semanas** | Confirmar indexación de cambios GEO (P1) | Verificar en GSC que las páginas modificadas no tienen errores |
-| **4 semanas** | Primeras señales de CTR post-title fix de `plantilla-kakebo-excel` (si P2-01 ya ejecutado) | Comparar CTR vs. snapshot P0 |
-| **6-8 semanas** | Primeras impresiones de `como-hacer-un-presupuesto-personal` | Decidir si merece P1 de enlazado |
-| **8 semanas** | Revisar si canibalización kakebo-online se ha resuelto o agravado | Ejecutar `SEO-KAKEBO-ONLINE-CANIB-01` si no se hizo antes |
-| **12 semanas** | Revisión completa del roadmap — actualizar `SEO_ROADMAP_V1.md` | Crear `SEO_ROADMAP_V2.md` basado en datos reales |
+Una tarea de este roadmap solo puede marcarse como completada cuando se cumplen **todas** las siguientes condiciones:
 
----
+1. **Commit único** con el nombre de la tarea, ya pusheado a `origin/main`.
+2. **Validación ejecutada y superada** exactamente como se definió en el backlog (build limpio, Rich Results Test, grep de confirmación, documento de auditoría, etc. — según corresponda a esa tarea).
+3. **Documentación actualizada** en `docs/PROJECT_STATUS.md` con el mismo formato que las tareas anteriores del proyecto (campo/detalle, cambios, validación).
+4. **Sin efectos colaterales no documentados** — si la tarea tocó algo fuera de los "archivos afectados" listados, eso debe quedar explícitamente registrado y justificado en el commit y en la documentación.
+5. **Sin mezclar objetivos** — si al ejecutar se detectó una segunda mejora relacionada, esa segunda mejora se registra como tarea nueva en este roadmap, no se cuela en el mismo commit.
+6. **Actualización del estado del hallazgo origen** en `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (o en el roadmap, según corresponda) para que la próxima auditoría no vuelva a listarlo como abierto.
 
-## 13. Conclusión
+Una tarea de tipo "medición" (snapshot GSC) se considera completada cuando el documento de snapshot existe con datos reales y una comparación explícita contra el baseline anterior — no antes de la fecha mínima fijada, aunque técnicamente se pudiera exportar antes.
 
-El sitio está en un punto de inflexión: la base técnica está sólida y la URL tractora funciona. El riesgo principal no es técnico sino estratégico: **dependencia de una sola URL y ausencia de datos reales para tomar decisiones**.
-
-El roadmap está diseñado para resolver exactamente eso:
-1. Obtener los datos (P0) que permiten priorizar con evidencia
-2. Mejorar la comprensión del sitio por motores generativos (P1) mientras llegan los datos
-3. Optimizar URL por URL con criterio una vez que el contexto está claro (P2-P4)
-4. Crear contenido solo donde hay un hueco real confirmado (P5)
-
-El principal error a evitar es saltarse la secuencia: crear artículos antes de tener el enlazado definido, o hacer enlazado antes de tener las URLs bien orientadas, o hacer contenido nuevo antes de tener GSC. El plan es claro: **orden antes que velocidad**.
-
-**Próxima tarea ejecutable:** `SEO-DATA-PRIORITY-01` — exportar snapshot GSC y documentarlo en el repo.
+Una tarea de tipo "contenido bloqueado" no puede completarse mientras su condición de desbloqueo (sección 6) no se haya cumplido, independientemente de si el equipo tiene capacidad para ejecutarla antes.
 
 ---
 
-*SEO_ROADMAP_V1.md — 2026-06-30*  
-*26 tareas priorizadas en 7 bloques · 5 tareas ejecutables inmediatamente · 12 bloqueadas hasta GSC*  
-*Sin cambios en código, contenido ni SEO técnico.*
+*SEO_ROADMAP_V1.md — actualizado 2026-07-07*
+*16 tareas priorizadas · P0: 3 · P1: 5 · P2: 5 · P3: 3 · 5 de ellas bloqueadas por fecha, datos o autorización*
+*Sin cambios en código, contenido ni configuración SEO — solo documentación.*
