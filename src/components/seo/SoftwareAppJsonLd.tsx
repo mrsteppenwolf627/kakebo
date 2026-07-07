@@ -30,7 +30,7 @@ export default function SoftwareAppJsonLd() {
         },
         "author": {
             "@type": "Organization",
-            "name": "Kakebo AI Team",
+            "name": "MetodoKakebo.com",
             "url": "https://www.metodokakebo.com",
             "logo": "https://www.metodokakebo.com/icon.png"
         }

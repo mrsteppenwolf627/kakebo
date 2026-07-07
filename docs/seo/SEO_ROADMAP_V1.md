@@ -274,11 +274,12 @@ Estos principios no son opcionales. Cualquier tarea que los rompa debe partirse 
 
 ---
 
-### `SEO-GEO-AUTHORSHIP-AUDIT-01`
+### `SEO-GEO-AUTHORSHIP-AUDIT-01` — ✅ COMPLETADA 2026-07-07
 
 | Campo | Detalle |
 |---|---|
 | **ID** | SEO-GEO-AUTHORSHIP-AUDIT-01 |
+| **Estado** | ✅ Completada — ejecutada como `SEO-AUTHOR-AUDIT-01`, documento `docs/seo/SEO_AUTHOR_AUDIT_01.md`. Hallazgo ampliado respecto al alcance original: no solo 14 artículos ES con "Equipo Kakebo", sino 7 identidades editoriales distintas en uso en todo el sitio (blog ES/EN, metadata global, schema, `/sobre-nosotros`). Desbloqueó la tarea `SEO-AUTHOR-NORMALIZATION-01`. |
 | **Título** | Verificar la autoría real en los 14 artículos de blog no revisados |
 | **Descripción** | Solo se ha confirmado que `metodo-kakebo-guia-definitiva` usa un nombre real de autor (Aitor Alarcón). Revisar el frontmatter `author` de los 14 artículos restantes y documentar cuáles siguen con "Equipo Kakebo" u otro valor genérico |
 | **Objetivo** | Cerrar el hallazgo G-03 — confirmar el alcance real del problema antes de decidir si migrar autoría |
@@ -291,6 +292,25 @@ Estos principios no son opcionales. Cualquier tarea que los rompa debe partirse 
 | **Validación necesaria** | Documento con tabla de los 15 artículos y su valor actual de `author` |
 | **Documentación a actualizar** | `docs/seo/SEO_GEO_AUTHORSHIP_AUDIT_01.md` (nuevo) |
 | **Prioridad** | **P2** |
+
+---
+
+### `SEO-AUTHOR-NORMALIZATION-01` — ✅ COMPLETADA 2026-07-07
+
+| Campo | Detalle |
+|---|---|
+| **ID** | SEO-AUTHOR-NORMALIZATION-01 |
+| **Título** | Normalizar la identidad de autoría a Persona (Aitor Alarcón) + Organización (MetodoKakebo.com) |
+| **Descripción** | Ejecuta la decisión de estrategia de autoría fijada tras `SEO_AUTHOR_AUDIT_01.md`: unificar las 7 identidades editoriales detectadas en exactamente 2, separadas por concepto (persona autora de contenido vs. organización editora) |
+| **Estado** | ✅ Completada — commit `feat(seo): normalize author identity`. 31 archivos modificados (29 `.mdx` + `layout.tsx` + `SoftwareAppJsonLd.tsx`). Cero referencias residuales a "Equipo Kakebo", "Kakebo Team" o "Kakebo AI Team" verificadas por búsqueda exhaustiva. Ver `docs/PROJECT_STATUS.md` y `docs/seo/SEO_AUTHOR_AUDIT_01.md` §9 para el detalle completo. |
+| **Objetivo** | Eliminar la contradicción "equipo" vs. "individuo" identificada como riesgo de severidad Alta en la auditoría de autoría |
+| **Impacto SEO** | Bajo-medio — coherencia de entidad para Google |
+| **Impacto GEO** | Alto — resuelve el riesgo de E-E-A-T más severo detectado en el sitio (autoría no verificable en contenido financiero) |
+| **Dificultad** | Baja — sustitución de valores de texto ya identificados, sin tocar estructura |
+| **Riesgo** | Bajo — cambios acotados a un campo por archivo, verificados uno a uno |
+| **Dependencias** | `SEO-GEO-AUTHORSHIP-AUDIT-01` (auditoría previa) y decisión explícita de estrategia por parte del usuario |
+| **Archivos afectados** | 29 `.mdx` de blog (ES+EN), `src/app/[locale]/layout.tsx`, `src/components/seo/SoftwareAppJsonLd.tsx` |
+| **Prioridad** | **P1** (ejecutada tras decisión de producto) |
 
 ---
 

@@ -5,6 +5,8 @@
 **Tipo:** Solo diagnóstico — sin cambios en código, contenido ni configuración SEO
 **Método:** Lectura directa del frontmatter de los 30 artículos de blog (15 ES + 15 EN), del componente que renderiza autoría y schema (`blog/[slug]/page.tsx`), de `layout.tsx` (metadata global), de las 3 páginas de herramientas, de la Home (schema `Organization`) y del contenido visible de `/sobre-nosotros` en ambos idiomas
 
+> **✅ ACTUALIZACIÓN 2026-07-07 — NORMALIZADO.** La decisión de estrategia quedó fijada (Persona: **Aitor Alarcón** · Organización/publisher: **MetodoKakebo.com**) y ejecutada en la tarea `SEO-AUTHOR-NORMALIZATION-01`. Las 7 identidades detectadas en esta auditoría (§3) han quedado reducidas a 2, correctamente separadas. Detalle completo de los cambios en `docs/PROJECT_STATUS.md`. Este documento se conserva como diagnóstico histórico — las secciones §3-§6 describen el estado **anterior** a la normalización.
+
 ---
 
 ## 1. Resumen ejecutivo
@@ -140,5 +142,22 @@ La **Opción A** es la más coherente con lo que el propio sitio ya comunica en 
 
 ---
 
-*SEO_AUTHOR_AUDIT_01.md — 2026-07-07*
-*Solo diagnóstico — sin cambios en código, contenido ni configuración SEO.*
+## 9. Cierre — Normalización ejecutada (2026-07-07)
+
+**Estrategia final adoptada:** Opción A (persona real única) con la organización separada — exactamente como se recomendaba en §7.
+
+| Concepto | Identidad final |
+|---|---|
+| **Persona** (autor de contenido — frontmatter, badge visible, `BlogPosting.author`, metadata `authors`) | **Aitor Alarcón** |
+| **Organización/publisher** (`BlogPosting.publisher`, blog index, herramientas, `SoftwareAppJsonLd.author`, metadata `creator`/`publisher`) | **MetodoKakebo.com** |
+
+**Inconsistencias eliminadas:** las 3 variantes de identidad editorial confusas o inexactas — "Equipo Kakebo" (14 artículos ES), "Kakebo Team" (15 artículos EN) y "Kakebo AI Team" (metadata global + un componente de schema) — quedan reducidas a 0 ocurrencias, verificado por búsqueda exhaustiva en `src/` y `messages/`.
+
+**No normalizado (deliberadamente, fuera del alcance de autoría):** el nombre de producto "Kakebo AI" (branding de la app, no identidad editorial), el handle social `@kakebo_ai`, y el copy de footer "Kakebo Ahorro". Ver `docs/PROJECT_STATUS.md` para la justificación completa de cada exclusión.
+
+**Detalle completo de la ejecución:** `docs/PROJECT_STATUS.md`, entrada `SEO-AUTHOR-NORMALIZATION-01`.
+
+---
+
+*SEO_AUTHOR_AUDIT_01.md — 2026-07-07, actualizado el mismo día tras la normalización*
+*Diagnóstico original sin cambios en código; §9 documenta la ejecución posterior de la tarea `SEO-AUTHOR-NORMALIZATION-01`.*

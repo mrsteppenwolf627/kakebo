@@ -18,9 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     },
     description: t("description"),
     keywords: t("keywords").split(", "),
-    authors: [{ name: "Kakebo AI Team" }],
-    creator: "Kakebo AI",
-    publisher: "Kakebo AI",
+    authors: [{ name: "Aitor Alarcón" }],
+    creator: "MetodoKakebo.com",
+    publisher: "MetodoKakebo.com",
     formatDetection: {
       email: false,
       address: false,

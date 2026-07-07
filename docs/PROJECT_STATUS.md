@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-07 (feat(seo): add structured data for tools hub — SEO-SCHEMA-HERRAMIENTAS-HUB-01)  
+**Última actualización:** 2026-07-07 (feat(seo): normalize author identity — SEO-AUTHOR-NORMALIZATION-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,41 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ SEO-AUTHOR-NORMALIZATION-01 — Normalización de la identidad de autoría
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-07 |
+| **Tarea** | `SEO-AUTHOR-NORMALIZATION-01` — ejecuta la decisión de estrategia de autoría fijada tras `docs/seo/SEO_AUTHOR_AUDIT_01.md` |
+| **Decisión de proyecto** | Persona: **Aitor Alarcón** (autoría de contenido) · Organización/publisher: **MetodoKakebo.com** (entidad editora) — sin mezclar ambos conceptos |
+| **Archivos** | 31 (29 artículos `.mdx` + `layout.tsx` + `SoftwareAppJsonLd.tsx`) |
+| **Build** | ✅ `npm run build` — Compiled successfully, sin errores nuevos |
+
+**Causa raíz (recordatorio de `SEO_AUTHOR_AUDIT_01.md`):** el proyecto usaba 7 identidades editoriales distintas: "Equipo Kakebo" (14 artículos ES), "Kakebo Team" (15 artículos EN), "Aitor Alarcón" (1 artículo ES), "Kakebo AI Team" (metadata global + un componente de schema no usado), "Kakebo AI" (creator/publisher de metadata), "MetodoKakebo.com" (publisher del schema, ya correcto) y "Aitor" (contenido visible de `/sobre-nosotros`).
+
+**Cambios aplicados:**
+1. **29 artículos `.mdx`** (14 ES con `author: 'Equipo Kakebo'` + 15 EN con `author: 'Kakebo Team'`) → `author: 'Aitor Alarcón'`. El artículo `metodo-kakebo-guia-definitiva.es.mdx` ya tenía el valor correcto y no se tocó (0 diff).
+2. **`src/app/[locale]/layout.tsx`** (metadata global de Next.js, aplicada a todo el sitio): `authors: [{ name: "Kakebo AI Team" }]` → `authors: [{ name: "Aitor Alarcón" }]` (Persona — autoría de contenido); `creator: "Kakebo AI"` → `creator: "MetodoKakebo.com"` y `publisher: "Kakebo AI"` → `publisher: "MetodoKakebo.com"` (Organización — entidad editora del sitio).
+3. **`src/components/seo/SoftwareAppJsonLd.tsx`**: `author.name: "Kakebo AI Team"` (schema tipo `Organization`, componente detectado durante la revisión aunque no está importado/renderizado en ninguna página actualmente) → `"MetodoKakebo.com"`, coherente con su tipo `Organization`.
+
+**Separación Persona/Organización mantenida:** `authors` de Next.js metadata y `BlogPosting.author` (tipo `Person`, ya vinculado dinámicamente al frontmatter desde antes — no requirió cambio de código) usan **Aitor Alarcón**. `creator`/`publisher` de metadata, `BlogPosting.publisher`, `blogSchema.publisher`, los `publisher` de las 3 herramientas y `SoftwareAppJsonLd.author` (tipo `Organization`) usan **MetodoKakebo.com**. Ningún campo mezcla ambos conceptos.
+
+**No tocado (fuera de alcance, justificado):**
+- El nombre de producto **"Kakebo AI"** en todo el resto del sitio (Home, Hero, manifest, OG image, reports, `SoftwareApplication.name`, menciones en el cuerpo de los artículos) — es el nombre de la app, no una identidad editorial, y la tarea solo pedía normalizar autoría, no tocar SEO técnico ni contenido.
+- El handle de Twitter/X `@kakebo_ai` (en `layout.tsx` y `Organization.sameAs` de Home) — es una referencia a una cuenta social real existente, no un texto de identidad editorial; cambiarlo rompería el enlace social.
+- `© Kakebo Ahorro` en el Footer — copy de marca del footer, no listado como variante a eliminar en esta tarea.
+- Contenido, títulos, estructura, sitemap y enlazado interno de los artículos — sin cambios, tal como se pidió.
+
+**Verificado:**
+- `git diff --stat` confirma 31 archivos modificados, 33 inserciones / 33 eliminaciones — cada `.mdx` con exactamente 1 línea cambiada (el campo `author`), `layout.tsx` con 3 líneas, `SoftwareAppJsonLd.tsx` con 1 línea.
+- Grep de `author:` en los 30 artículos (ES+EN) tras el cambio: los 30 muestran `author: 'Aitor Alarcón'`.
+- Búsqueda exhaustiva en `src/` y `messages/` de las 3 variantes eliminadas ("Equipo Kakebo", "Kakebo Team", "Kakebo AI Team"): **sin coincidencias** en los tres casos.
+- `npm run build` compila sin errores.
+- Confirmado que el `publisher` del schema `BlogPosting` (`blog/[slug]/page.tsx`) sigue siendo `"MetodoKakebo.com"`, sin diff — no se tocó al ya estar correcto desde la tarea G-12.
+- El badge visible de autor en cada artículo (`post.frontmatter.author[0]` + `post.frontmatter.author`) y el campo `BlogPosting.author.name` leen del mismo campo de frontmatter ya normalizado — ambos mostrarán "Aitor Alarcón" de forma consistente sin requerir cambios adicionales de código.
 
 ---
 
