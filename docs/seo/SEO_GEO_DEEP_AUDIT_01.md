@@ -218,7 +218,7 @@ No se detectó contenido duplicado entre artículos ES. `/tutorial` fue auditado
 
 | ID | Riesgo | Severidad |
 |---|---|---|
-| G-12 | `BlogPosting.publisher.name: "Kakebo"` contradice el glosario canónico del propio proyecto | Baja-Media |
+| G-12 | ✅ **RESUELTO 2026-07-07** — `BlogPosting.publisher.name: "Kakebo"` contradecía el glosario canónico del propio proyecto. Corregido a `"MetodoKakebo.com"` en `blog/[slug]/page.tsx` (ver `docs/PROJECT_STATUS.md`). | Baja-Media (histórica) |
 | G-08 | Sin página FAQ global del sitio | Baja |
 | G-03 | Autoría genérica no verificada en 14 de 15 artículos | Baja |
 
@@ -252,7 +252,7 @@ No se detectó contenido duplicado entre artículos ES. `/tutorial` fue auditado
 | ID | Descripción | Impacto | Urgencia | Dificultad | Tipo |
 |---|---|---|---|---|---|
 | T-13 | ✅ RESUELTO 2026-07-07 — Hreflang contradictorio hacia 10 artículos EN noindexados | Alto | ~~Alta~~ Cerrado | Muy baja | SEO técnico |
-| G-12 | `BlogPosting.publisher.name` usa "Kakebo" en lugar de "MetodoKakebo.com" | Medio | Media | Muy baja | GEO |
+| G-12 | ✅ RESUELTO 2026-07-07 — `BlogPosting.publisher.name` usaba "Kakebo" en lugar de "MetodoKakebo.com" | Medio | ~~Media~~ Cerrado | Muy baja | GEO |
 | RM-07 | `metodo-kakebo-guia-definitiva` infraconectado como hub de cluster | Alto | Media | Media | Arquitectura / contenido |
 | S-EJEC-01 | Ejecutar el plan de enlazado interno ya documentado (`SEO_INTERNAL_LINKING_V1_01.md`) | Alto | Media | Media | Arquitectura |
 | T-01 | Hub `/herramientas` ausente del sitemap y sin schema | Bajo | Baja | Baja | SEO técnico |

@@ -69,11 +69,12 @@ Estos principios no son opcionales. Cualquier tarea que los rompa debe partirse 
 
 ---
 
-### `SEO-SCHEMA-BLOGPOSTING-PUBLISHER-01`
+### `SEO-SCHEMA-BLOGPOSTING-PUBLISHER-01` — ✅ COMPLETADA 2026-07-07
 
 | Campo | Detalle |
 |---|---|
 | **ID** | SEO-SCHEMA-BLOGPOSTING-PUBLISHER-01 |
+| **Estado** | ✅ Completada — commit `fix(seo): unify BlogPosting publisher entity`. Ver `docs/PROJECT_STATUS.md` para el detalle de la corrección y `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` (G-12 marcado como resuelto). |
 | **Título** | Corregir `publisher.name` en el schema BlogPosting |
 | **Descripción** | Cambiar `"name": "Kakebo"` por `"name": "MetodoKakebo.com"` en el bloque JSON-LD `BlogPosting` de `blog/[slug]/page.tsx`, alineando con el resto del sitio y con el glosario canónico del proyecto |
 | **Objetivo** | Eliminar la única fuga de ambigüedad de entidad que queda en schema (G-12 de la auditoría) |

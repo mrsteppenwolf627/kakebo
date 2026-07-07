@@ -190,7 +190,7 @@ export default async function BlogPostPage({ params }: Props) {
                             }],
                             publisher: {
                                 "@type": "Organization",
-                                name: "Kakebo",
+                                name: "MetodoKakebo.com",
                                 logo: {
                                     "@type": "ImageObject",
                                     url: "https://www.metodokakebo.com/logo.png"

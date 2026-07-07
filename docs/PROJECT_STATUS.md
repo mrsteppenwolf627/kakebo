@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-07 (fix(seo): resolve hreflang contradiction for EN noindex posts — T-13)  
+**Última actualización:** 2026-07-07 (fix(seo): unify BlogPosting publisher entity — G-12)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,29 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+
+---
+
+## ✅ G-12 — Unificación de la entidad publisher.name del schema BlogPosting
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-07 |
+| **Tarea** | `G-12` (roadmap `docs/seo/SEO_ROADMAP_V1.md`, tarea `SEO-SCHEMA-BLOGPOSTING-PUBLISHER-01`) |
+| **Origen** | Hallazgo G-12 de `docs/seo/SEO_GEO_DEEP_AUDIT_01.md` |
+| **Archivo** | `src/app/[locale]/(public)/blog/[slug]/page.tsx` (bloque JSON-LD `BlogPosting`) |
+| **Build** | ✅ `npm run build` — Compiled successfully, sin errores nuevos |
+
+**Causa raíz:** el schema `BlogPosting`, generado en un único componente compartido por los 15 artículos de blog, definía `publisher.name: "Kakebo"`. El propio glosario canónico del proyecto (`SEO_GEO_TERMINOLOGY_01.md`) marca "Kakebo" a secas como término ambiguo a evitar como nombre de la organización, precisamente porque se confunde con el método histórico. El resto del sitio (Home `Organization.name`, blog index `publisher.name`, `calculadora-inflacion`, `calculadora-ahorro`, `regla-50-30-20`) ya usaba consistentemente `"MetodoKakebo.com"` o la referencia `@id` a la entidad `Organization` de la Home.
+
+**Fix aplicado:** cambio de un único valor de string — `name: "Kakebo"` → `name: "MetodoKakebo.com"` — en el bloque `publisher` del `BlogPosting`. No se ha tocado `logo`, `author`, `datePublished`, `dateModified`, `mainEntityOfPage` ni ningún otro campo del schema.
+
+**Verificado:**
+- `git diff` confirma que el commit modifica una única línea del archivo.
+- El componente `blog/[slug]/page.tsx` es el único punto del código que genera el schema `BlogPosting`; al ser compartido por los 15 artículos, el fix se propaga automáticamente a todos sin necesidad de tocar ningún `.mdx`.
+- Grep de `name: "Kakebo"` (y variantes) en `src/` tras el cambio: sin coincidencias — no queda ningún punto del código con la entidad ambigua.
+
+**No tocado:** `sitemap.ts`, `robots.ts`, cualquier archivo `.mdx`, el resto de propiedades del `BlogPosting`, y el resto de schemas del sitio (Home, blog index, herramientas), que ya usaban la entidad correcta.
 
 ---
 
