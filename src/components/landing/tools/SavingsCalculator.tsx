@@ -184,6 +184,24 @@ export function SavingsCalculator() {
                 </p>
             </div>
 
+            {/* Intro block — definition, formula, GEO context */}
+            <div className="max-w-3xl mx-auto space-y-4 text-center">
+                <p className="text-muted-foreground font-light leading-relaxed text-base">
+                    {t("intro.lead")}
+                </p>
+                <div className="rounded-xl border border-border bg-muted/30 p-5 text-left">
+                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">
+                        {t("intro.formulaLabel")}
+                    </p>
+                    <p className="text-lg font-mono font-medium text-foreground">
+                        {t("intro.formulaText")}
+                    </p>
+                </div>
+                <p className="text-sm text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
+                    {t("intro.vs5030")}
+                </p>
+            </div>
+
             {/* Calculator grid */}
             <div className="grid lg:grid-cols-12 gap-8 items-start">
                 {/* Inputs sidebar */}
@@ -609,6 +627,40 @@ export function SavingsCalculator() {
                 </div>
             </div>
 
+            {/* Interpretation section */}
+            <div className="max-w-3xl mx-auto space-y-4">
+                <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground">
+                    ¿Cómo interpretar el resultado?
+                </h2>
+                <div className="space-y-3">
+                    <div className="border-l-4 border-l-red-500 dark:border-l-red-400 bg-card border border-border rounded-r-xl p-4 space-y-1">
+                        <p className="text-sm font-semibold text-red-700 dark:text-red-400">Déficit</p>
+                        <p className="text-sm text-muted-foreground">Tus gastos superan tus ingresos. No queda margen para el ahorro.</p>
+                        <p className="text-xs text-muted-foreground/70">→ Revisa primero los gastos fijos; si son inamovibles, busca vías de ingreso adicional.</p>
+                    </div>
+                    <div className="border-l-4 border-l-amber-500 dark:border-l-amber-400 bg-card border border-border rounded-r-xl p-4 space-y-1">
+                        <p className="text-sm font-semibold text-amber-700 dark:text-amber-400">Margen cero</p>
+                        <p className="text-sm text-muted-foreground">Los gastos consumen exactamente tus ingresos. Un imprevisto provocaría deuda.</p>
+                        <p className="text-xs text-muted-foreground/70">→ Identifica el gasto variable más prescindible. Reducir 50-100 € ya crea margen.</p>
+                    </div>
+                    <div className="border-l-4 border-l-amber-400 dark:border-l-amber-300 bg-card border border-border rounded-r-xl p-4 space-y-1">
+                        <p className="text-sm font-semibold text-amber-600 dark:text-amber-300">Margen ajustado (menos del 10%)</p>
+                        <p className="text-sm text-muted-foreground">Ahorras algo, pero cualquier imprevisto lo elimina.</p>
+                        <p className="text-xs text-muted-foreground/70">→ Construye primero un fondo de seguridad de 1-2 meses de gastos fijos.</p>
+                    </div>
+                    <div className="border-l-4 border-l-primary bg-card border border-border rounded-r-xl p-4 space-y-1">
+                        <p className="text-sm font-semibold text-primary">Por debajo del objetivo Kakebo (10-19%)</p>
+                        <p className="text-sm text-muted-foreground">Ahorras, pero por debajo del 20% recomendado por el método Kakebo.</p>
+                        <p className="text-xs text-muted-foreground/70">→ Revisa si hay gastos variables reducibles sin afectar tu calidad de vida.</p>
+                    </div>
+                    <div className="border-l-4 border-l-emerald-500 dark:border-l-emerald-400 bg-card border border-border rounded-r-xl p-4 space-y-1">
+                        <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">Margen saludable (20% o más)</p>
+                        <p className="text-sm text-muted-foreground">Alcanzas o superas el objetivo mínimo del método Kakebo.</p>
+                        <p className="text-xs text-muted-foreground/70">→ Asigna el exceso a un objetivo concreto: fondo de emergencia, viaje, inversión.</p>
+                    </div>
+                </div>
+            </div>
+
             {/* SEO prose */}
             <div className="prose prose-stone dark:prose-invert max-w-3xl mx-auto prose-headings:font-serif prose-p:font-light">
                 <h2>{t("content.whyTitle")}</h2>
@@ -643,6 +695,38 @@ export function SavingsCalculator() {
                             className="text-primary hover:underline"
                         >
                             {t("content.link2")}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/herramientas/calculadora-inflacion"
+                            className="text-primary hover:underline"
+                        >
+                            {t("content.link3")}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/blog/como-ahorrar-dinero-cada-mes"
+                            className="text-primary hover:underline"
+                        >
+                            {t("content.link4")}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/blog/cuentas-remuneradas"
+                            className="text-primary hover:underline"
+                        >
+                            {t("content.link5")}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/blog/eliminar-gastos-hormiga"
+                            className="text-primary hover:underline"
+                        >
+                            {t("content.link6")}
                         </Link>
                     </li>
                 </ul>

@@ -240,14 +240,20 @@
         },
         "Savings": {
             "meta": {
-                "title": "Calculadora de Ahorro Mensual: ¿Cuánto Ahorrar al Mes?",
-                "description": "Calcula cuánto ahorrar al mes con nuestra calculadora de ahorro gratuita. Plan de ahorro mensual personalizado con el método japonés Kakebo.",
-                "ogTitle": "Calculadora de Ahorro Mensual | Simula tu Plan de Ahorro",
-                "ogDescription": "Calcula cuánto deberías ahorrar al mes según tus ingresos. Simulador de ahorro gratuito basado en el método Kakebo."
+                "title": "Calculadora de Ahorro Mensual Gratis",
+                "description": "Calcula tu margen de ahorro real: ingresos menos gastos fijos y variables. También cuánto tiempo necesitas para tu objetivo. Gratis, sin registro.",
+                "ogTitle": "Calculadora de Ahorro Mensual Gratis | MetodoKakebo.com",
+                "ogDescription": "Calcula tu margen real de ahorro mensual: ingresos menos gastos fijos y variables. Descubre cuánto tiempo necesitas para tu objetivo. Sin registro."
             },
             "header": {
                 "title": "Calculadora de Ahorro Mensual",
                 "subtitle": "Calcula cuánto puedes ahorrar al mes según tu situación real: ingresos, gastos fijos y variables."
+            },
+            "intro": {
+                "lead": "Una calculadora de ahorro mensual calcula cuánto dinero puedes ahorrar de verdad cada mes según tu situación real, no una distribución teórica.",
+                "formulaLabel": "Fórmula del margen real",
+                "formulaText": "Margen real = Ingresos netos − Gastos fijos − Gastos variables",
+                "vs5030": "A diferencia de la regla 50/30/20, que reparte los ingresos en porcentajes teóricos, esta calculadora parte de tus gastos reales. Con 2.000 € de ingresos, 800 € de gastos fijos y 500 € de variables, el margen real es 700 € (35%). El método Kakebo toma ese margen como base para planificar el ahorro mensual con el objetivo del 20%."
             },
             "inputs": {
                 "title": "Tu situación mensual",
@@ -315,7 +321,11 @@
                 "interlinkingTitle": "Sigue mejorando tu plan de ahorro:",
                 "link0": "Cómo hacer un presupuesto personal paso a paso",
                 "link1": "Método Kakebo para autónomos (ingresos irregulares)",
-                "link2": "Ahorrar en pareja sin discutir"
+                "link2": "Ahorrar en pareja sin discutir",
+                "link3": "¿Cuánto pierde valor tu dinero con la inflación?",
+                "link4": "15 técnicas para ahorrar dinero cada mes",
+                "link5": "Qué es una cuenta remunerada y cuándo tiene sentido",
+                "link6": "Cómo eliminar los gastos hormiga"
             }
         },
         "Rule503020": {
