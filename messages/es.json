@@ -247,21 +247,57 @@
             },
             "header": {
                 "title": "Calculadora de Ahorro Mensual",
-                "subtitle": "¿Cuánto puedes ahorrar al mes? Calcula tu plan de ahorro con el método japonés Kakebo."
+                "subtitle": "Calcula cuánto puedes ahorrar al mes según tu situación real: ingresos, gastos fijos y variables."
             },
             "inputs": {
-                "title": "Tus números mensuales",
-                "income": "Ingresos Netos Mensuales",
-                "incomeDesc": "Tu nómina y otros ingresos fijos.",
-                "fixed": "Gastos Fijos Actuales (Aprox.)",
-                "fixedDesc": "Alquiler, hipoteca, luz, agua, internet..."
+                "title": "Tu situación mensual",
+                "income": "Ingresos netos mensuales",
+                "incomeDesc": "Lo que entra en tu cuenta cada mes, después de impuestos.",
+                "fixed": "Gastos fijos mensuales",
+                "fixedDesc": "Alquiler, hipoteca, luz, agua, internet, seguros...",
+                "variable": "Gastos variables mensuales",
+                "variableDesc": "Alimentación, ocio, transporte diario, ropa, suscripciones...",
+                "goalToggle": "Añadir objetivo de ahorro",
+                "goalHide": "Quitar objetivo",
+                "totalGoal": "Objetivo total",
+                "totalGoalDesc": "Fondo de emergencia, viaje, entrada de piso...",
+                "months": "Plazo para alcanzarlo",
+                "monthsUnit": "meses",
+                "monthsDesc": "En cuántos meses quieres alcanzarlo (opcional)."
             },
             "tips": {
                 "title": "El secreto Kakebo",
-                "desc": "El método no te dice 'no gastes', te dice 'gasta con intención'. La clave es mover dinero de 'Vicio' a 'Cultura' o 'Ahorro'."
+                "desc": "El método no te dice 'no gastes', te dice 'gasta con intención'. La clave es ver dónde van realmente tus gastos variables y decidir si tienen sentido."
             },
             "results": {
-                "title": "Tu Distribución Ideal",
+                "empty": "Introduce tus ingresos para calcular tu margen de ahorro.",
+                "margin": "Margen de ahorro real",
+                "marginDesc": "Ingresos menos todos tus gastos",
+                "savingsRate": "Tasa de ahorro",
+                "savingsRateDesc": "Porcentaje de tus ingresos disponible para ahorrar",
+                "breakdown": {
+                    "title": "Distribución de tus ingresos",
+                    "fixed": "Fijos",
+                    "variable": "Variables",
+                    "margin": "Margen"
+                },
+                "statusGood": "Margen saludable. Tu tasa de ahorro supera el 20% que recomienda el método Kakebo.",
+                "statusBelowTarget": "Tu margen existe, pero está por debajo del 20% que recomienda Kakebo. Revisa tus gastos variables.",
+                "statusTight": "Margen muy ajustado (menos del 10% de tus ingresos). Cualquier imprevisto puede comprometer el ahorro.",
+                "statusZero": "Tu margen es cero. Tus gastos consumen exactamente tus ingresos.",
+                "statusDeficit": "Tus gastos superan tus ingresos. Revisa tus gastos fijos o variables antes de plantearte un objetivo de ahorro.",
+                "kakebo20": "Objetivo Kakebo (20%)",
+                "kakebo20Desc": "Referencia del método Kakebo",
+                "difference": "Tu margen vs. 20% Kakebo",
+                "differenceDesc": "Positivo: superas el objetivo. Negativo: te falta margen.",
+                "goalTitle": "Tu objetivo de ahorro",
+                "goalMonths": "Tiempo estimado",
+                "goalMonthsDesc": "meses al ritmo de tu margen actual",
+                "goalNeeded": "Ahorro necesario en",
+                "goalNeedsMargin": "Para calcular el tiempo hasta tu objetivo, primero necesitas un margen positivo.",
+                "goalViable": "Tu margen actual es suficiente para este plazo.",
+                "goalNotViable": "Te faltan {extra} al mes o amplía el plazo.",
+                "disclaimer": "Estimación orientativa. No tiene en cuenta variaciones de ingresos ni gastos imprevistos.",
                 "savingPotential": "Capacidad de Ahorro",
                 "recommended": "20% Recomendado",
                 "categories": {
@@ -269,15 +305,16 @@
                     "optional": "Ocio y Vicio (20%)",
                     "culture": "Cultura (10%)"
                 },
-                "ctaTitle": "¿Quieres llevar este control día a día automáticamente?",
+                "ctaTitle": "¿Quieres llevar este control día a día?",
                 "ctaButton": "Crear mi Kakebo Gratis"
             },
             "content": {
-                "whyTitle": "¿Por qué usar la regla 50/30/20 con Kakebo?",
-                "whyText1": "La calculadora utiliza una adaptación de la popular regla presupuestaria 50/30/20 aplicada al método Kakebo. Esta referencia sugiere destinar el 50% a necesidades básicas (Supervivencia), el 30% a gastos no esenciales (Ocio/Vicio y Cultura) y fijar el 20% restante como objetivo de ahorro mensual, separado de las categorías de gasto del método Kakebo.",
-                "whyText2": "Sin embargo, Kakebo va más allá de los porcentajes. Te invita a reflexionar: ¿Ese gasto en 'Ocio' te hizo feliz? ¿Podrías mover parte del presupuesto de 'Supervivencia' a 'Cultura'? La <bold>calculadora de ahorro</bold> te da el punto de partida numérico; la App de Kakebo te ayuda a mantener el hábito.",
-                "interlinkingTitle": "Mejora tu control financiero:",
-                "link1": "Método Kakebo para autónomos (Ingresos irregulares)",
+                "whyTitle": "¿Para qué sirve la calculadora de ahorro mensual?",
+                "whyText1": "A diferencia de un simple reparto teórico 50/30/20, esta calculadora trabaja con tu situación real: introduces tus ingresos, tus gastos fijos y tus gastos variables, y obtienes el margen exacto que tienes disponible para ahorrar cada mes.",
+                "whyText2": "El <bold>método Kakebo</bold> no trata solo de apuntar gastos, sino de entender tu estructura financiera. La calculadora te ayuda a identificar si el problema está en los gastos fijos (difíciles de reducir a corto plazo), en los variables (donde tienes más margen de acción) o si simplemente necesitas ajustar el plazo de tus objetivos.",
+                "interlinkingTitle": "Sigue mejorando tu plan de ahorro:",
+                "link0": "Cómo hacer un presupuesto personal paso a paso",
+                "link1": "Método Kakebo para autónomos (ingresos irregulares)",
                 "link2": "Ahorrar en pareja sin discutir"
             }
         },

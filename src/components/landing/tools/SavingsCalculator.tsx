@@ -6,223 +6,646 @@ import { useTranslations } from "next-intl";
 import { EmbedModal } from "./EmbedModal";
 import { analytics } from "@/lib/analytics";
 
+const fmt = (n: number) =>
+    new Intl.NumberFormat("es-ES", {
+        style: "currency",
+        currency: "EUR",
+        maximumFractionDigits: 0,
+    }).format(n);
+
+const incomeRange = (n: number) =>
+    n < 1000 ? "<1000" : n < 2000 ? "1000-2000" : n < 3000 ? "2000-3000" : "3000+";
+
+const marginRange = (n: number) =>
+    n < 0 ? "deficit" : n < 200 ? "0-200" : n < 500 ? "200-500" : "500+";
+
+const rateRange = (n: number) =>
+    n < 0 ? "deficit" : n < 10 ? "0-10" : n < 20 ? "10-20" : "20+";
+
+type Status = "deficit" | "zero" | "tight" | "below_target" | "good";
+
 export function SavingsCalculator() {
     const t = useTranslations("Tools.Savings");
-    const tCommon = useTranslations("Tools.Common.embed");
+    const tEmbed = useTranslations("Tools.Common.embed");
+
     const [isEmbedOpen, setIsEmbedOpen] = useState(false);
-    const [income, setIncome] = useState<number>(1500);
-    const [fixedExpenses, setFixedExpenses] = useState<number>(600);
+    const [income, setIncome] = useState<number>(2000);
+    const [fixedExpenses, setFixedExpenses] = useState<number>(800);
+    const [variableExpenses, setVariableExpenses] = useState<number>(500);
+    const [showGoal, setShowGoal] = useState(false);
+    const [totalGoal, setTotalGoal] = useState<number>(0);
+    const [months, setMonths] = useState<number>(12);
+
     const hasTrackedUse = useRef(false);
+    const hasTrackedCalculate = useRef(false);
+    const hasTrackedGoal = useRef(false);
 
     useEffect(() => {
         analytics.track("tool_viewed", { tool_name: "calculadora_ahorro" });
     }, []);
 
-    const idealSurvival = income * 0.5;
-    const idealWants = income * 0.3;
-    const idealSavings = income * 0.2;
-    const distribution = {
-        survival: idealSurvival,
-        optional: idealWants * 0.66,
-        culture: idealWants * 0.34,
-        extra: 0,
-        savingPotential: idealSavings,
-    };
+    // Core calculations
+    const margenReal = income - fixedExpenses - variableExpenses;
+    const savingsRate = income > 0 ? (margenReal / income) * 100 : 0;
 
-    const trackFirstUse = () => {
+    const status: Status =
+        margenReal < 0
+            ? "deficit"
+            : margenReal === 0
+            ? "zero"
+            : savingsRate < 10
+            ? "tight"
+            : savingsRate < 20
+            ? "below_target"
+            : "good";
+
+    // Bar widths (capped so fixed + variable ≤ 100%)
+    const fixedPct = income > 0 ? Math.min(100, (fixedExpenses / income) * 100) : 0;
+    const varPct = income > 0 ? Math.min(100 - fixedPct, (variableExpenses / income) * 100) : 0;
+    const marginBarPct = Math.max(0, 100 - fixedPct - varPct);
+
+    // Goal calculations
+    const mesesParaObjetivo =
+        margenReal > 0 && totalGoal > 0 ? Math.ceil(totalGoal / margenReal) : null;
+    const ahorroNecesario =
+        months > 0 && totalGoal > 0 ? Math.ceil(totalGoal / months) : null;
+    const diferenciaConPlazo =
+        ahorroNecesario !== null ? margenReal - ahorroNecesario : null;
+
+    const trackInteraction = () => {
         if (!hasTrackedUse.current) {
             hasTrackedUse.current = true;
             analytics.track("use_savings_calculator", { tool_name: "calculadora_ahorro" });
         }
+        hasTrackedCalculate.current = false;
     };
 
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat("es-ES", {
-            style: "currency",
-            currency: "EUR",
-            maximumFractionDigits: 0,
-        }).format(amount);
+    const trackCalculate = () => {
+        if (!hasTrackedCalculate.current && income > 0) {
+            hasTrackedCalculate.current = true;
+            analytics.track("savings_calculator_calculate", {
+                tool_name: "calculadora_ahorro",
+                income_range: incomeRange(income),
+                real_margin_range: marginRange(margenReal),
+                savings_rate_range: rateRange(savingsRate),
+                has_goal: showGoal && totalGoal > 0,
+                has_deadline: showGoal && totalGoal > 0 && months > 0,
+                result_status: status,
+            });
+        }
     };
+
+    const trackGoalResult = () => {
+        if (!hasTrackedGoal.current && mesesParaObjetivo !== null) {
+            hasTrackedGoal.current = true;
+            analytics.track("savings_calculator_goal_result", {
+                tool_name: "calculadora_ahorro",
+                months_to_goal: mesesParaObjetivo > 120 ? "120+" : String(mesesParaObjetivo),
+                savings_rate_range: rateRange(savingsRate),
+                result_status: status,
+            });
+        }
+    };
+
+    const handleInput =
+        (setter: (v: number) => void) =>
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            setter(Number(e.target.value));
+            trackInteraction();
+        };
+
+    const handleInputBlur = () => {
+        trackCalculate();
+    };
+
+    const handleGoalToggle = () => {
+        const next = !showGoal;
+        setShowGoal(next);
+        if (next) trackInteraction();
+    };
+
+    useEffect(() => {
+        if (showGoal && totalGoal > 0 && margenReal > 0) {
+            trackGoalResult();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showGoal, totalGoal, margenReal]);
+
+    // Status display config
+    const statusConfig: Record<
+        Status,
+        { color: string; bg: string; icon: string; label: string }
+    > = {
+        deficit: {
+            color: "text-red-600 dark:text-red-400",
+            bg: "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800",
+            icon: "↓",
+            label: t("results.statusDeficit"),
+        },
+        zero: {
+            color: "text-amber-600 dark:text-amber-400",
+            bg: "bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800",
+            icon: "—",
+            label: t("results.statusZero"),
+        },
+        tight: {
+            color: "text-amber-600 dark:text-amber-400",
+            bg: "bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800",
+            icon: "↗",
+            label: t("results.statusTight"),
+        },
+        below_target: {
+            color: "text-primary",
+            bg: "bg-primary/5 border-primary/20",
+            icon: "↑",
+            label: t("results.statusBelowTarget"),
+        },
+        good: {
+            color: "text-emerald-600 dark:text-emerald-400",
+            bg: "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800",
+            icon: "✓",
+            label: t("results.statusGood"),
+        },
+    };
+    const sc = statusConfig[status];
+
+    const inputClass =
+        "w-full rounded-lg border border-input bg-background py-2.5 text-foreground text-base focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all";
 
     return (
-        <div className="pt-24 pb-16">
-            <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-                {/* Header */}
-                <div className="text-center mb-12">
-                    <h2 className="text-4xl font-serif font-bold text-foreground sm:text-5xl mb-4">
-                        {t('header.title')}
+        <div className="max-w-5xl mx-auto space-y-16">
+            {/* Header */}
+            <div className="text-center space-y-4">
+                <h1 className="text-4xl md:text-5xl font-serif font-bold text-foreground leading-tight">
+                    {t("header.title")}
+                </h1>
+                <p className="text-lg text-muted-foreground font-light max-w-2xl mx-auto">
+                    {t("header.subtitle")}
+                </p>
+            </div>
+
+            {/* Calculator grid */}
+            <div className="grid lg:grid-cols-12 gap-8 items-start">
+                {/* Inputs sidebar */}
+                <aside className="lg:col-span-4 bg-card border border-border rounded-2xl p-8 shadow-sm space-y-6 lg:sticky lg:top-24">
+                    <h2 className="text-base font-semibold text-foreground font-serif">
+                        {t("inputs.title")}
                     </h2>
-                    <p className="text-lg text-muted-foreground font-light max-w-2xl mx-auto">
-                        {t('header.subtitle')}
-                    </p>
-                </div>
 
-                <div className="grid gap-12 lg:grid-cols-2">
-                    {/* INPUTS */}
-                    <div className="space-y-8 rounded-2xl border border-border bg-card p-8 shadow-sm">
-                        <div>
-                            <h3 className="text-xl font-serif font-semibold mb-6">{t('inputs.title')}</h3>
-
-                            <div className="space-y-6">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-foreground">
-                                        {t('inputs.income')}
-                                    </label>
-                                    <div className="relative">
-                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">€</span>
-                                        <input
-                                            type="number"
-                                            value={income}
-                                            onChange={(e) => { setIncome(Number(e.target.value)); trackFirstUse(); }}
-                                            className="w-full rounded-md border border-input bg-background pl-8 py-2 text-foreground focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                                        />
-                                    </div>
-                                    <p className="text-xs text-muted-foreground">{t('inputs.incomeDesc')}</p>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-foreground">
-                                        {t('inputs.fixed')}
-                                    </label>
-                                    <div className="relative">
-                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">€</span>
-                                        <input
-                                            type="number"
-                                            value={fixedExpenses}
-                                            onChange={(e) => { setFixedExpenses(Number(e.target.value)); trackFirstUse(); }}
-                                            className="w-full rounded-md border border-input bg-background pl-8 py-2 text-foreground focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                                        />
-                                    </div>
-                                    <p className="text-xs text-muted-foreground">{t('inputs.fixedDesc')}</p>
-                                </div>
-                            </div>
+                    {/* Income */}
+                    <div className="space-y-2">
+                        <label
+                            htmlFor="sc-income"
+                            className="text-xs font-bold text-muted-foreground uppercase tracking-widest block"
+                        >
+                            {t("inputs.income")}
+                        </label>
+                        <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm pointer-events-none">
+                                €
+                            </span>
+                            <input
+                                id="sc-income"
+                                type="number"
+                                min="0"
+                                step="100"
+                                value={income}
+                                onChange={handleInput(setIncome)}
+                                onBlur={handleInputBlur}
+                                className={`${inputClass} pl-8 pr-3`}
+                            />
                         </div>
-
-                        {/* Tips */}
-                        <div className="rounded-lg bg-muted/50 p-4 border border-border">
-                            <div>
-                                <h4 className="font-semibold text-foreground text-sm">{t('tips.title')}</h4>
-                                <p className="text-sm text-muted-foreground mt-1">
-                                    {t('tips.desc')}
-                                </p>
-                            </div>
-                        </div>
+                        <p className="text-xs text-muted-foreground">{t("inputs.incomeDesc")}</p>
                     </div>
 
-                    {/* RESULTS */}
-                    <div className="space-y-8">
-                        <div className="rounded-2xl bg-stone-900 p-8 text-white shadow-sm">
-                            <h3 className="text-xl font-serif font-semibold mb-6 text-stone-100">
-                                {t('results.title')}
-                            </h3>
+                    {/* Fixed expenses */}
+                    <div className="space-y-2">
+                        <label
+                            htmlFor="sc-fixed"
+                            className="text-xs font-bold text-muted-foreground uppercase tracking-widest block"
+                        >
+                            {t("inputs.fixed")}
+                        </label>
+                        <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm pointer-events-none">
+                                €
+                            </span>
+                            <input
+                                id="sc-fixed"
+                                type="number"
+                                min="0"
+                                step="50"
+                                value={fixedExpenses}
+                                onChange={handleInput(setFixedExpenses)}
+                                onBlur={handleInputBlur}
+                                className={`${inputClass} pl-8 pr-3`}
+                            />
+                        </div>
+                        <p className="text-xs text-muted-foreground">{t("inputs.fixedDesc")}</p>
+                    </div>
 
-                            <div className="space-y-6">
-                                {/* Saving Metric */}
-                                <div className="flex items-center justify-between border-b border-stone-700 pb-4">
-                                    <div>
-                                        <p className="text-sm text-stone-400 font-medium uppercase tracking-wider">{t('results.savingPotential')}</p>
-                                        <p className="text-3xl font-bold mt-1 text-green-400">{formatCurrency(distribution.savingPotential)}</p>
+                    {/* Variable expenses */}
+                    <div className="space-y-2">
+                        <label
+                            htmlFor="sc-variable"
+                            className="text-xs font-bold text-muted-foreground uppercase tracking-widest block"
+                        >
+                            {t("inputs.variable")}
+                        </label>
+                        <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm pointer-events-none">
+                                €
+                            </span>
+                            <input
+                                id="sc-variable"
+                                type="number"
+                                min="0"
+                                step="50"
+                                value={variableExpenses}
+                                onChange={handleInput(setVariableExpenses)}
+                                onBlur={handleInputBlur}
+                                className={`${inputClass} pl-8 pr-3`}
+                            />
+                        </div>
+                        <p className="text-xs text-muted-foreground">{t("inputs.variableDesc")}</p>
+                    </div>
+
+                    {/* Goal toggle section */}
+                    <div className="border-t border-border pt-6 space-y-4">
+                        <button
+                            onClick={handleGoalToggle}
+                            className="flex items-center gap-2 text-sm text-primary font-medium hover:text-primary/80 transition-colors"
+                            aria-expanded={showGoal}
+                        >
+                            <span
+                                className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center text-xs leading-none flex-shrink-0"
+                                aria-hidden="true"
+                            >
+                                {showGoal ? "−" : "+"}
+                            </span>
+                            {showGoal ? t("inputs.goalHide") : t("inputs.goalToggle")}
+                        </button>
+
+                        {showGoal && (
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <label
+                                        htmlFor="sc-goal"
+                                        className="text-xs font-bold text-muted-foreground uppercase tracking-widest block"
+                                    >
+                                        {t("inputs.totalGoal")}
+                                    </label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm pointer-events-none">
+                                            €
+                                        </span>
+                                        <input
+                                            id="sc-goal"
+                                            type="number"
+                                            min="0"
+                                            step="500"
+                                            value={totalGoal || ""}
+                                            placeholder="0"
+                                            onChange={handleInput(setTotalGoal)}
+                                            onBlur={handleInputBlur}
+                                            className={`${inputClass} pl-8 pr-3`}
+                                        />
                                     </div>
-                                    <div className="text-right">
-                                        <span className="inline-flex items-center rounded-full bg-green-400/10 px-3 py-1 text-xs font-medium text-green-400 ring-1 ring-inset ring-green-400/20">
-                                            {t('results.recommended')}
+                                    <p className="text-xs text-muted-foreground">
+                                        {t("inputs.totalGoalDesc")}
+                                    </p>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label
+                                        htmlFor="sc-months"
+                                        className="text-xs font-bold text-muted-foreground uppercase tracking-widest block"
+                                    >
+                                        {t("inputs.months")}
+                                    </label>
+                                    <input
+                                        id="sc-months"
+                                        type="number"
+                                        min="1"
+                                        max="240"
+                                        step="1"
+                                        value={months || ""}
+                                        placeholder="12"
+                                        onChange={handleInput(setMonths)}
+                                        onBlur={handleInputBlur}
+                                        className={`${inputClass} px-3`}
+                                    />
+                                    <p className="text-xs text-muted-foreground">
+                                        {t("inputs.monthsDesc")}
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Embed button */}
+                    <div className="border-t border-border pt-4">
+                        <button
+                            onClick={() => setIsEmbedOpen(true)}
+                            className="w-full inline-flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors p-3 border border-dashed border-border rounded-lg"
+                        >
+                            <svg
+                                className="w-4 h-4"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                                />
+                            </svg>
+                            {tEmbed("button")}
+                        </button>
+                    </div>
+                </aside>
+
+                {/* Results area */}
+                <div className="lg:col-span-8 space-y-6">
+                    {income === 0 ? (
+                        <div className="bg-card border border-border rounded-2xl p-12 text-center">
+                            <p className="text-muted-foreground font-light text-lg">
+                                {t("results.empty")}
+                            </p>
+                        </div>
+                    ) : (
+                        <>
+                            {/* Main result card */}
+                            <div className="bg-card border border-border rounded-2xl p-8 md:p-10 shadow-sm space-y-8 relative overflow-hidden">
+                                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/20 via-primary to-primary/20" />
+
+                                {/* Margin + rate */}
+                                <div className="grid sm:grid-cols-2 gap-6">
+                                    <div className="space-y-1">
+                                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                                            {t("results.margin")}
+                                        </p>
+                                        <p
+                                            className={`text-5xl font-serif ${
+                                                margenReal >= 0
+                                                    ? "text-foreground"
+                                                    : "text-red-600 dark:text-red-400"
+                                            }`}
+                                        >
+                                            {fmt(margenReal)}
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">
+                                            {t("results.marginDesc")}
+                                        </p>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                                            {t("results.savingsRate")}
+                                        </p>
+                                        <p
+                                            className={`text-5xl font-serif ${
+                                                savingsRate >= 20
+                                                    ? "text-emerald-600 dark:text-emerald-400"
+                                                    : savingsRate >= 10
+                                                    ? "text-primary"
+                                                    : "text-amber-600 dark:text-amber-400"
+                                            }`}
+                                        >
+                                            {savingsRate > 0 ? `${Math.round(savingsRate)}%` : "0%"}
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">
+                                            {t("results.savingsRateDesc")}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Stacked distribution bar */}
+                                <div className="space-y-3">
+                                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                                        {t("results.breakdown.title")}
+                                    </p>
+                                    <div
+                                        role="img"
+                                        aria-label={`Distribución: gastos fijos ${Math.round(fixedPct)}%, gastos variables ${Math.round(varPct)}%, margen ${Math.round(marginBarPct)}%`}
+                                        className="h-5 w-full rounded-full overflow-hidden flex bg-border"
+                                    >
+                                        <div
+                                            className="h-full bg-stone-400 dark:bg-stone-600 transition-all duration-300"
+                                            style={{ width: `${fixedPct}%` }}
+                                        />
+                                        <div
+                                            className="h-full bg-primary/50 transition-all duration-300"
+                                            style={{ width: `${varPct}%` }}
+                                        />
+                                        <div
+                                            className={`h-full transition-all duration-300 ${
+                                                marginBarPct > 0
+                                                    ? "bg-emerald-500 dark:bg-emerald-600"
+                                                    : ""
+                                            }`}
+                                            style={{ width: `${marginBarPct}%` }}
+                                        />
+                                    </div>
+                                    <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
+                                        <span className="flex items-center gap-1.5">
+                                            <span className="w-3 h-3 rounded-sm bg-stone-400 dark:bg-stone-600 inline-block flex-shrink-0" />
+                                            {t("results.breakdown.fixed")} ({Math.round(fixedPct)}%)
+                                        </span>
+                                        <span className="flex items-center gap-1.5">
+                                            <span className="w-3 h-3 rounded-sm bg-primary/50 inline-block flex-shrink-0" />
+                                            {t("results.breakdown.variable")} ({Math.round(varPct)}%)
+                                        </span>
+                                        <span className="flex items-center gap-1.5">
+                                            <span className="w-3 h-3 rounded-sm bg-emerald-500 dark:bg-emerald-600 inline-block flex-shrink-0" />
+                                            {t("results.breakdown.margin")} ({Math.round(marginBarPct)}%)
                                         </span>
                                     </div>
                                 </div>
 
-                                {/* Categories */}
-                                <div className="space-y-4">
-                                    <div className="grid grid-cols-[1fr,auto] items-center gap-4">
-                                        <div>
-                                            <div className="flex justify-between mb-1">
-                                                <span className="text-sm font-medium text-stone-300">{t('results.categories.survival')}</span>
-                                                <span className="text-sm font-medium text-stone-100">{formatCurrency(distribution.survival)}</span>
-                                            </div>
-                                            <div className="h-2 rounded-full bg-stone-800 overflow-hidden">
-                                                <div className="h-full bg-primary rounded-full w-[50%]"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-[1fr,auto] items-center gap-4">
-                                        <div>
-                                            <div className="flex justify-between mb-1">
-                                                <span className="text-sm font-medium text-stone-300">{t('results.categories.optional')}</span>
-                                                <span className="text-sm font-medium text-stone-100">{formatCurrency(distribution.optional)}</span>
-                                            </div>
-                                            <div className="h-2 rounded-full bg-stone-800 overflow-hidden">
-                                                <div className="h-full bg-accent rounded-full w-[20%]"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-[1fr,auto] items-center gap-4">
-                                        <div>
-                                            <div className="flex justify-between mb-1">
-                                                <span className="text-sm font-medium text-stone-300">{t('results.categories.culture')}</span>
-                                                <span className="text-sm font-medium text-stone-100">{formatCurrency(distribution.culture)}</span>
-                                            </div>
-                                            <div className="h-2 rounded-full bg-stone-800 overflow-hidden">
-                                                <div className="h-full bg-amber-400 rounded-full w-[10%]"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                {/* Status alert */}
+                                <div
+                                    className={`rounded-xl border p-4 flex items-start gap-3 ${sc.bg}`}
+                                    role="status"
+                                >
+                                    <span
+                                        className={`text-base leading-none mt-0.5 flex-shrink-0 ${sc.color}`}
+                                        aria-hidden="true"
+                                    >
+                                        {sc.icon}
+                                    </span>
+                                    <p className={`text-sm font-medium ${sc.color}`}>{sc.label}</p>
                                 </div>
+
+                                {/* Kakebo 20% reference (only when not in deficit) */}
+                                {margenReal > 0 && (
+                                    <div className="grid sm:grid-cols-2 gap-4">
+                                        <div className="rounded-lg bg-muted/40 border border-border p-4 space-y-1">
+                                            <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">
+                                                {t("results.kakebo20")}
+                                            </p>
+                                            <p className="text-2xl font-serif text-foreground">
+                                                {fmt(income * 0.2)}
+                                            </p>
+                                            <p className="text-xs text-muted-foreground">
+                                                {t("results.kakebo20Desc")}
+                                            </p>
+                                        </div>
+                                        <div className="rounded-lg bg-muted/40 border border-border p-4 space-y-1">
+                                            <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">
+                                                {t("results.difference")}
+                                            </p>
+                                            <p
+                                                className={`text-2xl font-serif ${
+                                                    margenReal >= income * 0.2
+                                                        ? "text-emerald-600 dark:text-emerald-400"
+                                                        : "text-amber-600 dark:text-amber-400"
+                                                }`}
+                                            >
+                                                {margenReal >= income * 0.2 ? "+" : ""}
+                                                {fmt(margenReal - income * 0.2)}
+                                            </p>
+                                            <p className="text-xs text-muted-foreground">
+                                                {t("results.differenceDesc")}
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
-                            <div className="mt-8 pt-6 border-t border-stone-700">
-                                <p className="text-sm text-stone-400 mb-4 text-center">
-                                    {t('results.ctaTitle')}
+                            {/* Goal card */}
+                            {showGoal && totalGoal > 0 && (
+                                <div className="bg-card border border-border rounded-2xl p-8 shadow-sm space-y-6">
+                                    <h3 className="text-lg font-serif font-semibold text-foreground">
+                                        {t("results.goalTitle")}
+                                    </h3>
+
+                                    {margenReal <= 0 ? (
+                                        <p className="text-sm text-muted-foreground">
+                                            {t("results.goalNeedsMargin")}
+                                        </p>
+                                    ) : (
+                                        <div className="grid sm:grid-cols-2 gap-4">
+                                            {mesesParaObjetivo !== null && (
+                                                <div className="rounded-xl bg-muted/40 border border-border p-5 space-y-1">
+                                                    <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">
+                                                        {t("results.goalMonths")}
+                                                    </p>
+                                                    <p className="text-4xl font-serif text-foreground">
+                                                        {mesesParaObjetivo}
+                                                    </p>
+                                                    <p className="text-xs text-muted-foreground">
+                                                        {t("results.goalMonthsDesc")}
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                            {ahorroNecesario !== null && months > 0 && (
+                                                <div
+                                                    className={`rounded-xl border p-5 space-y-1 ${
+                                                        diferenciaConPlazo !== null &&
+                                                        diferenciaConPlazo >= 0
+                                                            ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800"
+                                                            : "bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800"
+                                                    }`}
+                                                >
+                                                    <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">
+                                                        {t("results.goalNeeded")} {months}{" "}
+                                                        {t("inputs.monthsUnit")}
+                                                    </p>
+                                                    <p className="text-4xl font-serif text-foreground">
+                                                        {fmt(ahorroNecesario)}
+                                                    </p>
+                                                    {diferenciaConPlazo !== null && (
+                                                        <p
+                                                            className={`text-xs font-medium ${
+                                                                diferenciaConPlazo >= 0
+                                                                    ? "text-emerald-600 dark:text-emerald-400"
+                                                                    : "text-amber-600 dark:text-amber-400"
+                                                            }`}
+                                                        >
+                                                            {diferenciaConPlazo >= 0
+                                                                ? t("results.goalViable")
+                                                                : t("results.goalNotViable", {
+                                                                      extra: fmt(
+                                                                          Math.abs(diferenciaConPlazo)
+                                                                      ),
+                                                                  })}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    <p className="text-xs text-muted-foreground">
+                                        {t("results.disclaimer")}
+                                    </p>
+                                </div>
+                            )}
+
+                            {/* CTA */}
+                            <div className="bg-foreground text-background rounded-2xl p-8 text-center space-y-4">
+                                <p className="text-sm font-light text-background/70">
+                                    {t("results.ctaTitle")}
                                 </p>
                                 <Link
-                                    href="/login?mode=signup"
-                                    onClick={() => analytics.track("click_tool_to_app", { tool_name: "calculadora_ahorro", cta_location: "calculator_results" })}
-                                    className="block w-full rounded-lg bg-white py-3 text-center text-sm font-bold text-stone-900 hover:bg-stone-100 transition-colors"
+                                    href="/login?mode=signup&source=calculadora_ahorro"
+                                    onClick={() =>
+                                        analytics.track("click_tool_to_app", {
+                                            tool_name: "calculadora_ahorro",
+                                            cta_location: "calculator_results",
+                                        })
+                                    }
+                                    className="inline-block bg-background text-foreground font-semibold px-8 py-3 rounded-full hover:opacity-90 transition-opacity text-sm"
                                 >
-                                    {t('results.ctaButton')}
+                                    {t("results.ctaButton")}
                                 </Link>
                             </div>
-                        </div>
-
-                        {/* Embed Button */}
-                        <div className="flex justify-center mt-4">
-                            <button
-                                onClick={() => setIsEmbedOpen(true)}
-                                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                            >
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                                </svg>
-                                {tCommon('button')}
-                            </button>
-                        </div>
-                    </div>
+                        </>
+                    )}
                 </div>
+            </div>
 
-                {/* SEO Content */}
-                <div className="mt-16 max-w-3xl mx-auto prose prose-stone dark:prose-invert">
-                    <h2>{t('content.whyTitle')}</h2>
-                    <p>
-                        {t('content.whyText1')}
-                    </p>
-                    <p>
-                        {t.rich('content.whyText2', { bold: (chunks) => <strong>{chunks}</strong> })}
-                    </p>
+            {/* SEO prose */}
+            <div className="prose prose-stone dark:prose-invert max-w-3xl mx-auto prose-headings:font-serif prose-p:font-light">
+                <h2>{t("content.whyTitle")}</h2>
+                <p>{t("content.whyText1")}</p>
+                <p>
+                    {t.rich("content.whyText2", {
+                        bold: (chunks) => <strong>{chunks}</strong>,
+                    })}
+                </p>
 
-                    <h3 className="mt-12">{t('content.interlinkingTitle')}</h3>
-                    <ul>
-                        <li>
-                            <Link href="/blog/metodo-kakebo-para-autonomos" className="text-primary hover:underline">
-                                {t('content.link1')}
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/blog/ahorro-pareja" className="text-primary hover:underline">
-                                {t('content.link2')}
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
+                <h3>{t("content.interlinkingTitle")}</h3>
+                <ul>
+                    <li>
+                        <Link
+                            href="/blog/como-hacer-un-presupuesto-personal"
+                            className="text-primary hover:underline"
+                        >
+                            {t("content.link0")}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/blog/metodo-kakebo-para-autonomos"
+                            className="text-primary hover:underline"
+                        >
+                            {t("content.link1")}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/blog/ahorro-pareja"
+                            className="text-primary hover:underline"
+                        >
+                            {t("content.link2")}
+                        </Link>
+                    </li>
+                </ul>
             </div>
 
             <EmbedModal

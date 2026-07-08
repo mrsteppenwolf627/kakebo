@@ -1653,6 +1653,44 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 
 ---
 
+## TOOL-CALCULADORA-AHORRO-V2-IMPL-01 — Calculadora de ahorro V2
+
+**Fecha:** 2026-07-08  
+**Estado:** ✅ Completado  
+**Commit:** (pendiente confirmar hash)  
+**URL afectada:** `/herramientas/calculadora-ahorro`
+
+**Problema resuelto:**  
+La V1 capturaba el campo `fixedExpenses` en estado y UI pero nunca lo usaba en los cálculos. Las barras de progreso estaban hardcodeadas a `w-[50%]`, `w-[20%]`, `w-[10%]` con valores estáticos. La herramienta era funcionalmente un duplicado de la calculadora 50/30/20. El `page.tsx` añadía un `<h1>` duplicado y doble padding (`pt-32 pb-12` + `pt-24 pb-16` en el componente).
+
+**Cambios en V2:**
+
+| Archivo | Cambio |
+|---|---|
+| `SavingsCalculator.tsx` | Reescritura completa — nueva entrada de gastos variables, cálculo de margen real, barras dinámicas, alertas de estado, sección de objetivo opcional |
+| `page.tsx` | Eliminado H1 duplicado, eliminado doble padding, eliminada sección editorial (movida al componente). Reducido a wrapper + schemas JSON-LD |
+| `messages/es.json` → `Tools.Savings.*` | Añadidas claves para gastos variables, objetivo de ahorro, estados de resultado, sección goal, disclaimer |
+| `src/lib/analytics.ts` | Añadidos `savings_calculator_calculate` y `savings_calculator_goal_result` al tipo `EventName` |
+
+**Lógica de cálculo V2:**
+- `margenReal = ingresos − gastosFijos − gastosVariables`
+- `tasaAhorro = (margenReal / ingresos) × 100`
+- `mesesParaObjetivo = ceil(objetivo / margenReal)` cuando margen > 0
+- `ahorroNecesario = ceil(objetivo / plazo)` cuando plazo > 0
+- Estado: `deficit` | `zero` | `tight` (<10%) | `below_target` (<20%) | `good` (≥20%)
+- Barra apilada con `style={{ width: X% }}` — completamente dinámica
+
+**Analytics GA4 (sin datos personales exactos):**
+- `savings_calculator_calculate`: ranges de income, margen, tasa + has_goal, has_deadline, result_status
+- `savings_calculator_goal_result`: months_to_goal (rangos), savings_rate_range, result_status
+
+**Restricciones respetadas:**  
+Sin tocar otras herramientas · Sin tocar artículos del blog · Sin tocar SEO técnico global · Sin modificar canonical/hreflang/sitemap · Sin datos personales exactos en GA4
+
+**Build:** ✅ Compiled successfully — 0 errores TypeScript, 0 errores de compilación
+
+---
+
 ## CONTENT-01 — Artículo "Cuentas remuneradas"
 
 **Fecha:** 2026-07-08  

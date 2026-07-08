@@ -13,7 +13,9 @@ type EventName =
     | "click_tool_to_app"
     | "use_savings_calculator"
     | "use_inflation_calculator"
-    | "use_503020_calculator";
+    | "use_503020_calculator"
+    | "savings_calculator_calculate"
+    | "savings_calculator_goal_result";
 
 type EventProperties = Record<string, string | number | boolean>;
 
