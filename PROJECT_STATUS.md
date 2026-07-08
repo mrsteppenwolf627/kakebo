@@ -1657,7 +1657,7 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 
 **Fecha:** 2026-07-08  
 **Estado:** ✅ Completado  
-**Commit:** (pendiente confirmar hash)  
+**Commit:** `e986a1d`  
 **URL afectada:** `/herramientas/calculadora-ahorro`
 
 **Problema resuelto:**  
