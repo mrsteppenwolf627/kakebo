@@ -1653,6 +1653,51 @@ Método Kakebo · Kakebo · MetodoKakebo.com · Kakebo AI · App Kakebo · Kakeb
 
 ---
 
+## CONTENT-01 — Artículo "Cuentas remuneradas"
+
+**Fecha:** 2026-07-08  
+**Estado:** ✅ Completado  
+**Sprint:** Sprint Contenido V1  
+**Tipo:** Guía evergreen informativa — España-first, bank-agnostic
+
+**URL creada:** `/blog/cuentas-remuneradas`  
+**Archivo MDX:** `src/content/blog/cuentas-remuneradas.es.mdx`  
+**Imagen integrada:** `docs/seo/articulos/cuenta_remunerada.png` → `public/images/blog/cuentas-remuneradas.png`
+
+**Objetivo editorial:**  
+Explicar qué es una cuenta remunerada, cómo funciona, qué factores revisar antes de contratar una y cuándo encaja dentro de un sistema de ahorro personal tipo Kakebo. No es una comparativa comercial de bancos ni una recomendación de contratación.
+
+**Keyword principal:** `cuentas remuneradas`  
+**Keywords secundarias:** `qué es una cuenta remunerada`, `cuenta remunerada ahorro`, `TAE cuenta remunerada`, `fondo de emergencia cuenta remunerada`, `cuentas remuneradas España`, `cuenta remunerada o depósito`
+
+**Hipótesis SEO/GEO:**  
+Captar intención informativa sobre cuentas remuneradas y conectar naturalmente el clúster de ahorro mensual, fondo de emergencia, inflación y presupuesto personal ya existente en el sitio.
+
+**Estructura editorial:**  
+Respuesta rápida + definición + cómo funciona + tabla comparativa (4 productos) + qué mirar antes de contratar + cuándo tiene/no tiene sentido + ejemplo práctico (1.000 €, 3.000 €, 10.000 €) + fondo de emergencia + errores frecuentes + checklist (tabla) + FAQ (6 preguntas) + conclusión + fuentes oficiales
+
+**Fuentes oficiales integradas:**
+- Banco de España (cuentas a la vista, TAE, depósitos a plazo)
+- FGD — Fondo de Garantía de Depósitos (cobertura hasta 100.000 € por titular y entidad)
+- BOE — Ley 35/2006 del IRPF, artículo 25 (intereses como rendimientos del capital mobiliario)
+- BCE (contexto de tipos oficiales, sin previsiones)
+
+**Enlazado interno activo:**
+- `/blog/como-hacer-un-presupuesto-personal`
+- `/herramientas/calculadora-ahorro`
+- `/herramientas/calculadora-inflacion`
+
+**Restricciones respetadas:**  
+Sin comparativa comercial · Sin recomendación de entidades · Sin afiliación · Sin promesas de rentabilidad · Sin tabla de "mejores cuentas" · No se ha tocado `/blog/plantilla-kakebo-excel` · No se han modificado componentes globales
+
+**Schema generado automáticamente por el sistema:** `BlogPosting` + `FAQPage` (6 preguntas en frontmatter)
+
+**Ventana de medición SEO:** 8–12 semanas desde publicación
+
+**Build:** ✅ Compiled successfully — 0 errores TypeScript, 0 errores de compilación
+
+---
+
 ## SEO-503020-CALCULADORA-01 — Optimización herramienta regla 50/30/20
 
 **Fecha de ejecución:** 2026-06-26  
