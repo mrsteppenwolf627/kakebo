@@ -1691,6 +1691,70 @@ Sin tocar otras herramientas · Sin tocar artículos del blog · Sin tocar SEO t
 
 ---
 
+## TOOL-CALCULADORA-AHORRO-SEO-GEO-AUDIT-01 — Auditoría SEO/GEO calculadora de ahorro
+
+**Fecha:** 2026-07-08  
+**Estado:** ✅ Completado  
+**Commit:** `c123eb0`  
+**URL auditada:** `/herramientas/calculadora-ahorro`  
+**Archivo creado:** `docs/seo/TOOL_CALCULADORA_AHORRO_SEO_GEO_AUDIT_01.md`
+
+**Hallazgos principales (P0):**
+- Imagen Open Graph ausente — ningún `og:image` definido
+- FAQPage con solo 3 preguntas — insuficiente cobertura semántica
+- Sin bloque introductorio visible antes del calculador — definición, fórmula, diferenciación vs 50/30/20
+
+**Hallazgos P1:**
+- Título `"Calculadora de Ahorro Mensual: ¿Cuánto Ahorrar al Mes?"` largo y débil en keyword principal
+- Meta description sin diferenciadores V2 (gastos reales, objetivo de ahorro)
+- Sin HowTo schema ni sección visible de uso
+- Sin sección de interpretación de resultados
+- 4 enlaces internos clave ausentes: calculadora-inflacion, como-ahorrar-dinero-cada-mes, cuentas-remuneradas, eliminar-gastos-hormiga
+- SoftwareApplication sin `author`, sin `dateModified`, sin `featureList`
+
+**Restricciones respetadas:**  
+Sin modificar código · Solo documentación · Sin tocar SEO técnico global · Sin tocar otras herramientas ni artículos
+
+---
+
+## TOOL-CALCULADORA-AHORRO-SEO-GEO-IMPL-01 — Implementación SEO/GEO calculadora de ahorro
+
+**Fecha:** 2026-07-08  
+**Estado:** ✅ Completado  
+**Commit:** `ea3f17b`  
+**URL afectada:** `/herramientas/calculadora-ahorro`
+
+**Cambios implementados:**
+
+| Archivo | Cambio |
+|---|---|
+| `page.tsx` | Título `"Calculadora de Ahorro Mensual Gratis"`, OG dinámica `/api/og?title=...`, SCHEMA con `author`+`dateModified`+`featureList`, HOW_TO_SCHEMA (4 pasos), FAQPage ×6, sección HowTo + FAQ server-rendered, ajuste `pb-0` en wrapper |
+| `SavingsCalculator.tsx` | Bloque introductorio (definición + fórmula + ejemplo GEO + vs 50/30/20), tabla de interpretación de 5 estados, 4 enlaces internos nuevos |
+| `messages/es.json` | Meta title/description/ogTitle/ogDescription actualizados, bloque `intro.*` (4 claves), `content.link3-6` (4 claves) |
+
+**Schemas añadidos:**
+- `SoftwareApplication`: `author`, `dateModified: 2026-07-08`, `featureList` ×5
+- `HowTo` con 4 `HowToStep` — renderizado también como HTML visible
+- `FAQPage` expandida a 6 preguntas — renderizada también como HTML server-side
+
+**GEO refuerzo:**
+- Ejemplo numérico concreto en intro: `2.000 € ingresos − 800 € fijos − 500 € variables = 700 € (35%)`
+- Mención explícita `método Kakebo` y objetivo 20% en intro block
+- Publisher MetodoKakebo.com en schema `author`
+
+**Enlazado interno añadido:**
+- `/herramientas/calculadora-inflacion` (herramienta hermana)
+- `/blog/como-ahorrar-dinero-cada-mes` (cluster ahorro)
+- `/blog/cuentas-remuneradas` (cluster ahorro)
+- `/blog/eliminar-gastos-hormiga` (cluster ahorro)
+
+**Restricciones respetadas:**  
+Sin tocar SEO técnico global · Sin tocar otras herramientas · Sin tocar artículos del blog · Sin rediseño global · Sin nuevas funcionalidades de cálculo · Sin datos personales exactos en GA4 · Cambio atómico en tarea única
+
+**Build:** ✅ Compiled successfully — 0 errores TypeScript, 0 errores de compilación
+
+---
+
 ## CONTENT-01 — Artículo "Cuentas remuneradas"
 
 **Fecha:** 2026-07-08  
@@ -1975,6 +2039,9 @@ Sin comparativa comercial · Sin recomendación de entidades · Sin afiliación 
 | **SEO-GEO-TOOL-503020-COPY-01** | /herramientas/regla-50-30-20 — schema + copy Kakebo AI canónico | `ac80f84` | ✅ Completado (2026-07-01) |
 | **SEO-GEO-PILLAR-METODO-KAKEBO-GUIA-01** | /blog/metodo-kakebo-guia-definitiva — definición GEO, categorías canónicas, excerpt sin promesa | `aabc03a` | ✅ Completado (2026-07-01) |
 | **SEO-GEO-PILLAR-KAKEBO-ONLINE-GRATIS-ES-01** | /blog/kakebo-online-gratis ES — definición GEO, sin superlativos, MetodoKakebo.com | — | ✅ Completado (2026-07-01) |
+| **TOOL-CALCULADORA-AHORRO-V2-IMPL-01** | Calculadora de ahorro V2 — cálculo real con gastos fijos + variables | `e986a1d` | ✅ Completado (2026-07-08) |
+| **TOOL-CALCULADORA-AHORRO-SEO-GEO-AUDIT-01** | Auditoría SEO/GEO calculadora de ahorro — OG, FAQPage ×6, HowTo, enlaces internos | `c123eb0` | ✅ Completado (2026-07-08) |
+| **TOOL-CALCULADORA-AHORRO-SEO-GEO-IMPL-01** | SEO/GEO calculadora de ahorro — título, OG dinámica, schemas, FAQ visible, intro block, tabla interpretación, 4 enlaces | `ea3f17b` | ✅ Completado (2026-07-08) |
 
 **Restricciones activas:**
 - No abrir nuevo contenido SEO sin datos de Search Console (SEO-DATA-PRIORITY-01 primero).
