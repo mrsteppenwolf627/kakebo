@@ -1,8 +1,27 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (CONTENT-02)  
-**Último commit aceptado:** 1ef682c  
+**Última actualización:** 2026-07-09 (CONTENT-02-IMAGE-IMPL-01)  
+**Último commit aceptado:** 9f45938  
 **Rama operativa:** `main`
+
+---
+
+## CONTENT-02-IMAGE-IMPL-01 — Imagen destacada del artículo fondo de emergencia
+
+**Fecha:** 2026-07-09
+**Estado:** ✅ Completado
+**Sprint:** Sprint Contenido V1
+**Tipo:** Integración de asset — cambio atómico
+
+**Imagen origen:** `docs/seo/fondo_emergencia/fondo_emergencia.png` (PNG real, 1536×1024, verificado con `file`)
+**Imagen pública creada:** `public/images/blog/fondo-de-emergencia.png`
+**Archivo MDX actualizado:** `src/content/blog/fondo-de-emergencia.es.mdx` — añadido `image: '/images/blog/fondo-de-emergencia.png'` (1 línea, mismo patrón que `cuentas-remuneradas.es.mdx`)
+
+**Restricciones respetadas:** Sin cambios en title, H1, meta description, slug, FAQ ni enlaces internos · Sin tocar otros artículos · Sin tocar `/blog/plantilla-kakebo-excel` · Sin tocar herramientas · Sin tocar sitemap/robots/canonical/hreflang/schema global.
+
+**Validación:** `npm run build`/`lint`/`tsc --noEmit` ✅ sin errores; `/blog/fondo-de-emergencia` HTTP 200; imagen HTTP 200 (sin 404); `BlogPosting.image` y `og:image` ya usan la imagen específica en lugar del fallback; `FAQPage`/`BreadcrumbList` intactos; miniatura del listado `/blog` actualizada automáticamente.
+
+**Build:** ✅ Compiled successfully — 0 errores TypeScript, 0 errores de lint (76 warnings preexistentes no relacionados)
 
 ---
 

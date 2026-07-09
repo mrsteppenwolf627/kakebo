@@ -1,11 +1,30 @@
 # CONTENT_02_FONDO_EMERGENCIA — Artículo "Fondo de emergencia"
 
 **Fecha:** 2026-07-09
-**Tarea:** CONTENT-02
+**Tarea:** CONTENT-02 (+ actualización `CONTENT-02-IMAGE-IMPL-01`)
 **Sprint:** Sprint Contenido V1
 **Tipo:** Contenido nuevo — guía evergreen informativa/práctica, España-first
 **Documento base:** `docs/seo/KEYWORD_RESEARCH_FONDO_EMERGENCIA_01.md`
-**Commit de referencia (HEAD antes de esta tarea):** `1ef682c`
+**Commit de referencia (HEAD antes de CONTENT-02):** `1ef682c`
+**Commit de referencia (HEAD antes de CONTENT-02-IMAGE-IMPL-01):** `9f45938`
+
+---
+
+## 0. Validaciones de `CONTENT-02-IMAGE-IMPL-01`
+
+| Validación | Resultado |
+|---|---|
+| `npm run build` | ✅ Compilación exitosa |
+| `npm run lint` | ✅ 0 errores, 76 warnings preexistentes |
+| `npx tsc --noEmit` | ✅ 0 errores |
+| `GET /blog/fondo-de-emergencia` | ✅ HTTP 200 |
+| `GET /images/blog/fondo-de-emergencia.png` | ✅ HTTP 200 (sin 404) |
+| `BlogPosting.image` | ✅ `["/images/blog/fondo-de-emergencia.png"]` (ya no el fallback) |
+| `og:image` | ✅ `.../images/blog/fondo-de-emergencia.png` |
+| `FAQPage` / `BreadcrumbList` | ✅ Presentes, sin cambios |
+| `title` / H1 / `canonical` | ✅ Sin cambios |
+| Miniatura en `/blog` (índice) | ✅ Usa la nueva imagen automáticamente |
+| Diff del `.mdx` | ✅ 1 línea añadida (`image:`), sin tocar contenido editorial |
 
 ---
 
@@ -78,11 +97,11 @@ Los 10 H2 obligatorios, todos presentes: Qué es un fondo de emergencia · Cuán
 
 ## 8. Imagen
 
-No se ha añadido campo `image` en el frontmatter. El sistema de blog gestiona esto de forma segura:
-- `blog/[slug]/page.tsx` renderiza la imagen del artículo solo si `post.frontmatter.image` existe (`{post.frontmatter.image && (...)}`) — sin imagen, simplemente no se muestra el bloque de imagen destacada, sin error ni ruta rota.
-- El schema `BlogPosting` y el Open Graph usan automáticamente el fallback ya existente `https://www.metodokakebo.com/og-image.jpg` cuando no hay imagen específica (`post.frontmatter.image || "https://www.metodokakebo.com/og-image.jpg"`).
+**Actualización 2026-07-09 (`CONTENT-02-IMAGE-IMPL-01`):** la imagen destacada específica ya se ha integrado. Se copió `docs/seo/fondo_emergencia/fondo_emergencia.png` (PNG real, 1536×1024, verificado con `file`) a `public/images/blog/fondo-de-emergencia.png`, y se añadió `image: '/images/blog/fondo-de-emergencia.png'` al frontmatter de `fondo-de-emergencia.es.mdx`, siguiendo exactamente el mismo patrón de campo ya usado en `cuentas-remuneradas.es.mdx` (comillas simples, misma posición tras `updatedDate`). El archivo original en `docs/seo/fondo_emergencia/` no se movió ni se eliminó. No se modificó ningún otro campo del frontmatter ni el contenido editorial del artículo.
 
-**Necesidad documentada para tarea futura:** generar una imagen destacada dedicada para `/blog/fondo-de-emergencia` (patrón ya usado en el resto de artículos, p. ej. `public/images/blog/cuentas-remuneradas.png`) y añadir `image: '/images/blog/fondo-de-emergencia.png'` al frontmatter en una tarea de seguimiento independiente. No se ha inventado ninguna ruta de imagen inexistente en esta tarea.
+Con esto, `BlogPosting.image` y `og:image` ya usan la imagen específica del artículo en lugar del fallback `/og-image.jpg`; la miniatura del artículo en `/blog` también la usa automáticamente.
+
+**Estado anterior a esta actualización (histórico, ya resuelto):** el artículo se publicó sin campo `image`. El sistema de blog gestionaba esto de forma segura — `blog/[slug]/page.tsx` renderiza la imagen del artículo solo si `post.frontmatter.image` existe, y el schema `BlogPosting`/Open Graph usaban el fallback `https://www.metodokakebo.com/og-image.jpg` cuando no había imagen específica.
 
 ## 9. Qué se dejó fuera de alcance
 

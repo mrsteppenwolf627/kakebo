@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (Content: add emergency fund guide — CONTENT-02)  
+**Última actualización:** 2026-07-09 (Content: add emergency fund article image — CONTENT-02-IMAGE-IMPL-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -9,7 +9,23 @@
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
-> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `CONTENT-02`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `CONTENT-02`, `CONTENT-02-IMAGE-IMPL-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ CONTENT-02-IMAGE-IMPL-01 — Imagen destacada del artículo fondo de emergencia
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Integración de asset — cambio atómico |
+| **Documento** | `docs/seo/CONTENT_02_FONDO_EMERGENCIA.md` (actualizado) |
+
+Copia `docs/seo/fondo_emergencia/fondo_emergencia.png` (PNG real verificado, 1536×1024) a `public/images/blog/fondo-de-emergencia.png` y añade `image: '/images/blog/fondo-de-emergencia.png'` al frontmatter de `fondo-de-emergencia.es.mdx`, mismo patrón exacto que `cuentas-remuneradas.es.mdx`. Sin tocar contenido, title, H1, meta, FAQ ni enlaces internos del artículo.
+
+**Validación:** `npm run build`/`lint`/`tsc --noEmit` ✅ sin errores; imagen HTTP 200 (sin 404); `BlogPosting.image` y `og:image` ya usan la imagen específica; `FAQPage`/`BreadcrumbList` intactos.
+
+**Sin cambios de contenido, diseño ni funcionalidad.**
 
 ---
 
