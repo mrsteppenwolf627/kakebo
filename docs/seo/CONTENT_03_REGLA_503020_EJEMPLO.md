@@ -1,11 +1,37 @@
 # CONTENT_03_REGLA_503020_EJEMPLO — Artículo "Regla 50/30/20: ejemplo real con tu sueldo"
 
-**Fecha:** 2026-07-09
+**Fecha:** 2026-07-09 (+ actualización `CONTENT-03-IMAGE-IMPL-01`)
 **Tarea:** CONTENT-03
 **Sprint:** Sprint Contenido V1
 **Tipo:** Contenido nuevo — guía evergreen práctica de apoyo a herramienta existente
 **Documento base:** `docs/seo/KEYWORD_RESEARCH_REGLA_503020_01.md`
 **Commit de referencia (HEAD antes de CONTENT-03):** `6ed405a`
+**Commit de referencia (HEAD antes de CONTENT-03-IMAGE-IMPL-01):** `7d97645`
+
+---
+
+## 0. Actualización `CONTENT-03-IMAGE-IMPL-01` — Imagen destacada integrada
+
+| Validación | Resultado |
+|---|---|
+| `npm run build` | ✅ Compilación exitosa |
+| `npm run lint` | ✅ 0 errores, 76 warnings preexistentes |
+| `npx tsc --noEmit` | ✅ 0 errores |
+| `GET /blog/regla-50-30-20-ejemplo` | ✅ HTTP 200 |
+| `GET /images/blog/regla-50-30-20-ejemplo.png` | ✅ HTTP 200 (sin 404) |
+| `BlogPosting.image` | ✅ `["/images/blog/regla-50-30-20-ejemplo.png"]` (ya no el fallback) |
+| `og:image` | ✅ `.../images/blog/regla-50-30-20-ejemplo.png` |
+| `FAQPage` / `BreadcrumbList` | ✅ Presentes, sin cambios |
+| `title` / H1 / `canonical` | ✅ Sin cambios |
+| Contenido editorial | ✅ Sin cambios — diff del `.mdx` es 1 línea añadida (`image:`) |
+
+**Imagen origen:** `docs/seo/regla502030/regla503020.png` (PNG real verificado con `file`, 1536×1024, 8-bit RGB, ~1,97 MB).
+
+**Imagen pública creada:** `public/images/blog/regla-50-30-20-ejemplo.png` — copia exacta del origen, mismo patrón ya usado en `CONTENT-02-IMAGE-IMPL-01` (`fondo-de-emergencia`). El archivo original en `docs/seo/regla502030/` no se movió ni se eliminó.
+
+**Frontmatter actualizado:** se añadió `image: '/images/blog/regla-50-30-20-ejemplo.png'` a `regla-50-30-20-ejemplo.es.mdx`, en la misma posición (tras `updatedDate`, antes de `related`) y con el mismo formato (comillas simples) que `fondo-de-emergencia.es.mdx` y `cuentas-remuneradas.es.mdx` — patrón verificado antes de modificar.
+
+**Sin cambios de contenido editorial, title, H1, meta description, slug, FAQ ni enlaces internos.** `BlogPosting.image` y `og:image` ya usan la imagen específica del artículo en lugar del fallback `/og-image.jpg`; la miniatura del artículo en `/blog` también la usa automáticamente.
 
 ---
 
@@ -93,7 +119,7 @@ Los 10 H2 obligatorios, todos presentes: Qué es la regla 50/30/20 en pocas pala
 - No se ha tocado `/blog/plantilla-kakebo-excel`.
 - No se ha modificado la herramienta `/herramientas/regla-50-30-20` ni ningún otro componente compartido, salvo el uso —no modificación— de los componentes MDX ya existentes (`Callout`, `ToolCTA`, `FaqSection`, `FaqItem`, `ArticleCTA`).
 - No se ha tocado `sitemap.ts`, `robots.ts`, canonical ni hreflang — el sistema los genera automáticamente para el nuevo slug, mismo mecanismo ya usado por `fondo-de-emergencia` y `cuentas-remuneradas`.
-- No se ha generado imagen destacada específica. El frontmatter no incluye campo `image`; el sistema aplica el fallback automático a `/og-image.jpg` (verificado en `og:image` del HTML renderizado). Queda documentado como tarea futura, mismo patrón que `CONTENT-02` antes de `CONTENT-02-IMAGE-IMPL-01`.
+- **Estado anterior a `CONTENT-03-IMAGE-IMPL-01` (histórico, ya resuelto):** el artículo se publicó sin campo `image`; el sistema aplicaba el fallback automático a `/og-image.jpg`. Resuelto en la actualización §0 de este documento — la imagen destacada específica ya está integrada.
 - No se ha creado una plantilla Excel de la regla 50/30/20 — mención descartada de la versión final del artículo (ver §7) para no prometer una descarga inexistente.
 - No se ha tocado `.claude/settings.local.json`.
 

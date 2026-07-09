@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (CONTENT-03 — artículo regla 50/30/20 ejemplo)  
+**Última actualización:** 2026-07-09 (CONTENT-03-IMAGE-IMPL-01 — imagen destacada del artículo regla 50/30/20 ejemplo)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -9,7 +9,23 @@
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
-> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `CONTENT-02`, `CONTENT-02-IMAGE-IMPL-01`, `CONTENT-03`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`, `SEO-CONTENT-BACKLOG-CLUSTERS-01`, `KEYWORD-RESEARCH-REGLA-503020-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `CONTENT-02`, `CONTENT-02-IMAGE-IMPL-01`, `CONTENT-03`, `CONTENT-03-IMAGE-IMPL-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`, `SEO-CONTENT-BACKLOG-CLUSTERS-01`, `KEYWORD-RESEARCH-REGLA-503020-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ CONTENT-03-IMAGE-IMPL-01 — Imagen destacada del artículo regla 50/30/20 ejemplo
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Integración de asset — cambio atómico |
+| **Documento** | `docs/seo/CONTENT_03_REGLA_503020_EJEMPLO.md` (actualizado) |
+
+Copia `docs/seo/regla502030/regla503020.png` (PNG real verificado, 1536×1024) a `public/images/blog/regla-50-30-20-ejemplo.png`, y añade `image: '/images/blog/regla-50-30-20-ejemplo.png'` al frontmatter de `regla-50-30-20-ejemplo.es.mdx`, siguiendo exactamente el mismo patrón de campo ya usado en `fondo-de-emergencia.es.mdx` y `cuentas-remuneradas.es.mdx` (comillas simples, misma posición tras `updatedDate`). El archivo original en `docs/seo/regla502030/` no se movió ni se eliminó. No se modificó ningún otro campo del frontmatter ni el contenido editorial del artículo.
+
+**Validación:** `npm run build`/`lint`/`tsc --noEmit` ✅ sin errores; imagen HTTP 200 (sin 404); `BlogPosting.image` y `og:image` ya usan la imagen específica; `FAQPage`/`BreadcrumbList` intactos; `title`/H1/canonical sin cambios; herramienta `/herramientas/regla-50-30-20` y las URLs protegidas (`plantilla-kakebo-excel`, `fondo-de-emergencia`, `cuentas-remuneradas`) verificadas sin diff.
+
+**Sin cambios de contenido, diseño ni funcionalidad.**
 
 ---
 

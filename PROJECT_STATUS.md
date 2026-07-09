@@ -1,8 +1,27 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (CONTENT-03)  
-**Último commit aceptado:** 6ed405a  
+**Última actualización:** 2026-07-09 (CONTENT-03-IMAGE-IMPL-01)  
+**Último commit aceptado:** 7d97645  
 **Rama operativa:** `main`
+
+---
+
+## CONTENT-03-IMAGE-IMPL-01 — Imagen destacada del artículo regla 50/30/20 ejemplo
+
+**Fecha:** 2026-07-09
+**Estado:** ✅ Completado
+**Sprint:** Sprint Contenido V1
+**Tipo:** Integración de asset — cambio atómico
+
+**Imagen origen:** `docs/seo/regla502030/regla503020.png` (PNG real, 1536×1024, verificado con `file`)
+**Imagen pública creada:** `public/images/blog/regla-50-30-20-ejemplo.png`
+**Archivo MDX actualizado:** `src/content/blog/regla-50-30-20-ejemplo.es.mdx` — añadido `image: '/images/blog/regla-50-30-20-ejemplo.png'` (1 línea, mismo patrón que `fondo-de-emergencia.es.mdx` y `cuentas-remuneradas.es.mdx`)
+
+**Restricciones respetadas:** Sin cambios en title, H1, meta description, slug, FAQ ni enlaces internos · Sin tocar otros artículos · Sin tocar `/blog/plantilla-kakebo-excel` · Sin tocar `/blog/fondo-de-emergencia` ni `/blog/cuentas-remuneradas` · Sin tocar la herramienta `/herramientas/regla-50-30-20` · Sin tocar sitemap/robots/canonical/hreflang/schema global.
+
+**Validación:** `npm run build`/`lint`/`tsc --noEmit` ✅ sin errores; `/blog/regla-50-30-20-ejemplo` HTTP 200; imagen HTTP 200 (sin 404); `BlogPosting.image` y `og:image` ya usan la imagen específica en lugar del fallback; `FAQPage`/`BreadcrumbList` intactos; `title`/H1/canonical sin cambios; miniatura del listado `/blog` actualizada automáticamente; herramienta y URLs protegidas verificadas sin diff.
+
+**Build:** ✅ Compiled successfully — 0 errores TypeScript, 0 errores de lint (76 warnings preexistentes no relacionados)
 
 ---
 
