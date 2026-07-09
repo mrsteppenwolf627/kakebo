@@ -1,8 +1,27 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (SEO-SITENAME-UNIFY-01)  
-**Último commit aceptado:** 2f7af28  
+**Última actualización:** 2026-07-09 (SEO-AUTHOR-ABOUT-NORMALIZE-01)  
+**Último commit aceptado:** 217565a  
 **Rama operativa:** `main`
+
+---
+
+## SEO-AUTHOR-ABOUT-NORMALIZE-01 — Normalización de Person.name en /sobre-nosotros
+
+**Estado:** ✅ Completado (2026-07-09)
+
+Documento creado: `docs/seo/SEO_AUTHOR_ABOUT_NORMALIZE_01.md`
+
+Corrige el hallazgo adyacente detectado en `SEO-SITENAME-UNIFY-01`: `Person.name` en el schema JSON-LD de `/sobre-nosotros` decía `"Aitor Almu"` en lugar del nombre editorial canónico. Cambio atómico de 1 línea.
+
+**Corregido:**
+- `src/app/[locale]/(public)/sobre-nosotros/page.tsx` — `Person.name`: `"Aitor Almu"` → `"Aitor Alarcón"`
+
+**Sin tocar:** `Organization.name` (`"MetodoKakebo.com"`), `siteName`, `sameAs`, `contactPoint.email`, canonical/hreflang/sitemap/robots, artículos, herramientas, `plantilla-kakebo-excel`.
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores), `npx tsc --noEmit` ✅ (0 errores), render local confirma `Person.name: "Aitor Alarcón"` y `Organization.name` sin cambios.
+
+**Sin cambios de contenido, herramientas ni SEO técnico global.**
 
 ---
 

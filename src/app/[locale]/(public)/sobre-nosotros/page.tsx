@@ -49,7 +49,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             {
                 "@type": "Person",
                 "@id": "https://www.metodokakebo.com/#person",
-                "name": "Aitor Almu",
+                "name": "Aitor Alarcón",
                 "jobTitle": "Fundador y Desarrollador",
                 "url": "https://www.metodokakebo.com/sobre-nosotros",
                 "sameAs": [

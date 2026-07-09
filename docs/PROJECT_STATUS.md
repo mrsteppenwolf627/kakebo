@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (SEO: unify site name metadata — SEO-SITENAME-UNIFY-01)  
+**Última actualización:** 2026-07-09 (SEO: normalize about author identity — SEO-AUTHOR-ABOUT-NORMALIZE-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -10,6 +10,27 @@
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
 > **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ SEO-AUTHOR-ABOUT-NORMALIZE-01 — Normalización de Person.name en /sobre-nosotros
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Corrección técnica de schema — cambio atómico |
+| **Documento** | `docs/seo/SEO_AUTHOR_ABOUT_NORMALIZE_01.md` |
+
+Corrige el hallazgo adyacente detectado durante `SEO-SITENAME-UNIFY-01`: el schema JSON-LD `Person` (`@id: .../#person`) de `/sobre-nosotros` declaraba `"name": "Aitor Almu"`, inconsistente con la identidad editorial oficial fijada en `SEO-AUTHOR-NORMALIZATION-01` (Persona = **Aitor Alarcón**).
+
+**Corregido (1 archivo, 1 línea):**
+- `src/app/[locale]/(public)/sobre-nosotros/page.tsx` — `Person.name`: `"Aitor Almu"` → `"Aitor Alarcón"`
+
+**Sin tocar:** `Organization.name` (sigue `"MetodoKakebo.com"`), `siteName`/`openGraph.siteName`, `sameAs` (handles reales de X/GitHub), `contactPoint.email`, canonical/hreflang/sitemap/robots, artículos de blog, herramientas, `plantilla-kakebo-excel`.
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores), `npx tsc --noEmit` ✅ (0 errores), render local confirma `Person.name: "Aitor Alarcón"` y `Organization.name: "MetodoKakebo.com"` en el HTML servido.
+
+**Sin cambios de contenido, herramientas ni SEO técnico global.**
 
 ---
 
