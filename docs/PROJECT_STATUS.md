@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (Content: add emergency fund article image — CONTENT-02-IMAGE-IMPL-01)  
+**Última actualización:** 2026-07-09 (SEO-CONTENT-BACKLOG-CLUSTERS-01 — backlog editorial por clusters)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -9,7 +9,25 @@
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
-> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `CONTENT-02`, `CONTENT-02-IMAGE-IMPL-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `CONTENT-02`, `CONTENT-02-IMAGE-IMPL-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`, `SEO-CONTENT-BACKLOG-CLUSTERS-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ SEO-CONTENT-BACKLOG-CLUSTERS-01 — Backlog editorial SEO por clusters
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Solo análisis estratégico y documentación — sin código, sin MDX, sin contenido nuevo, sin cambios en herramientas ni en artículos existentes |
+| **Documento** | `docs/seo/SEO_CONTENT_BACKLOG_CLUSTERS_01.md` |
+
+Analiza los 10 clusters editoriales del sitio (Método Kakebo, Ahorro mensual, Fondo de emergencia, Cuentas remuneradas, Inflación, Presupuesto personal, Regla 50/30/20, Alternativas/Fintonic, Plantillas y Excel, Casos prácticos por perfil) contrastando contenido existente, huecos detectados y oportunidades futuras. Confirma que los clusters de Fondo de emergencia y Cuentas remuneradas están en ventana de medición y no requieren contenido adicional a corto plazo. Identifica como huecos críticos sin cerrar los artículos de respaldo para `/herramientas/regla-50-30-20` y `/herramientas/calculadora-inflacion` (ya señalados en `SEO_MAP_V1.md` desde 2026-06-30). Produce un backlog de 10 ideas priorizadas (alta/media/baja) y recomienda 3 para keyword research inmediato.
+
+**Top 3 recomendadas para keyword research:** artículo de respaldo regla 50/30/20, artículo de respaldo calculadora de inflación, Kakebo para primer sueldo/recién graduados.
+
+**No se ha creado ningún artículo ni MDX.** Sin cambios de código, contenido, herramientas, sitemap, robots, canonical, hreflang ni schema.
+
+**Siguiente tarea recomendada:** esperar el snapshot GSC 2026-07-17/31; en paralelo, keyword research aislado para el artículo de respaldo de la regla 50/30/20 (idea #1 del backlog).
 
 ---
 

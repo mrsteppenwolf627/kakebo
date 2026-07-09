@@ -1,8 +1,32 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (CONTENT-02-IMAGE-IMPL-01)  
+**Última actualización:** 2026-07-09 (SEO-CONTENT-BACKLOG-CLUSTERS-01)  
 **Último commit aceptado:** 9f45938  
 **Rama operativa:** `main`
+
+---
+
+## SEO-CONTENT-BACKLOG-CLUSTERS-01 — Backlog editorial SEO por clusters
+
+**Fecha:** 2026-07-09
+**Estado:** ✅ Completado — solo análisis estratégico y documentación
+**Tipo:** Sin código, sin MDX, sin contenido nuevo, sin cambios en herramientas ni en artículos existentes
+
+**Documento creado:** `docs/seo/SEO_CONTENT_BACKLOG_CLUSTERS_01.md`
+
+Revisa 10 clusters editoriales (Método Kakebo, Ahorro mensual, Fondo de emergencia, Cuentas remuneradas, Inflación, Presupuesto personal, Regla 50/30/20, Alternativas/Fintonic, Plantillas y Excel, Casos prácticos por perfil) contrastando `PLAN_SEO_GEO_METODOKAKEBO.md`, `SEO_MAP_V1.md`, `SEO_ROADMAP_RESUME_2026_07_09.md`, `KEYWORD_RESEARCH_FONDO_EMERGENCIA_01.md` y el contenido real en `src/content/blog/`.
+
+**Huecos críticos confirmados (heredados de `SEO_MAP_V1.md`, sin cerrar):** sin artículo de respaldo para `/herramientas/regla-50-30-20` ni para `/herramientas/calculadora-inflacion`.
+
+**Fondo de emergencia y Cuentas remuneradas:** clusters en ventana de medición activa — sin hueco editorial priorizable a corto plazo.
+
+**Backlog:** 10 ideas de artículo priorizadas (3 alta, 5 media, 2 baja). Top 3 para keyword research: artículo de respaldo regla 50/30/20, artículo de respaldo calculadora de inflación, Kakebo para primer sueldo/recién graduados.
+
+**Excluidos explícitamente:** comparativas bancarias vivas, "mejores cuentas remuneradas 2026", artículos de afiliación, cualquier pieza del cluster Excel sin autorización explícita, contenido nuevo general hasta el snapshot GSC 2026-07-17/31 (salvo keyword research aislado previo, mismo patrón que `fondo-de-emergencia`).
+
+**Siguiente tarea recomendada:** esperar snapshot GSC 2026-07-17/31; en paralelo, keyword research aislado para el artículo de respaldo de la regla 50/30/20.
+
+**Sin cambios de código, contenido, herramientas ni configuración SEO técnica.**
 
 ---
 
