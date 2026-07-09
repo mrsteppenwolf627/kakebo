@@ -1,8 +1,26 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (SEO-BREADCRUMB-TOOLS-IMPL-01)  
-**Último commit aceptado:** 00c6a3a  
+**Última actualización:** 2026-07-09 (KEYWORD-RESEARCH-FONDO-EMERGENCIA-01)  
+**Último commit aceptado:** 984b3fc  
 **Rama operativa:** `main`
+
+---
+
+## KEYWORD-RESEARCH-FONDO-EMERGENCIA-01 — Ficha keyword: fondo de emergencia
+
+**Estado:** ✅ Completado (2026-07-09) — solo investigación y documentación
+
+Documento creado: `docs/seo/KEYWORD_RESEARCH_FONDO_EMERGENCIA_01.md`
+
+**Keyword padre:** `fondo de emergencia`. **Keyword objetivo inicial:** `cuánto dinero tener en un fondo de emergencia` (long tail práctica/cálculo, menor fricción competitiva frente al término genérico dominado por bancos y aseguradoras).
+
+**Hallazgo clave:** "fondo de emergencia" ya se menciona sin desarrollar en `como-hacer-un-presupuesto-personal` (regla 3-6 meses), `cuentas-remuneradas` (dónde guardarlo) y la FAQ de `calculadora-ahorro` (cálculo vía función "Añadir objetivo"). El ángulo diferenciador del nuevo artículo es el **cálculo desde gastos reales conectado con `calculadora-ahorro`**, sin repetir "qué es" ni "dónde guardarlo" como ejes — solo enlazarlos.
+
+**Decisión final:** Producir. Sigue el mismo patrón que funcionó en `CONTENT-01`.
+
+**Siguiente tarea recomendada:** `CONTENT-02` — redacción del artículo `/blog/fondo-de-emergencia` según outline, keyword y restricciones definidas en la ficha.
+
+**Nota:** no se ha creado artículo, MDX ni tocado código en esta tarea.
 
 ---
 
