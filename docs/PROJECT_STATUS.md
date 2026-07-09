@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (SEO: normalize about author identity — SEO-AUTHOR-ABOUT-NORMALIZE-01)  
+**Última actualización:** 2026-07-09 (Docs: audit OG site name inheritance — SEO-OG-SITENAME-INHERITANCE-AUDIT-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -10,6 +10,22 @@
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
 > **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ SEO-OG-SITENAME-INHERITANCE-AUDIT-01 — Auditoría de ausencia de og:site_name
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Solo análisis y documentación — sin cambios en código, contenido ni configuración SEO |
+| **Documento** | `docs/seo/SEO_OG_SITENAME_INHERITANCE_AUDIT_01.md` |
+
+Audita el hallazgo señalado en `SEO-SITENAME-UNIFY-01`: 6 de 9 páginas públicas auditadas (`/`, `/sobre-nosotros`, `/blog/[slug]`, `/herramientas/calculadora-ahorro`, `/herramientas/regla-50-30-20`, `/tutorial`) no emiten `<meta property="og:site_name">` porque su `openGraph` propio reemplaza por completo (no fusiona) el `openGraph` de `layout.tsx` — comportamiento documentado de Next.js Metadata API, no un bug de valor. `/blog` y `/herramientas` (hub) heredan correctamente al no definir `openGraph` propio; `calculadora-inflacion` ya es correcta por definir `siteName` explícito. Ningún valor emitido es incorrecto — el problema es de ausencia, no de contenido erróneo.
+
+**Recomendación:** implementar en una tarea futura dedicada (`SEO-OG-SITENAME-INHERITANCE-IMPL-01`) — añadir `siteName` (idealmente vía constante compartida) al `openGraph` de los 6-7 archivos identificados. Riesgo bajo, no afecta ventanas de medición activas.
+
+**Sin cambios de código ni contenido.**
 
 ---
 

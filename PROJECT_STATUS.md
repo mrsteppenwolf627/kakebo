@@ -1,8 +1,22 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (SEO-AUTHOR-ABOUT-NORMALIZE-01)  
-**Último commit aceptado:** 217565a  
+**Última actualización:** 2026-07-09 (SEO-OG-SITENAME-INHERITANCE-AUDIT-01)  
+**Último commit aceptado:** 8e99d59  
 **Rama operativa:** `main`
+
+---
+
+## SEO-OG-SITENAME-INHERITANCE-AUDIT-01 — Auditoría de ausencia de og:site_name
+
+**Estado:** ✅ Completado (2026-07-09) — solo análisis y documentación
+
+Documento creado: `docs/seo/SEO_OG_SITENAME_INHERITANCE_AUDIT_01.md`
+
+Confirma que 6 de 9 páginas públicas (`/`, `/sobre-nosotros`, `/blog/[slug]`, `/herramientas/calculadora-ahorro`, `/herramientas/regla-50-30-20`, `/tutorial`) no emiten `og:site_name` por reemplazo (no fusión) del `openGraph` de `layout.tsx` cuando la página define uno propio — comportamiento de Next.js Metadata API, no un error de valor. `/blog`, `/herramientas` y `calculadora-inflacion` ya son correctas.
+
+**Siguiente tarea recomendada:** `SEO-OG-SITENAME-INHERITANCE-IMPL-01` — añadir `siteName: "MetodoKakebo.com"` (vía constante compartida) al `openGraph` de los 6-7 archivos identificados. Riesgo bajo, no afecta ventanas de medición activas.
+
+**Sin cambios de código ni contenido en esta tarea.**
 
 ---
 
