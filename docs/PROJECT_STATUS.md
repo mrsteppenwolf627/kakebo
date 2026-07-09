@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (Docs: add emergency fund keyword research — KEYWORD-RESEARCH-FONDO-EMERGENCIA-01)  
+**Última actualización:** 2026-07-09 (Content: add emergency fund guide — CONTENT-02)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -9,7 +9,24 @@
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
-> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `CONTENT-02`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ CONTENT-02 — Artículo "Fondo de emergencia"
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Contenido nuevo — guía evergreen informativa/práctica |
+| **Documento** | `docs/seo/CONTENT_02_FONDO_EMERGENCIA.md` |
+| **URL creada** | `/blog/fondo-de-emergencia` |
+
+Artículo redactado siguiendo `KEYWORD_RESEARCH_FONDO_EMERGENCIA_01.md` sin improvisar keywords ni cambiar el ángulo. Keyword padre `fondo de emergencia`, keyword objetivo `cuánto dinero tener en un fondo de emergencia`. 6 enlaces internos obligatorios verificados, 6 FAQ (frontmatter + visible), tabla de ejemplo por perfil de gastos fijos. Sin comparativa de bancos, sin afiliación, sin rentabilidades inventadas.
+
+**Ventana de medición:** 8-12 semanas desde publicación (2026-07-09).
+
+**Sin imagen destacada** (fallback automático a `/og-image.jpg`) — generación de imagen dedicada documentada como tarea futura.
 
 ---
 

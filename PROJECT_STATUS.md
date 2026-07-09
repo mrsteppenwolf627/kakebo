@@ -1,8 +1,47 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (KEYWORD-RESEARCH-FONDO-EMERGENCIA-01)  
-**Último commit aceptado:** 984b3fc  
+**Última actualización:** 2026-07-09 (CONTENT-02)  
+**Último commit aceptado:** 1ef682c  
 **Rama operativa:** `main`
+
+---
+
+## CONTENT-02 — Artículo "Fondo de emergencia"
+
+**Fecha:** 2026-07-09
+**Estado:** ✅ Completado
+**Sprint:** Sprint Contenido V1
+**Tipo:** Guía evergreen informativa/práctica — España-first, sin afiliación
+
+**URL creada:** `/blog/fondo-de-emergencia`
+**Archivo MDX:** `src/content/blog/fondo-de-emergencia.es.mdx`
+**Documento de research base:** `docs/seo/KEYWORD_RESEARCH_FONDO_EMERGENCIA_01.md`
+**Documento de la tarea:** `docs/seo/CONTENT_02_FONDO_EMERGENCIA.md`
+
+**Keyword padre:** `fondo de emergencia`
+**Keyword objetivo inicial:** `cuánto dinero tener en un fondo de emergencia`
+
+**Enlazado interno activo (6, todos obligatorios y verificados):**
+- `/herramientas/calculadora-ahorro`
+- `/blog/cuentas-remuneradas`
+- `/blog/como-ahorrar-dinero-cada-mes`
+- `/blog/como-hacer-un-presupuesto-personal`
+- `/herramientas/regla-50-30-20`
+- `/herramientas/calculadora-inflacion`
+
+**FAQ (6, frontmatter + visible):** cuánto tener, dónde guardarlo, si invertirlo, cuántos meses, si cuenta remunerada, cómo empezar sin ahorro previo.
+
+**Restricciones respetadas:** Sin comparativa de bancos · Sin recomendación de entidades · Sin afiliación · Sin rentabilidades inventadas · No se ha tocado `/blog/plantilla-kakebo-excel` · No se han modificado herramientas ni componentes globales.
+
+**Incidencia técnica:** el template de blog unifica `title` y `H1` en un único campo de frontmatter — se usó el "Title SEO recomendado" para ambos, documentado en detalle en `CONTENT_02_FONDO_EMERGENCIA.md` §3.
+
+**Schema generado automáticamente por el sistema:** `BlogPosting` + `BreadcrumbList` + `FAQPage` (6 preguntas).
+
+**Sin imagen destacada específica** — fallback automático a `/og-image.jpg`; generación de imagen dedicada queda como tarea futura.
+
+**Ventana de medición SEO:** 8-12 semanas desde publicación (2026-07-09).
+
+**Build:** ✅ Compiled successfully — 0 errores TypeScript, 0 errores de lint (76 warnings preexistentes no relacionados)
 
 ---
 

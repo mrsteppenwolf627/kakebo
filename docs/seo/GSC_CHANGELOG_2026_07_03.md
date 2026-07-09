@@ -115,6 +115,18 @@
 
 ---
 
+### commit (Content: add emergency fund guide) — CONTENT-02
+
+| Campo | Detalle |
+|---|---|
+| **URL afectada** | `/blog/fondo-de-emergencia` (nueva) |
+| **Tipo de señal** | Contenido nuevo, title, meta description, enlazado interno entrante desde el propio artículo hacia `calculadora-ahorro`, `cuentas-remuneradas`, `como-ahorrar-dinero-cada-mes`, `como-hacer-un-presupuesto-personal`, `regla-50-30-20`, `calculadora-inflacion` |
+| **Keyword objetivo** | `cuánto dinero tener en un fondo de emergencia` (long tail), keyword padre `fondo de emergencia` |
+| **Hipótesis** | Captar intención de cálculo práctico del fondo de emergencia, sin competir de frente por el término genérico dominado por bancos/aseguradoras; expandir el cluster de ahorro ya con señal fuerte (Kakebo, plantilla Excel, app/online, alternativas a Fintonic) y apoyar `calculadora-ahorro` desde un segundo ángulo editorial (mismo patrón que `cuentas-remuneradas`) |
+| **Ventana mínima** | 8-12 semanas para artículo nuevo (indexación y primeras señales de posicionamiento) |
+
+---
+
 ## 4. Métricas a revisar en el próximo snapshot (2026-07-17 a 2026-07-31)
 
 ### Home (`/`)
