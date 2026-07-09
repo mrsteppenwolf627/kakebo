@@ -38,6 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t("ogDescription"),
       type: "website",
       url: `/${locale}`,
+      siteName: "MetodoKakebo.com",
     },
     robots: { index: true, follow: true },
   };

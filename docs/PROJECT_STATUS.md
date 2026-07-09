@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (Docs: audit OG site name inheritance — SEO-OG-SITENAME-INHERITANCE-AUDIT-01)  
+**Última actualización:** 2026-07-09 (SEO: add explicit OG site name — SEO-OG-SITENAME-INHERITANCE-IMPL-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -10,6 +10,26 @@
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
 > **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ SEO-OG-SITENAME-INHERITANCE-IMPL-01 — og:site_name explícito en páginas afectadas
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Corrección técnica de metadata — cambio atómico |
+| **Documento** | `docs/seo/SEO_OG_SITENAME_INHERITANCE_IMPL_01.md` |
+
+Implementa la corrección recomendada por `SEO-OG-SITENAME-INHERITANCE-AUDIT-01`: añade `siteName: "MetodoKakebo.com"` (literal, sin constante — ver documento §4) al `openGraph` de las 6 páginas que no lo emitían por reemplazo de metadata en Next.js: `/`, `/sobre-nosotros`, `/blog/[slug]`, `/herramientas/calculadora-ahorro`, `/herramientas/regla-50-30-20`, `/tutorial`.
+
+**Corregido (6 archivos, 1 línea cada uno):** `page.tsx` (Home), `sobre-nosotros/page.tsx`, `blog/[slug]/page.tsx`, `calculadora-ahorro/page.tsx`, `regla-50-30-20/page.tsx`, `tutorial/page.tsx`.
+
+**Verificado sin cambios:** title, description, canonical, hreflang, schema JSON-LD, H1, contenido, funcionalidad de herramientas. `/blog`, `/herramientas` (hub) y `calculadora-inflacion` (ya correctas) siguen funcionando sin regresión.
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores), `npx tsc --noEmit` ✅ (0 errores), render local confirma `og:site_name: "MetodoKakebo.com"` en las 6 rutas corregidas + las 3 ya correctas.
+
+**Sin cambios de contenido ni funcionalidad.**
 
 ---
 

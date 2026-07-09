@@ -45,6 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             description: post.frontmatter.excerpt,
             type: "article",
             url: `/blog/${slug}`,
+            siteName: "MetodoKakebo.com",
             images: [
                 {
                     url: post.frontmatter.image || "/og-image.jpg",

@@ -13,6 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         openGraph: {
             title: t('ogTitle'),
             description: t('ogDescription'),
+            siteName: "MetodoKakebo.com",
         },
         alternates: {
             canonical: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/sobre-nosotros`.replace(/([^:]\/)\/+/g, "$1"),

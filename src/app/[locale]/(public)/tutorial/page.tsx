@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             description: t("metaDescription"),
             type: "article",
             url: "/tutorial",
+            siteName: "MetodoKakebo.com",
         },
         robots: { index: true, follow: true },
     };

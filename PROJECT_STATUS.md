@@ -1,8 +1,24 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (SEO-OG-SITENAME-INHERITANCE-AUDIT-01)  
-**Último commit aceptado:** 8e99d59  
+**Última actualización:** 2026-07-09 (SEO-OG-SITENAME-INHERITANCE-IMPL-01)  
+**Último commit aceptado:** f3527ad  
 **Rama operativa:** `main`
+
+---
+
+## SEO-OG-SITENAME-INHERITANCE-IMPL-01 — og:site_name explícito en páginas afectadas
+
+**Estado:** ✅ Completado (2026-07-09)
+
+Documento creado: `docs/seo/SEO_OG_SITENAME_INHERITANCE_IMPL_01.md`
+
+Añade `siteName: "MetodoKakebo.com"` (literal, sin constante compartida — decisión justificada en el documento) al `openGraph` de las 6 páginas identificadas por la auditoría previa: `/`, `/sobre-nosotros`, `/blog/[slug]`, `/herramientas/calculadora-ahorro`, `/herramientas/regla-50-30-20`, `/tutorial`. Cambio atómico, 6 archivos, 1 línea cada uno.
+
+**Verificado sin cambios:** title, description, canonical, hreflang, schema JSON-LD, H1, contenido, funcionalidad. Páginas ya correctas (`/blog`, `/herramientas`, `calculadora-inflacion`) sin regresión.
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores), `npx tsc --noEmit` ✅ (0 errores), render local confirma `og:site_name: "MetodoKakebo.com"` en las 9 páginas públicas auditadas.
+
+**Sin cambios de contenido ni funcionalidad.**
 
 ---
 

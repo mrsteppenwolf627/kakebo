@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             type: "website",
             title: t('ogTitle'),
             description: t('ogDescription'),
+            siteName: "MetodoKakebo.com",
             images: [
                 {
                     url: "/api/og?title=Calculadora de Ahorro Mensual&description=Calcula tu margen real de ahorro: ingresos menos gastos fijos y variables. Sin registro.",
