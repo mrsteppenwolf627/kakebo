@@ -1,8 +1,24 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (SEO-TECHNICAL-TUTORIAL-PRIORITY-01)  
-**Último commit aceptado:** 7d86627  
+**Última actualización:** 2026-07-09 (SEO-TECHNICAL-TUTORIAL-PRIORITY-IMPL-01)  
+**Último commit aceptado:** 0490071  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECHNICAL-TUTORIAL-PRIORITY-IMPL-01 — Ajuste de prioridad sitemap de /tutorial
+
+**Estado:** ✅ Completado (2026-07-09)
+
+Documento creado: `docs/seo/SEO_TECHNICAL_TUTORIAL_PRIORITY_IMPL_01.md`
+
+Implementa la decisión de `SEO-TECHNICAL-TUTORIAL-PRIORITY-01`: baja `priority` de `/tutorial` en `src/app/sitemap.ts` de `0.8` a `0.5`. Cambio atómico, 1 archivo, 1 línea. Cierra el hallazgo T-12.
+
+**Sin cambios:** title, H1, canonical, hreflang, robots, `openGraph`, JSON-LD, contenido de `/tutorial`; resto de prioridades del sitemap.
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores), `npx tsc --noEmit` ✅ (0 errores), `/sitemap.xml` confirma `priority: 0.5` para `/tutorial` y `/en/tutorial`; render local confirma que `/tutorial` sigue indexable (HTTP 200, `robots: index, follow`) sin cambios de metadata.
+
+**Sin cambios de contenido ni funcionalidad.**
 
 ---
 

@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     const coreRoutes = [
         { path: '', priority: 1, changeFrequency: 'weekly' as const },
-        { path: '/tutorial', priority: 0.8, changeFrequency: 'monthly' as const },
+        { path: '/tutorial', priority: 0.5, changeFrequency: 'monthly' as const },
         { path: '/sobre-nosotros', priority: 0.7, changeFrequency: 'monthly' as const },
         { path: '/blog', priority: 0.8, changeFrequency: 'weekly' as const },
         { path: '/herramientas', priority: 0.8, changeFrequency: 'weekly' as const },

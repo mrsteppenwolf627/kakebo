@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (Docs: audit tutorial SEO priority — SEO-TECHNICAL-TUTORIAL-PRIORITY-01)  
+**Última actualización:** 2026-07-09 (SEO: lower tutorial sitemap priority — SEO-TECHNICAL-TUTORIAL-PRIORITY-IMPL-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -10,6 +10,26 @@
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
 > **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ SEO-TECHNICAL-TUTORIAL-PRIORITY-IMPL-01 — Ajuste de prioridad sitemap de /tutorial
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Corrección técnica de sitemap — cambio atómico |
+| **Documento** | `docs/seo/SEO_TECHNICAL_TUTORIAL_PRIORITY_IMPL_01.md` |
+
+Implementa la decisión de `SEO-TECHNICAL-TUTORIAL-PRIORITY-01` (cierra el hallazgo T-12): baja `priority` de `/tutorial` en `src/app/sitemap.ts` de `0.8` a `0.5`, coherente con su función de onboarding de producto (no de captación SEO principal).
+
+**Corregido (1 archivo, 1 línea):** `src/app/sitemap.ts` — `{ path: '/tutorial', priority: 0.8, ... }` → `priority: 0.5`
+
+**Sin cambios:** title, H1, description, canonical, hreflang, `openGraph`, `robots`, JSON-LD, contenido de `/tutorial`; resto de `priority` en `coreRoutes`.
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores), `npx tsc --noEmit` ✅ (0 errores), `/sitemap.xml` confirma `/tutorial` y `/en/tutorial` con `priority: 0.5`, render local confirma title/H1/canonical/robots/og:site_name intactos.
+
+**Sin cambios de contenido ni metadata.**
 
 ---
 
