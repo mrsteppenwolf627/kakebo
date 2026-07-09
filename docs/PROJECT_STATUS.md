@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (SEO: lower tutorial sitemap priority — SEO-TECHNICAL-TUTORIAL-PRIORITY-IMPL-01)  
+**Última actualización:** 2026-07-09 (Docs: audit breadcrumb SEO — SEO-BREADCRUMB-AUDIT-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -10,6 +10,24 @@
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
 > **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ SEO-BREADCRUMB-AUDIT-01 — Auditoría del sistema de breadcrumbs
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Solo auditoría y documentación — sin cambios en código, contenido ni configuración SEO |
+| **Documento** | `docs/seo/SEO_BREADCRUMB_AUDIT_01.md` |
+
+Cierra la incertidumbre documentada en `SEO_GEO_DEEP_AUDIT_01.md` §7 sobre presencia de `BreadcrumbList`. Confirma: solo `blog/[slug]/page.tsx` implementa `BreadcrumbList` (correcto, verificado en ES y EN — URLs absolutas, posiciones correctas, nombres coherentes, sin inconsistencias). El resto de páginas core (Home, blog index, hub herramientas, `tutorial`, `sobre-nosotros`) no lo tienen, lo cual es coherente con su nivel de arquitectura. **Hallazgo real (H4):** las 3 herramientas individuales carecen de `BreadcrumbList` pese a tener jerarquía real (`Inicio > Herramientas > Herramienta`), el mismo patrón ya usado en blog.
+
+**Decisión recomendada:** sí procede implementación futura, acotada a extender `BreadcrumbList` a las 3 páginas de herramientas.
+
+**Siguiente tarea recomendada:** `SEO-BREADCRUMB-HERRAMIENTAS-IMPL-01`.
+
+**Sin cambios de código ni contenido.**
 
 ---
 

@@ -1,8 +1,24 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (SEO-TECHNICAL-TUTORIAL-PRIORITY-IMPL-01)  
-**Último commit aceptado:** 0490071  
+**Última actualización:** 2026-07-09 (SEO-BREADCRUMB-AUDIT-01)  
+**Último commit aceptado:** 6e7faf5  
 **Rama operativa:** `main`
+
+---
+
+## SEO-BREADCRUMB-AUDIT-01 — Auditoría del sistema de breadcrumbs
+
+**Estado:** ✅ Completado (2026-07-09) — solo auditoría y documentación
+
+Documento creado: `docs/seo/SEO_BREADCRUMB_AUDIT_01.md`
+
+Audita `BreadcrumbList` en 10 páginas core. Solo `blog/[slug]/page.tsx` lo implementa (correcto, verificado ES/EN). Hallazgo real: las 3 herramientas individuales carecen de `BreadcrumbList` pese a tener jerarquía real equivalente a la de blog.
+
+**Decisión recomendada:** implementar `BreadcrumbList` en las 3 herramientas individuales.
+
+**Siguiente tarea recomendada:** `SEO-BREADCRUMB-HERRAMIENTAS-IMPL-01`.
+
+**Sin cambios de código ni contenido.**
 
 ---
 
