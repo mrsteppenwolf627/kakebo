@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (Docs: audit breadcrumb SEO — SEO-BREADCRUMB-AUDIT-01)  
+**Última actualización:** 2026-07-09 (SEO: add breadcrumb schema to tools — SEO-BREADCRUMB-TOOLS-IMPL-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -10,6 +10,28 @@
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
 > **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ SEO-BREADCRUMB-TOOLS-IMPL-01 — BreadcrumbList en herramientas individuales
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Corrección técnica de schema — cambio atómico |
+| **Documento** | `docs/seo/SEO_BREADCRUMB_TOOLS_IMPL_01.md` |
+
+Implementa la recomendación de `SEO-BREADCRUMB-AUDIT-01` (hallazgo H4): añade `BreadcrumbList` (`Inicio > Herramientas > Herramienta`) a las 3 herramientas individuales, replicando el patrón inline ya validado en `blog/[slug]/page.tsx`, en un `<script>` independiente sin tocar los schemas existentes.
+
+**Modificado (3 archivos):** `calculadora-ahorro/page.tsx`, `calculadora-inflacion/page.tsx`, `regla-50-30-20/page.tsx`. Se convirtió cada componente a `async` con `params` para poder localizar (ES/EN) el `BreadcrumbList` — sin afectar a ningún elemento visible.
+
+**Verificado sin cambios:** title, canonical, hreflang, `openGraph`, H1, contenido; `SoftwareApplication`, `FAQPage`, `HowTo` y `DefinedTerm` siguen presentes en las 3 páginas.
+
+**Decisión sobre helper:** implementación local (inline) en cada archivo, sin crear helper compartido — consistente con el único precedente existente (blog) y con el principio de cambio pequeño y seguro.
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores), `npx tsc --noEmit` ✅ (0 errores), render local confirma `BreadcrumbList` correcto (posiciones 1-2-3, URLs absolutas) en las 3 rutas ES y sus 3 equivalentes EN.
+
+**Sin breadcrumb visible en UI. Sin cambios de contenido, diseño ni funcionalidad.**
 
 ---
 

@@ -114,7 +114,20 @@ const SCHEMA = {
     ]
 };
 
-export default function CalculatorInflationPage() {
+export default async function CalculatorInflationPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const localePath = locale === 'es' ? '' : '/en';
+
+    const BREADCRUMB_SCHEMA = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": locale === 'es' ? "Inicio" : "Home", "item": `https://www.metodokakebo.com${localePath}` },
+            { "@type": "ListItem", "position": 2, "name": locale === 'es' ? "Herramientas" : "Tools", "item": `https://www.metodokakebo.com${localePath}/herramientas` },
+            { "@type": "ListItem", "position": 3, "name": locale === 'es' ? "Calculadora de inflación" : "Inflation calculator", "item": `https://www.metodokakebo.com${localePath}/herramientas/calculadora-inflacion` }
+        ]
+    };
+
     return (
         <div className="min-h-screen bg-background dark:bg-background selection:bg-stone-200 dark:selection:bg-stone-800">
             <Navbar />
@@ -122,6 +135,10 @@ export default function CalculatorInflationPage() {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(SCHEMA) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_SCHEMA) }}
             />
 
             <main className="pt-32 pb-20 px-6">

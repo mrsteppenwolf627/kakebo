@@ -1,8 +1,24 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (SEO-BREADCRUMB-AUDIT-01)  
-**Último commit aceptado:** 6e7faf5  
+**Última actualización:** 2026-07-09 (SEO-BREADCRUMB-TOOLS-IMPL-01)  
+**Último commit aceptado:** 00c6a3a  
 **Rama operativa:** `main`
+
+---
+
+## SEO-BREADCRUMB-TOOLS-IMPL-01 — BreadcrumbList en herramientas individuales
+
+**Estado:** ✅ Completado (2026-07-09)
+
+Documento creado: `docs/seo/SEO_BREADCRUMB_TOOLS_IMPL_01.md`
+
+Añade `BreadcrumbList` (`Inicio > Herramientas > Herramienta`) a `calculadora-ahorro`, `calculadora-inflacion` y `regla-50-30-20`, replicando el patrón ya validado en blog. Cambio atómico, 3 archivos.
+
+**Sin cambios:** title, canonical, hreflang, `openGraph`, H1, contenido; `SoftwareApplication`/`FAQPage`/`HowTo`/`DefinedTerm` verificados intactos. Sin breadcrumb visible en UI.
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores), `npx tsc --noEmit` ✅ (0 errores), render local confirma `BreadcrumbList` correcto en ES y EN de las 3 herramientas.
+
+**Sin cambios de contenido, diseño ni funcionalidad.**
 
 ---
 

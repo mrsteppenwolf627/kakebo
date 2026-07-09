@@ -76,7 +76,20 @@ const HOW_TO_SCHEMA = {
     ]
 };
 
-export default function Calculator503020Page() {
+export default async function Calculator503020Page({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const localePath = locale === 'es' ? '' : '/en';
+
+    const BREADCRUMB_SCHEMA = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": locale === 'es' ? "Inicio" : "Home", "item": `https://www.metodokakebo.com${localePath}` },
+            { "@type": "ListItem", "position": 2, "name": locale === 'es' ? "Herramientas" : "Tools", "item": `https://www.metodokakebo.com${localePath}/herramientas` },
+            { "@type": "ListItem", "position": 3, "name": locale === 'es' ? "Regla 50/30/20" : "50/30/20 rule", "item": `https://www.metodokakebo.com${localePath}/herramientas/regla-50-30-20` }
+        ]
+    };
+
     return (
         <div className="min-h-screen bg-background dark:bg-background selection:bg-stone-200 dark:selection:bg-stone-800">
             <Navbar />
@@ -84,6 +97,10 @@ export default function Calculator503020Page() {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify([SCHEMA, HOW_TO_SCHEMA]) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_SCHEMA) }}
             />
 
             <main className="pt-32 pb-20 px-6">
