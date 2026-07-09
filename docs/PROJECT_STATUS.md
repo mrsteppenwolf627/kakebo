@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (SEO-CONTENT-BACKLOG-CLUSTERS-01 — backlog editorial por clusters)  
+**Última actualización:** 2026-07-09 (KEYWORD-RESEARCH-REGLA-503020-01 — ficha keyword artículo de respaldo regla 50/30/20)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -9,7 +9,28 @@
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
-> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `CONTENT-02`, `CONTENT-02-IMAGE-IMPL-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`, `SEO-CONTENT-BACKLOG-CLUSTERS-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `CONTENT-02`, `CONTENT-02-IMAGE-IMPL-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`, `SEO-CONTENT-BACKLOG-CLUSTERS-01`, `KEYWORD-RESEARCH-REGLA-503020-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ KEYWORD-RESEARCH-REGLA-503020-01 — Ficha keyword: artículo de respaldo regla 50/30/20
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Solo investigación, decisión SEO y documentación — sin código, sin MDX, sin contenido publicado |
+| **Documento** | `docs/seo/KEYWORD_RESEARCH_REGLA_503020_01.md` |
+| **Origen** | Idea #1 (prioridad alta) de `docs/seo/SEO_CONTENT_BACKLOG_CLUSTERS_01.md` |
+
+Decide cómo debe plantearse el futuro artículo de blog de apoyo a `/herramientas/regla-50-30-20` sin canibalizarla. Confirma que "qué es la regla 50/30/20" ya se menciona brevemente en `como-hacer-un-presupuesto-personal` y que la herramienta ya cubre `regla 50 30 20 calculadora` — el hueco real está en ejemplos numéricos por sueldo, límites prácticos de la regla y comparación con la 70/20/10, ninguno desarrollado hoy en el sitio.
+
+**Keyword padre:** `regla 50/30/20`. **Keyword principal de la herramienta:** `regla 50 30 20 calculadora` (no tocar). **Keyword objetivo inicial del artículo:** `regla 50 30 20 ejemplo`.
+
+**Decisión final:** Producir. Sigue el mismo patrón que ya funcionó en `CONTENT-01`/`CONTENT-02`.
+
+**Siguiente tarea recomendada:** redacción del artículo (`CONTENT-03` o equivalente), sujeta a decisión de timing frente al snapshot GSC 2026-07-17/31.
+
+**Sin cambios de código, contenido ni herramientas.**
 
 ---
 

@@ -1,8 +1,33 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (SEO-CONTENT-BACKLOG-CLUSTERS-01)  
+**Última actualización:** 2026-07-09 (KEYWORD-RESEARCH-REGLA-503020-01)  
 **Último commit aceptado:** 9f45938  
 **Rama operativa:** `main`
+
+---
+
+## KEYWORD-RESEARCH-REGLA-503020-01 — Ficha keyword: artículo de respaldo regla 50/30/20
+
+**Fecha:** 2026-07-09
+**Estado:** ✅ Completado — solo investigación y documentación
+**Tipo:** Sin código, sin MDX, sin contenido publicado, sin cambios en la herramienta
+
+**Documento creado:** `docs/seo/KEYWORD_RESEARCH_REGLA_503020_01.md`
+**Origen:** idea #1 (prioridad alta) de `docs/seo/SEO_CONTENT_BACKLOG_CLUSTERS_01.md`
+
+Define cómo debe plantearse el futuro artículo de blog de apoyo a `/herramientas/regla-50-30-20` sin canibalizarla. Verifica que "qué es la regla 50/30/20" ya se menciona brevemente en `como-hacer-un-presupuesto-personal` y que la herramienta ya cubre `regla 50 30 20 calculadora` (title, meta, `HowTo` schema). El hueco real detectado: ejemplos numéricos por tramo de sueldo, límites prácticos de la regla y comparación con la regla 70/20/10 — nada de esto existe hoy en el sitio.
+
+**Keyword padre:** `regla 50/30/20`.
+**Keyword principal de la herramienta (no tocar):** `regla 50 30 20 calculadora`.
+**Keyword objetivo inicial del artículo:** `regla 50 30 20 ejemplo`.
+
+**Riesgo de canibalización:** bajo, si el artículo respeta la delimitación de la ficha — no usa copy transaccional de "calculadora" como eje, no repite la explicación básica ya cubierta en el pilar de presupuesto personal.
+
+**Decisión final:** Producir. Mismo patrón que ya funcionó en `CONTENT-01` (`cuentas-remuneradas`) y `CONTENT-02` (`fondo-de-emergencia`).
+
+**Siguiente tarea recomendada:** redacción del artículo (`CONTENT-03` o equivalente), sujeta a decisión de timing frente al snapshot GSC 2026-07-17/31.
+
+**Sin cambios de código, contenido, herramientas ni configuración SEO técnica.**
 
 ---
 
