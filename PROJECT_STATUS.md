@@ -1,8 +1,30 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-03 (SEO-GSC-ANNOTATION-CHANGELOG-01)  
-**Último commit aceptado:** d8971ae  
+**Última actualización:** 2026-07-09 (POST-PUBLISH-INDEXATION-CHECK-01)  
+**Último commit aceptado:** 1b986e2  
 **Rama operativa:** `main`
+
+---
+
+## POST-PUBLISH-INDEXATION-CHECK-01 — Verificación post-publicación
+
+**Estado:** ✅ Completado (2026-07-09)
+
+Verificación de rastreabilidad, indexabilidad, sitemap, metadata y schema estructurado para las dos URLs trabajadas en Sprint Contenido V1:
+- `/blog/cuentas-remuneradas` (commit `011f42c`)
+- `/herramientas/calculadora-ahorro` (commits `e986a1d`, `ea3f17b`, `1b986e2`)
+
+Documento creado: `docs/seo/POST_PUBLISH_INDEXATION_CHECK_2026_07_08.md`  
+Resultado: ambas URLs correctamente integradas, en sitemap, sin bloqueos de indexación en producción, metadata y schema (`BlogPosting`, `FAQPage`, `BreadcrumbList`, `SoftwareApplication`, `HowTo`) coherentes. `npm run build`, `lint` y `tsc --noEmit` limpios. Sin cambios de código, contenido ni UI.
+
+**Próximas mediciones recomendadas:**
+- Artículo nuevo: revisar rastreo/indexación en 8–12 semanas.
+- Cambios title/meta calculadora: revisar CTR/posición en 2–4 semanas.
+- FAQ/HowTo visible: revisar rich results en 4–8 semanas.
+
+**Checklist manual pendiente para el usuario:** inspección GSC + Rich Results Test de ambas URLs (ver documento).
+
+**Nota:** se retoma el Plan Maestro SEO/GEO tras este cierre.
 
 ---
 
