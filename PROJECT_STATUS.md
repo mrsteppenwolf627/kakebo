@@ -1,8 +1,50 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (KEYWORD-RESEARCH-REGLA-503020-01)  
-**Último commit aceptado:** 9f45938  
+**Última actualización:** 2026-07-09 (CONTENT-03)  
+**Último commit aceptado:** 6ed405a  
 **Rama operativa:** `main`
+
+---
+
+## CONTENT-03 — Artículo "Regla 50/30/20: ejemplo real con tu sueldo"
+
+**Fecha:** 2026-07-09
+**Estado:** ✅ Completado
+**Sprint:** Sprint Contenido V1
+**Tipo:** Guía evergreen práctica de apoyo a herramienta existente — sin afiliación, sin comparativa bancaria
+
+**URL creada:** `/blog/regla-50-30-20-ejemplo`
+**Archivo MDX:** `src/content/blog/regla-50-30-20-ejemplo.es.mdx`
+**Documento de research base:** `docs/seo/KEYWORD_RESEARCH_REGLA_503020_01.md`
+**Documento de la tarea:** `docs/seo/CONTENT_03_REGLA_503020_EJEMPLO.md`
+
+**Keyword padre:** `regla 50/30/20`
+**Keyword protegida de la herramienta (no atacada):** `regla 50 30 20 calculadora`
+**Keyword objetivo del artículo:** `regla 50 30 20 ejemplo`
+
+**Enlazado interno activo (6, todos obligatorios y verificados):**
+- `/herramientas/regla-50-30-20`
+- `/herramientas/calculadora-ahorro`
+- `/blog/fondo-de-emergencia`
+- `/blog/como-hacer-un-presupuesto-personal`
+- `/blog/como-ahorrar-dinero-cada-mes`
+- `/blog/metodo-kakebo-guia-definitiva`
+
+**FAQ (6, frontmatter + visible):** cómo funciona la regla, ejemplo, qué pasa si se supera el 50% en necesidades, comparación con la 70/20/10, sueldo bajo, dónde calcularla.
+
+**Nota de no canibalización:** el artículo no usa "calculadora" en title/H1, no repite el copy transaccional de la herramienta y remite a ella únicamente como paso siguiente ("usa la calculadora 50/30/20 con tus propios números"). `/herramientas/regla-50-30-20` no se ha modificado en ningún campo.
+
+**Restricciones respetadas:** Sin comparativa bancaria · Sin afiliación · Sin promesa de que la regla sirve para todo el mundo (sección dedicada "Cuándo no funciona") · No se ha tocado `/blog/plantilla-kakebo-excel` · No se ha tocado `/blog/fondo-de-emergencia` ni `/blog/cuentas-remuneradas` · No se ha modificado la herramienta ni ningún componente global.
+
+**Incidencia técnica:** mismo patrón ya documentado en `CONTENT-02` — el template de blog unifica `title` y `H1` en un único campo de frontmatter; se usó el "Title SEO recomendado" para ambos, documentado en detalle en `CONTENT_03_REGLA_503020_EJEMPLO.md` §3.
+
+**Schema generado automáticamente por el sistema:** `BlogPosting` + `BreadcrumbList` + `FAQPage` (6 preguntas).
+
+**Sin imagen destacada específica** — fallback automático a `/og-image.jpg` (verificado en render local); generación de imagen dedicada queda como tarea futura.
+
+**Ventana de medición SEO:** 8-12 semanas desde publicación (2026-07-09).
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores, 76 warnings preexistentes), `npx tsc --noEmit` ✅ (0 errores), render local (servidor de desarrollo) confirma HTTP 200 en `/blog/regla-50-30-20-ejemplo`, title/H1/canonical correctos, `BlogPosting`/`BreadcrumbList`/`FAQPage` presentes, artículo visible en `/blog`, 6 enlaces internos verificados por conteo en HTML, y las 4 URLs protegidas (`plantilla-kakebo-excel`, `fondo-de-emergencia`, `cuentas-remuneradas`, `/herramientas/regla-50-30-20`) devuelven HTTP 200 sin diff.
 
 ---
 

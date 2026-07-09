@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (KEYWORD-RESEARCH-REGLA-503020-01 — ficha keyword artículo de respaldo regla 50/30/20)  
+**Última actualización:** 2026-07-09 (CONTENT-03 — artículo regla 50/30/20 ejemplo)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -9,7 +9,30 @@
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
-> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `CONTENT-02`, `CONTENT-02-IMAGE-IMPL-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`, `SEO-CONTENT-BACKLOG-CLUSTERS-01`, `KEYWORD-RESEARCH-REGLA-503020-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `CONTENT-02`, `CONTENT-02-IMAGE-IMPL-01`, `CONTENT-03`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`, `KEYWORD-RESEARCH-FONDO-EMERGENCIA-01`, `SEO-CONTENT-BACKLOG-CLUSTERS-01`, `KEYWORD-RESEARCH-REGLA-503020-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ CONTENT-03 — Artículo "Regla 50/30/20: ejemplo real con tu sueldo"
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Contenido nuevo — guía evergreen práctica de apoyo a herramienta existente |
+| **Documento** | `docs/seo/CONTENT_03_REGLA_503020_EJEMPLO.md` |
+| **URL creada** | `/blog/regla-50-30-20-ejemplo` |
+
+Artículo redactado siguiendo `KEYWORD_RESEARCH_REGLA_503020_01.md` sin improvisar keywords ni cambiar el ángulo. Keyword padre `regla 50/30/20`, keyword objetivo `regla 50 30 20 ejemplo`, keyword protegida de la herramienta `regla 50 30 20 calculadora` (no atacada). 6 enlaces internos obligatorios verificados, 6 FAQ (frontmatter + visible), tres tablas de ejemplo por sueldo (1.200 €/1.800 €/2.500 €) y comparación con la regla 70/20/10.
+
+**Nota de no canibalización:** title y H1 nunca usan "calculadora"; la keyword `regla 50 30 20 calculadora` se reserva exclusivamente para `/herramientas/regla-50-30-20`, que no se ha modificado en ningún campo (verificado con `git diff` y render local HTTP 200).
+
+**Ventana de medición:** 8-12 semanas desde publicación (2026-07-09).
+
+**Sin imagen destacada** (fallback automático a `/og-image.jpg`, verificado en `og:image`) — generación de imagen dedicada documentada como tarea futura, mismo patrón que `CONTENT-02`.
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores, 76 warnings preexistentes), `npx tsc --noEmit` ✅ (0 errores), render local confirma HTTP 200, `title`/`H1` correctos, `BlogPosting`/`BreadcrumbList`/`FAQPage` (6 preguntas) generados, 6 enlaces internos presentes, y las 4 URLs protegidas (`plantilla-kakebo-excel`, `fondo-de-emergencia`, `cuentas-remuneradas`, `/herramientas/regla-50-30-20`) intactas (HTTP 200, sin diff).
+
+**Sin cambios en la herramienta, en artículos existentes, en sitemap, robots, canonical, hreflang ni schema global.**
 
 ---
 

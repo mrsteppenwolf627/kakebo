@@ -127,6 +127,18 @@
 
 ---
 
+### commit (Content: add 50 30 20 example guide) — CONTENT-03
+
+| Campo | Detalle |
+|---|---|
+| **URL afectada** | `/blog/regla-50-30-20-ejemplo` (nueva) |
+| **Tipo de señal** | Contenido nuevo, title, meta description, enlazado interno entrante desde el propio artículo hacia `regla-50-30-20`, `calculadora-ahorro`, `fondo-de-emergencia`, `como-hacer-un-presupuesto-personal`, `como-ahorrar-dinero-cada-mes`, `metodo-kakebo-guia-definitiva` |
+| **Keyword objetivo** | `regla 50 30 20 ejemplo` (long tail), keyword padre `regla 50/30/20`, keyword protegida de la herramienta `regla 50 30 20 calculadora` (no atacada por el artículo) |
+| **Hipótesis** | Cerrar el gap editorial del cluster "Regla 50/30/20" (herramienta sin apoyo de blog desde 2026-06-30) con ejemplos numéricos por sueldo y honestidad sobre los límites de la regla, sin canibalizar `/herramientas/regla-50-30-20`; mismo patrón que `CONTENT-01`/`CONTENT-02` |
+| **Ventana mínima** | 8-12 semanas para artículo nuevo (indexación y primeras señales de posicionamiento) |
+
+---
+
 ## 4. Métricas a revisar en el próximo snapshot (2026-07-17 a 2026-07-31)
 
 ### Home (`/`)
