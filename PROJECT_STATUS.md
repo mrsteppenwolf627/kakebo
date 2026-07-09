@@ -1,8 +1,26 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (POST-PUBLISH-INDEXATION-CHECK-01)  
-**Último commit aceptado:** 1b986e2  
+**Última actualización:** 2026-07-09 (SEO-ROADMAP-RESUME-01)  
+**Último commit aceptado:** 552ef18  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ROADMAP-RESUME-01 — Reconciliación del roadmap SEO/GEO
+
+**Estado:** ✅ Completado (2026-07-09)
+
+Documento creado: `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md`
+
+Reconcilia el Plan Maestro y el roadmap SEO/GEO (`docs/seo/PLAN_SEO_GEO_METODOKAKEBO.md`, `docs/seo/SEO_ROADMAP_V1.md`, `docs/seo/SEO_GEO_DEEP_AUDIT_01.md`) con el estado real tras el cierre del Sprint SEO Técnico V1 y el avance del Sprint Contenido V1. Confirma cierre de todo el Bloque 1 técnico y la mayor parte del Bloque 2 (arquitectura/autoría); identifica 3 tareas técnicas ejecutables sin dependencias (`SEO-SITENAME-UNIFY-01`, `SEO-TECHNICAL-TUTORIAL-PRIORITY-01`, `SEO-BREADCRUMB-AUDIT-01`); confirma bloqueo del Bloque 4 de contenido hasta el snapshot GSC 2026-07-17/31; documenta que `/blog/cuentas-remuneradas` y `/herramientas/calculadora-ahorro` están en fase de medición y no deben tocarse.
+
+**Deudas resueltas verificadas:** hreflang T-13, publisher G-12, sitemap/schema hub herramientas T-01, `lastModified` T-10, normalización de autoría (7→2 identidades), calculadora de ahorro V2 + SEO/GEO completa, integración post-publicación confirmada externamente en GSC/Rich Results.
+
+**Deuda documental señalada (no corregida en esta tarea):** `docs/PROJECT_STATUS.md` y este archivo estaban desincronizados desde 2026-07-07; existe un `SEO_MAP_V1.md` residual sin trackear en la raíz del repo, superseded por `docs/seo/SEO_MAP_V1.md`.
+
+**Siguiente tarea recomendada:** `SEO-SITENAME-UNIFY-01` — única deuda técnica P1 sin ejecutar y sin dependencias, ejecutable ya sin violar ninguna ventana de medición activa.
+
+**Nota:** no se ha modificado código ni contenido. Solo documentación.
 
 ---
 

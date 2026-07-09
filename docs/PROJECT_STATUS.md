@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-07 (docs: close SEO Technical Sprint V1 — SEO-TECHNICAL-V1-CLOSE-01)  
+**Última actualización:** 2026-07-09 (docs: resume SEO roadmap — SEO-ROADMAP-RESUME-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -8,6 +8,24 @@
 > El historial de la migración SaaS→gratuito (P0.2–P1.5 de infraestructura) está en `CONTEXT.md`.
 > Las decisiones arquitectónicas de infraestructura están en `ADRs.md`.
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
+>
+> **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ SEO-ROADMAP-RESUME-01 — Reconciliación del roadmap SEO/GEO con el estado actual
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Análisis, reconciliación y documentación — sin cambios en código, contenido, UI ni configuración SEO |
+| **Documento** | `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` |
+
+Reconcilia `PLAN_SEO_GEO_METODOKAKEBO.md`, `SEO_ROADMAP_V1.md` y `SEO_GEO_DEEP_AUDIT_01.md` con el estado real del repo tras el cierre del Sprint SEO Técnico V1 y el avance del Sprint Contenido V1 (`CONTENT-01`, calculadora de ahorro V2 + SEO/GEO, `POST-PUBLISH-INDEXATION-CHECK-01`). Confirma que todo el Bloque 1 técnico y la mayor parte del Bloque 2 (arquitectura/autoría) del roadmap están cerrados; identifica 3 tareas técnicas P1-P3 sin ejecutar y sin dependencias (`SEO-SITENAME-UNIFY-01`, `SEO-TECHNICAL-TUTORIAL-PRIORITY-01`, `SEO-BREADCRUMB-AUDIT-01`); confirma que el bloque de contenido nuevo permanece bloqueado hasta el snapshot GSC del 2026-07-17/31; y señala una duplicidad documental entre este archivo y `PROJECT_STATUS.md` (raíz) para limpieza futura.
+
+**Decisión de siguiente tarea:** `SEO-SITENAME-UNIFY-01` (no ejecutada en esta tarea — ver documento para justificación completa).
+
+**Nota:** no se ha modificado código ni contenido. Solo documentación.
 
 ---
 
