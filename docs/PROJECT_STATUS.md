@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (SEO: add explicit OG site name — SEO-OG-SITENAME-INHERITANCE-IMPL-01)  
+**Última actualización:** 2026-07-09 (Docs: audit tutorial SEO priority — SEO-TECHNICAL-TUTORIAL-PRIORITY-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -10,6 +10,24 @@
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
 > **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ SEO-TECHNICAL-TUTORIAL-PRIORITY-01 — Auditoría de /tutorial
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Solo auditoría y decisión documentada — sin cambios en código, contenido ni configuración SEO |
+| **Documento** | `docs/seo/SEO_TECHNICAL_TUTORIAL_PRIORITY_01.md` |
+
+Cierra el hallazgo T-12 pendiente desde `SEO-TECHNICAL-TUTORIAL-01` (2026-07-01): la prioridad de sitemap de `/tutorial` (0.8) nunca se ajustó tras clasificar su contenido como real/no-thin. Confirma que `/tutorial` cumple una función genuina de onboarding de producto (presente también en `TopNav.tsx`, navegación de la app autenticada), coherente con la clasificación ya vigente en `SEO_MAP_V1.md` (intención "Navegacional/onboarding", P3, "sin prioridad SEO").
+
+**Decisión recomendada:** Opción B — mantener indexada, sin priorizar. Bajar `priority` de sitemap de `0.8` a `0.5` en una tarea de implementación futura (`SEO-TECHNICAL-TUTORIAL-PRIORITY-IMPL-01`).
+
+**Hallazgo adicional (nuevo, no confirmado por datos):** posible solapamiento de intención entre el title/H1 de `/tutorial` ("Cómo usar el Método Kakebo") y el pilar designado `/blog/metodo-kakebo-guia-definitiva` para la keyword "método kakebo". No se propone acción inmediata — pendiente de confirmar con el snapshot GSC del 2026-07-17/31.
+
+**Sin cambios de código ni contenido.**
 
 ---
 

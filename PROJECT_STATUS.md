@@ -1,8 +1,24 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (SEO-OG-SITENAME-INHERITANCE-IMPL-01)  
-**Último commit aceptado:** f3527ad  
+**Última actualización:** 2026-07-09 (SEO-TECHNICAL-TUTORIAL-PRIORITY-01)  
+**Último commit aceptado:** 7d86627  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECHNICAL-TUTORIAL-PRIORITY-01 — Auditoría de /tutorial
+
+**Estado:** ✅ Completado (2026-07-09) — solo auditoría y documentación
+
+Documento creado: `docs/seo/SEO_TECHNICAL_TUTORIAL_PRIORITY_01.md`
+
+Audita `/tutorial` (SEO, GEO, arquitectura, producto) y cierra el hallazgo T-12 pendiente desde `SEO-TECHNICAL-TUTORIAL-01`. Confirma función de onboarding real (presente en `TopNav.tsx`, navegación de la app autenticada), contenido no-thin, sin canibalización confirmada por datos.
+
+**Decisión recomendada:** Opción B — mantener indexada, sin priorizar. Bajar `priority` de sitemap de `0.8` a `0.5` en tarea futura (`SEO-TECHNICAL-TUTORIAL-PRIORITY-IMPL-01`).
+
+**Hallazgo nuevo, no confirmado:** posible solapamiento de intención entre `/tutorial` (title: "Cómo usar el Método Kakebo") y el pilar `/blog/metodo-kakebo-guia-definitiva` — pendiente de validar con snapshot GSC 2026-07-17/31, sin acción inmediata.
+
+**Sin cambios de código ni contenido.**
 
 ---
 
