@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       type: "website",
       locale: locale === "es" ? "es_ES" : "en_US",
       url: "/",
-      siteName: "Kakebo AI",
+      siteName: "MetodoKakebo.com",
       images: [
         {
           url: "/og-image.jpg",

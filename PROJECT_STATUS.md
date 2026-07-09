@@ -1,8 +1,30 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (SEO-ROADMAP-RESUME-01)  
-**Último commit aceptado:** 552ef18  
+**Última actualización:** 2026-07-09 (SEO-SITENAME-UNIFY-01)  
+**Último commit aceptado:** 2f7af28  
 **Rama operativa:** `main`
+
+---
+
+## SEO-SITENAME-UNIFY-01 — Unificación de siteName / entidad editorial
+
+**Estado:** ✅ Completado (2026-07-09)
+
+Documento creado: `docs/seo/SEO_SITENAME_UNIFY_01.md`
+
+Fija `MetodoKakebo.com` como nombre canónico de la entidad editorial del sitio, distinto del producto/app (`Kakebo AI`) y del concepto del método japonés (`método Kakebo`), ambos sin tocar. Cambio atómico: 2 archivos, 1 línea cada uno.
+
+**Corregido:**
+- `src/app/[locale]/layout.tsx` — `openGraph.siteName`: `"Kakebo AI"` → `"MetodoKakebo.com"`
+- `src/app/[locale]/(public)/sobre-nosotros/page.tsx` — `Organization.name` (JSON-LD): `"Kakebo AI"` → `"MetodoKakebo.com"`
+
+**Sin tocar (ya correcto):** `creator`/`publisher` globales, `calculadora-inflacion` (siteName), Organization/publisher/author en Home, blog index, hub herramientas, `calculadora-ahorro`, `blog/[slug]`; todos los `@id` de Organization; canonical/hreflang/sitemap/robots; `plantilla-kakebo-excel`.
+
+**Hallazgos adyacentes documentados, no corregidos:** `Person.name: "Aitor Almu"` en schema de `/sobre-nosotros` (debería ser "Aitor Alarcón"); ausencia de `og:site_name` en Home y `calculadora-ahorro` por comportamiento de no-merge de `openGraph` en Next.js.
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores, 76 warnings preexistentes), `npx tsc --noEmit` ✅ (0 errores), render local confirma JSON-LD/OG correctos.
+
+**Sin cambios de contenido ni funcionalidad.**
 
 ---
 

@@ -35,7 +35,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             {
                 "@type": "Organization",
                 "@id": "https://www.metodokakebo.com/#organization",
-                "name": "Kakebo AI",
+                "name": "MetodoKakebo.com",
                 "url": "https://www.metodokakebo.com",
                 "logo": "https://www.metodokakebo.com/icon.png",
                 "contactPoint": {

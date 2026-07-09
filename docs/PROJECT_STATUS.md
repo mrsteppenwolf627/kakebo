@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (docs: resume SEO roadmap — SEO-ROADMAP-RESUME-01)  
+**Última actualización:** 2026-07-09 (SEO: unify site name metadata — SEO-SITENAME-UNIFY-01)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -10,6 +10,28 @@
 > La estrategia de contenido e internacionalización está en la sección **Estrategia de Contenido e Internacionalización** de este mismo documento.
 >
 > **Nota de sincronización (2026-07-09):** las tareas del Sprint Contenido V1 (`CONTENT-01`, `TOOL-CALCULADORA-AHORRO-*`, `POST-PUBLISH-INDEXATION-CHECK-01`) se documentan en `PROJECT_STATUS.md` (raíz del repo), no en este archivo. Ver `docs/seo/SEO_ROADMAP_RESUME_2026_07_09.md` para la reconciliación completa y la nota sobre esta duplicidad documental.
+
+---
+
+## ✅ SEO-SITENAME-UNIFY-01 — Unificación de siteName / entidad editorial
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-09 |
+| **Tipo** | Corrección técnica de metadata/schema — cambio atómico |
+| **Documento** | `docs/seo/SEO_SITENAME_UNIFY_01.md` |
+
+Cierra el hallazgo RB-03 de `SEO_GEO_DEEP_AUDIT_01.md` y la tarea recomendada por `SEO-ROADMAP-RESUME-01`. Fija `MetodoKakebo.com` como nombre canónico de la entidad editorial en todo el sitio, distinto del producto/app (`Kakebo AI`, sin tocar) y del concepto del método japonés (`método Kakebo`, sin tocar).
+
+**Corregido (2 archivos, 1 línea cada uno):**
+- `src/app/[locale]/layout.tsx` — `openGraph.siteName`: `"Kakebo AI"` → `"MetodoKakebo.com"`
+- `src/app/[locale]/(public)/sobre-nosotros/page.tsx` — `Organization.name` (JSON-LD): `"Kakebo AI"` → `"MetodoKakebo.com"` (contradecía el mismo `@id` de Organization usado en el resto del sitio)
+
+**Verificado ya correcto y sin tocar:** `creator`/`publisher` de `layout.tsx`, `calculadora-inflacion` (siteName ya correcto), Organization/publisher/author de Home, blog index, hub herramientas, `calculadora-ahorro`, `blog/[slug]` (BlogPosting), todos los `@id` de Organization, canonical/hreflang/sitemap/robots, `plantilla-kakebo-excel`.
+
+**Hallazgos adyacentes documentados, no corregidos (fuera de alcance):** `Person.name: "Aitor Almu"` en schema de `/sobre-nosotros` (debería ser "Aitor Alarcón" según `SEO-AUTHOR-NORMALIZATION-01` — candidato a tarea de autoría futura); ausencia de `og:site_name` en Home y `calculadora-ahorro` por comportamiento de no-merge de `openGraph` en Next.js Metadata API (candidato a `SEO-OG-SITENAME-INHERITANCE-01`).
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores), `npx tsc --noEmit` ✅ (0 errores), render local confirma JSON-LD y OG correctos. Sin cambios en contenido, UI, funcionalidad, canonical, hreflang, sitemap ni robots.
 
 ---
 
