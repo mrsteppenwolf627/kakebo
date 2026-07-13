@@ -40,6 +40,38 @@ export function SimpleCTA({ href, cta }: { href: string; cta: string }) {
     );
 }
 
+export function ChoiceCTA({ title, description, primaryHref, primaryCta, primaryLocation, secondaryHref, secondaryCta }: {
+    title: string;
+    description: string;
+    primaryHref: string;
+    primaryCta: string;
+    primaryLocation: string;
+    secondaryHref: string;
+    secondaryCta: string;
+}) {
+    return (
+        <div className="not-prose my-8 rounded-xl border border-primary/20 bg-primary/5 p-5 sm:p-6">
+            <p className="mb-1.5 font-serif font-semibold text-foreground">{title}</p>
+            <p className="mb-5 text-sm leading-relaxed text-muted-foreground">{description}</p>
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <Link
+                    href={primaryHref as any}
+                    onClick={() => analytics.track("click_cta_login", { source_page: window.location.pathname, cta_label: primaryCta, cta_location: primaryLocation })}
+                    className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background sm:w-auto sm:rounded-full sm:px-6"
+                >
+                    {primaryCta}
+                </Link>
+                <a
+                    href={secondaryHref}
+                    className="inline-flex w-full items-center justify-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background sm:w-auto sm:rounded-full sm:px-6"
+                >
+                    {secondaryCta}
+                </a>
+            </div>
+        </div>
+    );
+}
+
 export function DownloadCTA({ href, cta }: { href: string; cta: string }) {
     return (
         <div className="not-prose my-8 flex justify-center">

@@ -70,6 +70,17 @@
 
 ---
 
+### CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13) — experimento CRO, no SEO
+
+| Campo | Detalle |
+|---|---|
+| **URL afectada** | `/blog/plantilla-kakebo-excel` (URL protegida) |
+| **Tipo de señal** | Ninguna señal SEO — no se modificó title, meta description, canonical, hreflang, H1, schema ni estructura general. Se añadió un bloque de CTA (`ChoiceCTA`) tras la introducción, con enlace interno adicional hacia `/`. |
+| **Hipótesis** | Experimento CRO: un CTA visible hacia Kakebo Online debería aumentar `click_cta_login` sin afectar la intención de búsqueda ni la descarga de la plantilla Excel. Ver `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. |
+| **Ventana mínima** | No evaluar impacto SEO inmediatamente (registrar como referencia si aparece variación de CTR/posición en próximos snapshots, dado el enlace interno adicional a `/`) |
+
+---
+
 ### commit `48b9983` — SEO-KAKEBO-ONLINE-GUIA-SNIPPET-01
 
 | Campo | Detalle |

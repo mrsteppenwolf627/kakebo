@@ -1,8 +1,37 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-09 (CONTENT-03-IMAGE-IMPL-01)  
-**Último commit aceptado:** 7d97645  
+**Última actualización:** 2026-07-13 (CRO-ACTIVATION-EXCEL-CTA-01)  
+**Último commit aceptado:** ac440fe  
 **Rama operativa:** `main`
+
+---
+
+## CRO-ACTIVATION-EXCEL-CTA-01 — Bloque de activación hacia Kakebo Online en `/blog/plantilla-kakebo-excel`
+
+**Fecha:** 2026-07-13
+**Estado:** ✅ Completado
+**Sprint:** CRO / Activación
+**Tipo:** Experimento CRO mínimo y reversible sobre URL protegida — sin cambio de metadata ni de intención SEO
+**Documento:** `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`
+
+**Hipótesis:** un CTA visible hacia Kakebo Online inmediatamente después de la introducción del artículo aumentará `click_cta_login` sin perjudicar la intención de búsqueda ni la descarga de la plantilla Excel.
+
+**Baseline GA4 (2026-06-15 a 2026-07-12):** 82 usuarios activos en la página · 2 usuarios con `click_cta_login` · conversión ≈ 2,44 % · 91 sesiones como landing page.
+
+**Cambio implementado:** nuevo bloque `ChoiceCTA` insertado justo después de la introducción y antes del bloque de descarga existente, con CTA principal ("Usar Kakebo online gratis" → `/`, dispara `click_cta_login` con `cta_location: plantilla_excel_intro`) y CTA secundario ("Prefiero la plantilla Excel" → ancla `#descarga-plantilla-excel` que apunta al `DownloadCTA` ya existente, sin duplicar la descarga).
+
+**Archivos modificados:**
+- `src/components/mdx/MDXClientCTAs.tsx` (nuevo componente `ChoiceCTA`)
+- `src/components/mdx/MDXComponents.tsx` (registro del componente)
+- `src/content/blog/plantilla-kakebo-excel.es.mdx` (bloque + ancla local, solo versión ES)
+
+**Restricciones respetadas:** sin cambios en slug, title, meta description, canonical, hreflang, H1, hero, imagen destacada, schema, FAQ, tabla comparativa, CTA de descarga existente ni CTA final del artículo · sin reordenar el artículo · sin tocar otras URLs.
+
+**Validación:** `npm run build` ✅ (0 errores), `npm run lint` ✅ (0 errores, 76 warnings preexistentes no relacionados), `npx tsc --noEmit` ✅ (0 errores); render local HTTP 200 con un único H1, `canonical` y `title` sin cambios, bloque visible en desktop y verificado responsive (mismas clases Tailwind que `ToolCTA`, ya en producción); CTA secundario verificado en navegador (hace scroll a `#descarga-plantilla-excel`); CTA principal usa el mismo helper `analytics.track("click_cta_login", …)` que `SimpleCTA`/`ToolCTA`.
+
+**Ventana de medición:** 28 días desde el despliegue (ver commit de despliegue).
+
+**Sin cambios en SEO, sitemap, robots, canonical, hreflang, schema global ni en otros artículos.**
 
 ---
 
