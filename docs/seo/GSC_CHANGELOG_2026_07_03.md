@@ -75,9 +75,20 @@
 | Campo | Detalle |
 |---|---|
 | **URL afectada** | `/blog/plantilla-kakebo-excel` (URL protegida) |
-| **Tipo de señal** | Ninguna señal SEO — no se modificó title, meta description, canonical, hreflang, H1, schema ni estructura general. Se añadió un bloque de CTA (`ChoiceCTA`) tras la introducción, con enlace interno adicional hacia `/`. |
+| **Tipo de señal** | Ninguna señal SEO — no se modificó title, meta description, canonical, hreflang, H1, schema ni estructura general. Se añadió un bloque de CTA (`ChoiceCTA`) tras la introducción, con enlace interno adicional hacia `/app` (corregido desde `/`, ver `CRO-ACTIVATION-EXCEL-CTA-FIX-01` abajo). |
 | **Hipótesis** | Experimento CRO: un CTA visible hacia Kakebo Online debería aumentar `click_cta_login` sin afectar la intención de búsqueda ni la descarga de la plantilla Excel. Ver `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. |
-| **Ventana mínima** | No evaluar impacto SEO inmediatamente (registrar como referencia si aparece variación de CTR/posición en próximos snapshots, dado el enlace interno adicional a `/`) |
+| **Ventana mínima** | No evaluar impacto SEO inmediatamente (registrar como referencia si aparece variación de CTR/posición en próximos snapshots, dado el enlace interno adicional) |
+
+---
+
+### CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13) — corrección de destino, no SEO
+
+| Campo | Detalle |
+|---|---|
+| **URL afectada** | `/blog/plantilla-kakebo-excel` (URL protegida) |
+| **Tipo de señal** | Ninguna señal SEO — solo se corrigió el destino del enlace interno del CTA principal, de `/` a `/app`. Sin cambios de title, meta, canonical, H1, schema ni estructura. |
+| **Hipótesis** | Corrección de embudo: `/app` evita una pantalla intermedia y mide el paso directo artículo → aplicación/login. No introduce cambio de intención SEO. |
+| **Ventana mínima** | No evaluar impacto SEO |
 
 ---
 

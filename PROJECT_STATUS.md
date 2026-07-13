@@ -1,8 +1,28 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-13 (CRO-ACTIVATION-EXCEL-CTA-01)  
-**Último commit aceptado:** ac440fe  
+**Última actualización:** 2026-07-13 (CRO-ACTIVATION-EXCEL-CTA-FIX-01)  
+**Último commit aceptado:** 5955a1d  
 **Rama operativa:** `main`
+
+---
+
+## CRO-ACTIVATION-EXCEL-CTA-FIX-01 — Corrección de destino del CTA principal a `/app`
+
+**Fecha:** 2026-07-13
+**Estado:** ✅ Completado
+**Sprint:** CRO / Activación
+**Tipo:** Corrección mínima de destino sobre experimento existente (`CRO-ACTIVATION-EXCEL-CTA-01`)
+**Documento:** `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis)
+
+El CTA principal del bloque `ChoiceCTA` en `/blog/plantilla-kakebo-excel` apuntaba a `/` (home), añadiendo una pantalla intermedia en el embudo de activación. Se corrigió a `/app`, verificado como ruta canónica: sin sesión redirige a `/login`, con sesión accede directamente a la app.
+
+**Archivo modificado:** `src/content/blog/plantilla-kakebo-excel.es.mdx` (1 línea: `primaryHref="/"` → `primaryHref="/app"`).
+
+**Sin cambios:** texto del CTA, diseño, componente `ChoiceCTA`, CTA secundario, evento `click_cta_login` ni sus parámetros (`cta_location: plantilla_excel_intro`, `source_page`), tracking de `download_template`, resto del artículo, title, meta, H1, canonical, schema.
+
+**Hallazgo independiente no corregido:** en `/login` el texto "Control de gastos" muestra literalmente `<br />` sin interpretar. Documentado, fuera de alcance de esta tarea.
+
+**Validación:** `npm run build` ✅, `npm run lint` ✅ (0 errores, 76 warnings preexistentes), `npx tsc --noEmit` ✅ (0 errores); verificado en navegador que el clic sin sesión lleva a `/app` → `/login`; CTA secundario sigue apuntando a `#descarga-plantilla-excel`.
 
 ---
 

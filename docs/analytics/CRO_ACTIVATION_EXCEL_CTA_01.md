@@ -14,6 +14,18 @@
 | Conversión aproximada hacia login | 2,44 % |
 | Sesiones como landing page | 91 |
 
+## 3bis. Corrección de destino (CRO-ACTIVATION-EXCEL-CTA-FIX-01, 2026-07-13)
+
+El CTA principal se implementó inicialmente apuntando a `/` (home). La validación manual posterior detectó que esto añadía una pantalla intermedia entre el artículo y el login/app, dificultando el embudo de activación directo.
+
+Se corrigió el destino del CTA principal de `/` a `/app`, verificado como ruta canónica de la aplicación: sin sesión, `/app` redirige automáticamente a `/login`; con sesión, accede directamente a la app.
+
+El tracking del experimento **no cambió**: sigue disparando `click_cta_login` con `cta_location: plantilla_excel_intro` y `source_page` dinámico. El CTA secundario (`#descarga-plantilla-excel`) tampoco cambió.
+
+Commit de la corrección: `CRO: fix Excel article CTA destination`.
+
+**Hallazgo independiente (no corregido en esta tarea):** en la pantalla de `/login` aparece un error visual — el texto "Control de gastos" muestra literalmente `<br />` sin interpretar como salto de línea, en vez de renderizarlo. Queda documentado para una tarea futura de corrección de UI; fuera de alcance de este experimento CRO.
+
 ## 3. Cambio exacto implementado
 
 Se añade un bloque `ChoiceCTA` inmediatamente después del párrafo de introducción y antes de la sección "¿Qué incluye la plantilla Kakebo Excel gratuita?" (que contiene el CTA de descarga existente).
@@ -22,7 +34,7 @@ El bloque presenta dos opciones:
 
 - **Título:** "Elige cómo llevar tu Kakebo"
 - **Texto:** "Puedes empezar ahora con Kakebo Online, sin instalar nada ni preparar hojas de cálculo, o descargar la plantilla Excel gratis si prefieres llevar el control manualmente."
-- **CTA principal** (botón primario, estilo `bg-primary`): "Usar Kakebo online gratis" → `/` (ruta canónica de registro/acceso ya usada por el resto del blog, p. ej. `SimpleCTA href="/"` en `ahorro-pareja.es.mdx`, `kakebo-online-gratis.es.mdx`, etc.)
+- **CTA principal** (botón primario, estilo `bg-primary`): "Usar Kakebo online gratis" → `/app` (corregido desde `/` — ver nota **3bis**)
 - **CTA secundario** (botón outline, visible pero no dominante): "Prefiero la plantilla Excel" → ancla local `#descarga-plantilla-excel`, que hace scroll al bloque `DownloadCTA` ya existente en la misma página (no se duplica la descarga ni se crea un flujo nuevo).
 
 No se ha reordenado el artículo, no se ha movido la plantilla, no se ha sustituido el CTA de descarga y no se ha modificado el CTA final del artículo (`SimpleCTA`).
