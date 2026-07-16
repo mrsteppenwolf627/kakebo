@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-09 (CONTENT-03-IMAGE-IMPL-01 — imagen destacada del artículo regla 50/30/20 ejemplo)  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-VALIDATION-01 — auditoría on-page de la calculadora de inflación, ver `PROJECT_STATUS.md` raíz y `docs/seo/VALIDACION_SEO_ONPAGE_CALCULADORA_INFLACION_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 

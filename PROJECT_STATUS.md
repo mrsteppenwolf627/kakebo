@@ -1,8 +1,24 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-13 (CRO-ACTIVATION-EXCEL-CTA-FIX-01)  
-**Último commit aceptado:** 5955a1d  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-VALIDATION-01)  
+**Último commit aceptado:** 569853e  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-VALIDATION-01 — Validación técnica y semántica de la calculadora de inflación
+
+**Fecha:** 2026-07-16
+**Estado:** ✅ Completado (solo auditoría — sin implementación)
+**Sprint:** SEO / Auditoría On-Page
+**Tipo:** Validación de código, HTML renderizado y producción. Sin cambios de código, contenido, metadata ni funcionalidad.
+**Documento:** `docs/seo/VALIDACION_SEO_ONPAGE_CALCULADORA_INFLACION_01.md`
+
+Auditoría del informe SE Ranking (70/100) sobre `https://www.metodokakebo.com/herramientas/calculadora-inflacion`, cara a la keyword "calculadora de inflación España". De los 10 hallazgos reportados: **6 CONFIRMADOS** (frase exacta ausente; salto de heading H1→H3 causado por el H3 del CTA interno; encabezados "Producto"/"Cuenta"/"Legal" duplicados por doble renderizado de `<Footer />` — en `page.tsx` y en `[locale]/layout.tsx`; 3 de 4 textos concatenados por spans/Links hermanos sin separador textual; cero enlaces externos a fuentes oficiales pese a citar al INE; la herramienta es de proyección futura con tasa manual, sin cálculo histórico entre fechas), **1 DESCARTADO** (meta description sí existe y se renderiza correctamente en producción, verificado con `curl` contra la URL real), **1 PARCIAL** (referencias temporales 2024-2025 presentes mas su vigencia no verificada) y **2 REQUIEREN DATOS ADICIONALES** (comparación con SERP y backlinks, fuera de alcance de esta tarea por restricción explícita).
+
+**Sin cambios de código, contenido, metadata, diseño ni funcionalidad. No se ha creado ninguna URL nueva ni cambiado el slug.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-HEADINGS-01` (corregir salto H1→H3 y duplicación de `<Footer />`).
 
 ---
 
