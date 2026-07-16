@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-CONTENT-01 — fuentes oficiales del INE/BOE, eliminación del "límite del 3% en 2024-2025" y de la cifra sin fuente sobre inflación desde 2000, metodología y limitaciones documentadas en la calculadora de inflación; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_CONTENT_01.md`)  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-CONCATENATED-TEXT-01 — corrección de los 3 textos concatenados confirmados con separadores `sr-only`, "Aceptar0k" confirmado no reproducible; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_CONCATENATED_TEXT_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 

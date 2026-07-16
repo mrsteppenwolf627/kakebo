@@ -1,8 +1,26 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-CONTENT-01)  
-**Último commit aceptado:** 72636cd  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-CONCATENATED-TEXT-01)  
+**Último commit aceptado:** 56b8632  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-CONCATENATED-TEXT-01 — Corregir textos concatenados
+
+**Fecha:** 2026-07-16
+**Estado:** ✅ Completado
+**Sprint:** SEO / Corrección On-Page (semántica y accesibilidad)
+**Tipo:** Corrección estructural mínima, sin cambios de copy, diseño, funcionalidad, metadata ni schema. Continúa sobre `SEO-ONPAGE-CALCULADORA-INFLACION-CONTENT-01` (commit base `56b86325ec8185f0fe8a300e7081e57147025e07`).
+**Documento:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_CONCATENATED_TEXT_01.md`
+
+Corrige los 3 fragmentos de texto concatenado confirmados en la auditoría original ("Pérdida de Valor Real-2559€Tu dinero vale...", "Poder de Compra Futuro7441€Equivalente...", "Crear cuenta gratisVer regla 50/30/20"), reproducidos y verificados en `document.body.textContent` con un navegador real. Causa raíz: `<span>`/`<Link>` hermanos sin separador textual entre ellos, con espaciado solo visual (CSS). **Solución:** 5 `<span className="sr-only">` (utilidad estándar de Tailwind, visualmente oculta y fuera del flujo de layout) insertados entre los elementos afectados en `CalculatorInflation.tsx`, sin tocar ninguna traducción.
+
+**"Aceptar0k" (hallazgo parcial):** confirmado **NO REPRODUCIBLE** — verificado con navegador real que "Aceptar" (CookieBanner) y "0k" (tick del gráfico Recharts) están a más de 5.000 caracteres de distancia en el DOM/`textContent`, sin ninguna adyacencia real. No se ha aplicado ningún cambio especulativo sobre `CookieBanner` ni el gráfico.
+
+**Verificado sin cambios:** fórmula, inputs/outputs, gráfico, CTA y sus destinos, tracking, metadata, schema, canonical, headings y Footer único.
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-BACKLINKS-01`.
 
 ---
 

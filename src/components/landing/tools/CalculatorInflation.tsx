@@ -192,9 +192,11 @@ export function CalculatorInflation() {
                                 <span className="text-xs text-red-600 dark:text-red-400 font-bold uppercase tracking-widest">
                                     {t('results.lossLabel')}
                                 </span>
+                                <span className="sr-only">: </span>
                                 <span className="text-5xl font-serif text-red-600 dark:text-red-300">
                                     -{formatMoney(totalLost)}
                                 </span>
+                                <span className="sr-only">. </span>
                                 <span className="text-red-400 font-light text-lg">
                                     {t.rich('results.lossText', {
                                         percentage: lostPercentage,
@@ -208,9 +210,11 @@ export function CalculatorInflation() {
                                 <span className="text-xs text-muted-foreground font-bold uppercase tracking-widest">
                                     {t('results.realLabel')}
                                 </span>
+                                <span className="sr-only">: </span>
                                 <span className="text-5xl font-serif text-foreground">
                                     {formatMoney(finalRealValue)}
                                 </span>
+                                <span className="sr-only">. </span>
                                 <span className="text-muted-foreground font-light text-lg">
                                     {t('results.realText')}
                                 </span>
@@ -290,6 +294,7 @@ export function CalculatorInflation() {
                                 >
                                     {t('cta.buttonPrimary')}
                                 </Link>
+                                <span className="sr-only"> </span>
                                 <Link
                                     href="/herramientas/regla-50-30-20"
                                     onClick={() => analytics.track("tool_interaction", { tool_name: "calculadora_inflacion", action: "cross_sell" })}
