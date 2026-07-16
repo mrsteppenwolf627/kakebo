@@ -1,8 +1,28 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ARCHITECTURE-01)  
-**Último commit aceptado:** f88feff  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-SPIKE-01)  
+**Último commit aceptado:** 0c1ccab  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-SPIKE-01 — Validación de la serie histórica larga del IPC (investigación)
+
+**Fecha:** 2026-07-16
+**Estado:** ✅ Investigación completada — **implementación NO iniciada, ADR sigue en estado Propuesto**
+**Sprint:** SEO / Arquitectura (spike técnico)
+**Tipo:** Investigación pura. **Cero cambios en `src/`, cero dataset definitivo guardado, ADR no aceptado.**
+**Documentos:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_SPIKE_01.md`, actualiza `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ARCHITECTURE_01.md` y `docs/adr/ADR-CALCULADORA-INFLACION-DATOS-HISTORICOS-01.md`
+
+Resuelve la incógnita técnica pendiente de la tarea anterior: **16 peticiones reales** contra la API JSON del INE (Tempus3), el navegador JAXI y la herramienta oficial `varipc` confirman que **el rango 2002–presente es el único accesible de forma estructurada (JSON, sin autenticación)** vía la serie `IPC290751` — verificado con coincidencia exacta (67,9%) frente al resultado oficial del INE para Ene 2002→Ene 2025. La serie larga 1961–presente **existe y el INE la usa en su propia calculadora oficial** (verificado: `varipc` calcula correctamente 1995→2025 y el rango máximo 1961→2026), pero **ningún canal JSON/CSV/PXWeb estructurado la expone** para el tramo 1961–2001, pese a que el metadato de la tabla `24077` declara `Anyo_Periodo_ini:"1961"`.
+
+**Recomendación del spike:** fijar el rango de la primera versión en **enero de 2002 – presente**; el rango 1961–2002 queda como ampliación futura no resuelta. **El ADR permanece en estado Propuesto** — no se recomienda aceptarlo todavía, pendiente de aprobación explícita del usuario sobre el rango y el resto de decisiones ya listadas.
+
+**Sin cambios en `src/`, sin dataset definitivo, sin scripts permanentes, sin implementación de cálculo histórico.**
+
+**STOP aplicado — ninguna tarea de implementación debe iniciarse sin aprobación explícita del usuario.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-DATASET-01` (solo si se aprueba el rango 2002–presente y se acepta el ADR).
 
 ---
 

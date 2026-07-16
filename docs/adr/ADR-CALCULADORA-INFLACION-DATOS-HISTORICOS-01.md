@@ -1,9 +1,17 @@
 # ADR — Arquitectura de datos para el cálculo histórico de inflación
 
 **Estado:** Propuesto — **no aceptado**. Requiere aprobación explícita del usuario antes de iniciar cualquier implementación.
-**Fecha:** 2026-07-16
+**Fecha:** 2026-07-16 (actualizado con evidencia del spike el mismo día)
 **Tarea de origen:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ARCHITECTURE-01`
-**Documento de soporte:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ARCHITECTURE_01.md`
+**Tarea de spike:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-SPIKE-01`
+**Documentos de soporte:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ARCHITECTURE_01.md`, `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_SPIKE_01.md`
+
+## Evidencia nueva aportada por el spike (`HISTORICAL-SPIKE-01`)
+
+- **Confirmado:** el rango 2002–presente (serie `IPC290751`, endpoint `GET /wstempus/js/ES/DATOS_SERIE/IPC290751`) es accesible de forma estructurada, JSON, sin autenticación, y coincide exactamente (67,9%, al margen de redondeo) con el resultado de la herramienta oficial `varipc` del INE para el caso Ene 2002 → Ene 2025.
+- **Confirmado:** el INE dispone internamente de una serie enlazada 1961–presente (verificado: la herramienta oficial `varipc` calcula correctamente 1995→2025 y el rango máximo 1961→2026), pero **no se ha encontrado ningún canal JSON/CSV/PXWeb estructurado** que exponga los valores brutos de esa serie para el periodo 1961–2001. Todos los intentos sobre la tabla `24077` (que declara en su metadato `Anyo_Periodo_ini:"1961"`) devolvieron únicamente la serie corta 2002–presente.
+- **Confirmado:** el propio INE documenta textualmente por qué la serie moderna empieza en 2002 (*"los datos de los nuevos Grupos de la ECOICOP ver. 2 están disponibles desde 2002"*).
+- **Confirmado:** existe ya una "Base 2025" vigente (posterior a la "Base 2021" asumida en la arquitectura original), evidenciando que el INE puede rebasear de nuevo en el futuro.
 
 ## Contexto
 
@@ -67,9 +75,29 @@ Comparadas en 13 criterios (fiabilidad, rendimiento, dependencia externa, comple
 - Antes de fusionar cualquier actualización del dataset a `main`, deben pasar los tests automatizados: ausencia de huecos/duplicados, comparación con al menos 5 casos oficiales del INE (`https://www.ine.es/varipc/`) dentro del margen de redondeo documentado por el propio INE, y regresión del modo de proyección existente (mismos resultados que hoy para los mismos inputs).
 - Cualquier cambio en el dataset se revisa como un PR normal, con el diff del propio JSON visible para auditoría humana antes de aprobar.
 
-## Condiciones para aprobar la implementación
+## Rango recomendado (actualizado tras el spike)
 
-1. Resolver, mediante un spike de investigación corto y sin código de producción, si la serie larga del IPC (1961–presente) es accesible de forma machine-readable a través de la API JSON del INE, o si el rango inicial se limita a 2002–presente de forma deliberada y documentada.
-2. Aprobación explícita del usuario sobre las decisiones pendientes listadas en el documento de soporte (rango histórico inicial, cadencia de actualización y responsable, tratamiento de eventos de analytics, persistencia del modo en la URL, decimales de presentación).
-3. Aprobación explícita de este ADR (cambio de estado de "Propuesto" a "Aceptado") por parte del usuario.
-4. Ninguna tarea de implementación (`HISTORICAL-DATASET-01`, `HISTORICAL-LOGIC-01`, `HISTORICAL-UI-01`, `HISTORICAL-QA-01`, `HISTORICAL-LAUNCH-01`) debe iniciarse antes de que se cumplan los 3 puntos anteriores.
+**Enero de 2002 – presente**, usando la serie `IPC290751` vía `GET https://servicios.ine.es/wstempus/js/ES/DATOS_SERIE/IPC290751`. El rango 1961–2002 queda excluido de la primera versión por ausencia de un canal estructurado confirmado, no por falta de relevancia — ver `HISTORICAL_SPIKE_01.md` sección 16 para la justificación completa basada en evidencia.
+
+## Fuente estructurada recomendada
+
+`GET https://servicios.ine.es/wstempus/js/ES/DATOS_SERIE/IPC290751?nult=<N>&det=0` — API JSON pública del INE (Tempus3), sin autenticación, licencia CC BY-SA 4.0, verificada en directo en dos tareas independientes (`HISTORICAL-ARCHITECTURE-01` y `HISTORICAL-SPIKE-01`).
+
+## Incertidumbres resueltas
+
+- El rango real de datos accesibles vía JSON estructurado (2002–presente, no 1961–presente pese a la declaración de metadatos de la tabla `24077`).
+- La explicación oficial de por qué 2002 es el punto de partida de la serie moderna.
+- La coincidencia exacta de la fórmula propuesta con el resultado oficial del INE, verificada con datos reales.
+
+## Incertidumbres pendientes
+
+- Canal machine-readable oficial para los valores brutos del IPC entre 1961 y 2001 (no encontrado; posible ampliación futura, requiere nuevo spike o contacto directo con el INE).
+- Todas las decisiones pendientes ya listadas en el documento de arquitectura (cadencia de actualización y responsable, tratamiento de eventos de analytics, persistencia del modo en la URL, decimales de presentación) — ninguna resuelta por el spike, siguen abiertas.
+
+## Condiciones actualizadas para aprobar la implementación
+
+1. ~~Resolver si la serie larga (1961–presente) es accesible de forma machine-readable~~ — **resuelto por el spike**: no lo es dentro de las fuentes investigadas; el rango inicial queda fijado en 2002–presente de forma deliberada y documentada.
+2. Aprobación explícita del usuario sobre el rango 2002–presente como definitivo para la primera versión (o, alternativamente, decisión de invertir en un nuevo spike para 1961–2002 antes de implementar).
+3. Aprobación explícita del usuario sobre el resto de decisiones pendientes listadas en el documento de soporte y en `HISTORICAL_SPIKE_01.md` (cadencia de actualización y responsable, tratamiento de eventos de analytics, persistencia del modo en la URL, decimales de presentación).
+4. Aprobación explícita de este ADR (cambio de estado de "Propuesto" a "Aceptado") por parte del usuario — **no otorgada en esta tarea ni en el spike**.
+5. Ninguna tarea de implementación (`HISTORICAL-DATASET-01`, `HISTORICAL-LOGIC-01`, `HISTORICAL-UI-01`, `HISTORICAL-QA-01`, `HISTORICAL-LAUNCH-01`) debe iniciarse antes de que se cumplan los puntos 2-4 anteriores.

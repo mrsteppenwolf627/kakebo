@@ -567,6 +567,23 @@ Listados íntegramente en la Fase 5.1 y 5.2.
 6. **Aprobación del ADR** (`docs/adr/ADR-CALCULADORA-INFLACION-DATOS-HISTORICOS-01.md`) — permanece en estado "Propuesto" hasta que el usuario lo apruebe explícitamente.
 7. **Autorización para iniciar la implementación** — ninguna de las tareas atómicas listadas debe comenzar sin aprobación explícita, conforme al "STOP OBLIGATORIO" de esta tarea.
 
+## Resultado del spike sobre la serie histórica larga
+
+**Tarea de origen del spike:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-SPIKE-01`. **Documento completo:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_SPIKE_01.md` (contiene todos los endpoints, comandos reproducibles y respuestas observadas). Resumen aplicado a esta arquitectura:
+
+1. **Fuente encontrada:** tabla oficial "Índice general nacional. Series desde enero de 1961" (`https://www.ine.es/jaxiT3/Tabla.htm?t=24077`, JAXI/PC-Axis), con 786 periodos declarados desde 1961M01, "Base 2025".
+2. **Endpoint:** ningún canal JSON/CSV/PXWeb estructurado confirmado para los datos brutos pre-2002 de esa tabla. El único endpoint JSON verificado (`servicios.ine.es/wstempus/js/ES/DATOS_SERIE/IPC290751` y `DATOS_TABLA/24077`) devuelve siempre la misma serie corta, 2002–presente, pese a que el propio catálogo de la API (`TABLAS_OPERACION/25`) declara para esa tabla `Anyo_Periodo_ini:"1961"`.
+3. **Rango confirmado con datos brutos accesibles:** enero 2002 – junio 2026 (294 puntos, `IPC290751`). Rango 1961–2002: confirmado que el INE lo calcula internamente (verificado vía su herramienta oficial `varipc`, que sí devuelve resultados para 1995→2025 y para el rango máximo 1961→2026), pero sin canal machine-readable propio confirmado en el spike.
+4. **Granularidad:** mensual, en todas las fuentes.
+5. **Método de descarga:** para el rango 2002–presente, `GET /wstempus/js/ES/DATOS_SERIE/IPC290751`, sin autenticación. Para 1961–2002, no resuelto.
+6. **Metodología:** el propio INE documenta textualmente en `varipc` que *"los datos de los nuevos Grupos de la ECOICOP ver. 2 están disponibles desde 2002"*, explicando y confirmando el límite encontrado empíricamente.
+7. **Comparación con IPC290751:** no fue posible obtener una serie larga distinta y comparable — todos los canales estructurados probados para la tabla `24077` devolvieron exactamente los mismos 294 puntos que `IPC290751`.
+8. **Comparación con la calculadora oficial:** coincidencia exacta (al margen de redondeo a 1 decimal) entre el cálculo propio con `IPC290751` y el resultado oficial de `varipc` para el caso Ene 2002 → Ene 2025 (67,9% ambos). Para los casos que cruzan 2002 (1995→2025: 104,1%; 1961→2026: 4.717,0%) solo se pudo verificar el resultado oficial, no reproducirlo de forma independiente.
+9. **Limitaciones:** el único mecanismo que sí calcula correctamente 1961–presente (`varipc`) es una página HTML parametrizada, no JSON, y solo devuelve el % agregado entre dos fechas, no la serie completa de valores — no apto para poblar un dataset local sin recurrir a un patrón cercano al scraping (descartado).
+10. **Recomendación final del spike:** fijar el rango de la primera versión en **enero de 2002 – presente**, dejando 1961–2002 como ampliación futura condicionada a un nuevo spike o a un mecanismo de obtención distinto, no resuelto en esta tarea.
+
+**Esta sección actualiza y resuelve parcialmente la incógnita señalada en la Fase 2.3 y en la "condición para aprobar la implementación" nº1 del ADR**: el rango recomendado queda fijado en 2002–presente con evidencia; el acceso estructurado a 1961–2002 sigue sin confirmarse y no se ha vuelto a intentar más allá de lo documentado en el spike.
+
 ## Siguiente tarea única recomendada
 
-`SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-SPIKE-01` — spike de investigación corto (sin código de producción) para resolver la única incógnita técnica pendiente: el identificador de serie/tabla que expone la serie larga del IPC (1961–presente) a través de la API JSON del INE, y lectura de la síntesis metodológica oficial de empalme de bases. Una vez resuelto, y con aprobación explícita del ADR y de las decisiones pendientes listadas arriba, podría comenzar `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-DATASET-01`.
+Si el usuario aprueba el rango 2002–presente y acepta el ADR (ambas decisiones pendientes de aprobación explícita, no tomadas en esta tarea ni en el spike): `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-DATASET-01` — crear el script de generación del dataset versionado (2002–presente) y el dataset inicial, con sus tests.
