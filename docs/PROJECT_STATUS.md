@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HEADINGS-01 — corrección del salto H1→H3 y del Footer duplicado en la calculadora de inflación; ver `PROJECT_STATUS.md` raíz y `docs/seo/VALIDACION_SEO_ONPAGE_CALCULADORA_INFLACION_01.md`)  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-CONTENT-01 — fuentes oficiales del INE/BOE, eliminación del "límite del 3% en 2024-2025" y de la cifra sin fuente sobre inflación desde 2000, metodología y limitaciones documentadas en la calculadora de inflación; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_CONTENT_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 

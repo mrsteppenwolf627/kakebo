@@ -15,6 +15,28 @@ import { analytics } from "@/lib/analytics";
 import { useTranslations } from "next-intl";
 import { EmbedModal } from "./EmbedModal";
 
+const INE_LINKS = {
+    ipc: "https://www.ine.es/ipc/",
+    irav: "https://www.ine.es/jaxiT3/Tabla.htm?t=72975",
+    rentTool: "https://www.ine.es/dyngs/IPC/es/index.htm?cid=1436",
+    varipc: "https://www.ine.es/varipc/",
+};
+
+function externalLink(href: string) {
+    return function ExternalLink(chunks: React.ReactNode) {
+        return (
+            <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-dotted underline-offset-2 hover:text-foreground transition-colors"
+            >
+                {chunks}
+            </a>
+        );
+    };
+}
+
 export function CalculatorInflation() {
     const t = useTranslations("Tools.Inflation");
     const tCommon = useTranslations("Tools.Common.embed");
@@ -118,7 +140,7 @@ export function CalculatorInflation() {
                                 <span className="absolute right-0 top-3 text-muted-foreground font-serif">%</span>
                             </div>
                             <p className="text-xs text-muted-foreground">
-                                {t('inputs.inflationDisclaimer')}
+                                {t.rich('inputs.inflationDisclaimer', { ipcLink: externalLink(INE_LINKS.ipc) })}
                             </p>
                         </div>
 
@@ -307,7 +329,10 @@ export function CalculatorInflation() {
 
                 <h2>{t('content.rentTitle')}</h2>
                 <p>
-                    {t('content.rentText')}
+                    {t.rich('content.rentText', {
+                        iravLink: externalLink(INE_LINKS.irav),
+                        rentToolLink: externalLink(INE_LINKS.rentTool)
+                    })}
                 </p>
 
                 <h2>{t('content.accumulatedTitle')}</h2>
@@ -344,6 +369,28 @@ export function CalculatorInflation() {
                         </tbody>
                     </table>
                 </div>
+                <p className="text-sm text-muted-foreground italic">
+                    {t('content.tableNote')}
+                </p>
+
+                <h2>{t('content.methodologyTitle')}</h2>
+                <p>
+                    {t.rich('content.methodologyIntro', { bold: (chunks) => <strong>{chunks}</strong> })}
+                </p>
+                <ul className="list-disc pl-5 space-y-2">
+                    <li>{t('content.methodologyList.manualRate')}</li>
+                    <li>{t('content.methodologyList.formula')}</li>
+                    <li>{t('content.methodologyList.noHistorical')}</li>
+                    <li>{t.rich('content.methodologyList.orientative', { ipcLink: externalLink(INE_LINKS.ipc) })}</li>
+                </ul>
+
+                <h3>{t('content.limitationsTitle')}</h3>
+                <ul className="list-disc pl-5 space-y-2">
+                    <li>{t('content.limitationsList.realRate')}</li>
+                    <li>{t('content.limitationsList.average')}</li>
+                    <li>{t('content.limitationsList.noFees')}</li>
+                    <li>{t('content.limitationsList.noAdvice')}</li>
+                </ul>
 
                 <h2>{t('content.faqTitle')}</h2>
 
@@ -351,7 +398,10 @@ export function CalculatorInflation() {
                     <div>
                         <h3 className="text-xl font-bold text-foreground mt-6">{t('content.faq.q1')}</h3>
                         <p>
-                            {t.rich('content.faq.a1', { bold: (chunks) => <strong>{chunks}</strong> })}
+                            {t.rich('content.faq.a1', {
+                                bold: (chunks) => <strong>{chunks}</strong>,
+                                ipcLink: externalLink(INE_LINKS.ipc)
+                            })}
                         </p>
                     </div>
 
@@ -364,14 +414,18 @@ export function CalculatorInflation() {
                             Tasa Variación = ((IPC Final - IPC Inicial) / IPC Inicial) x 100
                         </code>
                         <p>
-                            {t.rich('content.faq.a2b', { bold: (chunks) => <strong>{chunks}</strong> })}
+                            {t.rich('content.faq.a2b', {
+                                bold: (chunks) => <strong>{chunks}</strong>,
+                                rentToolLink: externalLink(INE_LINKS.rentTool),
+                                varipcLink: externalLink(INE_LINKS.varipc)
+                            })}
                         </p>
                     </div>
 
                     <div>
                         <h3 className="text-xl font-bold text-foreground mt-6">{t('content.faq.q3')}</h3>
                         <p>
-                            {t.rich('content.faq.a3', { bold: (chunks) => <strong>{chunks}</strong> })}
+                            {t.rich('content.faq.a3', { varipcLink: externalLink(INE_LINKS.varipc) })}
                         </p>
                     </div>
                 </div>
@@ -389,6 +443,10 @@ export function CalculatorInflation() {
                         </Link>
                     </li>
                 </ul>
+
+                <p className="text-sm text-muted-foreground mt-8 not-prose">
+                    {t('content.revisionNote')}
+                </p>
 
             </div>
 

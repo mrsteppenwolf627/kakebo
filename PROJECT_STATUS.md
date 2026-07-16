@@ -1,8 +1,28 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HEADINGS-01)  
-**Último commit aceptado:** 3617fc6  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-CONTENT-01)  
+**Último commit aceptado:** 72636cd  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-CONTENT-01 — Reforzar precisión, frescura y fuentes oficiales
+
+**Fecha:** 2026-07-16
+**Estado:** ✅ Completado
+**Sprint:** SEO / Corrección On-Page (contenido)
+**Tipo:** Corrección de contenido factual, sin cambios de funcionalidad, metadata ni schema. Continúa sobre `SEO-ONPAGE-CALCULADORA-INFLACION-HEADINGS-01` (commit base `72636cd9b0db145dd9aab24d9bed6854dbc02b1b`).
+**Documento:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_CONTENT_01.md`
+
+Audita y corrige el contenido factual de `https://www.metodokakebo.com/herramientas/calculadora-inflacion` (y su versión `/en/`) contra fuentes oficiales (INE, BOE), verificadas mediante consulta directa antes de redactar:
+
+**Eliminado por desactualizado/sin fuente:** "el límite del 3% en España durante 2024-2025" en el bloque de actualización de alquiler (no existe un porcentaje único vigente: desde 2025 el artículo 18 LAU remite, para los contratos a los que aplica, al Índice de Referencia de Arrendamientos de Vivienda que calcula el INE mensualmente, per BOE-A-2024-26685 — confirmado por consulta directa a la fuente); y la cifra "60-70% acumulado / ~1.700€" de la FAQ sobre el valor del dinero desde el año 2000 (sin fuente ni fecha verificable).
+
+**Añadido:** 4 enlaces externos a herramientas oficiales del INE (portal IPC, IRAV, actualización de rentas, simulador de variación) con anchor descriptivo y `target="_blank" rel="noopener noreferrer"`; una nueva sección visible de metodología (H2) y limitaciones (H3, anidada) explicando que la tasa la introduce el usuario, que el cálculo es una proyección matemática y no una predicción garantizada, y que no usa datos históricos del INE; una nota de descargo bajo la tabla comparativa; y una indicación discreta de fecha de revisión y fuentes al final del contenido. Keyword "calculadora de inflación España" incorporada de forma natural en el subtítulo visible, sin forzarla en el resto del contenido.
+
+**Sin cambios de funcionalidad** (inputs, fórmula, outputs, gráfico, CTA, tracking), **metadata**, **schema**, **slug** ni **diseño visual/responsive**.
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-CONCATENATED-TEXT-01` (textos concatenados, hallazgo 5 de la auditoría original).
 
 ---
 

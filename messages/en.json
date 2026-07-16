@@ -161,12 +161,12 @@
             },
             "header": {
                 "title": "Inflation Calculator <italic>in Spain</italic>",
-                "subtitle": "How much is your money really worth? Calculate the loss of purchasing power due to CPI and discover why saving is not enough."
+                "subtitle": "This Spain inflation calculator shows you how much your money is really worth: calculate the loss of purchasing power due to CPI and discover why saving is not always enough."
             },
             "inputs": {
                 "savings": "Your Current Savings",
                 "inflation": "Estimated Inflation (CPI)",
-                "inflationDisclaimer": "*Historical average 2000-2024: ~2.5%",
+                "inflationDisclaimer": "*Example rate — check the latest CPI variation at the <ipcLink>INE</ipcLink>",
                 "years": "Projection Years"
             },
             "results": {
@@ -190,21 +190,21 @@
                 "whatTitle": "What is Inflation?",
                 "whatText": "<bold>Inflation</bold> is the general and sustained increase in prices of goods and services in an economy over time. In Spain, it is measured mainly through the <bold>CPI (Consumer Price Index)</bold>. When there is inflation, every euro you have buys fewer products than before; that is, you lose <italic>purchasing power</italic>.",
                 "impactTitle": "Understanding the Impact of Inflation on your Savings",
-                "impactText": "Imagine you keep €10,000 in a safe today. With an average inflation of 3% per year:",
+                "impactText": "Imagine you keep €10,000 in a safe today. In this example, with a hypothetical inflation of 3% per year:",
                 "impactList": {
                     "today": "<bold>Today:</bold> You can buy a small car for €10,000.",
                     "future": "<bold>In 10 years:</bold> That same car will cost approximately €13,439.",
                     "problem": "<bold>The problem:</bold> You still only have €10,000 in the safe. Your money 'exists', but it is worth much less."
                 },
                 "rentTitle": "How to update your rent with CPI?",
-                "rentText": "If your rental contract specifies that the rent will be updated according to the CPI, the landlord can increase the price annually. To calculate it, the interannual rate published by the NSI the month prior to the contract anniversary is taken. It is essential to check if there is a legal maximum cap (such as the 3% limit in Spain during 2024-2025).",
+                "rentText": "If your rental contract provides for updating the rent according to the CPI, the actual increase depends on the contract signed, the date of each annual review, and the regulation in force at that time — there is no single percentage that applies to every case. Article 18 of Spain's Urban Leases Act (LAU) caps the annual increase at the CPI variation unless the parties have agreed otherwise, and since 2025 Law 12/2023 on the right to housing replaces that cap, for the contracts it applies to, with the <iravLink>Housing Rental Reference Index</iravLink> that the INE calculates every month. To update your rent with the exact figure for your contract, use the INE's <rentToolLink>official rent update tool</rentToolLink>. This page does not provide legal advice: if you have doubts about your contract, check the regulation in force or consult a professional.",
                 "accumulatedTitle": "Accumulated Inflation: The Reverse 'Compound Interest' Effect",
                 "accumulatedText": "Inflation is cumulative. A 2% annual inflation for 10 years does not mean that prices have risen by 20%, but that they have risen by more than 21.8% due to the compound effect. This is why leaving money idle for decades is financially dangerous.",
                 "tableTitle": "Comparison: Savings vs Investment vs Inflation",
                 "tableHeaders": {
                     "strategy": "Strategy",
                     "return": "Typical Return",
-                    "realResult": "Real Result (with 3% CPI)"
+                    "realResult": "Real Result (example with 3% inflation)"
                 },
                 "tableRows": {
                     "mattress": {
@@ -223,19 +223,36 @@
                         "result": "+4% a +7% (Real Gain)"
                     }
                 },
+                "tableNote": "Illustrative returns for educational purposes; not investment advice or real-time market data.",
+                "methodologyTitle": "Methodology and limitations of this calculator",
+                "methodologyIntro": "This tool calculates a <bold>mathematical projection</bold>, not a guaranteed forecast or an official INE figure:",
+                "methodologyList": {
+                    "manualRate": "You enter the inflation rate manually; the calculator does not query any real-time INE data.",
+                    "formula": "It applies the reverse compound interest formula: Real Value = Savings ÷ (1 + rate)^years.",
+                    "noHistorical": "It does not yet use official historical CPI series or calculate the real variation between two specific dates.",
+                    "orientative": "The result is indicative only. For the official current inflation or CPI figure, check the <ipcLink>INE's CPI portal</ipcLink>."
+                },
+                "limitationsTitle": "Limitations",
+                "limitationsList": {
+                    "realRate": "Real inflation varies over time and does not necessarily follow a constant rate like the one used in this calculation.",
+                    "average": "The CPI is a national statistical average; your personal inflation may differ depending on your spending habits.",
+                    "noFees": "The calculation does not include taxes, fees, or the real return of any financial product.",
+                    "noAdvice": "This calculator does not constitute financial or legal advice."
+                },
                 "faqTitle": "Frequently Asked Questions about CPI in Spain",
                 "faq": {
                     "q1": "What is the difference between CPI and Inflation?",
-                    "a1": "Although used interchangeably, <bold>inflation</bold> is the economic phenomenon (price increase), while the <bold>CPI</bold> is the statistical tool used by the NSI to measure it. The CPI is based on a representative 'shopping basket' (food, energy, transport) of Spanish families.",
+                    "a1": "Although used interchangeably, <bold>inflation</bold> is the economic phenomenon (price increase), while the <bold>CPI</bold> is the statistical tool used by the <ipcLink>INE</ipcLink> to measure it. The CPI is based on a representative 'shopping basket' (food, energy, transport) of Spanish families.",
                     "q2": "How to calculate accumulated CPI between two years?",
                     "a2": "The official formula to calculate the CPI variation is:",
-                    "a2b": "This formula is legally used to <bold>update rental income</bold> or salary reviews in agreements.",
+                    "a2b": "This is the formula the INE uses to <bold>update rental income</bold> for full-year contracts and salary reviews in agreements. You can apply it directly with the INE's <rentToolLink>rent update tool</rentToolLink> or by checking the <varipcLink>official CPI variation between dates</varipcLink>.",
                     "q3": "How much is my money from 2000 worth today in Spain?",
-                    "a3": "Due to accumulated inflation in Spain since the year 2000 (approximately 60-70% accumulated), to buy the same thing you bought with €1,000 in the year 2000, today you would need close to <bold>€1,700</bold>."
+                    "a3": "Accumulated inflation in Spain since the year 2000 is substantial, although the exact figure varies depending on the reference month. To find out how much you would need today to match the purchasing power of an amount from 2000, check the INE's <varipcLink>official CPI variation simulator</varipcLink>."
                 },
                 "interlinkingTitle": "Keep reading and protect your wealth:",
                 "link1": "Alternatives to banking apps that read your data",
-                "link2": "Kakebo vs YNAB: Which is better for you?"
+                "link2": "Kakebo vs YNAB: Which is better for you?",
+                "revisionNote": "Content last reviewed on July 16, 2026. Main sources: Instituto Nacional de Estadística (INE) and Boletín Oficial del Estado (BOE), Spain's official statistics institute and gazette. This calculator is indicative and does not constitute financial or legal advice."
             }
         },
         "Savings": {

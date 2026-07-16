@@ -161,12 +161,12 @@
             },
             "header": {
                 "title": "Calculadora de <italic>Inflación e IPC</italic> en España",
-                "subtitle": "¿Cuánto vale tu dinero realmente? Calcula la pérdida de poder adquisitivo por el IPC y descubre por qué ahorrar no es suficiente."
+                "subtitle": "Esta calculadora de inflación en España te muestra cuánto vale tu dinero realmente: calcula la pérdida de poder adquisitivo por el IPC y descubre por qué ahorrar no siempre es suficiente."
             },
             "inputs": {
                 "savings": "Tus Ahorros Actuales",
                 "inflation": "Inflación Estimada (IPC)",
-                "inflationDisclaimer": "*Media histórica 2000-2024: ~2.5%",
+                "inflationDisclaimer": "*Tasa de ejemplo — consulta la última variación del IPC en el <ipcLink>INE</ipcLink>",
                 "years": "Años de Proyección"
             },
             "results": {
@@ -190,21 +190,21 @@
                 "whatTitle": "¿Qué es la Inflación?",
                 "whatText": "La <bold>inflación</bold> es el aumento generalizado y sostenido de los precios de bienes y servicios en una economía a lo largo del tiempo. En España, se mide principalmente a través del <bold>IPC (Índice de Precios de Consumo)</bold>. Cuando hay inflación, cada euro que tienes compra menos productos que antes; es decir, pierdes <italic>poder adquisitivo</italic>.",
                 "impactTitle": "Entendiendo el Impacto de la Inflación en tus Ahorros",
-                "impactText": "Imagina que guardas 10.000€ en una caja fuerte hoy. Con una inflación media del 3% anual:",
+                "impactText": "Imagina que guardas 10.000€ en una caja fuerte hoy. En este ejemplo, con una inflación hipotética del 3% anual:",
                 "impactList": {
                     "today": "<bold>Hoy:</bold> Puedes comprar un coche pequeño por 10.000€.",
                     "future": "<bold>En 10 años:</bold> Ese mismo coche costará aproximadamente 13.439€.",
                     "problem": "<bold>El problema:</bold> Tú sigues teniendo solo 10.000€ en la caja. Tu dinero 'existe', pero vale mucho menos."
                 },
                 "rentTitle": "¿Cómo actualizar tu alquiler por el IPC?",
-                "rentText": "Si tu contrato de alquiler especifica que la renta se actualizará conforme al IPC, el propietario puede subirte el precio anualmente. Para calcularlo, se toma la tasa interanual publicada por el INE el mes anterior al aniversario del contrato. Es fundamental comprobar si existe un tope máximo legal (como el límite del 3% en España durante 2024-2025).",
+                "rentText": "Si tu contrato de alquiler prevé actualizar la renta según el IPC, la subida real depende del contrato firmado, de la fecha de cada anualidad y de la normativa vigente en ese momento: no existe un porcentaje único aplicable a todos los casos. El artículo 18 de la Ley de Arrendamientos Urbanos limita el incremento anual a la variación del IPC salvo que se haya pactado otra cosa, y desde 2025 la Ley 12/2023 por el derecho a la vivienda sustituye ese límite, en los contratos a los que aplica, por el <iravLink>Índice de Referencia de Arrendamientos de Vivienda</iravLink> que calcula el INE cada mes. Para actualizar tu renta con el dato exacto de tu contrato, usa la <rentToolLink>herramienta oficial de actualización de rentas del INE</rentToolLink>. Esta página no ofrece asesoramiento jurídico: ante cualquier duda sobre tu contrato, consulta la normativa vigente o a un profesional.",
                 "accumulatedTitle": "Inflación Acumulada: El Efecto 'Interés Compuesto' Inverso",
                 "accumulatedText": "La inflación es acumulativa. Una inflación del 2% anual durante 10 años no significa que los precios han subido un 20%, sino que han subido más del 21.8% debido al efecto compuesto. Este es el motivo por el cual dejar dinero quieto durante décadas es financieramente peligroso.",
                 "tableTitle": "Comparativa: Ahorro vs Inversión vs Inflación",
                 "tableHeaders": {
                     "strategy": "Estrategia",
                     "return": "Rentabilidad Típica",
-                    "realResult": "Resultado Real (con IPC 3%)"
+                    "realResult": "Resultado Real (ejemplo con 3% de inflación)"
                 },
                 "tableRows": {
                     "mattress": {
@@ -223,19 +223,36 @@
                         "result": "+4% a +7% (Ganancia Real)"
                     }
                 },
+                "tableNote": "Rentabilidades ilustrativas con fines educativos; no son una recomendación de inversión ni datos de mercado en tiempo real.",
+                "methodologyTitle": "Metodología y limitaciones de esta calculadora",
+                "methodologyIntro": "Esta herramienta calcula una <bold>proyección matemática</bold>, no una predicción garantizada ni un dato oficial del INE:",
+                "methodologyList": {
+                    "manualRate": "La tasa de inflación del resultado la introduces tú manualmente; la calculadora no consulta ningún dato del INE en tiempo real.",
+                    "formula": "Aplica la fórmula de interés compuesto inverso: Valor Real = Ahorros ÷ (1 + tasa)^años.",
+                    "noHistorical": "No utiliza todavía series históricas oficiales del IPC ni calcula la variación real entre dos fechas concretas.",
+                    "orientative": "El resultado es orientativo. Para el dato oficial de inflación o IPC vigente, consulta el <ipcLink>portal del IPC del INE</ipcLink>."
+                },
+                "limitationsTitle": "Limitaciones",
+                "limitationsList": {
+                    "realRate": "La inflación real varía con el tiempo y no sigue necesariamente una tasa constante como la de este cálculo.",
+                    "average": "El IPC es una media estadística nacional; tu inflación personal puede ser distinta según tus hábitos de consumo.",
+                    "noFees": "El cálculo no incluye impuestos, comisiones ni la rentabilidad real de ningún producto financiero.",
+                    "noAdvice": "Esta calculadora no constituye asesoramiento financiero ni legal."
+                },
                 "faqTitle": "Preguntas Frecuentes sobre el IPC en España",
                 "faq": {
                     "q1": "¿Cuál es la diferencia entre IPC e Inflación?",
-                    "a1": "Aunque se usan indistintamente, la <bold>inflación</bold> es el fenómeno económico (subida de precios), mientras que el <bold>IPC</bold> es la herramienta estadística que usa el INE para medirla. El IPC se basa en una 'cesta de la compra' representativa (alimentos, energía, transporte) de las familias españolas.",
+                    "a1": "Aunque se usan indistintamente, la <bold>inflación</bold> es el fenómeno económico (subida de precios), mientras que el <bold>IPC</bold> es la herramienta estadística que usa el <ipcLink>INE</ipcLink> para medirla. El IPC se basa en una 'cesta de la compra' representativa (alimentos, energía, transporte) de las familias españolas.",
                     "q2": "¿Cómo calcular el IPC acumulado entre dos años?",
                     "a2": "La fórmula oficial para calcular la variación del IPC es:",
-                    "a2b": "Esta fórmula es la que se utiliza legalmente para <bold>actualizar rentas de alquiler</bold> o revisiones salariales en convenios.",
+                    "a2b": "Esta es la fórmula que utiliza el INE para <bold>actualizar rentas de alquiler</bold> por anualidades completas y revisiones salariales en convenios. Puedes aplicarla con la <rentToolLink>herramienta de actualización de rentas del INE</rentToolLink> o consultando la <varipcLink>variación oficial del IPC entre fechas</varipcLink>.",
                     "q3": "¿Cuánto vale mi dinero de 2000 hoy en España?",
-                    "a3": "Debido a la inflación acumulada en España desde el año 2000 (aproximadamente un 60-70% acumulado), para comprar lo mismo que comprabas con 1.000€ en el año 2000, hoy necesitarías cerca de <bold>1.700€</bold>."
+                    "a3": "La inflación acumulada en España desde el año 2000 es considerable, aunque la cifra exacta varía según el mes de referencia. Para saber cuánto necesitarías hoy para igualar el poder adquisitivo de una cantidad del año 2000, consulta el <varipcLink>simulador oficial de variación del IPC del INE</varipcLink>."
                 },
                 "interlinkingTitle": "Sigue leyendo y protege tu patrimonio:",
                 "link1": "Alternativas a las apps bancarias que leen tus datos",
-                "link2": "Kakebo vs YNAB: ¿Cuál es mejor para ti?"
+                "link2": "Kakebo vs YNAB: ¿Cuál es mejor para ti?",
+                "revisionNote": "Contenido revisado por última vez el 16 de julio de 2026. Fuentes principales: Instituto Nacional de Estadística (INE) y Boletín Oficial del Estado (BOE). Esta calculadora es orientativa y no constituye asesoramiento financiero ni legal."
             }
         },
         "Savings": {
