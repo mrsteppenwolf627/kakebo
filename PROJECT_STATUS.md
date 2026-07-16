@@ -1,8 +1,55 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-VALIDATION-01)  
-**Último commit aceptado:** 569853e  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HEADINGS-01)  
+**Último commit aceptado:** 3617fc6  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HEADINGS-01 — Corrección de estructura semántica y Footer duplicado
+
+**Fecha:** 2026-07-16
+**Estado:** ✅ Completado
+**Sprint:** SEO / Corrección On-Page
+**Tipo:** Corrección mínima de estructura semántica, sobre hallazgos confirmados en `SEO-ONPAGE-CALCULADORA-INFLACION-VALIDATION-01` (commit base `3617fc62f400eb6f4ebd477efcde1f230f037341`).
+**Documento de referencia:** `docs/seo/VALIDACION_SEO_ONPAGE_CALCULADORA_INFLACION_01.md`
+
+Corrige exclusivamente los dos hallazgos de estructura confirmados en la auditoría anterior sobre `https://www.metodokakebo.com/herramientas/calculadora-inflacion`:
+
+**1. Salto de heading H1→H3.** Causa raíz: el CTA interno de la calculadora ("Protege tus ahorros del IPC") usaba `<h3>` en `CalculatorInflation.tsx`, apareciendo en el DOM antes del primer `<h2>` de la sección de contenido SEO/GEO. Es un título de bloque de llamada a la acción, no un subtema del contenido informativo, por lo que no debía formar parte del outline de encabezados. **Solución:** cambio de `<h3>` a `<p>` manteniendo exactamente las mismas clases visuales (`text-3xl font-serif`) — sin cambio de texto, estilo ni comportamiento.
+
+**2. Footer duplicado.** Causa raíz: `<Footer />` se renderizaba dos veces — una vez explícitamente en `page.tsx` de la calculadora, y otra vez en `src/app/[locale]/layout.tsx`, que ya renderiza el Footer global para todas las páginas. **Solución:** eliminado el import y la instancia redundante de `<Footer />` en `page.tsx` de la calculadora, manteniendo como único Footer válido el gestionado por el layout raíz. No se modificó `Footer.tsx` ni ninguna otra página (`regla-50-30-20` queda fuera de alcance, según restricción explícita, y conserva su propio `<Footer />` sin tocar).
+
+**Jerarquía de headings — antes:**
+H1 → **H3** ("Protege tus ahorros del IPC") → H2 → H2 → H2 → H2 → H3 → H2 → H3×3 → H3 → H3×3 ("Producto"/"Cuenta"/"Legal", **duplicados** por doble Footer).
+
+**Jerarquía de headings — después:**
+H1 → H2 → H2 → H2 → H2 → H3 (bajo el H2 anterior, correcto) → H2 → H3×3 (FAQ) → H3 (interlinking) → H3×3 ("Producto"/"Cuenta"/"Legal", **una sola vez**).
+Total: 1×H1, 5×H2, 8×H3. Sin saltos de nivel.
+
+**Footers:** 2 → 1 (verificado: `grep -c "<footer" ` sobre el HTML renderizado local devuelve 1).
+
+**Archivos modificados (2, cambio mínimo):**
+- `src/app/[locale]/(landing)/herramientas/calculadora-inflacion/page.tsx` — elimina el import de `Footer` y la instancia `<Footer />` (2 líneas).
+- `src/components/landing/tools/CalculatorInflation.tsx` — cambia el tag del CTA de `<h3>` a `<p>` (2 líneas), mismas clases.
+
+**Validación ejecutada:**
+- `npx tsc --noEmit` ✅ 0 errores.
+- `npm run lint` ✅ 0 errores (76 warnings preexistentes, no relacionados).
+- `npm run build` ✅ Compiled successfully, `/herramientas/calculadora-inflacion` presente en el build.
+- Servidor local (`npm run start`) + inspección del HTML renderizado real (`curl` a `localhost:3000/herramientas/calculadora-inflacion`):
+  - Un único H1, sin salto H1→H3, jerarquía H1→H2→...→H3 correcta.
+  - Un único `<footer>`, "Producto"/"Cuenta"/"Legal" aparecen una sola vez cada uno.
+  - `meta description`, `title`, `canonical` sin cambios (idénticos a los verificados en `SEO-ONPAGE-CALCULADORA-INFLACION-VALIDATION-01`).
+  - Schema (`SoftwareApplication`, `FAQPage`, `DefinedTerm`, `BreadcrumbList`) intacto.
+  - Los 3 inputs de la calculadora (`savings-input`, `inflation-input`, `years-input`) presentes.
+  - CTA "Protege tus ahorros del IPC" sigue visible con el mismo texto y estilo (ahora como `<p>` en vez de `<h3>`); enlaces `/login?source=calculator_inflation` y `/herramientas/regla-50-30-20` intactos.
+
+**Confirmado sin alterar:** funcionalidad de la calculadora (inputs, fórmula, resultados, gráfico), metadata (title/description/canonical/OG/Twitter/hreflang), schema, copy visible, diseño visual/responsive, tracking, otras herramientas (`regla-50-30-20`, `calculadora-ahorro`), slug, redirects.
+
+**Cambios preexistentes ajenos a esta tarea** (`.claude/settings.local.json`, subdirectorio anidado `kakebo`, archivos untracked `CLAUDE.md`, `SEO_MAP_V1.md`, `docs/seo/fondo_emergencia/`, `docs/seo/regla502030/`, `imagenes/blog/`, `imagenes/kakebo online gratis.png`) quedaron intactos, sin stage ni commit.
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-CONTENT-01` — enlazar fuentes oficiales (INE) y verificar vigencia de referencias temporales/legales.
 
 ---
 

@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-VALIDATION-01 — auditoría on-page de la calculadora de inflación, ver `PROJECT_STATUS.md` raíz y `docs/seo/VALIDACION_SEO_ONPAGE_CALCULADORA_INFLACION_01.md`)  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HEADINGS-01 — corrección del salto H1→H3 y del Footer duplicado en la calculadora de inflación; ver `PROJECT_STATUS.md` raíz y `docs/seo/VALIDACION_SEO_ONPAGE_CALCULADORA_INFLACION_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 

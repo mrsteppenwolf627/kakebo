@@ -254,9 +254,9 @@ export function CalculatorInflation() {
 
                         {/* CTA Internal */}
                         <div className="bg-stone-900 dark:bg-stone-800 text-white p-10 rounded-xl text-center space-y-8">
-                            <h3 className="text-3xl font-serif">
+                            <p className="text-3xl font-serif">
                                 {t('cta.title')}
-                            </h3>
+                            </p>
                             <p className="text-stone-300 font-light max-w-lg mx-auto text-lg leading-relaxed">
                                 {t('cta.text')}
                             </p>
