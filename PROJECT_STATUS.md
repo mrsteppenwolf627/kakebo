@@ -1,8 +1,26 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-CONCATENATED-TEXT-01)  
-**Último commit aceptado:** 56b8632  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-INTERNAL-LINKING-01)  
+**Último commit aceptado:** af9310c  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-INTERNAL-LINKING-01 — Reforzar enlazado interno entrante
+
+**Fecha:** 2026-07-16
+**Estado:** ✅ Completado
+**Sprint:** SEO / Enlazado interno
+**Tipo:** Enlazado interno editorial selectivo, sin nuevas URLs ni cambios en la calculadora. Continúa sobre `SEO-ONPAGE-CALCULADORA-INFLACION-CONCATENATED-TEXT-01` (commit base `af9310c83dee0fc3249eb284fc136a1b71bc8307`).
+**Documento:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_INTERNAL_LINKING_01.md`
+
+Audita el enlazado interno hacia `/herramientas/calculadora-inflacion` (antes: 3 globales/navegación, 2 de tarjeta/hub, 4 editoriales reales repartidos en 3 páginas) y añade **3 enlaces editoriales nuevos**, uno por página, en `plantilla-kakebo-excel.es.mdx` (anchor "calcula cómo afecta la inflación a tus ahorros"), `como-hacer-un-presupuesto-personal.es.mdx` (anchor "pérdida de poder adquisitivo") y `regla-50-30-20-ejemplo.es.mdx` (anchor "calculadora de inflación"). Cada enlace es una única frase de transición integrada en un párrafo ya existente, sin reescribir contenido, sin alterar la intención principal de ninguna de las 3 páginas y sin riesgo de canibalización (ninguna compite por la intención "calculadora de inflación").
+
+**Descartadas sin forzar enlace:** `como-ahorrar-dinero-cada-mes`, `ahorro-pareja`, `kakebo-sueldo-minimo` y el pilar semántico `metodo-kakebo-guia-definitiva` (sin sección natural sobre inflación/pérdida de valor donde insertar el enlace).
+
+**Sin cambios en la calculadora** (`page.tsx`, `CalculatorInflation.tsx`, `messages/es.json`, `messages/en.json`) ni en Navbar/Footer/menús globales.
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-BACKLINKS-01`.
 
 ---
 

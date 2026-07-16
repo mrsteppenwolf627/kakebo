@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-CONCATENATED-TEXT-01 — corrección de los 3 textos concatenados confirmados con separadores `sr-only`, "Aceptar0k" confirmado no reproducible; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_CONCATENATED_TEXT_01.md`)  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-INTERNAL-LINKING-01 — 3 enlaces editoriales nuevos hacia la calculadora de inflación desde `plantilla-kakebo-excel`, `como-hacer-un-presupuesto-personal` y `regla-50-30-20-ejemplo`, sin cambios en la calculadora; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_INTERNAL_LINKING_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
