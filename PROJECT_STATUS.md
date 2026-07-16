@@ -1,8 +1,30 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-SPIKE-01)  
-**Último commit aceptado:** 0c1ccab  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-DATASET-01)  
+**Último commit aceptado:** 03e8371  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-DATASET-01 — Dataset histórico oficial del IPC y ADR aceptado
+
+**Fecha:** 2026-07-16
+**Estado:** ✅ Completado — **UI, fórmula histórica y analytics siguen sin implementar (fuera de alcance)**
+**Sprint:** SEO / Datos (implementación de infraestructura, sin UI)
+**Tipo:** Dataset versionado + script de actualización reproducible. **Sin cambios en la calculadora, sin UI, sin lógica de cálculo de producción.**
+**Documentos:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_DATASET_01.md`, `docs/adr/ADR-CALCULADORA-INFLACION-DATOS-HISTORICOS-01.md` (**estado: ACEPTADO**)
+
+**Rango aprobado por el usuario:** enero de 2002 – presente, serie `IPC290751`, API JSON Tempus3 del INE, sin llamadas al INE en runtime, 1961–2001 como ampliación futura no resuelta. **ADR aceptado** con este alcance exacto.
+
+Crea `src/lib/inflation/data/ipc-nacional-es.json` (294 registros, 2002-01 a 2026-06, un registro por mes, sin huecos ni duplicados) y `scripts/update-ipc-dataset.ts` (descarga desde `https://servicios.ine.es/wstempus/js/ES/DATOS_SERIE/IPC290751`, con timeout explícito, validación estructural completa —serie correcta, cobertura, orden, ausencia de huecos/duplicados/periodos futuros, valores finitos positivos—, detección de cambio de base vía comparación de código de serie, y escritura idempotente). Verificado: doble ejecución consecutiva sin cambios en el INE no reescribe el archivo (idempotencia confirmada). Verificado: el dataset reproduce exactamente el resultado oficial ya validado en el spike (Ene 2002→Ene 2025 = 67,9%).
+
+**Validaciones ejecutadas:** `tsc` ✅, `lint` ✅ (0 errores, 76 warnings preexistentes), `build` ✅. `npm run test`: 1 fallo preexistente y no relacionado (`calculate-whatif.test.ts`, discrepancia de texto en consejos de ahorro, sin relación con IPC/INE) — documentado, no corregido, conforme a alcance.
+
+**Sin cambios en UI, páginas, componentes de la calculadora, traducciones, metadata, schema, canonical, slug ni analytics.**
+
+**STOP aplicado — no se implementa la fórmula histórica de producción ni se inicia la siguiente tarea.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-LOGIC-01`.
 
 ---
 

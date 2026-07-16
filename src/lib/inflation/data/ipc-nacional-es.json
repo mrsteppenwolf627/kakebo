@@ -1,0 +1,1783 @@
+{
+  "metadata": {
+    "source": "Instituto Nacional de Estadística (INE)",
+    "seriesId": "IPC290751",
+    "seriesName": "Nacional. Índice general. Índice.",
+    "sourceUrl": "https://servicios.ine.es/wstempus/js/ES/DATOS_SERIE/IPC290751",
+    "relatedTableUrl": "https://www.ine.es/jaxiT3/Tabla.htm?t=24077",
+    "license": "CC BY-SA 4.0",
+    "coverageStart": "2002-01",
+    "coverageEnd": "2026-06",
+    "frequency": "monthly",
+    "base": "2025",
+    "recordCount": 294,
+    "updatedAt": "2026-07-16",
+    "generator": "scripts/update-ipc-dataset.ts"
+  },
+  "data": [
+    {
+      "period": "2002-01",
+      "year": 2002,
+      "month": 1,
+      "index": 58.717
+    },
+    {
+      "period": "2002-02",
+      "year": 2002,
+      "month": 2,
+      "index": 58.768
+    },
+    {
+      "period": "2002-03",
+      "year": 2002,
+      "month": 3,
+      "index": 59.253
+    },
+    {
+      "period": "2002-04",
+      "year": 2002,
+      "month": 4,
+      "index": 60.058
+    },
+    {
+      "period": "2002-05",
+      "year": 2002,
+      "month": 5,
+      "index": 60.274
+    },
+    {
+      "period": "2002-06",
+      "year": 2002,
+      "month": 6,
+      "index": 60.277
+    },
+    {
+      "period": "2002-07",
+      "year": 2002,
+      "month": 7,
+      "index": 59.858
+    },
+    {
+      "period": "2002-08",
+      "year": 2002,
+      "month": 8,
+      "index": 60.03
+    },
+    {
+      "period": "2002-09",
+      "year": 2002,
+      "month": 9,
+      "index": 60.255
+    },
+    {
+      "period": "2002-10",
+      "year": 2002,
+      "month": 10,
+      "index": 60.851
+    },
+    {
+      "period": "2002-11",
+      "year": 2002,
+      "month": 11,
+      "index": 60.946
+    },
+    {
+      "period": "2002-12",
+      "year": 2002,
+      "month": 12,
+      "index": 61.148
+    },
+    {
+      "period": "2003-01",
+      "year": 2003,
+      "month": 1,
+      "index": 60.896
+    },
+    {
+      "period": "2003-02",
+      "year": 2003,
+      "month": 2,
+      "index": 61.026
+    },
+    {
+      "period": "2003-03",
+      "year": 2003,
+      "month": 3,
+      "index": 61.449
+    },
+    {
+      "period": "2003-04",
+      "year": 2003,
+      "month": 4,
+      "index": 61.949
+    },
+    {
+      "period": "2003-05",
+      "year": 2003,
+      "month": 5,
+      "index": 61.892
+    },
+    {
+      "period": "2003-06",
+      "year": 2003,
+      "month": 6,
+      "index": 61.933
+    },
+    {
+      "period": "2003-07",
+      "year": 2003,
+      "month": 7,
+      "index": 61.545
+    },
+    {
+      "period": "2003-08",
+      "year": 2003,
+      "month": 8,
+      "index": 61.827
+    },
+    {
+      "period": "2003-09",
+      "year": 2003,
+      "month": 9,
+      "index": 62.011
+    },
+    {
+      "period": "2003-10",
+      "year": 2003,
+      "month": 10,
+      "index": 62.429
+    },
+    {
+      "period": "2003-11",
+      "year": 2003,
+      "month": 11,
+      "index": 62.633
+    },
+    {
+      "period": "2003-12",
+      "year": 2003,
+      "month": 12,
+      "index": 62.74
+    },
+    {
+      "period": "2004-01",
+      "year": 2004,
+      "month": 1,
+      "index": 62.3
+    },
+    {
+      "period": "2004-02",
+      "year": 2004,
+      "month": 2,
+      "index": 62.329
+    },
+    {
+      "period": "2004-03",
+      "year": 2004,
+      "month": 3,
+      "index": 62.764
+    },
+    {
+      "period": "2004-04",
+      "year": 2004,
+      "month": 4,
+      "index": 63.623
+    },
+    {
+      "period": "2004-05",
+      "year": 2004,
+      "month": 5,
+      "index": 63.999
+    },
+    {
+      "period": "2004-06",
+      "year": 2004,
+      "month": 6,
+      "index": 64.1
+    },
+    {
+      "period": "2004-07",
+      "year": 2004,
+      "month": 7,
+      "index": 63.614
+    },
+    {
+      "period": "2004-08",
+      "year": 2004,
+      "month": 8,
+      "index": 63.895
+    },
+    {
+      "period": "2004-09",
+      "year": 2004,
+      "month": 9,
+      "index": 64.009
+    },
+    {
+      "period": "2004-10",
+      "year": 2004,
+      "month": 10,
+      "index": 64.667
+    },
+    {
+      "period": "2004-11",
+      "year": 2004,
+      "month": 11,
+      "index": 64.828
+    },
+    {
+      "period": "2004-12",
+      "year": 2004,
+      "month": 12,
+      "index": 64.765
+    },
+    {
+      "period": "2005-01",
+      "year": 2005,
+      "month": 1,
+      "index": 64.219
+    },
+    {
+      "period": "2005-02",
+      "year": 2005,
+      "month": 2,
+      "index": 64.386
+    },
+    {
+      "period": "2005-03",
+      "year": 2005,
+      "month": 3,
+      "index": 64.895
+    },
+    {
+      "period": "2005-04",
+      "year": 2005,
+      "month": 4,
+      "index": 65.83
+    },
+    {
+      "period": "2005-05",
+      "year": 2005,
+      "month": 5,
+      "index": 65.956
+    },
+    {
+      "period": "2005-06",
+      "year": 2005,
+      "month": 6,
+      "index": 66.11
+    },
+    {
+      "period": "2005-07",
+      "year": 2005,
+      "month": 7,
+      "index": 65.705
+    },
+    {
+      "period": "2005-08",
+      "year": 2005,
+      "month": 8,
+      "index": 65.994
+    },
+    {
+      "period": "2005-09",
+      "year": 2005,
+      "month": 9,
+      "index": 66.399
+    },
+    {
+      "period": "2005-10",
+      "year": 2005,
+      "month": 10,
+      "index": 66.939
+    },
+    {
+      "period": "2005-11",
+      "year": 2005,
+      "month": 11,
+      "index": 67.04
+    },
+    {
+      "period": "2005-12",
+      "year": 2005,
+      "month": 12,
+      "index": 67.184
+    },
+    {
+      "period": "2006-01",
+      "year": 2006,
+      "month": 1,
+      "index": 66.912
+    },
+    {
+      "period": "2006-02",
+      "year": 2006,
+      "month": 2,
+      "index": 66.944
+    },
+    {
+      "period": "2006-03",
+      "year": 2006,
+      "month": 3,
+      "index": 67.418
+    },
+    {
+      "period": "2006-04",
+      "year": 2006,
+      "month": 4,
+      "index": 68.369
+    },
+    {
+      "period": "2006-05",
+      "year": 2006,
+      "month": 5,
+      "index": 68.615
+    },
+    {
+      "period": "2006-06",
+      "year": 2006,
+      "month": 6,
+      "index": 68.719
+    },
+    {
+      "period": "2006-07",
+      "year": 2006,
+      "month": 7,
+      "index": 68.31
+    },
+    {
+      "period": "2006-08",
+      "year": 2006,
+      "month": 8,
+      "index": 68.45
+    },
+    {
+      "period": "2006-09",
+      "year": 2006,
+      "month": 9,
+      "index": 68.337
+    },
+    {
+      "period": "2006-10",
+      "year": 2006,
+      "month": 10,
+      "index": 68.618
+    },
+    {
+      "period": "2006-11",
+      "year": 2006,
+      "month": 11,
+      "index": 68.787
+    },
+    {
+      "period": "2006-12",
+      "year": 2006,
+      "month": 12,
+      "index": 68.976
+    },
+    {
+      "period": "2007-01",
+      "year": 2007,
+      "month": 1,
+      "index": 68.512
+    },
+    {
+      "period": "2007-02",
+      "year": 2007,
+      "month": 2,
+      "index": 68.559
+    },
+    {
+      "period": "2007-03",
+      "year": 2007,
+      "month": 3,
+      "index": 69.079
+    },
+    {
+      "period": "2007-04",
+      "year": 2007,
+      "month": 4,
+      "index": 70.033
+    },
+    {
+      "period": "2007-05",
+      "year": 2007,
+      "month": 5,
+      "index": 70.225
+    },
+    {
+      "period": "2007-06",
+      "year": 2007,
+      "month": 6,
+      "index": 70.354
+    },
+    {
+      "period": "2007-07",
+      "year": 2007,
+      "month": 7,
+      "index": 69.843
+    },
+    {
+      "period": "2007-08",
+      "year": 2007,
+      "month": 8,
+      "index": 69.938
+    },
+    {
+      "period": "2007-09",
+      "year": 2007,
+      "month": 9,
+      "index": 70.168
+    },
+    {
+      "period": "2007-10",
+      "year": 2007,
+      "month": 10,
+      "index": 71.077
+    },
+    {
+      "period": "2007-11",
+      "year": 2007,
+      "month": 11,
+      "index": 71.587
+    },
+    {
+      "period": "2007-12",
+      "year": 2007,
+      "month": 12,
+      "index": 71.887
+    },
+    {
+      "period": "2008-01",
+      "year": 2008,
+      "month": 1,
+      "index": 71.442
+    },
+    {
+      "period": "2008-02",
+      "year": 2008,
+      "month": 2,
+      "index": 71.553
+    },
+    {
+      "period": "2008-03",
+      "year": 2008,
+      "month": 3,
+      "index": 72.188
+    },
+    {
+      "period": "2008-04",
+      "year": 2008,
+      "month": 4,
+      "index": 72.965
+    },
+    {
+      "period": "2008-05",
+      "year": 2008,
+      "month": 5,
+      "index": 73.458
+    },
+    {
+      "period": "2008-06",
+      "year": 2008,
+      "month": 6,
+      "index": 73.881
+    },
+    {
+      "period": "2008-07",
+      "year": 2008,
+      "month": 7,
+      "index": 73.526
+    },
+    {
+      "period": "2008-08",
+      "year": 2008,
+      "month": 8,
+      "index": 73.368
+    },
+    {
+      "period": "2008-09",
+      "year": 2008,
+      "month": 9,
+      "index": 73.353
+    },
+    {
+      "period": "2008-10",
+      "year": 2008,
+      "month": 10,
+      "index": 73.605
+    },
+    {
+      "period": "2008-11",
+      "year": 2008,
+      "month": 11,
+      "index": 73.293
+    },
+    {
+      "period": "2008-12",
+      "year": 2008,
+      "month": 12,
+      "index": 72.917
+    },
+    {
+      "period": "2009-01",
+      "year": 2009,
+      "month": 1,
+      "index": 72.018
+    },
+    {
+      "period": "2009-02",
+      "year": 2009,
+      "month": 2,
+      "index": 72.026
+    },
+    {
+      "period": "2009-03",
+      "year": 2009,
+      "month": 3,
+      "index": 72.144
+    },
+    {
+      "period": "2009-04",
+      "year": 2009,
+      "month": 4,
+      "index": 72.849
+    },
+    {
+      "period": "2009-05",
+      "year": 2009,
+      "month": 5,
+      "index": 72.823
+    },
+    {
+      "period": "2009-06",
+      "year": 2009,
+      "month": 6,
+      "index": 73.144
+    },
+    {
+      "period": "2009-07",
+      "year": 2009,
+      "month": 7,
+      "index": 72.52
+    },
+    {
+      "period": "2009-08",
+      "year": 2009,
+      "month": 8,
+      "index": 72.773
+    },
+    {
+      "period": "2009-09",
+      "year": 2009,
+      "month": 9,
+      "index": 72.601
+    },
+    {
+      "period": "2009-10",
+      "year": 2009,
+      "month": 10,
+      "index": 73.119
+    },
+    {
+      "period": "2009-11",
+      "year": 2009,
+      "month": 11,
+      "index": 73.515
+    },
+    {
+      "period": "2009-12",
+      "year": 2009,
+      "month": 12,
+      "index": 73.496
+    },
+    {
+      "period": "2010-01",
+      "year": 2010,
+      "month": 1,
+      "index": 72.759
+    },
+    {
+      "period": "2010-02",
+      "year": 2010,
+      "month": 2,
+      "index": 72.627
+    },
+    {
+      "period": "2010-03",
+      "year": 2010,
+      "month": 3,
+      "index": 73.165
+    },
+    {
+      "period": "2010-04",
+      "year": 2010,
+      "month": 4,
+      "index": 73.944
+    },
+    {
+      "period": "2010-05",
+      "year": 2010,
+      "month": 5,
+      "index": 74.109
+    },
+    {
+      "period": "2010-06",
+      "year": 2010,
+      "month": 6,
+      "index": 74.241
+    },
+    {
+      "period": "2010-07",
+      "year": 2010,
+      "month": 7,
+      "index": 73.909
+    },
+    {
+      "period": "2010-08",
+      "year": 2010,
+      "month": 8,
+      "index": 74.095
+    },
+    {
+      "period": "2010-09",
+      "year": 2010,
+      "month": 9,
+      "index": 74.146
+    },
+    {
+      "period": "2010-10",
+      "year": 2010,
+      "month": 10,
+      "index": 74.824
+    },
+    {
+      "period": "2010-11",
+      "year": 2010,
+      "month": 11,
+      "index": 75.23
+    },
+    {
+      "period": "2010-12",
+      "year": 2010,
+      "month": 12,
+      "index": 75.692
+    },
+    {
+      "period": "2011-01",
+      "year": 2011,
+      "month": 1,
+      "index": 75.138
+    },
+    {
+      "period": "2011-02",
+      "year": 2011,
+      "month": 2,
+      "index": 75.234
+    },
+    {
+      "period": "2011-03",
+      "year": 2011,
+      "month": 3,
+      "index": 75.796
+    },
+    {
+      "period": "2011-04",
+      "year": 2011,
+      "month": 4,
+      "index": 76.739
+    },
+    {
+      "period": "2011-05",
+      "year": 2011,
+      "month": 5,
+      "index": 76.714
+    },
+    {
+      "period": "2011-06",
+      "year": 2011,
+      "month": 6,
+      "index": 76.606
+    },
+    {
+      "period": "2011-07",
+      "year": 2011,
+      "month": 7,
+      "index": 76.194
+    },
+    {
+      "period": "2011-08",
+      "year": 2011,
+      "month": 8,
+      "index": 76.289
+    },
+    {
+      "period": "2011-09",
+      "year": 2011,
+      "month": 9,
+      "index": 76.475
+    },
+    {
+      "period": "2011-10",
+      "year": 2011,
+      "month": 10,
+      "index": 77.078
+    },
+    {
+      "period": "2011-11",
+      "year": 2011,
+      "month": 11,
+      "index": 77.391
+    },
+    {
+      "period": "2011-12",
+      "year": 2011,
+      "month": 12,
+      "index": 77.492
+    },
+    {
+      "period": "2012-01",
+      "year": 2012,
+      "month": 1,
+      "index": 76.639
+    },
+    {
+      "period": "2012-02",
+      "year": 2012,
+      "month": 2,
+      "index": 76.719
+    },
+    {
+      "period": "2012-03",
+      "year": 2012,
+      "month": 3,
+      "index": 77.235
+    },
+    {
+      "period": "2012-04",
+      "year": 2012,
+      "month": 4,
+      "index": 78.32
+    },
+    {
+      "period": "2012-05",
+      "year": 2012,
+      "month": 5,
+      "index": 78.204
+    },
+    {
+      "period": "2012-06",
+      "year": 2012,
+      "month": 6,
+      "index": 78.058
+    },
+    {
+      "period": "2012-07",
+      "year": 2012,
+      "month": 7,
+      "index": 77.876
+    },
+    {
+      "period": "2012-08",
+      "year": 2012,
+      "month": 8,
+      "index": 78.314
+    },
+    {
+      "period": "2012-09",
+      "year": 2012,
+      "month": 9,
+      "index": 79.085
+    },
+    {
+      "period": "2012-10",
+      "year": 2012,
+      "month": 10,
+      "index": 79.757
+    },
+    {
+      "period": "2012-11",
+      "year": 2012,
+      "month": 11,
+      "index": 79.658
+    },
+    {
+      "period": "2012-12",
+      "year": 2012,
+      "month": 12,
+      "index": 79.714
+    },
+    {
+      "period": "2013-01",
+      "year": 2013,
+      "month": 1,
+      "index": 78.695
+    },
+    {
+      "period": "2013-02",
+      "year": 2013,
+      "month": 2,
+      "index": 78.832
+    },
+    {
+      "period": "2013-03",
+      "year": 2013,
+      "month": 3,
+      "index": 79.109
+    },
+    {
+      "period": "2013-04",
+      "year": 2013,
+      "month": 4,
+      "index": 79.405
+    },
+    {
+      "period": "2013-05",
+      "year": 2013,
+      "month": 5,
+      "index": 79.551
+    },
+    {
+      "period": "2013-06",
+      "year": 2013,
+      "month": 6,
+      "index": 79.669
+    },
+    {
+      "period": "2013-07",
+      "year": 2013,
+      "month": 7,
+      "index": 79.258
+    },
+    {
+      "period": "2013-08",
+      "year": 2013,
+      "month": 8,
+      "index": 79.504
+    },
+    {
+      "period": "2013-09",
+      "year": 2013,
+      "month": 9,
+      "index": 79.355
+    },
+    {
+      "period": "2013-10",
+      "year": 2013,
+      "month": 10,
+      "index": 79.678
+    },
+    {
+      "period": "2013-11",
+      "year": 2013,
+      "month": 11,
+      "index": 79.844
+    },
+    {
+      "period": "2013-12",
+      "year": 2013,
+      "month": 12,
+      "index": 79.915
+    },
+    {
+      "period": "2014-01",
+      "year": 2014,
+      "month": 1,
+      "index": 78.852
+    },
+    {
+      "period": "2014-02",
+      "year": 2014,
+      "month": 2,
+      "index": 78.818
+    },
+    {
+      "period": "2014-03",
+      "year": 2014,
+      "month": 3,
+      "index": 78.994
+    },
+    {
+      "period": "2014-04",
+      "year": 2014,
+      "month": 4,
+      "index": 79.697
+    },
+    {
+      "period": "2014-05",
+      "year": 2014,
+      "month": 5,
+      "index": 79.715
+    },
+    {
+      "period": "2014-06",
+      "year": 2014,
+      "month": 6,
+      "index": 79.737
+    },
+    {
+      "period": "2014-07",
+      "year": 2014,
+      "month": 7,
+      "index": 78.987
+    },
+    {
+      "period": "2014-08",
+      "year": 2014,
+      "month": 8,
+      "index": 79.112
+    },
+    {
+      "period": "2014-09",
+      "year": 2014,
+      "month": 9,
+      "index": 79.233
+    },
+    {
+      "period": "2014-10",
+      "year": 2014,
+      "month": 10,
+      "index": 79.602
+    },
+    {
+      "period": "2014-11",
+      "year": 2014,
+      "month": 11,
+      "index": 79.547
+    },
+    {
+      "period": "2014-12",
+      "year": 2014,
+      "month": 12,
+      "index": 79.083
+    },
+    {
+      "period": "2015-01",
+      "year": 2015,
+      "month": 1,
+      "index": 77.812
+    },
+    {
+      "period": "2015-02",
+      "year": 2015,
+      "month": 2,
+      "index": 77.972
+    },
+    {
+      "period": "2015-03",
+      "year": 2015,
+      "month": 3,
+      "index": 78.47
+    },
+    {
+      "period": "2015-04",
+      "year": 2015,
+      "month": 4,
+      "index": 79.191
+    },
+    {
+      "period": "2015-05",
+      "year": 2015,
+      "month": 5,
+      "index": 79.569
+    },
+    {
+      "period": "2015-06",
+      "year": 2015,
+      "month": 6,
+      "index": 79.782
+    },
+    {
+      "period": "2015-07",
+      "year": 2015,
+      "month": 7,
+      "index": 79.041
+    },
+    {
+      "period": "2015-08",
+      "year": 2015,
+      "month": 8,
+      "index": 78.779
+    },
+    {
+      "period": "2015-09",
+      "year": 2015,
+      "month": 9,
+      "index": 78.536
+    },
+    {
+      "period": "2015-10",
+      "year": 2015,
+      "month": 10,
+      "index": 79.039
+    },
+    {
+      "period": "2015-11",
+      "year": 2015,
+      "month": 11,
+      "index": 79.329
+    },
+    {
+      "period": "2015-12",
+      "year": 2015,
+      "month": 12,
+      "index": 79.097
+    },
+    {
+      "period": "2016-01",
+      "year": 2016,
+      "month": 1,
+      "index": 77.588
+    },
+    {
+      "period": "2016-02",
+      "year": 2016,
+      "month": 2,
+      "index": 77.314
+    },
+    {
+      "period": "2016-03",
+      "year": 2016,
+      "month": 3,
+      "index": 77.81
+    },
+    {
+      "period": "2016-04",
+      "year": 2016,
+      "month": 4,
+      "index": 78.355
+    },
+    {
+      "period": "2016-05",
+      "year": 2016,
+      "month": 5,
+      "index": 78.783
+    },
+    {
+      "period": "2016-06",
+      "year": 2016,
+      "month": 6,
+      "index": 79.148
+    },
+    {
+      "period": "2016-07",
+      "year": 2016,
+      "month": 7,
+      "index": 78.572
+    },
+    {
+      "period": "2016-08",
+      "year": 2016,
+      "month": 8,
+      "index": 78.673
+    },
+    {
+      "period": "2016-09",
+      "year": 2016,
+      "month": 9,
+      "index": 78.677
+    },
+    {
+      "period": "2016-10",
+      "year": 2016,
+      "month": 10,
+      "index": 79.576
+    },
+    {
+      "period": "2016-11",
+      "year": 2016,
+      "month": 11,
+      "index": 79.864
+    },
+    {
+      "period": "2016-12",
+      "year": 2016,
+      "month": 12,
+      "index": 80.338
+    },
+    {
+      "period": "2017-01",
+      "year": 2017,
+      "month": 1,
+      "index": 79.896
+    },
+    {
+      "period": "2017-02",
+      "year": 2017,
+      "month": 2,
+      "index": 79.608
+    },
+    {
+      "period": "2017-03",
+      "year": 2017,
+      "month": 3,
+      "index": 79.592
+    },
+    {
+      "period": "2017-04",
+      "year": 2017,
+      "month": 4,
+      "index": 80.356
+    },
+    {
+      "period": "2017-05",
+      "year": 2017,
+      "month": 5,
+      "index": 80.308
+    },
+    {
+      "period": "2017-06",
+      "year": 2017,
+      "month": 6,
+      "index": 80.343
+    },
+    {
+      "period": "2017-07",
+      "year": 2017,
+      "month": 7,
+      "index": 79.788
+    },
+    {
+      "period": "2017-08",
+      "year": 2017,
+      "month": 8,
+      "index": 79.947
+    },
+    {
+      "period": "2017-09",
+      "year": 2017,
+      "month": 9,
+      "index": 80.086
+    },
+    {
+      "period": "2017-10",
+      "year": 2017,
+      "month": 10,
+      "index": 80.825
+    },
+    {
+      "period": "2017-11",
+      "year": 2017,
+      "month": 11,
+      "index": 81.194
+    },
+    {
+      "period": "2017-12",
+      "year": 2017,
+      "month": 12,
+      "index": 81.231
+    },
+    {
+      "period": "2018-01",
+      "year": 2018,
+      "month": 1,
+      "index": 80.355
+    },
+    {
+      "period": "2018-02",
+      "year": 2018,
+      "month": 2,
+      "index": 80.463
+    },
+    {
+      "period": "2018-03",
+      "year": 2018,
+      "month": 3,
+      "index": 80.558
+    },
+    {
+      "period": "2018-04",
+      "year": 2018,
+      "month": 4,
+      "index": 81.224
+    },
+    {
+      "period": "2018-05",
+      "year": 2018,
+      "month": 5,
+      "index": 81.956
+    },
+    {
+      "period": "2018-06",
+      "year": 2018,
+      "month": 6,
+      "index": 82.17
+    },
+    {
+      "period": "2018-07",
+      "year": 2018,
+      "month": 7,
+      "index": 81.581
+    },
+    {
+      "period": "2018-08",
+      "year": 2018,
+      "month": 8,
+      "index": 81.697
+    },
+    {
+      "period": "2018-09",
+      "year": 2018,
+      "month": 9,
+      "index": 81.897
+    },
+    {
+      "period": "2018-10",
+      "year": 2018,
+      "month": 10,
+      "index": 82.654
+    },
+    {
+      "period": "2018-11",
+      "year": 2018,
+      "month": 11,
+      "index": 82.563
+    },
+    {
+      "period": "2018-12",
+      "year": 2018,
+      "month": 12,
+      "index": 82.193
+    },
+    {
+      "period": "2019-01",
+      "year": 2019,
+      "month": 1,
+      "index": 81.142
+    },
+    {
+      "period": "2019-02",
+      "year": 2019,
+      "month": 2,
+      "index": 81.34
+    },
+    {
+      "period": "2019-03",
+      "year": 2019,
+      "month": 3,
+      "index": 81.636
+    },
+    {
+      "period": "2019-04",
+      "year": 2019,
+      "month": 4,
+      "index": 82.459
+    },
+    {
+      "period": "2019-05",
+      "year": 2019,
+      "month": 5,
+      "index": 82.619
+    },
+    {
+      "period": "2019-06",
+      "year": 2019,
+      "month": 6,
+      "index": 82.522
+    },
+    {
+      "period": "2019-07",
+      "year": 2019,
+      "month": 7,
+      "index": 82.011
+    },
+    {
+      "period": "2019-08",
+      "year": 2019,
+      "month": 8,
+      "index": 81.965
+    },
+    {
+      "period": "2019-09",
+      "year": 2019,
+      "month": 9,
+      "index": 81.965
+    },
+    {
+      "period": "2019-10",
+      "year": 2019,
+      "month": 10,
+      "index": 82.76
+    },
+    {
+      "period": "2019-11",
+      "year": 2019,
+      "month": 11,
+      "index": 82.9
+    },
+    {
+      "period": "2019-12",
+      "year": 2019,
+      "month": 12,
+      "index": 82.84
+    },
+    {
+      "period": "2020-01",
+      "year": 2020,
+      "month": 1,
+      "index": 82.032
+    },
+    {
+      "period": "2020-02",
+      "year": 2020,
+      "month": 2,
+      "index": 81.935
+    },
+    {
+      "period": "2020-03",
+      "year": 2020,
+      "month": 3,
+      "index": 81.621
+    },
+    {
+      "period": "2020-04",
+      "year": 2020,
+      "month": 4,
+      "index": 81.868
+    },
+    {
+      "period": "2020-05",
+      "year": 2020,
+      "month": 5,
+      "index": 81.863
+    },
+    {
+      "period": "2020-06",
+      "year": 2020,
+      "month": 6,
+      "index": 82.24
+    },
+    {
+      "period": "2020-07",
+      "year": 2020,
+      "month": 7,
+      "index": 81.502
+    },
+    {
+      "period": "2020-08",
+      "year": 2020,
+      "month": 8,
+      "index": 81.54
+    },
+    {
+      "period": "2020-09",
+      "year": 2020,
+      "month": 9,
+      "index": 81.662
+    },
+    {
+      "period": "2020-10",
+      "year": 2020,
+      "month": 10,
+      "index": 82.09
+    },
+    {
+      "period": "2020-11",
+      "year": 2020,
+      "month": 11,
+      "index": 82.225
+    },
+    {
+      "period": "2020-12",
+      "year": 2020,
+      "month": 12,
+      "index": 82.4
+    },
+    {
+      "period": "2021-01",
+      "year": 2021,
+      "month": 1,
+      "index": 82.407
+    },
+    {
+      "period": "2021-02",
+      "year": 2021,
+      "month": 2,
+      "index": 81.922
+    },
+    {
+      "period": "2021-03",
+      "year": 2021,
+      "month": 3,
+      "index": 82.716
+    },
+    {
+      "period": "2021-04",
+      "year": 2021,
+      "month": 4,
+      "index": 83.693
+    },
+    {
+      "period": "2021-05",
+      "year": 2021,
+      "month": 5,
+      "index": 84.087
+    },
+    {
+      "period": "2021-06",
+      "year": 2021,
+      "month": 6,
+      "index": 84.487
+    },
+    {
+      "period": "2021-07",
+      "year": 2021,
+      "month": 7,
+      "index": 83.85
+    },
+    {
+      "period": "2021-08",
+      "year": 2021,
+      "month": 8,
+      "index": 84.232
+    },
+    {
+      "period": "2021-09",
+      "year": 2021,
+      "month": 9,
+      "index": 84.934
+    },
+    {
+      "period": "2021-10",
+      "year": 2021,
+      "month": 10,
+      "index": 86.496
+    },
+    {
+      "period": "2021-11",
+      "year": 2021,
+      "month": 11,
+      "index": 86.761
+    },
+    {
+      "period": "2021-12",
+      "year": 2021,
+      "month": 12,
+      "index": 87.797
+    },
+    {
+      "period": "2022-01",
+      "year": 2022,
+      "month": 1,
+      "index": 87.46
+    },
+    {
+      "period": "2022-02",
+      "year": 2022,
+      "month": 2,
+      "index": 88.167
+    },
+    {
+      "period": "2022-03",
+      "year": 2022,
+      "month": 3,
+      "index": 90.837
+    },
+    {
+      "period": "2022-04",
+      "year": 2022,
+      "month": 4,
+      "index": 90.676
+    },
+    {
+      "period": "2022-05",
+      "year": 2022,
+      "month": 5,
+      "index": 91.426
+    },
+    {
+      "period": "2022-06",
+      "year": 2022,
+      "month": 6,
+      "index": 93.118
+    },
+    {
+      "period": "2022-07",
+      "year": 2022,
+      "month": 7,
+      "index": 92.881
+    },
+    {
+      "period": "2022-08",
+      "year": 2022,
+      "month": 8,
+      "index": 93.117
+    },
+    {
+      "period": "2022-09",
+      "year": 2022,
+      "month": 9,
+      "index": 92.47
+    },
+    {
+      "period": "2022-10",
+      "year": 2022,
+      "month": 10,
+      "index": 92.78
+    },
+    {
+      "period": "2022-11",
+      "year": 2022,
+      "month": 11,
+      "index": 92.669
+    },
+    {
+      "period": "2022-12",
+      "year": 2022,
+      "month": 12,
+      "index": 92.808
+    },
+    {
+      "period": "2023-01",
+      "year": 2023,
+      "month": 1,
+      "index": 92.613
+    },
+    {
+      "period": "2023-02",
+      "year": 2023,
+      "month": 2,
+      "index": 93.487
+    },
+    {
+      "period": "2023-03",
+      "year": 2023,
+      "month": 3,
+      "index": 93.831
+    },
+    {
+      "period": "2023-04",
+      "year": 2023,
+      "month": 4,
+      "index": 94.39
+    },
+    {
+      "period": "2023-05",
+      "year": 2023,
+      "month": 5,
+      "index": 94.345
+    },
+    {
+      "period": "2023-06",
+      "year": 2023,
+      "month": 6,
+      "index": 94.881
+    },
+    {
+      "period": "2023-07",
+      "year": 2023,
+      "month": 7,
+      "index": 95.042
+    },
+    {
+      "period": "2023-08",
+      "year": 2023,
+      "month": 8,
+      "index": 95.552
+    },
+    {
+      "period": "2023-09",
+      "year": 2023,
+      "month": 9,
+      "index": 95.721
+    },
+    {
+      "period": "2023-10",
+      "year": 2023,
+      "month": 10,
+      "index": 95.998
+    },
+    {
+      "period": "2023-11",
+      "year": 2023,
+      "month": 11,
+      "index": 95.663
+    },
+    {
+      "period": "2023-12",
+      "year": 2023,
+      "month": 12,
+      "index": 95.687
+    },
+    {
+      "period": "2024-01",
+      "year": 2024,
+      "month": 1,
+      "index": 95.768
+    },
+    {
+      "period": "2024-02",
+      "year": 2024,
+      "month": 2,
+      "index": 96.108
+    },
+    {
+      "period": "2024-03",
+      "year": 2024,
+      "month": 3,
+      "index": 96.84
+    },
+    {
+      "period": "2024-04",
+      "year": 2024,
+      "month": 4,
+      "index": 97.514
+    },
+    {
+      "period": "2024-05",
+      "year": 2024,
+      "month": 5,
+      "index": 97.771
+    },
+    {
+      "period": "2024-06",
+      "year": 2024,
+      "month": 6,
+      "index": 98.139
+    },
+    {
+      "period": "2024-07",
+      "year": 2024,
+      "month": 7,
+      "index": 97.673
+    },
+    {
+      "period": "2024-08",
+      "year": 2024,
+      "month": 8,
+      "index": 97.713
+    },
+    {
+      "period": "2024-09",
+      "year": 2024,
+      "month": 9,
+      "index": 97.123
+    },
+    {
+      "period": "2024-10",
+      "year": 2024,
+      "month": 10,
+      "index": 97.729
+    },
+    {
+      "period": "2024-11",
+      "year": 2024,
+      "month": 11,
+      "index": 97.968
+    },
+    {
+      "period": "2024-12",
+      "year": 2024,
+      "month": 12,
+      "index": 98.411
+    },
+    {
+      "period": "2025-01",
+      "year": 2025,
+      "month": 1,
+      "index": 98.579
+    },
+    {
+      "period": "2025-02",
+      "year": 2025,
+      "month": 2,
+      "index": 98.966
+    },
+    {
+      "period": "2025-03",
+      "year": 2025,
+      "month": 3,
+      "index": 99.024
+    },
+    {
+      "period": "2025-04",
+      "year": 2025,
+      "month": 4,
+      "index": 99.647
+    },
+    {
+      "period": "2025-05",
+      "year": 2025,
+      "month": 5,
+      "index": 99.714
+    },
+    {
+      "period": "2025-06",
+      "year": 2025,
+      "month": 6,
+      "index": 100.382
+    },
+    {
+      "period": "2025-07",
+      "year": 2025,
+      "month": 7,
+      "index": 100.305
+    },
+    {
+      "period": "2025-08",
+      "year": 2025,
+      "month": 8,
+      "index": 100.345
+    },
+    {
+      "period": "2025-09",
+      "year": 2025,
+      "month": 9,
+      "index": 100.059
+    },
+    {
+      "period": "2025-10",
+      "year": 2025,
+      "month": 10,
+      "index": 100.748
+    },
+    {
+      "period": "2025-11",
+      "year": 2025,
+      "month": 11,
+      "index": 100.943
+    },
+    {
+      "period": "2025-12",
+      "year": 2025,
+      "month": 12,
+      "index": 101.289
+    },
+    {
+      "period": "2026-01",
+      "year": 2026,
+      "month": 1,
+      "index": 100.836
+    },
+    {
+      "period": "2026-02",
+      "year": 2026,
+      "month": 2,
+      "index": 101.261
+    },
+    {
+      "period": "2026-03",
+      "year": 2026,
+      "month": 3,
+      "index": 102.44
+    },
+    {
+      "period": "2026-04",
+      "year": 2026,
+      "month": 4,
+      "index": 102.883
+    },
+    {
+      "period": "2026-05",
+      "year": 2026,
+      "month": 5,
+      "index": 102.951
+    },
+    {
+      "period": "2026-06",
+      "year": 2026,
+      "month": 6,
+      "index": 103.598
+    }
+  ]
+}

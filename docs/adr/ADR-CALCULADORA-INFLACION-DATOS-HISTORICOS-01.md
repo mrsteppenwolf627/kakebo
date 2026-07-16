@@ -1,10 +1,35 @@
 # ADR — Arquitectura de datos para el cálculo histórico de inflación
 
-**Estado:** Propuesto — **no aceptado**. Requiere aprobación explícita del usuario antes de iniciar cualquier implementación.
-**Fecha:** 2026-07-16 (actualizado con evidencia del spike el mismo día)
+**Estado:** **ACEPTADO**
+**Fecha de creación:** 2026-07-16
+**Fecha de aceptación:** 2026-07-16
 **Tarea de origen:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ARCHITECTURE-01`
 **Tarea de spike:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-SPIKE-01`
-**Documentos de soporte:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ARCHITECTURE_01.md`, `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_SPIKE_01.md`
+**Tarea de aceptación:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-DATASET-01`
+**Documentos de soporte:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ARCHITECTURE_01.md`, `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_SPIKE_01.md`, `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_DATASET_01.md`
+
+## Decisión aprobada por el usuario (2026-07-16)
+
+El usuario aprueba explícitamente, con este alcance exacto:
+
+- Rango histórico de la primera versión: **enero de 2002 – presente**.
+- Fuente: serie oficial **`IPC290751`** del INE.
+- Canal: **API JSON Tempus3** (`https://servicios.ine.es/wstempus/js/ES/DATOS_SERIE/IPC290751`) como fuente estructurada.
+- Los datos permanecen **versionados dentro del repositorio** (`src/lib/inflation/data/ipc-nacional-es.json`).
+- **Cero llamadas al INE durante el uso normal de la calculadora** — el dataset se genera/actualiza únicamente mediante `scripts/update-ipc-dataset.ts`, ejecutado de forma manual o vía CI disparado a mano.
+- **Enero de 1961 – diciembre de 2001** queda excluido de esta versión, como **ampliación futura no resuelta** (sin canal estructurado confirmado, ver `HISTORICAL_SPIKE_01.md`).
+
+Como consecuencia de esta aprobación, este ADR pasa de **Propuesto** a **ACEPTADO** con el alcance exacto arriba descrito. El dataset y el script de actualización correspondientes se implementaron en `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-DATASET-01` — ver `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_DATASET_01.md` para el detalle completo de la implementación, validaciones ejecutadas y resultados.
+
+**No implementado todavía por esta aceptación** (fuera de alcance de `HISTORICAL-DATASET-01`, corresponde a tareas futuras): UI, selector de modo histórico, campos de fecha, fórmula de cálculo de inflación/pérdida de poder adquisitivo, componentes React, traducciones, eventos de analytics.
+
+## Condición de revisión de este ADR
+
+Este ADR debe revisarse (no necesariamente revertirse) si ocurre cualquiera de estos eventos:
+
+1. **Cambio de base del INE** que altere el código de la serie `IPC290751` (detectado automáticamente por el script: aborta si `COD` devuelto no coincide con el esperado).
+2. **Desaparición o cambio de contrato** del endpoint `https://servicios.ine.es/wstempus/js/ES/DATOS_SERIE/IPC290751` (detectado por el script: aborta ante HTTP no-200, contenido no-JSON, o formato de respuesta inesperado).
+3. **Aparición de un canal oficial estructurado** (JSON/CSV/PXWeb) para la serie larga 1961–2001, que permitiría ampliar el rango sin depender de HTML no estructurado.
 
 ## Evidencia nueva aportada por el spike (`HISTORICAL-SPIKE-01`)
 
@@ -65,7 +90,7 @@ Comparadas en 13 criterios (fiabilidad, rendimiento, dependencia externa, comple
 
 ## Estrategia de actualización
 
-- Script `scripts/update-ipc-dataset.ts` (propuesto, no creado) que consulta `GET https://servicios.ine.es/wstempus/js/ES/DATOS_SERIE/IPC290751` (serie verificada en directo durante esta tarea), valida la respuesta y regenera el dataset versionado con sus metadatos (`generatedAt`, `coverage`, `source`, `license`).
+- Script `scripts/update-ipc-dataset.ts` (**creado en `HISTORICAL-DATASET-01`**) que consulta `GET https://servicios.ine.es/wstempus/js/ES/DATOS_SERIE/IPC290751`, valida la respuesta y regenera el dataset versionado (`src/lib/inflation/data/ipc-nacional-es.json`) con sus metadatos (`updatedAt`, `coverageStart`/`coverageEnd`, `source`, `license`).
 - Ejecución **manual** o vía **workflow de CI disparado manualmente** — explícitamente **no** un cron job automático en esta fase, conforme a la restricción de la tarea de origen.
 - Cadencia recomendada: mensual (ideal, alineado con la publicación mensual del IPC) o trimestral (mínimo aceptable) — a confirmar por el usuario.
 
@@ -94,10 +119,10 @@ Comparadas en 13 criterios (fiabilidad, rendimiento, dependencia externa, comple
 - Canal machine-readable oficial para los valores brutos del IPC entre 1961 y 2001 (no encontrado; posible ampliación futura, requiere nuevo spike o contacto directo con el INE).
 - Todas las decisiones pendientes ya listadas en el documento de arquitectura (cadencia de actualización y responsable, tratamiento de eventos de analytics, persistencia del modo en la URL, decimales de presentación) — ninguna resuelta por el spike, siguen abiertas.
 
-## Condiciones actualizadas para aprobar la implementación
+## Condiciones para aprobar la implementación (histórico — todas satisfechas al aceptar este ADR)
 
 1. ~~Resolver si la serie larga (1961–presente) es accesible de forma machine-readable~~ — **resuelto por el spike**: no lo es dentro de las fuentes investigadas; el rango inicial queda fijado en 2002–presente de forma deliberada y documentada.
-2. Aprobación explícita del usuario sobre el rango 2002–presente como definitivo para la primera versión (o, alternativamente, decisión de invertir en un nuevo spike para 1961–2002 antes de implementar).
-3. Aprobación explícita del usuario sobre el resto de decisiones pendientes listadas en el documento de soporte y en `HISTORICAL_SPIKE_01.md` (cadencia de actualización y responsable, tratamiento de eventos de analytics, persistencia del modo en la URL, decimales de presentación).
-4. Aprobación explícita de este ADR (cambio de estado de "Propuesto" a "Aceptado") por parte del usuario — **no otorgada en esta tarea ni en el spike**.
-5. Ninguna tarea de implementación (`HISTORICAL-DATASET-01`, `HISTORICAL-LOGIC-01`, `HISTORICAL-UI-01`, `HISTORICAL-QA-01`, `HISTORICAL-LAUNCH-01`) debe iniciarse antes de que se cumplan los puntos 2-4 anteriores.
+2. ~~Aprobación explícita del usuario sobre el rango 2002–presente como definitivo para la primera versión~~ — **satisfecho**: aprobado explícitamente por el usuario (ver "Decisión aprobada por el usuario" arriba).
+3. Aprobación explícita del usuario sobre el resto de decisiones pendientes (cadencia de actualización y responsable, tratamiento de eventos de analytics, persistencia del modo en la URL, decimales de presentación) — **siguen pendientes**, no forman parte del alcance aprobado para `HISTORICAL-DATASET-01`; deberán resolverse antes de las tareas de UI/lógica de cálculo.
+4. ~~Aprobación explícita de este ADR~~ — **satisfecho**: estado cambiado a ACEPTADO el 2026-07-16.
+5. Ninguna tarea de implementación de UI, fórmula de cálculo, componentes React, traducciones o analytics debe iniciarse sin resolver primero el punto 3.

@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-SPIKE-01 — 16 peticiones reales verifican que solo el rango 2002–presente del IPC es accesible vía API JSON estructurada del INE; rango 1961–2002 confirmado existente pero sin canal estructurado; ADR sigue Propuesto, implementación NO iniciada; ver `PROJECT_STATUS.md` raíz, `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_SPIKE_01.md` y `docs/adr/ADR-CALCULADORA-INFLACION-DATOS-HISTORICOS-01.md`)  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-DATASET-01 — dataset oficial del IPC (2002-01–2026-06, 294 registros, serie IPC290751) versionado en `src/lib/inflation/data/ipc-nacional-es.json` con script reproducible `scripts/update-ipc-dataset.ts`; ADR aceptado con este alcance; sin cambios en UI ni lógica de cálculo; ver `PROJECT_STATUS.md` raíz, `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_DATASET_01.md` y `docs/adr/ADR-CALCULADORA-INFLACION-DATOS-HISTORICOS-01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
