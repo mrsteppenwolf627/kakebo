@@ -1,8 +1,30 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-INTERNAL-LINKING-01)  
-**Último commit aceptado:** af9310c  
+**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ARCHITECTURE-01)  
+**Último commit aceptado:** f88feff  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ARCHITECTURE-01 — Arquitectura del cálculo histórico (investigación y diseño)
+
+**Fecha:** 2026-07-16
+**Estado:** ✅ Documentación completada — **implementación NO iniciada, pendiente de aprobación**
+**Sprint:** SEO / Arquitectura (investigación pura)
+**Tipo:** Investigación, arquitectura y documentación. **Cero cambios en `src/`, cero dependencias añadidas, cero implementación.**
+**Documentos:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ARCHITECTURE_01.md`, `docs/adr/ADR-CALCULADORA-INFLACION-DATOS-HISTORICOS-01.md` (estado: Propuesto, no aceptado)
+
+Investiga y documenta la arquitectura para añadir un segundo modo ("inflación histórica entre dos fechas con datos oficiales") a `/herramientas/calculadora-inflacion`, manteniendo el modo actual y la URL. **Fuente oficial verificada en directo**: API JSON del INE (Tempus3, `https://servicios.ine.es/wstempus/js/ES/...`), pública, sin autenticación, licencia CC BY-SA 4.0. Serie `IPC290751` (índice general nacional) verificada con datos reales desde enero de 2002 hasta el último mes publicado (junio de 2026 en el momento de la consulta). Existe además una tabla oficial larga (1961–presente, "Base 2025") en el navegador clásico del INE, cuyo acceso equivalente vía la API JSON moderna **no se ha confirmado** — queda como única incógnita técnica pendiente de un spike futuro.
+
+**Arquitectura recomendada:** dataset JSON estático versionado en el repositorio + script de actualización manual/CI (nunca cron automático), sin ninguna llamada a la API del INE en tiempo real durante el render — evaluadas y descartadas explícitamente las alternativas de consulta en tiempo real desde servidor y de dataset sin versionar.
+
+**Fórmulas, ejemplos verificados con datos reales, estructura de software, plan de tests, riesgos y matriz de decisiones pendientes:** documentados en el entregable principal.
+
+**Sin cambios en `src/`, sin implementación de cálculo histórico, sin nuevas URLs, sin dependencias añadidas.** El ADR permanece en estado **Propuesto**, no aceptado.
+
+**STOP aplicado conforme a instrucción explícita — ninguna tarea de implementación debe iniciarse sin aprobación explícita del usuario.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-SPIKE-01` (solo si se aprueba continuar).
 
 ---
 
