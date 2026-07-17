@@ -1,8 +1,30 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-DATASET-01)  
-**Último commit aceptado:** 03e8371  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-LOGIC-01)  
+**Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-LOGIC-01 — Lógica de dominio del cálculo histórico
+
+**Fecha:** 2026-07-17
+**Estado:** ✅ Completado — **UI, selector de modo, campos de fecha, traducciones y analytics siguen sin implementar (fuera de alcance)**
+**Sprint:** SEO / Datos (lógica de dominio, sin UI)
+**Tipo:** Lógica de dominio pura (TypeScript). **Sin componentes React, sin tests unitarios permanentes, sin cambios en el dataset ni en el script de actualización.**
+**Documentos:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_LOGIC_01.md`
+
+Crea `src/lib/inflation/{types.ts,errors.ts,historical.ts,index.ts}`: valida la integridad del dataset una sola vez al cargar el módulo (metadata, huecos, duplicados, orden cronológico, cobertura declarada vs. real) y expone `calculateHistoricalInflation({ amount, startPeriod, endPeriod })` con las fórmulas oficiales (`adjustmentFactor = endIndex/startIndex`, `cumulativeInflationPercentage = (endIndex/startIndex - 1) × 100`, `equivalentAmountAtEnd`, `requiredNominalIncrease`), sin redondeo interno. Funciones de acceso a la cobertura (`getDatasetCoverage`, `getFirstAvailablePeriod`, `getLastAvailablePeriod`, `getTotalPeriods`, `getAvailablePeriods`, `getIndexForPeriod`) sin exponer el JSON mutable. Errores tipados (`InflationError` + `code`: `INVALID_AMOUNT`, `INVALID_PERIOD_FORMAT`, `PERIOD_NOT_AVAILABLE`, `INVALID_PERIOD_ORDER`, `DATASET_INTEGRITY_ERROR`).
+
+**Verificado con comprobaciones temporales (no versionadas):** caso oficial 2002-01→2025-01 (67,888...%, coincide con el spike), caso de mismo periodo (factor 1, 0%), deflación real del dataset (2002-06→2002-07, -0,695...%, incremento nominal negativo sin forzar a cero), y 7 casos de error (formato, fecha completa, fuera de cobertura, cantidad negativa/NaN, orden cronológico inválido) — todos con el comportamiento esperado.
+
+**Validaciones ejecutadas:** `tsc` ✅, `lint` ✅ (0 errores, 76 warnings preexistentes, ninguno en `src/lib/inflation/`), `build` ✅. `npm run test`: mismo único fallo preexistente y no relacionado (`calculate-whatif.test.ts`) — 505/506 tests pasan.
+
+**Sin cambios en el dataset, el script de actualización, componentes React, páginas, traducciones, metadata, schema ni analytics.**
+
+**STOP aplicado — no se implementan tests unitarios permanentes, UI, selector de modo, ni se inicia la siguiente tarea.**
+
+**Siguiente tarea recomendada:** tests unitarios permanentes (Vitest) para `src/lib/inflation/` (formato, límites, deflación, integridad del dataset, comparación con casos oficiales del INE), antes de la UI.
 
 ---
 

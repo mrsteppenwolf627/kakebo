@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-16 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-DATASET-01 — dataset oficial del IPC (2002-01–2026-06, 294 registros, serie IPC290751) versionado en `src/lib/inflation/data/ipc-nacional-es.json` con script reproducible `scripts/update-ipc-dataset.ts`; ADR aceptado con este alcance; sin cambios en UI ni lógica de cálculo; ver `PROJECT_STATUS.md` raíz, `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_DATASET_01.md` y `docs/adr/ADR-CALCULADORA-INFLACION-DATOS-HISTORICOS-01.md`)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-LOGIC-01 — lógica de dominio pura del cálculo histórico de inflación creada en `src/lib/inflation/{types,errors,historical,index}.ts`, consumiendo el dataset de la tarea anterior sin modificarlo; sin UI, sin tests permanentes, sin traducciones ni analytics; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_LOGIC_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
