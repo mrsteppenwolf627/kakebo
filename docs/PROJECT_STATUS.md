@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-TESTS-01 — suite de 67 tests unitarios permanentes para `src/lib/inflation/` en `src/__tests__/lib/inflation/historical.test.ts` (cobertura, fórmulas, deflación, validación, errores, inmutabilidad); ningún defecto encontrado, dataset y lógica de producción sin modificar; sin UI, sin traducciones ni analytics; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_TESTS_01.md`)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-01 — componente de interfaz aislado, funcional y responsivo creado en `src/components/landing/tools/CalculatorInflationHistorical.tsx`; lógica del dominio local pura; inyección total de etiquetas por props; sin traducciones ni analytics; ver `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_UI_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,34 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-01 — Interfaz funcional aislada del modo histórico
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-17 |
+| **Tipo** | Desarrollo Frontend (UI aislada) |
+| **Documento** | `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_UI_01.md` |
+
+Crea un componente de interfaz funcional y reutilizable para calcular la inflación histórica entre dos periodos mensuales utilizando exclusivamente la lógica ya implementada en `src/lib/inflation/`.
+El componente queda aislado en `src/components/landing/tools/CalculatorInflationHistorical.tsx` y **no se integra en CalculatorInflation.tsx ni se monta en ninguna ruta de producción**.
+
+**Características principales:**
+- **Contrato de props:** Toda etiqueta, placeholder y mensaje de error se inyecta desde las propiedades (`labels` y `locale`), evitando traducciones en duro o importar `useTranslations`.
+- **Inicialización:** Carga por defecto con un importe de 1000 €, último mes disponible como mes final, y 12 meses antes como mes inicial (obtenidos dinámicamente). Ejecuta el cálculo al montar para mostrar resultados de inmediato.
+- **Formateo localizado:** Usa `Intl.DateTimeFormat` para formatear los periodos a partir de cadenas `"YYYY-MM"` y `Intl.NumberFormat` para importes y porcentajes respetando el `locale`.
+- **Lógica e índices:** Los índices del IPC se muestran con sus exactamente 3 decimales nativos. Maneja la deflación con variaciones nominales negativas sin truncar a cero y adaptando el estilo visual (verdes).
+- **Accesibilidad y Responsive:** 100% navegable con teclado, inputs vinculados a etiquetas por IDs, contenedor de error con `role="alert"`, resultados con `aria-live="polite"` y grid responsive Tailwind.
+- **Acción de reinicio:** Limpia resultados y errores restaurando el pre-cálculo por defecto.
+
+**Validaciones técnicas:**
+- `npx vitest run src/__tests__/lib/inflation/historical.test.ts` ✅ 67 tests pasan.
+- `npx vitest run` ✅ 572/573 tests pasan (único fallo ajeno preexistente permitido).
+- `npx tsc --noEmit` ✅ Sin errores.
+- `npm run lint` ✅ Sin errores de linter en el código nuevo.
+- `npm run build` ✅ Compiled successfully.
 
 ---
 

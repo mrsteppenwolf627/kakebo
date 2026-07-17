@@ -1,8 +1,34 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-TESTS-01)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-01)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-01 — Interfaz funcional aislada del modo histórico
+
+**Fecha:** 2026-07-17
+**Estado:** ✅ Completado — **Aislada, sin integración en la calculadora pública, selector de modo, traducciones ni analytics (fuera de alcance)**
+**Sprint:** SEO / Datos / Frontend (UI aislada)
+**Tipo:** Componente React cliente aislado (`CalculatorInflationHistorical.tsx`). **Sin cambios en la lógica de dominio, dataset, script de actualización, traducciones ni analytics.**
+**Documentos:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_UI_01.md`
+
+Crea `src/components/landing/tools/CalculatorInflationHistorical.tsx` que permite calcular la inflación acumulada utilizando la lógica ya validada de `src/lib/inflation`.
+- **Contrato de props:** Toda etiqueta, placeholder y mensaje de error se inyecta desde las props (`labels: CalculatorInflationHistoricalLabels` y `locale: string`), evitando traducciones en duro o importar `useTranslations`.
+- **Inicialización:** Carga por defecto con un importe de 1000 €, último mes disponible como mes final, y 12 meses antes como mes inicial (obtenidos dinámicamente). Ejecuta el cálculo al montar para mostrar resultados de inmediato.
+- **Formateo localizado:** Usa `Intl.DateTimeFormat` para formatear los periodos a partir de cadenas `"YYYY-MM"` y `Intl.NumberFormat` para importes y porcentajes respetando el `locale`.
+- **Lógica e índices:** Los índices del IPC se muestran con sus exactamente 3 decimales nativos. Maneja la deflación con variaciones nominales negativas sin truncar a cero y adaptando el estilo visual (verdes).
+- **Accesibilidad y Responsive:** 100% navegable con teclado, inputs vinculados a etiquetas por IDs, contenedor de error con `role="alert"`, resultados con `aria-live="polite"` y grid responsive Tailwind.
+- **Acción de reinicio:** Limpia resultados y errores restaurando el pre-cálculo por defecto.
+
+**Validaciones ejecutadas:** test específico de inflación ✅ 67/67, suite global ✅ 572/573 (único fallo ajeno y preexistente permitido), `tsc --noEmit` ✅, `lint` ✅ (0 fallos en código nuevo), `build` ✅.
+
+**Sin cambios en dataset, lógica, tests unitarios, componentes de producción (`CalculatorInflation.tsx`), traducciones ni analytics.**
+
+**STOP aplicado — no se integra en CalculatorInflation.tsx ni se inicia la siguiente tarea.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-INTEGRATION-01`.
 
 ---
 
