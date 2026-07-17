@@ -8,6 +8,47 @@ import {
   InflationError,
 } from "@/lib/inflation";
 import type { HistoricalInflationResult } from "@/lib/inflation/types";
+import { analytics } from "@/lib/analytics";
+
+const SOURCE_PAGE = "/herramientas/calculadora-inflacion";
+
+type HistoricalErrorCode =
+  | "INVALID_AMOUNT"
+  | "INVALID_PERIOD_FORMAT"
+  | "PERIOD_NOT_AVAILABLE"
+  | "INVALID_PERIOD_ORDER"
+  | "DATASET_INCONSISTENCY"
+  | "UNEXPECTED_ERROR";
+
+/** Distancia en meses entre dos periodos "YYYY-MM". Determinista, sin redondeos. */
+const getIntervalMonths = (startPeriod: string, endPeriod: string): number => {
+  const [startYear, startMonth] = startPeriod.split("-").map(Number);
+  const [endYear, endMonth] = endPeriod.split("-").map(Number);
+  return (endYear - startYear) * 12 + (endMonth - startMonth);
+};
+
+const getResultType = (cumulativeInflationPercentage: number): "inflation" | "deflation" | "no_change" => {
+  if (cumulativeInflationPercentage > 0) return "inflation";
+  if (cumulativeInflationPercentage < 0) return "deflation";
+  return "no_change";
+};
+
+const trackHistoricalCalculation = (result: HistoricalInflationResult) => {
+  analytics.track("historical_inflation_calculation", {
+    start_period: result.startPeriod,
+    end_period: result.endPeriod,
+    interval_months: getIntervalMonths(result.startPeriod, result.endPeriod),
+    result_type: getResultType(result.cumulativeInflationPercentage),
+    source_page: SOURCE_PAGE,
+  });
+};
+
+const trackHistoricalError = (errorCode: HistoricalErrorCode) => {
+  analytics.track("historical_inflation_error", {
+    error_code: errorCode,
+    source_page: SOURCE_PAGE,
+  });
+};
 
 export interface CalculatorInflationHistoricalLabels {
   amountLabel: string;
@@ -164,6 +205,7 @@ export function CalculatorInflationHistorical({
     if (parsedAmount === null) {
       setError(labels.invalidAmountError);
       setErrorTarget("amount");
+      trackHistoricalError("INVALID_AMOUNT");
       return;
     }
 
@@ -175,32 +217,39 @@ export function CalculatorInflationHistorical({
       });
 
       setResult(calculation);
+      trackHistoricalCalculation(calculation);
     } catch (err) {
       if (err instanceof InflationError) {
         switch (err.code) {
           case "INVALID_AMOUNT":
             setError(labels.invalidAmountError);
             setErrorTarget("amount");
+            trackHistoricalError("INVALID_AMOUNT");
             break;
           case "INVALID_PERIOD_FORMAT":
             setError(labels.invalidPeriodFormatError);
             setErrorTarget("periods");
+            trackHistoricalError("INVALID_PERIOD_FORMAT");
             break;
           case "PERIOD_NOT_AVAILABLE":
             setError(labels.periodNotAvailableError);
             setErrorTarget("periods");
+            trackHistoricalError("PERIOD_NOT_AVAILABLE");
             break;
           case "INVALID_PERIOD_ORDER":
             setError(labels.invalidPeriodOrderError);
             setErrorTarget("periods");
+            trackHistoricalError("INVALID_PERIOD_ORDER");
             break;
           default:
             setError(labels.genericError);
             setErrorTarget("form");
+            trackHistoricalError("DATASET_INCONSISTENCY");
         }
       } else {
         setError(labels.genericError);
         setErrorTarget("form");
+        trackHistoricalError("UNEXPECTED_ERROR");
       }
     }
   };

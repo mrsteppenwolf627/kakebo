@@ -1,8 +1,37 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-AMOUNT-INPUT-FIX-01)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-01)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-01 — Medición del modo histórico de inflación
+
+**Fecha:** 2026-07-17
+**Modelo:** Claude Code
+**Estado:** ✅ Completado
+**Sprint:** SEO / Analytics — instrumentación aislada, sin cambios funcionales
+**Tipo:** Implementación de eventos de analytics. **Sin cambios en dataset, lógica matemática, traducciones, metadata, schema, ni en el modo futuro salvo la llamada estrictamente necesaria para registrar el cambio de tab.**
+**Documentos:** `docs/analytics/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ANALYTICS_01.md`
+
+**Analytics implementado:** se reutiliza la utilidad centralizada existente `src/lib/analytics.ts` (`analytics.track`), sin crear un sistema nuevo. Tres eventos nuevos añadidos a la unión `EventName`:
+
+1. `inflation_calculator_mode_change` — `{ mode_from, mode_to, source_page }`, disparado desde una nueva función `handleModeChange` en `CalculatorInflation.tsx` (clic y teclado), con guard `next === mode` que evita duplicados y evita disparos en el render inicial.
+2. `historical_inflation_calculation` — `{ start_period, end_period, interval_months, result_type, source_page }`, disparado en `CalculatorInflationHistorical.tsx` tras un cálculo válido. `interval_months` se calcula con una utilidad local nueva; `result_type` (`inflation`/`deflation`/`no_change`) se deriva del signo de `cumulativeInflationPercentage` ya calculado por el dominio.
+3. `historical_inflation_error` — `{ error_code, source_page }`, con 6 códigos estables (`INVALID_AMOUNT`, `INVALID_PERIOD_FORMAT`, `PERIOD_NOT_AVAILABLE`, `INVALID_PERIOD_ORDER`, `DATASET_INCONSISTENCY`, `UNEXPECTED_ERROR`), disparado en cada rama de error existente de `handleSubmit`.
+
+**Privacidad:** no se envía la cantidad introducida, la cantidad equivalente, la variación monetaria exacta, los índices IPC ni el porcentaje exacto de inflación; tampoco identificadores personales, correo, user ID, IP ni datos de sesión adicionales.
+
+**Validaciones completadas:** test específico ✅ 67/67, suite completa ✅ 582/583 (572 previos + 10 tests nuevos; único fallo ajeno preexistente: `calculate-whatif.test.ts`), `tsc` ✅, `lint` ✅, `build` ✅. Evento de cambio de modo validado manualmente en harness Vite aislado (clic, teclado, sin duplicados en clic repetido sobre la pestaña activa, sin disparo en el render inicial). Eventos de cálculo/error cubiertos por 8 tests de componente nuevos.
+
+**URL pendiente únicamente de validación final y cierre:** el código está listo para producción; queda pendiente una tarea exclusiva de validación en producción real que confirme que GA4 recibe los tres eventos con los parámetros esperados (no realizada en esta tarea, fuera de alcance explícito).
+
+**Hallazgos preexistentes aún abiertos (no tocados):** NaN con cantidad cero en modo futuro; etiqueta "AÑOS" sin traducir; desbordamiento horizontal a 320/375px; fallo preexistente y ajeno en `calculate-whatif.test.ts`.
+
+**STOP aplicado — no se valida en producción, no se modifica metadata/schema, no se solicita reindexación, no se corrigen defectos ajenos, no se inicia el cierre final.**
+
+**Siguiente tarea recomendada:** validar en producción real (tras el despliegue) que los tres eventos nuevos llegan correctamente a GA4 con los parámetros esperados, sin cambios de código.
 
 ---
 

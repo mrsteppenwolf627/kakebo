@@ -87,11 +87,21 @@ export function CalculatorInflation() {
         emptyStateMessage: t("historical.emptyStateMessage"),
     };
 
+    const handleModeChange = (next: CalculatorMode) => {
+        if (next === mode) return;
+        analytics.track("inflation_calculator_mode_change", {
+            mode_from: mode,
+            mode_to: next,
+            source_page: "/herramientas/calculadora-inflacion",
+        });
+        setMode(next);
+    };
+
     const handleTabKeyDown = (e: React.KeyboardEvent, current: CalculatorMode) => {
         if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
         e.preventDefault();
         const next: CalculatorMode = current === "future" ? "historical" : "future";
-        setMode(next);
+        handleModeChange(next);
         (next === "future" ? futureTabRef : historicalTabRef).current?.focus();
     };
 
@@ -162,7 +172,7 @@ export function CalculatorInflation() {
                         aria-selected={mode === "future"}
                         aria-controls={futurePanelId}
                         tabIndex={mode === "future" ? 0 : -1}
-                        onClick={() => setMode("future")}
+                        onClick={() => handleModeChange("future")}
                         onKeyDown={(e) => handleTabKeyDown(e, "future")}
                         className={`flex-1 sm:flex-none px-5 py-2.5 rounded-lg text-sm font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900 dark:focus-visible:outline-stone-100 cursor-pointer ${
                             mode === "future"
@@ -180,7 +190,7 @@ export function CalculatorInflation() {
                         aria-selected={mode === "historical"}
                         aria-controls={historicalPanelId}
                         tabIndex={mode === "historical" ? 0 : -1}
-                        onClick={() => setMode("historical")}
+                        onClick={() => handleModeChange("historical")}
                         onKeyDown={(e) => handleTabKeyDown(e, "historical")}
                         className={`flex-1 sm:flex-none px-5 py-2.5 rounded-lg text-sm font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900 dark:focus-visible:outline-stone-100 cursor-pointer ${
                             mode === "historical"

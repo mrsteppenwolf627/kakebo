@@ -15,7 +15,10 @@ type EventName =
     | "use_inflation_calculator"
     | "use_503020_calculator"
     | "savings_calculator_calculate"
-    | "savings_calculator_goal_result";
+    | "savings_calculator_goal_result"
+    | "inflation_calculator_mode_change"
+    | "historical_inflation_calculation"
+    | "historical_inflation_error";
 
 type EventProperties = Record<string, string | number | boolean>;
 

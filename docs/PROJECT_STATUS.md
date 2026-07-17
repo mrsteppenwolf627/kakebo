@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-AMOUNT-INPUT-FIX-01 — corrección del defecto H1 detectado en la validación de producción: el input de cantidad del modo histórico bloqueaba silenciosamente el envío de valores inválidos por validación nativa del navegador; corregido cambiando el input a `type="text" inputMode="decimal"`; sin cambios en lógica de dominio, traducciones, dataset ni modo futuro; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_AMOUNT_INPUT_FIX_01.md`)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-01 — implementación de 3 eventos de analytics para medir el uso del modo histórico (cambio de modo, cálculo completado, error controlado), reutilizando la utilidad `analytics.track` existente; sin cantidades monetarias ni datos personales en los payloads; sin cambios en lógica de dominio, traducciones, dataset, metadata ni schema; ver `PROJECT_STATUS.md` raíz y `docs/analytics/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ANALYTICS_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,33 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-01 — Medición del modo histórico de inflación
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-17 |
+| **Tipo** | Instrumentación de analytics, aislada |
+| **Documento** | `docs/analytics/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ANALYTICS_01.md` |
+
+**Sistema utilizado:** utilidad centralizada existente `src/lib/analytics.ts` (`analytics.track`), sin crear infraestructura nueva.
+
+**Eventos implementados:**
+1. `inflation_calculator_mode_change` — `{ mode_from, mode_to, source_page }`, en `CalculatorInflation.tsx`, vía nueva función `handleModeChange` (clic y teclado), con guard anti-duplicados (`next === mode`).
+2. `historical_inflation_calculation` — `{ start_period, end_period, interval_months, result_type, source_page }`, en `CalculatorInflationHistorical.tsx`, tras un cálculo válido.
+3. `historical_inflation_error` — `{ error_code, source_page }`, con 6 códigos estables, en cada rama de error existente.
+
+**Privacidad:** sin cantidad introducida, cantidad equivalente, variación monetaria, índices IPC, porcentaje exacto, ni datos personales.
+
+**Validado:** manualmente en harness Vite aislado para el cambio de modo (clic, teclado, sin duplicados, sin disparo inicial); mediante 8 tests de componente nuevos para cálculo/error; 2 tests unitarios nuevos para la utilidad `analytics.ts`.
+
+**Validaciones técnicas:** `npx vitest run src/__tests__/lib/inflation/historical.test.ts` ✅ 67/67, `npx vitest run` (suite completa) ✅ 582/583 (único fallo ajeno preexistente: `calculate-whatif.test.ts`), `npx tsc --noEmit` ✅, `npm run lint` ✅, `npm run build` ✅.
+
+**Hallazgos preexistentes no tocados:** NaN con cantidad cero en modo futuro, etiqueta "AÑOS" sin traducir, desbordamiento horizontal a 320/375px.
+
+**STOP aplicado tras commit y push — sin validar en producción, sin modificar metadata/schema, sin corregir defectos ajenos, sin iniciar el cierre final.**
 
 ---
 
