@@ -1,8 +1,32 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-LOGIC-01)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-TESTS-01)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-TESTS-01 — Tests unitarios de la lógica histórica
+
+**Fecha:** 2026-07-17
+**Estado:** ✅ Completado — **UI, selector de modo, traducciones y analytics siguen sin implementar (fuera de alcance)**
+**Sprint:** SEO / Datos (tests de dominio, sin UI)
+**Tipo:** Tests unitarios permanentes (Vitest). **Sin cambios en la lógica de producción (no se detectaron defectos), sin cambios en el dataset ni en el script de actualización.**
+**Documentos:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_TESTS_01.md`
+
+Crea `src/__tests__/lib/inflation/historical.test.ts` (67 tests) cubriendo: cobertura del dataset (primer/último periodo, total 294, orden cronológico, ausencia de huecos), consulta de índices (valores exactos, sin interpolación ni fallback al mes más cercano), el caso oficial 2002-01→2025-01 (67,888...%, verificado con `toBeCloseTo` sobre la cifra completa, no solo el 67,9% redondeado), periodos iguales (factor 1, incluyendo un límite de cobertura y `amount=0`), deflación real del dataset (2002-06→2002-07, sin forzar a cero), validación de cantidades (negativa, `NaN`, `Infinity`, `-Infinity`, string forzada), 13 formatos de periodo inválidos, orden cronológico, contrato de errores (`InflationError`, 5 códigos), inmutabilidad de `getAvailablePeriods()`/`getDatasetCoverage().periods` (arrays congelados), determinismo y exportaciones públicas. Ningún mock usado (dataset real en todos los casos).
+
+**Ningún defecto encontrado** — no se modificó ningún archivo de `src/lib/inflation/{types,errors,historical,index}.ts`.
+
+**Resultado de la suite completa:** 573 tests (506 preexistentes + 67 nuevos), 572 pasan, 1 falla (mismo fallo preexistente y ajeno: `calculate-whatif.test.ts`).
+
+**Validaciones ejecutadas:** test específico ✅ 67/67, suite completa (572/573, fallo ajeno conocido), `tsc` ✅, `lint` ✅ (0 errores, 76 warnings preexistentes), `build` ✅.
+
+**Sin cambios en el dataset, el script de actualización, componentes React, páginas, traducciones, metadata, schema ni analytics. Sin corrección del test ajeno preexistente.**
+
+**STOP aplicado — no se implementa UI, selector de modo, ni se inicia la siguiente tarea.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-01`.
 
 ---
 

@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-LOGIC-01 — lógica de dominio pura del cálculo histórico de inflación creada en `src/lib/inflation/{types,errors,historical,index}.ts`, consumiendo el dataset de la tarea anterior sin modificarlo; sin UI, sin tests permanentes, sin traducciones ni analytics; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_LOGIC_01.md`)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-TESTS-01 — suite de 67 tests unitarios permanentes para `src/lib/inflation/` en `src/__tests__/lib/inflation/historical.test.ts` (cobertura, fórmulas, deflación, validación, errores, inmutabilidad); ningún defecto encontrado, dataset y lógica de producción sin modificar; sin UI, sin traducciones ni analytics; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_TESTS_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
