@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-PRODUCTION-VALIDATION-01 — validación exhaustiva en producción real de ambos modos de `/herramientas/calculadora-inflacion`; URL aprobada para continuar; 1 hallazgo ALTO no bloqueante (validación nativa del input de cantidad histórica) y varios preexistentes documentados; sin cambios de código; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_PRODUCTION_VALIDATION_01.md`)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-AMOUNT-INPUT-FIX-01 — corrección del defecto H1 detectado en la validación de producción: el input de cantidad del modo histórico bloqueaba silenciosamente el envío de valores inválidos por validación nativa del navegador; corregido cambiando el input a `type="text" inputMode="decimal"`; sin cambios en lógica de dominio, traducciones, dataset ni modo futuro; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_AMOUNT_INPUT_FIX_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,30 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-AMOUNT-INPUT-FIX-01 — Corrección del bloqueo nativo del input de cantidad (H1)
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-17 |
+| **Tipo** | Corrección de defecto único, aislada |
+| **Documento** | `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_AMOUNT_INPUT_FIX_01.md` |
+
+**Defecto corregido:** el input de cantidad del modo histórico usaba `type="number" min="0" step="any"`, permitiendo que la validación nativa HTML5 del navegador bloqueara silenciosamente el envío del formulario (clic y Enter) para valores inválidos, sin ejecutar el `onSubmit` de React.
+
+**Causa raíz:** atributos de restricción nativos interceptando el evento `submit` antes de llegar a React. La lógica de validación estricta (`STRICT_AMOUNT_PATTERN`, `parseStrictAmount`, `handleSubmit`) ya era correcta.
+
+**Solución:** cambio del input a `type="text" inputMode="decimal" autoComplete="off"`, único cambio funcional, sin tocar lógica de dominio, traducciones, dataset ni modo futuro.
+
+**Validado:** por clic real y por Enter, con los 6 valores válidos y los 12 valores inválidos requeridos; botón de reset verificado; sin fuga de `NaN`/`Infinity`; resultado anterior siempre limpiado en envío inválido.
+
+**Validaciones técnicas:** `npx vitest run src/__tests__/lib/inflation/historical.test.ts` ✅ 67/67, `npx vitest run` (suite completa) ✅ 572/573 (único fallo ajeno preexistente: `calculate-whatif.test.ts`), `npx tsc --noEmit` ✅, `npm run lint` ✅, `npm run build` ✅.
+
+**Hallazgos preexistentes no tocados:** NaN con cantidad cero en modo futuro, etiqueta "AÑOS" sin traducir, desbordamiento horizontal a 320/375px.
+
+**STOP aplicado tras commit y push — sin analytics, sin corregir el modo futuro ni el desbordamiento móvil, sin iniciar la siguiente tarea.**
 
 ---
 

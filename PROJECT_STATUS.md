@@ -1,8 +1,37 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-PRODUCTION-VALIDATION-01)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-AMOUNT-INPUT-FIX-01)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-AMOUNT-INPUT-FIX-01 — Corrección del bloqueo nativo del input de cantidad (H1)
+
+**Fecha:** 2026-07-17
+**Modelo:** Claude Code
+**Estado:** ✅ Completado
+**Sprint:** SEO / QA — corrección de defecto único
+**Tipo:** Corrección funcional aislada. **Sin cambios en `CalculatorInflation.tsx`, traducciones, dataset, lógica de dominio, tests de dominio, modo futuro/proyección, analytics, metadata ni schema.**
+**Documentos:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_AMOUNT_INPUT_FIX_01.md`
+
+**Defecto corregido (H1):** el input de cantidad del modo histórico usaba `type="number" min="0" step="any"`, lo que permitía que la validación nativa HTML5 del navegador bloqueara silenciosamente el envío del formulario para valores inválidos (`-1`, `+`, `-`, `.`, etc.), tanto por clic como por Enter, sin que el `onSubmit` de React se ejecutara nunca.
+
+**Causa raíz:** atributos nativos de restricción (`type="number"`, `min`, `step`) interceptando el evento `submit` antes de que llegara al handler de React. La lógica de validación estricta (`STRICT_AMOUNT_PATTERN`, `parseStrictAmount`, `handleSubmit`) ya era correcta y no requirió cambios.
+
+**Solución aplicada:** cambio del input a `type="text" inputMode="decimal" autoComplete="off"`, manteniendo el teclado numérico en móviles y sin reducir accesibilidad (`aria-invalid`, `aria-describedby` sin cambios).
+
+**Validación completada:** confirmado por clic real y por Enter que `invalidAmountError` se muestra siempre para valores inválidos, el resultado anterior se limpia siempre, y el valor introducido se preserva. Comprobados los 6 valores válidos (`0`, `1`, `1000`, `1000.50`, `0.01`, `999999999999`) y los 12 valores inválidos (cadena vacía, `-1`, `+`, `-`, `.`, `1e`, `1000abc`, `1000 200`, `1,5`, `NaN`, `Infinity`, `-Infinity`) requeridos. Botón de reset verificado (restaura `1000`, limpia error, recalcula resultado por defecto).
+
+**URL preparada para analytics:** no aplica — esta tarea no instrumenta analytics (fuera de alcance explícito).
+
+**Hallazgos preexistentes aún abiertos (no tocados):** NaN con cantidad cero en modo futuro; etiqueta "AÑOS" sin traducir en inglés; desbordamiento horizontal a 320/375px; fallo preexistente y ajeno en `calculate-whatif.test.ts`.
+
+**Validaciones ejecutadas:** test específico ✅ 67/67, suite completa 572/573 (mismo fallo ajeno), `tsc` ✅, `lint` ✅ (0 errores, warnings preexistentes), `build` ✅.
+
+**STOP aplicado — no se añade analytics, no se corrige el modo futuro, no se corrige el desbordamiento móvil, no se modifican traducciones/metadata/schema, no se solicita reindexación, no se inicia la siguiente tarea.**
+
+**Siguiente tarea recomendada:** corregir el desbordamiento horizontal a 320/375px en el modo histórico (defecto preexistente ya documentado), manteniendo fuera de alcance el modo futuro/proyección.
 
 ---
 

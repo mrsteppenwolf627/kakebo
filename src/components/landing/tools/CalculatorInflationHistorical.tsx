@@ -238,9 +238,9 @@ export function CalculatorInflationHistorical({
               <div className="relative">
                 <input
                   id={amountInputId}
-                  type="number"
-                  min="0"
-                  step="any"
+                  type="text"
+                  inputMode="decimal"
+                  autoComplete="off"
                   placeholder={labels.amountPlaceholder}
                   value={amountInput}
                   onChange={(e) => setAmountInput(e.target.value)}
