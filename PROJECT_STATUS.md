@@ -1,8 +1,33 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-INTEGRATION-01)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-PRODUCTION-VALIDATION-01)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-PRODUCTION-VALIDATION-01 — Validación en producción de ambos modos
+
+**Fecha:** 2026-07-17
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **URL aprobada para continuar (no bloqueada)**
+**Sprint:** SEO / QA producción (validación exclusiva, sin cambios de código)
+**Tipo:** Validación funcional, visual y de accesibilidad en `https://www.metodokakebo.com/herramientas/calculadora-inflacion` (real, sin caché confirmado). **Sin cambios en componentes, traducciones, dataset, lógica, tests, analytics, metadata ni schema.**
+**Documentos:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_PRODUCTION_VALIDATION_01.md`
+
+Validado en producción real (HTML sin caché: `X-Vercel-Cache: MISS`, `Age: 0`): selector de modos (10 alternancias, 1 solo panel visible siempre, sin defecto `hidden`/`grid`), conservación de estado entre modos, modo futuro sin regresión (-2.559€/7.441€), caso oficial histórico exacto (+67,9%/1.678,88€/678,88€), mismo periodo (0%), deflación real (-0,7%, color esmeralda), orden invertido (error correcto), cantidad cero (sin NaN/Infinity), reset, traducciones ES/EN completas (sin claves crudas), accesibilidad ARIA (tab/tabpanel, roving tabIndex, sin IDs duplicados), red (0 llamadas a servicios.ine.es, todo local).
+
+**Hallazgo confirmado — ALTO (H1):** el input de cantidad del modo histórico (`type="number" min="0"`) permite que la validación nativa del navegador bloquee silenciosamente el envío con valores como `-1` o `+` (clic real o Enter), sin mostrar el error personalizado ni limpiar el resultado anterior. No bloqueante para el uso normal; recomendado corregir (`type="text" inputMode="decimal"`) antes de instrumentar analytics de errores.
+
+**Otros hallazgos:** error de hidratación React #418 observado una vez, no reproducido en 3 recargas (NO REPRODUCIBLE); NaN con cantidad 0 en modo futuro y etiqueta "AÑOS" sin traducir en inglés (PREEXISTENTES, modo futuro no tocado); desbordamiento horizontal a 320/375px (PREEXISTENTE, confirmado idéntico antes/después de la integración vía `git stash` en la tarea anterior, no agravado por el selector).
+
+**Validaciones ejecutadas:** test específico ✅ 67/67, suite completa 572/573 (mismo fallo ajeno), `tsc` ✅, `lint` ✅, `build` ✅.
+
+**Sin cambios funcionales de ningún tipo — tarea exclusivamente documental.**
+
+**STOP aplicado — no se corrigen defectos, no se añade analytics, no se modifica metadata/schema, no se solicita reindexación, no se inicia la siguiente tarea.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-AMOUNT-INPUT-FIX-01` (corregir H1).
 
 ---
 

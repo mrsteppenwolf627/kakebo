@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-INTEGRATION-01 — modo histórico integrado en `/herramientas/calculadora-inflacion` mediante selector de tabs accesible; modo futuro preservado; defecto real de CSS `hidden`/`grid` detectado y corregido; sin analytics ni cambios de metadata/schema; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_INTEGRATION_01.md`)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-PRODUCTION-VALIDATION-01 — validación exhaustiva en producción real de ambos modos de `/herramientas/calculadora-inflacion`; URL aprobada para continuar; 1 hallazgo ALTO no bloqueante (validación nativa del input de cantidad histórica) y varios preexistentes documentados; sin cambios de código; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_PRODUCTION_VALIDATION_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
