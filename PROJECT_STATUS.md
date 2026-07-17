@@ -1,10 +1,37 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-01)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-REVIEW-01)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
 
 ---
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-REVIEW-01 — Auditoría técnica del componente histórico aislado
+
+**Fecha:** 2026-07-17
+**Estado:** ✅ Completado — **componente aislado aprobado para integración futura; sin integración, sin traducciones, sin analytics**
+**Sprint:** SEO / Frontend / QA
+**Tipo:** Revisión técnica + corrección acotada en un único componente.
+**Documentos:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_UI_REVIEW_01.md`
+
+Audita `src/components/landing/tools/CalculatorInflationHistorical.tsx` frente al alcance aprobado y corrige **5 defectos confirmados** sin tocar dataset, dominio, tests ni la calculadora pública:
+- parsing de cantidad demasiado permisivo por `parseFloat` (endurecido con conversión estricta, sin parsing parcial);
+- IDs estáticos reutilizables (corregido con `useId`);
+- contrato de labels incompleto (añadidos `startIndexLabel`, `endIndexLabel`, `emptyStateMessage`);
+- asociación incompleta de errores a controles de periodo (`aria-invalid` / `aria-describedby`);
+- formateadores `Intl.NumberFormat` sin fallback ante `locale` inválido.
+
+**Hallazgos descartados:** estado inicial, periodos, deflación, acceso al dominio, aislamiento del componente, ausencia de red/analytics/Supabase y precisión del cálculo.  
+**Revisión visual real ejecutada:** harness temporal Vite + Chrome headless en 320, 375, 768 y 1440 px; estados renderizados: inicial, cero, decimal, mismo periodo, periodo invertido, deflación, cantidad inválida e importe grande.  
+**Incidencia de QA local documentada:** el primer intento sobre Next local quedó bloqueado por `ERR_TOO_MANY_REDIRECTS`; no se contabilizó como revisión válida.
+
+**Validaciones ejecutadas:** test específico de inflación ✅ 67/67, suite global ✅ 572/573 (único fallo ajeno preexistente permitido: `calculate-whatif.test.ts`), `tsc --noEmit` ✅, `lint` ✅, `build` ✅.
+
+**Sin cambios en** `CalculatorInflation.tsx`, páginas públicas, dataset, lógica de dominio, tests permanentes, traducciones, metadata, schema, analytics o dependencias.
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-INTEGRATION-01`.
+
+---
+
 
 ## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-01 — Interfaz funcional aislada del modo histórico
 
@@ -2870,3 +2897,4 @@ El orden establecido busca consolidar la autoridad temática (Topical Authority)
 **Enlaces internos:** 9 artículos del blog + 2 herramientas  
 **Build:** ✅ Compiled successfully — 0 errores TypeScript  
 **Tests:** ✅ 506/506 passing
+

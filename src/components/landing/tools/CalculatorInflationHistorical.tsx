@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import {
   calculateHistoricalInflation,
   getAvailablePeriods,
@@ -21,6 +21,8 @@ export interface CalculatorInflationHistoricalLabels {
   accumulatedInflationLabel: string;
   purchasingPowerChangeLabel: string;
   periodSummaryLabel: string;
+  startIndexLabel: string;
+  endIndexLabel: string;
   sourceLabel: string;
   sourceName: string;
   resetButton: string;
@@ -29,6 +31,7 @@ export interface CalculatorInflationHistoricalLabels {
   periodNotAvailableError: string;
   invalidPeriodOrderError: string;
   genericError: string;
+  emptyStateMessage: string;
 }
 
 export interface CalculatorInflationHistoricalProps {
@@ -36,61 +39,131 @@ export interface CalculatorInflationHistoricalProps {
   locale: string;
 }
 
-const formatPeriod = (period: string, locale: string): string => {
+type ErrorTarget = "amount" | "periods" | "form";
+
+const DEFAULT_AMOUNT = 1000;
+const DEFAULT_AMOUNT_INPUT = String(DEFAULT_AMOUNT);
+const STRICT_AMOUNT_PATTERN = /^(?:\d+(?:\.\d+)?|\.\d+)$/;
+
+const createDateFormatter = (locale: string) => {
+  try {
+    return new Intl.DateTimeFormat(locale, {
+      year: "numeric",
+      month: "long",
+      timeZone: "UTC",
+    });
+  } catch {
+    return new Intl.DateTimeFormat(undefined, {
+      year: "numeric",
+      month: "long",
+      timeZone: "UTC",
+    });
+  }
+};
+
+const createNumberFormatter = (
+  locale: string,
+  options: Intl.NumberFormatOptions
+) => {
+  try {
+    return new Intl.NumberFormat(locale, options);
+  } catch {
+    return new Intl.NumberFormat(undefined, options);
+  }
+};
+
+const formatPeriod = (period: string, formatter: Intl.DateTimeFormat): string => {
   try {
     const [yearStr, monthStr] = period.split("-");
     const year = parseInt(yearStr, 10);
     const month = parseInt(monthStr, 10);
     const date = new Date(Date.UTC(year, month - 1, 1));
-    return new Intl.DateTimeFormat(locale, {
-      year: "numeric",
-      month: "long",
-      timeZone: "UTC",
-    }).format(date);
+
+    return formatter.format(date);
   } catch {
     return period;
   }
+};
+
+const parseStrictAmount = (input: string): number | null => {
+  const normalizedInput = input.trim();
+
+  if (normalizedInput.length === 0 || !STRICT_AMOUNT_PATTERN.test(normalizedInput)) {
+    return null;
+  }
+
+  const parsedAmount = Number(normalizedInput);
+
+  if (!Number.isFinite(parsedAmount) || parsedAmount < 0) {
+    return null;
+  }
+
+  return parsedAmount;
 };
 
 export function CalculatorInflationHistorical({
   labels,
   locale,
 }: CalculatorInflationHistoricalProps) {
+  const instanceId = useId();
   const availablePeriods = getAvailablePeriods();
   const lastPeriod = getLastAvailablePeriod();
 
-  // Starting period is recommended to be 12 months before the last available period
+  // Recommended start period: 12 real periods before the latest available period.
   const startPeriodIndex = Math.max(0, availablePeriods.length - 1 - 12);
   const defaultStartPeriod = availablePeriods[startPeriodIndex];
 
-  const [amountInput, setAmountInput] = useState("1000");
-  const [startPeriod, setStartPeriod] = useState(defaultStartPeriod);
-  const [endPeriod, setEndPeriod] = useState(lastPeriod);
-  const [error, setError] = useState<string | null>(null);
+  const amountInputId = `${instanceId}-amount-input`;
+  const startPeriodSelectId = `${instanceId}-start-period-select`;
+  const endPeriodSelectId = `${instanceId}-end-period-select`;
+  const errorId = `${instanceId}-error`;
 
-  // Initial calculation with safe defaults so the user sees results immediately
-  const initialResult = (() => {
+  const dateFormatter = createDateFormatter(locale);
+  const moneyFormatter = createNumberFormatter(locale, {
+    style: "currency",
+    currency: "EUR",
+  });
+  const percentageFormatter = createNumberFormatter(locale, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
+  const indexFormatter = createNumberFormatter(locale, {
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 3,
+  });
+  const currencySymbol =
+    moneyFormatter.formatToParts(0).find((part) => part.type === "currency")?.value ?? "EUR";
+
+  const getDefaultResult = (): HistoricalInflationResult | null => {
     try {
       return calculateHistoricalInflation({
-        amount: 1000,
+        amount: DEFAULT_AMOUNT,
         startPeriod: defaultStartPeriod,
         endPeriod: lastPeriod,
       });
     } catch {
       return null;
     }
-  })();
+  };
 
-  const [result, setResult] = useState<HistoricalInflationResult | null>(initialResult);
+  const [amountInput, setAmountInput] = useState(DEFAULT_AMOUNT_INPUT);
+  const [startPeriod, setStartPeriod] = useState(defaultStartPeriod);
+  const [endPeriod, setEndPeriod] = useState(lastPeriod);
+  const [error, setError] = useState<string | null>(null);
+  const [errorTarget, setErrorTarget] = useState<ErrorTarget | null>(null);
+  const [result, setResult] = useState<HistoricalInflationResult | null>(() => getDefaultResult());
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setErrorTarget(null);
     setResult(null);
 
-    const parsedAmount = parseFloat(amountInput);
-    if (isNaN(parsedAmount) || parsedAmount < 0) {
+    const parsedAmount = parseStrictAmount(amountInput);
+
+    if (parsedAmount === null) {
       setError(labels.invalidAmountError);
+      setErrorTarget("amount");
       return;
     }
 
@@ -100,149 +173,136 @@ export function CalculatorInflationHistorical({
         startPeriod,
         endPeriod,
       });
+
       setResult(calculation);
     } catch (err) {
       if (err instanceof InflationError) {
         switch (err.code) {
           case "INVALID_AMOUNT":
             setError(labels.invalidAmountError);
+            setErrorTarget("amount");
             break;
           case "INVALID_PERIOD_FORMAT":
             setError(labels.invalidPeriodFormatError);
+            setErrorTarget("periods");
             break;
           case "PERIOD_NOT_AVAILABLE":
             setError(labels.periodNotAvailableError);
+            setErrorTarget("periods");
             break;
           case "INVALID_PERIOD_ORDER":
             setError(labels.invalidPeriodOrderError);
+            setErrorTarget("periods");
             break;
           default:
             setError(labels.genericError);
+            setErrorTarget("form");
         }
       } else {
         setError(labels.genericError);
+        setErrorTarget("form");
       }
     }
   };
 
   const handleReset = () => {
-    setAmountInput("1000");
+    setAmountInput(DEFAULT_AMOUNT_INPUT);
     setStartPeriod(defaultStartPeriod);
     setEndPeriod(lastPeriod);
     setError(null);
-
-    try {
-      const calculation = calculateHistoricalInflation({
-        amount: 1000,
-        startPeriod: defaultStartPeriod,
-        endPeriod: lastPeriod,
-      });
-      setResult(calculation);
-    } catch {
-      setResult(null);
-    }
+    setErrorTarget(null);
+    setResult(getDefaultResult());
   };
 
-  const formatMoney = (amount: number) =>
-    new Intl.NumberFormat(locale, {
-      style: "currency",
-      currency: "EUR",
-    }).format(amount);
-
+  const formatMoney = (amount: number) => moneyFormatter.format(amount);
   const formatPercentage = (percentage: number) =>
-    new Intl.NumberFormat(locale, {
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1,
-    }).format(percentage) + "%";
+    `${percentageFormatter.format(percentage)}%`;
+  const formatIndex = (indexValue: number) => indexFormatter.format(indexValue);
 
-  const formatIndex = (indexValue: number) =>
-    new Intl.NumberFormat(locale, {
-      minimumFractionDigits: 3,
-      maximumFractionDigits: 3,
-    }).format(indexValue);
+  const amountHasError = errorTarget === "amount";
+  const periodsHaveError = errorTarget === "periods";
+  const describedBy = error ? errorId : undefined;
 
   return (
     <div className="max-w-6xl mx-auto space-y-16">
-      {/* Calculator Layout Grid */}
       <div className="grid lg:grid-cols-12 gap-8 items-start">
-        {/* Left Sidebar: Form block */}
         <aside className="lg:col-span-4 bg-card border border-border p-8 rounded-2xl shadow-sm space-y-8 sticky top-24">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Amount input */}
             <div className="space-y-4">
               <label
-                htmlFor="amount-input"
+                htmlFor={amountInputId}
                 className="text-xs font-bold text-muted-foreground uppercase tracking-widest block"
               >
                 {labels.amountLabel}
               </label>
               <div className="relative">
                 <input
-                  id="amount-input"
+                  id={amountInputId}
                   type="number"
                   min="0"
                   step="any"
                   placeholder={labels.amountPlaceholder}
                   value={amountInput}
-                  onChange={(e) => {
-                    setAmountInput(e.target.value);
-                  }}
-                  aria-invalid={!!error}
-                  aria-describedby={error ? "inflation-error" : undefined}
+                  onChange={(e) => setAmountInput(e.target.value)}
+                  aria-invalid={amountHasError}
+                  aria-describedby={amountHasError ? describedBy : undefined}
                   className="w-full text-3xl font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-foreground"
                 />
-                <span className="absolute right-0 top-3 text-muted-foreground font-serif">€</span>
+                <span className="absolute right-0 top-3 text-muted-foreground font-serif">
+                  {currencySymbol}
+                </span>
               </div>
             </div>
 
-            {/* Start Period select */}
             <div className="space-y-4">
               <label
-                htmlFor="start-period-select"
+                htmlFor={startPeriodSelectId}
                 className="text-xs font-bold text-muted-foreground uppercase tracking-widest block"
               >
                 {labels.startPeriodLabel}
               </label>
               <select
-                id="start-period-select"
+                id={startPeriodSelectId}
                 value={startPeriod}
                 onChange={(e) => setStartPeriod(e.target.value)}
+                aria-invalid={periodsHaveError}
+                aria-describedby={periodsHaveError ? describedBy : undefined}
                 className="w-full text-base font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-foreground cursor-pointer"
               >
                 {availablePeriods.map((period) => (
                   <option key={period} value={period} className="text-foreground bg-card">
-                    {formatPeriod(period, locale)}
+                    {formatPeriod(period, dateFormatter)}
                   </option>
                 ))}
               </select>
             </div>
 
-            {/* End Period select */}
             <div className="space-y-4">
               <label
-                htmlFor="end-period-select"
+                htmlFor={endPeriodSelectId}
                 className="text-xs font-bold text-muted-foreground uppercase tracking-widest block"
               >
                 {labels.endPeriodLabel}
               </label>
               <select
-                id="end-period-select"
+                id={endPeriodSelectId}
                 value={endPeriod}
                 onChange={(e) => setEndPeriod(e.target.value)}
+                aria-invalid={periodsHaveError}
+                aria-describedby={periodsHaveError ? describedBy : undefined}
                 className="w-full text-base font-serif border-b-2 border-stone-200 dark:border-stone-800 focus:border-stone-900 dark:focus:border-stone-400 outline-none py-2 bg-transparent transition-colors text-foreground cursor-pointer"
               >
                 {availablePeriods.map((period) => (
                   <option key={period} value={period} className="text-foreground bg-card">
-                    {formatPeriod(period, locale)}
+                    {formatPeriod(period, dateFormatter)}
                   </option>
                 ))}
               </select>
             </div>
 
-            {/* Error block with role alert */}
             {error && (
               <div
-                id="inflation-error"
+                id={errorId}
                 role="alert"
                 className="p-4 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 text-red-600 dark:text-red-400 rounded-xl text-sm font-medium"
               >
@@ -250,7 +310,6 @@ export function CalculatorInflationHistorical({
               </div>
             )}
 
-            {/* Action buttons */}
             <div className="space-y-3 pt-4">
               <button
                 type="submit"
@@ -269,33 +328,33 @@ export function CalculatorInflationHistorical({
           </form>
         </aside>
 
-        {/* Right Main Content: Results card */}
-        <div className="lg:col-span-8 space-y-8" aria-live="polite">
+        <div
+          className="lg:col-span-8 space-y-8"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           {result ? (
             <div className="bg-card border border-border p-8 md:p-12 rounded-2xl shadow-sm space-y-12 relative overflow-hidden">
-              {/* Aesthetic gradient top-bar */}
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-stone-200 dark:from-stone-800 via-red-400 dark:via-red-500 to-stone-200 dark:to-stone-800"></div>
 
-              {/* Main Result Panels */}
               <div className="grid md:grid-cols-2 gap-8 items-stretch">
-                {/* Equivalent Amount at End Period */}
-                <div className="bg-stone-950 dark:bg-stone-900 text-white p-8 rounded-xl flex flex-col justify-center text-center space-y-2">
+                <div className="min-w-0 bg-stone-950 dark:bg-stone-900 text-white p-8 rounded-xl flex flex-col justify-center text-center space-y-2">
                   <span className="text-xs text-stone-400 font-bold uppercase tracking-widest">
                     {labels.equivalentAmountLabel}
                   </span>
                   <span className="sr-only">: </span>
-                  <span className="text-3xl md:text-4xl lg:text-5xl font-serif">
+                  <span className="text-3xl md:text-4xl lg:text-5xl font-serif break-words">
                     {formatMoney(result.equivalentAmountAtEnd)}
                   </span>
                   <span className="sr-only">. </span>
                   <span className="text-stone-400 font-light text-xs">
-                    {labels.periodSummaryLabel}: {formatPeriod(result.endPeriod, locale)}
+                    {labels.periodSummaryLabel}: {formatPeriod(result.endPeriod, dateFormatter)}
                   </span>
                 </div>
 
-                {/* Accumulated Inflation percentage */}
                 <div
-                  className={`p-8 rounded-xl border flex flex-col justify-center text-center space-y-2 ${
+                  className={`min-w-0 p-8 rounded-xl border flex flex-col justify-center text-center space-y-2 ${
                     result.cumulativeInflationPercentage >= 0
                       ? "bg-red-50 dark:bg-red-900/10 border-red-100 dark:border-red-900/30"
                       : "bg-emerald-50 dark:bg-emerald-900/10 border-emerald-100 dark:border-emerald-900/30"
@@ -312,7 +371,7 @@ export function CalculatorInflationHistorical({
                   </span>
                   <span className="sr-only">: </span>
                   <span
-                    className={`text-3xl md:text-4xl lg:text-5xl font-serif ${
+                    className={`text-3xl md:text-4xl lg:text-5xl font-serif break-words ${
                       result.cumulativeInflationPercentage >= 0
                         ? "text-red-600 dark:text-red-300"
                         : "text-emerald-600 dark:text-emerald-300"
@@ -325,23 +384,20 @@ export function CalculatorInflationHistorical({
                 </div>
               </div>
 
-              {/* Detailed Breakdown Section */}
               <div className="border-t border-border pt-8 space-y-6">
                 <h3 className="text-lg font-bold text-foreground">{labels.resultHeading}</h3>
 
                 <div className="grid sm:grid-cols-2 gap-6 text-sm">
-                  {/* Initial amount & period */}
                   <div className="space-y-1">
                     <span className="text-muted-foreground block">{labels.initialAmountLabel}</span>
                     <span className="font-serif text-lg text-foreground">
                       {formatMoney(result.amount)}{" "}
                       <span className="text-sm text-muted-foreground font-sans">
-                        ({formatPeriod(result.startPeriod, locale)})
+                        ({formatPeriod(result.startPeriod, dateFormatter)})
                       </span>
                     </span>
                   </div>
 
-                  {/* Nominal difference (purchasing power change) */}
                   <div className="space-y-1">
                     <span className="text-muted-foreground block">
                       {labels.purchasingPowerChangeLabel}
@@ -358,20 +414,18 @@ export function CalculatorInflationHistorical({
                     </span>
                   </div>
 
-                  {/* Initial IPC Index */}
                   <div className="space-y-1">
                     <span className="text-muted-foreground block">
-                      Índice IPC Inicial ({formatPeriod(result.startPeriod, locale)})
+                      {labels.startIndexLabel} ({formatPeriod(result.startPeriod, dateFormatter)})
                     </span>
                     <span className="font-serif text-lg text-foreground">
                       {formatIndex(result.startIndex)}
                     </span>
                   </div>
 
-                  {/* Final IPC Index */}
                   <div className="space-y-1">
                     <span className="text-muted-foreground block">
-                      Índice IPC Final ({formatPeriod(result.endPeriod, locale)})
+                      {labels.endIndexLabel} ({formatPeriod(result.endPeriod, dateFormatter)})
                     </span>
                     <span className="font-serif text-lg text-foreground">
                       {formatIndex(result.endIndex)}
@@ -379,7 +433,6 @@ export function CalculatorInflationHistorical({
                   </div>
                 </div>
 
-                {/* Data source metadata note */}
                 <div className="pt-6 border-t border-border text-xs text-muted-foreground">
                   <span>{labels.sourceLabel} </span>
                   <span className="font-semibold text-foreground">{labels.sourceName}</span>
@@ -388,7 +441,7 @@ export function CalculatorInflationHistorical({
             </div>
           ) : (
             <div className="bg-card border border-border p-8 md:p-12 rounded-2xl shadow-sm text-center text-muted-foreground font-light py-16">
-              Introduzca los parámetros para calcular la inflación histórica.
+              {labels.emptyStateMessage}
             </div>
           )}
         </div>

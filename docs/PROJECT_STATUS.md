@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-01 — componente de interfaz aislado, funcional y responsivo creado en `src/components/landing/tools/CalculatorInflationHistorical.tsx`; lógica del dominio local pura; inyección total de etiquetas por props; sin traducciones ni analytics; ver `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_UI_01.md`)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-REVIEW-01 — auditoría técnica completada sobre `src/components/landing/tools/CalculatorInflationHistorical.tsx`; 5 hallazgos confirmados corregidos; componente sigue aislado, sin integración, sin traducciones ni analytics; ver `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_UI_REVIEW_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,26 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-REVIEW-01 — Auditoría técnica del componente histórico aislado
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-17 |
+| **Tipo** | QA técnico + corrección acotada |
+| **Documento** | `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_UI_REVIEW_01.md` |
+
+Audita `src/components/landing/tools/CalculatorInflationHistorical.tsx` antes de integrarlo y confirma **5 hallazgos reales**, todos corregidos dentro del propio componente: parsing estricto de cantidad (sin `parseFloat` parcial), IDs únicos por instancia con `useId`, cierre del contrato de labels visibles, asociación correcta de errores a los selects cuando falla el rango de periodos, y fallback seguro para `locale` inválido en `Intl`.
+
+**Verificado y descartado:** estado inicial determinista, uso exclusivo de la API pública de `src/lib/inflation`, conservación de deflación y cantidad cero, orden/labels de periodos, aislamiento del componente, ausencia de red, cookies, Supabase, analytics, cambios en dataset o lógica de dominio.
+
+**Responsive y revisión visual local:** render real mediante harness temporal Vite + Chrome headless en 320, 375, 768 y 1440 px; estados revisados: inicial, cero, decimal, mismo periodo, invertido, deflación, cantidad inválida e importe grande. El primer intento sobre Next local quedó invalidado por `ERR_TOO_MANY_REDIRECTS` y no se contabilizó como QA válido.
+
+**Validaciones técnicas:** `npx vitest run src/__tests__/lib/inflation/historical.test.ts` ✅ 67/67, `npx vitest run` ✅ 572/573 (único fallo ajeno preexistente: `calculate-whatif.test.ts`), `npx tsc --noEmit` ✅, `npm run lint` ✅, `npm run build` ✅.
+
+**Sin cambios** en `CalculatorInflation.tsx`, páginas públicas, traducciones, analytics, tests permanentes, dataset, dominio o dependencias. El componente queda **aprobado para integración futura**, pero sigue sin integrarse en esta tarea.
 
 ---
 
@@ -3952,3 +3972,4 @@ Ningún cambio visual puede sacrificar contraste ni accesibilidad por estética.
 | 7 | UIUX-08 | Reemplazar hardcoded colors con tokens semánticos |
 | 8 | UIUX-09 | Activar `.bg-sakura` en una sección de la home |
 | 9+ | UIUX-10 a 15 | Refinamientos: FeatureCards, hover CTAs, CTA artículo, accesibilidad, blog index, accent |
+
