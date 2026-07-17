@@ -277,6 +277,11 @@
                 "invalidPeriodOrderError": "El mes inicial no puede ser posterior al mes final.",
                 "genericError": "No se ha podido realizar el cálculo. Inténtalo de nuevo.",
                 "emptyStateMessage": "Introduce una cantidad y selecciona dos meses para calcular la inflación acumulada."
+            },
+            "modeSelector": {
+                "label": "Tipo de cálculo",
+                "future": "Proyección futura",
+                "historical": "Inflación histórica"
             }
         },
         "Savings": {

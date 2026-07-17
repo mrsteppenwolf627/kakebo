@@ -1,8 +1,33 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-I18N-01)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-INTEGRATION-01)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-INTEGRATION-01 — Integración del modo histórico en la calculadora pública
+
+**Fecha:** 2026-07-17
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **modo histórico visible en producción tras el próximo deploy; analytics del nuevo modo pendientes (fuera de alcance)**
+**Sprint:** SEO / UI (integración, sin analytics)
+**Tipo:** Integración de UI en `/herramientas/calculadora-inflacion`. **Sin cambios en dataset, lógica de dominio, tests de dominio, metadata, schema, slug ni analytics.**
+**Documentos:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_INTEGRATION_01.md`
+
+Integra `CalculatorInflationHistorical` (aprobado en `HISTORICAL-UI-REVIEW-01`) dentro de `CalculatorInflation.tsx` mediante un selector de tabs accesible (`role="tablist"`/`tab`/`tabpanel`, navegación por flechas, `useId()` para IDs únicos). El modo futuro (proyección) permanece intacto y como modo inicial; ambos paneles quedan montados y ocultos con `hidden` para preservar el estado del modo histórico al alternar. Traducciones conectadas vía `t("historical.*")` desde el namespace `Tools.Inflation.historical` ya creado, más una nueva clave `Tools.Inflation.modeSelector` (label, future, historical) en ES/EN.
+
+**Defecto real encontrado y corregido:** el panel del modo futuro combinaba el atributo `hidden` con la clase Tailwind `grid` en el mismo `<div>`, y la regla de utilidad `.grid{display:grid}` ganaba la cascada sobre `[hidden]{display:none}` del user-agent, dejando el panel visible pese a `hidden`. Corregido separando el wrapper `hidden` de la clase de display en un `<div>` anidado adicional. Verificado con `getBoundingClientRect()`/`offsetParent` tras el fix.
+
+**Validación visual real** (navegador + harness temporal Vite, mismo mecanismo de mitigación que `HISTORICAL-UI-REVIEW-01` por inestabilidad del router local de Next/Turbopack): estado inicial futuro (10.000€/3%/10 años → -2.559€/7.441€), cambio de modo con preservación de estado, caso oficial histórico, deflación real (2002-06→2002-07, -0,7%, color esmeralda), periodo invertido (error mostrado), mismo periodo con cantidad 0, navegación por teclado (flechas), responsive 768px sin desborde. Detectado un desbordamiento horizontal a 320/375px, **confirmado preexistente** (idéntico antes de esta tarea, vía comparación con `git stash`), no introducido por el selector.
+
+**Validaciones ejecutadas:** test específico ✅ 67/67, suite completa 572/573 (mismo fallo ajeno), `tsc` ✅, `lint` ✅ (0 errores, 76 warnings preexistentes), `build` ✅.
+
+**Sin cambios en el dataset, la lógica de dominio, los tests de dominio, la página pública (metadata/schema/slug), ni analytics.**
+
+**STOP aplicado — no se añade analytics, no se modifica metadata/schema, no se inicia la siguiente tarea.**
+
+**Siguiente tarea recomendada:** decidir y documentar la estrategia de analytics para el modo histórico.
 
 ---
 

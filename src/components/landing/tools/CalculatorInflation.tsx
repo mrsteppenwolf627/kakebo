@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useId } from "react";
 import { Link } from "@/i18n/routing";
 import {
     AreaChart,
@@ -12,8 +12,14 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import { analytics } from "@/lib/analytics";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { EmbedModal } from "./EmbedModal";
+import {
+    CalculatorInflationHistorical,
+    type CalculatorInflationHistoricalLabels,
+} from "./CalculatorInflationHistorical";
+
+type CalculatorMode = "future" | "historical";
 
 const INE_LINKS = {
     ipc: "https://www.ine.es/ipc/",
@@ -40,11 +46,54 @@ function externalLink(href: string) {
 export function CalculatorInflation() {
     const t = useTranslations("Tools.Inflation");
     const tCommon = useTranslations("Tools.Common.embed");
+    const locale = useLocale();
+    const instanceId = useId();
     const [isEmbedOpen, setIsEmbedOpen] = useState(false);
     const [savings, setSavings] = useState(10000);
     const [inflationRate, setInflationRate] = useState(3);
     const [years, setYears] = useState(10);
+    const [mode, setMode] = useState<CalculatorMode>("future");
     const hasTrackedUse = useRef(false);
+    const futureTabRef = useRef<HTMLButtonElement>(null);
+    const historicalTabRef = useRef<HTMLButtonElement>(null);
+
+    const futureTabId = `${instanceId}-tab-future`;
+    const historicalTabId = `${instanceId}-tab-historical`;
+    const futurePanelId = `${instanceId}-panel-future`;
+    const historicalPanelId = `${instanceId}-panel-historical`;
+
+    const historicalLabels: CalculatorInflationHistoricalLabels = {
+        amountLabel: t("historical.amountLabel"),
+        amountPlaceholder: t("historical.amountPlaceholder"),
+        startPeriodLabel: t("historical.startPeriodLabel"),
+        endPeriodLabel: t("historical.endPeriodLabel"),
+        calculateButton: t("historical.calculateButton"),
+        resultHeading: t("historical.resultHeading"),
+        initialAmountLabel: t("historical.initialAmountLabel"),
+        equivalentAmountLabel: t("historical.equivalentAmountLabel"),
+        accumulatedInflationLabel: t("historical.accumulatedInflationLabel"),
+        purchasingPowerChangeLabel: t("historical.purchasingPowerChangeLabel"),
+        periodSummaryLabel: t("historical.periodSummaryLabel"),
+        startIndexLabel: t("historical.startIndexLabel"),
+        endIndexLabel: t("historical.endIndexLabel"),
+        sourceLabel: t("historical.sourceLabel"),
+        sourceName: t("historical.sourceName"),
+        resetButton: t("historical.resetButton"),
+        invalidAmountError: t("historical.invalidAmountError"),
+        invalidPeriodFormatError: t("historical.invalidPeriodFormatError"),
+        periodNotAvailableError: t("historical.periodNotAvailableError"),
+        invalidPeriodOrderError: t("historical.invalidPeriodOrderError"),
+        genericError: t("historical.genericError"),
+        emptyStateMessage: t("historical.emptyStateMessage"),
+    };
+
+    const handleTabKeyDown = (e: React.KeyboardEvent, current: CalculatorMode) => {
+        if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+        e.preventDefault();
+        const next: CalculatorMode = current === "future" ? "historical" : "future";
+        setMode(next);
+        (next === "future" ? futureTabRef : historicalTabRef).current?.focus();
+    };
 
     useEffect(() => {
         analytics.track("tool_viewed", { tool_name: "calculadora_inflacion" });
@@ -98,7 +147,71 @@ export function CalculatorInflation() {
                 </p>
             </div>
 
-            {/* Calculator Layout: Grid on Desktop */}
+            {/* Mode Selector: Future projection vs. Historical inflation */}
+            <div className="flex justify-center">
+                <div
+                    role="tablist"
+                    aria-label={t("modeSelector.label")}
+                    className="inline-flex w-full sm:w-auto flex-wrap gap-1 rounded-xl border border-border bg-card p-1"
+                >
+                    <button
+                        ref={futureTabRef}
+                        type="button"
+                        role="tab"
+                        id={futureTabId}
+                        aria-selected={mode === "future"}
+                        aria-controls={futurePanelId}
+                        tabIndex={mode === "future" ? 0 : -1}
+                        onClick={() => setMode("future")}
+                        onKeyDown={(e) => handleTabKeyDown(e, "future")}
+                        className={`flex-1 sm:flex-none px-5 py-2.5 rounded-lg text-sm font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900 dark:focus-visible:outline-stone-100 cursor-pointer ${
+                            mode === "future"
+                                ? "bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900"
+                                : "text-muted-foreground hover:text-foreground"
+                        }`}
+                    >
+                        {t("modeSelector.future")}
+                    </button>
+                    <button
+                        ref={historicalTabRef}
+                        type="button"
+                        role="tab"
+                        id={historicalTabId}
+                        aria-selected={mode === "historical"}
+                        aria-controls={historicalPanelId}
+                        tabIndex={mode === "historical" ? 0 : -1}
+                        onClick={() => setMode("historical")}
+                        onKeyDown={(e) => handleTabKeyDown(e, "historical")}
+                        className={`flex-1 sm:flex-none px-5 py-2.5 rounded-lg text-sm font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900 dark:focus-visible:outline-stone-100 cursor-pointer ${
+                            mode === "historical"
+                                ? "bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900"
+                                : "text-muted-foreground hover:text-foreground"
+                        }`}
+                    >
+                        {t("modeSelector.historical")}
+                    </button>
+                </div>
+            </div>
+
+            {/* Historical inflation panel */}
+            <div
+                id={historicalPanelId}
+                role="tabpanel"
+                aria-labelledby={historicalTabId}
+                hidden={mode !== "historical"}
+                tabIndex={0}
+            >
+                <CalculatorInflationHistorical labels={historicalLabels} locale={locale} />
+            </div>
+
+            {/* Future projection panel: Grid on Desktop */}
+            <div
+                id={futurePanelId}
+                role="tabpanel"
+                aria-labelledby={futureTabId}
+                hidden={mode !== "future"}
+                tabIndex={0}
+            >
             <div className="grid lg:grid-cols-12 gap-8 items-start">
 
                 {/* Left Sidebar: Inputs */}
@@ -306,6 +419,7 @@ export function CalculatorInflation() {
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
 
             {/* SEO & GEO Semantic Content Section */}

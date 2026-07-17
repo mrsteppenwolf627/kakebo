@@ -277,6 +277,11 @@
                 "invalidPeriodOrderError": "The start month cannot be later than the end month.",
                 "genericError": "The calculation could not be completed. Please try again.",
                 "emptyStateMessage": "Enter an amount and select two months to calculate cumulative inflation."
+            },
+            "modeSelector": {
+                "label": "Calculation type",
+                "future": "Future projection",
+                "historical": "Historical inflation"
             }
         },
         "Savings": {
