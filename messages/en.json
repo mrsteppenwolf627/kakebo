@@ -253,6 +253,30 @@
                 "link1": "Alternatives to banking apps that read your data",
                 "link2": "Kakebo vs YNAB: Which is better for you?",
                 "revisionNote": "Content last reviewed on July 16, 2026. Main sources: Instituto Nacional de Estadística (INE) and Boletín Oficial del Estado (BOE), Spain's official statistics institute and gazette. This calculator is indicative and does not constitute financial or legal advice."
+            },
+            "historical": {
+                "amountLabel": "Initial amount",
+                "amountPlaceholder": "Enter an amount",
+                "startPeriodLabel": "Start month",
+                "endPeriodLabel": "End month",
+                "calculateButton": "Calculate historical inflation",
+                "resultHeading": "Historical inflation result",
+                "initialAmountLabel": "Initial amount",
+                "equivalentAmountLabel": "Equivalent amount in the final month",
+                "accumulatedInflationLabel": "Cumulative inflation",
+                "purchasingPowerChangeLabel": "Change in value",
+                "periodSummaryLabel": "Analysed period",
+                "startIndexLabel": "Initial CPI index",
+                "endIndexLabel": "Final CPI index",
+                "sourceLabel": "Source",
+                "sourceName": "Spanish National Statistics Institute (INE)",
+                "resetButton": "Reset",
+                "invalidAmountError": "Enter a valid amount equal to or greater than zero.",
+                "invalidPeriodFormatError": "The selected period format is invalid.",
+                "periodNotAvailableError": "Data is not available for one of the selected periods.",
+                "invalidPeriodOrderError": "The start month cannot be later than the end month.",
+                "genericError": "The calculation could not be completed. Please try again.",
+                "emptyStateMessage": "Enter an amount and select two months to calculate cumulative inflation."
             }
         },
         "Savings": {

@@ -1,8 +1,31 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-REVIEW-01)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-I18N-01)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-I18N-01 — Traducciones del modo histórico de inflación
+
+**Fecha:** 2026-07-17
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **componente todavía no integrado en producción (fuera de alcance)**
+**Sprint:** SEO / i18n (traducciones del modo histórico, sin integración)
+**Tipo:** Traducciones ES/EN (`next-intl`). **Sin cambios en el componente, en la calculadora pública, en el dataset, en la lógica de dominio ni en los tests.**
+**Documentos:** `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_I18N_01.md`
+
+Añade el namespace `Tools.Inflation.historical` en `messages/es.json` y `messages/en.json`, con las 22 claves exactas requeridas por `CalculatorInflationHistoricalLabels` (`src/components/landing/tools/CalculatorInflationHistorical.tsx`). `purchasingPowerChangeLabel` se traduce de forma neutral ("Variación del valor" / "Change in value"), sin usar "pérdida de poder adquisitivo" ni asumir signo, conforme al riesgo ya anticipado en `HISTORICAL-UI-REVIEW-01` (`requiredNominalIncrease` puede ser positivo, cero o negativo). Fuente identificada como "Instituto Nacional de Estadística (INE)" / "Spanish National Statistics Institute (INE)", sin enlaces ni HTML embebido.
+
+**Paridad de claves validada:** 22/22 en ambos idiomas, coincidencia exacta con el contrato de labels, sin claves vacías, sin interpolación de variables no consumidas por el componente.
+
+**Validaciones ejecutadas:** JSON válido ✅, paridad de claves ✅, test específico de inflación ✅ 67/67, suite completa 572/573 (mismo fallo preexistente y ajeno `calculate-whatif.test.ts`), `tsc` ✅, `lint` ✅ (0 errores, 76 warnings preexistentes), `build` ✅.
+
+**Sin cambios en el componente histórico, en `CalculatorInflation.tsx`, en páginas públicas, en el dataset, en la lógica de dominio, en los tests, en analytics ni en dependencias.**
+
+**STOP aplicado — no se integra el componente, no se crea el selector de modos, no se inicia la siguiente tarea.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-INTEGRATION-01`.
 
 ---
 ## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-REVIEW-01 — Auditoría técnica del componente histórico aislado

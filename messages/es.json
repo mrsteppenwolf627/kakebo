@@ -253,6 +253,30 @@
                 "link1": "Alternativas a las apps bancarias que leen tus datos",
                 "link2": "Kakebo vs YNAB: ¿Cuál es mejor para ti?",
                 "revisionNote": "Contenido revisado por última vez el 16 de julio de 2026. Fuentes principales: Instituto Nacional de Estadística (INE) y Boletín Oficial del Estado (BOE). Esta calculadora es orientativa y no constituye asesoramiento financiero ni legal."
+            },
+            "historical": {
+                "amountLabel": "Cantidad inicial",
+                "amountPlaceholder": "Introduce una cantidad",
+                "startPeriodLabel": "Mes inicial",
+                "endPeriodLabel": "Mes final",
+                "calculateButton": "Calcular inflación histórica",
+                "resultHeading": "Resultado de la inflación histórica",
+                "initialAmountLabel": "Cantidad inicial",
+                "equivalentAmountLabel": "Cantidad equivalente en el mes final",
+                "accumulatedInflationLabel": "Inflación acumulada",
+                "purchasingPowerChangeLabel": "Variación del valor",
+                "periodSummaryLabel": "Periodo analizado",
+                "startIndexLabel": "Índice IPC inicial",
+                "endIndexLabel": "Índice IPC final",
+                "sourceLabel": "Fuente",
+                "sourceName": "Instituto Nacional de Estadística (INE)",
+                "resetButton": "Restablecer",
+                "invalidAmountError": "Introduce una cantidad válida igual o superior a cero.",
+                "invalidPeriodFormatError": "El formato del periodo seleccionado no es válido.",
+                "periodNotAvailableError": "No hay datos disponibles para uno de los periodos seleccionados.",
+                "invalidPeriodOrderError": "El mes inicial no puede ser posterior al mes final.",
+                "genericError": "No se ha podido realizar el cálculo. Inténtalo de nuevo.",
+                "emptyStateMessage": "Introduce una cantidad y selecciona dos meses para calcular la inflación acumulada."
             }
         },
         "Savings": {

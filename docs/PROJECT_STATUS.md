@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-UI-REVIEW-01 — auditoría técnica completada sobre `src/components/landing/tools/CalculatorInflationHistorical.tsx`; 5 hallazgos confirmados corregidos; componente sigue aislado, sin integración, sin traducciones ni analytics; ver `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_UI_REVIEW_01.md`)  
+**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-I18N-01 — namespace `Tools.Inflation.historical` creado en `messages/{es,en}.json` con las 22 claves del contrato de `CalculatorInflationHistoricalLabels`, paridad exacta validada entre idiomas; componente sigue sin integrar, sin analytics; ver `PROJECT_STATUS.md` raíz y `docs/seo/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_I18N_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
