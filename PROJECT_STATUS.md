@@ -1,8 +1,41 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-01)  
+**Última actualización:** 2026-07-18 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-PRODUCTION-VALIDATION-01 — bloque cerrado)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-PRODUCTION-VALIDATION-01 — Validación de analytics en producción y cierre del bloque
+
+**Fecha:** 2026-07-18
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Analytics validado en producción. Bloque `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL` cerrado formalmente.**
+**Sprint:** SEO / QA producción (validación exclusiva, sin cambios de código)
+**Tipo:** Validación de los 3 eventos de analytics (`inflation_calculator_mode_change`, `historical_inflation_calculation`, `historical_inflation_error`) en `https://www.metodokakebo.com/herramientas/calculadora-inflacion` (real, sin caché confirmado). **Sin cambios en componentes, analytics funcional, traducciones, dataset, lógica, tests, metadata ni schema.**
+**Documentos:** `docs/analytics/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ANALYTICS_PRODUCTION_VALIDATION_01.md`
+
+**Analytics validado:** los 3 eventos confirmados en producción real mediante interceptación de `window.gtag` y solicitudes de red reales a `google-analytics.com/g/collect`. 5 alternancias de modo contabilizadas exactamente (0 duplicados en clic repetido sobre pestaña activa, 0 eventos en render inicial), caso oficial (2002-01→2025-01, +67,9%) con `interval_months: 276` y `result_type: "inflation"` correctos, mismo periodo (`no_change`), deflación (`deflation`), error de cantidad (`INVALID_AMOUNT`, clic y Enter), error de orden de periodos (`INVALID_PERIOD_ORDER`, sin fuga de periodos en el payload).
+
+**Privacidad confirmada:** ningún payload contiene cantidad inicial, cantidad equivalente, variación monetaria, índices IPC, porcentaje exacto, ni datos personales.
+
+**Consentimiento:** el proyecto no implementa CMP/banner de cookies (arquitectura preexistente); GA4 carga incondicionalmente. No se ha introducido ningún bypass porque no existía mecanismo de consentimiento que sortear.
+
+**Funcionamiento sin analytics:** confirmado en producción con `window.gtag` forzado a `undefined` — cambio de modo y cálculo siguen funcionando sin excepciones ni ruptura de interfaz.
+
+**Hallazgos:** 2 `LIMITACIÓN DE VALIDACIÓN` no bloqueantes (código `503` uniforme en todas las solicitudes de red, atribuible a la herramienta de inspección y no a un rechazo real de GA4; discrepancia entre llamadas JS interceptadas — 5 — y solicitudes de red observadas — 3 — para el cambio de modo, consistente con agrupación de eventos de `gtag.js`, sin evidencia de duplicación real). Ningún hallazgo bloqueante, alto, medio ni bajo.
+
+**Bloque cerrado — completadas:** arquitectura, investigación oficial, dataset, actualización, lógica, tests (67/67), UI, revisión, traducciones, integración, validación de producción, corrección de cantidad, analytics, validación de analytics.
+
+**Estado final de la URL:** `IMPLEMENTACIÓN COMPLETADA — EN FASE DE MEDICIÓN` (no se declara éxito SEO orgánico; pendiente de ventanas de medición GSC de 2–12 semanas).
+
+**Validaciones ejecutadas:** tests de analytics ✅ 10/10, test específico ✅ 67/67, suite completa 582/583 (mismo fallo ajeno), `tsc` ✅, `lint` ✅, `build` ✅.
+
+**Sin cambios funcionales de ningún tipo — tarea exclusivamente documental.**
+
+**STOP aplicado — no se implementan más cambios, no se añaden eventos, no se modifica SEO, no se corrige deuda previa, no se inicia otra optimización de esta URL, no se solicita reindexación.**
+
+**Siguiente tarea recomendada:** ninguna de desarrollo. Próxima acción: medición pasiva en GA4 (desde ya) y en GSC (ventanas de 2–4, 4–8 y 8–12 semanas), sin nueva implementación sobre esta URL salvo que la medición revele un defecto.
 
 ---
 

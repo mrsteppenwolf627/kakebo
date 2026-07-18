@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-17 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-01 — implementación de 3 eventos de analytics para medir el uso del modo histórico (cambio de modo, cálculo completado, error controlado), reutilizando la utilidad `analytics.track` existente; sin cantidades monetarias ni datos personales en los payloads; sin cambios en lógica de dominio, traducciones, dataset, metadata ni schema; ver `PROJECT_STATUS.md` raíz y `docs/analytics/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ANALYTICS_01.md`)  
+**Última actualización:** 2026-07-18 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-PRODUCTION-VALIDATION-01 — validación en producción real de los 3 eventos de analytics del modo histórico; analytics APROBADO; bloque `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL` cerrado formalmente; URL declarada `IMPLEMENTACIÓN COMPLETADA — EN FASE DE MEDICIÓN`; sin cambios de código; ver `PROJECT_STATUS.md` raíz y `docs/analytics/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ANALYTICS_PRODUCTION_VALIDATION_01.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,34 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-PRODUCTION-VALIDATION-01 — Validación de analytics en producción y cierre del bloque
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-18 |
+| **Tipo** | Validación en producción (documental, sin cambios de código) |
+| **Documento** | `docs/analytics/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ANALYTICS_PRODUCTION_VALIDATION_01.md` |
+
+Validados en producción real (`https://www.metodokakebo.com/herramientas/calculadora-inflacion`, HTML sin caché, chunk JS con el código del commit `b1ae7c9` confirmado) los 3 eventos de analytics mediante interceptación de `window.gtag` y solicitudes de red reales a `google-analytics.com/g/collect`: `inflation_calculator_mode_change` (5 alternancias exactas, 0 duplicados en clic repetido, 0 en render inicial), `historical_inflation_calculation` (caso oficial 2002-01→2025-01 con `interval_months: 276` y `result_type: "inflation"`, mismo periodo, deflación), `historical_inflation_error` (`INVALID_AMOUNT` por clic y Enter, `INVALID_PERIOD_ORDER` sin fuga de periodos).
+
+**Privacidad confirmada:** sin cantidad, cantidad equivalente, variación monetaria, índices IPC, porcentaje exacto, ni datos personales en ningún payload.
+
+**Consentimiento:** sin CMP en el proyecto (preexistente); GA4 carga incondicionalmente; sin bypass introducido.
+
+**Sin analytics:** confirmado que la calculadora sigue funcionando con normalidad con `window.gtag` forzado a `undefined`.
+
+**Hallazgos:** 2 `LIMITACIÓN DE VALIDACIÓN` no bloqueantes (artefacto de status `503` en la herramienta de inspección de red; posible agrupación de eventos de `gtag.js` sin evidencia de duplicación real). Ningún hallazgo bloqueante.
+
+**Veredicto analytics:** ✅ APROBADO. **Bloque `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL` cerrado formalmente.** Estado final de la URL: `IMPLEMENTACIÓN COMPLETADA — EN FASE DE MEDICIÓN` (sin éxito SEO orgánico declarado; pendiente de ventanas GSC de 2–12 semanas).
+
+**Validaciones técnicas:** tests de analytics ✅ 10/10, test específico ✅ 67/67, suite completa 582/583 (mismo fallo ajeno), `tsc` ✅, `lint` ✅, `build` ✅.
+
+**Sin cambios funcionales de ningún tipo — tarea exclusivamente documental.**
+
+**STOP aplicado — no se implementan más cambios, no se añaden eventos, no se modifica SEO, no se corrige deuda previa, no se inicia otra optimización de esta URL, no se solicita reindexación.**
 
 ---
 
