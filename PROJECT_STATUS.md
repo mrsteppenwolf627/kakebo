@@ -1,8 +1,37 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SOURCES-02 — 6 fuentes oficiales añadidas, 1 corrección factual confirmada)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-FAQ-GEO-02 — 1 pregunta reformulada, 1 añadida, test de sincronía FAQ/schema añadido)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-ALTERNATIVAS-FINTONIC-FAQ-GEO-02 — Optimización quirúrgica de FAQ y respuestas directas GEO
+
+**Fecha:** 2026-07-20
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **1 pregunta reformulada, 1 pregunta añadida. Resto del artículo intacto.**
+**Sprint:** SEO / GEO — implementación editorial quirúrgica
+**Tipo:** Aplicación de los 2 cambios de FAQ aprobados en `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02` (`6f6a4d8`, sección 12) para `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias`, continuando `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SOURCES-02` (`58e7d42`). **Sin cambios en frontmatter (salvo `faq`), title, seoTitle, description, H1, introducción, headings, tabla, fichas, fuentes existentes, enlaces internos, CTA ni schema global.**
+**Documento de referencia:** `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md` (sección 12)
+
+**Pregunta reformulada (Q2):** "¿Existe una alternativa a apps bancarias sin conexión bancaria?" → **"¿Hay una alternativa a Fintonic sin conectar el banco?"** — wording literal aprobado en la arquitectura, para capturar mejor el featured snippet de la keyword principal sin perder la cobertura semántica de "apps bancarias" en la respuesta.
+
+**Pregunta añadida (Q6):** **"¿Es mejor usar una app automática o registrar los gastos manualmente?"** — candidata aprobada en la arquitectura; cubre la sub-intención "automatización vs. registro consciente" identificada como eje de decisión principal, sin canibalizar ninguna URL futura sobre Fintonic (no menciona "qué es Fintonic" ni su seguridad).
+
+**Preguntas descartadas (ya evaluadas y rechazadas en la arquitectura, no re-evaluadas aquí):** "¿Qué aplicación sustituye a Fintonic?" (redundante), "¿Fintonic es seguro?" (riesgo de canibalización explícito), "¿Qué app sirve para controlar gastos en España?" (intención demasiado genérica), "¿MetodoKakebo.com conecta con el banco?" (ya respondida implícitamente).
+
+**Test añadido (justificado):** no existía ninguna validación que garantizara la sincronía entre el `frontmatter.faq` (usado para generar el schema `FAQPage`) y las preguntas visibles en `<FaqSection>` — son dos fuentes de datos independientes en `page.tsx`, sin ningún mecanismo que las mantenga alineadas. Se añadió `src/__tests__/content/alternativas-a-app-bancarias-faq-sync.test.ts`, limitado a esta URL, que verifica mismo número de preguntas, ausencia de duplicados y mismo orden/texto de preguntas entre ambas fuentes. No se modificó ningún componente compartido.
+
+**Número de preguntas:** 5 antes → 6 después. FAQPage JSON-LD verificado con 6 entradas `Question`, en el mismo orden que el frontmatter.
+
+**Validaciones ejecutadas:** `tsc --noEmit` ✅ 0 errores; `eslint` ✅ 0 errores; `npm run build` ✅ compilado sin errores; test nuevo ✅ 3/3; servidor de producción local + `curl`/inspección HTML: 1 title, 1 meta description, 1 H1, introducción y 9 H2/19 H3 intactos, FAQPage con 6 preguntas correctas y sin duplicados, BreadcrumbList sin cambios, tabla/fichas/fuentes/CTA verificados sin cambios, `/es/` sigue con 308 y `/en/` sigue `noindex, nofollow`; suite de tests: 585/586 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`; +3 tests nuevos, todos en verde).
+
+**Sin cambios en frontmatter (salvo `faq`), title, seoTitle, description, H1, introducción, headings, tabla, fichas, pros/contras, fuentes existentes, enlaces internos, CTA, imágenes, schema global, canonical, hreflang, slug, sitemap ni robots.**
+
+**STOP aplicado — no se inicia `INTERNAL-LINKING-02`, no se modifica ninguna otra parte del artículo.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-INTERNAL-LINKING-02`.
 
 ---
 

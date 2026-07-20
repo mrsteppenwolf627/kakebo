@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SOURCES-02 — 6 fuentes oficiales añadidas y 1 corrección factual confirmada en `/blog/alternativas-a-app-bancarias`, resto del artículo intacto; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_SOURCES_02.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-FAQ-GEO-02 — FAQ de `/blog/alternativas-a-app-bancarias` optimizada: 1 pregunta reformulada, 1 añadida, test de sincronía FAQ/schema añadido; ver sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,29 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-ALTERNATIVAS-FINTONIC-FAQ-GEO-02 — Optimización quirúrgica de FAQ y respuestas directas GEO
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-20 |
+| **Tipo** | Implementación editorial quirúrgica (solo `faq` en frontmatter + `FaqSection` visible) + 1 test nuevo |
+| **URL objetivo** | `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` |
+| **Documento de arquitectura** | `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md` (sección 12) |
+
+Aplicación de los 2 cambios de FAQ aprobados: reformulación de "¿Existe una alternativa a apps bancarias sin conexión bancaria?" → "¿Hay una alternativa a Fintonic sin conectar el banco?", y adición de "¿Es mejor usar una app automática o registrar los gastos manualmente?" (cubre la sub-intención automatización vs. registro consciente sin canibalizar futuras URLs sobre Fintonic).
+
+**Test añadido:** `src/__tests__/content/alternativas-a-app-bancarias-faq-sync.test.ts` — no existía validación de sincronía entre `frontmatter.faq` (fuente del schema `FAQPage`) y las preguntas visibles en `<FaqSection>`, dos fuentes independientes en `page.tsx`. El test, limitado a esta URL, verifica mismo número, ausencia de duplicados y mismo orden/texto en ambas fuentes.
+
+**Preguntas:** 5 → 6. FAQPage JSON-LD verificado con 6 `Question` en el orden correcto.
+
+**Validaciones:** `tsc` ✅, `eslint` ✅, `build` ✅, test nuevo 3/3 ✅, HTML renderizado verificado en local (title/description/H1/introducción/headings/tabla/fichas/fuentes/CTA sin cambios, FAQPage con 6 preguntas sin duplicados), tests 585/586 (1 fallo preexistente ajeno).
+
+**Sin cambios en frontmatter (salvo `faq`), title, seoTitle, description, H1, introducción, headings, tabla, fichas, fuentes existentes, enlaces internos, CTA, schema global, canonical, hreflang, slug, sitemap ni robots.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-INTERNAL-LINKING-02`.
 
 ---
 
