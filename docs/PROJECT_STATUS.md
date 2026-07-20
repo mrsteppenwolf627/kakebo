@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02 — arquitectura de optimización SEO/editorial/GEO/CTA de `/blog/alternativas-a-app-bancarias`; sin implementación; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md`)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SNIPPET-02 — title, meta description y H1 de `/blog/alternativas-a-app-bancarias` implementados y validados en build/local; ver sección correspondiente en este documento y en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,32 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SNIPPET-02 — Implementación quirúrgica de title, meta description y H1
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-20 |
+| **Tipo** | Implementación quirúrgica (código + contenido, alcance estrictamente limitado al snippet y H1) |
+| **URL objetivo** | `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` |
+| **Documento de arquitectura** | `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md` |
+
+Implementación de la combinación de title/meta description/H1 aprobada en `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02` (`6f6a4d8`). El sistema de blog usaba un único campo `title` de frontmatter para `<title>`, OG, Twitter, JSON-LD `headline` y H1 — no permitía valores distintos. Se resolvió con un campo opcional retrocompatible `seoTitle?: string` (`src/lib/blog.ts`), usado en `generateMetadata()` (`page.tsx`) con fallback a `title` — ningún otro post del blog cambia de comportamiento.
+
+**ANTES → DESPUÉS:**
+- Title: 94 car., sin "Fintonic" → "Alternativas a Fintonic y Apps Bancarias (2026): 8 Opciones" (59 car., 73 con sufijo)
+- Meta description: 178 car. → 149 car.
+- H1: idéntico al title → "Alternativas a Fintonic: 8 apps para controlar tus gastos sin ceder tus datos" (77 car., distinto del title)
+
+**Archivos modificados:** `src/content/blog/alternativas-a-app-bancarias.es.mdx`, `src/lib/blog.ts`, `src/app/[locale]/(public)/blog/[slug]/page.tsx`.
+
+**Validaciones:** `tsc` ✅, `eslint` ✅ (0 errores), `build` ✅, HTML renderizado verificado en local (1 title, 1 description, 1 H1 distinto del title, OG/Twitter/JSON-LD coherentes, tabla/CTA/intro/headings sin cambios, `/es/` 308 y `/en/` noindex sin alterar), tests 582/583 (1 fallo preexistente ajeno).
+
+**Sin cambios en cuerpo, headings H2/H3, tabla, fichas, FAQ, enlaces, CTA, analytics, canonical, hreflang, slug, sitemap ni robots.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-CONTENT-INTRO-02`.
 
 ---
 

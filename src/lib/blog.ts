@@ -8,6 +8,9 @@ export interface BlogPost {
     slug: string;
     frontmatter: {
         title: string;
+        // Optional decoupled <title>/OG/Twitter text. Falls back to `title` (which
+        // also renders the visible H1) when absent, so existing posts are unaffected.
+        seoTitle?: string;
         date: string;
         excerpt: string;
         author: string;

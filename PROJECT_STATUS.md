@@ -1,8 +1,45 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02 — arquitectura de optimización diseñada, sin implementación)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SNIPPET-02 — title, meta description y H1 implementados en producción)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SNIPPET-02 — Implementación quirúrgica de title, meta description y H1
+
+**Fecha:** 2026-07-20
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Snippet y H1 implementados en producción.**
+**Sprint:** SEO / Implementación on-page quirúrgica
+**Tipo:** Implementación de la combinación de title/meta description/H1 aprobada en `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02` (`6f6a4d8`) para `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias`. **Sin cambios en cuerpo, headings H2/H3, tabla, fichas, FAQ, enlaces, CTA, canonical, hreflang ni slug.**
+**Documento de referencia:** `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md`
+
+**Desacoplo title/H1:** el sistema de blog usaba un único campo `title` de frontmatter para el `<title>`, OG, Twitter, JSON-LD `headline` y el H1 visible — no permitía valores distintos. Se resolvió de forma localizada y retrocompatible: se añadió el campo opcional `seoTitle?: string` a la interfaz `BlogPost['frontmatter']` (`src/lib/blog.ts`) y se usó `post.frontmatter.seoTitle || post.frontmatter.title` en `generateMetadata()` (`src/app/[locale]/(public)/blog/[slug]/page.tsx`) para `<title>`, `openGraph.title` y `twitter.title`. El H1 y el JSON-LD `headline` siguen leyendo `post.frontmatter.title`. El fallback (`|| post.frontmatter.title`) garantiza que ningún otro post del blog cambia de comportamiento al no definir `seoTitle`. No se tocó el template visual ni ningún componente compartido más allá de este cambio mínimo.
+
+**ANTES:**
+- Title: "Alternativas a Apps Bancarias para Controlar Gastos sin Conectar el Banco (2026) | Blog Kakebo" (94 car. sin sufijo, sin "Fintonic")
+- Meta description: 178 car.
+- H1: idéntico al title
+
+**DESPUÉS (verificado en `curl`/HTML renderizado en local, build de producción):**
+- Title: "Alternativas a Fintonic y Apps Bancarias (2026): 8 Opciones | Blog Kakebo" (59 car. sin sufijo, 73 con sufijo)
+- Meta description: "Comparamos 8 alternativas a Fintonic en 2026: con y sin conexión bancaria, precio y privacidad. Encuentra la que se adapta a ti, sin ceder tus datos." (149 car.)
+- H1: "Alternativas a Fintonic: 8 apps para controlar tus gastos sin ceder tus datos" (77 car., distinto del title)
+
+**Archivos modificados:** `src/content/blog/alternativas-a-app-bancarias.es.mdx` (frontmatter: `title`, `seoTitle` nuevo, `excerpt`, `updatedDate` → `2026-07-20`), `src/lib/blog.ts` (campo opcional `seoTitle` en la interfaz), `src/app/[locale]/(public)/blog/[slug]/page.tsx` (uso de `seoTitle` en metadata).
+
+**Validaciones ejecutadas:** `tsc --noEmit` ✅ 0 errores; `eslint` sobre los 3 archivos ✅ 0 errores (1 warning preexistente y ajeno, import no usado no tocado por este cambio); `npm run build` ✅ compilado sin errores; servidor de producción local + `curl`/inspección HTML: 1 sola `<title>`, 1 sola meta description, 1 solo H1 (distinto del title), OG/Twitter con `seoTitle`, canonical sin cambios, JSON-LD (`BlogPosting` headline, `BreadcrumbList`, `FAQPage` con 5 preguntas) coherente y sin duplicar, tabla/CTA/intro/H2/H3 verificados byte a byte sin cambios, `/es/` sigue con 308 y `/en/` sigue `noindex, nofollow` con su propio contenido sin tocar; suite de tests: 582/583 (1 fallo preexistente y ajeno en `calculate-whatif.test.ts`, no relacionado con blog/SEO).
+
+**Baseline GSC previo (sin modificar en esta tarea, solo de referencia para medición futura):** 4 clics · 459 impresiones · CTR ≈0,87% · posición media ≈8,19 (agregado); cluster Fintonic: 1 clic · 131 impresiones · CTR ≈0,76% · posición ≈9,75.
+
+**Ventana mínima de medición del snippet:** 2-4 semanas antes de evaluar impacto en CTR/posición.
+
+**Sin cambios en cuerpo del artículo, headings H2/H3, tabla, fichas, FAQ, enlaces, CTA, analytics, canonical, hreflang, slug, sitemap ni robots.**
+
+**STOP aplicado — no se inicia `CONTENT-INTRO-02`, no se modifica ninguna otra parte de la URL.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-CONTENT-INTRO-02`.
 
 ---
 

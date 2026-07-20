@@ -34,14 +34,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const enPost = getBlogPost(slug, 'en');
     const enIsIndexable = !!enPost && !enPost.frontmatter.noindex;
 
+    // Decoupled SEO title: falls back to the H1 (`title`) when a post has no
+    // dedicated `seoTitle`, so this only changes behavior for posts that opt in.
+    const seoTitle = post.frontmatter.seoTitle || post.frontmatter.title;
+
     return {
-        title: `${post.frontmatter.title} | Blog Kakebo`,
+        title: `${seoTitle} | Blog Kakebo`,
         description: post.frontmatter.excerpt,
         ...(post.frontmatter.noindex && {
             robots: { index: false, follow: false },
         }),
         openGraph: {
-            title: post.frontmatter.title,
+            title: seoTitle,
             description: post.frontmatter.excerpt,
             type: "article",
             url: `/blog/${slug}`,
@@ -65,7 +69,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
         twitter: {
             card: "summary_large_image",
-            title: post.frontmatter.title,
+            title: seoTitle,
             description: post.frontmatter.excerpt,
             images: [post.frontmatter.image || "/og-image.jpg"],
         },
