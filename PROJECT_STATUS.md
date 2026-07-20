@@ -1,8 +1,37 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-INTERNAL-LINKING-02 — 1 enlace saliente aprobado añadido, sin enlaces entrantes por falta de aprobación inequívoca)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-PRODUCTION-VALIDATION-02 — validación de producción superada; **milestone SEO-ONPAGE-ALTERNATIVAS-FINTONIC-02 cerrado formalmente**; URL declarada `IMPLEMENTACIÓN COMPLETADA — EN FASE DE MEDICIÓN`)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-ALTERNATIVAS-FINTONIC-PRODUCTION-VALIDATION-02 — Validación de producción y cierre del milestone
+
+**Fecha:** 2026-07-20
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Validación de producción superada. Milestone `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-02` cerrado formalmente.**
+**Sprint:** SEO / Validación de producción y cierre de milestone (validación exclusiva, sin cambios de código, contenido ni tests)
+**Tipo:** Validación en producción real (HTTP directo, sin caché de este entorno) de las 9 tareas del milestone para `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias`, contrastada contra la arquitectura aprobada. **Sin cambios en artículo, metadata, headings, tabla, fichas, FAQ, fuentes, enlaces, CTA, schema, tests, canonical, hreflang ni slug.**
+**Documento:** `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_PRODUCTION_VALIDATION_02.md`
+
+**Confirmado en producción:** title/description/H1 nuevos (verificados idénticos, únicos, sin duplicación de marca); introducción SEO/GEO presente y antigua ausente; los 2 headings corregidos ("Comparativa: Alternativas a Fintonic y Apps Bancarias en 2026", "Las 8 alternativas a Fintonic, analizadas") presentes y antiguos ausentes; corrección factual de Spendee ("checa", "austriaca" ausente); 6 fuentes oficiales presentes y verificadas HTTP 200 cada una; FAQ con 6 preguntas visibles = 6 entidades `Question` en el schema, mismo orden, sin duplicados; enlace interno a `/herramientas/calculadora-ahorro` (anchor "calculadora de ahorro") presente y funcional; canonical, redirect 308 de `/es/`, `noindex` de `/en/`, sitemap y schema (`BlogPosting`/`BreadcrumbList`) sin regresiones.
+
+**Validaciones locales:** `tsc` ✅, `eslint` ✅, `build` ✅, test de sincronía FAQ ✅ 3/3, suite completa 585/586 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`, confirmado no relacionado con el milestone).
+
+**Hallazgos:** 0 confirmados nuevos, 4 descartados (canibalización EN, duplicidad de metadata, enlaces rotos, desincronía FAQ/schema), 2 dudosos/preexistentes ya documentados en tareas anteriores (T-01 — discrepancia de `hreflang` en el HTTP Link header, sin corregir por estar fuera de alcance y sin evidencia de daño real; riesgo de percepción de neutralidad de la FAQ, no agravado en este milestone). Ningún hallazgo bloqueante.
+
+**Sin cambios funcionales de ningún tipo — tarea exclusivamente de validación y documental.**
+
+**Estado final de la URL:** `IMPLEMENTACIÓN COMPLETADA — EN FASE DE MEDICIÓN` (no se declara éxito SEO orgánico; pendiente de ventanas GSC de 2-12 semanas).
+
+**Baseline de medición (pre-milestone):** agregado 4 clics · 459 impresiones · CTR ≈0,87% · posición ≈8,19; cluster Fintonic 1 clic · 131 impresiones · CTR ≈0,76% · posición ≈9,75.
+
+**Ventanas de medición:** snippet 2-4 semanas; introducción/headings/FAQ/fuentes 4-8 semanas; enlazado interno 4-8 semanas; tendencia estable 8-12 semanas.
+
+**STOP aplicado — no se elige otra URL, no se inicia otro milestone, no se modifica esta URL salvo que la medición revele una regresión.**
+
+**Milestone `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-02`: CERRADO — EN MEDICIÓN.**
 
 ---
 

@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-INTERNAL-LINKING-02 — enlazado interno de `/blog/alternativas-a-app-bancarias` reforzado: 1 enlace saliente aprobado añadido, 0 entrantes por falta de aprobación inequívoca; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_INTERNAL_LINKING_02.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-PRODUCTION-VALIDATION-02 — validación de producción superada; **milestone SEO-ONPAGE-ALTERNATIVAS-FINTONIC-02 cerrado — CERRADO — EN MEDICIÓN**; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_PRODUCTION_VALIDATION_02.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,27 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-ALTERNATIVAS-FINTONIC-PRODUCTION-VALIDATION-02 — Validación de producción y cierre del milestone
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-20 |
+| **Tipo** | Validación en producción (documental, sin cambios de código, contenido ni tests) |
+| **URL objetivo** | `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` |
+| **Documento** | `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_PRODUCTION_VALIDATION_02.md` |
+
+Validados en producción real (HTTP directo con `curl`, sin caché de este entorno) todos los cambios de las 9 tareas del milestone: snippet, introducción, 2 headings, corrección factual de Spendee, 6 fuentes oficiales (las 6 verificadas HTTP 200), FAQ de 6 preguntas sincronizada con `FAQPage` (verificado también con test automatizado), enlace interno a `/herramientas/calculadora-ahorro`, canonical, redirect 308 de `/es/`, `noindex` de `/en/`, sitemap y schema — todo conforme a la arquitectura aprobada, sin regresiones.
+
+**Validaciones locales:** `tsc` ✅, `eslint` ✅, `build` ✅, test FAQ sync ✅ 3/3, suite completa 585/586 (mismo fallo preexistente y ajeno).
+
+**Hallazgos:** 0 confirmados nuevos; 2 dudosos/preexistentes ya documentados (T-01 hreflang en HTTP Link header, riesgo de neutralidad de FAQ) sin agravar.
+
+**Veredicto:** validación superada. **Milestone `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-02` cerrado formalmente.** Estado final de la URL: `IMPLEMENTACIÓN COMPLETADA — EN FASE DE MEDICIÓN`.
+
+**Ventanas de medición:** snippet 2-4 semanas; contenido/headings/FAQ/fuentes 4-8 semanas; enlazado 4-8 semanas; tendencia estable 8-12 semanas. Sin nueva implementación sobre esta URL salvo regresión detectada.
 
 ---
 
