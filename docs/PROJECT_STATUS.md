@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-FAQ-GEO-02 — FAQ de `/blog/alternativas-a-app-bancarias` optimizada: 1 pregunta reformulada, 1 añadida, test de sincronía FAQ/schema añadido; ver sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-INTERNAL-LINKING-02 — enlazado interno de `/blog/alternativas-a-app-bancarias` reforzado: 1 enlace saliente aprobado añadido, 0 entrantes por falta de aprobación inequívoca; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_INTERNAL_LINKING_02.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,29 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-ALTERNATIVAS-FINTONIC-INTERNAL-LINKING-02 — Enlazado interno contextual quirúrgico
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-20 |
+| **Tipo** | Implementación quirúrgica de enlazado interno (1 frase nueva) |
+| **URL objetivo** | `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` |
+| **Documento de evidencia** | `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_INTERNAL_LINKING_02.md` |
+
+Implementación del único enlace saliente aprobado sin ambigüedad en la arquitectura (sección 13): enlace hacia `/herramientas/calculadora-ahorro` (anchor "calculadora de ahorro"), insertado como frase nueva al final de la sección "Privacidad frente a comodidad: no son excluyentes", continuando `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-FAQ-GEO-02` (`236f67f`).
+
+**Enlaces entrantes:** 0 modificados — sin aprobación inequívoca en la arquitectura (regla de bloqueo aplicada); el único candidato (`CalculatorInflation.tsx`) queda diferido a una tarea de i18n/UI separada.
+
+**Enlaces legacy:** ninguno detectado hacia `/es/blog/alternativas-a-app-bancarias`.
+
+**Validaciones:** `tsc` ✅, `eslint` ✅, `build` ✅, HTML renderizado verificado en local (metadata/H1/introducción/headings/tabla/fichas/FAQ/CTA sin cambios, nuevo enlace correctamente renderizado), destino verificado 200 OK, tests 585/586 (1 fallo preexistente ajeno).
+
+**Sin cambios en metadata, H1, introducción, headings, tabla, fichas, FAQ, CTA, fuentes externas, schema, canonical, hreflang, slug, sitemap ni robots.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-PRODUCTION-VALIDATION-02`.
 
 ---
 

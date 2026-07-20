@@ -1,8 +1,33 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-FAQ-GEO-02 — 1 pregunta reformulada, 1 añadida, test de sincronía FAQ/schema añadido)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-INTERNAL-LINKING-02 — 1 enlace saliente aprobado añadido, sin enlaces entrantes por falta de aprobación inequívoca)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-ALTERNATIVAS-FINTONIC-INTERNAL-LINKING-02 — Enlazado interno contextual quirúrgico
+
+**Fecha:** 2026-07-20
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **1 enlace saliente aprobado implementado. 0 enlaces entrantes modificados (sin aprobación inequívoca). Resto del artículo intacto.**
+**Sprint:** SEO / Enlazado interno — implementación quirúrgica
+**Tipo:** Implementación del único enlace saliente aprobado sin ambigüedad en `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02` (`6f6a4d8`, sección 13) para `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias`, continuando `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-FAQ-GEO-02` (`236f67f`). **Sin cambios en metadata, H1, introducción, headings, tabla, fichas (salvo la frase mínima aprobada), FAQ, CTA, fuentes externas ni schema.**
+**Documento de evidencia:** `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_INTERNAL_LINKING_02.md`
+
+**Enlace saliente añadido:** `/herramientas/calculadora-ahorro`, anchor "calculadora de ahorro", insertado como una única frase nueva al final de la sección "Privacidad frente a comodidad: no son excluyentes" (el punto funcionalmente más próximo a la "sección de cierre" propuesta en la arquitectura, que no llegó a implementarse como heading en `HEADINGS-02`): *"Una vez elijas la alternativa que mejor encaja contigo, el siguiente paso es ponerle una meta: la [calculadora de ahorro](/herramientas/calculadora-ahorro) te ayuda a calcular cuánto puedes ahorrar cada mes."*
+
+**Enlaces entrantes:** **0 modificados.** Aplicada la regla de bloqueo del prompt — la arquitectura no aprueba de forma inequívoca ninguna modificación de enlace entrante en el alcance de esta tarea; el único candidato (anchor de `CalculatorInflation.tsx`, vía `messages/es.json`) está explícitamente diferido a una tarea de i18n/UI separada. Los 4 entrantes existentes (`peligros-apps-ahorro-automatico`, `kakebo-vs-ynab`, `kakebo-online-gratis`, `como-ahorrar-dinero-cada-mes`) están protegidos, no modificados.
+
+**Enlaces legacy:** ninguno detectado hacia `/es/blog/alternativas-a-app-bancarias` en todo `src/`.
+
+**Validaciones ejecutadas:** `tsc --noEmit` ✅ 0 errores; `eslint` ✅ 0 errores; `npm run build` ✅ compilado sin errores; servidor de producción local + `curl`/inspección HTML: 1 title, 1 meta description, 1 H1, introducción, 9 H2/19 H3, FAQPage (6 preguntas) y CTA intactos, nuevo enlace renderizado correctamente sin `target="_blank"`, `/es/` sigue con 308 y `/en/` sigue `noindex, nofollow`, destino `/herramientas/calculadora-ahorro` verificado 200 OK antes y después; suite de tests: 585/586 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`).
+
+**Sin cambios en metadata, title, seoTitle, description, H1, introducción, headings, tabla, fichas, pros/contras, FAQ, CTA, fuentes externas, imágenes, schema, canonical, hreflang, slug, sitemap ni robots.**
+
+**STOP aplicado — no se inicia `PRODUCTION-VALIDATION-02`, no se modifica ninguna otra parte del proyecto.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-PRODUCTION-VALIDATION-02`.
 
 ---
 
