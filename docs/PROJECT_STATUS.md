@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-18 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-PRODUCTION-VALIDATION-01 — validación en producción real de los 3 eventos de analytics del modo histórico; analytics APROBADO; bloque `SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL` cerrado formalmente; URL declarada `IMPLEMENTACIÓN COMPLETADA — EN FASE DE MEDICIÓN`; sin cambios de código; ver `PROJECT_STATUS.md` raíz y `docs/analytics/SEO_ONPAGE_CALCULADORA_INFLACION_HISTORICAL_ANALYTICS_PRODUCTION_VALIDATION_01.md`)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-VALIDATION-02 — diagnóstico SEO/técnico/editorial de `/blog/alternativas-a-app-bancarias`; sin implementación; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_VALIDATION_02.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,32 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-ALTERNATIVAS-FINTONIC-VALIDATION-02 — Validación SEO/técnica/editorial de `alternativas-a-app-bancarias`
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-20 |
+| **Tipo** | Validación de diagnóstico (documental, sin cambios de código, contenido ni metadata) |
+| **URL objetivo** | `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` |
+| **Datos GSC de partida** | 4 clics · 459 impresiones · CTR ≈0,87% · posición media ≈8,19 (variantes agregadas: sin prefijo, `/es/`, `/en/`) |
+| **Documento** | `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_VALIDATION_02.md` |
+
+Validación completa de repositorio, inventario de archivos, HTML real de producción (3 variantes vía `curl` con cabeceras), intención de búsqueda, snippet, contenido, estructura/GEO, enlazado interno y conversión, siguiendo el histórico documentado de P0.7 (`5d5407e`) y SEO-CTR-FINTONIC-01 (`e1f30a5`).
+
+**Hallazgo principal (CONFIRMADO):** el `title` (94 caracteres) no contiene "Fintonic" — keyword del 100% del cluster de consultas objetivo — y excede la longitud recomendada; `meta description` (178 caracteres) también la excede. Causa más probable del CTR bajo.
+
+**Hallazgo técnico (CONFIRMADO):** el HTTP `Link` header anuncia `hreflang="en"` pese a que el `<head>` HTML correctamente lo omite (variante EN es `noindex`). Origen no determinado.
+
+**Descartado:** canibalización ES/EN (redirect 308 en `/es/`, `noindex` real en `/en/`, exclusión correcta del sitemap); apps comparadas desactualizadas (Spendee y Toshl verificadas vigentes en 2026); enlaces rotos; contenido oculto.
+
+**Dudoso:** fragmentación de señales GSC por indexación histórica previa a las correcciones ya aplicadas; posible sesgo de objetividad hacia el producto propio dentro de la comparativa.
+
+**Sin cambios en artículo, metadata, title, description, headings, enlaces, schema, canonical, hreflang, slug ni componentes.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-KEYWORD-SERP-02`.
 
 ---
 

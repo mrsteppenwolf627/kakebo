@@ -1,8 +1,35 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-18 (SEO-ONPAGE-CALCULADORA-INFLACION-HISTORICAL-ANALYTICS-PRODUCTION-VALIDATION-01 — bloque cerrado)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-VALIDATION-02 — diagnóstico completado, sin implementación)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-ALTERNATIVAS-FINTONIC-VALIDATION-02 — Validación SEO/técnica/editorial de `alternativas-a-app-bancarias`
+
+**Fecha:** 2026-07-20
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Diagnóstico documentado. Sin implementación.**
+**Sprint:** SEO / Validación on-page (diagnóstico exclusivo, sin cambios de código, contenido ni metadata)
+**Tipo:** Validación de `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` (URL priorizada por GSC: 4 clics, 459 impresiones, CTR ≈0,87%, posición media ≈8,19; cluster "alternativas a fintonic"). Cubre repositorio, inventario de archivos, HTML real de producción en 3 variantes (sin prefijo, `/es/`, `/en/`), intención, snippet, contenido, estructura/GEO, enlazado y conversión. **Sin cambios en artículo, metadata, title, description, headings, enlaces, schema, canonical, hreflang, slug ni componentes.**
+**Documento:** `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_VALIDATION_02.md`
+
+**Hallazgo principal (CONFIRMADO):** el `title` actual (94 caracteres) no contiene "Fintonic" — keyword del 100% del cluster de consultas objetivo — y excede la longitud recomendada en SERP; la `meta description` (178 caracteres) también la excede. Causa más probable del CTR bajo pese a posición media razonable.
+
+**Hallazgo técnico (CONFIRMADO):** discrepancia entre el HTTP `Link` header (anuncia `hreflang="en"`) y el `<head>` HTML (correctamente sin `en`, por ser la variante EN `noindex`). Origen no determinado — pendiente de investigación técnica independiente.
+
+**Descartado:** canibalización entre variantes (`/es/` redirige 308 correcto; `/en/` sirve `noindex, nofollow` y está excluida del sitemap); apps comparadas desactualizadas (Spendee y Toshl verificadas operativas en 2026 vía búsqueda web); enlaces rotos; contenido oculto o fragmentos concatenados.
+
+**Dudoso:** fragmentación de señales GSC entre variantes por indexación histórica previa a las correcciones ya aplicadas (no verificable sin acceso a GSC por URL); posible sesgo de objetividad por promoción del producto propio dentro de una comparativa neutral; ausencia de fuente en claims genéricos sobre modelo de negocio fintech.
+
+**Validaciones ejecutadas:** `git status`/`fetch`/`log`/`diff` (repositorio limpio y sincronizado con `origin/main` antes de empezar), `curl -D -` contra las 3 variantes de producción, inspección de `sitemap.xml` en producción, verificación web de vigencia de 2 apps competidoras, lectura íntegra de `page.tsx`, `sitemap.ts`, `robots.ts`, `middleware.ts`, `i18n/routing.ts` y ambos `.mdx`.
+
+**Sin cambios funcionales de ningún tipo — tarea exclusivamente documental.**
+
+**STOP aplicado — no se implementan correcciones, no se inicia keyword research, no se modifica la URL.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-KEYWORD-SERP-02` (análisis de SERP del cluster "alternativas a fintonic" antes de decidir cómo reintroducir la keyword en title/H1).
 
 ---
 
