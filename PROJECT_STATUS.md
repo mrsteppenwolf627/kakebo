@@ -1,8 +1,37 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-HEADINGS-02 — 2 headings alineados con la keyword Fintonic)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SOURCES-02 — 6 fuentes oficiales añadidas, 1 corrección factual confirmada)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SOURCES-02 — Verificación factual y trazabilidad mediante fuentes oficiales
+
+**Fecha:** 2026-07-20
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **6 fuentes oficiales añadidas, 1 corrección factual mínima confirmada. Resto del artículo intacto.**
+**Sprint:** SEO / Verificación editorial quirúrgica
+**Tipo:** Verificación de afirmaciones objetivas (precio, plataforma, conexión bancaria, nacionalidad de la empresa, modelo de negocio) de las 8 alternativas comparadas en `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` contra fuentes oficiales (web/precios oficiales de cada app, un registro oficial de la Comisión Europea, y código propio para Kakebo AI). Continúa `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-HEADINGS-02` (`fde6c76`). **Sin cambios en frontmatter, title, seoTitle, description, H1, introducción, headings, tabla (salvo nota al pie), FAQ, CTA, enlaces internos ni schema.**
+**Documento de evidencia:** `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_SOURCES_02.md`
+
+**Aplicaciones verificadas:** Fintonic, Spendee, Toshl Finance, Money Manager, Emma, YNAB (contra fuentes oficiales externas) y Kakebo AI (contra código propio: `src/app/api/stripe/checkout/route.ts` confirma pagos desactivados — "Kakebo is now free" — y ausencia de integración bancaria en `src/app`/`src/lib`).
+
+**Corrección factual (único dato objetivo corregido):** ficha de Spendee — "Aplicación austriaca con sede en Praga" (contradicción interna: Austria vs. Praga/República Checa) → "Aplicación checa, con sede en Praga", citando la página oficial "About" de Spendee (SPENDEE a.s., Praga, República Checa).
+
+**6 fuentes oficiales añadidas** (enlaces inline en el párrafo descriptivo de cada ficha o en la nota al pie de la tabla, todos verificados HTTP 200): fintonic.com (modelo de negocio de Fintonic), spendee.com/about (nacionalidad, corrección), EU Digital Finance Platform (nacionalidad de Toshl Finance), realbyteapps.com (nacionalidad Money Manager), emma-app.com (nacionalidad Emma), ynab.com/pricing (ausencia de versión gratuita de YNAB).
+
+**No verificable con fuente concluyente (sin modificar el texto):** cobertura geográfica europea de la conexión bancaria de Toshl Finance.
+
+**No corregido por prudencia:** precios exactos en EUR de Spendee, Toshl, Emma y YNAB — las fuentes oficiales muestran USD/GBP con aviso de variación por país; no se ha convertido moneda ni inventado equivalencias, conforme a la restricción explícita de la tarea.
+
+**Validaciones ejecutadas:** `tsc --noEmit` ✅ 0 errores; `eslint` ✅ 0 errores (mismo warning preexistente ajeno); `npm run build` ✅ compilado sin errores; servidor de producción local + `curl`/inspección HTML: 1 title, 1 meta description, 1 H1, introducción y 9 H2/19 H3 intactos, los 6 enlaces nuevos renderizados correctamente (`target="_blank" rel="noopener noreferrer"`, sin `nofollow`, consistente con el componente `CustomLink` existente, no modificado), FAQPage (5 preguntas) y BreadcrumbList sin cambios, CTA presente, `/es/` sigue con 308 y `/en/` sigue `noindex, nofollow`; validación HTTP de los 6 enlaces añadidos (todos 200, sin redirecciones a dominio distinto del oficial); suite de tests: 582/583 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`).
+
+**Sin cambios en frontmatter, title, seoTitle, description, H1, introducción, headings, orden/número de alternativas, Pros/Contras/Para quién (ningún bullet modificado), FAQ, CTA, enlaces internos, imágenes, schema, canonical, hreflang, slug, sitemap ni robots.**
+
+**STOP aplicado — no se inicia `FAQ-GEO-02`, no se modifica ninguna otra parte del artículo.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-FAQ-GEO-02`.
 
 ---
 

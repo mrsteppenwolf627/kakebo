@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-HEADINGS-02 — 2 headings de `/blog/alternativas-a-app-bancarias` alineados con la keyword Fintonic, resto del artículo intacto; ver sección correspondiente en este documento y en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SOURCES-02 — 6 fuentes oficiales añadidas y 1 corrección factual confirmada en `/blog/alternativas-a-app-bancarias`, resto del artículo intacto; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_SOURCES_02.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,33 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SOURCES-02 — Verificación factual y trazabilidad mediante fuentes oficiales
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-20 |
+| **Tipo** | Verificación factual + implementación quirúrgica (enlaces de fuente + 1 corrección mínima) |
+| **URL objetivo** | `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` |
+| **Documento de evidencia** | `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_SOURCES_02.md` |
+
+Verificación de las afirmaciones objetivas de las 8 alternativas comparadas contra fuentes oficiales (Fintonic, Spendee, Toshl Finance, Money Manager, Emma, YNAB vía web/precios oficiales; Kakebo AI vía código propio), continuando `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-HEADINGS-02` (`fde6c76`).
+
+**Corrección factual:** Spendee — "austriaca" → "checa" (contradicción interna corregida, fuente: spendee.com/about).
+
+**6 fuentes oficiales añadidas** como enlaces inline (nacionalidad de cada empresa + modelo de negocio de Fintonic + ausencia de plan gratuito de YNAB), todas verificadas HTTP 200.
+
+**Kakebo AI verificado por código:** gratuito confirmado (`src/app/api/stripe/checkout/route.ts` — pagos desactivados explícitamente), sin conexión bancaria confirmado (ausencia de integración en el código).
+
+**No verificable:** cobertura europea de conexión bancaria de Toshl Finance (sin tocar). **No corregido por prudencia:** precios exactos en EUR de 4 apps (fuentes oficiales en USD/GBP, sin conversión de moneda).
+
+**Validaciones:** `tsc` ✅, `eslint` ✅, `build` ✅, HTML renderizado verificado en local (title/description/H1/introducción/headings intactos, 6 enlaces nuevos correctos, FAQ/tabla/CTA sin cambios), validación HTTP de los 6 enlaces (200), tests 582/583 (1 fallo preexistente ajeno).
+
+**Sin cambios en frontmatter, title, seoTitle, description, H1, introducción, headings, orden/número de alternativas, Pros/Contras, FAQ, CTA, enlaces internos, schema, canonical, hreflang, slug, sitemap ni robots.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-FAQ-GEO-02`.
 
 ---
 
