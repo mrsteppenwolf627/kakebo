@@ -1,8 +1,37 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-CONTENT-INTRO-02 — introducción del artículo optimizada)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-HEADINGS-02 — 2 headings alineados con la keyword Fintonic)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-ALTERNATIVAS-FINTONIC-HEADINGS-02 — Alineación quirúrgica de 2 headings con la keyword Fintonic
+
+**Fecha:** 2026-07-20
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **2 headings corregidos. Resto del artículo intacto.**
+**Sprint:** SEO / Implementación editorial quirúrgica
+**Tipo:** Corrección de los 2 headings expresamente aprobados en `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02` (`6f6a4d8`, sección 7), continuando `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-CONTENT-INTRO-02` (`6ad176d`), para `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias`. **Sin cambios en frontmatter, title, seoTitle, description, H1, introducción, tabla, fichas, FAQ, enlaces, CTA, imágenes ni schema.**
+**Documento de referencia:** `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md`
+
+**Heading 1 (H2, introducción de la tabla):** "Comparativa: Mejores Alternativas a Apps Bancarias en 2026" → **"Comparativa: Alternativas a Fintonic y Apps Bancarias en 2026"** — alinea el heading con la keyword principal manteniendo el framing "Apps Bancarias" (wording literal de la arquitectura, sección 7).
+
+**Heading 2 (H2, introducción de las fichas):** "Las 5 mejores alternativas a Fintonic, analizadas" → **"Las 8 alternativas a Fintonic, analizadas"** — corrige una inconsistencia numérica preexistente (el heading decía "5" mientras el cuerpo siempre comparó 8 apps) y elimina el claim "mejores" no justificado (wording literal de la arquitectura, sección 7).
+
+**Otros headings propuestos en la arquitectura como opcionales** ("¿Qué es una alternativa a Fintonic y cómo elegirla?", "En resumen: ¿cuál elegir?", renombrar el heading de la FAQ) **no se han tocado** en esta tarea por no estar expresamente aprobados como cambio obligatorio — quedan disponibles para una tarea futura si se decide.
+
+**Archivo de contenido modificado:** `src/content/blog/alternativas-a-app-bancarias.es.mdx` (diff de exactamente 2 líneas).
+
+**Inventario de headings:** 8 H2 y 9 H3 en el cuerpo del artículo, idénticos antes y después (solo cambió el texto de 2 H2, ningún heading añadido, eliminado ni movido).
+
+**Validaciones ejecutadas:** `tsc --noEmit` ✅ 0 errores; `eslint` ✅ 0 errores (mismo warning preexistente ajeno); `npm run build` ✅ compilado sin errores; servidor de producción local + `curl`/inspección HTML: 1 title, 1 meta description, 1 H1 (idénticos a `SNIPPET-02`), introducción de `CONTENT-INTRO-02` confirmada intacta, los 2 headings renderizados con el texto exacto aprobado, 9 H2 y 19 H3 totales en la página (incluyendo footer y posts relacionados) sin cambios respecto a la tarea anterior, tabla y fichas verificadas sin cambios, FAQPage (5 preguntas) y BreadcrumbList sin cambios, CTA presente, `/es/` sigue con 308 y `/en/` sigue `noindex, nofollow`; suite de tests: 582/583 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`).
+
+**Sin cambios en frontmatter, title, seoTitle, description, H1, introducción, tabla, alternativas, fichas, pros/contras, FAQ, enlaces, CTA, imágenes, fuentes, schema, canonical, hreflang, slug, sitemap ni robots.**
+
+**STOP aplicado — no se inicia `SOURCES-02`, no se modifica ninguna otra parte del artículo.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SOURCES-02`.
 
 ---
 

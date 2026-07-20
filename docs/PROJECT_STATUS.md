@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-CONTENT-INTRO-02 — introducción de `/blog/alternativas-a-app-bancarias` reescrita, resto del artículo intacto; ver sección correspondiente en este documento y en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-HEADINGS-02 — 2 headings de `/blog/alternativas-a-app-bancarias` alineados con la keyword Fintonic, resto del artículo intacto; ver sección correspondiente en este documento y en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,33 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-ALTERNATIVAS-FINTONIC-HEADINGS-02 — Alineación quirúrgica de 2 headings con la keyword Fintonic
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-20 |
+| **Tipo** | Implementación editorial quirúrgica (solo 2 headings H2) |
+| **URL objetivo** | `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` |
+| **Documento de arquitectura** | `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md` (sección 7) |
+
+Corrección de los 2 headings expresamente aprobados en la arquitectura, continuando `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-CONTENT-INTRO-02` (`6ad176d`):
+- "Comparativa: Mejores Alternativas a Apps Bancarias en 2026" → "Comparativa: Alternativas a Fintonic y Apps Bancarias en 2026"
+- "Las 5 mejores alternativas a Fintonic, analizadas" → "Las 8 alternativas a Fintonic, analizadas" (corrige inconsistencia numérica preexistente: el heading decía "5" pero el cuerpo siempre comparó 8 apps)
+
+Los headings opcionales de la arquitectura (nuevo H2 informativo, H2 de conclusión, renombrar FAQ) no se han tocado por no estar expresamente aprobados como obligatorios.
+
+**Archivo modificado:** `src/content/blog/alternativas-a-app-bancarias.es.mdx` (diff de exactamente 2 líneas).
+
+**Inventario:** 8 H2 y 9 H3 en el cuerpo, idénticos antes y después.
+
+**Validaciones:** `tsc` ✅, `eslint` ✅, `build` ✅, HTML renderizado verificado en local (title/description/H1/introducción intactos, 2 headings con el texto exacto aprobado, tabla/fichas/FAQ/CTA sin cambios, `/es/` y `/en/` sin alterar), tests 582/583 (1 fallo preexistente ajeno).
+
+**Sin cambios en frontmatter, title, seoTitle, description, H1, introducción, tabla, alternativas, FAQ, enlaces, CTA, imágenes, schema, canonical, hreflang, slug, sitemap ni robots.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SOURCES-02`.
 
 ---
 
