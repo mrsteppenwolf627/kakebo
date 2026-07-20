@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-VALIDATION-02 — diagnóstico SEO/técnico/editorial de `/blog/alternativas-a-app-bancarias`; sin implementación; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_VALIDATION_02.md`)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-KEYWORD-SERP-02 — investigación de keywords, intención y SERP competitiva de `/blog/alternativas-a-app-bancarias`; sin implementación; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_KEYWORD_SERP_02.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,33 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-ALTERNATIVAS-FINTONIC-KEYWORD-SERP-02 — Investigación de keywords, intención y SERP competitiva
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-20 |
+| **Tipo** | Investigación de diagnóstico (documental, sin cambios de código, contenido ni metadata) |
+| **URL objetivo** | `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` |
+| **Datos GSC (cluster Fintonic)** | 1 clic · 131 impresiones · CTR ≈0,76% · posición media ≈9,75 |
+| **Datos SE Ranking** | 6 keywords del cluster Fintonic, posiciones 8-10, volumen 50, dificultad 14-32 (mercado ES, julio 2026); Domain Trust 7, Page Trust de la URL 3, 0 backlinks |
+| **Documento** | `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_KEYWORD_SERP_02.md` |
+
+Investigación completa de keyword principal, variantes, intención de búsqueda y SERP competitiva, continuando el diagnóstico de `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-VALIDATION-02` (commit `035ed25`).
+
+**Decisión de keyword:** principal `alternativas a fintonic`; variante primaria `alternativa a fintonic`; el resto son variantes secundarias de la misma intención. Descartadas: `qué es Fintonic`, `Fintonic es seguro`, `Fintonic empresas`, `Mint` como keyword propia en ES.
+
+**Hallazgo principal:** confirmada la hipótesis de partida — verificación directa de Banktrack (posición 2/4) y Cashual (posición 11) muestra un patrón consistente de keyword exacta + número de alternativas + año 2026 en title/H1, ausente en el snippet actual de MetodoKakebo.com, que rankea en posición ≈9 pese a Page Trust 3 y 0 backlinks.
+
+**Advertencia:** el title mostrado por SE Ranking para la URL `/es/` es un dato histórico/legacy, no el snippet real actual (verificado en producción).
+
+**Canibalización:** descartada en todo el sitio.
+
+**Sin cambios en artículo, metadata, title, description, H1, headings, enlaces, schema, canonical, hreflang, slug ni componentes.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02`.
 
 ---
 

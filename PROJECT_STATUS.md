@@ -1,8 +1,33 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-VALIDATION-02 — diagnóstico completado, sin implementación)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-KEYWORD-SERP-02 — investigación de keywords y SERP completada, sin implementación)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-ALTERNATIVAS-FINTONIC-KEYWORD-SERP-02 — Investigación de keywords, intención y SERP competitiva
+
+**Fecha:** 2026-07-20
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Investigación documentada. Sin implementación.**
+**Sprint:** SEO / Investigación on-page (diagnóstico exclusivo, sin cambios de código, contenido ni metadata)
+**Tipo:** Investigación de keyword principal, variantes, intención de búsqueda y SERP competitiva para `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias`, a partir de datos GSC, datos SE Ranking (julio 2026, mercado ES) y observación manual + verificación directa de la SERP para "alternativas a fintonic". Continúa `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-VALIDATION-02` (commit `035ed25`). **Sin cambios en artículo, metadata, title, description, H1, headings, enlaces, schema, canonical, hreflang, slug ni componentes.**
+**Documento:** `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_KEYWORD_SERP_02.md`
+
+**Decisión de keyword:** principal `alternativas a fintonic`; variante primaria `alternativa a fintonic`; variantes secundarias `fintonic alternativas`, `alternativa fintonic`, `fintonic alternativa`, `alternativas fintonic` (mismo volumen/dificultad, cubrir semánticamente en cuerpo, no en title/H1). Descartadas: `qué es Fintonic`, `Fintonic es seguro`/`estafa`, `Fintonic empresas`, `Mint` como keyword propia en ES.
+
+**Hallazgo principal:** hipótesis de partida confirmada — la SERP para "alternativas a fintonic" está dominada por listicles con keyword exacta en title/H1, número de alternativas y año 2026 (verificado directamente en Banktrack, posición 2/4, y Cashual, posición 11); el snippet actual de MetodoKakebo.com no sigue ese patrón (sin "Fintonic", sin número, title de 94 caracteres), lo que es coherente con el CTR bajo pese a posición razonable (≈9) y autoridad de página muy baja (Page Trust 3, 0 backlinks).
+
+**Advertencia documentada:** el title mostrado por SE Ranking ("Las 7 Mejores Alternativas a Fintonic en 2026 - Kakebo") es un dato histórico/legacy asociado a la URL `/es/` (que redirige 308), no el snippet actual real, verificado en producción el 2026-07-20.
+
+**Canibalización:** descartada — ninguna otra URL del sitio targetea "Fintonic" como entidad principal; el componente `SoftwareAppJsonLd.tsx` que menciona "Fintonic" no está importado en ningún punto del código y no genera señal SEO real.
+
+**Sin cambios funcionales de ningún tipo — tarea exclusivamente documental.**
+
+**STOP aplicado — no se inicia arquitectura, no se modifica la URL, no se implementa title, meta ni H1.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02` (diseño de title, meta, H1, primer bloque visible, jerarquía H2/H3, bloque GEO y descomposición en tareas atómicas de implementación — sin ejecutar la implementación en esa misma tarea).
 
 ---
 
