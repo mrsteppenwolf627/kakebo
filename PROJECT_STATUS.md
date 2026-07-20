@@ -1,8 +1,31 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-KEYWORD-SERP-02 — investigación de keywords y SERP completada, sin implementación)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02 — arquitectura de optimización diseñada, sin implementación)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02 — Arquitectura de optimización SEO/editorial/GEO/CTA
+
+**Fecha:** 2026-07-20
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Arquitectura diseñada. Sin implementación.**
+**Sprint:** SEO / Arquitectura on-page (diseño exclusivo, sin cambios de código, contenido ni metadata)
+**Tipo:** Diseño de la arquitectura definitiva de optimización de `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` — snippet, primer bloque visible, jerarquía de headings, tabla comparativa, alternativas, política de fuentes, GEO, FAQ, enlazado interno, CTA y schema — a partir de `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-VALIDATION-02` (`035ed25`) y `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-KEYWORD-SERP-02` (`0a946c3`). **Sin cambios en artículo, metadata, title, description, H1, headings, tabla, alternativas, FAQ, enlaces, CTA, schema, canonical, hreflang, slug ni componentes.**
+**Documento:** `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md`
+
+**Combinación de snippet recomendada (diseño, no implementada):** title `"Alternativas a Fintonic y Apps Bancarias (2026): 8 Opciones"`; meta description centrada en cobertura con/sin conexión bancaria y privacidad; H1 `"Alternativas a Fintonic: 8 apps para controlar tus gastos sin ceder tus datos"`. Preserva explícitamente el framing "apps bancarias" para no perder el 71% de impresiones no-Fintonic.
+
+**Plan de implementación atómico (7 tareas, no ejecutadas):** `SNIPPET` → `CONTENT-INTRO` → `HEADINGS` → `SOURCES` (paralela) → `FAQ-GEO` → `INTERNAL-LINKING` → `PRODUCTION-VALIDATION`. Cada una con archivos, dependencias, riesgos y criterio de cierre definidos. Modelo asignado: Claude Code en todas; revisión con Codex recomendable solo en `SOURCES` (verificación de datos de terceros).
+
+**Elementos protegidos:** slug, canonical, redirect 308 de `/es/`, noindex de EN, tabla comparativa (8 filas), fichas Pros/Contras, FAQ, schema `FAQPage`/`BlogPosting`/`BreadcrumbList`, enlazado entrante, framing "apps bancarias", neutralidad editorial (Kakebo AI tratado en igualdad de condiciones dentro de la comparativa). Hallazgo técnico T-01 (hreflang en HTTP Link header) explícitamente fuera de alcance.
+
+**Sin cambios funcionales de ningún tipo — tarea exclusivamente documental.**
+
+**STOP aplicado — no se implementa ninguna tarea del plan, no se modifica la URL.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SNIPPET-02` (primera tarea atómica del plan de implementación).
 
 ---
 

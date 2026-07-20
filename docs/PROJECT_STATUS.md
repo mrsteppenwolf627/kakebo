@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-KEYWORD-SERP-02 — investigación de keywords, intención y SERP competitiva de `/blog/alternativas-a-app-bancarias`; sin implementación; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_KEYWORD_SERP_02.md`)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02 — arquitectura de optimización SEO/editorial/GEO/CTA de `/blog/alternativas-a-app-bancarias`; sin implementación; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md`)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,29 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02 — Arquitectura de optimización SEO/editorial/GEO/CTA
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-20 |
+| **Tipo** | Arquitectura/diseño (documental, sin cambios de código, contenido ni metadata) |
+| **URL objetivo** | `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` |
+| **Documento** | `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md` |
+
+Diseño de la arquitectura definitiva de optimización (snippet, primer bloque visible, headings, tabla, alternativas, fuentes, GEO, FAQ, enlazado, CTA, schema), continuando `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-VALIDATION-02` (`035ed25`) y `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-KEYWORD-SERP-02` (`0a946c3`).
+
+**Snippet recomendado:** title `"Alternativas a Fintonic y Apps Bancarias (2026): 8 Opciones"`; H1 `"Alternativas a Fintonic: 8 apps para controlar tus gastos sin ceder tus datos"`; meta description con cobertura con/sin conexión bancaria. Preserva el framing "apps bancarias".
+
+**Plan atómico (7 tareas, no ejecutadas):** `SNIPPET` → `CONTENT-INTRO` → `HEADINGS` → `SOURCES` (paralela) → `FAQ-GEO` → `INTERNAL-LINKING` → `PRODUCTION-VALIDATION`.
+
+**Elementos protegidos:** slug, canonical, redirect 308 `/es/`, noindex EN, tabla, fichas, FAQ, schema, enlazado entrante, framing "apps bancarias", neutralidad editorial.
+
+**Sin cambios en artículo, metadata, title, description, H1, headings, tabla, alternativas, FAQ, enlaces, CTA, schema, canonical, hreflang, slug ni componentes.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SNIPPET-02`.
 
 ---
 
