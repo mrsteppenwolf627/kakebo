@@ -1,8 +1,37 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SNIPPET-02 — title, meta description y H1 implementados en producción)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-CONTENT-INTRO-02 — introducción del artículo optimizada)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ONPAGE-ALTERNATIVAS-FINTONIC-CONTENT-INTRO-02 — Optimización editorial quirúrgica de la introducción
+
+**Fecha:** 2026-07-20
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Introducción reescrita. Resto del artículo intacto.**
+**Sprint:** SEO / Implementación editorial quirúrgica
+**Tipo:** Reescritura de los 3 párrafos introductorios de `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` (entre el H1 y la tabla comparativa) según el diseño de `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02` (`6f6a4d8`), continuando `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SNIPPET-02` (`de7efe1`). **Sin cambios en frontmatter, title, seoTitle, description, H1, H2/H3, tabla, fichas, FAQ, enlaces, CTA, imágenes ni schema.**
+**Documento de referencia:** `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md`
+
+**Objetivo del nuevo bloque:** responder de forma directa a "qué es una alternativa a Fintonic", cubrir los criterios de comparación (privacidad, precio, automatización, plataforma, forma de registro, perfil de usuario), explicar que no hay una única mejor opción para todos, y transicionar de forma neutral hacia la tabla — sin presentar Kakebo AI como ganador (no se menciona en la intro) y preservando el framing "apps bancarias".
+
+**ANTES (152 palabras, 3 párrafos):** intro genérica centrada en "apps bancarias" sin definición directa de "alternativa a Fintonic", sin mención explícita de los criterios de comparación.
+
+**DESPUÉS (150 palabras, 3 párrafos):** primer párrafo con respuesta directa GEO ("Una alternativa a Fintonic es cualquier aplicación o método..."), segundo párrafo con los 6 criterios de comparación explícitos y la afirmación de que no hay una única mejor opción, tercer párrafo de transición neutral hacia la tabla.
+
+**Archivo de contenido modificado:** `src/content/blog/alternativas-a-app-bancarias.es.mdx` (únicamente los 3 párrafos entre el H1 y el separador previo a la tabla — diff de 3 líneas eliminadas / 3 añadidas, verificado).
+
+**Validaciones ejecutadas:** `tsc --noEmit` ✅ 0 errores; `eslint` ✅ 0 errores (mismo warning preexistente de MDX sin config, ajeno); `npm run build` ✅ compilado sin errores; servidor de producción local + `curl`/inspección HTML: 1 title, 1 meta description, 1 H1 (todos idénticos a `SNIPPET-02`), 9 H2 y 19 H3 sin cambios, `FAQPage` (5 preguntas) y `BreadcrumbList` sin cambios, tabla comparativa (encabezados y fila Kakebo AI) verificada carácter a carácter sin cambios, CTA presente sin cambios, intro anterior confirmada ausente (0 coincidencias) y nueva intro confirmada presente; suite de tests: 582/583 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`, no relacionado con blog/SEO).
+
+**Ventana de medición:** contenido introductorio, 4-8 semanas.
+
+**Sin cambios en frontmatter, title, seoTitle, description, H1, headings, tabla, alternativas, pros/contras, FAQ, enlaces, CTA, imágenes, fuentes, schema, canonical, hreflang, slug, sitemap ni robots.**
+
+**STOP aplicado — no se inicia `HEADINGS-02`, no se modifica ninguna otra parte del artículo.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-HEADINGS-02`.
 
 ---
 

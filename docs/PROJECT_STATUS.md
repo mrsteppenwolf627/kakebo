@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SNIPPET-02 — title, meta description y H1 de `/blog/alternativas-a-app-bancarias` implementados y validados en build/local; ver sección correspondiente en este documento y en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-CONTENT-INTRO-02 — introducción de `/blog/alternativas-a-app-bancarias` reescrita, resto del artículo intacto; ver sección correspondiente en este documento y en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
@@ -13,6 +13,27 @@
 >
 > **CRO-ACTIVATION-EXCEL-CTA-01 (2026-07-13):** experimento CRO sobre la URL protegida `/blog/plantilla-kakebo-excel` (bloque `ChoiceCTA` de activación hacia Kakebo Online). Documentación completa en `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md`. Sin cambio de metadata ni de intención SEO de la URL.
 > **CRO-ACTIVATION-EXCEL-CTA-FIX-01 (2026-07-13):** corrección del destino del CTA principal de `/` a `/app` en el bloque anterior. Sin cambio de tracking ni de metadata. Ver `PROJECT_STATUS.md` (raíz) y `docs/analytics/CRO_ACTIVATION_EXCEL_CTA_01.md` (sección 3bis).
+
+---
+
+## ✅ SEO-ONPAGE-ALTERNATIVAS-FINTONIC-CONTENT-INTRO-02 — Optimización editorial quirúrgica de la introducción
+
+| Campo | Detalle |
+|---|---|
+| **Fecha** | 2026-07-20 |
+| **Tipo** | Implementación editorial quirúrgica (solo los 3 párrafos introductorios) |
+| **URL objetivo** | `https://www.metodokakebo.com/blog/alternativas-a-app-bancarias` |
+| **Documento de arquitectura** | `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_ARCHITECTURE_02.md` |
+
+Reescritura de la introducción (entre el H1 y la tabla comparativa) siguiendo el diseño de `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-ARCHITECTURE-02` (`6f6a4d8`), continuando `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-SNIPPET-02` (`de7efe1`). Nuevo primer párrafo con respuesta directa GEO ("Una alternativa a Fintonic es cualquier aplicación o método..."), segundo párrafo con los 6 criterios de comparación (privacidad, conexión bancaria, precio, plataforma, forma de registro, perfil) y la afirmación explícita de que no hay una única mejor opción, tercer párrafo de transición neutral hacia la tabla. Kakebo AI no se menciona en la intro — sin presentarlo como ganador. 152 → 150 palabras, 3 párrafos en ambos casos.
+
+**Archivo modificado:** `src/content/blog/alternativas-a-app-bancarias.es.mdx` (diff de exactamente 3 líneas eliminadas / 3 añadidas).
+
+**Validaciones:** `tsc` ✅, `eslint` ✅, `build` ✅, HTML renderizado verificado en local (title/description/H1 idénticos a `SNIPPET-02`, 9 H2, 19 H3, FAQPage de 5 preguntas y BreadcrumbList sin cambios, tabla verificada carácter a carácter, CTA presente), tests 582/583 (1 fallo preexistente ajeno).
+
+**Sin cambios en frontmatter, title, seoTitle, description, H1, headings, tabla, alternativas, FAQ, enlaces, CTA, imágenes, schema, canonical, hreflang, slug, sitemap ni robots.**
+
+**Siguiente tarea recomendada:** `SEO-ONPAGE-ALTERNATIVAS-FINTONIC-HEADINGS-02`.
 
 ---
 
