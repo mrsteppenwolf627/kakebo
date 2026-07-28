@@ -1,8 +1,29 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-PRODUCTION-VALIDATION-02 — validación de producción superada; **milestone SEO-ONPAGE-ALTERNATIVAS-FINTONIC-02 cerrado formalmente**; URL declarada `IMPLEMENTACIÓN COMPLETADA — EN FASE DE MEDICIÓN`)  
+**Última actualización:** 2026-07-28 (UI-CALCULADORA-AHORRO-FOOTER-DUPLICATE-01 — footer duplicado eliminado en `/herramientas/calculadora-ahorro`)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## UI-CALCULADORA-AHORRO-FOOTER-DUPLICATE-01 — Footer duplicado en calculadora de ahorro
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado
+**Sprint:** UI / bugfix quirúrgico
+**Tipo:** Eliminación de una instancia redundante de `<Footer />` en `https://www.metodokakebo.com/herramientas/calculadora-ahorro`.
+**Documento:** `docs/UI_CALCULADORA_AHORRO_FOOTER_DUPLICATE_01.md`
+
+**Causa:** `src/app/[locale]/(public)/herramientas/calculadora-ahorro/page.tsx` renderizaba `<Footer />` propio además del `<Footer />` global de `src/app/[locale]/layout.tsx`. El layout local de la ruta era un passthrough, no la causa.
+
+**Cambio:** eliminado el import y el render de `Footer` en `page.tsx` (2 líneas). Footer global intacto. Sin cambios en Navbar, metadata, schema, calculadora ni contenido.
+
+**Validación:** `npm run build` PASS; `npm run lint` 0 errores; `npm test` 585/586 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`); recuento de `<footer>` en HTML servido por `npm run start`: home 1, calculadora-ahorro 1 (antes 2), calculadora-inflacion 1 (control).
+
+**Hallazgo fuera de alcance (no corregido):** el mismo patrón de footer duplicado, preexistente, afecta también a `/blog`, artículos de blog, `/tutorial`, `/herramientas` y `/herramientas/regla-50-30-20`. Documentado para una tarea de seguimiento separada.
+
+**STOP aplicado — no se corrigen las demás páginas, no se inicia ninguna otra tarea.**
 
 ---
 

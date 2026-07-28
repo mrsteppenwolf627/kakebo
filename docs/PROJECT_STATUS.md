@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-20 (SEO-ONPAGE-ALTERNATIVAS-FINTONIC-PRODUCTION-VALIDATION-02 — validación de producción superada; **milestone SEO-ONPAGE-ALTERNATIVAS-FINTONIC-02 cerrado — CERRADO — EN MEDICIÓN**; ver `docs/seo/SEO_ONPAGE_ALTERNATIVAS_FINTONIC_PRODUCTION_VALIDATION_02.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-28 (UI-CALCULADORA-AHORRO-FOOTER-DUPLICATE-01 — footer duplicado eliminado en `/herramientas/calculadora-ahorro`; ver `docs/UI_CALCULADORA_AHORRO_FOOTER_DUPLICATE_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 

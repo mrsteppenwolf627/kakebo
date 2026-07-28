@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { Navbar } from "@/components/landing/Navbar";
-import { Footer } from "@/components/landing/Footer";
 import { SavingsCalculator } from "@/components/landing/tools/SavingsCalculator";
 import { getTranslations } from 'next-intl/server';
 
@@ -217,7 +216,6 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
                 </div>
             </section>
 
-            <Footer />
         </main>
     );
 }
