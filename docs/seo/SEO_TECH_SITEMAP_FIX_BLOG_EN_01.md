@@ -126,18 +126,29 @@ cambios de comportamiento respecto a antes del fix.
 
 ## Validación de producción
 
-**Pendiente de despliegue.** Tras el despliegue de este commit a producción, queda pendiente:
+**Completada el 2026-07-28** (tarea `SEO-TECH-SITEMAP-FIX-BLOG-EN-PRODUCTION-VALIDATION-01`),
+tras confirmar el despliegue del commit `f50e1ad74b9a4b09a4cd45a3ccae2021252c0473`.
 
-1. Descargar `https://www.metodokakebo.com/sitemap.xml` y confirmar la ausencia de las 3 URLs
-   `/en/blog/*` afectadas.
-2. Confirmar que las 3 URLs siguen devolviendo HTTP 404 (comportamiento correcto — el fix retira
-   el anuncio en el sitemap, no crea contenido nuevo ni cambia el estado real de esas rutas).
-3. Confirmar que las URLs `/en/blog/*` válidas y `/login`/`/en/login` no han cambiado.
+- `https://www.metodokakebo.com/sitemap.xml` → HTTP 200, **47 URLs totales** (antes del fix: 50;
+  diferencia de exactamente -3, coherente con el fix local).
+- Las 3 URLs `/en/blog/cuentas-remuneradas`, `/en/blog/fondo-de-emergencia`,
+  `/en/blog/regla-50-30-20-ejemplo` → **ausentes** del sitemap de producción.
+- Sus 3 contrapartes en español (`/blog/cuentas-remuneradas`, `/blog/fondo-de-emergencia`,
+  `/blog/regla-50-30-20-ejemplo`) → **presentes**.
+- `https://www.metodokakebo.com/en/blog/como-ahorrar-dinero-cada-mes` (EN real e indexable) →
+  **presente**.
+- `https://www.metodokakebo.com/en/blog/ahorro-pareja` (EN real, `noindex`) → **ausente**;
+  `https://www.metodokakebo.com/blog/ahorro-pareja` (ES) → presente.
+- `/login` y `/en/login` → presentes, sin cambios respecto a antes del fix (fuera de alcance,
+  confirmado intacto).
+- Las 3 URLs eliminadas del sitemap siguen devolviendo **HTTP 404 real** en producción — el fix
+  retira su anuncio en el sitemap, no altera el estado real de esas rutas (verificado con `curl`
+  directo a cada una de las 3 URLs).
 
-Este paso no se ha podido completar dentro de esta tarea porque requiere el despliegue real del
-commit a `https://www.metodokakebo.com`, fuera del alcance de las acciones ejecutables en este
-entorno de trabajo. Se recomienda repetir el método de verificación de
-`SEO-TECH-SITEMAP-VALIDATION-01` sección 3 tras el despliegue.
+Nota metodológica: Vercel no expone un header público con el hash de commit desplegado, así que la
+confirmación de despliegue se apoya en evidencia funcional — el conteo de URLs y el comportamiento
+exacto del sitemap de producción coinciden con el resultado esperado del commit `f50e1ad`
+(idéntico al verificado localmente en la sección anterior), no en un header de commit.
 
 ## Confirmación: `/login` fuera de alcance
 

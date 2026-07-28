@@ -1,8 +1,25 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-TECH-SITEMAP-FIX-BLOG-EN-01 — excluidas del sitemap las 3 URLs `/en/blog/*` sin traducción real, confirmadas 404 en SEO-TECH-SITEMAP-VALIDATION-01)  
+**Última actualización:** 2026-07-28 (SEO-TECH-SITEMAP-FIX-BLOG-EN-PRODUCTION-VALIDATION-01 — validación en producción del fix del sitemap superada; **milestone del sitemap EN cerrado formalmente**)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECH-SITEMAP-FIX-BLOG-EN-PRODUCTION-VALIDATION-01 — Validación de producción y cierre
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Validación de producción superada. Cierre formal de la corrección del sitemap EN.**
+**Sprint:** SEO técnico / validación de producción (sin cambios de código)
+**Tipo:** Verificación en producción real (HTTP directo, sin caché de este entorno) del despliegue del commit `f50e1ad74b9a4b09a4cd45a3ccae2021252c0473` (`SEO-TECH-SITEMAP-FIX-BLOG-EN-01`).
+**Documento:** `docs/seo/SEO_TECH_SITEMAP_FIX_BLOG_EN_01.md` (sección "Validación de producción" actualizada)
+
+**Confirmado en producción:** `/sitemap.xml` con 47 URLs (antes: 50, -3 exacto); las 3 URLs `/en/blog/{cuentas-remuneradas,fondo-de-emergencia,regla-50-30-20-ejemplo}` ausentes; sus 3 versiones ES presentes; un post EN real e indexable (`como-ahorrar-dinero-cada-mes`) presente; un post EN real `noindex` (`ahorro-pareja`) ausente del sitemap EN mientras su ES permanece; `/login` y `/en/login` sin cambios; las 3 URLs eliminadas del sitemap siguen devolviendo HTTP 404 real (comportamiento correcto, no se creó contenido).
+
+**Sin regresiones detectadas — sin cambios de código en esta tarea.**
+
+**STOP aplicado — no se corrigió el canonical/hreflang de login, no se inició ninguna otra tarea.**
 
 ---
 
