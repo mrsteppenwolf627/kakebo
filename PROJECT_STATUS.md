@@ -1,8 +1,25 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-TECH-BROKEN-IMAGE-FIX-01 — corregida la imagen rota de `/en/blog/metodo-kakebo-guia-definitiva`; validación de producción pendiente de despliegue)  
+**Última actualización:** 2026-07-28 (SEO-TECH-BROKEN-IMAGE-FIX-PRODUCTION-VALIDATION-01 — validación de producción superada; **imagen rota de `/en/blog/metodo-kakebo-guia-definitiva` corregida y cerrada formalmente**)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECH-BROKEN-IMAGE-FIX-PRODUCTION-VALIDATION-01 — Validación de producción y cierre
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Validación de producción superada. Cierre formal de la corrección de imagen rota del artículo EN.**
+**Sprint:** SEO técnico / validación de producción (sin cambios de código)
+**Tipo:** Verificación en producción real (HTTP directo, HTML servido, comprobación visual en navegador) del despliegue del commit `4c94ef2b729e97086448b5b64102f896380d79da` (`SEO-TECH-BROKEN-IMAGE-FIX-01`).
+**Documento:** `docs/seo/SEO_TECH_BROKEN_IMAGE_FIX_01.md` (sección "Validación de producción" actualizada)
+
+**Confirmado en producción:** página HTTP 200; asset `metodo-kakebo-guia-definitiva.png` HTTP 200 (raw y variante optimizada `/_next/image`); hero, `og:image`, `twitter:image` y schema `BlogPosting.image` apuntando correctamente al nuevo asset; 0 referencias a `kakebo-method` en el HTML; comprobación visual real en navegador confirma imagen completa, sin icono roto, sin deformación ni regresión de layout; versión española sin cambios.
+
+**Sin regresiones — sin cambios de código en esta tarea.**
+
+**STOP aplicado — no se optimizó el peso de la imagen, no se modificaron otros artículos, no se inició ninguna otra tarea.**
 
 ---
 

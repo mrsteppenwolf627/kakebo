@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-07-28
 **Modelo:** Claude Code
-**Estado:** ✅ Completado (validación local); validación de producción pendiente de despliegue
+**Estado:** ✅ Completado — validación local y validación de producción superadas. Cierre definitivo.
 
 ## Referencia anterior
 
@@ -63,19 +63,37 @@ Verificado con `git diff --stat`: 1 archivo, 1 línea insertada, 1 línea elimin
 
 ## Validación de producción
 
-**Pendiente de despliegue**, siguiendo el mismo patrón que las tareas anteriores de este ciclo.
-Tras el despliegue de este commit, queda pendiente confirmar en
-`https://www.metodokakebo.com/en/blog/metodo-kakebo-guia-definitiva`:
+**Completada el 2026-07-28** (tarea `SEO-TECH-BROKEN-IMAGE-FIX-PRODUCTION-VALIDATION-01`), tras
+confirmar el despliegue del commit `4c94ef2b729e97086448b5b64102f896380d79da`.
 
-1. Hero visible sin icono de imagen rota.
-2. `https://www.metodokakebo.com/images/blog/metodo-kakebo-guia-definitiva.png` → HTTP 200 (ya
-   verificado hoy en producción como parte de `SEO-TECH-BROKEN-IMAGE-VALIDATION-01`, sin cambios
-   esperados en el asset en sí).
-3. `og:image` y `twitter:image` correctos en el HTML servido.
-4. Schema `BlogPosting.image` correcto.
-5. Ausencia total de `kakebo-method.jpg` en el HTML de producción.
+- `https://www.metodokakebo.com/en/blog/metodo-kakebo-guia-definitiva` → HTTP 200.
+- `https://www.metodokakebo.com/images/blog/metodo-kakebo-guia-definitiva.png` → HTTP 200
+  (`Content-Type: image/png`, `Content-Length: 2560701`, idéntico al ya verificado en
+  `SEO-TECH-BROKEN-IMAGE-VALIDATION-01`).
+- `https://www.metodokakebo.com/_next/image?url=%2Fimages%2Fblog%2Fmetodo-kakebo-guia-definitiva.png&w=1200&q=75`
+  (variante optimizada de Next.js, la usada realmente por el `<img>` renderizado) → HTTP 200.
+- **Hero visible:** `<img>` con `srcSet`/`src` apuntando a
+  `/_next/image?url=%2Fimages%2Fblog%2Fmetodo-kakebo-guia-definitiva.png&...` en el HTML de
+  producción.
+- **`og:image`:** `https://www.metodokakebo.com/images/blog/metodo-kakebo-guia-definitiva.png` —
+  correcto.
+- **`twitter:image`:** mismo valor — correcto.
+- **Schema `BlogPosting`:** `"image":["/images/blog/metodo-kakebo-guia-definitiva.png"...]` —
+  correcto.
+- **0 apariciones** de `kakebo-method` en el HTML de producción (confirmado con `grep -c`).
+- **Comprobación visual real** (Chrome, producción): la imagen se carga completa, sin icono de
+  imagen rota, sin deformación ni recorte incorrecto (`object-cover` respetado), sin regresiones
+  en el layout del artículo (título, fecha, autor, separador y cuerpo del artículo renderizan con
+  normalidad antes y después de la imagen). Capturas de pantalla tomadas antes y después de la
+  carga completa del asset (2.5 MB, tiempo de carga perceptible pero sin error).
+- **Versión española:** `https://www.metodokakebo.com/blog/metodo-kakebo-guia-definitiva` → HTTP
+  200, `og:image`/`twitter:image` idénticos a los de antes de este fix (mismo asset que ya usaba
+  correctamente) — sin cambios.
 
-Se recomienda una tarea de seguimiento `SEO-TECH-BROKEN-IMAGE-FIX-PRODUCTION-VALIDATION-01`.
+Nota metodológica: igual que en las validaciones de producción anteriores de este ciclo, Vercel no
+expone un header público con el hash de commit desplegado; la confirmación se apoya en evidencia
+funcional — el comportamiento observado en producción coincide en todos los puntos con el
+resultado esperado del commit `4c94ef2`, idéntico al verificado localmente.
 
 ## Confirmación: sin cambios de contenido ni metadata adicional
 

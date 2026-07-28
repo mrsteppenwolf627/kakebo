@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-28 (SEO-TECH-BROKEN-IMAGE-FIX-01 — corregida la imagen rota de `/en/blog/metodo-kakebo-guia-definitiva`; validación de producción pendiente de despliegue; ver `docs/seo/SEO_TECH_BROKEN_IMAGE_FIX_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-28 (SEO-TECH-BROKEN-IMAGE-FIX-PRODUCTION-VALIDATION-01 — validación de producción superada, imagen rota de `/en/blog/metodo-kakebo-guia-definitiva` corregida y cerrada; ver `docs/seo/SEO_TECH_BROKEN_IMAGE_FIX_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
