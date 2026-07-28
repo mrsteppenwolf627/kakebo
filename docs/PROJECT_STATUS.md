@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-28 (UI-CALCULADORA-AHORRO-FOOTER-DUPLICATE-01 — footer duplicado eliminado en `/herramientas/calculadora-ahorro`; ver `docs/UI_CALCULADORA_AHORRO_FOOTER_DUPLICATE_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-28 (UI-CALCULADORA-AHORRO-EDITORIAL-BLOCK-01 — mejora visual del bloque "¿Para qué sirve la calculadora de ahorro mensual?"; ver `docs/UI_CALCULADORA_AHORRO_EDITORIAL_BLOCK_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 

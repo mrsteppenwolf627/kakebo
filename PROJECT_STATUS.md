@@ -1,8 +1,29 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (UI-CALCULADORA-AHORRO-FOOTER-DUPLICATE-01 — footer duplicado eliminado en `/herramientas/calculadora-ahorro`)  
+**Última actualización:** 2026-07-28 (UI-CALCULADORA-AHORRO-EDITORIAL-BLOCK-01 — mejora visual del bloque "¿Para qué sirve la calculadora de ahorro mensual?" en `/herramientas/calculadora-ahorro`)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## UI-CALCULADORA-AHORRO-EDITORIAL-BLOCK-01 — Mejora visual del bloque editorial "¿Para qué sirve...?"
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado
+**Sprint:** UI / mejora visual quirúrgica
+**Tipo:** Reestructuración visual (sin cambios de texto, enlaces, metadata ni schema) del bloque "¿Para qué sirve la calculadora de ahorro mensual?" en `https://www.metodokakebo.com/herramientas/calculadora-ahorro`.
+**Documento:** `docs/UI_CALCULADORA_AHORRO_EDITORIAL_BLOCK_01.md`
+
+**Problema:** el bloque usaba una clase `prose` genérica que lo hacía visualmente inconsistente con el resto de la página (heading sin la jerarquía de los demás H2, párrafos sin el mismo tratamiento tipográfico, lista de enlaces sin formato de tarjeta, sin separación visual antes de "Sigue mejorando tu plan de ahorro").
+
+**Cambio:** en `src/components/landing/tools/SavingsCalculator.tsx`, sustituido el contenedor `prose` por bloques manuales reutilizando clases ya existentes en la propia página (mismo H2/H3 y párrafo secundario que la sección de interpretación de resultados) y patrones ya usados en el proyecto (tarjeta-enlace de `RelatedPosts.tsx`, icono de flecha con hover de `ToolsSection.tsx`, anillo de foco de `Hero.tsx`/`Navbar.tsx`). Añadido separador (`border-t`) antes de la lista de enlaces relacionados, ahora renderizada como tarjetas con icono `ArrowRight`.
+
+**Sin cambios** en texto, claves i18n, hrefs, orden de enlaces, metadata, H1, canonical, schema, footer ni funcionamiento de la calculadora.
+
+**Validación:** `npm run build` PASS; `npm run lint` 0 errores (76 warnings preexistentes, sin cambios); `npm test` 585/586 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`); footer sigue en 1 instancia en la URL; calculadora verificada funcional (recálculo en vivo); revisión responsive en escritorio y en ancho estrecho tipo móvil (con limitación de entorno documentada para el breakpoint `md:` exacto).
+
+**STOP aplicado — no se corrigieron los footers duplicados de otras rutas, no se optimizó SEO, no se modificó contenido, no se inició ninguna otra tarea.**
 
 ---
 

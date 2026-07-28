@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { ArrowRight } from "lucide-react";
 import { EmbedModal } from "./EmbedModal";
 import { analytics } from "@/lib/analytics";
 
@@ -661,72 +662,90 @@ export function SavingsCalculator() {
                 </div>
             </div>
 
-            {/* SEO prose */}
-            <div className="prose prose-stone dark:prose-invert max-w-3xl mx-auto prose-headings:font-serif prose-p:font-light">
-                <h2>{t("content.whyTitle")}</h2>
-                <p>{t("content.whyText1")}</p>
-                <p>
-                    {t.rich("content.whyText2", {
-                        bold: (chunks) => <strong>{chunks}</strong>,
-                    })}
-                </p>
+            {/* Why this calculator */}
+            <div className="max-w-3xl mx-auto space-y-4">
+                <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground">
+                    {t("content.whyTitle")}
+                </h2>
+                <div className="space-y-4">
+                    <p className="text-sm text-muted-foreground font-light leading-relaxed">
+                        {t("content.whyText1")}
+                    </p>
+                    <p className="text-sm text-muted-foreground font-light leading-relaxed">
+                        {t.rich("content.whyText2", {
+                            bold: (chunks) => <strong className="font-semibold text-foreground">{chunks}</strong>,
+                        })}
+                    </p>
+                </div>
+            </div>
 
-                <h3>{t("content.interlinkingTitle")}</h3>
-                <ul>
+            {/* Related resources */}
+            <div className="max-w-3xl mx-auto mt-10 pt-8 border-t border-border space-y-4">
+                <h3 className="text-lg md:text-xl font-serif font-semibold text-foreground">
+                    {t("content.interlinkingTitle")}
+                </h3>
+                <ul className="space-y-2">
                     <li>
                         <Link
                             href="/blog/como-hacer-un-presupuesto-personal"
-                            className="text-primary hover:underline"
+                            className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                         >
-                            {t("content.link0")}
+                            <span>{t("content.link0")}</span>
+                            <ArrowRight className="w-4 h-4 flex-none text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-primary" />
                         </Link>
                     </li>
                     <li>
                         <Link
                             href="/blog/metodo-kakebo-para-autonomos"
-                            className="text-primary hover:underline"
+                            className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                         >
-                            {t("content.link1")}
+                            <span>{t("content.link1")}</span>
+                            <ArrowRight className="w-4 h-4 flex-none text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-primary" />
                         </Link>
                     </li>
                     <li>
                         <Link
                             href="/blog/ahorro-pareja"
-                            className="text-primary hover:underline"
+                            className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                         >
-                            {t("content.link2")}
+                            <span>{t("content.link2")}</span>
+                            <ArrowRight className="w-4 h-4 flex-none text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-primary" />
                         </Link>
                     </li>
                     <li>
                         <Link
                             href="/herramientas/calculadora-inflacion"
-                            className="text-primary hover:underline"
+                            className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                         >
-                            {t("content.link3")}
+                            <span>{t("content.link3")}</span>
+                            <ArrowRight className="w-4 h-4 flex-none text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-primary" />
                         </Link>
                     </li>
                     <li>
                         <Link
                             href="/blog/como-ahorrar-dinero-cada-mes"
-                            className="text-primary hover:underline"
+                            className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                         >
-                            {t("content.link4")}
+                            <span>{t("content.link4")}</span>
+                            <ArrowRight className="w-4 h-4 flex-none text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-primary" />
                         </Link>
                     </li>
                     <li>
                         <Link
                             href="/blog/cuentas-remuneradas"
-                            className="text-primary hover:underline"
+                            className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                         >
-                            {t("content.link5")}
+                            <span>{t("content.link5")}</span>
+                            <ArrowRight className="w-4 h-4 flex-none text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-primary" />
                         </Link>
                     </li>
                     <li>
                         <Link
                             href="/blog/eliminar-gastos-hormiga"
-                            className="text-primary hover:underline"
+                            className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                         >
-                            {t("content.link6")}
+                            <span>{t("content.link6")}</span>
+                            <ArrowRight className="w-4 h-4 flex-none text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-primary" />
                         </Link>
                     </li>
                 </ul>
