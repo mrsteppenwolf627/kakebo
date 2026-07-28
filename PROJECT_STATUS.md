@@ -1,8 +1,26 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-PRODUCTION-VALIDATION-01 — validación de producción superada; **optimización de `ahorro-pareja.png` cerrada formalmente**)  
+**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-KAKEBO-AUTONOMOS-01 — `kakebo-autonomos.png` optimizado de 2,47MB a ~746KB; validación de producción pendiente, en cadena con las 2 imágenes restantes)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-PERF-LARGE-IMAGES-FIX-KAKEBO-AUTONOMOS-01 — Optimización de kakebo-autonomos.png
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado (validación local); validación de producción conjunta pendiente (1 de 3 en cadena)
+**Sprint:** SEO / rendimiento — corrección quirúrgica de asset (segunda de la serie, tras `ahorro-pareja.png`)
+**Documento:** `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_KAKEBO_AUTONOMOS_01.md`
+
+**Cambio:** `public/images/blog/kakebo-autonomos.png` reexportado con `sharp` (PNG indexado de 256 colores + dithering, `compressionLevel: 9, effort: 10`), analizado independientemente de `ahorro-pareja.png`. Peso: 2,47 MB → 764 399 bytes (-69,1%). Misma ruta, nombre, formato PNG y dimensiones 1536×1024. Ningún código, MDX, componente ni configuración modificado.
+
+**Resultado visual:** a diferencia de `ahorro-pareja.png`, esta imagen (portada de libreta con caligrafía japonesa, iconos pequeños y tabla) cuantiza sin ningún artefacto detectable ni siquiera a zoom 3× sobre texto/iconos finos ni en degradados — no requirió decisión del usuario sobre trade-offs.
+
+**Validación:** `npm run build` PASS; `npm run lint` 0 errores; `npm test` 610/611 (mismo fallo preexistente y ajeno); hero, `og:image`, `twitter:image`, schema y miniatura relacionada verificados; `ahorro-pareja.png`, `kakebo-vs-ynab.png` y `libro-kakebo-pdf.png` confirmados sin cambios.
+
+**STOP aplicado — validación de producción diferida a la tarea conjunta final de la cadena.**
 
 ---
 
