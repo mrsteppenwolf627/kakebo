@@ -1,8 +1,30 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (UI-CALCULADORA-AHORRO-EDITORIAL-BLOCK-01 — mejora visual del bloque "¿Para qué sirve la calculadora de ahorro mensual?" en `/herramientas/calculadora-ahorro`)  
+**Última actualización:** 2026-07-28 (SEO-TECH-SITEMAP-VALIDATION-01 — validación con evidencia real de los hallazgos de sitemap de la auditoría SE Ranking del 28/07/2026; **solo diagnóstico, sin cambios de código**)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECH-SITEMAP-VALIDATION-01 — Validación de hallazgos de sitemap (auditoría SE Ranking 28/07/2026)
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Tarea exclusiva de diagnóstico y documentación. Cero cambios de código, sitemap, canonical, hreflang o contenido.**
+**Sprint:** SEO técnico / validación de auditoría externa
+**Tipo:** Verificación con evidencia real (HTTP directo a producción, inspección de `/sitemap.xml`, lectura de código fuente) de los 3 hallazgos reportados por SE Ranking sobre el sitemap.
+**Documento:** `docs/seo/SEO_TECH_SITEMAP_VALIDATION_01.md`
+
+**Los 3 hallazgos se confirman como reales**, ninguno es falso positivo:
+1. `https://www.metodokakebo.com/en/blog/{cuentas-remuneradas,fondo-de-emergencia,regla-50-30-20-ejemplo}` están en el sitemap y devuelven HTTP 404 real — no existe fichero `.en.mdx` para ninguno de los 3 posts. Causa raíz: `src/app/sitemap.ts` genera la URL `/en/blog/{slug}` para todo post ES no-noindex sin comprobar si el fichero EN existe; el mecanismo de exclusión (`enNoindexSlugs`) solo cubre el caso "fichero EN existe y tiene `noindex: true`", no "fichero EN no existe". Verificado que el mecanismo sí funciona correctamente para los 10 posts EN reales marcados `noindex`.
+2. Las mismas 3 URLs muestran un `<meta name="robots">` duplicado y conflictivo (`noindex` inyectado automáticamente por Next.js al llamar `notFound()`, más `index, follow` heredado del layout raíz) — síntoma real, pero derivado del mismo bug de fondo (la URL no debería generarse).
+3. `/login` y `/en/login` declaran el mismo canonical fijo `https://www.metodokakebo.com/es/login`, una URL que a su vez redirige (308) a `/login` y que no sigue el patrón de URLs del sitio (`localePrefix: 'as-needed'` nunca usa `/es/`). Causa raíz: `src/app/[locale]/login/layout.tsx` usa `metadata` estático en vez de `generateMetadata` dinámico por `locale` (a diferencia de `privacy`/`terms`/`cookies`, que sí son dinámicos). Efecto colateral detectado: `/en/login` sirve título en español.
+
+**Búsqueda de casos equivalentes no reportados:** ninguno encontrado — el conjunto de posts ES sin traducción EN coincide exactamente con las 3 URLs reportadas; el patrón de canonical estático con `/es/` es exclusivo de `login/layout.tsx`.
+
+**4 tareas de corrección propuestas y documentadas, no ejecutadas:** `SEO-TECH-SITEMAP-FIX-BLOG-EN-01`, `SEO-TECH-LOGIN-CANONICAL-FIX-01`, `SEO-TECH-LOGIN-SITEMAP-DECISION-01`, `SEO-TECH-SITEMAP-REVALIDATION-01`.
+
+**STOP aplicado — no se corrigió el sitemap, no se tocó canonical ni hreflang, no se modificó contenido, no se inició ninguna otra tarea.**
 
 ---
 
