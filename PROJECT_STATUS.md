@@ -1,8 +1,29 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-TECH-LOGIN-METADATA-FIX-PRODUCTION-VALIDATION-01 — validación de producción superada; **corrección de metadata de login cerrada formalmente**)  
+**Última actualización:** 2026-07-28 (SEO-ARCH-HERRAMIENTAS-INTERNAL-LINKING-VALIDATION-01 — validación del enlazado interno del hub `/herramientas`; hallazgo de SE Ranking **confirmado**; **solo diagnóstico, sin cambios de código**)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ARCH-HERRAMIENTAS-INTERNAL-LINKING-VALIDATION-01 — Validación del enlazado interno del hub de herramientas
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Tarea exclusiva de diagnóstico. Cero cambios de código, navegación, footer o contenido.**
+**Sprint:** SEO / arquitectura — validación de auditoría externa
+**Tipo:** Verificación con evidencia real (código fuente + HTML de producción) del hallazgo de SE Ranking (28/07/2026): `/herramientas` y `/en/herramientas` sin enlaces internos entrantes.
+**Documento:** `docs/seo/SEO_ARCH_HERRAMIENTAS_INTERNAL_LINKING_VALIDATION_01.md`
+
+**Hallazgo CONFIRMADO.** Búsqueda exhaustiva en código fuente y HTML de producción real: 0 enlaces `<a href="/herramientas">` (ni `/en/herramientas`) en todo el sitio. El dropdown "Herramientas" del navbar (desktop y móvil) es un `<button>`/`<span>`, no un enlace; el footer enlaza las 3 herramientas individuales pero no el hub; home, blog, artículos, `/tutorial` y `/sobre-nosotros` no lo referencian; cada herramienta individual solo referencia `/herramientas` dentro del `BreadcrumbList` JSON-LD (dato estructurado, sin `<a>` visible ni rastreable). El hub sí aparece en `/sitemap.xml`, pero eso no sustituye el enlazado interno editorial.
+
+**Estado real del hub:** técnicamente correcto — HTTP 200, indexable, canonical/hreflang correctos en ambos locales, schema `CollectionPage` bien formado, contenido coherente ES/EN, las 3 herramientas activas listadas. El problema es exclusivamente de enlazado, no de la página en sí.
+
+**Riesgo SEO:** medio — no hay riesgo de desindexación (vía sitemap sigue descubierta), pero sí de señal de autoridad interna débil y de una ruta de navegación real inexistente para usuarios.
+
+**Primera corrección propuesta (no ejecutada):** `SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-01` — convertir el disparador "Herramientas" del navbar en un enlace real al hub, alcance atómico de un único componente global.
+
+**STOP aplicado — no se añadió ningún enlace, no se tocó navbar/footer/herramientas individuales, no se corrigieron otros hallazgos, no se inició ninguna otra tarea.**
 
 ---
 

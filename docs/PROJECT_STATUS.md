@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-28 (SEO-TECH-LOGIN-METADATA-FIX-PRODUCTION-VALIDATION-01 — validación de producción superada, cierre formal de la corrección de metadata de login; ver `docs/seo/SEO_TECH_LOGIN_METADATA_FIX_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-28 (SEO-ARCH-HERRAMIENTAS-INTERNAL-LINKING-VALIDATION-01 — hallazgo de SE Ranking sobre el hub `/herramientas` confirmado con evidencia real; **solo diagnóstico**; ver `docs/seo/SEO_ARCH_HERRAMIENTAS_INTERNAL_LINKING_VALIDATION_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
