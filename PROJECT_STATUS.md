@@ -1,8 +1,26 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-KAKEBO-AUTONOMOS-01 — `kakebo-autonomos.png` optimizado de 2,47MB a ~746KB; validación de producción pendiente, en cadena con las 2 imágenes restantes)  
+**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-KAKEBO-VS-YNAB-01 — `kakebo-vs-ynab.png` optimizado de 2,45MB a ~624KB; validación de producción pendiente, 2 de 3 en cadena)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-PERF-LARGE-IMAGES-FIX-KAKEBO-VS-YNAB-01 — Optimización de kakebo-vs-ynab.png
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado (validación local); validación de producción conjunta pendiente (2 de 3 en cadena)
+**Sprint:** SEO / rendimiento — corrección quirúrgica de asset (tercera de la serie)
+**Documento:** `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_KAKEBO_VS_YNAB_01.md`
+
+**Cambio:** `public/images/blog/kakebo-vs-ynab.png` reexportado con `sharp` (PNG indexado de 256 colores + dithering), analizado independientemente. Peso: 2,45 MB → 639 302 bytes (-73,9%). Misma ruta, nombre, formato PNG y dimensiones 1536×1024. Ningún código, MDX, componente ni configuración modificado.
+
+**Resultado visual:** imagen con reflejos metálicos (balanza de latón) y UI de pantalla de móvil con iconos pequeños — ambos elementos, los más exigentes de la imagen, se preservan sin banding, posterización ni pérdida de nitidez incluso a zoom 3×. No requirió decisión del usuario.
+
+**Validación:** `npm run build` PASS; `npm run lint` 0 errores; `npm test` 610/611 (mismo fallo preexistente y ajeno); hero, `og:image`, `twitter:image`, schema y miniatura relacionada verificados; `ahorro-pareja.png`, `kakebo-autonomos.png` confirmados sin cambios; `libro-kakebo-pdf.png` aún pendiente (tarea 3 de la cadena).
+
+**STOP aplicado — validación de producción diferida a la tarea conjunta final de la cadena.**
 
 ---
 
