@@ -119,10 +119,13 @@ export function Navbar() {
             {t('about')}
           </Link>
 
-          {/* Herramientas Dropdown — UIUX-12 accessible dropdown, do not modify */}
+          {/* Herramientas Dropdown — UIUX-12 accessible dropdown.
+              SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-01: the trigger is now a real
+              <Link> to the tools hub plus a separate chevron <button> that
+              toggles the dropdown, instead of one <button> doing both jobs. */}
           <div
             ref={toolsRef}
-            className="relative"
+            className="relative flex items-center"
             onMouseEnter={() => setIsToolsOpen(true)}
             onMouseLeave={() => setIsToolsOpen(false)}
             onKeyDown={(e) => {
@@ -132,15 +135,22 @@ export function Navbar() {
               }
             }}
           >
+            <Link
+              href="/herramientas"
+              onClick={() => setIsToolsOpen(false)}
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
+            >
+              {t('tools')}
+            </Link>
             <button
               ref={toolsButtonRef}
               onClick={() => setIsToolsOpen(prev => !prev)}
               aria-expanded={isToolsOpen}
               aria-haspopup="true"
               aria-controls="tools-dropdown-menu"
-              className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
+              aria-label={t('toolsMenuToggle')}
+              className="flex items-center justify-center p-1 -ml-0.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
             >
-              {t('tools')}
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${isToolsOpen ? 'rotate-180' : ''}`} aria-hidden="true">
                 <path d="m6 9 6 6 6-6" />
               </svg>
@@ -300,7 +310,13 @@ export function Navbar() {
 
               {/* Tools group */}
               <div className="flex flex-col gap-1 border-t border-border/40 pt-3 mt-1">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest pb-1">{t('tools')}</span>
+                <Link
+                  href="/herramientas"
+                  onClick={closeMenu}
+                  className="text-xs font-medium text-muted-foreground uppercase tracking-widest pb-1 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-inset"
+                >
+                  {t('tools')}
+                </Link>
                 <Link
                   href="/herramientas/calculadora-ahorro"
                   onClick={closeMenu}

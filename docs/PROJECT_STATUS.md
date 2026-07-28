@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-28 (SEO-ARCH-HERRAMIENTAS-INTERNAL-LINKING-VALIDATION-01 — hallazgo de SE Ranking sobre el hub `/herramientas` confirmado con evidencia real; **solo diagnóstico**; ver `docs/seo/SEO_ARCH_HERRAMIENTAS_INTERNAL_LINKING_VALIDATION_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-28 (SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-01 — enlace real al hub `/herramientas` añadido al navbar global (ES/EN, desktop/móvil); validación de producción pendiente de despliegue; ver `docs/seo/SEO_ARCH_HERRAMIENTAS_NAVBAR_LINK_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 

@@ -6,6 +6,7 @@
     "Navigation": {
         "blog": "Blog",
         "tools": "Tools",
+        "toolsMenuToggle": "View all tools",
         "features": "Features",
         "howItWorks": "How it Works",
         "login": "Login",

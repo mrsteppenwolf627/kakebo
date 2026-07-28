@@ -1,8 +1,29 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-ARCH-HERRAMIENTAS-INTERNAL-LINKING-VALIDATION-01 — validación del enlazado interno del hub `/herramientas`; hallazgo de SE Ranking **confirmado**; **solo diagnóstico, sin cambios de código**)  
+**Última actualización:** 2026-07-28 (SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-01 — enlace real al hub `/herramientas` añadido al navbar global; validación de producción pendiente de despliegue)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-01 — Enlace real al hub desde el navbar global
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado (validación local); validación de producción pendiente de despliegue
+**Sprint:** SEO / arquitectura — corrección quirúrgica
+**Tipo:** Primera corrección propuesta en `SEO-ARCH-HERRAMIENTAS-INTERNAL-LINKING-VALIDATION-01`, ejecutada.
+**Documento:** `docs/seo/SEO_ARCH_HERRAMIENTAS_NAVBAR_LINK_01.md`
+
+**Cambio:** en `src/components/landing/Navbar.tsx`, el disparador "Herramientas" (un único `<button>` en desktop, un `<span>` en móvil) se divide en un `<Link href="/herramientas">` real (texto "Herramientas") y, en desktop, un `<button>` independiente que conserva el toggle del desplegable (mismo `aria-expanded`/`aria-haspopup`/`aria-controls`, ahora con `aria-label` propio). Sin anidación de elementos interactivos. Añadida clave i18n `Navigation.toolsMenuToggle` en ambos locales.
+
+**Resultado:** `<a href="/herramientas">` (ES) y `<a href="/en/herramientas">` (EN) presentes en el navbar de toda página pública, en desktop y móvil. Desplegable desktop (hover + botón + Escape + clic fuera) sin cambios de comportamiento; las 3 herramientas individuales siguen accesibles igual que antes.
+
+**Tests añadidos:** `src/__tests__/components/Navbar.test.tsx` (8 tests, todos en verde): href ES/EN, botón independiente, ausencia de anidación inválida, apertura/cierre del desplegable, herramientas individuales intactas, cierre al navegar, enlace real en menú móvil.
+
+**Validación:** `npm run build` PASS; `npm run lint` 0 errores (sin cambios); `npm test` 610/611 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`); HTML local verificado con `npm run start` + `curl` y con interacción real en navegador (hover, clic, inspección DOM de anidación). **Validación en producción pendiente de despliegue.**
+
+**STOP aplicado — no se tocó footer, home, hub, herramientas individuales, `/blog/plantilla-kakebo-excel` ni sitemap; no se corrigieron otros hallazgos; no se inició ninguna otra tarea.**
 
 ---
 
