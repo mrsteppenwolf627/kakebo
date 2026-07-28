@@ -1,8 +1,29 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-TECH-SITEMAP-VALIDATION-01 — validación con evidencia real de los hallazgos de sitemap de la auditoría SE Ranking del 28/07/2026; **solo diagnóstico, sin cambios de código**)  
+**Última actualización:** 2026-07-28 (SEO-TECH-SITEMAP-FIX-BLOG-EN-01 — excluidas del sitemap las 3 URLs `/en/blog/*` sin traducción real, confirmadas 404 en SEO-TECH-SITEMAP-VALIDATION-01)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECH-SITEMAP-FIX-BLOG-EN-01 — Excluir del sitemap posts EN sin fichero de traducción
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado
+**Sprint:** SEO técnico / corrección quirúrgica
+**Tipo:** Corrección de `src/app/sitemap.ts` para dejar de anunciar `/en/blog/{slug}` cuando no existe `{slug}.en.mdx`, causa raíz confirmada en `SEO-TECH-SITEMAP-VALIDATION-01`.
+**Documento:** `docs/seo/SEO_TECH_SITEMAP_FIX_BLOG_EN_01.md`
+
+**Cambio:** invertido el criterio de exclusión EN de "lista de bloqueo" (`enNoindexSlugs`: excluir si el fichero EN existe y es noindex) a "lista de permiso" (`enIndexableSlugs`: incluir solo si el fichero EN existe y NO es noindex), reutilizando `getBlogPosts('en')` sin duplicar lectura de ficheros. Aplicado en los dos puntos de `sitemap.ts` donde se generaba la URL EN y su `alternates.languages`.
+
+**Resultado:** `/en/blog/cuentas-remuneradas`, `/en/blog/fondo-de-emergencia` y `/en/blog/regla-50-30-20-ejemplo` ya no aparecen en el sitemap generado localmente (50→47 URLs, exactamente -3). Sus versiones ES permanecen; los 10 posts EN reales e indexables permanecen; los 10 posts EN reales marcados `noindex` permanecen excluidos; `/login` y `/en/login` no se han tocado.
+
+**Tests añadidos:** `src/__tests__/app/sitemap.test.ts` (5, mockeado) y `src/__tests__/app/sitemap-en-blog-content.test.ts` (5, contenido real sin mocks) — 10 tests nuevos, todos en verde.
+
+**Validación:** `npm run build` PASS; `npm run lint` 0 errores (sin cambios); `npm test` 595/596 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`); sitemap local verificado con `npm run start` + `curl`. **Validación en producción pendiente de despliegue** (documentada como paso siguiente en el documento de cierre).
+
+**STOP aplicado — no se tocó canonical ni hreflang de login, no se modificó contenido, no se corrigieron otros hallazgos del sitemap, no se inició ninguna otra tarea.**
 
 ---
 

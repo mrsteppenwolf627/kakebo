@@ -50,16 +50,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
         });
     });
 
-    // Build set of EN slugs that have noindex: true in their EN frontmatter
+    // Build set of EN slugs that actually have a translated file AND are indexable.
+    // getBlogPosts('en') only returns slugs with a real {slug}.en.mdx file, so this
+    // set doubles as both an existence check and a noindex check — a slug with no
+    // EN file at all never enters `enPosts` in the first place.
     const enPosts = getBlogPosts('en');
-    const enNoindexSlugs = new Set(
-        enPosts.filter((p) => p.frontmatter.noindex).map((p) => p.slug)
+    const enIndexableSlugs = new Set(
+        enPosts.filter((p) => !p.frontmatter.noindex).map((p) => p.slug)
     );
 
-    // Add localized blog posts (skip noindex posts per locale)
+    // Add localized blog posts (skip EN URLs when no EN file exists or it's noindex)
     posts.filter((post) => !post.frontmatter.noindex).forEach((post) => {
         locales.forEach((locale) => {
-            if (locale === 'en' && enNoindexSlugs.has(post.slug)) return;
+            if (locale === 'en' && !enIndexableSlugs.has(post.slug)) return;
 
             const path = locale === 'es' ? `/blog/${post.slug}` : `/${locale}/blog/${post.slug}`;
             sitemapEntries.push({
@@ -69,7 +72,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
                 priority: 0.7,
                 alternates: {
                     languages: locales.reduce((acc, l) => {
-                        if (l === 'en' && enNoindexSlugs.has(post.slug)) return acc;
+                        if (l === 'en' && !enIndexableSlugs.has(post.slug)) return acc;
                         const lPath = l === 'es' ? `/blog/${post.slug}` : `/${l}/blog/${post.slug}`;
                         acc[l] = `${baseUrl}${lPath}`;
                         return acc;

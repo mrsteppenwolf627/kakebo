@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-28 (SEO-TECH-SITEMAP-VALIDATION-01 — validación con evidencia real de los hallazgos de sitemap de SE Ranking; **solo diagnóstico**; ver `docs/seo/SEO_TECH_SITEMAP_VALIDATION_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-28 (SEO-TECH-SITEMAP-FIX-BLOG-EN-01 — excluidas del sitemap las 3 URLs `/en/blog/*` sin fichero de traducción; ver `docs/seo/SEO_TECH_SITEMAP_FIX_BLOG_EN_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
