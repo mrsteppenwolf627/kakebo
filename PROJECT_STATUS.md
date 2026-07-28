@@ -1,8 +1,29 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-TECH-SITEMAP-FIX-BLOG-EN-PRODUCTION-VALIDATION-01 — validación en producción del fix del sitemap superada; **milestone del sitemap EN cerrado formalmente**)  
+**Última actualización:** 2026-07-28 (SEO-TECH-LOGIN-METADATA-FIX-01 — metadata de `/login` y `/en/login` corregida a canonical/hreflang/título localizados; validación de producción pendiente de despliegue)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECH-LOGIN-METADATA-FIX-01 — Metadata localizada para /login y /en/login
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado (validación local); validación de producción pendiente de despliegue
+**Sprint:** SEO técnico / corrección quirúrgica
+**Tipo:** Corrección de `src/app/[locale]/login/layout.tsx`, causa raíz confirmada en `SEO-TECH-SITEMAP-VALIDATION-01`.
+**Documento:** `docs/seo/SEO_TECH_LOGIN_METADATA_FIX_01.md`
+
+**Cambio:** metadata estática (idéntica para ambos locales, canonical fijo `.../es/login`, título en español incluso en `/en/login`) reemplazada por `generateMetadata({ params })` dinámica, replicando el patrón de `privacy`/`terms`/`cookies`. Añadido namespace i18n `Auth.meta` en `messages/es.json` y `messages/en.json`.
+
+**Resultado:** `/login` → canonical `https://www.metodokakebo.com/login`; `/en/login` → canonical `https://www.metodokakebo.com/en/login` y título/descripción en inglés real (antes servía copy español). hreflang `es`/`en`/`x-default` apuntan únicamente a URLs limpias que devuelven HTTP 200; ninguna referencia a `/es/login`. Las URLs con query params (`?mode=signup`, `?source=...`) resuelven el mismo canonical limpio por diseño (el layout no recibe `searchParams`). `/es/login` sigue redirigiendo (308→`/login`) sin cambios, ya sin ser referenciada desde ninguna metadata.
+
+**Tests añadidos:** `src/__tests__/app/login-metadata.test.ts` (7 tests, todos en verde).
+
+**Validación:** `npm run build` PASS; `npm run lint` 0 errores (sin cambios); `npm test` 602/603 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`); HTML local verificado con `npm run start` + `curl` (título, canonical, hreflang, variantes con parámetros, formulario de login intacto, `/es/login` sigue en 308). **Validación en producción pendiente de despliegue.**
+
+**STOP aplicado — no se tocó el sitemap, no se cambió robots/noindex, no se modificó autenticación, no se corrigieron otros hallazgos de la auditoría, no se inició ninguna otra tarea.**
 
 ---
 

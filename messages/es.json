@@ -570,6 +570,10 @@
         }
     },
     "Auth": {
+        "meta": {
+            "title": "Iniciar Sesión | Kakebo",
+            "description": "Accede a tu cuenta de Kakebo para gestionar tus gastos y presupuestos mensuales. Método japonés de ahorro digitalizado."
+        },
         "leftPanel": {
             "title": "Control de gastos <br />con método japonés",
             "subtitle": "Registra, clasifica y revisa tus gastos mensuales con claridad. Sin complicaciones, sin humo.",

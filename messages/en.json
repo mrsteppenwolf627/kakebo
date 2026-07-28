@@ -523,6 +523,10 @@
         }
     },
     "Auth": {
+        "meta": {
+            "title": "Log In | Kakebo",
+            "description": "Access your Kakebo account to manage your monthly expenses and budgets. The Japanese savings method, digitized."
+        },
         "leftPanel": {
             "title": "Expense control <br />with Japanese method",
             "subtitle": "Track, categorize, and review your monthly expenses with clarity. No complications, no fluff.",

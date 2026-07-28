@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-28 (SEO-TECH-SITEMAP-FIX-BLOG-EN-PRODUCTION-VALIDATION-01 — validación de producción superada, cierre formal del fix del sitemap EN; ver `docs/seo/SEO_TECH_SITEMAP_FIX_BLOG_EN_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-28 (SEO-TECH-LOGIN-METADATA-FIX-01 — metadata de `/login`/`/en/login` corregida con canonical y hreflang localizados; validación de producción pendiente de despliegue; ver `docs/seo/SEO_TECH_LOGIN_METADATA_FIX_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
