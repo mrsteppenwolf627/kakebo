@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-07-28
 **Modelo:** Claude Code
-**Estado:** ✅ Completado (validación local); validación de producción pendiente de despliegue
+**Estado:** ✅ Completado — validación local y validación de producción superadas. El hub `/herramientas` recibe ahora un enlace interno global rastreable. Cierre definitivo.
 
 ## Problema anterior
 
@@ -185,11 +185,71 @@ persiste entre rutas.
 
 ## Validación de producción
 
-**Pendiente de despliegue**, siguiendo el mismo patrón que las tareas anteriores de este ciclo
-(commit local → tarea de seguimiento `..._PRODUCTION-VALIDATION-01`). Tras el despliegue, queda
-pendiente confirmar en `https://www.metodokakebo.com/` y `https://www.metodokakebo.com/en`: enlace
-visible y correcto en el navbar de ambos locales, desplegable funcional, y HTML rastreable con
-`<a href="/herramientas">`/`<a href="/en/herramientas">` presentes.
+**Completada el 2026-07-28** (tarea `SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-PRODUCTION-VALIDATION-01`),
+tras confirmar el despliegue del commit `f4e2e3f65e973a48a48181f3d9f8082529d9efbe`.
+
+**Evidencia de despliegue:** `https://www.metodokakebo.com/` y `https://www.metodokakebo.com/en`
+sirven exactamente el HTML esperado del commit — `<a href="/herramientas">Herramientas</a>` /
+`<a href="/en/herramientas">Tools</a>` presentes, junto con el botón `aria-controls="tools-dropdown-menu"`
+con `aria-label` localizado ("Ver todas las herramientas" / "View all tools"). Vercel no expone un
+header público de commit; la confirmación se apoya en esta evidencia funcional, idéntica a la
+verificada en local.
+
+**Validación ES:**
+- `<a href="/herramientas">Herramientas</a>` presente en el HTML servido de `/`.
+- Clic real en el texto "Herramientas" (navegador) → navega a
+  `https://www.metodokakebo.com/herramientas`.
+- `https://www.metodokakebo.com/herramientas` → HTTP 200.
+- Botón del chevron (`aria-controls="tools-dropdown-menu"`) abre/cierra el desplegable de forma
+  independiente del enlace — verificado con clic real (captura de pantalla) y con
+  `aria-expanded` alternando `false → true → false`.
+- Las 3 herramientas individuales (`Calculadora Ahorro`, `Regla 50/30/20`, `Calculadora Inflación`)
+  siguen visibles y con sus `href` correctos dentro del desplegable.
+
+**Validación EN:**
+- `<a href="/en/herramientas">Tools</a>` presente en el HTML servido de `/en`.
+- Clic real en el texto "Tools" → navega a `https://www.metodokakebo.com/en/herramientas`
+  (confirmado por URL y `<title>Kakebo Tools: Savings and Inflation Calculators</title>` de la
+  pestaña tras el clic).
+- `https://www.metodokakebo.com/en/herramientas` → HTTP 200.
+- `aria-label` del botón del chevron correctamente localizado a "View all tools".
+- Desplegable EN funcional, mostrando "Savings Calculator", "50/30/20 Rule", "Inflation Calculator".
+
+**Validación desktop:**
+- Hover sobre "Herramientas"/"Tools" abre el desplegable (verificado con captura de pantalla en
+  ambos locales, sin cambios visuales respecto al comportamiento anterior a este fix).
+- Clic en el texto navega al hub (verificado en ambos locales).
+- Clic en el chevron abre/cierra el menú de forma independiente (verificado con captura y con
+  `aria-expanded`).
+- Clic fuera del desplegable lo cierra (verificado con captura de pantalla: clic en un punto
+  alejado del navbar cierra el menú y el chevron vuelve a su posición original).
+- `Escape` (con foco en el botón del chevron) cierra el desplegable y devuelve el foco al propio
+  botón — verificado leyendo `aria-expanded` (`true → false`) y `document.activeElement` tras la
+  tecla.
+- Sin saltos visuales ni desalineación en ninguna de las capturas tomadas (home ES, home EN, hub
+  ES, hub EN, desplegable abierto en ambos locales).
+
+**Validación móvil:**
+- No se pudo interactuar con el botón hamburguesa real en un viewport estrecho en esta sesión de
+  producción (misma limitación de entorno ya documentada: el redimensionado de ventana no afecta
+  a `window.innerWidth` en este navegador de automatización). La implementación móvil ya quedó
+  validada estructuralmente en la fase local mediante el test automatizado
+  `Navbar.test.tsx` (que renderiza directamente la rama JSX del menú móvil, independiente del
+  ancho de viewport) y no se ha modificado desde entonces — el HTML servido en producción es
+  idéntico al verificado en local (mismo build, mismo commit).
+
+**Comprobación del DOM (producción, ambos locales):**
+- `document.querySelector('a[href="/herramientas"]')` / `.../en/herramientas` → elemento `<a>`
+  real, `tabIndex` nativo `0`.
+- `document.querySelector('button[aria-controls="tools-dropdown-menu"]')` → elemento `<button>`
+  real, `tabIndex` nativo `0`, con `aria-label` presente y localizado.
+- `link.parentElement === button.parentElement` → `true` (hermanos, mismo contenedor).
+- `link.contains(button)` → `false`; `button.contains(link)` → `false` — sin anidación de
+  elementos interactivos en ningún sentido, confirmado en producción real.
+
+**Confirmación:** el hub `/herramientas` (y `/en/herramientas`) ya recibe un enlace interno global
+rastreable (`<a href>` real, presente en todas las páginas públicas vía el navbar compartido),
+resolviendo en producción el hallazgo "página huérfana" de `SEO-ARCH-HERRAMIENTAS-INTERNAL-LINKING-VALIDATION-01`.
 
 ## Confirmación: no se modificaron otras áreas
 

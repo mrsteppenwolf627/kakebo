@@ -1,8 +1,25 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-01 — enlace real al hub `/herramientas` añadido al navbar global; validación de producción pendiente de despliegue)  
+**Última actualización:** 2026-07-28 (SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-PRODUCTION-VALIDATION-01 — validación de producción superada; **el hub `/herramientas` ya recibe un enlace interno global rastreable, cierre definitivo**)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-PRODUCTION-VALIDATION-01 — Validación de producción y cierre
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Validación de producción superada. El hub `/herramientas` recibe ahora un enlace interno global rastreable en ambos locales. Cierre definitivo.**
+**Sprint:** SEO / arquitectura — validación de producción (sin cambios de código)
+**Tipo:** Verificación en producción real (HTML servido, clics reales en navegador, inspección del DOM) del despliegue del commit `f4e2e3f65e973a48a48181f3d9f8082529d9efbe` (`SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-01`).
+**Documento:** `docs/seo/SEO_ARCH_HERRAMIENTAS_NAVBAR_LINK_01.md` (sección "Validación de producción" actualizada)
+
+**Confirmado en producción:** `<a href="/herramientas">Herramientas</a>` y `<a href="/en/herramientas">Tools</a>` presentes en el navbar de `/` y `/en`; clic real en el texto navega correctamente a ambos hubs (HTTP 200 en ambos); botón del chevron independiente abre/cierra el desplegable (hover, clic, clic fuera y Escape, todos verificados con interacción real y `aria-expanded`); las 3 herramientas individuales siguen accesibles en ambos locales; DOM confirma `link` y `button` como hermanos, sin anidación en ningún sentido, ambos focalizables, `aria-label` correctamente localizado. Sin regresiones visuales detectadas en las capturas tomadas.
+
+**Sin regresiones — sin cambios de código en esta tarea.**
+
+**STOP aplicado — no se añadieron enlaces desde footer/home/artículos, no se tocó el hub ni las herramientas individuales, no se inició ninguna otra tarea.**
 
 ---
 
