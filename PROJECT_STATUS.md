@@ -1,8 +1,28 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-KAKEBO-VS-YNAB-01 — `kakebo-vs-ynab.png` optimizado de 2,45MB a ~624KB; validación de producción pendiente, 2 de 3 en cadena)  
+**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-LIBRO-KAKEBO-PDF-01 — `libro-kakebo-pdf.png` optimizado de 2,19MB a ~594KB; **3 de 3 imágenes optimizadas, validación de producción conjunta pendiente**)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-PERF-LARGE-IMAGES-FIX-LIBRO-KAKEBO-PDF-01 — Optimización de libro-kakebo-pdf.png
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado (validación local); validación de producción conjunta pendiente (3 de 3 en cadena — última imagen)
+**Sprint:** SEO / rendimiento — corrección quirúrgica de asset (cuarta y última de la serie)
+**Documento:** `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_LIBRO_KAKEBO_PDF_01.md`
+
+**Cambio:** `public/images/blog/libro-kakebo-pdf.png` reexportado con `sharp` (PNG indexado de 256 colores + dithering), analizado independientemente. Peso: 2,19 MB → 608 577 bytes (-72,3%). Misma ruta, nombre, formato PNG y dimensiones 1536×1024. Ningún código, MDX, componente ni configuración modificado.
+
+**Resultado visual:** imagen con más texto fino de toda la serie (título manuscrito "PLAN FINANCIERO", lista de 5 conceptos, dígitos LCD de calculadora "1250") — todo el texto y dígitos permanecen perfectamente legibles a zoom 3× sobre resolución nativa, sin artefactos. No requirió decisión del usuario.
+
+**Validación:** `npm run build` PASS; `npm run lint` 0 errores; `npm test` 610/611 (mismo fallo preexistente y ajeno); hero, `og:image`, `twitter:image`, schema y miniatura relacionada verificados; `ahorro-pareja.png`, `kakebo-autonomos.png` y `kakebo-vs-ynab.png` confirmados sin cambios adicionales.
+
+**Con esta tarea se completan las 4 optimizaciones de imagen de la auditoría SE Ranking del 28/07/2026.** Validación de producción conjunta pendiente en la tarea final de la cadena.
+
+**STOP aplicado — no se optimizó ninguna otra imagen, no se modificó código ni frontmatter, no se cambió formato ni dimensiones.**
 
 ---
 
