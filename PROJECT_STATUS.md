@@ -1,8 +1,25 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-TECH-LOGIN-METADATA-FIX-01 — metadata de `/login` y `/en/login` corregida a canonical/hreflang/título localizados; validación de producción pendiente de despliegue)  
+**Última actualización:** 2026-07-28 (SEO-TECH-LOGIN-METADATA-FIX-PRODUCTION-VALIDATION-01 — validación de producción superada; **corrección de metadata de login cerrada formalmente**)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECH-LOGIN-METADATA-FIX-PRODUCTION-VALIDATION-01 — Validación de producción y cierre
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Validación de producción superada. Cierre formal de la corrección de metadata de login.**
+**Sprint:** SEO técnico / validación de producción (sin cambios de código)
+**Tipo:** Verificación en producción real (HTTP directo, sin caché de este entorno) del despliegue del commit `0f8d10f727f1dc82bb8ad263030cb01bb91aba2f` (`SEO-TECH-LOGIN-METADATA-FIX-01`).
+**Documento:** `docs/seo/SEO_TECH_LOGIN_METADATA_FIX_01.md` (sección "Validación de producción" actualizada)
+
+**Confirmado en producción:** `/login` (HTTP 200, title "Iniciar Sesión | Kakebo", canonical `.../login`, hreflang correcto, 0 referencias a `/es/login`); `/en/login` (HTTP 200, title "Log In | Kakebo" en inglés real, canonical `.../en/login`, mismo hreflang, 0 referencias a `/es/login`); las 8 variantes con parámetros de tracking (`?mode=signup`, `?source=calculadora_ahorro`, `?source=calculator_503020`, `?source=calculator_inflation` en ambos locales) declaran el canonical limpio correspondiente; `/es/login` sigue en 308 → `/login`, sin cambios; formulario de login (email/password/Google OAuth) intacto en ambos locales.
+
+**Sin regresiones detectadas — sin cambios de código en esta tarea.**
+
+**STOP aplicado — no se eliminó login del sitemap, no se cambió noindex/robots, no se modificó autenticación, no se inició ninguna otra tarea.**
 
 ---
 
@@ -10,7 +27,7 @@
 
 **Fecha:** 2026-07-28
 **Modelo:** Claude Code
-**Estado:** ✅ Completado (validación local); validación de producción pendiente de despliegue
+**Estado:** ✅ Completado — validación local y validación de producción superadas.
 **Sprint:** SEO técnico / corrección quirúrgica
 **Tipo:** Corrección de `src/app/[locale]/login/layout.tsx`, causa raíz confirmada en `SEO-TECH-SITEMAP-VALIDATION-01`.
 **Documento:** `docs/seo/SEO_TECH_LOGIN_METADATA_FIX_01.md`

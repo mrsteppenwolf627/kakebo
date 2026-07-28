@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-07-28
 **Modelo:** Claude Code
-**Estado:** ✅ Completado (validación local); validación de producción pendiente de despliegue
+**Estado:** ✅ Completado — validación local y validación de producción superadas. Cierre formal.
 
 ## Causa raíz
 
@@ -159,13 +159,30 @@ diccionario determinista, independiente del contenido real de `messages/*.json`)
 
 ## Validación de producción
 
-**Pendiente de despliegue**, igual que en el ciclo de la tarea anterior
-(`SEO-TECH-SITEMAP-FIX-BLOG-EN-01` → `SEO-TECH-SITEMAP-FIX-BLOG-EN-PRODUCTION-VALIDATION-01`). Tras
-el despliegue de este commit, queda pendiente repetir el mismo método contra
-`https://www.metodokakebo.com/login` y `https://www.metodokakebo.com/en/login`: confirmar HTTP
-200 en ambas, canonical/hreflang/title correctos y ausencia total de `/es/login` en el HTML
-servido. Se recomienda una tarea de seguimiento
-`SEO-TECH-LOGIN-METADATA-FIX-PRODUCTION-VALIDATION-01`.
+**Completada el 2026-07-28** (tarea `SEO-TECH-LOGIN-METADATA-FIX-PRODUCTION-VALIDATION-01`), tras
+confirmar el despliegue del commit `0f8d10f727f1dc82bb8ad263030cb01bb91aba2f`.
+
+- `https://www.metodokakebo.com/login` → HTTP 200; `<title>Iniciar Sesión | Kakebo</title>`;
+  canonical `https://www.metodokakebo.com/login`; hreflang `es→/login`, `en→/en/login`,
+  `x-default→/login`; **0 referencias** a `/es/login` en el HTML servido.
+- `https://www.metodokakebo.com/en/login` → HTTP 200; `<title>Log In | Kakebo</title>` (inglés
+  real, confirmado en producción); canonical `https://www.metodokakebo.com/en/login`; mismo bloque
+  hreflang; **0 referencias** a `/es/login`.
+- Las 8 variantes con parámetros verificadas en producción (`/login?mode=signup`,
+  `/login?mode=signup&source=calculadora_ahorro`, `/login?source=calculator_503020`,
+  `/login?source=calculator_inflation` y sus 4 equivalentes `/en/login?...`) declaran todas el
+  canonical limpio correspondiente (`.../login` o `.../en/login`), sin query string, confirmando
+  el comportamiento por diseño documentado arriba.
+- `https://www.metodokakebo.com/es/login` sigue devolviendo HTTP 308 con `Location: /login`, sin
+  cambios — ya no referenciada desde ninguna metadata de `/login` ni `/en/login`.
+- Formulario de login verificado sin cambios en producción: campos de email/password y botón de
+  Google OAuth presentes tanto en `/login` como en `/en/login`.
+
+Nota metodológica: igual que en la validación de producción anterior
+(`SEO-TECH-SITEMAP-FIX-BLOG-EN-PRODUCTION-VALIDATION-01`), Vercel no expone un header público con
+el hash de commit desplegado; la confirmación de despliegue se apoya en evidencia funcional — el
+comportamiento exacto de metadata observado en producción coincide en todos los puntos con el
+resultado esperado del commit `0f8d10f`, idéntico al verificado localmente.
 
 ## Confirmación: sitemap fuera de alcance
 
