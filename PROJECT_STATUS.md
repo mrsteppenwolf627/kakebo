@@ -1,8 +1,27 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-TECH-BROKEN-IMAGE-VALIDATION-01 — imagen rota en `/en/blog/metodo-kakebo-guia-definitiva` **confirmada**; **solo diagnóstico, sin cambios de código**)  
+**Última actualización:** 2026-07-28 (SEO-TECH-BROKEN-IMAGE-FIX-01 — corregida la imagen rota de `/en/blog/metodo-kakebo-guia-definitiva`; validación de producción pendiente de despliegue)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECH-BROKEN-IMAGE-FIX-01 — Corrección de la imagen rota del artículo EN
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado (validación local); validación de producción pendiente de despliegue
+**Sprint:** SEO técnico / corrección quirúrgica
+**Tipo:** Corrección del campo `image` del frontmatter, causa raíz confirmada en `SEO-TECH-BROKEN-IMAGE-VALIDATION-01`.
+**Documento:** `docs/seo/SEO_TECH_BROKEN_IMAGE_FIX_01.md`
+
+**Cambio:** en `src/content/blog/metodo-kakebo-guia-definitiva.en.mdx`, el campo `image` del frontmatter pasa de `/images/blog/kakebo-method.jpg` (fichero inexistente, HTTP 404, nunca existió en el repo) a `/images/blog/metodo-kakebo-guia-definitiva.png` (mismo asset que ya usa correctamente la versión española, HTTP 200). Cambio de una única línea; sin tocar contenido, otros campos del frontmatter, la versión ES, el asset en sí, ni la plantilla.
+
+**Resultado:** hero visible, `og:image`, `twitter:image` y schema `BlogPosting.image` de la versión inglesa apuntan ahora al asset correcto, verificado en HTML local. 0 referencias restantes a `kakebo-method` en todo el repositorio.
+
+**Validación:** `npm run build` PASS; `npm run lint` 0 errores (sin cambios); `npm test` 610/611 (mismo fallo preexistente y ajeno en `calculate-whatif.test.ts`); HTML local verificado con `npm run start` + `curl` (hero, OG, Twitter, schema, asset HTTP 200, versión ES sin cambios). **Validación en producción pendiente de despliegue.**
+
+**STOP aplicado — no se optimizó el peso de la imagen, no se modificaron otros artículos, no se corrigieron otros hallazgos, no se inició ninguna otra tarea.**
 
 ---
 
