@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-07-28
 **Modelo:** Claude Code
-**Estado:** ✅ Completado (validación local); validación de producción conjunta pendiente (tarea 4 de la cadena)
+**Estado:** ✅ Completado — validación local y validación de producción conjunta superadas (tarea `SEO-PERF-LARGE-IMAGES-REMAINING-PRODUCTION-VALIDATION-01`). Cierre definitivo.
 
 ## Peso original y final
 
@@ -110,6 +110,21 @@ ruta, sin cambios de comportamiento.
 
 ## Validación de producción
 
-**Pendiente** — se validará de forma conjunta con las otras 2 imágenes de esta cadena en la tarea
-`SEO-PERF-LARGE-IMAGES-REMAINING-PRODUCTION-VALIDATION-01`, tras desplegar el último commit de la
-cadena.
+**Completada el 2026-07-28**, de forma conjunta con las otras 2 imágenes de la cadena, tras
+confirmar el despliegue del commit `e879d6c937b3044c87313a2cf372db18db84e94b` (último de la
+serie).
+
+- `https://www.metodokakebo.com/images/blog/kakebo-autonomos.png` → HTTP 200,
+  `Content-Type: image/png`, `Content-Length: 764399` (idéntico al local), 1536×1024, PNG válido
+  (colormap de 8 bits).
+- `/_next/image?url=%2Fimages%2Fblog%2Fkakebo-autonomos.png&w=828&q=75`: sin negociación WebP →
+  HTTP 200, PNG, 187 477 bytes; con `Accept: image/webp` (navegador real) → HTTP 200, **WebP,
+  43 852 bytes**.
+- `/blog/metodo-kakebo-para-autonomos` y `/en/blog/metodo-kakebo-para-autonomos` → HTTP 200
+  ambos; hero, `og:image`, `twitter:image` y schema `BlogPosting.image` apuntando correctamente a
+  `/images/blog/kakebo-autonomos.png`.
+- Comprobación visual real en navegador (ambos locales): portada con caligrafía japonesa
+  (家計簿) y tabla de iconos completamente nítidas, sin artefactos, sin regresión de layout.
+- Miniatura relacionada verificada en `https://www.metodokakebo.com/blog/ahorro-pareja`.
+- `ahorro-pareja.png` (718 596 B), `kakebo-vs-ynab.png` (639 302 B) y `libro-kakebo-pdf.png`
+  (608 577 B) confirmados en producción sin afectar a este asset.

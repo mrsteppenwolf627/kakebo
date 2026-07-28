@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-LIBRO-KAKEBO-PDF-01 — `libro-kakebo-pdf.png` optimizado de 2,19MB a ~594KB; 3 de 3 imágenes de la cadena optimizadas, validación de producción conjunta pendiente; ver `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_LIBRO_KAKEBO_PDF_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-REMAINING-PRODUCTION-VALIDATION-01 — validación de producción conjunta superada; las 4 imágenes >1MB de la auditoría SE Ranking del 28/07/2026 quedan optimizadas y cerradas; ver `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_KAKEBO_AUTONOMOS_01.md`, `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_KAKEBO_VS_YNAB_01.md`, `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_LIBRO_KAKEBO_PDF_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 

@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-07-28
 **Modelo:** Claude Code
-**Estado:** ✅ Completado (validación local); validación de producción conjunta pendiente (tarea 4 de la cadena)
+**Estado:** ✅ Completado — validación local y validación de producción conjunta superadas (tarea `SEO-PERF-LARGE-IMAGES-REMAINING-PRODUCTION-VALIDATION-01`). Cierre definitivo. Con esta imagen se cierran las 4 optimizaciones de la auditoría SE Ranking del 28/07/2026.
 
 ## Peso original y final
 
@@ -109,6 +109,23 @@ ruta, sin cambios de comportamiento.
 
 ## Validación de producción
 
-**Pendiente** — se validará de forma conjunta con las otras 2 imágenes de esta cadena en la tarea
-`SEO-PERF-LARGE-IMAGES-REMAINING-PRODUCTION-VALIDATION-01`, tras desplegar este commit (el último
-de la serie de optimización).
+**Completada el 2026-07-28**, de forma conjunta con las otras 2 imágenes de la cadena, tras
+confirmar el despliegue del commit `e879d6c937b3044c87313a2cf372db18db84e94b` (este mismo commit,
+el último de la serie).
+
+- `https://www.metodokakebo.com/images/blog/libro-kakebo-pdf.png` → HTTP 200,
+  `Content-Type: image/png`, `Content-Length: 608577` (idéntico al local), 1536×1024, PNG válido
+  (colormap de 8 bits). Nota: la primera comprobación coincidió con el despliegue aún en curso
+  (Vercel servía todavía el fichero antiguo de 2 193 491 bytes); tras una breve espera y nueva
+  comprobación, el peso pasó a coincidir exactamente con el resultado local.
+- `/_next/image?url=%2Fimages%2Fblog%2Flibro-kakebo-pdf.png&w=828&q=75`: sin negociación WebP →
+  HTTP 200, PNG, 189 819 bytes; con `Accept: image/webp` (navegador real) → HTTP 200, **WebP,
+  43 830 bytes**.
+- `/blog/libro-kakebo-pdf` y `/en/blog/libro-kakebo-pdf` → HTTP 200 ambos; hero, `og:image`,
+  `twitter:image` y schema `BlogPosting.image` apuntando correctamente a
+  `/images/blog/libro-kakebo-pdf.png`.
+- Comprobación visual real en navegador (ambos locales): texto "PLAN FINANCIERO" y dígitos de la
+  calculadora completamente legibles, sin artefactos, sin regresión de layout.
+- Miniatura relacionada verificada en `https://www.metodokakebo.com/blog/plantilla-kakebo-excel`.
+- `ahorro-pareja.png` (718 596 B), `kakebo-autonomos.png` (764 399 B) y `kakebo-vs-ynab.png`
+  (639 302 B) confirmados en producción sin afectar a este asset.
