@@ -1,8 +1,25 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-01 — optimizado `ahorro-pareja.png` de 2,54MB a ~719KB; validación de producción pendiente de despliegue)  
+**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-PRODUCTION-VALIDATION-01 — validación de producción superada; **optimización de `ahorro-pareja.png` cerrada formalmente**)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-PRODUCTION-VALIDATION-01 — Validación de producción y cierre
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Validación de producción superada. Optimización de `ahorro-pareja.png` cerrada formalmente.**
+**Sprint:** SEO / rendimiento — validación de producción (sin cambios de código/assets)
+**Tipo:** Verificación en producción real (HTTP directo con/sin negociación WebP, HTML servido, comprobación visual en navegador) del despliegue del commit `6a5f7197d6cecf69b0aecea6824a0fd5c5d9e9cc` (`SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-01`).
+**Documento:** `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_AHORRO_PAREJA_01.md` (sección "Validación de producción" actualizada)
+
+**Confirmado en producción:** asset HTTP 200, `Content-Length: 718596` (idéntico al local, <1MB), 1536×1024, PNG válido; `/_next/image` sirve WebP de 50 142 bytes a navegadores reales; hero, `og:image`, `twitter:image` y schema `BlogPosting.image` correctos en ES y EN; miniatura relacionada intacta; comprobación visual real en ambos locales sin artefactos, deformación ni regresión de layout; las otras 3 imágenes grandes (`kakebo-vs-ynab.png`, `kakebo-autonomos.png`, `libro-kakebo-pdf.png`) confirmadas sin cambios en producción.
+
+**Sin regresiones — sin cambios de código ni assets en esta tarea.**
+
+**STOP aplicado — no se optimizaron las otras 3 imágenes, no se modificó código ni frontmatter, no se inició ninguna otra tarea.**
 
 ---
 

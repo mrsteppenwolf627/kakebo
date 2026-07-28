@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-07-28
 **Modelo:** Claude Code
-**Estado:** ✅ Completado (validación local); validación de producción pendiente de despliegue
+**Estado:** ✅ Completado — validación local y validación de producción superadas. Cierre definitivo.
 
 ## 1. Peso original
 
@@ -114,12 +114,40 @@ Verificado en `/blog/kakebo-sueldo-minimo` (artículo que lista `ahorro-pareja` 
 
 ## 11. Validación de producción
 
-**Pendiente de despliegue**, siguiendo el mismo patrón que las tareas anteriores de este ciclo.
-Tras el despliegue de este commit, queda pendiente confirmar en
-`https://www.metodokakebo.com/images/blog/ahorro-pareja.png`: HTTP 200, peso ~719 KB, y
-comprobación visual real del hero en `/blog/ahorro-pareja` y `/en/blog/ahorro-pareja`. Se
-recomienda una tarea de seguimiento
-`SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-PRODUCTION-VALIDATION-01`.
+**Completada el 2026-07-28** (tarea `SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-PRODUCTION-VALIDATION-01`),
+tras confirmar el despliegue del commit `6a5f7197d6cecf69b0aecea6824a0fd5c5d9e9cc`.
+
+- `https://www.metodokakebo.com/images/blog/ahorro-pareja.png` → HTTP 200,
+  `Content-Type: image/png`, `Content-Length: 718596` (idéntico al peso local), 1536×1024, PNG
+  válido (`file`: "PNG image data, 1536 x 1024, 8-bit colormap, non-interlaced") — **peso
+  confirmado <1 MB en producción**.
+- Variante optimizada `/_next/image?url=%2Fimages%2Fblog%2Fahorro-pareja.png&w=828&q=75`:
+  - Sin negociación WebP → HTTP 200, PNG, 228 054 bytes.
+  - Con `Accept: image/webp` (navegador real) → HTTP 200, **WebP, 50 142 bytes** — sin
+    regresiones de tamaño, proporción ni calidad respecto al comportamiento ya documentado en
+    `SEO-PERF-LARGE-IMAGES-VALIDATION-01`.
+- **Validación visual ES** (`https://www.metodokakebo.com/blog/ahorro-pareja`, captura de
+  pantalla real): hero visible, imagen completa, sin artefactos perceptibles a tamaño normal, sin
+  deformación, sin banding visible, sin regresiones de layout.
+- **Validación visual EN** (`https://www.metodokakebo.com/en/blog/ahorro-pareja`, captura de
+  pantalla real): mismo resultado — hero completo, sin artefactos, sin deformación, sin
+  regresiones de layout.
+- **HTML de ambas versiones inspeccionado:** hero (`<Image>` con `srcSet`/`src` vía
+  `/_next/image?url=%2Fimages%2Fblog%2Fahorro-pareja.png&...`), `og:image`
+  (`https://www.metodokakebo.com/images/blog/ahorro-pareja.png`), `twitter:image` (misma URL) y
+  `BlogPosting.image` (`["/images/blog/ahorro-pareja.png"...]`) — los 4 apuntan correctamente a la
+  misma ruta sin cambios, en ES y en EN.
+- **Miniatura de artículo relacionado** verificada en `https://www.metodokakebo.com/blog/kakebo-sueldo-minimo`:
+  `srcSet` de `RelatedPosts.tsx` (`w=384`…`w=3840`) apuntando a la misma ruta, sin cambios de
+  comportamiento.
+- **Las otras 3 imágenes grandes confirmadas sin cambios en producción:** `kakebo-vs-ynab.png`
+  (2 448 636 bytes), `kakebo-autonomos.png` (2 472 867 bytes), `libro-kakebo-pdf.png`
+  (2 193 491 bytes) — pesos idénticos a los documentados antes de este fix.
+
+Nota metodológica: igual que en las validaciones de producción anteriores de este ciclo, Vercel no
+expone un header público con el hash de commit desplegado; la confirmación se apoya en evidencia
+funcional — el peso exacto del asset en producción (718 596 bytes) coincide con el resultado
+esperado del commit `6a5f719`, idéntico al verificado localmente.
 
 ## 12. Confirmación: las otras imágenes no fueron modificadas
 

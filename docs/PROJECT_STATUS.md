@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-01 — `ahorro-pareja.png` optimizado de 2,54MB a ~719KB, misma ruta/formato/dimensiones; validación de producción pendiente de despliegue; ver `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_AHORRO_PAREJA_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-PRODUCTION-VALIDATION-01 — validación de producción superada, `ahorro-pareja.png` optimizado y cerrado formalmente; ver `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_AHORRO_PAREJA_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
