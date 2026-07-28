@@ -1,8 +1,31 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-TECH-BROKEN-IMAGE-FIX-PRODUCTION-VALIDATION-01 — validación de producción superada; **imagen rota de `/en/blog/metodo-kakebo-guia-definitiva` corregida y cerrada formalmente**)  
+**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-VALIDATION-01 — validación de las 4 imágenes >1MB señaladas por SE Ranking; **solo diagnóstico, sin cambios de assets**)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-PERF-LARGE-IMAGES-VALIDATION-01 — Validación de imágenes >1MB (auditoría SE Ranking 28/07/2026)
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Tarea exclusiva de diagnóstico. Cero cambios de assets, contenido, componentes o configuración.**
+**Sprint:** SEO / rendimiento — validación de auditoría externa
+**Tipo:** Verificación con evidencia real (HTTP directo a producción con y sin negociación WebP, código fuente, frontmatter) de las 4 URLs con imagen >1MB reportadas por SE Ranking: `kakebo-vs-ynab`, `metodo-kakebo-para-autonomos`, `libro-kakebo-pdf`, `ahorro-pareja`.
+**Documento:** `docs/seo/SEO_PERF_LARGE_IMAGES_VALIDATION_01.md`
+
+**Hallazgo real pero matizado.** Los 4 ficheros originales (`public/images/blog/*.png`, PNG sin comprimir a 1536×1024) pesan entre 2,19 MB y 2,54 MB — confirmado >1 MB en las 4 URLs. Pero el `<img>` realmente renderizado en cada página pasa por `/_next/image` (Next.js Image Optimization, activa por defecto, sin `unoptimized`), que sirve variantes correctamente dimensionadas y negociadas por formato: **nunca por encima de ~130 KB con WebP (navegador real) y nunca por encima de 742 KB en el peor caso probado (PNG sin negociar, ancho máximo del srcset)** — siempre por debajo de 1 MB. El único punto que sirve el fichero sin optimizar es `og:image`/`twitter:image`/schema `BlogPosting.image`, que sí reciben crawlers sociales.
+
+**Clasificación:** las 4 URLs se clasifican como **OPTIMIZACIÓN RECOMENDABLE** (no "necesaria" en sentido urgente, ya que no hay impacto confirmado en Core Web Vitals; no falso positivo, ya que el original >1MB es real y se sirve sin optimizar a redes sociales/schema).
+
+**Alcance:** cada imagen se usa en su propia página (ES indexable; EN `noindex: true` en las 4) y como miniatura de "relacionado" en 1-2 páginas adicionales (a tamaño reducido, <55 KB, sin impacto).
+
+**Orden de prioridad:** 1) `ahorro-pareja.png` (2,54 MB, mayor reutilización), 2) `kakebo-autonomos.png` (2,47 MB), 3) `kakebo-vs-ynab.png` (2,45 MB), 4) `libro-kakebo-pdf.png` (2,19 MB).
+
+**Primera corrección propuesta (no ejecutada):** `SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-01` — comprimir solo `ahorro-pareja.png` (mayor prioridad), sin tocar código ni frontmatter. Las otras 3 imágenes requerirían tareas atómicas independientes cada una, sin agruparlas.
+
+**STOP aplicado — no se comprimió ninguna imagen, no se sustituyó ningún asset, no se modificó contenido, no se corrigieron otros hallazgos, no se inició ninguna otra tarea.**
 
 ---
 
