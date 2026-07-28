@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-28 (SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-PRODUCTION-VALIDATION-01 — validación de producción superada, el hub `/herramientas` ya recibe un enlace interno global rastreable; cierre definitivo; ver `docs/seo/SEO_ARCH_HERRAMIENTAS_NAVBAR_LINK_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-28 (SEO-TECH-BROKEN-IMAGE-VALIDATION-01 — imagen rota en `/en/blog/metodo-kakebo-guia-definitiva` confirmada con evidencia real; **solo diagnóstico**; ver `docs/seo/SEO_TECH_BROKEN_IMAGE_VALIDATION_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 

@@ -1,8 +1,27 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-ARCH-HERRAMIENTAS-NAVBAR-LINK-PRODUCTION-VALIDATION-01 — validación de producción superada; **el hub `/herramientas` ya recibe un enlace interno global rastreable, cierre definitivo**)  
+**Última actualización:** 2026-07-28 (SEO-TECH-BROKEN-IMAGE-VALIDATION-01 — imagen rota en `/en/blog/metodo-kakebo-guia-definitiva` **confirmada**; **solo diagnóstico, sin cambios de código**)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-TECH-BROKEN-IMAGE-VALIDATION-01 — Validación de imagen rota en artículo EN
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado — **Tarea exclusiva de diagnóstico. Cero cambios de código, contenido, imágenes o metadata.**
+**Sprint:** SEO técnico — validación de auditoría externa
+**Tipo:** Verificación con evidencia real (HTTP directo a producción, código fuente, historial de Git) del hallazgo de SE Ranking (28/07/2026): imagen 4XX en `/en/blog/metodo-kakebo-guia-definitiva`.
+**Documento:** `docs/seo/SEO_TECH_BROKEN_IMAGE_VALIDATION_01.md`
+
+**Hallazgo CONFIRMADO.** El hero, `og:image`, `twitter:image` y el `image` del schema `BlogPosting` de la versión inglesa apuntan a `https://www.metodokakebo.com/images/blog/kakebo-method.jpg`, que devuelve HTTP 404 (tanto el asset original como su variante `/_next/image` optimizada). Causa raíz: `src/content/blog/metodo-kakebo-guia-definitiva.en.mdx` (frontmatter `image:`) referencia un nombre de fichero que nunca existió en el repositorio (confirmado en `git log --all`), a diferencia de la versión ES, que usa `metodo-kakebo-guia-definitiva.png` (existe, HTTP 200). Única referencia a ese nombre en todo el repo — no hay otras páginas afectadas.
+
+**Impacto real:** visible para el usuario (icono de imagen rota en la cabecera del artículo EN), no solo metadata social. La página en sí es indexable, con canonical y hreflang correctos — el defecto es exclusivamente la imagen.
+
+**Primera corrección propuesta (no ejecutada):** `SEO-TECH-BROKEN-IMAGE-FIX-01` — cambiar el campo `image` del frontmatter EN para reutilizar el asset ES ya existente (`/images/blog/metodo-kakebo-guia-definitiva.png`).
+
+**STOP aplicado — no se corrigió la imagen, no se modificó contenido/metadata, no se corrigieron otros hallazgos, no se inició ninguna otra tarea.**
 
 ---
 
