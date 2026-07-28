@@ -1,8 +1,27 @@
 # Estado del Proyecto Kakebo AI
 
-**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-VALIDATION-01 — validación de las 4 imágenes >1MB señaladas por SE Ranking; **solo diagnóstico, sin cambios de assets**)  
+**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-01 — optimizado `ahorro-pareja.png` de 2,54MB a ~719KB; validación de producción pendiente de despliegue)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`
+
+---
+
+## SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-01 — Optimización de ahorro-pareja.png
+
+**Fecha:** 2026-07-28
+**Modelo:** Claude Code
+**Estado:** ✅ Completado (validación local); validación de producción pendiente de despliegue
+**Sprint:** SEO / rendimiento — corrección quirúrgica de asset
+**Tipo:** Primera corrección propuesta en `SEO-PERF-LARGE-IMAGES-VALIDATION-01`, ejecutada.
+**Documento:** `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_AHORRO_PAREJA_01.md`
+
+**Cambio:** `public/images/blog/ahorro-pareja.png` reexportado con `sharp` (PNG indexado de 256 colores + dithering, `compressionLevel: 9, effort: 10`), manteniendo ruta, nombre, formato PNG y dimensiones 1536×1024 exactas. Peso: 2,54 MB → 718 596 bytes (-71,7%). Ningún fichero de código, MDX, componente ni configuración modificado — único archivo tocado en el repositorio.
+
+**Decisión informada del usuario:** durante la validación se detectó un conflicto real entre "peso <1MB" y "cero degradación visible" — la recompresión sin pérdida solo lograba -7,5% (insuficiente), mientras que la cuantización a 256 colores sí alcanzaba el objetivo pero introduce un dithering sutil visible solo con zoom al archivo nativo (imperceptible al tamaño real de visualización web, 828px). Se presentó la comparación visual al usuario, que eligió explícitamente la versión de 256 colores.
+
+**Validación:** `npm run build` PASS; `npm run lint` 0 errores (sin cambios); `npm test` 610/611 (mismo fallo preexistente y ajeno); asset local HTTP 200 (718 596 bytes); `/_next/image` HTTP 200; hero, `og:image`, `twitter:image`, schema y miniaturas relacionadas verificados apuntando correctamente a la misma ruta; comprobación visual real en navegador sin regresión. **Validación en producción pendiente de despliegue.** Las otras 3 imágenes (`kakebo-vs-ynab.png`, `kakebo-autonomos.png`, `libro-kakebo-pdf.png`) confirmadas sin modificar.
+
+**STOP aplicado — no se optimizaron las otras 3 imágenes, no se modificó código ni frontmatter, no se cambió el formato, no se inició ninguna otra tarea.**
 
 ---
 

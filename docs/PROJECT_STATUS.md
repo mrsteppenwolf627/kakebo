@@ -1,6 +1,6 @@
 # PROJECT STATUS — metodokakebo.com
 
-**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-VALIDATION-01 — validación de las 4 imágenes >1MB señaladas por SE Ranking, con evidencia real de peso transferido vía Next.js Image Optimization; **solo diagnóstico**; ver `docs/seo/SEO_PERF_LARGE_IMAGES_VALIDATION_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
+**Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-FIX-AHORRO-PAREJA-01 — `ahorro-pareja.png` optimizado de 2,54MB a ~719KB, misma ruta/formato/dimensiones; validación de producción pendiente de despliegue; ver `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_AHORRO_PAREJA_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com
 
