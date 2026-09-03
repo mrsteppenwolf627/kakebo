@@ -1,18 +1,24 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { analytics } from "@/lib/analytics";
+import { clearGoogleSignupIntent, markGoogleSignupIntent } from "@/lib/authIntent";
 
-export default function LoginPage() {
+function LoginForm() {
   const supabase = createClient();
   const t = useTranslations("Auth");
+  const searchParams = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup">(
+    searchParams.get("mode") === "signup" ? "signup" : "login"
+  );
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [needsConfirm, setNeedsConfirm] = useState(false);
@@ -23,6 +29,12 @@ export default function LoginPage() {
     setNeedsConfirm(false);
 
     try {
+      if (mode === "signup") {
+        markGoogleSignupIntent();
+      } else {
+        clearGoogleSignupIntent();
+      }
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
@@ -33,6 +45,7 @@ export default function LoginPage() {
 
       if (error) throw error;
     } catch (e: any) {
+      clearGoogleSignupIntent();
       setMsg(e?.message ?? t('form.errors.unknown'));
       setLoading(false);
     }
@@ -77,6 +90,8 @@ export default function LoginPage() {
         });
 
         if (error) throw error;
+
+        analytics.track("sign_up", { method: "email" });
 
         setNeedsConfirm(true);
         setMsg(
@@ -345,5 +360,13 @@ export default function LoginPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }

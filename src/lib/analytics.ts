@@ -8,6 +8,7 @@ type EventName =
     | "tool_viewed"
     | "tool_interaction"
     | "signup_click"
+    | "sign_up"
     | "download_template"
     | "click_cta_login"
     | "click_tool_to_app"

@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/browser";
+import { analytics } from "@/lib/analytics";
+import { consumeGoogleSignupIntent, isLikelyNewUser } from "@/lib/authIntent";
 
 /**
  * Client-side OAuth callback handler
@@ -18,7 +21,16 @@ export default function AuthCallbackPage() {
   const [status, setStatus] = useState("Verificando sesión...");
 
   useEffect(() => {
+    function trackSignUpIfNeeded(user: User | null | undefined, hadSignupIntent: boolean) {
+      if (!hadSignupIntent || !user) return;
+      if (isLikelyNewUser(user)) {
+        analytics.track("sign_up", { method: "google" });
+      }
+    }
+
     async function handleCallback() {
+      const hadSignupIntent = consumeGoogleSignupIntent();
+
       try {
         // Check for error in URL params
         const params = new URLSearchParams(window.location.search);
@@ -49,6 +61,7 @@ export default function AuthCallbackPage() {
 
           if (session) {
             console.log("[Auth Callback Client] Session found, redirecting to /app");
+            trackSignUpIfNeeded(session.user, hadSignupIntent);
             setStatus("¡Sesión iniciada! Redirigiendo...");
             router.replace("/app");
             return;
@@ -69,6 +82,7 @@ export default function AuthCallbackPage() {
 
           if (newSession) {
             console.log("[Auth Callback Client] Session established after exchange");
+            trackSignUpIfNeeded(newSession.user, hadSignupIntent);
             setStatus("¡Sesión iniciada! Redirigiendo...");
             router.replace("/app");
           } else {
@@ -80,6 +94,7 @@ export default function AuthCallbackPage() {
           const { data: { session } } = await supabase.auth.getSession();
 
           if (session) {
+            trackSignUpIfNeeded(session.user, hadSignupIntent);
             router.replace("/app");
           } else {
             router.replace("/login");
