@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 import { canUsePremium, Profile } from "@/lib/auth/access-control";
+import { analytics } from "@/lib/analytics";
 import { useTranslations } from "next-intl";
 
 const KAKEBO_CATEGORIES = {
@@ -340,6 +341,8 @@ export default function NewExpensePage() {
         const errorData = await response.json();
         throw new Error(errorData.error?.message || "Error al guardar el gasto");
       }
+
+      analytics.track("expense_created", { entry_method: "manual" });
 
       await recordCorrectionIfNeeded(category);
 

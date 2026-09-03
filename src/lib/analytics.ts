@@ -13,6 +13,7 @@ type EventName =
     | "click_cta_login"
     | "click_tool_to_app"
     | "click_excel_to_app"
+    | "expense_created"
     | "use_savings_calculator"
     | "use_inflation_calculator"
     | "use_503020_calculator"
