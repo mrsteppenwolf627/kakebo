@@ -56,7 +56,7 @@ export function ChoiceCTA({ title, description, primaryHref, primaryCta, primary
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
                     href={primaryHref as any}
-                    onClick={() => analytics.track("click_cta_login", { source_page: window.location.pathname, cta_label: primaryCta, cta_location: primaryLocation })}
+                    onClick={() => analytics.track("click_excel_to_app", { source_page: window.location.pathname, cta_label: primaryCta, cta_location: primaryLocation, destination_path: primaryHref })}
                     className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background sm:w-auto sm:rounded-full sm:px-6"
                 >
                     {primaryCta}
