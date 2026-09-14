@@ -1,7 +1,27 @@
 # Kakebo AI Agent - Context Document
 
 **Last Updated:** 2026-09-14  
-**Version:** 3.6 - Fase 0: Auditoría técnica de partida
+**Version:** 3.7 - Fase 0.1: Corrección documental posterior a la auditoría
+
+---
+
+## ⚠️ Estado operativo vigente (leer primero)
+
+Este bloque resume el estado **confirmado más reciente** (Fase 0 + Fase 0.1, 2026-09-14). **Todo lo que hay debajo de este bloque — incluida la propia entrada "Fase 0", "Fase 0.1" y todas las secciones `P0.x`/`P1.x`/`Project Overview` más antiguas — es registro histórico (antecedentes).** Es útil como evidencia y trazabilidad de lo que se hizo y cuándo, pero **no debe usarse por sí solo para inferir el estado actual del producto**: ante cualquier contradicción, prevalece lo indicado aquí y en el código fuente, no el texto histórico. Las entradas históricas que contradicen este bloque se han anotado en su sitio en vez de borrarse.
+
+- **Frontend ↔ IA, conexión confirmada de forma estática (Fase 0.1):** el chat visible en la app (`FloatingAgentChat` en `src/app/[locale]/app/page.tsx`, y la página completa `src/app/[locale]/app/agent/page.tsx`) renderiza `AIChat` (`src/components/AIChat/AIChat.tsx`), que usa el hook `useAgentStream` (`src/hooks/useAgent.ts`), el cual llama a `POST /api/ai/agent-v2/stream`. Esa ruta usa `stream-caller.ts`, que usa `DEFAULT_MODEL` = `"gpt-5-nano"` (`src/lib/ai/client.ts`). La ruta v1 `/api/ai/agent` y el hook `useAgent` (no-stream) **no tienen ningún llamador en componentes visibles** — solo los referencia su propio test (`src/__tests__/api/ai/agent.test.ts`); es código huérfano a efectos de frontend. Esto es una conclusión de **lectura estática del código fuente actual**, no una verificación en producción/runtime — no se ha ejecutado la app ni se ha observado tráfico real.
+- **Stripe:** desmantelado en código (confirmado en Fase 0). Decisión de producto ya cerrada: se reintroduce en la **Fase 3** (acceso fundador + trial + Plus + Stripe, como fase única). Las entradas históricas `P0.x` de más abajo, que documentan la eliminación de Stripe, siguen siendo un registro válido de lo que se hizo entonces — no implican que Stripe vaya a seguir ausente.
+- **Modelo gratuito:** la sección "💎 Free Model (100% Free)" de más abajo describe correctamente el código tal y como está en la fecha de esta auditoría (todo usuario autenticado tiene acceso completo, sin trial). Su interpretación de producto ("no paid tiers, ever") queda **superada** por las decisiones ya cerradas en Fase 0 (Plus de pago, trial, límite de 30 gastos — ver más abajo). Tratar esa sección como histórica de infraestructura, no como decisión de producto vigente.
+- **Modelo de IA:** las secciones "🔧 Configuration → Agent Settings" y "💰 Cost Analysis" de más abajo referencian `gpt-4o-mini` como modelo del agente. Confirmado en Fase 0/0.1 por lectura directa de `src/lib/ai/client.ts`: el modelo activo en `DEFAULT_MODEL` (usado por `agent-v2`/`stream-caller.ts`, la ruta realmente conectada al frontend) es **`gpt-5-nano`**. `gpt-4o-mini` sigue existiendo como opción en la tabla de costes, pero no es el modelo por defecto.
+- **CSP:** confirmado en `next.config.ts` (Fase 0.1): la cabecera `Content-Security-Policy` tiene `frame-src 'none'` y **no contiene ninguna referencia a `js.stripe.com`**. La entrada histórica "Auditoría Intermedia P0.2" de más abajo, que señala `frame-src https://js.stripe.com` como hallazgo, describe un estado **anterior ya corregido** por la entrada `P0.3` — no es el estado actual.
+- **Pruebas/build:** ni Fase 0 ni Fase 0.1 han ejecutado build, lint ni tests — ambas son auditorías de solo lectura (revisión estática de código y documentación). Las cifras de tests/lint/build que aparecen en las secciones históricas `P1.2`–`P1.5` (por ejemplo "Tests: 506/506", "ESLint: 0 errores") son **resultados históricos fechados el 2026-06-15**, anteriores a esta sesión, y no deben leerse como el estado actual del repositorio sin volver a ejecutarlos.
+
+Corrección de secuencia de fases (Fase 0.1, sustituye a la propuesta original de `docs/planning/fase-0-auditoria-tecnica.md`, que agrupaba erróneamente el límite de 30 gastos dentro de la Fase 1 — ver el apéndice de corrección en ese documento):
+
+1. **Fase 1 — Ciclos libres**, únicamente. Sin trial, sin límite de 30 gastos, sin modo consulta, sin ninguna restricción nueva de acceso.
+2. **Fase 2 — IA fiable.**
+3. **Fase 3 — una única fase coherente:** acceso fundador, prueba de 30 días, plan gratuito de 30 gastos/mes, modo consulta, Stripe, correos transaccionales y Analytics de monetización. No se puede adelantar el límite de 30 gastos a una fase anterior: los usuarios fundadores deben tener acceso ilimitado y permanente, y ese derecho (la distinción "usuario fundador" en `access-control.ts`/`profiles`) todavía no existe en código — introducir el límite antes de implementar el acceso fundador dejaría a esos usuarios expuestos al límite que se supone no les aplica.
+4. **Fase 4 — Publicidad y afiliación.**
 
 ---
 
@@ -32,6 +52,21 @@ Detalle completo, riesgos priorizados, dependencias externas a revisar por el pr
 - Aprendizaje: memoria individual por defecto; aprendizaje colectivo solo opcional y anonimizado.
 - Anuncios y afiliados solo en contenido público, nunca dentro de la app. Amazon primero; bancos/fintech después.
 - Orden de desarrollo: ciclos libres → IA afinada → pagos → publicidad/afiliación. Flujo de trabajo por fase: fase completa → documentación/contexto actualizado → validación → un único commit selectivo y push.
+
+---
+
+## 🩹 Fase 0.1 - Corrección documental posterior a la auditoría (2026-09-14)
+
+### Estado: COMPLETADA (corrección documental en solo lectura, sin cambios funcionales)
+
+**Motivo:** la Fase 0 dejó `CONTEXT.md` con secciones históricas (P0.x/P1.x, "Free Model", "Cost Analysis") mezcladas sin distinción visible con el estado auditado, con riesgo de que una lectura futura infiera estado actual a partir de texto antiguo. Esta fase no cambia ninguna conclusión de Fase 0; corrige cómo se presenta.
+
+**Cambios aplicados:**
+- Añadido el bloque **"⚠️ Estado operativo vigente"** al principio del documento (justo debajo de la cabecera), que fija qué es vigente y marca explícitamente todo lo posterior como histórico/antecedente.
+- Confirmada de forma estática (no en runtime) la conexión frontend → agente IA: `FloatingAgentChat`/`AgentPage` → `AIChat` → `useAgentStream` → `POST /api/ai/agent-v2/stream` → `stream-caller.ts` → `DEFAULT_MODEL = "gpt-5-nano"`. La ruta v1 (`/api/ai/agent`) y el hook `useAgent` no-stream no tienen caller visible en el frontend.
+- Anotadas en su sitio las afirmaciones históricas que contradicen el estado auditado: CSP/Stripe en "Auditoría Intermedia P0.2", framing de "100% Free" permanente, y modelo de IA `gpt-4o-mini` en "Cost Analysis"/"Agent Settings". No se ha borrado ningún contenido histórico.
+- Corregida la secuencia de fases: el límite de 30 gastos, el trial y el modo consulta pasan de la Fase 1 a la Fase 3, junto con acceso fundador, Stripe, correos y Analytics de monetización, como una única fase coherente. Detalle y motivo en el apéndice de `docs/planning/fase-0-auditoria-tecnica.md`.
+- Sin ejecución de build/lint/tests en esta fase (ver aviso sobre pruebas en el bloque "Estado operativo vigente").
 
 ---
 
@@ -544,6 +579,8 @@ Los 35 errores restantes en `src/__tests__/**` no bloquean el build.
 - `sitemap.ts` genera rutas públicas principales, pero la auditoría encontró contenido y navegación todavía anclados a `#pricing`.
 - `next.config.ts` conserva CSP con `frame-src https://js.stripe.com`, lo cual contradice el objetivo de eliminar Stripe.
 
+> **Nota Fase 0.1 (2026-09-14):** hallazgo histórico, ya corregido en `P0.3` (más arriba). Estado actual confirmado por lectura directa de `next.config.ts`: `frame-src 'none'`, sin ninguna referencia a `js.stripe.com`. No usar esta línea para inferir el estado actual de la CSP.
+
 ### Commits revisados
 - **Claude:** `4cd29e1` `Refactor: remove SaaS model and Stripe integration (via Claude)`
 - **Claude:** `bfde5b1` `Feat: Botón descargar plantilla en página Kakebo (via Claude)`
@@ -682,6 +719,8 @@ Priority 3: Semantic Similarity
 ---
 
 ## 💎 Free Model (100% Free)
+
+> **Nota Fase 0.1 (2026-09-14):** esta sección describe correctamente el código en la fecha de la auditoría (todo usuario autenticado tiene acceso completo, sin trial ni tiers). Su afirmación de producto ("no paid tiers, ever") queda **superada** por las decisiones de producto ya cerradas en Fase 0: se reintroduce un plan Plus de pago, trial de 30 días y límite de 30 gastos/mes en la Fase 3. Léase como histórico de infraestructura, no como decisión de producto vigente.
 
 Kakebo AI is now a completely free tool. There are no paid tiers, trials, or paywalls.
 
@@ -854,6 +893,8 @@ Day 3: User C marks "insulina" as NOT vicio
 
 ## 💰 Cost Analysis
 
+> **Nota Fase 0.1 (2026-09-14):** tabla histórica. Confirmado por lectura directa de `src/lib/ai/client.ts` que el modelo por defecto (`DEFAULT_MODEL`), usado por la ruta realmente conectada al frontend (`agent-v2`/`stream-caller.ts`), es `gpt-5-nano`, no `gpt-4o-mini`. `gpt-4o-mini` sigue existiendo como opción en el cliente pero no es el modelo activo por defecto — los costes reales actuales no coinciden con esta tabla sin volver a calcularlos para `gpt-5-nano`.
+
 ### OpenAI API Costs
 | Service | Cost | Usage |
 |---------|------|-------|
@@ -878,6 +919,9 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 ```
 
 ### Agent Settings
+
+> **Nota Fase 0.1 (2026-09-14):** histórico. El modelo activo por defecto confirmado en Fase 0.1 es `gpt-5-nano` (`DEFAULT_MODEL` en `src/lib/ai/client.ts`), no `gpt-4o-mini`.
+
 ```typescript
 // Model
 model: "gpt-4o-mini"

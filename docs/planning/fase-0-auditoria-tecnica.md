@@ -141,15 +141,17 @@ Estos puntos **no se han verificado ni se pueden verificar desde el código** en
 
 ## 4. Propuesta de orden de implementación por fases (sin código)
 
+> ⚠️ **Corregido en Fase 0.1 (2026-09-14).** La redacción original de esta sección (conservada íntegra más abajo como referencia histórica) agrupaba el límite de 30 gastos, el trial y el "modo consulta" dentro de la Fase 1. Eso es incorrecto: esas reglas dependen de que exista primero el acceso fundador (usuarios existentes con acceso ilimitado permanente), que todavía no existe en código. Ver la secuencia corregida y el motivo completo en el **Apéndice A** al final de este documento. Los criterios de aceptación de la Fase 1 en la sección 5 tienen la misma corrección.
+
 Sigue el orden de prioridad ya decidido: **ciclos libres → IA afinada → pagos → publicidad/afiliación**, con la documentación/contexto y la validación como parte de cada fase, y un único commit selectivo + push al cierre de cada una.
 
-**Fase 1 — Ciclos libres y control de gastos**
+**Fase 1 — Ciclos libres y control de gastos** *(texto original, ver corrección en Apéndice A)*
 Implementar el contador de 30 gastos por mes natural, el "modo consulta" al alcanzarlo, y el reseteo el día 1. Reutilizar el bloqueo de mes cerrado ya existente como base. Decidir cómo conviven "ciclos libres" (decisión de producto para el plan gratuito) con el límite de 30 gastos.
 
 **Fase 2 — IA afinada**
 Resolver primero cuál arquitectura de agente (v1/v2) queda como única activa y retirar la otra. Exponer la confirmación de escritura como ajuste de usuario (hoy es solo variable de entorno). Confirmar y, si procede, corregir el uso de `dangerouslyAllowBrowser`. Añadir el paso "preguntar el ciclo antes de analizar" a los flujos de análisis. Definir memoria individual por defecto y diseñar el opt-in explícito y anonimizado para aprendizaje colectivo (hoy no existe distinción). Revisar/añadir límites de uso y telemetría de coste ya con datos reales de `learning-metrics.ts` y `metrics.ts`.
 
-**Fase 3 — Pagos (Plus)**
+**Fase 3 — Pagos (Plus)** *(texto original, ver corrección en Apéndice A)*
 Reintroducir Stripe (cuenta, productos, precios 2,99 €/mes y 29,99 €/año impuestos incluidos, checkout, portal, webhook) y reactivar la lógica de tiers en `access-control.ts` (hoy neutralizada). Implementar la regla de trial de 30 días sin tarjeta para usuarios nuevos y el acceso gratuito permanente para usuarios existentes (requiere el corte de fecha/lista de usuarios existentes, ver dependencia de Supabase en la sección 3). Añadir correos transaccionales (bienvenida, fin de trial, cobro, cancelación) — hoy inexistentes. Implementar cancelación con acceso hasta fin de periodo y proceso de devoluciones manual.
 
 **Fase 4 — Publicidad y afiliación**
@@ -161,7 +163,9 @@ Cada fase debería cerrar con: actualización de `CONTEXT.md` (o `PROJECT_STATUS
 
 ## 5. Criterios de aceptación y pruebas por fase
 
-**Fase 1 — Ciclos libres**
+> ⚠️ **Corregido en Fase 0.1 (2026-09-14).** Los criterios de la Fase 1 de más abajo (texto original conservado) corresponden en realidad a la Fase 3, por el mismo motivo indicado en la sección 4 y detallado en el **Apéndice A**. Ninguno de estos criterios se ha verificado ni ejecutado: son criterios de aceptación futuros, no resultados de pruebas ya realizadas.
+
+**Fase 1 — Ciclos libres** *(texto original; criterios reubicados en Fase 3 — ver Apéndice A)*
 - Un usuario free no puede crear el gasto nº 31 del mes natural; la UI/API responde en "modo consulta" (lectura permitida, escritura bloqueada) hasta el día 1 o hasta que se suscriba.
 - El contador se resetea correctamente al cambiar de mes natural, sin depender del cierre manual de mes ya existente.
 - Test automatizado que cubra: gasto 29 (permitido), gasto 30 (permitido, límite alcanzado), gasto 31 (bloqueado), reseteo el día 1.
@@ -203,3 +207,50 @@ Cada fase debería cerrar con: actualización de `CONTEXT.md` (o `PROJECT_STATUS
 - Anuncios y afiliados solo en contenido público, nunca dentro de la app. Amazon primero; bancos/fintech después.
 - Prioridad de desarrollo: ciclos libres → IA afinada → pagos → publicidad/afiliación.
 - Flujo de trabajo: una fase completa, documentación/contexto actualizado, validación, un único commit selectivo y push.
+
+---
+
+## Apéndice A — Corrección documental (Fase 0.1, 2026-09-14)
+
+Este apéndice corrige la Fase 0 sin borrar su contenido original (secciones 4 y 5 más arriba, marcadas con ⚠️). No cambia ninguna conclusión de estado de código de la Fase 0; corrige la secuencia de fases y precisa la conclusión sobre la conexión frontend↔IA.
+
+### A.1 Conexión frontend ↔ agente de IA (verificación estática de código)
+
+Confirmado por lectura directa del código fuente en esta sesión (Fase 0.1):
+
+1. **Componente visible que abre el chat:** `FloatingAgentChat` (`src/components/FloatingAgentChat.tsx`), montado en `src/app/[locale]/app/page.tsx:120` — botón flotante que despliega el chat en modo `widget`. También existe una página de chat a pantalla completa, `src/app/[locale]/app/agent/page.tsx`, que renderiza el mismo componente en modo `full` (envuelta en `SubscriptionGuard`, que hoy es un passthrough que siempre renderiza sus `children` sin comprobar nada — vestigio del modelo SaaS anterior, coherente con `canUsePremium()` siempre `true`).
+2. Ambos renderizan `AIChat` (`src/components/AIChat/AIChat.tsx`), que usa el hook **`useAgentStream`** (`src/hooks/useAgent.ts`).
+3. `useAgentStream` hace `POST` a **`/api/ai/agent-v2/stream`** (`src/app/api/ai/agent-v2/stream/route.ts`), leyendo la respuesta como Server-Sent Events.
+4. Esa ruta usa `src/lib/agents-v2/stream-caller.ts`, que llama a OpenAI con `model: DEFAULT_MODEL`, donde `DEFAULT_MODEL = "gpt-5-nano"` (`src/lib/ai/client.ts:26`).
+5. Existe una segunda arquitectura, v1 (`src/app/api/ai/agent/route.ts`) y un hook no-stream (`useAgent`, en el mismo archivo `src/hooks/useAgent.ts`) que la llama — pero **ningún componente de la aplicación importa `useAgent`**; el único lugar que referencia la ruta v1 es su propio test (`src/__tests__/api/ai/agent.test.ts`). Es decir, v1 está desconectada del frontend visible.
+
+**Conclusión, formulada con precisión:** la arquitectura v2 (`agent-v2/stream`, modelo `gpt-5-nano`) está **conectada en el código fuente actual** al único punto de entrada de chat que existe en la app (`FloatingAgentChat` / página `agent`). Esto es una conclusión de auditoría estática — se ha leído el código, no se ha ejecutado la aplicación, no se ha abierto el chat en un navegador ni se ha observado una petición real a `/api/ai/agent-v2/stream`. Por tanto **no equivale a "verificado en producción"**: sigue pendiente confirmar en runtime (o en producción) que el flujo responde correctamente, que las variables de entorno (`OPENAI_API_KEY`, `ENABLE_WRITE_CONFIRMATION`, etc.) están configuradas, y que no hay un feature flag o A/B que en producción sirva la v1 en algún segmento de usuarios (no se ha encontrado ninguno en el código, pero tampoco se ha buscado exhaustivamente fuera de `src/`).
+
+### A.2 Secuencia de fases corregida
+
+La sección 4 original agrupó el límite de 30 gastos, el trial y el "modo consulta" dentro de la Fase 1. Es un error de secuenciación: esas tres reglas solo tienen sentido una vez existe el **acceso fundador** (usuarios existentes con acceso ilimitado y permanente), y esa distinción no existe todavía en ningún sitio del código — `access-control.ts` no tiene ningún campo ni lógica que identifique a un "usuario fundador" frente a un usuario nuevo. Si se implementara el límite de 30 gastos antes que el acceso fundador, los usuarios existentes (que según la decisión de producto ya cerrada deben tener acceso ilimitado permanente) quedarían expuestos al mismo límite que los usuarios nuevos, contradiciendo la decisión de producto.
+
+**Secuencia corregida:**
+
+- **Fase 1 — Ciclos libres (únicamente).** Solo la funcionalidad de "ciclos libres" ya decidida para el plan gratuito. **No incluye** trial, límite de 30 gastos, modo consulta, ni ninguna restricción nueva de acceso — esas piezas se mueven a la Fase 3. Si la definición exacta de "ciclos libres" requiere más detalle de producto antes de implementarse, eso es una pregunta a resolver al iniciar la Fase 1, no un motivo para adelantar el límite de gastos.
+  - *Criterios de aceptación (sustituyen a los de la sección 5):* la funcionalidad de ciclos libres queda definida y probada según el alcance que se acuerde al iniciar la fase; sin regresión en el bloqueo de mes cerrado ya existente (`status === "closed"`); sin introducir ningún contador de límite de gastos ni modo consulta.
+
+- **Fase 2 — IA fiable.** Sin cambios respecto al contenido original de la sección 4/5 (resolver v1 vs v2, confirmación de escritura configurable, `dangerouslyAllowBrowser`, preguntar el ciclo antes de analizar, memoria individual/colectiva, límites de uso y telemetría).
+
+- **Fase 3 — Acceso fundador + monetización, como una única fase coherente.** Incluye, en este orden interno:
+  1. Acceso fundador: identificar y marcar en `access-control.ts`/`profiles` a los usuarios existentes con acceso completo gratuito **permanente** (requiere el corte de fecha/lista definido con el propietario, ver sección 3).
+  2. Trial de 30 días sin tarjeta para usuarios nuevos.
+  3. Plan gratuito con límite de 30 gastos/mes natural y "modo consulta" al alcanzarlo (los criterios de aceptación originales de la Fase 1 en la sección 5 — gasto 29/30/31, reseteo el día 1 — aplican aquí, no en la Fase 1).
+  4. Stripe: checkout, portal, webhook, precios Plus (2,99 €/mes, 29,99 €/año, impuestos incluidos), reactivación de `canUsePremium()`/tiers.
+  5. Correos transaccionales (bienvenida, fin de trial, cobro, cancelación).
+  6. Eventos de Analytics de monetización (inicio/fin de trial, límite alcanzado, alta/baja Plus).
+  - Se implementa como una única fase (no sub-fases separadas con commits independientes) porque estas piezas son interdependientes: el límite de 30 gastos sin acceso fundador ya implementado rompería la promesa a los usuarios existentes; el trial sin Stripe no tiene forma de convertir a pago; Stripe sin correos deja al usuario sin confirmación de sus acciones de pago.
+  - *Criterios de aceptación:* los de la sección 5 "Fase 3 — Pagos" originales, más los de la "Fase 1 — Ciclos libres" originales (gasto 29/30/31, reseteo el día 1, modo consulta), todos verificados juntos antes de cerrar la fase.
+
+- **Fase 4 — Publicidad y afiliación.** Sin cambios respecto al contenido original.
+
+### A.3 Resultados de pruebas: históricos vs. ejecutados en Fase 0 / 0.1
+
+- **Fase 0 y Fase 0.1 no han ejecutado build, lint ni tests.** Ambas son auditorías/correcciones documentales en modo solo lectura: lectura de código fuente, `grep`, y edición de Markdown. Ninguna cifra de tests, lint o build de este informe ni de `CONTEXT.md` proviene de una ejecución realizada en estas dos fases.
+- Las cifras de tests/lint/build que aparecen en `CONTEXT.md` bajo las secciones `P1.2`–`P1.5` (p. ej. "Tests: 506/506 ✅", "ESLint: 0 errores") son **resultados históricos, fechados el 2026-06-15**, de sesiones de trabajo anteriores a esta auditoría. No se han vuelto a ejecutar ni verificar en Fase 0 ni en Fase 0.1, y no deben presentarse ni leerse como el estado actual del repositorio.
+- Cualquier criterio de aceptación de las secciones 4, 5 y A.2 de este documento es una **condición futura a cumplir**, no un resultado ya obtenido.
