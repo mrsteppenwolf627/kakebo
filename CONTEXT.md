@@ -1,7 +1,37 @@
 # Kakebo AI Agent - Context Document
 
-**Last Updated:** 2026-06-15  
-**Version:** 3.5 - Test Mock Type Cleanup (P1.5)
+**Last Updated:** 2026-09-14  
+**Version:** 3.6 - Fase 0: Auditoría técnica de partida
+
+---
+
+## 🔍 Fase 0 - Auditoría técnica de partida y decisiones de producto cerradas (2026-09-14)
+
+### Estado: COMPLETADA (auditoría en solo lectura, sin cambios funcionales)
+
+**Commit base auditado:** `4d7d1abfe1da600e165a55c53aab2a831cade3ba` (`main`)
+**Informe completo:** [`docs/planning/fase-0-auditoria-tecnica.md`](docs/planning/fase-0-auditoria-tecnica.md)
+
+### Resumen del estado confirmado
+
+- Sistema de meses/cierres/bloqueo de escritura tras cierre ya implementado (`api/months`, `api/expenses`). **No existe** ningún límite de nº de gastos por mes todavía.
+- Dos arquitecturas de agente de IA conviven (v1 `api/ai/agent`, v2 `api/ai/agent-v2`) sin confirmar cuál está activa en frontend. Confirmación de escritura de IA implementada pero controlada por variable de entorno global, no por ajuste de usuario. Embeddings activos (`pgvector`, estado real no verificable sin Supabase).
+- **Stripe está completamente desmantelado** (no solo desactivado): cliente `stripe = null`, rutas checkout/portal devuelven 410, sin dependencia `stripe` en `package.json`, coherente con ADR-001 ("Cambio de modelo SaaS a herramienta gratuita"). `access-control.ts` conserva el modelo de datos de tiers/trial pero `canUsePremium()` da acceso completo a cualquier usuario autenticado.
+- No existe ninguna integración de email transaccional (sin proveedor, sin plantillas propias).
+- Analytics: GA4 vía `gtag`, con ~17 eventos ya implementados (`src/lib/analytics.ts`); ninguno relacionado con trial/límite/suscripción todavía.
+- Migraciones locales muy escasas (2 archivos); el esquema real vive mayormente en Supabase remoto — RLS, extensiones, triggers y volumen de datos requieren verificación externa, no asumidos aquí.
+
+Detalle completo, riesgos priorizados, dependencias externas a revisar por el propietario (Stripe, Supabase, fiscalidad, correos, AdSense/afiliados) y propuesta de fases de implementación: ver el informe enlazado arriba.
+
+### Decisiones de producto ya cerradas (válidas para todas las fases siguientes)
+
+- Usuarios existentes: acceso completo gratuito permanente. Nuevos usuarios: 30 días de prueba completa sin tarjeta. Después: versión gratuita con 30 gastos/mes natural; al llegar al límite, modo consulta hasta el día 1 o suscripción.
+- Plus: 2,99 €/mes y 29,99 €/año, impuestos incluidos — gastos ilimitados, IA y exportación de informes. Gratis conserva ciclos libres, análisis básicos, ajustes y consulta.
+- Cancelación: acceso hasta el final del periodo pagado. Devoluciones: gestión manual y personalizada.
+- IA inicialmente en español; prioridades: registro natural, búsqueda/corrección/edición, consultas fiables sobre datos, análisis de hábitos. Confirmación antes de escritura, configurable en ajustes. Preguntar el ciclo antes de analizar.
+- Aprendizaje: memoria individual por defecto; aprendizaje colectivo solo opcional y anonimizado.
+- Anuncios y afiliados solo en contenido público, nunca dentro de la app. Amazon primero; bancos/fintech después.
+- Orden de desarrollo: ciclos libres → IA afinada → pagos → publicidad/afiliación. Flujo de trabajo por fase: fase completa → documentación/contexto actualizado → validación → un único commit selectivo y push.
 
 ---
 
