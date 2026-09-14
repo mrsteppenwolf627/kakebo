@@ -206,6 +206,59 @@ describe("Expenses API", () => {
       expect(data.error.code).toBe("CONFLICT");
     });
 
+    it("Fase 1.1: should return 404 and never insert when the explicit month_id does not exist", async () => {
+      const expense = {
+        date: "2025-01-15",
+        amount: 50,
+        category: "survival",
+        month_id: "33333333-3333-4333-8333-333333333333",
+      };
+
+      // Explicit month_id lookup -> no row found for this id
+      mockSupabase.single.mockResolvedValueOnce({ data: null, error: { code: "PGRST116" } });
+
+      const request = new NextRequest("http://localhost/api/expenses", {
+        method: "POST",
+        body: JSON.stringify(expense),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(404);
+      expect(data.success).toBe(false);
+      expect(data.error.code).toBe("NOT_FOUND");
+      expect(mockSupabase.insert).not.toHaveBeenCalled();
+    });
+
+    it("Fase 1.1: should return 404 and never insert when the explicit month_id belongs to another user", async () => {
+      const expense = {
+        date: "2025-01-15",
+        amount: 50,
+        category: "survival",
+        month_id: "44444444-4444-4444-8444-444444444444",
+      };
+
+      // The month exists but the .eq("user_id", user.id) filter excludes it
+      // (it belongs to a different user) -> single() resolves with no row.
+      mockSupabase.single.mockResolvedValueOnce({ data: null, error: { code: "PGRST116" } });
+
+      const request = new NextRequest("http://localhost/api/expenses", {
+        method: "POST",
+        body: JSON.stringify(expense),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(404);
+      expect(data.success).toBe(false);
+      expect(data.error.code).toBe("NOT_FOUND");
+      expect(mockSupabase.insert).not.toHaveBeenCalled();
+    });
+
     it("should bootstrap a cycle for the expense's date when the user has no open cycle yet", async () => {
       const expense = {
         date: "2025-02-15",

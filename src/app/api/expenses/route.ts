@@ -112,6 +112,9 @@ export const POST = withLogging(async (request: NextRequest) => {
     if (monthId) {
       // Explicit month_id (e.g. deliberate navigation to a specific cycle):
       // the closed-cycle write lock still applies regardless of the caller.
+      // It must also resolve to a real cycle owned by this user — an
+      // inexistent or foreign month_id is rejected instead of silently
+      // falling through to the insert (Fase 1.1).
       const { data: targetMonth } = await supabase
         .from("months")
         .select("status")
@@ -119,7 +122,11 @@ export const POST = withLogging(async (request: NextRequest) => {
         .eq("user_id", user.id)
         .single();
 
-      if (targetMonth?.status === "closed") {
+      if (!targetMonth) {
+        return responses.notFound("El ciclo indicado no existe o no te pertenece.");
+      }
+
+      if (targetMonth.status === "closed") {
         return responses.conflict(
           "Ese ciclo está cerrado. No puedes añadir gastos."
         );

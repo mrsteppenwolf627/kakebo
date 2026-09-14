@@ -1,15 +1,15 @@
 # Kakebo AI Agent - Context Document
 
 **Last Updated:** 2026-09-14  
-**Version:** 3.8 - Fase 1: Ciclos libres
+**Version:** 3.9 - Fase 1.1: corrección de ciclos libres (fecha real con `?ym=`)
 
 ---
 
 ## ⚠️ Estado operativo vigente (leer primero)
 
-Este bloque resume el estado **confirmado más reciente** (Fase 0 + Fase 0.1 + Fase 1, 2026-09-14). **Todo lo que hay debajo de este bloque — incluidas las propias entradas "Fase 1", "Fase 0.1", "Fase 0" y todas las secciones `P0.x`/`P1.x`/`Project Overview` más antiguas — es registro histórico (antecedentes).** Es útil como evidencia y trazabilidad de lo que se hizo y cuándo, pero **no debe usarse por sí solo para inferir el estado actual del producto**: ante cualquier contradicción, prevalece lo indicado aquí y en el código fuente, no el texto histórico. Las entradas históricas que contradicen este bloque se han anotado en su sitio en vez de borrarse.
+Este bloque resume el estado **confirmado más reciente** (Fase 0 + Fase 0.1 + Fase 1 + Fase 1.1, 2026-09-14). **Todo lo que hay debajo de este bloque — incluidas las propias entradas "Fase 1.1", "Fase 1", "Fase 0.1", "Fase 0" y todas las secciones `P0.x`/`P1.x`/`Project Overview` más antiguas — es registro histórico (antecedentes).** Es útil como evidencia y trazabilidad de lo que se hizo y cuándo, pero **no debe usarse por sí solo para inferir el estado actual del producto**: ante cualquier contradicción, prevalece lo indicado aquí y en el código fuente, no el texto histórico. Las entradas históricas que contradicen este bloque se han anotado en su sitio en vez de borrarse.
 
-- **Ciclos libres (Fase 1, implementado):** un usuario puede cerrar su ciclo Kakebo cualquier día del mes; el siguiente ciclo se abre (o reutiliza) de inmediato, de forma idempotente, vía `PATCH /api/months/[id]` (helper `ensureNextCycleOpen` en `src/lib/months.ts`). Los gastos nuevos sin `month_id` explícito se imputan al ciclo actualmente **abierto** del usuario (`getOpenMonth`), no al mes natural de su fecha real — la fecha real del gasto nunca se altera. Navegar deliberadamente a un ciclo cerrado (`?ym=` explícito, o `month_id` explícito en la API) sigue bloqueando creación, edición y borrado. Ver la entrada "Fase 1" más abajo para archivos y pruebas.
+- **Ciclos libres (Fase 1 + corrección Fase 1.1, implementado):** un usuario puede cerrar su ciclo Kakebo cualquier día del mes; el siguiente ciclo se abre (o reutiliza) de inmediato, de forma idempotente, vía `PATCH /api/months/[id]` (helper `ensureNextCycleOpen` en `src/lib/months.ts`). Un gasto nuevo se imputa al ciclo que corresponda (abierto del usuario si no hay `?ym=`/`month_id` explícito; el ciclo exacto indicado si lo hay) **sin que su fecha real se altere en ningún caso** — la Fase 1.1 eliminó el recorte de fecha (`clampDateToYm`) que la Fase 1 había dejado activo en el camino `?ym=`. Navegar deliberadamente a un ciclo cerrado (`?ym=` explícito, o `month_id` explícito en la API) sigue bloqueando creación, edición y borrado; un `month_id` explícito inexistente o ajeno a otro usuario también se rechaza (404), corregido en Fase 1.1. Ver las entradas "Fase 1.1" y "Fase 1" más abajo para archivos y pruebas.
 - **Frontend ↔ IA, conexión confirmada de forma estática (Fase 0.1):** el chat visible en la app (`FloatingAgentChat` en `src/app/[locale]/app/page.tsx`, y la página completa `src/app/[locale]/app/agent/page.tsx`) renderiza `AIChat` (`src/components/AIChat/AIChat.tsx`), que usa el hook `useAgentStream` (`src/hooks/useAgent.ts`), el cual llama a `POST /api/ai/agent-v2/stream`. Esa ruta usa `stream-caller.ts`, que usa `DEFAULT_MODEL` = `"gpt-5-nano"` (`src/lib/ai/client.ts`). La ruta v1 `/api/ai/agent` y el hook `useAgent` (no-stream) **no tienen ningún llamador en componentes visibles** — solo los referencia su propio test (`src/__tests__/api/ai/agent.test.ts`); es código huérfano a efectos de frontend. Esto es una conclusión de **lectura estática del código fuente actual**, no una verificación en producción/runtime — no se ha ejecutado la app ni se ha observado tráfico real.
 - **Stripe:** desmantelado en código (confirmado en Fase 0). Decisión de producto ya cerrada: se reintroduce en la **Fase 3** (acceso fundador + trial + Plus + Stripe, como fase única). Las entradas históricas `P0.x` de más abajo, que documentan la eliminación de Stripe, siguen siendo un registro válido de lo que se hizo entonces — no implican que Stripe vaya a seguir ausente.
 - **Modelo gratuito:** la sección "💎 Free Model (100% Free)" de más abajo describe correctamente el código tal y como está en la fecha de esta auditoría (todo usuario autenticado tiene acceso completo, sin trial). Su interpretación de producto ("no paid tiers, ever") queda **superada** por las decisiones ya cerradas en Fase 0 (Plus de pago, trial, límite de 30 gastos — ver más abajo). Tratar esa sección como histórica de infraestructura, no como decisión de producto vigente.
@@ -23,6 +23,28 @@ Secuencia de fases vigente (fijada en Fase 0.1; Fase 1 ya completada):
 2. **Fase 2 — IA fiable.**
 3. **Fase 3 — una única fase coherente:** acceso fundador, prueba de 30 días, plan gratuito de 30 gastos/mes, modo consulta, Stripe, correos transaccionales y Analytics de monetización. No se puede adelantar el límite de 30 gastos a una fase anterior: los usuarios fundadores deben tener acceso ilimitado y permanente, y ese derecho (la distinción "usuario fundador" en `access-control.ts`/`profiles`) todavía no existe en código — introducir el límite antes de implementar el acceso fundador dejaría a esos usuarios expuestos al límite que se supone no les aplica.
 4. **Fase 4 — Publicidad y afiliación.**
+
+---
+
+## 🩹 Fase 1.1 - Corrección: fecha real no debe forzarse con `?ym=` (2026-09-14)
+
+### Estado: COMPLETADA
+
+**Problema confirmado por revisión posterior:** la Fase 1 corrigió que la API impute un gasto sin `month_id` explícito al ciclo abierto conservando la fecha real, pero `NewExpenseClient.tsx` seguía usando `clampDateToYm()` cuando el usuario llegaba con `?ym=` (navegación explícita a un ciclo, p. ej. tras cerrar septiembre y llegar a `/app/new?ym=2026-10`). Al introducir la fecha real `2026-09-29`, la interfaz la transformaba a `2026-10-01`, contradiciendo el requisito central de que el gasto conserve siempre su fecha real.
+
+**Corrección aplicada:**
+- Eliminada la función `clampDateToYm` y sus dos usos en `NewExpenseClient.tsx` (recorte al escribir la fecha, y recorte antes de enviar la petición). El `?ym=` sigue decidiendo exclusivamente a qué ciclo se imputa el gasto (`month_id`); nunca qué fecha puede llevar. El bloqueo si ese ciclo está cerrado se mantiene sin cambios.
+- Texto de ayuda `Transaction.NewExpense.dateHint` corregido en `messages/es.json`/`messages/en.json` (ya no afirma que la fecha se ajusta al mes seleccionado).
+- **Endurecimiento de seguridad/integridad en `POST /api/expenses`:** un `month_id` explícito inexistente o perteneciente a otro usuario no se rechazaba (la comprobación solo miraba `status === "closed"`, que es `false` también cuando el ciclo no se encuentra); ahora se rechaza con 404 antes de intentar el insert.
+- No se tocó la lógica de imputación al ciclo abierto introducida en Fase 1 (`getOpenMonth`/`getOrCreateMonth`/`ensureNextCycleOpen`), ni se introdujo ningún día fijo de cierre — el ciclo libre sigue pudiendo cerrarse cualquier día.
+
+**Archivos modificados:** `src/app/[locale]/app/new/NewExpenseClient.tsx`, `src/app/api/expenses/route.ts`, `messages/es.json`, `messages/en.json`, `src/__tests__/components/NewExpenseClient.analytics.test.tsx`, `src/__tests__/api/expenses.test.ts`.
+
+**Pruebas ejecutadas (esta sesión):** `npx vitest run` completo → 657/658 (mismo fallo preexistente y ajeno de Fase 1, `calculate-whatif.test.ts`, sin tocar). Específicas: `NewExpenseClient.analytics.test.tsx` 10/10 (incl. reproducción exacta del flujo reportado: cierre de septiembre día 28 → `/app?ym=2026-10` → `/app/new?ym=2026-10` → fecha `2026-09-29` → petición con `date: "2026-09-29"` y `month_id` del ciclo octubre; y regresión de bloqueo de ciclo cerrado explícito), `expenses.test.ts` 11/11 (incl. 2 nuevos: `month_id` inexistente y `month_id` ajeno, ambos rechazados con 404 sin llegar a `insert`). Lint sobre archivos tocados: 0 errores, mismos 4 warnings preexistentes. `npm run build`: OK.
+
+**Confirmación de alcance:** sin IA, pagos, trial, límite de gastos, Stripe, correos, publicidad ni afiliación. Sin datos históricos tocados ni migraciones de base de datos.
+
+**Documento de fase:** [`docs/planning/fase-1-ciclos-libres.md`](docs/planning/fase-1-ciclos-libres.md) (sección 7)
 
 ---
 

@@ -256,12 +256,6 @@ export default function NewExpensePage() {
     }
   }
 
-  function clampDateToYm(d: string) {
-    if (!ymValid || !ym) return d;
-    if (d.startsWith(`${ym}-`)) return d;
-    return `${ym}-01`;
-  }
-
   async function ensureMonth(userId: string, year: number, month: number) {
     // ... same implementation ...
     const { data, error } = await supabase
@@ -341,7 +335,11 @@ export default function NewExpensePage() {
       const session = sessionRes.session;
       if (!session?.user) throw new Error("Auth session missing");
 
-      const safeDate = clampDateToYm(date);
+      // Fase 1.1: la fecha real nunca se fuerza ni se altera, tanto si el
+      // usuario navega a un ciclo concreto (?ym=) como si no. El ?ym= solo
+      // decide a qué ciclo se imputa el gasto (month_id), nunca qué fecha
+      // puede llevar.
+      const safeDate = date;
 
       let targetYear: number;
       let targetMonth: number;
@@ -451,7 +449,7 @@ export default function NewExpensePage() {
               <input
                 type="date"
                 value={date}
-                onChange={(e) => setDate(clampDateToYm(e.target.value))}
+                onChange={(e) => setDate(e.target.value)}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={inputsDisabled}
               />

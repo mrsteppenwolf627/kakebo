@@ -16,8 +16,12 @@ vi.mock("next/navigation", () => ({
   useSearchParams: () => searchParams,
 }));
 
+// Reference-stable translator: a fresh closure on every call would make the
+// component's `checkMonth` effect (which depends on `tExpense`) re-run on
+// every render, looping `checking` state forever when `?ym=` is present.
+const translate = (key: string) => key;
 vi.mock("next-intl", () => ({
-  useTranslations: () => (key: string) => key,
+  useTranslations: () => translate,
 }));
 
 const AMOUNT_PLACEHOLDER = "0.00";
@@ -272,5 +276,68 @@ describe("NewExpenseClient expense_created tracking", () => {
     expect(body.date).toBe("2026-09-29");
     // El gasto se imputa al ciclo abierto actual, no al mes natural de la fecha.
     expect(body.month_id).toBe("open-cycle-october");
+  });
+
+  it("Fase 1.1: navigating explicitly to /app/new?ym=2026-10 after closing September early no longer clamps a 2026-09-29 real date to 2026-10-01", async () => {
+    // Reproduce el flujo real reportado:
+    // 1) el usuario cierra septiembre el 28 de septiembre,
+    // 2) la app abre/navega al ciclo octubre (?ym=2026-10),
+    // 3) desde el panel de octubre pulsa "Añadir gasto" -> /app/new?ym=2026-10,
+    // 4) introduce la fecha real 2026-09-29,
+    // 5) la petición debe llevar date: "2026-09-29" (NO "2026-10-01") y el
+    //    month_id del ciclo octubre ya abierto.
+    (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { id: "expense-1" } }),
+    });
+
+    searchParams = new URLSearchParams("ym=2026-10");
+    supabaseMock = makeSupabaseMock({
+      monthStatus: "open",
+      monthId: "october-cycle-explicit",
+      monthYear: 2026,
+      monthMonth: 10,
+    });
+
+    const { container } = render(<NewExpensePage />);
+    await waitFor(() => expect(screen.getByRole("button", { name: "submit" })).not.toBeDisabled());
+
+    const dateInput = container.querySelector('input[type="date"]') as HTMLInputElement;
+    fireEvent.change(dateInput, { target: { value: "2026-09-29" } });
+    // El input refleja la fecha tal cual la escribió el usuario, sin recorte.
+    expect(dateInput.value).toBe("2026-09-29");
+
+    // Re-espera a que el re-chequeo del estado del ciclo (disparado por el
+    // cambio de fecha) termine antes de enviar, igual que haría un usuario real.
+    await waitFor(() => expect(screen.getByRole("button", { name: "submit" })).not.toBeDisabled());
+
+    fillForm({ amount: "8.5", note: "helado tras cerrar septiembre" });
+    await submit();
+
+    await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+
+    const [, options] = (global.fetch as ReturnType<typeof vi.fn>).mock.calls[0];
+    const body = JSON.parse((options as RequestInit).body as string);
+
+    expect(body.date).toBe("2026-09-29");
+    expect(body.date).not.toBe("2026-10-01");
+    expect(body.month_id).toBe("october-cycle-explicit");
+  });
+
+  it("Fase 1.1: an explicitly selected closed cycle (?ym=) still blocks expense creation", async () => {
+    // Regresión: el bloqueo por cierre de un ciclo navegado explícitamente
+    // debe seguir funcionando tras quitar el recorte de fecha.
+    searchParams = new URLSearchParams("ym=2026-09");
+    supabaseMock = makeSupabaseMock({ monthStatus: "closed" });
+
+    render(<NewExpensePage />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "submit" })).toBeDisabled();
+    });
+
+    expect(global.fetch).not.toHaveBeenCalled();
+    expect(trackMock).not.toHaveBeenCalled();
+    expect(pushMock).not.toHaveBeenCalled();
   });
 });

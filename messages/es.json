@@ -1131,7 +1131,7 @@
             "currentMonth": "Mes: actual",
             "monthClosed": "Mes cerrado",
             "monthClosedDesc": "No se pueden añadir gastos a este periodo.",
-            "dateHint": "La fecha se mantiene dentro del mes seleccionado.",
+            "dateHint": "El gasto se imputa a este ciclo; la fecha real que elijas no se modifica.",
             "placeholders": {
                 "conceptExpense": "Ej: compra supermercado",
                 "conceptIncome": "Ej: Nómina enero",

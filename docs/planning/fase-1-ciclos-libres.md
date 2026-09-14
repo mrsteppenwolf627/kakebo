@@ -155,3 +155,47 @@ Compilación y verificación de TypeScript correctas; todas las rutas se generan
 ## 6. Confirmación explícita de alcance
 
 Esta fase **no** introduce: límite de gastos, trial, acceso fundador, Stripe, pagos, correos transaccionales, publicidad, afiliados, ni cambios en rutas/componentes/arquitectura de IA. Solo modifica la resolución de ciclo/mes para gastos nuevos y el comportamiento de cierre de ciclo. No se tocó ningún archivo `.env*`, secreto, configuración de Stripe, Supabase remoto ni Vercel.
+
+---
+
+## 7. Corrección Fase 1.1 (2026-09-14) — la fecha real seguía forzándose con `?ym=`
+
+### Estado: COMPLETADA
+
+**Problema confirmado por revisión posterior:** la Fase 1 hizo que `POST /api/expenses` impute correctamente un gasto sin `month_id` explícito al ciclo abierto, conservando la fecha real. Pero `NewExpenseClient.tsx` seguía usando `clampDateToYm()` en el camino de navegación **explícita** a un ciclo (`?ym=`), heredado de antes de la Fase 1. Flujo afectado exactamente como se reportó:
+
+1. El usuario cierra septiembre el 28 de septiembre.
+2. La app abre/navega al ciclo octubre.
+3. Desde el panel de octubre, pulsa "Añadir gasto" → llega a `/app/new?ym=2026-10`.
+4. Introduce la fecha real `2026-09-29`.
+5. La interfaz la transformaba a `2026-10-01` — la fecha real se perdía, contradiciendo el requisito central de Fase 1.
+
+**Causa técnica:** `clampDateToYm(d)` forzaba cualquier fecha que no empezara por `${ym}-` al día 1 de ese `ym`. Esta función se seguía llamando tanto en el `onChange` del input de fecha como al construir `safeDate` justo antes de enviar la petición, en **ambas** ramas de `saveExpense()` (con y sin `?ym=`) — la Fase 1 solo corrigió a qué `month_id` se imputaba el gasto en cada rama, no eliminó el recorte de fecha que ya existía para la rama `?ym=`.
+
+**Corrección aplicada:**
+- Eliminada por completo la función `clampDateToYm` y sus dos usos (`onChange` del input de fecha, y el cálculo de `safeDate` en `saveExpense`). La fecha que escribe el usuario se envía tal cual, tanto si llega con `?ym=` como si no.
+- El `?ym=` sigue determinando exclusivamente **a qué ciclo se imputa** el gasto (`month_id`, vía `ensureMonth(year, month)` para ese `ym` exacto) — nunca qué fecha puede llevar. Se mantiene el bloqueo si ese ciclo está cerrado (`m.status === "closed"`), sin cambios.
+- Texto de ayuda bajo el campo de fecha (`Transaction.NewExpense.dateHint`, `messages/es.json` y `messages/en.json`) corregido: ya no afirma que "la fecha se mantiene dentro del mes seleccionado" (falso tras la corrección); ahora indica que el gasto se imputa a ese ciclo conservando la fecha real elegida.
+- **Endurecimiento adicional en la API** (`POST /api/expenses`): al revisar el camino de `month_id` explícito se detectó que un `month_id` inexistente o perteneciente a otro usuario no se rechazaba — la comprobación solo miraba `if (targetMonth?.status === "closed")`, que es `false` tanto si el ciclo está abierto como si `targetMonth` es `null` (no encontrado), dejando pasar el insert con un `month_id` no verificado. Corregido: ahora se rechaza explícitamente con 404 (`"El ciclo indicado no existe o no te pertenece"`) cuando `targetMonth` es `null`, antes de intentar el insert.
+- Sin cambios en la lógica de imputación al ciclo abierto (`getOpenMonth`/`getOrCreateMonth`/`ensureNextCycleOpen`) introducida en Fase 1 — esta corrección es puramente sobre el recorte de fecha y la validación de `month_id` explícito.
+- **No se introdujo ningún día fijo de nómina**: no se añadió ninguna restricción nueva sobre qué fechas puede llevar un gasto; al contrario, se eliminó la única restricción de fecha que quedaba.
+
+**Archivos modificados:**
+- `src/app/[locale]/app/new/NewExpenseClient.tsx` — eliminado `clampDateToYm` y sus usos.
+- `src/app/api/expenses/route.ts` — `month_id` explícito inexistente/ajeno rechazado con 404 antes del insert.
+- `messages/es.json`, `messages/en.json` — texto de `dateHint` corregido.
+- Tests: `src/__tests__/components/NewExpenseClient.analytics.test.tsx` (nuevos casos + estabilización del mock de `next-intl`), `src/__tests__/api/expenses.test.ts` (nuevos casos de `month_id` inválido/ajeno).
+- Documentación: este documento, `CONTEXT.md`.
+
+**Flujo real cubierto por tests** (`src/__tests__/components/NewExpenseClient.analytics.test.tsx`):
+- *"Fase 1.1: navigating explicitly to /app/new?ym=2026-10 after closing September early no longer clamps a 2026-09-29 real date to 2026-10-01"* — reproduce exactamente el flujo reportado: `searchParams = "ym=2026-10"`, ciclo octubre abierto simulado, el usuario escribe `2026-09-29` en el input de fecha (se verifica que el input refleja ese valor sin recorte), y se comprueba que la petición `POST /api/expenses` se envía con `date: "2026-09-29"` (nunca `"2026-10-01"`) y `month_id` del ciclo octubre.
+- *"Fase 1.1: an explicitly selected closed cycle (?ym=) still blocks expense creation"* — regresión: el bloqueo por cierre de un ciclo navegado explícitamente se mantiene tras quitar el recorte de fecha.
+- `src/__tests__/api/expenses.test.ts`: dos casos nuevos verifican que un `month_id` explícito inexistente, y uno perteneciente a otro usuario, se rechazan con 404 y **nunca** llegan a llamar a `insert` sobre `expenses`.
+
+**Pruebas, lint y build ejecutados en esta corrección:**
+- `npx vitest run` (suite completa): **657/658 tests pasan.** Único fallo: el mismo preexistente y ajeno de Fase 1, `calculate-whatif.test.ts` (fecha objetivo hardcodeada `2026-08-01`, ya pasada respecto al reloj del sistema) — no tocado en esta corrección.
+- Específicos: `NewExpenseClient.analytics.test.tsx` 10/10 ✅, `expenses.test.ts` 11/11 ✅, `expenses-id.test.ts` 2/2 ✅, `months.test.ts` 8/8 ✅, `months-id.test.ts` 4/4 ✅, `months.test.ts` (lib) 3/3 ✅.
+- `npx eslint` sobre archivos tocados: 0 errores, 4 warnings — los mismos ya identificados como preexistentes en Fase 1 (verificado de nuevo con `git diff`).
+- `npm run build`: compilación y `tsc` correctos, todas las rutas generadas sin error.
+
+**Confirmación de alcance:** esta corrección **no** añade IA, pagos, trial, límite de gastos, Stripe, correos, publicidad ni afiliación. No se tocó ningún dato histórico ni se añadió migración de base de datos. No se introdujo ningún día fijo de cierre — el ciclo libre sigue pudiendo cerrarse cualquier día.

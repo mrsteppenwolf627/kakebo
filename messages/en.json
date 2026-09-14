@@ -1084,7 +1084,7 @@
             "currentMonth": "Month: current",
             "monthClosed": "Month closed",
             "monthClosedDesc": "Cannot add expenses to this period.",
-            "dateHint": "Date is kept within selected month.",
+            "dateHint": "The expense is booked to this cycle; the real date you choose is never changed.",
             "placeholders": {
                 "conceptExpense": "Ex: groceries",
                 "conceptIncome": "Ex: January salary",
