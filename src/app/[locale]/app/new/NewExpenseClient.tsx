@@ -290,6 +290,40 @@ export default function NewExpensePage() {
     return created as { id: string; status: "open" | "closed" };
   }
 
+  /**
+   * Ciclos libres: cuando el usuario no viene navegando a un mes concreto (?ym=),
+   * el gasto se imputa al ciclo que está actualmente ABIERTO, no al mes natural
+   * de la fecha de hoy. Así, cerrar un ciclo antes del día 1 abre el siguiente
+   * ciclo inmediatamente y los gastos posteriores caen en él aunque su fecha
+   * real siga perteneciendo al mes natural anterior.
+   */
+  async function ensureCurrentOpenCycle(userId: string) {
+    const { data, error } = await supabase
+      .from("months")
+      .select("id,year,month,status")
+      .eq("user_id", userId)
+      .eq("status", "open")
+      .order("year", { ascending: false })
+      .order("month", { ascending: false })
+      .limit(1);
+
+    if (error) throw error;
+
+    const openMonth = data?.[0] as
+      | { id: string; year: number; month: number; status: "open" | "closed" }
+      | undefined;
+    if (openMonth) return openMonth;
+
+    // Bootstrap: el usuario todavía no tiene ningún ciclo -> se abre uno para hoy.
+    const now = new Date();
+    const bootstrapped = await ensureMonth(
+      userId,
+      now.getFullYear(),
+      now.getMonth() + 1
+    );
+    return { ...bootstrapped, year: now.getFullYear(), month: now.getMonth() + 1 };
+  }
+
   async function saveExpense() {
     setError(null);
 
@@ -309,12 +343,23 @@ export default function NewExpensePage() {
 
       const safeDate = clampDateToYm(date);
 
-      const targetYear =
-        ymValid && ym ? parseYm(ym).year : Number(safeDate.slice(0, 4));
-      const targetMonth =
-        ymValid && ym ? parseYm(ym).month : Number(safeDate.slice(5, 7));
+      let targetYear: number;
+      let targetMonth: number;
+      let m: { id: string; status: "open" | "closed" };
 
-      const m = await ensureMonth(session.user.id, targetYear, targetMonth);
+      if (ymValid && ym) {
+        // Navegación deliberada a un ciclo concreto (p. ej. desde el historial):
+        // se respeta ese ciclo exacto, incluido su posible bloqueo por cierre.
+        targetYear = parseYm(ym).year;
+        targetMonth = parseYm(ym).month;
+        m = await ensureMonth(session.user.id, targetYear, targetMonth);
+      } else {
+        // Alta genérica ("Añadir gasto"): se imputa al ciclo abierto actual.
+        const openCycle = await ensureCurrentOpenCycle(session.user.id);
+        targetYear = openCycle.year;
+        targetMonth = openCycle.month;
+        m = openCycle;
+      }
 
       if (m.status === "closed") {
         setError(

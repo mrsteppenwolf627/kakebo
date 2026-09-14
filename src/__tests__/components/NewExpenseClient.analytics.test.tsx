@@ -28,11 +28,17 @@ function makeSupabaseMock({
   session = { user: { id: "user-1" } },
   profile = { id: "user-1", tier: "free" },
   monthStatus = "open",
+  monthId = "month-1",
+  monthYear = 2026,
+  monthMonth = 9,
 }: {
   user?: unknown;
   session?: unknown;
   profile?: unknown;
   monthStatus?: "open" | "closed";
+  monthId?: string;
+  monthYear?: number;
+  monthMonth?: number;
 } = {}) {
   return {
     auth: {
@@ -50,22 +56,24 @@ function makeSupabaseMock({
         };
       }
       if (table === "months") {
-        return {
-          select: () => ({
-            eq: () => ({
-              eq: () => ({
-                eq: () => ({
-                  limit: () =>
-                    Promise.resolve({
-                      data: [{ id: "month-1", status: monthStatus }],
-                    }),
-                }),
-              }),
+        // Chainable mock: supports both the exact (?ym=) lookup
+        // (.eq().eq().eq().limit()) and the open-cycle lookup used when no
+        // ?ym= is present (.eq().eq().order().order().limit()).
+        const chain: Record<string, unknown> = {
+          eq: () => chain,
+          order: () => chain,
+          limit: () =>
+            Promise.resolve({
+              data: [
+                { id: monthId, status: monthStatus, year: monthYear, month: monthMonth },
+              ],
             }),
-          }),
+        };
+        return {
+          select: () => chain,
           insert: () => ({
             select: () => ({
-              single: () => Promise.resolve({ data: { id: "month-1", status: "open" } }),
+              single: () => Promise.resolve({ data: { id: monthId, status: "open" } }),
             }),
           }),
         };
@@ -228,5 +236,41 @@ describe("NewExpenseClient expense_created tracking", () => {
     expect(global.fetch).not.toHaveBeenCalled();
     expect(trackMock).not.toHaveBeenCalled();
     expect(pushMock).not.toHaveBeenCalled();
+  });
+
+  it("ciclos libres: imputes a generic new expense to the currently OPEN cycle (not today's calendar month) and preserves the entered real date unchanged", async () => {
+    (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { id: "expense-1" } }),
+    });
+
+    // Simulates: the September cycle was closed early (day 28) and the next
+    // cycle is already open, labelled October, even though the expense being
+    // entered still has a real date within September.
+    supabaseMock = makeSupabaseMock({
+      monthStatus: "open",
+      monthId: "open-cycle-october",
+      monthYear: 2026,
+      monthMonth: 10,
+    });
+
+    const { container } = render(<NewExpensePage />);
+    await waitFor(() => expect(screen.getByRole("button", { name: "submit" })).not.toBeDisabled());
+
+    const dateInput = container.querySelector('input[type="date"]') as HTMLInputElement;
+    fireEvent.change(dateInput, { target: { value: "2026-09-29" } });
+
+    fillForm({ amount: "10", note: "gasto tras cierre anticipado" });
+    await submit();
+
+    await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+
+    const [, options] = (global.fetch as ReturnType<typeof vi.fn>).mock.calls[0];
+    const body = JSON.parse((options as RequestInit).body as string);
+
+    // La fecha real se conserva tal cual, no se fuerza al mes natural del ciclo.
+    expect(body.date).toBe("2026-09-29");
+    // El gasto se imputa al ciclo abierto actual, no al mes natural de la fecha.
+    expect(body.month_id).toBe("open-cycle-october");
   });
 });

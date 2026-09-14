@@ -14,6 +14,7 @@ import {
   shouldTriggerEmbeddings,
 } from "@/lib/ai";
 import { apiLogger } from "@/lib/logger";
+import { getOpenMonth, getOrCreateMonth } from "@/lib/months";
 
 /**
  * GET /api/expenses
@@ -105,47 +106,48 @@ export const POST = withLogging(async (request: NextRequest) => {
     const body = await request.json();
     const input = createExpenseSchema.parse(body);
 
-    // Get or create month for this expense
+    // Get or resolve the cycle (month) this expense belongs to.
     let monthId = input.month_id;
 
-    if (!monthId) {
-      // Extract year-month from date
-      const ym = input.date.substring(0, 7); // "YYYY-MM"
-      const { year, month } = parseYm(ym);
-
-      // Try to find existing month
-      const { data: existingMonth } = await supabase
+    if (monthId) {
+      // Explicit month_id (e.g. deliberate navigation to a specific cycle):
+      // the closed-cycle write lock still applies regardless of the caller.
+      const { data: targetMonth } = await supabase
         .from("months")
-        .select("id, status")
+        .select("status")
+        .eq("id", monthId)
         .eq("user_id", user.id)
-        .eq("year", year)
-        .eq("month", month)
         .single();
 
-      if (existingMonth) {
-        // Check if month is closed
-        if (existingMonth.status === "closed") {
+      if (targetMonth?.status === "closed") {
+        return responses.conflict(
+          "Ese ciclo está cerrado. No puedes añadir gastos."
+        );
+      }
+    } else {
+      // Ciclos libres (Fase 1): sin month_id explícito, el gasto se imputa al
+      // ciclo actualmente ABIERTO del usuario — no al mes natural de su fecha
+      // real (que se conserva tal cual en `date`). Así, cerrar un ciclo antes
+      // del día 1 abre el siguiente de inmediato y los gastos con fecha real
+      // de los días restantes del mes natural anterior quedan en ese ciclo
+      // nuevo, en vez de chocar con el ciclo recién cerrado.
+      const openMonth = await getOpenMonth(supabase, user.id);
+
+      if (openMonth) {
+        monthId = openMonth.id;
+      } else {
+        // Bootstrap: el usuario no tiene ningún ciclo todavía -> se abre uno
+        // para el mes natural de la fecha del gasto.
+        const ym = input.date.substring(0, 7); // "YYYY-MM"
+        const { year, month } = parseYm(ym);
+        const { row: monthRow } = await getOrCreateMonth(supabase, user.id, year, month);
+
+        if (monthRow.status === "closed") {
           return responses.conflict(
             `El mes ${formatYm(year, month)} está cerrado. No puedes añadir gastos.`
           );
         }
-        monthId = existingMonth.id;
-      } else {
-        // Create new month
-        const { data: newMonth, error: monthError } = await supabase
-          .from("months")
-          .insert({
-            user_id: user.id,
-            year,
-            month,
-            status: "open",
-            savings_done: false,
-          })
-          .select("id")
-          .single();
-
-        if (monthError) throw monthError;
-        monthId = newMonth.id;
+        monthId = monthRow.id;
       }
     }
 

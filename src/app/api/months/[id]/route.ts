@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { updateMonthSchema, uuidSchema } from "@/lib/schemas";
+import { ensureNextCycleOpen } from "@/lib/months";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -56,7 +57,7 @@ export const PATCH = withLogging(async (request: NextRequest, { params }: RouteP
     // Verify month exists and belongs to user
     const { data: existing, error: fetchError } = await supabase
       .from("months")
-      .select("id, status")
+      .select("id, year, month, status")
       .eq("id", monthId)
       .eq("user_id", user.id)
       .single();
@@ -87,6 +88,13 @@ export const PATCH = withLogging(async (request: NextRequest, { params }: RouteP
       .single();
 
     if (error) throw error;
+
+    // Ciclos libres (Fase 1): cerrar un ciclo abre (o reutiliza) inmediatamente
+    // el siguiente, para que el usuario pueda seguir registrando gastos con su
+    // fecha real sin esperar al día 1 del mes natural siguiente.
+    if (input.status === "closed") {
+      await ensureNextCycleOpen(supabase, user.id, existing.year, existing.month);
+    }
 
     return responses.ok(data);
   } catch (error) {

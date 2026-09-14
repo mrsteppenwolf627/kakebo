@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { createMonthSchema, monthQuerySchema, parseYm } from "@/lib/schemas";
+import { getOrCreateMonth } from "@/lib/months";
 
 /**
  * GET /api/months
@@ -68,40 +69,11 @@ export const POST = withLogging(async (request: NextRequest) => {
     const input = createMonthSchema.parse(body);
     const { year, month } = parseYm(input.ym);
 
-    // Try to find existing month
-    const { data: existingMonth, error: fetchError } = await supabase
-      .from("months")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("year", year)
-      .eq("month", month)
-      .single();
+    // Get or create (idempotent). Also used by Fase 1 (ciclos libres) to
+    // open/reuse the next cycle right after closing the current one.
+    const { row, created } = await getOrCreateMonth(supabase, user.id, year, month);
 
-    // If found, return it
-    if (existingMonth) {
-      return responses.ok(existingMonth);
-    }
-
-    // If not found (PGRST116), create new month
-    if (fetchError && fetchError.code !== "PGRST116") {
-      throw fetchError;
-    }
-
-    const { data: newMonth, error: insertError } = await supabase
-      .from("months")
-      .insert({
-        user_id: user.id,
-        year,
-        month,
-        status: "open",
-        savings_done: false,
-      })
-      .select()
-      .single();
-
-    if (insertError) throw insertError;
-
-    return responses.created(newMonth);
+    return created ? responses.created(row) : responses.ok(row);
   } catch (error) {
     return handleApiError(error);
   }
