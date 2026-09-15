@@ -33,6 +33,7 @@ import { openai, DEFAULT_MODEL, calculateCost } from "@/lib/ai/client";
 import type {
   ChatCompletionMessageParam,
   ChatCompletionAssistantMessageParam,
+  ChatCompletionChunk,
 } from "openai/resources/chat/completions";
 
 import { KAKEBO_SYSTEM_PROMPT } from "./prompts";
@@ -55,6 +56,10 @@ import {
   type AnalyzeHabitsScopeGateArgs,
 } from "@/lib/agents/tools/utils/analyze-habits-scope-gate";
 import { callMissesExplicitPreviousCycle } from "@/lib/agents/tools/utils/previous-cycle-guard";
+import {
+  containsSynthesisPlaceholder,
+  SYNTHESIS_SAFETY_FALLBACK_MESSAGE,
+} from "./synthesis-guard";
 import { getAiConfirmWritesPreference } from "./user-write-confirmation";
 import {
   createPendingAction,
@@ -151,6 +156,52 @@ async function executeAnalyzeSpendingPatternCall(
       }),
     };
   }
+}
+
+/**
+ * Hotfix 2.2: consume un stream de síntesis COMPLETO antes de entregar nada
+ * al usuario, en vez de reenviar cada chunk en directo. Un placeholder de
+ * plantilla ("€X", "N gastos"...) puede completarse solo tras varios chunks
+ * — no se puede "deshacer" un chunk ya enviado, así que la única forma
+ * fiable de garantizar que nunca llega un placeholder es esperar al texto
+ * completo, comprobarlo, y solo entonces decidir qué emitir: el texto real
+ * si está limpio, o `SYNTHESIS_SAFETY_FALLBACK_MESSAGE` si no. Nunca
+ * reescribe ni resume el texto descartado (podría contener el propio
+ * placeholder) y nunca registra su contenido en logs/métricas.
+ */
+async function consumeGuardedSynthesisStream(
+  stream: AsyncIterable<ChatCompletionChunk>,
+  onEvent: StreamEventCallback,
+  userId: string
+): Promise<{ inputTokens: number; outputTokens: number; blocked: boolean }> {
+  let buffer = "";
+  let inputTokens = 0;
+  let outputTokens = 0;
+
+  for await (const chunk of stream) {
+    const text = chunk.choices[0]?.delta?.content ?? "";
+    if (text) buffer += text;
+    if (chunk.usage) {
+      inputTokens += chunk.usage.prompt_tokens ?? 0;
+      outputTokens += chunk.usage.completion_tokens ?? 0;
+    }
+  }
+
+  const blocked = containsSynthesisPlaceholder(buffer);
+  if (blocked) {
+    // Aviso técnico seguro: NUNCA el texto descartado, solo la señal de que
+    // el filtro se activó, para poder detectar regresiones sin exponer
+    // ningún dato de gasto/usuario en logs.
+    apiLogger.warn(
+      { userId },
+      "Synthesis placeholder guard triggered — respuesta sustituida por mensaje seguro (Hotfix 2.2)"
+    );
+    onEvent({ type: "chunk", text: SYNTHESIS_SAFETY_FALLBACK_MESSAGE });
+  } else if (buffer) {
+    onEvent({ type: "chunk", text: buffer });
+  }
+
+  return { inputTokens, outputTokens, blocked };
 }
 
 // ─── Main streaming function ──────────────────────────────────────────────────
@@ -317,16 +368,13 @@ export async function processFunctionCallingStream(
         stream_options: { include_usage: true },
       });
 
-      for await (const chunk of confirmedSynthesisStream) {
-        const text = chunk.choices[0]?.delta?.content ?? "";
-        if (text) {
-          onEvent({ type: "chunk", text });
-        }
-        if (chunk.usage) {
-          inputTokens += chunk.usage.prompt_tokens ?? 0;
-          outputTokens += chunk.usage.completion_tokens ?? 0;
-        }
-      }
+      const confirmedGuarded = await consumeGuardedSynthesisStream(
+        confirmedSynthesisStream,
+        onEvent,
+        userId
+      );
+      inputTokens += confirmedGuarded.inputTokens;
+      outputTokens += confirmedGuarded.outputTokens;
 
       const latencyMs = Date.now() - startTime;
       const costUsd = calculateCost(DEFAULT_MODEL, inputTokens, outputTokens);
@@ -737,16 +785,9 @@ export async function processFunctionCallingStream(
       stream_options: { include_usage: true },
     });
 
-    for await (const chunk of secondStream) {
-      const text = chunk.choices[0]?.delta?.content ?? "";
-      if (text) {
-        onEvent({ type: "chunk", text });
-      }
-      if (chunk.usage) {
-        inputTokens += chunk.usage.prompt_tokens ?? 0;
-        outputTokens += chunk.usage.completion_tokens ?? 0;
-      }
-    }
+    const secondGuarded = await consumeGuardedSynthesisStream(secondStream, onEvent, userId);
+    inputTokens += secondGuarded.inputTokens;
+    outputTokens += secondGuarded.outputTokens;
 
     // ── Done ──────────────────────────────────────────────────────────────
     const latencyMs = Date.now() - startTime;
