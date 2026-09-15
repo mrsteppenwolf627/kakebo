@@ -102,10 +102,11 @@ Sé específico. El sistema entiende contexto humano.`,
                 },
                 cycle_scope: {
                     type: "string",
-                    enum: ["current", "specific", "all_history"],
+                    enum: ["current", "previous", "specific", "all_history"],
                     description: `Ámbito de CICLO REAL (ciclos libres), preferible a "period" cuando el usuario habla de su ciclo Kakebo:
 - "current": el ciclo actualmente ABIERTO del usuario (nunca se calcula por fecha de calendario — usa el ciclo real, aunque el usuario lo haya cerrado anticipadamente y algunos gastos de ese ciclo tengan fecha real del mes natural anterior).
-- "specific": un ciclo concreto (abierto o cerrado) identificado por "cycle_ym". Puedes consultar ciclos cerrados en modo lectura.
+- "previous": el ciclo INMEDIATAMENTE ANTERIOR al ciclo actualmente abierto, resuelto por los ciclos reales del usuario (nunca por fecha de calendario). Úsalo SIEMPRE que el usuario diga "ciclo anterior", "mi ciclo anterior", "ciclo pasado" o equivalentes — nunca lo traduzcas a "specific" con un cycle_ym adivinado ni a "current". Si no hay ciclo anterior, la herramienta lo dirá con claridad sin consultar ningún gasto.
+- "specific": un ciclo concreto (abierto o cerrado) identificado por "cycle_ym". Puedes consultar ciclos cerrados en modo lectura. Úsalo solo para un ciclo distinto al inmediatamente anterior (p. ej. "el ciclo de agosto"), nunca como sustituto de "previous".
 - "all_history": todo el histórico del usuario, sin filtrar por ciclo.
 
 Si se indica "cycle_scope", prevalece sobre "period". El resultado incluye "resolvedScope" con el ciclo realmente resuelto (etiqueta YYYY-MM y si está abierto o cerrado) — úsalo para explicar con precisión qué ciclo se consultó.`,

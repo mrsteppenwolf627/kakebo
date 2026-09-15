@@ -113,6 +113,42 @@ export async function getMonthByYm(
 }
 
 /**
+ * Hotfix 2.1: devuelve el ciclo INMEDIATAMENTE ANTERIOR a una etiqueta de
+ * referencia (year, month), resuelto exclusivamente a partir de los ciclos
+ * reales del usuario en `months` — nunca por fecha de calendario ni por la
+ * fecha actual. "Anterior" se define como el ciclo con la mayor etiqueta
+ * (year, month) que sea estrictamente menor que la referencia, comparando
+ * ambos campos como un par ordenado (no por fecha real de los gastos que
+ * contenga). Permite leer un ciclo cerrado. Devuelve null si el usuario no
+ * tiene ningún ciclo anterior a esa referencia todavía.
+ */
+export async function getPreviousMonth(
+  supabase: SupabaseClient,
+  userId: string,
+  referenceYear: number,
+  referenceMonth: number
+): Promise<MonthRow | null> {
+  const { data, error } = await supabase
+    .from("months")
+    .select("*")
+    .eq("user_id", userId)
+    .order("year", { ascending: false })
+    .order("month", { ascending: false })
+    .limit(500);
+
+  if (error) throw error;
+
+  const rows = (data || []) as MonthRow[];
+  const previous = rows.find(
+    (row) =>
+      row.year < referenceYear ||
+      (row.year === referenceYear && row.month < referenceMonth)
+  );
+
+  return previous ?? null;
+}
+
+/**
  * Ciclos libres: al cerrar un ciclo, abre (o reutiliza) inmediatamente el
  * siguiente, para que el usuario pueda seguir registrando gastos con su
  * fecha real sin esperar al día 1 del mes natural siguiente.

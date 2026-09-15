@@ -2,6 +2,8 @@
 
 **Estado:** Completada en código local (2026-09-14 → 2026-09-15). **No desplegada.** Pendiente: revisión del propietario, ejecución manual de 5 migraciones en Supabase SQL Editor, commit, push y validación en producción.
 
+**Hotfix 2.1 (2026-09-15):** corrección de un bug real de producción sobre "ciclo anterior" — ver §7. No añade ninguna migración nueva (usa la tabla `months` ya existente).
+
 Este documento es el registro técnico completo de la Fase 2. Distingue explícitamente **hechos verificados por lectura de código y por tests locales** de **aspectos que solo se podrán confirmar tras aplicar las migraciones y desplegar** (marcados como "⏳ Pendiente de verificar en producción").
 
 ---
@@ -131,3 +133,54 @@ Migración pre-existente `supabase/migrations/20260217_security_audit.sql`: no f
 - **Hallazgo corregido durante la revisión de cierre:** ver §2 (2.G) — frase residual de aprendizaje colectivo en `search-expenses-definition.ts`, corregida y con test de regresión.
 
 ⏳ **No verificado en esta sesión** (requiere migraciones aplicadas + despliegue real): comportamiento de RLS contra Supabase real, coste real de OpenAI (`cost_usd` sigue siendo una estimación local, nunca una factura verificada), latencia real en producción, y si `ai_logs` ya existe o no en el proyecto de destino.
+
+---
+
+## 7. Hotfix 2.1 — resolver correctamente "ciclo anterior" (2026-09-15)
+
+### Estado: completado en código local. No desplegado.
+
+**Bug real observado en producción:** tras pedir un análisis y responder "ciclo anterior", la IA consultaba enero — un mes de calendario inventado por el propio modelo. Causa: `cycle_scope` solo admitía `"current" | "specific" | "all_history"`; "ciclo anterior" no tenía ninguna resolución determinista, así que el modelo intentaba traducirlo a un `cycle_ym` concreto por su cuenta (adivinando).
+
+### 7.1 Contrato: nuevo `cycle_scope: "previous"`
+
+- `CycleScope` (`src/lib/agents/tools/utils/cycle-scope.ts`) pasa a `"current" | "specific" | "all_history" | "previous"`.
+- `resolveCycleScope` resuelve `"previous"` así: 1) obtiene el ciclo abierto actual vía `getOpenMonth` (si no hay, error claro, cero consulta de gastos); 2) busca, entre los ciclos reales del usuario en `months`, el de mayor etiqueta `(year, month)` estrictamente anterior a esa referencia (nuevo helper `getPreviousMonth`, `src/lib/months.ts` — orden descendente por `(year, month)`, nunca por fecha de calendario ni por la fecha actual); 3) si no existe ninguno, error claro, cero consulta de gastos. Permite leer un ciclo cerrado (mismo criterio que `"specific"`).
+- `getPreviousMonth` es una función independiente y testeable sin mockear `resolveCycleScope`: recibe una referencia `(year, month)` y devuelve el `MonthRow` real inmediatamente anterior o `null`.
+
+### 7.2 Integración: propagado a ambas tools y al prompt
+
+- `searchExpenses` y `analyzeSpendingHabits` (`src/lib/agents/tools/search-expenses.ts`, `analyze-habits.ts`) no necesitaron cambios de lógica — ya eran genéricas sobre `CycleScope` y delegan siempre en `resolveCycleScope`.
+- Definiciones de tool expuestas al modelo (`src/lib/agents-v2/tools/definitions.ts`, `search-expenses-definition.ts`): `"previous"` añadido al `enum` de `cycle_scope` (ambas tools) y de `compare_cycle_scope` (`analyzeSpendingPattern`), con instrucciones explícitas de no traducir "ciclo anterior" a `"specific"` con un `cycle_ym` inventado ni a `"current"`.
+- Prompt activo (`KAKEBO_SYSTEM_PROMPT`, `src/lib/agents-v2/prompts.ts`, §0 y §0.3): "ciclo anterior"/"mi ciclo anterior"/"ciclo pasado" mapean siempre a `cycle_scope: "previous"`; una comparación explícita con el ciclo anterior usa `compare_cycle_scope: "previous"`.
+- También puede usarse como ciclo de **comparación** (`compare_cycle_scope: "previous"`) cuando el usuario lo pide explícitamente — sin activar `compare` por defecto, mismo criterio que el resto de comparaciones de 2.F.
+
+### 7.3 Protección contra adivinanzas (backstop determinista)
+
+El prompt por sí solo no garantiza que el modelo use `"previous"` ante la expresión "ciclo anterior" — el propio bug reportado es prueba de ello. Se añade una puerta adicional, **fuera** del modelo:
+
+- `src/lib/agents/tools/utils/previous-cycle-guard.ts` (función pura, mismo patrón que `search-scope-gate.ts`/`analyze-habits-scope-gate.ts` de 2.D/2.F): `messageRequestsPreviousCycle(userMessage)` detecta la expresión literal "ciclo anterior" (o equivalentes reconocidos: "mi ciclo anterior", "ciclo pasado", "previous cycle", "last cycle") en el mensaje del turno actual — nunca en el historial, nunca por inferencia semántica. `callMissesExplicitPreviousCycle(userMessage, args)` es `true` solo si esa expresión aparece Y ni `cycle_scope` ni (cuando `compare: true`) `compare_cycle_scope` valen `"previous"` — así no se marca en falso un caso legítimo como "compara este ciclo con el anterior" (`cycle_scope: "current"`, `compare_cycle_scope: "previous"`, ambos correctos).
+- Integrado en `stream-caller.ts` como una tercera puerta de ámbito (después de las de 2.D y 2.F, mismo estilo): si detecta la infracción, bloquea la ejecución de `searchExpenses`/`analyzeSpendingPattern` y emite un mensaje de aclaración — nunca ejecuta con el ciclo adivinado.
+- No depende de ningún cambio en `search-scope-gate.ts` ni `analyze-habits-scope-gate.ts` (que siguen siendo agnósticos al valor de `cycle_scope`, solo verifican su presencia) — es una puerta añadida, no una modificación de las existentes.
+
+### 7.4 Pruebas añadidas
+
+- `src/__tests__/lib/months.test.ts`: `getPreviousMonth` — ciclo cerrado inmediatamente anterior al abierto, salto de año (diciembre → enero), sin ningún ciclo previo (primer ciclo del usuario) devuelve `null`, nunca elige un ciclo de etiqueta posterior aunque esté cerrado.
+- `src/__tests__/agents/tools/utils/cycle-scope.test.ts`: resolución `"previous"` — ciclo cerrado permitido, sin ciclo abierto (error claro), sin ciclo previo disponible (error claro).
+- `src/__tests__/agents/tools/search-expenses.test.ts`: ciclo abierto septiembre + cerrado agosto + histórico julio → `"previous"` resuelve agosto; un gasto con fecha real de **julio** perteneciente al ciclo agosto vía `month_id` se incluye correctamente (nunca se filtra por fecha real); sin ciclo abierto o sin ciclo previo, error claro y **cero** consulta a la tabla `expenses`.
+- `src/__tests__/agents/tools/analyze-habits.test.ts`: comparación con `compare_cycle_scope: "previous"` calcula la variación determinista frente al ciclo real inmediatamente anterior.
+- `src/__tests__/agents/tools/utils/previous-cycle-guard.test.ts`: función pura de detección de la expresión y del backstop, incluidos los casos de comparación legítima (no debe marcarse en falso) y de comparación con ninguno de los dos campos usando `"previous"` (debe marcarse).
+- `src/__tests__/agents-v2/stream-caller.previous-cycle-guard.test.ts`: flujo activo real (`processFunctionCallingStream`) — "ciclo anterior" + `cycle_scope: "specific"`/`"current"` inventado se bloquea sin ejecutar ni `analyzeSpendingHabits` ni `searchExpenses`; "ciclo anterior" + `cycle_scope: "previous"` (o `compare_cycle_scope: "previous"`) se ejecuta con esos argumentos exactos; regresión: sin la expresión "ciclo anterior" en el mensaje, `current`/`specific`/`all_history` siguen ejecutando sin bloqueo.
+- Regresión: `src/__tests__/agents-v2/search-expenses-definition.test.ts` y la suite completa de `agents`/`agents-v2` re-ejecutadas — ver §7.5.
+
+### 7.5 Validación
+
+- **Tests:** ejecución dirigida de los archivos nuevos/modificados + regresión completa de `src/__tests__/agents/` y `src/__tests__/agents-v2/` + `src/__tests__/lib/months.test.ts` → **472/473**. Único fallo: `calculate-whatif.test.ts` (fecha hardcodeada ya pasada) — el mismo fallo preexistente y ajeno documentado en §6, no relacionado con este hotfix.
+- **Lint:** `npx eslint` sobre los 16 archivos tocados (código + tests) → **0 errores**. 1 warning preexistente sin relación (`keywordPattern` sin usar, línea 870 de `search-expenses.ts`, ya presente antes de este hotfix).
+- **Build:** `npm run build` → compilación y generación de rutas correctas, sin errores (`BUILD_EXIT=0`, sin coincidencias de "error"/"Failed to compile" en la salida completa).
+- **`git diff --check`** (archivos de este hotfix): sin errores — solo avisos LF→CRLF normales en Windows.
+- **Sin migración nueva:** este hotfix no toca el esquema de `months` ni ninguna otra tabla — usa exclusivamente datos ya existentes.
+
+### 7.6 Alcance
+
+Sin cambios de modelo, Vercel, Supabase remoto, SEO, páginas públicas, Stripe, pagos, correos, publicidad ni afiliación. Sin `git add`, commit ni push durante este hotfix.

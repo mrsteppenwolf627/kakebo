@@ -18,10 +18,11 @@ export interface SearchExpensesParams {
     // del catálogo (src/lib/subcategories.ts). Cuando se proporciona, tiene
     // prioridad sobre la búsqueda por texto/embeddings.
     subcategories?: string[];
-    // Fase 2.C: ámbito de ciclo real (ciclos libres). Cuando se proporciona,
-    // prevalece sobre `period` — el filtrado se hace por `month_id` real,
-    // nunca por rango de fechas de calendario. Ver
-    // src/lib/agents/tools/utils/cycle-scope.ts para la resolución.
+    // Fase 2.C (+ Hotfix 2.1: añade "previous"): ámbito de ciclo real
+    // (ciclos libres). Cuando se proporciona, prevalece sobre `period` — el
+    // filtrado se hace por `month_id` real, nunca por rango de fechas de
+    // calendario. Ver src/lib/agents/tools/utils/cycle-scope.ts para la
+    // resolución.
     cycle_scope?: CycleScope;
     // Requerido cuando cycle_scope === "specific". Identificador inequívoco
     // del ciclo: etiqueta YYYY-MM tal como se guarda en `months` (year,

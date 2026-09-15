@@ -54,6 +54,7 @@ import {
   evaluateAnalyzeHabitsScope,
   type AnalyzeHabitsScopeGateArgs,
 } from "@/lib/agents/tools/utils/analyze-habits-scope-gate";
+import { callMissesExplicitPreviousCycle } from "@/lib/agents/tools/utils/previous-cycle-guard";
 import { getAiConfirmWritesPreference } from "./user-write-confirmation";
 import {
   createPendingAction,
@@ -524,6 +525,59 @@ export async function processFunctionCallingStream(
           : "¿Quieres que analice el ciclo actual, un ciclo concreto o todo tu historial?";
 
       onEvent({ type: "chunk", text: clarifyMessage });
+
+      const latencyMs = Date.now() - startTime;
+      const costUsd = calculateCost(DEFAULT_MODEL, inputTokens, outputTokens);
+
+      onEvent({
+        type: "done",
+        toolsUsed: [],
+        metrics: {
+          model: DEFAULT_MODEL,
+          latencyMs,
+          inputTokens,
+          outputTokens,
+          totalTokens: inputTokens + outputTokens,
+          costUsd,
+          toolCalls: 0,
+        },
+      });
+      await recordTurn("scope_blocked", { toolsUsed: [tc.function.name], success: true });
+      return;
+    }
+    // ───────────────────────────────────────────────────────────────────────
+
+    // ── Previous-cycle guess-protection gate (Hotfix 2.1) ──────────────────
+    // Bug real: al pedir "ciclo anterior", el modelo podía traducirlo a un
+    // cycle_scope/cycle_ym arbitrario (p. ej. enero, o el ciclo actual) en
+    // vez de usar el ámbito determinista cycle_scope: "previous". Backstop
+    // puro sobre el texto literal del turno actual (ver
+    // previous-cycle-guard.ts): si el usuario pidió expresamente su "ciclo
+    // anterior" y ni cycle_scope ni compare_cycle_scope usan "previous", se
+    // bloquea la ejecución y se pide confirmación — nunca se analiza un
+    // ciclo inventado.
+    for (const tc of toolCallsToExecute) {
+      if (tc.function.name !== "searchExpenses" && tc.function.name !== "analyzeSpendingPattern") {
+        continue;
+      }
+
+      let parsedArgs: {
+        cycle_scope?: string;
+        compare?: boolean;
+        compare_cycle_scope?: string;
+      };
+      try {
+        parsedArgs = JSON.parse(tc.function.arguments);
+      } catch {
+        continue; // Argumentos inválidos: deja que el flujo normal falle y lo reporte.
+      }
+
+      if (!callMissesExplicitPreviousCycle(userMessage, parsedArgs)) continue;
+
+      onEvent({
+        type: "chunk",
+        text: "Para tu ciclo anterior, uso el ciclo inmediatamente anterior al actual (nunca un mes adivinado) — ¿confirmas que quieres tu ciclo anterior, o te referías a otro ciclo concreto?",
+      });
 
       const latencyMs = Date.now() - startTime;
       const costUsd = calculateCost(DEFAULT_MODEL, inputTokens, outputTokens);

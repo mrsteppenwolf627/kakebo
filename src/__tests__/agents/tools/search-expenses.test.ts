@@ -257,6 +257,97 @@ describe("searchExpenses — filtro exacto por subcategoría y ciclo real (Fase 
     expect(supabase.__expensesLte).not.toHaveBeenCalled();
   });
 
+  // ---------------------------------------------------------------------
+  // Hotfix 2.1: cycle_scope 'previous' — ciclo inmediatamente anterior al
+  // actual, resuelto vía tabla months (nunca por fecha de calendario, nunca
+  // un mes adivinado).
+  // ---------------------------------------------------------------------
+
+  it("cycle_scope 'previous' resolves August given an open September cycle, a closed August cycle and older history", async () => {
+    const supabase = makeSupabase({
+      monthsRows: [
+        { id: "sept-cycle", year: 2026, month: 9, status: "open", user_id: userId, savings_done: false },
+        { id: "august-cycle", year: 2026, month: 8, status: "closed", user_id: userId, savings_done: false },
+        { id: "july-cycle", year: 2026, month: 7, status: "closed", user_id: userId, savings_done: false },
+      ],
+      expenseRows: [
+        {
+          id: "e1",
+          date: "2026-08-15",
+          amount: 22,
+          note: "Gasto de agosto",
+          category: "supervivencia",
+          subcategory: null,
+        },
+      ],
+    });
+
+    const result = await searchExpenses(supabase as never, userId, {
+      cycle_scope: "previous",
+    });
+
+    expect(result.resolvedScope?.scope).toBe("previous");
+    expect(result.resolvedScope?.cycleYm).toBe("2026-08");
+    expect(result.resolvedScope?.status).toBe("closed");
+    expect(result.totalCount).toBe(1);
+    expect(supabase.__expensesEq).toHaveBeenCalledWith("month_id", "august-cycle");
+  });
+
+  it("cycle_scope 'previous' includes an expense with a real date in JULY that belongs to the August cycle via month_id", async () => {
+    const supabase = makeSupabase({
+      monthsRows: [
+        { id: "sept-cycle", year: 2026, month: 9, status: "open", user_id: userId, savings_done: false },
+        { id: "august-cycle", year: 2026, month: 8, status: "closed", user_id: userId, savings_done: false },
+      ],
+      expenseRows: [
+        {
+          // El usuario cerró julio anticipadamente el día 31 de julio; este
+          // gasto tiene fecha real de julio pero pertenece al ciclo agosto
+          // vía month_id — nunca debe excluirse por fecha de calendario.
+          id: "e1",
+          date: "2026-07-31",
+          amount: 18,
+          note: "Gasto de fin de julio ya en el ciclo agosto",
+          category: "opcional",
+          subcategory: null,
+        },
+      ],
+    });
+
+    const result = await searchExpenses(supabase as never, userId, {
+      cycle_scope: "previous",
+    });
+
+    expect(result.totalCount).toBe(1);
+    expect(result.expenses[0].date).toBe("2026-07-31");
+    expect(supabase.__expensesGte).not.toHaveBeenCalled();
+    expect(supabase.__expensesLte).not.toHaveBeenCalled();
+  });
+
+  it("cycle_scope 'previous' with no open cycle fails clearly and never queries expenses", async () => {
+    const supabase = makeSupabase({ monthsRows: [] }); // getOpenMonth -> null
+
+    await expect(
+      searchExpenses(supabase as never, userId, { cycle_scope: "previous" })
+    ).rejects.toThrow(/ciclo abierto/i);
+
+    expect(supabase.from).not.toHaveBeenCalledWith("expenses");
+  });
+
+  it("cycle_scope 'previous' with no earlier cycle (user's very first cycle) fails clearly and never queries expenses", async () => {
+    const supabase = makeSupabase({
+      monthsRows: [
+        { id: "first-cycle", year: 2026, month: 1, status: "open", user_id: userId, savings_done: false },
+      ],
+    });
+
+    await expect(
+      searchExpenses(supabase as never, userId, { cycle_scope: "previous" })
+    ).rejects.toThrow(/ciclo anterior/i);
+
+    expect(supabase.from).not.toHaveBeenCalledWith("expenses");
+  });
+
   it("a nonexistent or foreign specific cycle fails clearly and never queries expenses", async () => {
     const supabase = makeSupabase({ monthsRows: [] }); // getMonthByYm -> null
 

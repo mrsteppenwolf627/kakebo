@@ -41,6 +41,29 @@ describe("searchExpenses tool definition (agent-v2) — contrato search_intent",
     expect(params.properties.cycle_ym).toBeDefined();
     expect(params.properties.subcategories).toBeDefined();
   });
+
+  it("Hotfix 2.1: cycle_scope incluye 'previous' (ciclo inmediatamente anterior, resuelto por ciclos reales)", () => {
+    if (tool?.type !== "function") throw new Error("tool no es de tipo function");
+    const params = tool.function.parameters as {
+      properties: Record<string, { enum?: string[] }>;
+    };
+    expect(params.properties.cycle_scope.enum).toContain("previous");
+  });
+});
+
+describe("analyzeSpendingPattern tool definition (agent-v2) — Hotfix 2.1: cycle_scope 'previous'", () => {
+  const tool = KAKEBO_TOOLS.find(
+    (t) => t.type === "function" && t.function.name === "analyzeSpendingPattern"
+  );
+
+  it("cycle_scope y compare_cycle_scope incluyen 'previous'", () => {
+    if (tool?.type !== "function") throw new Error("tool no es de tipo function");
+    const params = tool.function.parameters as {
+      properties: Record<string, { enum?: string[] }>;
+    };
+    expect(params.properties.cycle_scope.enum).toContain("previous");
+    expect(params.properties.compare_cycle_scope.enum).toContain("previous");
+  });
 });
 
 /**

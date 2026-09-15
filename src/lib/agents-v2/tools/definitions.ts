@@ -41,10 +41,11 @@ const analyzeSpendingPatternTool: ChatCompletionTool = {
 **⚠️ ÁMBITO DE CICLO OBLIGATORIO (cycle_scope) — sin excepción:**
 Esta tool SIEMPRE es una consulta agregada — a diferencia de searchExpenses, no existe aquí ningún caso "individual_lookup" exento. Debes indicar SIEMPRE cycle_scope:
 - "current": el ciclo actualmente abierto del usuario.
-- "specific": un ciclo concreto ya identificado (aporta cycle_ym, formato YYYY-MM) — incluye ciclos YA CERRADOS, cuya lectura está permitida.
+- "previous": el ciclo INMEDIATAMENTE ANTERIOR al ciclo actualmente abierto (resuelto siempre por los ciclos reales del usuario, nunca por mes de calendario). Úsalo SIEMPRE que el usuario diga "ciclo anterior", "mi ciclo anterior", "ciclo pasado" o equivalentes — NUNCA lo traduzcas a "specific" con un cycle_ym inventado ni a "current". Si no hay ciclo anterior disponible, la herramienta lo dirá con claridad; no inventes ningún mes.
+- "specific": un ciclo concreto ya identificado (aporta cycle_ym, formato YYYY-MM) — incluye ciclos YA CERRADOS, cuya lectura está permitida. Úsalo solo cuando el usuario identifique un ciclo distinto al inmediatamente anterior (p. ej. "el ciclo de agosto"), nunca como sustituto de "previous".
 - "all_history": todo el histórico, sin restringir a ningún ciclo.
 
-Si el usuario no ha dejado claro el ámbito, NO llames a esta tool — el orquestador bloqueará la llamada igualmente y se le preguntará. Nunca asumas "el ciclo actual" salvo que el usuario lo haya elegido expresamente (ni tampoco un mes de calendario natural).
+Si el usuario no ha dejado claro el ámbito, NO llames a esta tool — el orquestador bloqueará la llamada igualmente y se le preguntará. Nunca asumas "el ciclo actual" salvo que el usuario lo haya elegido expresamente (ni tampoco un mes de calendario natural). Si el usuario pide su "ciclo anterior" y no usas cycle_scope: "previous" (o compare_cycle_scope: "previous" cuando corresponda a la comparación), el orquestador bloqueará la llamada igualmente.
 
 **⚠️ COMPARACIÓN SOLO SI SE PIDE EXPLÍCITAMENTE:**
 - Usa compare: true SOLO cuando el usuario pida comparar, evolución, cambio o tendencia frente a OTRO ciclo (p. ej. "¿he gastado más que el ciclo pasado?", "¿cómo ha evolucionado mi gasto en ocio?").
@@ -62,7 +63,8 @@ Si el usuario no ha dejado claro el ámbito, NO llames a esta tool — el orques
 - "¿cuánto llevo gastado este ciclo?" → { cycle_scope: "current", category: "all" }
 - "analiza mis hábitos de este ciclo" → { cycle_scope: "current", category: "all" }
 - "resumen de supervivencia del ciclo de agosto" → { cycle_scope: "specific", cycle_ym: "2026-08", category: "survival" }
-- "¿he gastado más en opcional que el ciclo pasado?" → { cycle_scope: "current", category: "optional", compare: true, compare_cycle_scope: "specific", compare_cycle_ym: "<ciclo anterior identificado>" }
+- "analiza mi ciclo anterior" → { cycle_scope: "previous", category: "all" }
+- "¿he gastado más en opcional que en mi ciclo anterior?" → { cycle_scope: "current", category: "optional", compare: true, compare_cycle_scope: "previous" }
 
 **Sobre el resultado:** usa SIEMPRE los campos ya calculados (totalAmount, count, byCategory, bySubcategory, mostFrequent, topExpenses, comparison, observations, possiblePatterns, recommendations) — nunca sumes ni cuentes tú mismo. Si "limited" es true, dilo con claridad: hay demasiado pocos gastos para detectar patrones fiables, y "possiblePatterns"/"recommendations" estarán vacíos a propósito. Distingue siempre observación (hecho verificable) de posible patrón (señal, no concluyente) y de recomendación (sugerencia genérica y prudente, nunca un diagnóstico). Si "coverage.unclassified" > 0, avisa de que el desglose por subcategoría no es exhaustivo sobre histórico sin clasificar.`,
 
@@ -71,9 +73,10 @@ Si el usuario no ha dejado claro el ámbito, NO llames a esta tool — el orques
       properties: {
         cycle_scope: {
           type: "string",
-          enum: ["current", "specific", "all_history"],
+          enum: ["current", "previous", "specific", "all_history"],
           description: `Ámbito de ciclo real (obligatorio, sin excepción):
 - "current": ciclo actualmente abierto.
+- "previous": el ciclo inmediatamente anterior al actual. Úsalo SIEMPRE para "ciclo anterior"/"ciclo pasado" — nunca lo sustituyas por "specific" con un cycle_ym adivinado.
 - "specific": ciclo concreto (aporta cycle_ym) — permite leer ciclos cerrados.
 - "all_history": todo el histórico.
 
@@ -101,8 +104,8 @@ Por defecto: "all"`,
         },
         compare_cycle_scope: {
           type: "string",
-          enum: ["current", "specific", "all_history"],
-          description: `Ámbito del ciclo de comparación. Requerido cuando compare es true.`,
+          enum: ["current", "previous", "specific", "all_history"],
+          description: `Ámbito del ciclo de comparación. Requerido cuando compare es true. Usa "previous" cuando el usuario pida comparar con su ciclo anterior/pasado — nunca "specific" con un cycle_ym adivinado.`,
         },
         compare_cycle_ym: {
           type: "string",

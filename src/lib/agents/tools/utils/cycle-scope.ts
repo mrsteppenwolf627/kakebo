@@ -1,5 +1,5 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import { getOpenMonth, getMonthByYm } from "@/lib/months";
+import { getOpenMonth, getMonthByYm, getPreviousMonth } from "@/lib/months";
 
 /**
  * Fase 2.C: ámbito de ciclo real para herramientas de búsqueda/análisis de
@@ -10,7 +10,7 @@ import { getOpenMonth, getMonthByYm } from "@/lib/months";
  * (misma fuente que usan `/api/expenses`, `/api/months` y `createTransaction`
  * desde la Fase 1/2.A), nunca por rangos de fecha.
  */
-export type CycleScope = "current" | "specific" | "all_history";
+export type CycleScope = "current" | "specific" | "all_history" | "previous";
 
 export interface ResolvedCycleScope {
   scope: CycleScope;
@@ -40,6 +40,12 @@ const CYCLE_YM_REGEX = /^\d{4}-(0[1-9]|1[0-2])$/;
  * - `"all_history"`: no se resuelve ningún ciclo concreto; `monthId` es
  *   `null` y el llamador no debe aplicar ningún filtro de ciclo (ni de
  *   fecha de calendario).
+ * - `"previous"` (Hotfix 2.1): el ciclo INMEDIATAMENTE ANTERIOR al ciclo
+ *   abierto actual del usuario, resuelto vía `getOpenMonth` + `getPreviousMonth`
+ *   (tabla `months`), nunca por fecha de calendario ni por la fecha actual.
+ *   Permite leer un ciclo cerrado. Si el usuario no tiene ciclo abierto, o no
+ *   tiene ningún ciclo anterior a ese, lanza un error claro sin consultar
+ *   ningún gasto — nunca elige ni infiere un mes de calendario arbitrario.
  */
 export async function resolveCycleScope(
   supabase: SupabaseClient,
@@ -72,6 +78,39 @@ export async function resolveCycleScope(
       cycleYm: ym,
       status: openMonth.status,
       description: `ciclo abierto actual (${ym})`,
+    };
+  }
+
+  if (scope === "previous") {
+    const openMonth = await getOpenMonth(supabase, userId);
+
+    if (!openMonth) {
+      throw new Error(
+        "No tienes ningún ciclo abierto todavía. No se puede resolver el ciclo anterior."
+      );
+    }
+
+    const previousMonth = await getPreviousMonth(
+      supabase,
+      userId,
+      openMonth.year,
+      openMonth.month
+    );
+
+    if (!previousMonth) {
+      throw new Error(
+        "No tienes ningún ciclo anterior al actual todavía. No se ha consultado ningún gasto."
+      );
+    }
+
+    const ym = `${previousMonth.year}-${String(previousMonth.month).padStart(2, "0")}`;
+
+    return {
+      scope,
+      monthId: previousMonth.id,
+      cycleYm: ym,
+      status: previousMonth.status,
+      description: `ciclo anterior (${ym}, ${previousMonth.status === "closed" ? "cerrado" : "abierto"})`,
     };
   }
 

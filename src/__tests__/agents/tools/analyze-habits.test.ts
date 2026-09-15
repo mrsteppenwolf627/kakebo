@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { computeHabitAggregate, analyzeSpendingHabits } from "@/lib/agents/tools/analyze-habits";
-import { getOpenMonth, getMonthByYm } from "@/lib/months";
+import { getOpenMonth, getMonthByYm, getPreviousMonth } from "@/lib/months";
 
 vi.mock("@/lib/logger", () => ({
   apiLogger: { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() },
@@ -9,10 +9,12 @@ vi.mock("@/lib/logger", () => ({
 vi.mock("@/lib/months", () => ({
   getOpenMonth: vi.fn(),
   getMonthByYm: vi.fn(),
+  getPreviousMonth: vi.fn(),
 }));
 
 const mockGetOpenMonth = vi.mocked(getOpenMonth);
 const mockGetMonthByYm = vi.mocked(getMonthByYm);
+const mockGetPreviousMonth = vi.mocked(getPreviousMonth);
 
 /**
  * Fase 2.F: pruebas de la función determinista pura `computeHabitAggregate`
@@ -312,6 +314,59 @@ describe("analyzeSpendingHabits (Fase 2.F) — ámbito de ciclo real y análisis
     expect(result.comparison?.deltaAmount).toBe(20);
     expect(result.comparison?.deltaPercentage).toBe(20); // (120-100)/100 * 100
     expect(result.comparison?.deltaCount).toBe(1);
+  });
+
+  it("Hotfix 2.1: con compare_cycle_scope: 'previous', compara con el ciclo inmediatamente anterior — nunca un mes inventado", async () => {
+    const octoberCycle = {
+      id: "october-cycle",
+      user_id: userId,
+      year: 2026,
+      month: 10,
+      status: "open" as const,
+      savings_done: false,
+    };
+    // Se resuelve dos veces: el ámbito principal ("current") y, dentro de
+    // la resolución de "previous" para la comparación, el ciclo abierto de
+    // referencia — en ambos casos es el mismo ciclo real de octubre.
+    mockGetOpenMonth.mockResolvedValue(octoberCycle);
+    mockGetPreviousMonth.mockResolvedValue({
+      id: "september-cycle",
+      user_id: userId,
+      year: 2026,
+      month: 9,
+      status: "closed",
+      savings_done: true,
+    });
+
+    let callCount = 0;
+    const currentExpenses = Array.from({ length: 6 }, (_, i) =>
+      expense(`oct-${i}`, "2026-10-0" + (i + 1), 20, `Gasto ${i}`, "extra")
+    ); // total 120
+    const baselineExpenses = Array.from({ length: 5 }, (_, i) =>
+      expense(`sep-${i}`, "2026-09-0" + (i + 1), 20, `Gasto sep ${i}`, "extra")
+    ); // total 100
+
+    const chain: Record<string, unknown> = {
+      eq: vi.fn(() => chain),
+      then: (resolve: (v: { data: unknown; error: null }) => void) => {
+        callCount += 1;
+        resolve({ data: callCount === 1 ? currentExpenses : baselineExpenses, error: null });
+      },
+    };
+    const supabase = { from: vi.fn(() => ({ select: () => chain })) } as never;
+
+    const result = await analyzeSpendingHabits(supabase, userId, {
+      cycle_scope: "current",
+      compare: true,
+      compare_cycle_scope: "previous",
+    });
+
+    expect(result.comparison).toBeDefined();
+    expect(result.comparison?.baseline.scope).toBe("previous");
+    expect(result.comparison?.baseline.cycleYm).toBe("2026-09");
+    expect(result.comparison?.baseline.totalAmount).toBe(100);
+    expect(result.comparison?.deltaAmount).toBe(20);
+    expect(mockGetPreviousMonth).toHaveBeenCalledWith(supabase, userId, 2026, 10);
   });
 
   it("compare: true sin compare_cycle_scope lanza un error claro (no se ejecuta sin ámbito de comparación)", async () => {
