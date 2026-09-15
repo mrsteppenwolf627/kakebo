@@ -6,9 +6,24 @@
  *
  * Strategy:
  * 1. Extract merchant from transaction concept
- * 2. Query merchant_rules table (user-specific first, then global)
+ * 2. Query merchant_rules table (user-specific ONLY)
  * 3. Return category suggestion with confidence and source
  * 4. If no rule found, return null (GPT will classify)
+ *
+ * Fase 2.G (corrección de privacidad): las sugerencias basadas en reglas
+ * GLOBALES (`source: "global_rule"`, filas `user_id IS NULL` de
+ * `merchant_rules`) están DESACTIVADAS POR COMPLETO — falla cerrado, sin
+ * excepción. Motivo: `merchant` es texto derivado de lo que el propio
+ * usuario escribió (no una etiqueta/categoría cerrada y minimizada), y las
+ * filas globales históricas no registran qué usuario ni si había
+ * consentimiento en el momento de cada voto — no se puede demostrar que
+ * una regla global proceda solo de usuarios consintientes. La RPC
+ * `get_merchant_rule` sigue pudiendo devolver una fila con
+ * `source: "global_rule"` (su lógica SQL no se modifica en esta tarea),
+ * así que el filtrado se hace aquí, en la aplicación: cualquier resultado
+ * que no sea `"user_rule"` se descarta y se trata como "sin sugerencia".
+ * Las reglas PERSONALES (`user_id = userId`, aisladas por RLS) no se ven
+ * afectadas.
  */
 
 import { SupabaseClient } from "@supabase/supabase-js";
@@ -90,6 +105,18 @@ export async function suggestCategory(
 
     // Rule found
     const rule = data[0];
+
+    // Fase 2.G: falla cerrado ante cualquier fila que no sea una regla
+    // PERSONAL del propio usuario — nunca se usa una regla global para
+    // sugerir categoría (ver cabecera del archivo).
+    if (rule.source !== "user_rule") {
+      apiLogger.debug(
+        { merchant, userId, source: rule.source },
+        "Discarding non-personal (global) merchant rule — collective suggestions are disabled (Fase 2.G)"
+      );
+      return null;
+    }
+
     const suggestion: CategorySuggestion = {
       category: rule.category,
       confidence: rule.confidence,
@@ -105,7 +132,7 @@ export async function suggestCategory(
         source: rule.source,
         userId,
       },
-      "Category suggested from merchant rule"
+      "Category suggested from personal merchant rule"
     );
 
     return suggestion;
@@ -170,6 +197,9 @@ export async function suggestCategoriesBatch(
     }
 
     // Step 2: Query merchant rules for all merchants (single query)
+    // Fase 2.G (corrección de privacidad): SOLO reglas personales
+    // (user_id = userId). Ya no se consulta ninguna fila global
+    // (user_id IS NULL) — ver la cabecera del archivo.
     const { data: userRules, error: userError } = await supabase
       .from("merchant_rules")
       .select("merchant, category, confidence")
@@ -183,38 +213,12 @@ export async function suggestCategoriesBatch(
       );
     }
 
-    const { data: globalRules, error: globalError } = await supabase
-      .from("merchant_rules")
-      .select("merchant, category, confidence, vote_count")
-      .is("user_id", null)
-      .in("merchant", merchants)
-      .gte("vote_count", 3); // Min 3 votes for consensus
-
-    if (globalError) {
-      apiLogger.warn(
-        { error: globalError, userId },
-        "Error querying global merchant rules"
-      );
-    }
-
-    // Step 3: Build merchant → rule map
+    // Step 3: Build merchant → rule map (personal rules only)
     const merchantToRule = new Map<
       string,
       { category: string; confidence: number; source: string }
     >();
 
-    // Add global rules first (lower priority)
-    if (globalRules) {
-      for (const rule of globalRules) {
-        merchantToRule.set(rule.merchant, {
-          category: rule.category,
-          confidence: rule.confidence * 0.8, // Discount global vs personal
-          source: "global_rule",
-        });
-      }
-    }
-
-    // Add user rules (override global rules)
     if (userRules) {
       for (const rule of userRules) {
         merchantToRule.set(rule.merchant, {
@@ -310,7 +314,11 @@ export function shouldUseSuggestion(
     return true;
   }
 
-  // Global rules: use only if confident enough
-  // (Global rules have 0.8x discount, so effective confidence is lower)
+  // Fase 2.G: suggestCategory/suggestCategoriesBatch ya no devuelven
+  // nunca una sugerencia con source: "global_rule" (descartada aguas
+  // arriba, ver cabecera del archivo), así que esta rama es inalcanzable
+  // en la práctica. Se conserva por compatibilidad de tipos/tests de esta
+  // función pura — no representa ningún camino activo hacia datos
+  // colectivos.
   return suggestion.confidence >= confidenceThreshold;
 }

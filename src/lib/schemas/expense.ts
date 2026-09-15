@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   categorySchema,
+  subcategorySchema,
   dateSchema,
   amountSchema,
   uuidSchema,
@@ -20,6 +21,10 @@ export const createExpenseSchema = z.object({
     .optional()
     .default(""),
   month_id: uuidSchema.optional(), // If not provided, will be resolved from date
+  // Fase 2.B: segunda capa de clasificación opcional. No obliga al usuario
+  // manual a elegirla; los gastos históricos sin subcategoría siguen siendo
+  // válidos (nullable/optional en todos los schemas de expense).
+  subcategory: subcategorySchema.nullable().optional(),
 });
 
 export type CreateExpenseInput = z.infer<typeof createExpenseSchema>;
@@ -36,6 +41,9 @@ export const updateExpenseSchema = z
       .string()
       .max(500, { message: "La nota no puede exceder 500 caracteres" })
       .optional(),
+    // Fase 2.B: permite asignar, cambiar o limpiar (null) la subcategoría
+    // de un gasto existente.
+    subcategory: subcategorySchema.nullable().optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: "Debes proporcionar al menos un campo para actualizar",
@@ -67,6 +75,9 @@ export const expenseSchema = z.object({
   amount: z.number(),
   category: categorySchema,
   note: z.string().nullable(),
+  // Fase 2.B: nullable/optional para que los gastos históricos (sin
+  // subcategoría asignada) sigan siendo objetos válidos.
+  subcategory: subcategorySchema.nullable().optional(),
   created_at: z.string(),
 });
 

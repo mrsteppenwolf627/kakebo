@@ -818,7 +818,13 @@
             "placeholderFull": "Ask something about your finances..."
         },
         "disclaimer": "AI agents can make mistakes.",
-        "error": "Error"
+        "error": "Error",
+        "confirmation": {
+            "title": "Confirm AI-proposed change",
+            "confirm": "Confirm",
+            "confirming": "Confirming...",
+            "cancel": "Cancel"
+        }
     },
     "CategoryGuide": {
         "title": "Category Guide",
@@ -1116,6 +1122,12 @@
             "loadError": "Error loading settings",
             "loading": "Loading...",
             "disclaimer": "These settings are saved to your account (Supabase), not locally.",
+            "aiConfirmTitle": "AI assistant",
+            "aiConfirmLabel": "Ask for confirmation before the AI changes my data",
+            "aiConfirmDesc": "When enabled, the assistant will ask you to confirm every time it proposes creating, editing, or correcting an expense, before saving it.",
+            "collectiveLearningTitle": "Collective learning",
+            "collectiveLearningLabel": "Participate in future anonymous collective improvements",
+            "collectiveLearningDesc": "Disabled by default. Right now this preference doesn't activate any data sharing: there isn't yet a collective-learning path that can guarantee anonymity and the origin of each contribution. Your personal corrections and preferences keep helping only you, whether this is on or off. If we add a safe collective path in the future, it would only ever share a minimal, anonymous signal (never the amount, note, merchant name, your email, your user ID, or your history), and you'll be able to turn it on or off at any time.",
             "subscriptionTitle": "Kakebo Account",
             "subscriptionDescTitle": "Full access, free",
             "subscriptionDescText": "Kakebo is completely free. All features are available to every registered user.",

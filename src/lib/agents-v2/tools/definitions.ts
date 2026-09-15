@@ -8,62 +8,81 @@
 import type { ChatCompletionTool } from "openai/resources/chat/completions";
 import { searchExpensesTool } from "./search-expenses-definition";
 import { submitFeedbackTool } from "./submit-feedback-definition";
+import { SUBCATEGORY_IDS, SUBCATEGORIES } from "@/lib/subcategories";
 
 /**
- * Tool 1: Analyze Spending Patterns
+ * Tool 1: Analyze Spending Habits (Fase 2.F)
  *
- * Maps natural language about spending to category and period analysis.
- * Critical: Handles semantic mapping of terms like "comida" → "survival"
+ * Análisis agregado y de HÁBITOS (totales, distribución, gastos frecuentes,
+ * concentración, comparativas explícitas) sobre un ÁMBITO DE CICLO REAL —
+ * nunca sobre meses de calendario. Todo número sale de cálculo determinista
+ * sobre los gastos reales; el modelo solo redacta y explica.
  */
 const analyzeSpendingPatternTool: ChatCompletionTool = {
   type: "function",
   function: {
     name: "analyzeSpendingPattern",
-    description: `Analiza patrones de gasto AGREGADOS (totales, promedios, estadísticas) por categoría.
+    description: `Analiza patrones y HÁBITOS de gasto AGREGADOS (totales, distribución por categoría/subcategoría, gastos más frecuentes, mayores gastos, y comparativas cuando se pidan explícitamente) sobre un ámbito de ciclo real.
 
-**⚠️ REGLA CRÍTICA: USA searchExpenses PRIMERO para "gastos de X"**
+**⚠️ REGLA CRÍTICA: USA searchExpenses PRIMERO para "gastos de X" (listar gastos individuales)**
 
-**Úsala SOLO cuando el usuario pida ESTADÍSTICAS SIN LISTAR GASTOS:**
-- "¿cuánto he gastado este mes?" (solo total, sin detalles)
+**Úsala cuando el usuario pida ESTADÍSTICAS o HÁBITOS, sin listar cada gasto:**
+- "¿cuánto he gastado este ciclo?" (solo total)
 - "resumen de gastos por categoría"
-- "¿estoy gastando más en opcional que antes?"
-- "tendencia de supervivencia"
-- "promedio de gastos"
+- "analiza mis hábitos de este ciclo" / "¿tengo algún patrón raro de gasto?"
+- "¿estoy gastando más en opcional que en mi ciclo anterior?" (comparación EXPLÍCITA)
+- "¿qué gasto se repite más?"
 
 **❌ NO LA USES cuando el usuario quiera VER GASTOS INDIVIDUALES:**
 - "gastos de comida" → USA searchExpenses (lista gastos específicos)
-- "gastos de restaurantes" → USA searchExpenses
-- "gastos de salud" → USA searchExpenses
-- "mis últimos gastos" → USA searchExpenses
 - "muéstrame los gastos de X" → USA searchExpenses
-- CUALQUIER consulta donde el usuario quiera DETALLES de gastos → USA searchExpenses
+- CUALQUIER consulta donde el usuario quiera DETALLES de gastos concretos → USA searchExpenses
+
+**⚠️ ÁMBITO DE CICLO OBLIGATORIO (cycle_scope) — sin excepción:**
+Esta tool SIEMPRE es una consulta agregada — a diferencia de searchExpenses, no existe aquí ningún caso "individual_lookup" exento. Debes indicar SIEMPRE cycle_scope:
+- "current": el ciclo actualmente abierto del usuario.
+- "specific": un ciclo concreto ya identificado (aporta cycle_ym, formato YYYY-MM) — incluye ciclos YA CERRADOS, cuya lectura está permitida.
+- "all_history": todo el histórico, sin restringir a ningún ciclo.
+
+Si el usuario no ha dejado claro el ámbito, NO llames a esta tool — el orquestador bloqueará la llamada igualmente y se le preguntará. Nunca asumas "el ciclo actual" salvo que el usuario lo haya elegido expresamente (ni tampoco un mes de calendario natural).
+
+**⚠️ COMPARACIÓN SOLO SI SE PIDE EXPLÍCITAMENTE:**
+- Usa compare: true SOLO cuando el usuario pida comparar, evolución, cambio o tendencia frente a OTRO ciclo (p. ej. "¿he gastado más que el ciclo pasado?", "¿cómo ha evolucionado mi gasto en ocio?").
+- Cuando compare: true, indica también compare_cycle_scope (y compare_cycle_ym si es "specific") — el ciclo contra el que se compara. Si no lo tienes claro, no lo inventes: el orquestador pedirá esa aclaración.
+- Si el usuario NO ha pedido comparar, NO uses compare — no añadas un segundo ciclo "por si acaso".
 
 **MAPEO SEMÁNTICO CRÍTICO - Categorías:**
-Debes interpretar inteligentemente el lenguaje natural del usuario:
+- **"survival"** (Supervivencia): comida, alimentación, supermercado, vivienda, alquiler, transporte, gasolina, medicinas, farmacia
+- **"optional"** (Opcional): ocio, entretenimiento, restaurantes, comer fuera, cine, ropa, compras, viajes
+- **"culture"** (Cultura): educación, formación, cursos, libros, museos, desarrollo personal
+- **"extra"** (Extra): imprevistos, emergencias, regalos, otros
+- **"all"** (Todas): cuando el usuario no especifica categoría o pide análisis general
 
-- **"survival"** (Supervivencia): comida, alimentación, supermercado, alimentos, mercado, despensa, vivienda, alquiler, renta, casa, transporte, metro, autobús, gasolina, medicinas, farmacia
+**Ejemplos correctos:**
+- "¿cuánto llevo gastado este ciclo?" → { cycle_scope: "current", category: "all" }
+- "analiza mis hábitos de este ciclo" → { cycle_scope: "current", category: "all" }
+- "resumen de supervivencia del ciclo de agosto" → { cycle_scope: "specific", cycle_ym: "2026-08", category: "survival" }
+- "¿he gastado más en opcional que el ciclo pasado?" → { cycle_scope: "current", category: "optional", compare: true, compare_cycle_scope: "specific", compare_cycle_ym: "<ciclo anterior identificado>" }
 
-- **"optional"** (Opcional): ocio, entretenimiento, diversión, tiempo libre, restaurantes, bares, cafés, comer fuera, cine, conciertos, teatro, eventos, ropa, calzado, moda, compras, shopping, viajes, vacaciones
-
-- **"culture"** (Cultura): educación, formación, cursos, clases, estudios, libros, ebooks, audiolibros, museos, exposiciones, conferencias, talleres, desarrollo personal
-
-- **"extra"** (Extra): imprevistos, emergencias, urgencias, regalos, obsequios, otros, varios
-
-- **"all"** (Todas): cuando el usuario NO especifica categoría o pide análisis general
-
-**Ejemplos CORRECTOS (solo totales, sin listar gastos):**
-- "¿cuánto llevo gastado este mes?" (solo total) → category: "all"
-- "resumen de gastos de supervivencia" (estadística) → category: "survival"
-- "¿he gastado más en opcional que el mes pasado?" (comparación) → category: "optional"
-
-**Ejemplos INCORRECTOS (usa searchExpenses en su lugar):**
-- "gastos de comida" → ❌ NO uses esta herramienta, usa searchExpenses
-- "gastos de ocio" → ❌ NO uses esta herramienta, usa searchExpenses
-- "mis gastos en libros" → ❌ NO uses esta herramienta, usa searchExpenses`,
+**Sobre el resultado:** usa SIEMPRE los campos ya calculados (totalAmount, count, byCategory, bySubcategory, mostFrequent, topExpenses, comparison, observations, possiblePatterns, recommendations) — nunca sumes ni cuentes tú mismo. Si "limited" es true, dilo con claridad: hay demasiado pocos gastos para detectar patrones fiables, y "possiblePatterns"/"recommendations" estarán vacíos a propósito. Distingue siempre observación (hecho verificable) de posible patrón (señal, no concluyente) y de recomendación (sugerencia genérica y prudente, nunca un diagnóstico). Si "coverage.unclassified" > 0, avisa de que el desglose por subcategoría no es exhaustivo sobre histórico sin clasificar.`,
 
     parameters: {
       type: "object",
       properties: {
+        cycle_scope: {
+          type: "string",
+          enum: ["current", "specific", "all_history"],
+          description: `Ámbito de ciclo real (obligatorio, sin excepción):
+- "current": ciclo actualmente abierto.
+- "specific": ciclo concreto (aporta cycle_ym) — permite leer ciclos cerrados.
+- "all_history": todo el histórico.
+
+NUNCA se resuelve por mes de calendario ni se omite.`,
+        },
+        cycle_ym: {
+          type: "string",
+          description: `Requerido cuando cycle_scope es "specific". Formato YYYY-MM (p. ej. "2026-08").`,
+        },
         category: {
           type: "string",
           enum: ["survival", "optional", "culture", "extra", "all"],
@@ -76,60 +95,27 @@ Debes interpretar inteligentemente el lenguaje natural del usuario:
 
 Por defecto: "all"`,
         },
-        period: {
-          type: "string",
-          enum: [
-            "current_month",
-            "last_month",
-            "last_3_months",
-            "last_6_months",
-            "current_week",
-            "last_week",
-          ],
-          description: `Período de tiempo a analizar. Mapea expresiones naturales:
-- "este mes", "en el mes actual" → "current_month"
-- "el mes pasado", "mes anterior" → "last_month"
-- "últimos 3 meses", "trimestre" → "last_3_months"
-- "últimos 6 meses", "semestre" → "last_6_months"
-- "esta semana", "semana actual" → "current_week"
-- "semana pasada", "la semana pasada" → "last_week"
-
-Por defecto: "current_month"`,
+        compare: {
+          type: "boolean",
+          description: `true SOLO cuando el usuario pida explícitamente comparar, evolución, cambio o tendencia frente a otro ciclo. Requiere compare_cycle_scope. Por defecto: false (nunca compares "por si acaso").`,
         },
-        groupBy: {
+        compare_cycle_scope: {
           type: "string",
-          enum: ["day", "week", "month"],
-          description: `Nivel de agrupación de datos:
-- "day": Datos diarios (más detalle)
-- "week": Por semanas
-- "month": Por meses (para períodos largos)
-
-Por defecto: "day"`,
+          enum: ["current", "specific", "all_history"],
+          description: `Ámbito del ciclo de comparación. Requerido cuando compare es true.`,
+        },
+        compare_cycle_ym: {
+          type: "string",
+          description: `Requerido cuando compare_cycle_scope es "specific". Formato YYYY-MM.`,
         },
         limit: {
           type: "number",
-          description: `Número máximo de gastos a devolver.
+          description: `Número máximo de elementos en las listas de gastos más frecuentes / mayores gastos.
 - Por defecto: 5
-- Máximo: 50
-
-**USA limit=50 cuando usuario pida:**
-- "todos los gastos"
-- "muéstrame todo"
-- "lista completa"
-
-Usa default (5) para preguntas generales.`,
-        },
-        semanticFilter: {
-          type: "string",
-          description: `⚠️ DEPRECADO - NO USES ESTE PARÁMETRO.
-
-Para búsquedas específicas como "restaurantes", "salud", "comida", "transporte", etc.,
-USA LA HERRAMIENTA searchExpenses EN SU LUGAR.
-
-Este parámetro existe solo por compatibilidad pero NO funciona correctamente.`,
+- Máximo: 20`,
         },
       },
-      required: [], // Todos los parámetros son opcionales con defaults sensibles
+      required: ["cycle_scope"],
     },
   },
 };
@@ -447,6 +433,19 @@ Ejemplos: "Compra en Mercadona", "Cena con amigos", "Netflix", "Transporte públ
 - "optional": ocio, restaurantes, ropa, viajes
 - "culture": educación, libros, museos
 - "extra": imprevistos, regalos`,
+        },
+        subcategory: {
+          type: "string",
+          enum: [...SUBCATEGORY_IDS],
+          description: `Subcategoría opcional (solo para gastos), más específica que la categoría Kakebo. Úsala solo si el concepto la deja clara; si hay duda, omite el campo.
+
+**Distinción obligatoria:**
+- "food_basic": supermercado, mercado, comida para casa (ej: Mercadona, Carrefour).
+- "dining_out": restaurantes, bares, chiringuitos, comida a domicilio (ej: cena fuera, delivery).
+
+Resto del catálogo: ${SUBCATEGORY_IDS.filter((id) => id !== "food_basic" && id !== "dining_out")
+            .map((id) => `"${id}" (${SUBCATEGORIES[id].description})`)
+            .join(", ")}.`,
         },
         date: {
           type: "string",

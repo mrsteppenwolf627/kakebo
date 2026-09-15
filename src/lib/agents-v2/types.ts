@@ -34,11 +34,31 @@ export interface PendingAction {
 }
 
 /**
- * Confirmation request for write operations
+ * Confirmation request for write operations (legacy, non-streaming v1
+ * architecture — src/lib/agents-v2/function-caller.ts + src/app/api/ai/
+ * agent-v2/route.ts). NOT used by the active chat, which streams via
+ * src/lib/agents-v2/stream-caller.ts and uses `StreamConfirmationRequest`
+ * below instead. Left unchanged: v1 is out of scope for Fase 2.E.
  */
 export interface ConfirmationRequest {
   message: string; // Confirmation question for user
   pendingAction: PendingAction;
+  requiresConfirmation: true;
+}
+
+/**
+ * Confirmation request for write operations, ACTIVE streaming flow (Fase
+ * 2.E — corrección de seguridad). Sent to the client over SSE. Carries
+ * ONLY the human-readable message and an opaque `confirmationId` — never
+ * the executable action (`PendingAction`) itself. The real action stays
+ * server-side, in `public.ai_pending_actions` (see
+ * src/lib/agents-v2/pending-actions.ts), and is only resolved when the
+ * client sends this exact `confirmationId` back, consumed atomically so it
+ * can execute at most once.
+ */
+export interface StreamConfirmationRequest {
+  message: string; // Confirmation question for user
+  confirmationId: string; // Opaque id — resolves to the real action server-side, once
   requiresConfirmation: true;
 }
 

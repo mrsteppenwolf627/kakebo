@@ -1,8 +1,12 @@
 /**
- * Tests for learning from corrections (P1-1)
+ * Tests for learning from corrections (P1-1 + Fase 2.G corrección de privacidad)
  *
- * Validates that merchant rules are correctly saved when users correct categories,
- * creating a feedback loop for improved accuracy.
+ * Validates that merchant rules are correctly saved (PERSONAL, user_id-
+ * scoped) when users correct categories. The GLOBAL merchant_rules vote
+ * (user_id IS NULL) is disabled entirely — with or without
+ * `allow_collective_learning` — because merchant_rules cannot prove
+ * per-contribution consent/provenance and `merchant` is user-entered text,
+ * not a minimized label.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -35,7 +39,7 @@ vi.mock("@/lib/agents/tools/utils/merchant-extractor", () => ({
   }),
 }));
 
-describe("Learn From Correction (P1-1)", () => {
+describe("Learn From Correction (P1-1 + Fase 2.G corrección de privacidad)", () => {
   let mockSupabase: SupabaseClient;
   const userId = "test-user-123";
 
@@ -218,52 +222,40 @@ describe("Learn From Correction (P1-1)", () => {
       expect(result.message).toContain("Error al aprender");
     });
 
-    it("should increment global rule vote if correction matches global consensus", async () => {
-      // Mock upsert_merchant_rule success
-      const mockRpc = vi
-        .fn()
-        .mockResolvedValueOnce({
-          // First call: upsert_merchant_rule
-          data: "rule-123",
-          error: null,
-        })
-        .mockResolvedValueOnce({
-          // Second call: increment_global_rule_vote
-          data: null,
-          error: null,
-        });
+    it("Fase 2.G: NUNCA incrementa el voto global, ni siquiera cuando la corrección coincidiría con el consenso — la regla PERSONAL se sigue guardando igual", async () => {
+      // Mock upsert_merchant_rule success. Solo debería producirse ESTA
+      // llamada RPC — nunca "increment_global_rule_vote".
+      const mockRpc = vi.fn().mockResolvedValue({
+        data: "rule-123",
+        error: null,
+      });
 
       mockSupabase.rpc = mockRpc as any;
 
-      // Mock from() to handle both the existing rule check AND global rule check
+      // Mock from() — incluso si hubiera una fila global coincidente, no
+      // debe llegar a consultarse ni usarse: el código ya no la busca.
       const mockFrom = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn((field: string, value: any) => {
-            // This is the check for existing user rule (returns not found)
-            return {
-              eq: vi.fn(() => ({
-                limit: vi.fn(() => ({
-                  single: vi.fn(() => ({
-                    data: null,
-                    error: { code: "PGRST116" }, // Not found = new rule
-                  })),
+          eq: vi.fn(() => ({
+            eq: vi.fn(() => ({
+              limit: vi.fn(() => ({
+                single: vi.fn(() => ({
+                  data: null,
+                  error: { code: "PGRST116" }, // Not found = new rule
                 })),
               })),
-            };
-          }),
-          is: vi.fn((field: string, value: any) => {
-            // This is the check for global rule (returns matching global rule)
-            return {
-              eq: vi.fn(() => ({
-                limit: vi.fn(() => ({
-                  single: vi.fn(() => ({
-                    data: { category: "supervivencia", vote_count: 5 },
-                    error: null,
-                  })),
+            })),
+          })),
+          is: vi.fn(() => ({
+            eq: vi.fn(() => ({
+              limit: vi.fn(() => ({
+                single: vi.fn(() => ({
+                  data: { category: "supervivencia", vote_count: 5 },
+                  error: null,
                 })),
               })),
-            };
-          }),
+            })),
+          })),
         })),
       }));
 
@@ -278,7 +270,29 @@ describe("Learn From Correction (P1-1)", () => {
       );
 
       expect(result.success).toBe(true);
-      expect(result.globalVoteIncremented).toBe(true);
+      expect(result.ruleCreated).toBe(true); // Regla personal sigue funcionando.
+      expect(result.globalVoteIncremented).toBe(false);
+      expect(mockRpc).toHaveBeenCalledTimes(1); // Solo upsert_merchant_rule.
+      expect(mockRpc).not.toHaveBeenCalledWith(
+        "increment_global_rule_vote",
+        expect.anything()
+      );
+    });
+
+    it("Fase 2.G: el resultado NUNCA incrementa el voto global aunque allow_collective_learning esté activado (no hay ninguna comprobación de consentimiento que lo reactive)", async () => {
+      const mockRpc = vi.fn().mockResolvedValue({ data: "rule-123", error: null });
+      mockSupabase.rpc = mockRpc as any;
+
+      const result = await learnFromCorrection(
+        mockSupabase,
+        userId,
+        "Mercadona compra",
+        "opcional",
+        "supervivencia"
+      );
+
+      expect(result.globalVoteIncremented).toBe(false);
+      expect(mockRpc.mock.calls.map((c) => c[0])).not.toContain("increment_global_rule_vote");
     });
   });
 

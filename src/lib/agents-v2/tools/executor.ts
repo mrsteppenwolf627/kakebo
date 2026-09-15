@@ -19,6 +19,15 @@ import type {
 } from "../types";
 
 // Import existing tool implementations (NO CHANGES to these files)
+// Fase 2.F: este executor sigue usando el `analyzeSpendingPattern` legado
+// (basado en meses de calendario) SIN CAMBIOS — es compartido por
+// function-caller.ts (arquitectura no conectada al chat activo) y por
+// stream-caller.ts. Para no alterar ese código compartido/no conectado,
+// stream-caller.ts intercepta las llamadas a "analyzeSpendingPattern"
+// ANTES de llegar aquí y las ejecuta con la nueva lógica de hábitos
+// (analyzeSpendingHabits, src/lib/agents/tools/analyze-habits.ts) por su
+// cuenta — este case nunca se alcanza para esa tool en el flujo activo,
+// pero permanece intacto para function-caller.ts.
 import {
   analyzeSpendingPattern,
   type AnalyzeSpendingPatternParams,

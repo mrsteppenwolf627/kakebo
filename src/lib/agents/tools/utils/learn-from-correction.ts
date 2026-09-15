@@ -7,8 +7,22 @@
  * Strategy:
  * 1. When user corrects category, extract merchant from concept
  * 2. Save user-specific rule (upsert_merchant_rule)
- * 3. If correction matches global consensus, increment global vote count
- * 4. User rules have confidence = 1.0 (explicit correction)
+ * 3. User rules have confidence = 1.0 (explicit correction)
+ *
+ * Fase 2.G (corrección de privacidad): la contribución al voto GLOBAL de
+ * `merchant_rules` (user_id IS NULL) está DESACTIVADA POR COMPLETO — falla
+ * cerrado, sin excepción, incluso con `allow_collective_learning`
+ * activado. Motivo: `merchant` es texto extraído del concepto que
+ * introduce el propio usuario (puede contener información no minimizada,
+ * no es una simple etiqueta/categoría cerrada), y las filas globales
+ * históricas de `merchant_rules` no guardan qué usuario ni si tenía
+ * consentimiento en el momento del voto — no hay forma de demostrar que
+ * una fila global proceda solo de usuarios consintientes. Hasta que exista
+ * un diseño nuevo que registre procedencia y consentimiento verificable
+ * por contribución (fuera de alcance de esta tarea, requiere rediseñar el
+ * esquema), NINGUNA función de este archivo escribe en una fila global de
+ * `merchant_rules`. El aprendizaje PERSONAL (regla propia, `user_id =
+ * userId`, aislada por RLS) no se ve afectado — sigue funcionando igual.
  */
 
 import { SupabaseClient } from "@supabase/supabase-js";
@@ -142,29 +156,12 @@ export async function learnFromCorrection(
       "Merchant rule saved successfully"
     );
 
-    // Step 4: Increment global rule vote count (if correction matches global consensus)
-    let globalVoteIncremented = false;
-
-    try {
-      await incrementGlobalRuleVoteIfMatches(
-        supabase,
-        merchant,
-        newCategory,
-        userId
-      );
-      globalVoteIncremented = true;
-
-      apiLogger.debug(
-        { merchant, category: newCategory, userId },
-        "Global rule vote incremented"
-      );
-    } catch (voteError) {
-      // Don't fail the entire operation if vote increment fails
-      apiLogger.warn(
-        { error: voteError, merchant, userId },
-        "Failed to increment global rule vote - continuing"
-      );
-    }
+    // Fase 2.G (corrección de privacidad): el voto GLOBAL de merchant_rules
+    // está desactivado por completo, sin excepción — ver el comentario de
+    // cabecera del archivo. `globalVoteIncremented` se mantiene en el tipo
+    // de retorno por compatibilidad, pero es SIEMPRE false: no existe
+    // ningún camino en este archivo que escriba en una fila global.
+    const globalVoteIncremented = false;
 
     const message = ruleCreated
       ? `✅ Regla aprendida: "${merchant}" → ${newCategory}`
@@ -192,87 +189,6 @@ export async function learnFromCorrection(
       globalVoteIncremented: false,
       message: `Error al aprender de la corrección: ${err instanceof Error ? err.message : "Unknown error"}`,
     };
-  }
-}
-
-/**
- * Increment global rule vote count if user correction matches global consensus
- *
- * This helps build global consensus over time.
- * Only increments if global rule exists AND user correction matches it.
- *
- * @param supabase - Supabase client
- * @param merchant - Merchant name
- * @param category - Category (Spanish DB format)
- * @param userId - User ID (for logging)
- */
-async function incrementGlobalRuleVoteIfMatches(
-  supabase: SupabaseClient,
-  merchant: string,
-  category: string,
-  userId: string
-): Promise<void> {
-  try {
-    // Check if global rule exists and matches category
-    const { data: globalRule, error: fetchError } = await supabase
-      .from("merchant_rules")
-      .select("category, vote_count")
-      .is("user_id", null)
-      .eq("merchant", merchant)
-      .limit(1)
-      .single();
-
-    if (fetchError || !globalRule) {
-      // No global rule exists - don't create one (only increment existing)
-      apiLogger.debug(
-        { merchant, userId },
-        "No global rule found - not incrementing"
-      );
-      return;
-    }
-
-    // Check if user correction matches global consensus
-    if (globalRule.category !== category) {
-      apiLogger.debug(
-        {
-          merchant,
-          userCategory: category,
-          globalCategory: globalRule.category,
-          userId,
-        },
-        "User correction differs from global rule - not incrementing"
-      );
-      return;
-    }
-
-    // User correction matches global consensus - increment vote
-    const { error: incrementError } = await supabase.rpc(
-      "increment_global_rule_vote",
-      {
-        p_merchant: merchant,
-        p_category: category,
-      }
-    );
-
-    if (incrementError) {
-      throw incrementError;
-    }
-
-    apiLogger.info(
-      {
-        merchant,
-        category,
-        previousVoteCount: globalRule.vote_count,
-        userId,
-      },
-      "Global rule vote incremented (user correction matches consensus)"
-    );
-  } catch (err) {
-    apiLogger.warn(
-      { err, merchant, userId },
-      "Error incrementing global rule vote"
-    );
-    throw err;
   }
 }
 

@@ -280,4 +280,68 @@ describe("updateTransaction", () => {
     // Verify that eq was called with user_id filter
     expect(mockSupabase.eq).toHaveBeenCalledWith("user_id", userId);
   });
+
+  describe("Fase 2.A: ciclos libres en updateTransaction (IA)", () => {
+    it("rejects editing an expense that belongs to a closed cycle, without updating anything", async () => {
+      mockSupabase.maybeSingle.mockResolvedValueOnce({
+        data: {
+          id: transactionId,
+          user_id: userId,
+          note: "Existing",
+          category: "supervivencia",
+          month_id: "closed-cycle-uuid",
+        },
+        error: null,
+      });
+      // Comprobación del estado del ciclo (from("months").select("status")...)
+      mockSupabase.single.mockResolvedValueOnce({
+        data: { status: "closed" },
+        error: null,
+      });
+
+      await expect(
+        updateTransaction(mockSupabase, userId, { transactionId, amount: 99 })
+      ).rejects.toThrow(/ciclo cerrado/i);
+
+      expect(mockSupabase.update).not.toHaveBeenCalled();
+    });
+
+    it("still allows editing when the expense belongs to an open cycle (existing behavior preserved)", async () => {
+      mockSupabase.maybeSingle.mockResolvedValueOnce({
+        data: {
+          id: transactionId,
+          user_id: userId,
+          note: "Existing",
+          category: "supervivencia",
+          month_id: "open-cycle-uuid",
+        },
+        error: null,
+      });
+      mockSupabase.single
+        // Comprobación del estado del ciclo
+        .mockResolvedValueOnce({ data: { status: "open" }, error: null })
+        // Resultado del update
+        .mockResolvedValueOnce({
+          data: {
+            id: transactionId,
+            user_id: userId,
+            amount: 77,
+            note: "Existing",
+            category: "supervivencia",
+            date: "2026-02-12",
+          },
+          error: null,
+        });
+
+      const result = await updateTransaction(mockSupabase, userId, {
+        transactionId,
+        amount: 77,
+      });
+
+      expect(result.success).toBe(true);
+      expect(mockSupabase.update).toHaveBeenCalledWith(
+        expect.objectContaining({ amount: 77 })
+      );
+    });
+  });
 });

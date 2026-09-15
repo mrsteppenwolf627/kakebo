@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SUBCATEGORY_IDS } from "../subcategories";
 
 /**
  * Kakebo expense categories
@@ -22,6 +23,17 @@ export const CATEGORY_LABELS: Record<CategoryKey, string> = {
   culture: "Cultura",
   extra: "Extra",
 };
+
+/**
+ * Fase 2.B: subcategorías Kakebo — segunda capa de clasificación opcional.
+ * Derivado de `SUBCATEGORY_IDS` (src/lib/subcategories.ts), la única fuente
+ * de verdad del catálogo. No se redefine la lista de identificadores aquí.
+ */
+export const subcategorySchema = z.enum(SUBCATEGORY_IDS, {
+  error: "Subcategoría inválida",
+});
+
+export type SubcategoryKey = z.infer<typeof subcategorySchema>;
 
 /**
  * Year-month format: YYYY-MM (e.g., "2025-01")

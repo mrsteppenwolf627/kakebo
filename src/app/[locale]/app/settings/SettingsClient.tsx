@@ -13,6 +13,14 @@ type UserSettingsRow = {
     budget_opcional: number | null;
     budget_cultura: number | null;
     budget_extra: number | null;
+    // Fase 2.E: "Pedir confirmación antes de que la IA cambie mis datos".
+    // Nullable porque filas anteriores a la migración pueden no tenerla
+    // todavía — se trata como activado (true) por defecto en ese caso.
+    ai_confirm_writes: boolean | null;
+    // Fase 2.G: consentimiento explícito para aprendizaje colectivo
+    // anónimo. Nullable por el mismo motivo — se trata como DESACTIVADO
+    // (false) por defecto, al contrario que ai_confirm_writes.
+    allow_collective_learning: boolean | null;
 };
 
 type FixedExpenseRow = {
@@ -33,6 +41,8 @@ const DEFAULT: Omit<UserSettingsRow, "user_id"> = {
     budget_opcional: 0,
     budget_cultura: 0,
     budget_extra: 0,
+    ai_confirm_writes: true,
+    allow_collective_learning: false,
 };
 
 function num(v: any) {
@@ -122,7 +132,7 @@ export default function SettingsClient() {
                 const { data, error } = await supabase
                     .from("user_settings")
                     .select(
-                        "user_id,monthly_income,monthly_saving_goal,budget_supervivencia,budget_opcional,budget_cultura,budget_extra"
+                        "user_id,monthly_income,monthly_saving_goal,budget_supervivencia,budget_opcional,budget_cultura,budget_extra,ai_confirm_writes,allow_collective_learning"
                     )
                     .eq("user_id", uid)
                     .limit(1);
@@ -138,6 +148,13 @@ export default function SettingsClient() {
                     budget_opcional: num(row?.budget_opcional ?? 0),
                     budget_cultura: num(row?.budget_cultura ?? 0),
                     budget_extra: num(row?.budget_extra ?? 0),
+                    // Activado por defecto: tanto si no hay fila todavía como
+                    // si la columna es null (fila anterior a la migración).
+                    ai_confirm_writes: row?.ai_confirm_writes ?? true,
+                    // Fase 2.G: DESACTIVADO por defecto (lo opuesto a
+                    // ai_confirm_writes) — tanto si no hay fila todavía como
+                    // si la columna es null.
+                    allow_collective_learning: row?.allow_collective_learning ?? false,
                 });
 
                 // 2) fixed expenses
@@ -185,6 +202,8 @@ export default function SettingsClient() {
                 budget_opcional: num(form.budget_opcional),
                 budget_cultura: num(form.budget_cultura),
                 budget_extra: num(form.budget_extra),
+                ai_confirm_writes: form.ai_confirm_writes ?? true,
+                allow_collective_learning: form.allow_collective_learning ?? false,
             };
 
             const { error } = await supabase
@@ -430,6 +449,44 @@ export default function SettingsClient() {
                                     }
                                 />
                             </div>
+                        </div>
+
+                        <div className="border border-border rounded-lg p-5 space-y-3 bg-card">
+                            <div className="font-semibold text-foreground">{tGen("aiConfirmTitle")}</div>
+                            <label className="flex items-start gap-3 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={form.ai_confirm_writes ?? true}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            ai_confirm_writes: e.target.checked,
+                                        })
+                                    }
+                                    className="mt-1 h-4 w-4 rounded border-input text-primary focus:ring-1 focus:ring-primary"
+                                />
+                                <span className="text-sm text-foreground">{tGen("aiConfirmLabel")}</span>
+                            </label>
+                            <p className="text-xs text-muted-foreground">{tGen("aiConfirmDesc")}</p>
+                        </div>
+
+                        <div className="border border-border rounded-lg p-5 space-y-3 bg-card">
+                            <div className="font-semibold text-foreground">{tGen("collectiveLearningTitle")}</div>
+                            <label className="flex items-start gap-3 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={form.allow_collective_learning ?? false}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            allow_collective_learning: e.target.checked,
+                                        })
+                                    }
+                                    className="mt-1 h-4 w-4 rounded border-input text-primary focus:ring-1 focus:ring-primary"
+                                />
+                                <span className="text-sm text-foreground">{tGen("collectiveLearningLabel")}</span>
+                            </label>
+                            <p className="text-xs text-muted-foreground">{tGen("collectiveLearningDesc")}</p>
                         </div>
 
                         <button

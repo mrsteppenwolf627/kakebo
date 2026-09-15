@@ -15,9 +15,14 @@
  * Error events:
  *   data: {"type":"error","message":"..."}\n\n
  *
- * Confirmation events (write operations with ENABLE_WRITE_CONFIRMATION=true):
- *   data: {"type":"confirmation","request":{...}}\n\n
+ * Confirmation events (write operations pending user approval, Fase 2.E):
+ *   data: {"type":"confirmation","request":{"message":"...","confirmationId":"...","requiresConfirmation":true}}\n\n
  *   data: {"type":"done",...}\n\n
+ *
+ * To confirm a pending write, resend the SAME confirmationId (never the
+ * action itself) as `confirmationId` in the next POST body. The server
+ * resolves and consumes it atomically — see
+ * src/lib/agents-v2/pending-actions.ts.
  *
  * Client usage (fetch + ReadableStream):
  *   const response = await fetch('/api/ai/agent-v2/stream', { method: 'POST', body: ... });
@@ -47,21 +52,11 @@ const streamRequestSchema = z.object({
     )
     .optional()
     .default([]),
-  confirmedAction: z
-    .object({
-      toolCall: z.object({
-        id: z.string(),
-        type: z.literal("function"),
-        function: z.object({
-          name: z.string(),
-          arguments: z.string(),
-        }),
-      }),
-      toolName: z.string(),
-      arguments: z.record(z.string(), z.unknown()),
-      description: z.string(),
-    })
-    .optional(),
+  // Fase 2.E (corrección de seguridad): el cliente reenvía ÚNICAMENTE el
+  // identificador opaco de la confirmación pendiente — nunca la acción
+  // ejecutable. El servidor la resuelve consumiéndola atómicamente en
+  // processFunctionCallingStream (ver src/lib/agents-v2/pending-actions.ts).
+  confirmationId: z.string().uuid().optional(),
 });
 
 // ─── SSE helpers ──────────────────────────────────────────────────────────────
@@ -114,7 +109,7 @@ export async function POST(request: NextRequest) {
             // Bridge callback event → SSE data frame
             controller.enqueue(sseData(event));
           },
-          input.confirmedAction
+          input.confirmationId
         );
       } catch {
         // Unhandled error (processFunctionCallingStream already handles internal errors)

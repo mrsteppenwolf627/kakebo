@@ -1,7 +1,9 @@
 /**
- * Tests for example retrieval (P1-2)
+ * Tests for example retrieval (P1-2 + Fase 2.G)
  *
- * Validates that correction examples are correctly retrieved for few-shot learning.
+ * Validates that correction examples are correctly retrieved for few-shot
+ * learning, and that (Fase 2.G) global examples (`user_id IS NULL`) are
+ * NEVER mixed in — only the querying user's own examples.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -29,31 +31,45 @@ describe("Example Retriever (P1-2)", () => {
   let mockSupabase: SupabaseClient;
   const userId = "test-user-123";
 
+  /** Chainable query builder mock: every modifier returns itself; awaiting resolves the final result. */
+  function makeChain(result: { data: unknown; error: unknown }) {
+    const chain: Record<string, unknown> = {
+      eq: vi.fn(() => chain),
+      gte: vi.fn(() => chain),
+      or: vi.fn(() => chain),
+      order: vi.fn(() => chain),
+      limit: vi.fn(() => Promise.resolve(result)),
+    };
+    return chain;
+  }
+
   beforeEach(() => {
     // Mock Supabase client
     mockSupabase = {
       rpc: vi.fn(),
       from: vi.fn(() => ({
-        select: vi.fn(() => ({
-          or: vi.fn(() => ({
-            gte: vi.fn(() => ({
-              order: vi.fn(() => ({
-                limit: vi.fn(() => ({
-                  data: [],
-                  error: null,
-                })),
-              })),
-            })),
-          })),
-        })),
+        select: vi.fn(() => makeChain({ data: [], error: null })),
       })),
     } as any;
   });
 
   describe("getRelevantExamples", () => {
-    it("should retrieve examples via RPC when category filter provided", async () => {
-      // Mock RPC to return examples
-      vi.mocked(mockSupabase.rpc).mockResolvedValue({
+    it("Fase 2.G: NUNCA llama a la RPC get_relevant_examples (su fallback global vive en SQL, no filtrable por consentimiento)", async () => {
+      const chain = makeChain({ data: [], error: null });
+      const mockFrom = vi.fn(() => ({ select: vi.fn(() => chain) }));
+      mockSupabase.from = mockFrom as any;
+
+      await getRelevantExamples(mockSupabase, userId, {
+        categoryFilter: "supervivencia",
+        limit: 3,
+      });
+
+      expect(mockSupabase.rpc).not.toHaveBeenCalled();
+      expect(mockFrom).toHaveBeenCalledWith("correction_examples");
+    });
+
+    it("Fase 2.G: filtra SIEMPRE por user_id = userId, incluso con categoryFilter — nunca user_id IS NULL", async () => {
+      const chain = makeChain({
         data: [
           {
             concept: "mercadona compra",
@@ -62,89 +78,60 @@ describe("Example Retriever (P1-2)", () => {
             merchant: "mercadona",
             confidence: 1.0,
           },
-          {
-            concept: "lidl productos",
-            old_category: "opcional",
-            new_category: "supervivencia",
-            merchant: "lidl",
-            confidence: 1.0,
-          },
         ],
         error: null,
-      } as any);
+      });
+      mockSupabase.from = vi.fn(() => ({ select: vi.fn(() => chain) })) as any;
 
       const examples = await getRelevantExamples(mockSupabase, userId, {
         categoryFilter: "supervivencia",
         limit: 3,
       });
 
-      expect(examples).toHaveLength(2);
+      expect(examples).toHaveLength(1);
       expect(examples[0].concept).toBe("mercadona compra");
-      expect(examples[0].oldCategory).toBe("opcional");
-      expect(examples[0].newCategory).toBe("supervivencia");
-      expect(examples[0].merchant).toBe("mercadona");
-      expect(examples[0].confidence).toBe(1.0);
-
-      expect(mockSupabase.rpc).toHaveBeenCalledWith("get_relevant_examples", {
-        p_user_id: userId,
-        p_category: "supervivencia",
-        p_limit: 3,
-      });
+      expect(chain.eq).toHaveBeenCalledWith("user_id", userId);
+      expect(chain.eq).toHaveBeenCalledWith("new_category", "supervivencia");
+      // Nunca se usa .or() para combinar con user_id IS NULL.
+      expect(chain.or).not.toHaveBeenCalled();
     });
 
-    it("should return empty array if RPC returns no data", async () => {
-      // Mock RPC to return empty
-      vi.mocked(mockSupabase.rpc).mockResolvedValue({
-        data: [],
+    it("should return empty array if the query returns no data", async () => {
+      const chain = makeChain({ data: [], error: null });
+      mockSupabase.from = vi.fn(() => ({ select: vi.fn(() => chain) })) as any;
+
+      const examples = await getRelevantExamples(mockSupabase, userId, {
+        categoryFilter: "supervivencia",
+      });
+
+      expect(examples).toEqual([]);
+    });
+
+    it("should return empty array if the query fails", async () => {
+      const chain = makeChain({ data: null, error: { message: "Database error" } });
+      mockSupabase.from = vi.fn(() => ({ select: vi.fn(() => chain) })) as any;
+
+      const examples = await getRelevantExamples(mockSupabase, userId, {
+        categoryFilter: "supervivencia",
+      });
+
+      expect(examples).toEqual([]);
+    });
+
+    it("should use the direct query when no category filter, still scoped to the user only", async () => {
+      const chain = makeChain({
+        data: [
+          {
+            concept: "netflix",
+            old_category: "supervivencia",
+            new_category: "opcional",
+            merchant: "netflix",
+            confidence: 1.0,
+          },
+        ],
         error: null,
-      } as any);
-
-      const examples = await getRelevantExamples(mockSupabase, userId, {
-        categoryFilter: "supervivencia",
       });
-
-      expect(examples).toEqual([]);
-    });
-
-    it("should return empty array if RPC fails", async () => {
-      // Mock RPC to return error
-      vi.mocked(mockSupabase.rpc).mockResolvedValue({
-        data: null,
-        error: { message: "Database error" },
-      } as any);
-
-      const examples = await getRelevantExamples(mockSupabase, userId, {
-        categoryFilter: "supervivencia",
-      });
-
-      expect(examples).toEqual([]);
-    });
-
-    it("should use direct query when no category filter", async () => {
-      // Mock from() chain
-      const mockFrom = vi.fn(() => ({
-        select: vi.fn(() => ({
-          or: vi.fn(() => ({
-            gte: vi.fn(() => ({
-              order: vi.fn(() => ({
-                limit: vi.fn(() => ({
-                  data: [
-                    {
-                      concept: "netflix",
-                      old_category: "supervivencia",
-                      new_category: "opcional",
-                      merchant: "netflix",
-                      confidence: 1.0,
-                    },
-                  ],
-                  error: null,
-                })),
-              })),
-            })),
-          })),
-        })),
-      }));
-
+      const mockFrom = vi.fn(() => ({ select: vi.fn(() => chain) }));
       mockSupabase.from = mockFrom as any;
 
       const examples = await getRelevantExamples(mockSupabase, userId, {
@@ -154,11 +141,13 @@ describe("Example Retriever (P1-2)", () => {
       expect(examples).toHaveLength(1);
       expect(examples[0].concept).toBe("netflix");
       expect(mockFrom).toHaveBeenCalledWith("correction_examples");
+      expect(chain.eq).toHaveBeenCalledWith("user_id", userId);
     });
 
     it("should handle exceptions gracefully", async () => {
-      // Mock RPC to throw exception
-      vi.mocked(mockSupabase.rpc).mockRejectedValue(new Error("Network error"));
+      mockSupabase.from = vi.fn(() => {
+        throw new Error("Network error");
+      }) as any;
 
       const examples = await getRelevantExamples(mockSupabase, userId, {
         categoryFilter: "supervivencia",
@@ -248,33 +237,20 @@ describe("Example Retriever (P1-2)", () => {
   });
 
   describe("getSimilarExamples", () => {
-    it("should find examples with similar keywords", async () => {
-      // Mock from() chain
-      const mockFrom = vi.fn(() => ({
-        select: vi.fn(() => ({
-          or: vi.fn(() => ({
-            or: vi.fn(() => ({
-              gte: vi.fn(() => ({
-                order: vi.fn(() => ({
-                  limit: vi.fn(() => ({
-                    data: [
-                      {
-                        concept: "mercadona compra semanal",
-                        old_category: "opcional",
-                        new_category: "supervivencia",
-                        merchant: "mercadona",
-                        confidence: 1.0,
-                      },
-                    ],
-                    error: null,
-                  })),
-                })),
-              })),
-            })),
-          })),
-        })),
-      }));
-
+    it("should find examples with similar keywords, scoped to the user only (Fase 2.G: no global fallback)", async () => {
+      const chain = makeChain({
+        data: [
+          {
+            concept: "mercadona compra semanal",
+            old_category: "opcional",
+            new_category: "supervivencia",
+            merchant: "mercadona",
+            confidence: 1.0,
+          },
+        ],
+        error: null,
+      });
+      const mockFrom = vi.fn(() => ({ select: vi.fn(() => chain) }));
       mockSupabase.from = mockFrom as any;
 
       const similar = await getSimilarExamples(
@@ -286,6 +262,7 @@ describe("Example Retriever (P1-2)", () => {
 
       expect(similar).toHaveLength(1);
       expect(similar[0].concept).toBe("mercadona compra semanal");
+      expect(chain.eq).toHaveBeenCalledWith("user_id", userId);
     });
 
     it("should return empty array for concepts with no keywords", async () => {
@@ -300,25 +277,8 @@ describe("Example Retriever (P1-2)", () => {
     });
 
     it("should return empty array if query fails", async () => {
-      // Mock from() to return error
-      const mockFrom = vi.fn(() => ({
-        select: vi.fn(() => ({
-          or: vi.fn(() => ({
-            or: vi.fn(() => ({
-              gte: vi.fn(() => ({
-                order: vi.fn(() => ({
-                  limit: vi.fn(() => ({
-                    data: null,
-                    error: { message: "Database error" },
-                  })),
-                })),
-              })),
-            })),
-          })),
-        })),
-      }));
-
-      mockSupabase.from = mockFrom as any;
+      const chain = makeChain({ data: null, error: { message: "Database error" } });
+      mockSupabase.from = vi.fn(() => ({ select: vi.fn(() => chain) })) as any;
 
       const similar = await getSimilarExamples(
         mockSupabase,

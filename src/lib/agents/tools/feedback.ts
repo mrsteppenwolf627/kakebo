@@ -62,24 +62,64 @@ export async function submitSearchFeedback(
         }
         // ================================================
 
+        // ========== VERIFY OWNERSHIP (Fase 2.A) ==========
+        // Un expense_id inexistente o perteneciente a otro usuario nunca debe
+        // guardarse como feedback — se rechaza de forma segura sin insertar.
+        const candidateIds = Array.from(
+            new Set([...validCorrectExpenses, ...validIncorrectExpenses])
+        );
+
+        let ownedIds = new Set<string>();
+
+        if (candidateIds.length > 0) {
+            const { data: ownedExpenses, error: ownershipError } = await supabase
+                .from("expenses")
+                .select("id")
+                .in("id", candidateIds)
+                .eq("user_id", userId);
+
+            if (ownershipError) {
+                apiLogger.error(
+                    { error: ownershipError, userId },
+                    "Failed to verify expense ownership for feedback"
+                );
+                throw ownershipError;
+            }
+
+            ownedIds = new Set((ownedExpenses ?? []).map((e) => e.id as string));
+        }
+
+        const rejectedIds = candidateIds.filter((id) => !ownedIds.has(id));
+        if (rejectedIds.length > 0) {
+            apiLogger.warn(
+                { query, rejectedIds, userId },
+                "Rejected feedback for nonexistent or foreign expense_id"
+            );
+        }
+
+        const ownedCorrectExpenses = validCorrectExpenses.filter((id) => ownedIds.has(id));
+        const ownedIncorrectExpenses = validIncorrectExpenses.filter((id) => ownedIds.has(id));
+        // ===================================================
+
         apiLogger.info(
             {
                 query,
-                correctCount: validCorrectExpenses.length,
-                incorrectCount: validIncorrectExpenses.length,
+                correctCount: ownedCorrectExpenses.length,
+                incorrectCount: ownedIncorrectExpenses.length,
+                rejectedCount: rejectedIds.length,
             },
             "Submitting search feedback"
         );
 
-        // Prepare feedback records (only for valid expense IDs)
+        // Prepare feedback records (only for valid AND owned expense IDs)
         const feedbackRecords = [
-            ...validCorrectExpenses.map((expenseId) => ({
+            ...ownedCorrectExpenses.map((expenseId) => ({
                 user_id: userId,
                 query: query.toLowerCase().trim(),
                 expense_id: expenseId,
                 feedback_type: "correct" as FeedbackType,
             })),
-            ...validIncorrectExpenses.map((expenseId) => ({
+            ...ownedIncorrectExpenses.map((expenseId) => ({
                 user_id: userId,
                 query: query.toLowerCase().trim(),
                 expense_id: expenseId,
@@ -93,6 +133,14 @@ export async function submitSearchFeedback(
                 return {
                     success: false,
                     message: "No se puede guardar feedback para gastos fijos en este momento",
+                };
+            }
+
+            // If every provided expense_id was nonexistent or foreign, reject explicitly.
+            if (rejectedIds.length > 0) {
+                return {
+                    success: false,
+                    message: "No se pudo guardar el feedback: el gasto indicado no existe o no te pertenece",
                 };
             }
 
@@ -124,9 +172,12 @@ export async function submitSearchFeedback(
         );
 
         // Build success message
-        let message = `Aprendido: ${validCorrectExpenses.length} correctos, ${validIncorrectExpenses.length} incorrectos para "${query}"`;
+        let message = `Aprendido: ${ownedCorrectExpenses.length} correctos, ${ownedIncorrectExpenses.length} incorrectos para "${query}"`;
         if (fixedExpensesSkipped > 0) {
             message += ` (${fixedExpensesSkipped} gastos fijos omitidos)`;
+        }
+        if (rejectedIds.length > 0) {
+            message += ` (${rejectedIds.length} gasto(s) rechazado(s) por no pertenecer al usuario)`;
         }
 
         return {
@@ -199,101 +250,51 @@ export async function getSearchFeedback(
 
 /**
  * Get global feedback consensus across ALL users
- * 
- * Uses majority voting: if 60%+ of users mark an expense as incorrect,
- * it's considered globally incorrect.
- * 
- * This allows the agent to learn from ALL users, not just one.
+ *
+ * Fase 2.G (aprendizaje personalizado y consentimiento colectivo opcional):
+ * DESACTIVADO — falla cerrado. Devuelve siempre feedback vacío, sin
+ * consultar `search_feedback` de otros usuarios en absoluto.
+ *
+ * Motivo: `search_feedback` está indexado por `expense_id` (identificador
+ * de una fila de gasto concreta) y `query` (texto libre tecleado por el
+ * usuario) — ninguno de los dos es un dato minimizado (etiqueta/categoría +
+ * señal de corrección); son, respectivamente, un identificador de un
+ * registro específico y texto libre. Cumplir la minimización exigida por
+ * la Fase 2.G ("nunca nota libre... ni identificador de usuario ni
+ * historial") exigiría rediseñar el esquema de `search_feedback` para
+ * agregar por categoría/subcategoría en vez de por gasto individual — una
+ * refactorización grande, fuera de alcance de esta tarea. Además, antes de
+ * esta fase, esta función no comprobaba consentimiento alguno: consultaba
+ * feedback de TODOS los usuarios sin distinción. En vez de intentar un
+ * filtrado parcial (que seguiría exponiendo expense_id/query no
+ * minimizados de usuarios consintientes), se desactiva por completo.
+ *
+ * `getHybridFeedback` (más abajo) sigue funcionando con normalidad para el
+ * feedback personal del propio usuario — el aprendizaje individual no se
+ * ve afectado por esta desactivación.
  */
 export async function getGlobalFeedback(
-    supabase: SupabaseClient,
-    query: string,
-    minVotes: number = 3 // Minimum votes needed for consensus
+    _supabase: SupabaseClient,
+    _query: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- kept for call-site compatibility; unused now that this is disabled (see doc comment above)
+    _minVotes: number = 3
 ): Promise<QueryFeedback> {
-    try {
-        const normalizedQuery = query.toLowerCase().trim();
-
-        // Get all feedback for this query across all users
-        const { data, error } = await supabase
-            .from("search_feedback")
-            .select("expense_id, feedback_type")
-            .eq("query", normalizedQuery);
-
-        if (error) {
-            apiLogger.error({ error, query }, "Failed to get global feedback");
-            throw error;
-        }
-
-        // Count votes per expense
-        const votesByExpense = new Map<string, { correct: number; incorrect: number }>();
-
-        for (const record of data || []) {
-            if (!votesByExpense.has(record.expense_id)) {
-                votesByExpense.set(record.expense_id, { correct: 0, incorrect: 0 });
-            }
-
-            const votes = votesByExpense.get(record.expense_id)!;
-            if (record.feedback_type === "correct") {
-                votes.correct++;
-            } else if (record.feedback_type === "incorrect") {
-                votes.incorrect++;
-            }
-        }
-
-        const feedback: QueryFeedback = {
-            correctExpenseIds: new Set(),
-            incorrectExpenseIds: new Set(),
-        };
-
-        // Apply consensus threshold (60% majority)
-        const consensusThreshold = 0.6;
-
-        for (const [expenseId, votes] of votesByExpense.entries()) {
-            const totalVotes = votes.correct + votes.incorrect;
-
-            // Need minimum votes for consensus
-            if (totalVotes < minVotes) {
-                continue;
-            }
-
-            const incorrectRatio = votes.incorrect / totalVotes;
-            const correctRatio = votes.correct / totalVotes;
-
-            if (incorrectRatio >= consensusThreshold) {
-                feedback.incorrectExpenseIds.add(expenseId);
-            } else if (correctRatio >= consensusThreshold) {
-                feedback.correctExpenseIds.add(expenseId);
-            }
-        }
-
-        apiLogger.info(
-            {
-                query,
-                totalExpenses: votesByExpense.size,
-                globalCorrect: feedback.correctExpenseIds.size,
-                globalIncorrect: feedback.incorrectExpenseIds.size,
-            },
-            "Retrieved global feedback consensus"
-        );
-
-        return feedback;
-    } catch (error) {
-        apiLogger.error({ error, query }, "Error getting global feedback");
-        return {
-            correctExpenseIds: new Set(),
-            incorrectExpenseIds: new Set(),
-        };
-    }
+    return {
+        correctExpenseIds: new Set(),
+        incorrectExpenseIds: new Set(),
+    };
 }
 
 /**
  * Get hybrid feedback: personal + global
- * 
- * Priority:
- * 1. User's personal feedback (highest priority)
- * 2. Global consensus from all users (fallback)
- * 
- * This gives users control while benefiting from collective knowledge.
+ *
+ * Fase 2.G: `getGlobalFeedback` está desactivado (siempre devuelve vacío,
+ * ver su comentario), así que esta función es, en la práctica, feedback
+ * PERSONAL únicamente — se conserva la firma y la fusión para no tener que
+ * tocar los llamantes (search-expenses.ts), y porque si en el futuro
+ * `getGlobalFeedback` se rediseña con datos minimizados y consentimiento
+ * real, esta función ya sabe fusionarlo correctamente (personal con
+ * prioridad).
  */
 export async function getHybridFeedback(
     supabase: SupabaseClient,

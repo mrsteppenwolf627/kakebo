@@ -10,6 +10,15 @@ describe("createTransaction", () => {
       from: vi.fn().mockReturnThis(),
       insert: vi.fn().mockReturnThis(),
       select: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      order: vi.fn().mockReturnThis(),
+      // getOpenMonth() (ciclos libres, Fase 1/2.A) terminates in .limit():
+      // by default simulate an open cycle already existing, so existing
+      // tests exercise the normal "imputed to the open cycle" path.
+      limit: vi.fn().mockResolvedValue({
+        data: [{ id: "open-month-uuid", status: "open", year: 2026, month: 2 }],
+        error: null,
+      }),
       single: vi.fn().mockReturnThis(),
     };
   });
@@ -227,5 +236,210 @@ describe("createTransaction", () => {
         })
       );
     }
+  });
+
+  describe("Fase 2.A: ciclos libres en createTransaction (IA)", () => {
+    it("imputes an AI-created expense to the currently open cycle, preserving its real date even when the cycle label is a later month", async () => {
+      // Escenario: el usuario cerró su ciclo anterior anticipadamente hace
+      // unos días; el ciclo abierto actual ya está etiquetado con el mes
+      // "siguiente" a la fecha real del gasto (ciclo libre). Se calcula una
+      // fecha real reciente en relación al reloj real para no depender de
+      // una fecha fija que acabe cayendo fuera del rango permitido por el
+      // validador (máx. 7 días en el futuro).
+      const realDate = new Date();
+      realDate.setDate(realDate.getDate() - 5);
+      const dateStr = realDate.toISOString().slice(0, 10);
+      const labelMonth = new Date(realDate);
+      labelMonth.setMonth(labelMonth.getMonth() + 1);
+
+      mockSupabase.limit.mockResolvedValueOnce({
+        data: [
+          {
+            id: "next-cycle-uuid",
+            status: "open",
+            year: labelMonth.getFullYear(),
+            month: labelMonth.getMonth() + 1,
+          },
+        ],
+        error: null,
+      });
+
+      const mockInsertedExpense = {
+        id: "expense-after-close",
+        user_id: userId,
+        amount: 12,
+        note: "Helado",
+        category: "opcional",
+        date: dateStr,
+        month_id: "next-cycle-uuid",
+      };
+      mockSupabase.single.mockResolvedValue({
+        data: mockInsertedExpense,
+        error: null,
+      });
+
+      const result = await createTransaction(mockSupabase, userId, {
+        type: "expense",
+        amount: 12,
+        concept: "Helado",
+        category: "optional",
+        date: dateStr,
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.date).toBe(dateStr);
+      expect(mockSupabase.insert).toHaveBeenCalledWith(
+        expect.objectContaining({ date: dateStr, month_id: "next-cycle-uuid" })
+      );
+    });
+
+    it("aborts without inserting when the resolved cycle is closed (no open cycle, bootstrap finds a closed month)", async () => {
+      // No hay ningún ciclo abierto (getOpenMonth -> []); el bootstrap por
+      // fecha encuentra que el mes natural correspondiente ya existe y está
+      // cerrado.
+      mockSupabase.limit.mockResolvedValueOnce({ data: [], error: null });
+      mockSupabase.single.mockResolvedValueOnce({
+        data: { id: "closed-month-uuid", status: "closed", year: 2026, month: 2 },
+        error: null,
+      });
+
+      await expect(
+        createTransaction(mockSupabase, userId, {
+          type: "expense",
+          amount: 20,
+          concept: "Test",
+          category: "survival",
+          date: "2026-02-15",
+        })
+      ).rejects.toThrow(/cerrado/i);
+
+      expect(mockSupabase.insert).not.toHaveBeenCalled();
+    });
+
+    it("aborts without inserting when the cycle cannot be resolved at all (never creates an expense without month_id)", async () => {
+      mockSupabase.limit.mockResolvedValueOnce({
+        data: null,
+        error: { message: "DB unavailable" },
+      });
+
+      await expect(
+        createTransaction(mockSupabase, userId, {
+          type: "expense",
+          amount: 15,
+          concept: "Test",
+          category: "survival",
+          date: "2026-02-15",
+        })
+      ).rejects.toThrow();
+
+      expect(mockSupabase.insert).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Fase 2.B: subcategoría en createTransaction (IA)", () => {
+    it("persists a valid subcategory on the created expense", async () => {
+      mockSupabase.single.mockResolvedValue({
+        data: {
+          id: "expense-food",
+          user_id: userId,
+          amount: 40,
+          note: "Mercadona",
+          category: "supervivencia",
+          date: "2026-02-12",
+          subcategory: "food_basic",
+        },
+        error: null,
+      });
+
+      const result = await createTransaction(mockSupabase, userId, {
+        type: "expense",
+        amount: 40,
+        concept: "Mercadona",
+        category: "survival",
+        date: "2026-02-12",
+        subcategory: "food_basic",
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.subcategory).toBe("food_basic");
+      expect(mockSupabase.insert).toHaveBeenCalledWith(
+        expect.objectContaining({ subcategory: "food_basic" })
+      );
+    });
+
+    it("distinguishes food_basic from dining_out — dining_out is persisted as its own value, never merged with food_basic", async () => {
+      mockSupabase.single.mockResolvedValue({
+        data: {
+          id: "expense-dining",
+          user_id: userId,
+          amount: 35,
+          note: "Cena en restaurante",
+          category: "opcional",
+          date: "2026-02-12",
+          subcategory: "dining_out",
+        },
+        error: null,
+      });
+
+      const result = await createTransaction(mockSupabase, userId, {
+        type: "expense",
+        amount: 35,
+        concept: "Cena en restaurante",
+        category: "optional",
+        date: "2026-02-12",
+        subcategory: "dining_out",
+      });
+
+      expect(result.subcategory).toBe("dining_out");
+      expect(result.subcategory).not.toBe("food_basic");
+      expect(mockSupabase.insert).toHaveBeenCalledWith(
+        expect.objectContaining({ subcategory: "dining_out" })
+      );
+    });
+
+    it("still creates the expense without a subcategory when none is provided (manual/legacy behavior preserved)", async () => {
+      mockSupabase.single.mockResolvedValue({
+        data: {
+          id: "expense-no-sub",
+          user_id: userId,
+          amount: 20,
+          note: "Test",
+          category: "supervivencia",
+          date: "2026-02-12",
+          subcategory: null,
+        },
+        error: null,
+      });
+
+      const result = await createTransaction(mockSupabase, userId, {
+        type: "expense",
+        amount: 20,
+        concept: "Test",
+        category: "survival",
+        date: "2026-02-12",
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.subcategory).toBeNull();
+      expect(mockSupabase.insert).toHaveBeenCalledWith(
+        expect.objectContaining({ subcategory: null })
+      );
+    });
+
+    it("rejects an invalid subcategory and never inserts the expense", async () => {
+      await expect(
+        createTransaction(mockSupabase, userId, {
+          type: "expense",
+          amount: 20,
+          concept: "Test",
+          category: "survival",
+          date: "2026-02-12",
+          // @ts-expect-error intentionally invalid for this test
+          subcategory: "comida",
+        })
+      ).rejects.toThrow(/subcategoría inválida/i);
+
+      expect(mockSupabase.insert).not.toHaveBeenCalled();
+    });
   });
 });

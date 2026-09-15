@@ -865,7 +865,13 @@
             "placeholderFull": "Pregunta algo sobre tus finanzas..."
         },
         "disclaimer": "Los agentes de IA pueden cometer errores.",
-        "error": "Error"
+        "error": "Error",
+        "confirmation": {
+            "title": "Confirmar cambio propuesto por la IA",
+            "confirm": "Confirmar",
+            "confirming": "Confirmando...",
+            "cancel": "Cancelar"
+        }
     },
     "CategoryGuide": {
         "title": "Guía de categorías",
@@ -1163,6 +1169,12 @@
             "loadError": "Error cargando ajustes",
             "loading": "Cargando...",
             "disclaimer": "Estos ajustes se guardan en tu cuenta (Supabase), no en el navegador.",
+            "aiConfirmTitle": "Asistente de IA",
+            "aiConfirmLabel": "Pedir confirmación antes de que la IA cambie mis datos",
+            "aiConfirmDesc": "Cuando está activado, el asistente te pedirá confirmar cada vez que proponga crear, editar o corregir un gasto, antes de guardarlo.",
+            "collectiveLearningTitle": "Aprendizaje colectivo",
+            "collectiveLearningLabel": "Participar en futuras mejoras colectivas anónimas",
+            "collectiveLearningDesc": "Desactivado por defecto. Ahora mismo esta preferencia no activa ningún intercambio de datos: todavía no existe una vía de aprendizaje colectivo que garantice el anonimato y el origen de cada aportación. Tus correcciones y preferencias personales siguen ayudándote solo a ti, las actives o no. Si en el futuro añadimos una vía colectiva segura, solo compartiría una señal mínima y anónima (nunca el importe, la nota, el nombre del comercio, tu correo, tu identificador de usuario ni tu historial), y podrás activarla o desactivarla en cualquier momento.",
             "subscriptionTitle": "Cuenta Kakebo",
             "subscriptionDescTitle": "Gestiona tu cuenta",
             "subscriptionDescText": "Revisa tus datos y configuración de forma segura.",

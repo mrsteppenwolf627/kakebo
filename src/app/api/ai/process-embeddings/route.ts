@@ -21,13 +21,22 @@ import { apiLogger } from "@/lib/logger";
 export const POST = withLogging(
   async (request: NextRequest) => {
     try {
-      // Verify internal API secret to prevent abuse
+      // Verify internal API secret to prevent abuse (Fase 2.A: el secreto es
+      // siempre obligatorio — si no está configurado, la ruta se rechaza en
+      // vez de saltarse la comprobación, y nunca llega a usar la clave
+      // service-role ni a procesar gastos).
       const { searchParams } = new URL(request.url);
       const secret = searchParams.get("secret");
       const expectedSecret = process.env.INTERNAL_API_SECRET;
 
-      // If no secret is configured, fall back to checking if it's a server-side request
-      if (expectedSecret && secret !== expectedSecret) {
+      if (!expectedSecret) {
+        apiLogger.error(
+          "INTERNAL_API_SECRET is not configured - refusing process-embeddings request"
+        );
+        return responses.unauthorized("Internal API secret is not configured");
+      }
+
+      if (secret !== expectedSecret) {
         apiLogger.warn(
           { providedSecret: secret?.slice(0, 5) },
           "Unauthorized access to process-embeddings endpoint"
@@ -78,12 +87,19 @@ export const POST = withLogging(
  */
 export const GET = withLogging(async (request: NextRequest) => {
   try {
-    // Verify internal API secret
+    // Verify internal API secret (Fase 2.A: siempre obligatorio, ver POST)
     const { searchParams } = new URL(request.url);
     const secret = searchParams.get("secret");
     const expectedSecret = process.env.INTERNAL_API_SECRET;
 
-    if (expectedSecret && secret !== expectedSecret) {
+    if (!expectedSecret) {
+      apiLogger.error(
+        "INTERNAL_API_SECRET is not configured - refusing process-embeddings status request"
+      );
+      return responses.unauthorized("Internal API secret is not configured");
+    }
+
+    if (secret !== expectedSecret) {
       return responses.unauthorized("Invalid API secret");
     }
 

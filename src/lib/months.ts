@@ -84,6 +84,35 @@ export async function getOpenMonth(
 }
 
 /**
+ * Busca un ciclo concreto del usuario por su etiqueta (year, month), sin
+ * crearlo. A diferencia de `getOrCreateMonth`, esta lectura está pensada
+ * para resolver un ciclo "specific" en herramientas de análisis/búsqueda
+ * (Fase 2.C): la lectura de ciclos cerrados está permitida (solo la
+ * escritura se bloquea en las rutas correspondientes). Devuelve null si no
+ * existe ningún ciclo con esa etiqueta para ese usuario — el filtro por
+ * `user_id` garantiza que nunca se resuelve (ni se filtra por) un ciclo de
+ * otro usuario.
+ */
+export async function getMonthByYm(
+  supabase: SupabaseClient,
+  userId: string,
+  year: number,
+  month: number
+): Promise<MonthRow | null> {
+  const { data, error } = await supabase
+    .from("months")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("year", year)
+    .eq("month", month)
+    .limit(1);
+
+  if (error) throw error;
+
+  return (data?.[0] as MonthRow | undefined) ?? null;
+}
+
+/**
  * Ciclos libres: al cerrar un ciclo, abre (o reutiliza) inmediatamente el
  * siguiente, para que el usuario pueda seguir registrando gastos con su
  * fecha real sin esperar al día 1 del mes natural siguiente.

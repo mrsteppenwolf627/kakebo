@@ -6,11 +6,23 @@
  * When users have corrected similar transactions before, show those examples
  * in the GPT prompt to guide better classification.
  *
- * Strategy:
- * 1. Get user-specific examples (high priority)
- * 2. Supplement with global examples if needed
- * 3. Filter by category, confidence, and relevance
- * 4. Track usage to identify most helpful examples
+ * Fase 2.G (aprendizaje personalizado y consentimiento colectivo opcional):
+ * SOLO se recuperan ejemplos del propio usuario (`user_id = userId`). El
+ * comportamiento anterior también mezclaba ejemplos globales
+ * (`user_id IS NULL`, vía `.or(user_id.eq.X,user_id.is.null)` o la RPC
+ * `get_relevant_examples`, que hace el mismo fallback global en SQL) —
+ * ejemplos que, en `correction_examples`, incluyen el concepto/nota
+ * original del gasto (texto libre), no una señal minimizada. No existe hoy
+ * ningún flujo activo que escriba nuevas filas globales (solo datos de
+ * semilla sintéticos de la migración), así que no hay nada que "consentir"
+ * de forma retroactiva ni forma de saber qué usuario aportó cada fila
+ * global histórica (se guardan con `user_id = NULL`). Minimizar ese
+ * concepto/nota a nivel de lectura, sin cambiar el esquema, no es posible
+ * sin una refactorización grande de `correction_examples` — así que, según
+ * el criterio de "fallar cerrado" de la Fase 2.G, esta función deja de usar
+ * datos globales por completo, tanto en el camino directo como en el de la
+ * RPC (que ya no se invoca). El aprendizaje personal (ejemplos propios)
+ * sigue funcionando exactamente igual, con o sin consentimiento colectivo.
  */
 
 import { SupabaseClient } from "@supabase/supabase-js";
@@ -72,52 +84,20 @@ export async function getRelevantExamples(
   } = options;
 
   try {
-    // If category filter provided, use RPC function for optimized query
-    if (categoryFilter) {
-      const { data, error } = await supabase.rpc("get_relevant_examples", {
-        p_user_id: userId,
-        p_category: categoryFilter,
-        p_limit: limit,
-      });
-
-      if (error) {
-        apiLogger.error(
-          { error, userId, categoryFilter },
-          "Error getting relevant examples via RPC"
-        );
-        return [];
-      }
-
-      if (!data || data.length === 0) {
-        apiLogger.debug(
-          { userId, categoryFilter },
-          "No relevant examples found"
-        );
-        return [];
-      }
-
-      const examples: CorrectionExample[] = data.map((row: any) => ({
-        concept: row.concept,
-        oldCategory: row.old_category,
-        newCategory: row.new_category,
-        merchant: row.merchant,
-        confidence: row.confidence,
-      }));
-
-      apiLogger.info(
-        { userId, categoryFilter, count: examples.length },
-        "Retrieved relevant examples via RPC"
-      );
-
-      return examples;
-    }
-
-    // Otherwise, use direct query (more flexible)
+    // Fase 2.G: consulta directa, siempre acotada al propio usuario — ya
+    // no se usa la RPC `get_relevant_examples` (su fallback a ejemplos
+    // globales vive en SQL y no se puede filtrar por consentimiento desde
+    // aquí). Se conserva `categoryFilter` como un filtro más de la misma
+    // consulta, en vez de una rama RPC aparte.
     let query = supabase
       .from("correction_examples")
       .select("concept, old_category, new_category, merchant, confidence")
-      .or(`user_id.eq.${userId},user_id.is.null`) // User-specific OR global
+      .eq("user_id", userId)
       .gte("confidence", minConfidence);
+
+    if (categoryFilter) {
+      query = query.eq("new_category", categoryFilter);
+    }
 
     if (preferRecent) {
       query = query.order("created_at", { ascending: false });
@@ -237,10 +217,12 @@ export async function getSimilarExamples(
     // Build query to match any keyword
     const keywordPattern = keywords.join("|");
 
+    // Fase 2.G: acotado siempre al propio usuario (ver cabecera del
+    // fichero) — ya no se incluyen ejemplos globales (`user_id IS NULL`).
     const { data, error } = await supabase
       .from("correction_examples")
       .select("concept, old_category, new_category, merchant, confidence")
-      .or(`user_id.eq.${userId},user_id.is.null`)
+      .eq("user_id", userId)
       .or(
         keywords.map((kw) => `concept.ilike.%${kw}%`).join(",")
       )

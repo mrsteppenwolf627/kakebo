@@ -3,10 +3,25 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useAgentStream } from '@/hooks/useAgent';
 import { ChatMessage } from './ChatMessage';
+import { ConfirmationModal } from './ConfirmationModal';
 import { useTranslations } from 'next-intl';
 
 export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full" | "widget"; onClose?: () => void }) {
-    const { messages, isLoading, streamingContent, streamingStatus, error, sendMessage, clearHistory } = useAgentStream();
+    const {
+        messages,
+        isLoading,
+        streamingContent,
+        streamingStatus,
+        error,
+        sendMessage,
+        clearHistory,
+        pendingConfirmationId,
+        pendingActionMessage,
+        confirmAction,
+        cancelAction,
+        cancelError,
+        isActionPending,
+    } = useAgentStream();
     const [inputValue, setInputValue] = useState('');
     const messagesContainerRef = useRef<HTMLDivElement>(null);
     const t = useTranslations("Agent");
@@ -24,7 +39,9 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!inputValue.trim() || isLoading) return;
+        // Fase 2.E: con una confirmación de escritura pendiente, no se envían
+        // mensajes nuevos hasta que el usuario confirme o cancele.
+        if (!inputValue.trim() || isLoading || pendingConfirmationId) return;
 
         const text = inputValue;
         setInputValue(''); // Limpiar input inmediatamente
@@ -33,9 +50,9 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
 
     // Estilos base según el modo
     const containerClasses = {
-        default: "flex flex-col h-[calc(100dvh-120px)] sm:h-[600px] w-full max-w-4xl mx-auto bg-card rounded-xl border border-border shadow-sm overflow-hidden transition-colors",
-        full: "flex flex-col h-full w-full bg-background",
-        widget: "flex flex-col h-full w-full bg-card rounded-xl border border-border shadow-2xl overflow-hidden"
+        default: "relative flex flex-col h-[calc(100dvh-120px)] sm:h-[600px] w-full max-w-4xl mx-auto bg-card rounded-xl border border-border shadow-sm overflow-hidden transition-colors",
+        full: "relative flex flex-col h-full w-full bg-background",
+        widget: "relative flex flex-col h-full w-full bg-card rounded-xl border border-border shadow-2xl overflow-hidden"
     };
 
     const headerClasses = {
@@ -170,12 +187,12 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         placeholder={mode === 'widget' ? t('input.placeholderWidget') : t('input.placeholderFull')}
-                        disabled={isLoading}
+                        disabled={isLoading || !!pendingConfirmationId}
                         className={`flex-1 ${mode === 'widget' ? 'p-2 text-sm' : 'p-3 px-4'} rounded-xl border border-border bg-muted/30 text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-shadow disabled:bg-muted disabled:text-muted-foreground placeholder:text-muted-foreground/60`}
                     />
                     <button
                         type="submit"
-                        disabled={!inputValue.trim() || isLoading}
+                        disabled={!inputValue.trim() || isLoading || !!pendingConfirmationId}
                         className={`bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50 ${mode === 'widget' ? 'p-2 rounded-lg' : 'p-3 px-6 rounded-xl'} font-medium transition-all shadow-sm flex items-center justify-center`}
                     >
                         {mode === 'widget' ? (
@@ -200,6 +217,17 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                     </div>
                 )}
             </div>
+
+            {/* Fase 2.E: popup de confirmación de escrituras de IA */}
+            {pendingConfirmationId && pendingActionMessage && (
+                <ConfirmationModal
+                    message={pendingActionMessage}
+                    onConfirm={confirmAction}
+                    onCancel={cancelAction}
+                    isSubmitting={isLoading || isActionPending}
+                    errorMessage={cancelError}
+                />
+            )}
         </div>
     );
 }

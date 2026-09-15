@@ -8,6 +8,8 @@ import {
   suggestCategory,
   shouldUseSuggestion,
 } from "./utils/category-suggester";
+import { getOpenMonth, getOrCreateMonth } from "@/lib/months";
+import { isValidSubcategory, type SubcategoryId } from "@/lib/subcategories";
 
 /**
  * Parameters for creating a new transaction (expense or income)
@@ -19,6 +21,9 @@ export interface CreateTransactionParams {
   category: "survival" | "optional" | "culture" | "extra";
   date?: string; // YYYY-MM-DD format, defaults to today
   notes?: string; // Optional additional notes
+  // Fase 2.B: segunda capa de clasificación opcional (solo aplica a gastos).
+  // Debe ser uno de los identificadores del catálogo en src/lib/subcategories.ts.
+  subcategory?: SubcategoryId | null;
 }
 
 /**
@@ -34,6 +39,7 @@ export interface CreateTransactionResult {
   date: string;
   message: string;
   warnings?: string[]; // Validation warnings (if any)
+  subcategory?: SubcategoryId | null; // Fase 2.B
 }
 
 /**
@@ -70,54 +76,49 @@ function getCategoryColor(category: string): string {
 }
 
 /**
- * Get or create month record for given date
- * This ensures expenses are properly linked to months (same as manual creation)
+ * Ciclos libres (Fase 1 / Fase 2.A): resuelve el ciclo (month_id) al que debe
+ * imputarse un gasto creado por IA, con el mismo criterio que ya usa
+ * `POST /api/expenses` — el gasto se imputa al ciclo actualmente ABIERTO del
+ * usuario, conservando su fecha real sin alterarla nunca. Si el usuario no
+ * tiene ningún ciclo todavía, se hace bootstrap con el mes natural de la
+ * fecha del gasto (igual que la API REST).
+ *
+ * Si el ciclo resuelto está cerrado, o si la resolución falla por cualquier
+ * motivo, lanza un error claro — nunca debe crearse el gasto sin `month_id`.
  */
-async function getOrCreateMonth(
+async function resolveExpenseCycle(
   supabase: SupabaseClient,
   userId: string,
   date: string
 ): Promise<string> {
-  // Extract year and month from date (YYYY-MM-DD → year, month)
+  const openMonth = await getOpenMonth(supabase, userId);
+
+  if (openMonth) {
+    // getOpenMonth ya filtra por status = 'open', pero se comprueba de
+    // forma explícita por seguridad ante cualquier cambio futuro del helper.
+    if (openMonth.status === "closed") {
+      throw new Error(
+        "El ciclo actual está cerrado. No se puede registrar el gasto."
+      );
+    }
+    return openMonth.id;
+  }
+
+  // Bootstrap: el usuario no tiene ningún ciclo todavía -> se abre uno para
+  // el mes natural de la fecha del gasto.
   const [yearStr, monthStr] = date.split("-");
   const year = parseInt(yearStr, 10);
   const month = parseInt(monthStr, 10);
 
-  // Check if month record exists
-  const { data: existing, error: fetchError } = await supabase
-    .from("months")
-    .select("id,status")
-    .eq("user_id", userId)
-    .eq("year", year)
-    .eq("month", month)
-    .limit(1);
+  const { row: monthRow } = await getOrCreateMonth(supabase, userId, year, month);
 
-  if (fetchError) {
-    throw new Error(`Error fetching month: ${fetchError.message}`);
+  if (monthRow.status === "closed") {
+    throw new Error(
+      `El ciclo ${yearStr}-${monthStr} está cerrado. No se puede registrar el gasto.`
+    );
   }
 
-  // If exists, return its ID
-  if (existing && existing.length > 0) {
-    return existing[0].id;
-  }
-
-  // Create new month record
-  const { data: created, error: createError } = await supabase
-    .from("months")
-    .insert({
-      user_id: userId,
-      year,
-      month,
-      status: "open",
-    })
-    .select("id")
-    .single();
-
-  if (createError) {
-    throw new Error(`Error creating month: ${createError.message}`);
-  }
-
-  return created.id;
+  return monthRow.id;
 }
 
 /**
@@ -162,6 +163,25 @@ export async function createTransaction(
     }
     // ==================================================
 
+    // ========== VALIDATE SUBCATEGORY (Fase 2.B) ==========
+    // Segunda capa de clasificación, opcional. Si se proporciona, debe ser
+    // uno de los identificadores del catálogo aprobado — un valor inválido
+    // se rechaza explícitamente en vez de guardarse tal cual o ignorarse en
+    // silencio.
+    if (
+      params.subcategory !== undefined &&
+      params.subcategory !== null &&
+      !isValidSubcategory(params.subcategory)
+    ) {
+      throw new Error(
+        `Subcategoría inválida: "${params.subcategory}". No se ha creado la transacción.`
+      );
+    }
+    const subcategory: SubcategoryId | null = isValidSubcategory(params.subcategory)
+      ? params.subcategory
+      : null;
+    // =======================================================
+
     // ========== VALIDATE TRANSACTION BEFORE WRITE (P0-2) ==========
     const validationResult = await validateTransactionBeforeWrite(supabase, {
       type: params.type,
@@ -201,26 +221,18 @@ export async function createTransaction(
     // Determine which table to insert into
     const tableName = params.type === "expense" ? "expenses" : "incomes";
 
-    // ========== GET/CREATE MONTH RECORD ==========
-    // This ensures expenses are linked to months (same as manual creation)
-    // so they appear in the dashboard properly
+    // ========== RESOLVE CYCLE (ciclos libres, Fase 2.A) ==========
+    // A diferencia del comportamiento anterior, si la resolución del ciclo
+    // falla o el ciclo está cerrado, se aborta la creación por completo:
+    // nunca se crea un gasto sin `month_id`.
     let monthId: string | null = null;
 
     if (params.type === "expense") {
-      try {
-        monthId = await getOrCreateMonth(supabase, userId, date);
-        apiLogger.debug(
-          { userId, date, monthId },
-          "Month record obtained for expense"
-        );
-      } catch (monthError) {
-        apiLogger.warn(
-          { error: monthError, userId, date },
-          "Failed to get/create month record - proceeding without month_id"
-        );
-        // Continue without month_id rather than failing the entire operation
-        // The expense will still be created, just won't show in month-filtered views
-      }
+      monthId = await resolveExpenseCycle(supabase, userId, date);
+      apiLogger.debug(
+        { userId, date, monthId },
+        "Cycle resolved for expense"
+      );
     }
     // ===========================================
 
@@ -237,6 +249,8 @@ export async function createTransaction(
     if (params.type === "expense" && monthId) {
       insertPayload.month_id = monthId;
       insertPayload.color = getCategoryColor(dbCategory);
+      // Fase 2.B: subcategoría opcional, solo aplica a gastos.
+      insertPayload.subcategory = subcategory;
     }
 
     const { data, error } = await supabase
@@ -275,6 +289,7 @@ export async function createTransaction(
       date: date,
       message,
       warnings: validationResult.warnings.length > 0 ? validationResult.warnings : undefined,
+      subcategory: params.type === "expense" ? subcategory : undefined,
     };
   } catch (error) {
     apiLogger.error({ error, params }, "Error in createTransaction");

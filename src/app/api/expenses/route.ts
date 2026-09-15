@@ -168,6 +168,9 @@ export const POST = withLogging(async (request: NextRequest) => {
         amount: input.amount,
         category: input.category,
         note: input.note || "",
+        // Fase 2.B: opcional; si no se envía, queda null (compatible con
+        // gastos históricos y con el usuario manual que aún no la elige).
+        subcategory: input.subcategory ?? null,
       })
       .select()
       .single();

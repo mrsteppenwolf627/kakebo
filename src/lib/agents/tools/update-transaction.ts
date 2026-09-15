@@ -100,7 +100,7 @@ export async function updateTransaction(
 
     const { data: existing, error: checkError } = await supabase
       .from(tableName)
-      .select("id,user_id,amount,note,category,date")
+      .select("id,user_id,amount,note,category,date,month_id")
       .eq("id", params.transactionId)
       .maybeSingle();
 
@@ -131,6 +131,28 @@ export async function updateTransaction(
         "User ID mismatch - security violation"
       );
       throw new Error("No tienes permiso para modificar esta transacción");
+    }
+    // ===========================================================================
+
+    // ========== CICLOS LIBRES: BLOQUEO DE CICLO CERRADO (Fase 2.A) ==========
+    // Un gasto de un ciclo cerrado no puede editarse por IA, igual que ya
+    // bloquean /api/expenses/[id] y la edición manual desde la app.
+    if (tableName === "expenses" && existing.month_id) {
+      const { data: monthData } = await supabase
+        .from("months")
+        .select("status")
+        .eq("id", existing.month_id)
+        .single();
+
+      if (monthData?.status === "closed") {
+        apiLogger.warn(
+          { transactionId: params.transactionId, monthId: existing.month_id, userId },
+          "Blocked update: expense belongs to a closed cycle"
+        );
+        throw new Error(
+          "No puedes modificar un gasto de un ciclo cerrado."
+        );
+      }
     }
     // ===========================================================================
 
