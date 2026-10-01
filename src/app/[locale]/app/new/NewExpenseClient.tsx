@@ -385,7 +385,14 @@ export default function NewExpensePage() {
         throw new Error(errorData.error?.message || "Error al guardar el gasto");
       }
 
+      const responseData = (await response.json()) as {
+        data?: { is_first_expense?: boolean };
+      };
+
       analytics.track("expense_created", { entry_method: "manual" });
+      if (responseData.data?.is_first_expense === true) {
+        analytics.track("first_expense_created", { entry_method: "manual" });
+      }
 
       await recordCorrectionIfNeeded(category);
 

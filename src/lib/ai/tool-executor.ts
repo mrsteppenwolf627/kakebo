@@ -126,21 +126,26 @@ async function executeCreateExpense(
     monthId = newMonth.id;
   }
 
-  // Create expense
-  const { data, error } = await supabase
-    .from("expenses")
-    .insert({
-      user_id: userId,
-      month_id: monthId,
-      date,
-      amount: params.amount,
-      category: params.category,
-      note: params.note,
-    })
-    .select()
-    .single();
+  // Create expense — única vía permitida: fn_create_expense (Fase 3.B).
+  // Ver docs/planning/fase-3-monetizacion.md §3.B.2.
+  const { data, error } = await supabase.rpc("fn_create_expense", {
+    p_month_id: monthId,
+    p_date: date,
+    p_amount: params.amount,
+    p_category: params.category,
+    p_note: params.note,
+  });
 
-  if (error) throw error;
+  if (error) {
+    if ((error as { code?: string }).code === "KB001") {
+      return {
+        success: false,
+        error:
+          "Has alcanzado el límite de 30 gastos este mes en el plan gratuito. Hazte Plus para seguir registrando sin límite.",
+      };
+    }
+    throw error;
+  }
 
   return {
     success: true,

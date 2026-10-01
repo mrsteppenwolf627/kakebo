@@ -116,6 +116,14 @@ export function handleApiError(error: unknown): NextResponse {
         return responses.badRequest("Referencia inválida a otro registro");
       case "42501": // Insufficient privilege (RLS)
         return responses.forbidden("No tienes permiso para esta operación");
+      case "KB001": // fn_create_expense: límite mensual de gastos gratuito alcanzado
+        return responses.conflict(
+          "Has alcanzado el límite de 30 gastos este mes en el plan gratuito. Hazte Plus para seguir registrando sin límite."
+        );
+      case "KB002": // fn_create_expense: validación/propiedad fallida -- mensaje neutro,
+        // nunca se reenvía supabaseError.message (podría filtrar si un ciclo existe
+        // pero pertenece a otro usuario frente a si simplemente no existe).
+        return responses.badRequest("No se pudo crear el gasto. Revisa los datos e inténtalo de nuevo.");
       default:
         return responses.badRequest(
           supabaseError.message || "Error de base de datos"

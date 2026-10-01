@@ -158,24 +158,34 @@ export const POST = withLogging(async (request: NextRequest) => {
       }
     }
 
-    // Create expense
-    const { data, error } = await supabase
-      .from("expenses")
-      .insert({
-        user_id: user.id,
-        month_id: monthId,
-        date: input.date,
-        amount: input.amount,
-        category: input.category,
-        note: input.note || "",
-        // Fase 2.B: opcional; si no se envía, queda null (compatible con
-        // gastos históricos y con el usuario manual que aún no la elige).
-        subcategory: input.subcategory ?? null,
-      })
-      .select()
-      .single();
+    // Create expense — única vía permitida: fn_create_expense (Fase 3.B).
+    // Resuelve internamente el estado de acceso, aplica el límite mensual
+    // gratuito de forma atómica (mes natural Europe/Madrid, independiente
+    // del ciclo libre de Fase 1) y revalida propiedad/cierre del ciclo. Ver
+    // docs/planning/fase-3-monetizacion.md §3.B.2.
+    const { data, error } = await supabase.rpc("fn_create_expense", {
+      p_month_id: monthId,
+      p_date: input.date,
+      p_amount: input.amount,
+      p_category: input.category,
+      p_note: input.note || "",
+      // Fase 2.B: opcional; si no se envía, queda null (compatible con
+      // gastos históricos y con el usuario manual que aún no la elige).
+      p_subcategory: input.subcategory ?? null,
+    });
 
     if (error) throw error;
+
+    // La RPC registra atómicamente la primera creación por usuario. La fila
+    // solo expone si este gasto ganó esa única carrera; no se envían datos del
+    // gasto ni identificadores a GA4.
+    const { data: firstActivation, error: firstActivationError } = await supabase
+      .from("first_expense_activations")
+      .select("expense_id")
+      .eq("expense_id", data.id)
+      .maybeSingle();
+
+    if (firstActivationError) throw firstActivationError;
 
     // Auto-trigger batch embedding generation every 5 expenses (global counter)
     // This runs asynchronously without blocking the response
@@ -220,7 +230,10 @@ export const POST = withLogging(async (request: NextRequest) => {
       }
     })();
 
-    return responses.created(data);
+    return responses.created({
+      ...data,
+      is_first_expense: firstActivation !== null,
+    });
   } catch (error) {
     return handleApiError(error);
   }

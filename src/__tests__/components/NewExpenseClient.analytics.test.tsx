@@ -145,6 +145,39 @@ describe("NewExpenseClient expense_created tracking", () => {
     expect(payloadJson).not.toContain("month-1");
   });
 
+  it("fires first_expense_created only when the API marks this as the user's first expense", async () => {
+    (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { id: "expense-1", is_first_expense: true } }),
+    });
+
+    render(<NewExpensePage />);
+    await waitFor(() => expect(screen.getByRole("button", { name: "submit" })).not.toBeDisabled());
+
+    fillForm();
+    await submit();
+
+    await waitFor(() => expect(trackMock).toHaveBeenCalledTimes(2));
+    expect(trackMock).toHaveBeenNthCalledWith(1, "expense_created", { entry_method: "manual" });
+    expect(trackMock).toHaveBeenNthCalledWith(2, "first_expense_created", { entry_method: "manual" });
+  });
+
+  it("does not infer first activation when the API does not mark it", async () => {
+    (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+      ok: true,
+      json: async () => ({ data: { id: "expense-2", is_first_expense: false } }),
+    });
+
+    render(<NewExpensePage />);
+    await waitFor(() => expect(screen.getByRole("button", { name: "submit" })).not.toBeDisabled());
+
+    fillForm();
+    await submit();
+
+    await waitFor(() => expect(trackMock).toHaveBeenCalledTimes(1));
+    expect(trackMock).not.toHaveBeenCalledWith("first_expense_created", expect.anything());
+  });
+
   it("preserves navigation back to /app after a successful save", async () => {
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
       ok: true,

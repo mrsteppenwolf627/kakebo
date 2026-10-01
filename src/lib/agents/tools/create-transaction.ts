@@ -218,9 +218,6 @@ export async function createTransaction(
     }
     // ==============================================================
 
-    // Determine which table to insert into
-    const tableName = params.type === "expense" ? "expenses" : "incomes";
-
     // ========== RESOLVE CYCLE (ciclos libres, Fase 2.A) ==========
     // A diferencia del comportamiento anterior, si la resolución del ciclo
     // falla o el ciclo está cerrado, se aborta la creación por completo:
@@ -236,32 +233,59 @@ export async function createTransaction(
     }
     // ===========================================
 
-    // Build insert payload
-    const insertPayload: Record<string, unknown> = {
-      user_id: userId,
-      amount: params.amount,
-      note: params.concept,
-      category: dbCategory,
-      date: date,
-    };
+    let data: { id: string; [key: string]: unknown };
 
-    // Add month_id and color for expenses (required for dashboard display)
-    if (params.type === "expense" && monthId) {
-      insertPayload.month_id = monthId;
-      insertPayload.color = getCategoryColor(dbCategory);
-      // Fase 2.B: subcategoría opcional, solo aplica a gastos.
-      insertPayload.subcategory = subcategory;
-    }
+    if (params.type === "expense") {
+      // Única vía permitida para gastos: fn_create_expense (Fase 3.B).
+      // Ver docs/planning/fase-3-monetizacion.md §3.B.2.
+      const { data: expenseData, error: expenseError } = await supabase.rpc(
+        "fn_create_expense",
+        {
+          p_month_id: monthId,
+          p_date: date,
+          p_amount: params.amount,
+          p_category: dbCategory,
+          p_note: params.concept,
+          p_color: getCategoryColor(dbCategory),
+          // Fase 2.B: subcategoría opcional, solo aplica a gastos.
+          p_subcategory: subcategory,
+        }
+      );
 
-    const { data, error } = await supabase
-      .from(tableName)
-      .insert(insertPayload)
-      .select()
-      .single();
+      if (expenseError) {
+        if ((expenseError as { code?: string }).code === "KB001") {
+          throw new Error(
+            "Has alcanzado el límite de 30 gastos este mes en el plan gratuito. Hazte Plus para seguir registrando sin límite."
+          );
+        }
+        apiLogger.error({ error: expenseError, params }, "Error creating expense");
+        throw expenseError;
+      }
 
-    if (error) {
-      apiLogger.error({ error, params }, `Error creating ${params.type}`);
-      throw error;
+      data = expenseData;
+    } else {
+      // Los ingresos no están sujetos al límite gratuito de gastos -- se
+      // mantienen como inserción directa, sin cambios.
+      const insertPayload: Record<string, unknown> = {
+        user_id: userId,
+        amount: params.amount,
+        note: params.concept,
+        category: dbCategory,
+        date: date,
+      };
+
+      const { data: incomeData, error: incomeError } = await supabase
+        .from("incomes")
+        .insert(insertPayload)
+        .select()
+        .single();
+
+      if (incomeError) {
+        apiLogger.error({ error: incomeError, params }, "Error creating income");
+        throw incomeError;
+      }
+
+      data = incomeData;
     }
 
     const message = params.type === "expense"

@@ -14,6 +14,7 @@ type EventName =
     | "click_tool_to_app"
     | "click_excel_to_app"
     | "expense_created"
+    | "first_expense_created"
     | "use_savings_calculator"
     | "use_inflation_calculator"
     | "use_503020_calculator"

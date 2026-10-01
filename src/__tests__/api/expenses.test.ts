@@ -14,6 +14,10 @@ const mockSupabase = {
   order: vi.fn(() => mockSupabase),
   limit: vi.fn(() => mockSupabase),
   single: vi.fn(),
+  maybeSingle: vi.fn().mockResolvedValue({ data: null, error: null }),
+  // Fase 3.B: la creación de gastos pasa por fn_create_expense (RPC), no por
+  // un INSERT directo -- ver docs/planning/fase-3-monetizacion.md §3.B.2.
+  rpc: vi.fn(),
 };
 
 vi.mock("@/lib/supabase/server", () => ({
@@ -140,8 +144,12 @@ describe("Expenses API", () => {
           resolve: (value: { data: (typeof mockOpenMonth)[]; error: null }) => void
         ) => resolve({ data: [mockOpenMonth], error: null }),
       } as never);
-      // Insert expense
-      mockSupabase.single.mockResolvedValueOnce({ data: mockCreatedExpense, error: null });
+      // Insert expense via fn_create_expense RPC
+      mockSupabase.rpc.mockResolvedValueOnce({ data: mockCreatedExpense, error: null });
+      mockSupabase.maybeSingle.mockResolvedValueOnce({
+        data: { expense_id: "exp-new" },
+        error: null,
+      });
 
       const request = new NextRequest("http://localhost/api/expenses", {
         method: "POST",
@@ -155,6 +163,78 @@ describe("Expenses API", () => {
       expect(response.status).toBe(201);
       expect(data.success).toBe(true);
       expect(data.data.id).toBe("exp-new");
+      expect(data.data.is_first_expense).toBe(true);
+      expect(mockSupabase.rpc).toHaveBeenCalledWith(
+        "fn_create_expense",
+        expect.objectContaining({
+          p_month_id: "month-123",
+          p_date: newExpense.date,
+          p_amount: newExpense.amount,
+          p_category: newExpense.category,
+        })
+      );
+    });
+
+    it("should return 409 when fn_create_expense reports the monthly free-tier limit", async () => {
+      const expense = { date: "2025-01-15", amount: 10, category: "survival" };
+      const mockOpenMonth = { id: "month-123", status: "open", year: 2025, month: 1 };
+
+      mockSupabase.limit.mockReturnValueOnce({
+        ...mockSupabase,
+        then: (
+          resolve: (value: { data: (typeof mockOpenMonth)[]; error: null }) => void
+        ) => resolve({ data: [mockOpenMonth], error: null }),
+      } as never);
+      mockSupabase.rpc.mockResolvedValueOnce({
+        data: null,
+        error: { code: "KB001", message: "Límite mensual de gastos alcanzado" },
+      });
+
+      const request = new NextRequest("http://localhost/api/expenses", {
+        method: "POST",
+        body: JSON.stringify(expense),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(409);
+      expect(data.success).toBe(false);
+      expect(data.error.code).toBe("CONFLICT");
+      expect(data.error.message).toMatch(/límite de 30 gastos/i);
+    });
+
+    it("should map any other fn_create_expense failure to a generic error without leaking DB details", async () => {
+      const expense = { date: "2025-01-15", amount: 10, category: "survival" };
+      const mockOpenMonth = { id: "month-123", status: "open", year: 2025, month: 1 };
+
+      mockSupabase.limit.mockReturnValueOnce({
+        ...mockSupabase,
+        then: (
+          resolve: (value: { data: (typeof mockOpenMonth)[]; error: null }) => void
+        ) => resolve({ data: [mockOpenMonth], error: null }),
+      } as never);
+      mockSupabase.rpc.mockResolvedValueOnce({
+        data: null,
+        error: { code: "KB002", message: "Ciclo no válido" },
+      });
+
+      const request = new NextRequest("http://localhost/api/expenses", {
+        method: "POST",
+        body: JSON.stringify(expense),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(400);
+      expect(data.success).toBe(false);
+      // El mensaje debe ser el genérico de errors.ts, no el texto crudo devuelto
+      // por la función SQL (que podría filtrar si el ciclo es ajeno o inexistente).
+      expect(data.error.message).not.toBe("Ciclo no válido");
+      expect(data.error.message).toMatch(/no se pudo crear el gasto/i);
     });
 
     it("should return 422 for invalid body", async () => {
@@ -282,17 +362,17 @@ describe("Expenses API", () => {
         .mockResolvedValueOnce({
           data: { id: "new-month-123", status: "open" },
           error: null,
-        })
-        // Create expense
-        .mockResolvedValueOnce({
-          data: {
-            id: "exp-new",
-            user_id: "user-123",
-            month_id: "new-month-123",
-            ...expense,
-          },
-          error: null,
         });
+      // Create expense via fn_create_expense RPC
+      mockSupabase.rpc.mockResolvedValueOnce({
+        data: {
+          id: "exp-new",
+          user_id: "user-123",
+          month_id: "new-month-123",
+          ...expense,
+        },
+        error: null,
+      });
 
       const request = new NextRequest("http://localhost/api/expenses", {
         method: "POST",
@@ -307,6 +387,11 @@ describe("Expenses API", () => {
       expect(data.success).toBe(true);
       // Verify month was created
       expect(mockSupabase.insert).toHaveBeenCalled();
+      // Verify the expense creation went through the RPC, not a direct insert
+      expect(mockSupabase.rpc).toHaveBeenCalledWith(
+        "fn_create_expense",
+        expect.objectContaining({ p_month_id: "new-month-123" })
+      );
     });
 
     it("ciclos libres: imputes the expense to the open cycle and preserves its real date, even when that date's calendar month differs from the cycle's label", async () => {
@@ -335,7 +420,7 @@ describe("Expenses API", () => {
         month_id: "cycle-october",
         ...expense,
       };
-      mockSupabase.single.mockResolvedValueOnce({ data: createdExpense, error: null });
+      mockSupabase.rpc.mockResolvedValueOnce({ data: createdExpense, error: null });
 
       const request = new NextRequest("http://localhost/api/expenses", {
         method: "POST",
@@ -349,8 +434,9 @@ describe("Expenses API", () => {
       expect(response.status).toBe(201);
       // La fecha real nunca se altera y el gasto se asigna al ciclo ABIERTO,
       // no a uno derivado del mes natural de la fecha.
-      expect(mockSupabase.insert).toHaveBeenCalledWith(
-        expect.objectContaining({ month_id: "cycle-october", date: "2026-09-29" })
+      expect(mockSupabase.rpc).toHaveBeenCalledWith(
+        "fn_create_expense",
+        expect.objectContaining({ p_month_id: "cycle-october", p_date: "2026-09-29" })
       );
       expect(data.data.date).toBe("2026-09-29");
       expect(data.data.month_id).toBe("cycle-october");
