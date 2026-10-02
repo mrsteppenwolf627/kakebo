@@ -7,6 +7,10 @@ import {
   markEmailSignupPending,
   consumeEmailSignupPending,
   getSourceFromHref,
+  getSourceFromSearch,
+  buildEmailCallbackUrl,
+  isEmailSignupConfirmed,
+  claimSignupConfirmation,
   resolveAttributionSource,
   isLikelyNewUser,
 } from "@/lib/authIntent";
@@ -73,6 +77,47 @@ describe("authIntent", () => {
     expect(getSourceFromHref("/login?mode=signup&source=calculadora_ahorro")).toBe("calculadora_ahorro");
     expect(getSourceFromHref("/login")).toBe("direct");
     expect(getSourceFromHref("/app")).toBe("direct");
+  });
+
+  it("builds the email callback URL with an encoded source, defaulting to direct", () => {
+    expect(buildEmailCallbackUrl("https://x.test", "calculator_503020")).toBe(
+      "https://x.test/auth/callback?source=calculator_503020"
+    );
+    expect(buildEmailCallbackUrl("https://x.test")).toBe("https://x.test/auth/callback?source=direct");
+    expect(buildEmailCallbackUrl("https://x.test", "a b&c")).toBe("https://x.test/auth/callback?source=a%20b%26c");
+  });
+
+  it("reads the source from a callback search string and returns null when absent", () => {
+    expect(getSourceFromSearch("?code=1&source=blog_excel")).toBe("blog_excel");
+    expect(getSourceFromSearch("?code=1")).toBeNull();
+    expect(getSourceFromSearch("?source=")).toBeNull();
+  });
+
+  it("confirms an email signup from email_confirmed_at or confirmed_at, hours after created_at", () => {
+    const base = { last_sign_in_at: "2026-09-03T12:30:01.000Z" };
+    expect(isEmailSignupConfirmed({ ...base, email_confirmed_at: "2026-09-03T12:30:00.000Z" })).toBe(true);
+    expect(isEmailSignupConfirmed({ ...base, email_confirmed_at: null, confirmed_at: "2026-09-03T12:30:00.000Z" })).toBe(true);
+    expect(isEmailSignupConfirmed({ email_confirmed_at: "2026-09-03T12:30:00.000Z" })).toBe(true);
+  });
+
+  it("does not confirm an email signup without confirmation timestamps", () => {
+    expect(isEmailSignupConfirmed({ last_sign_in_at: "2026-09-03T12:30:01.000Z" })).toBe(false);
+    expect(isEmailSignupConfirmed({ email_confirmed_at: null, confirmed_at: null })).toBe(false);
+  });
+
+  it("does not treat a much later login of an already confirmed account as a confirmation", () => {
+    expect(
+      isEmailSignupConfirmed({
+        email_confirmed_at: "2020-01-01T00:05:00.000Z",
+        last_sign_in_at: "2026-09-03T12:30:01.000Z",
+      })
+    ).toBe(false);
+  });
+
+  it("lets a signup confirmation be claimed once per user and tab session", () => {
+    expect(claimSignupConfirmation("user-1")).toBe(true);
+    expect(claimSignupConfirmation("user-1")).toBe(false);
+    expect(claimSignupConfirmation("user-2")).toBe(true);
   });
 
   it("treats a user whose last_sign_in_at matches created_at as new", () => {

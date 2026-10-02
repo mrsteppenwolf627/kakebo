@@ -5,11 +5,21 @@ import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/browser";
 import { analytics } from "@/lib/analytics";
-import { consumeEmailSignupPending, consumeGoogleSignup, isLikelyNewUser } from "@/lib/authIntent";
+import {
+  claimSignupConfirmation,
+  consumeEmailSignupPending,
+  consumeGoogleSignup,
+  getSourceFromSearch,
+  isEmailSignupConfirmed,
+  isLikelyNewUser,
+} from "@/lib/authIntent";
 
 interface SignupContext {
   google: { hadIntent: boolean; source: string };
-  emailPending: { email: string; source: string } | null;
+  // Present when this callback may be an email signup confirmation: either the
+  // confirmation link carried a source in the URL or the same browser left a
+  // pending mark. email is only known from the pending mark.
+  emailSignup: { email: string | null; source: string } | null;
 }
 
 /**
@@ -27,28 +37,46 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     function trackSignUpIfNeeded(user: User | null | undefined, ctx: SignupContext) {
-      if (!user || !isLikelyNewUser(user)) return;
+      if (!user) return;
 
-      if (ctx.google.hadIntent) {
+      const provider = user.app_metadata?.provider;
+      const isEmailUser = provider === "email";
+
+      // Google keeps the created_at/last_sign_in_at heuristic: both match on a first sign-in.
+      if (ctx.google.hadIntent && !isEmailUser) {
+        if (!isLikelyNewUser(user) || !claimSignupConfirmation(user.id)) return;
         // sign_up is kept for compatibility with the previous Google tracking.
         analytics.track("sign_up", { method: "google" });
         analytics.track("sign_up_confirmed", { method: "google", source: ctx.google.source });
         return;
       }
 
-      if (ctx.emailPending) {
-        // Ignore the mark if the session belongs to a different email.
-        const sessionEmail = user.email?.toLowerCase();
-        if (sessionEmail && sessionEmail !== ctx.emailPending.email.trim().toLowerCase()) return;
-        analytics.track("sign_up_confirmed", { method: "email", source: ctx.emailPending.source });
-      }
+      // Email confirmation can happen long after created_at, so it relies on the confirmation timestamps instead.
+      if (!ctx.emailSignup || (provider && !isEmailUser)) return;
+      if (!isEmailSignupConfirmed(user)) return;
+
+      // Ignore the pending mark if the session belongs to a different email.
+      const pendingEmail = ctx.emailSignup.email?.trim().toLowerCase();
+      const sessionEmail = user.email?.toLowerCase();
+      if (pendingEmail && sessionEmail && sessionEmail !== pendingEmail) return;
+
+      if (!claimSignupConfirmation(user.id)) return;
+      analytics.track("sign_up_confirmed", { method: "email", source: ctx.emailSignup.source });
     }
 
     async function handleCallback() {
       // Consumed up front so a reload or second effect run can never re-fire them.
+      const google = consumeGoogleSignup();
+      const emailPending = consumeEmailSignupPending();
+      // The URL source (set in emailRedirectTo) wins because it survives confirming in another
+      // browser; sessionStorage is the fallback for links without it.
+      const urlSource = getSourceFromSearch(window.location.search);
       const signupContext: SignupContext = {
-        google: consumeGoogleSignup(),
-        emailPending: consumeEmailSignupPending(),
+        google,
+        emailSignup:
+          urlSource || emailPending
+            ? { email: emailPending?.email ?? null, source: urlSource ?? emailPending?.source ?? "direct" }
+            : null,
       };
 
       try {

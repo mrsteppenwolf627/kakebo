@@ -8,6 +8,7 @@ import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { analytics } from "@/lib/analytics";
 import {
+  buildEmailCallbackUrl,
   clearGoogleSignupIntent,
   markEmailSignupPending,
   markGoogleSignupIntent,
@@ -75,7 +76,7 @@ function LoginForm() {
         type: "signup",
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: buildEmailCallbackUrl(window.location.origin, source),
         },
       });
 
@@ -100,7 +101,7 @@ function LoginForm() {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
+            emailRedirectTo: buildEmailCallbackUrl(window.location.origin, source),
           },
         });
 

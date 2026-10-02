@@ -138,9 +138,21 @@ describe("AuthCallbackPage sign_up tracking", () => {
   });
 });
 
-describe("AuthCallbackPage sign_up_confirmed tracking for email signups", () => {
-  const NEW_EMAIL_USER = { ...NEW_USER, email: "new@example.com" };
 
+// An email account that signed up at 10:00 and clicked the confirmation link
+// 2.5 hours later: created_at and last_sign_in_at are far apart, which is exactly
+// what isLikelyNewUser would reject.
+const EMAIL_CONFIRMED_USER = {
+  id: "user-email",
+  email: "new@example.com",
+  app_metadata: { provider: "email" },
+  created_at: "2026-09-03T10:00:00.000Z",
+  email_confirmed_at: "2026-09-03T12:30:00.000Z",
+  confirmed_at: "2026-09-03T12:30:00.000Z",
+  last_sign_in_at: "2026-09-03T12:30:01.000Z",
+};
+
+describe("AuthCallbackPage sign_up_confirmed tracking for email signups", () => {
   beforeEach(() => {
     trackMock.mockClear();
     replaceMock.mockClear();
@@ -158,17 +170,71 @@ describe("AuthCallbackPage sign_up_confirmed tracking for email signups", () => 
     window.sessionStorage.setItem("kakebo_email_signup_source", source);
   }
 
-  it("fires sign_up_confirmed with method email and the stored source for a new account after a pending email signup", async () => {
+  function mockSessionUser(user: Record<string, unknown>) {
+    getSessionMock.mockResolvedValue({ data: { session: { user } }, error: null });
+  }
+
+  async function renderAndWaitForRedirect() {
+    render(<AuthCallbackPage />);
+    await waitFor(() => expect(replaceMock).toHaveBeenCalledWith("/app"));
+  }
+
+  function confirmedEvents() {
+    return trackMock.mock.calls.filter((call) => call[0] === "sign_up_confirmed");
+  }
+
+  it("confirms an email signup several hours after created_at, using the sessionStorage source as fallback", async () => {
     setPendingEmailSignup();
     setUrl("?code=abc123");
-    getSessionMock.mockResolvedValue({ data: { session: { user: NEW_EMAIL_USER } }, error: null });
+    mockSessionUser(EMAIL_CONFIRMED_USER);
 
-    render(<AuthCallbackPage />);
-
-    await waitFor(() => expect(replaceMock).toHaveBeenCalledWith("/app"));
+    await renderAndWaitForRedirect();
 
     expect(trackMock).toHaveBeenCalledTimes(1);
     expect(trackMock).toHaveBeenCalledWith("sign_up_confirmed", { method: "email", source: "blog_excel" });
+  });
+
+  it("does not use isLikelyNewUser for email: a confirmation days after signup still counts", async () => {
+    setPendingEmailSignup();
+    setUrl("?code=abc123");
+    mockSessionUser({
+      ...EMAIL_CONFIRMED_USER,
+      created_at: "2026-08-01T10:00:00.000Z",
+    });
+
+    await renderAndWaitForRedirect();
+
+    expect(confirmedEvents()).toHaveLength(1);
+  });
+
+  it("accepts confirmed_at when email_confirmed_at is null", async () => {
+    setPendingEmailSignup();
+    setUrl("?code=abc123");
+    mockSessionUser({ ...EMAIL_CONFIRMED_USER, email_confirmed_at: null });
+
+    await renderAndWaitForRedirect();
+
+    expect(trackMock).toHaveBeenCalledWith("sign_up_confirmed", { method: "email", source: "blog_excel" });
+  });
+
+  it("confirms in another browser using the source carried by the callback URL (no sessionStorage)", async () => {
+    setUrl("?source=calculator_503020&code=abc123");
+    mockSessionUser(EMAIL_CONFIRMED_USER);
+
+    await renderAndWaitForRedirect();
+
+    expect(trackMock).toHaveBeenCalledTimes(1);
+    expect(trackMock).toHaveBeenCalledWith("sign_up_confirmed", { method: "email", source: "calculator_503020" });
+  });
+
+  it("prefers the URL source over the sessionStorage source", async () => {
+    setPendingEmailSignup("new@example.com", "stale_source");
+    setUrl("?source=calculadora_ahorro&code=abc123");
+    mockSessionUser(EMAIL_CONFIRMED_USER);
+
+    await renderAndWaitForRedirect();
+
+    expect(trackMock).toHaveBeenCalledWith("sign_up_confirmed", { method: "email", source: "calculadora_ahorro" });
   });
 
   it("also confirms when the session is created by exchangeCodeForSession", async () => {
@@ -182,34 +248,115 @@ describe("AuthCallbackPage sign_up_confirmed tracking for email signups", () => 
       return { error: null };
     });
     getSessionMock.mockImplementation(async () => ({
-      data: { session: exchanged ? { user: NEW_EMAIL_USER } : null },
+      data: { session: exchanged ? { user: EMAIL_CONFIRMED_USER } : null },
       error: null,
     }));
 
-    render(<AuthCallbackPage />);
-
-    await waitFor(() => expect(replaceMock).toHaveBeenCalledWith("/app"));
+    await renderAndWaitForRedirect();
 
     expect(trackMock).toHaveBeenCalledTimes(1);
     expect(trackMock).toHaveBeenCalledWith("sign_up_confirmed", { method: "email", source: "blog_excel" });
   });
 
-  it("defaults the source to direct when only the pending email mark is present", async () => {
-    window.sessionStorage.setItem("kakebo_email_signup_pending", "new@example.com");
-    setUrl("?code=abc123");
-    getSessionMock.mockResolvedValue({ data: { session: { user: NEW_EMAIL_USER } }, error: null });
-
-    render(<AuthCallbackPage />);
-
-    await waitFor(() => expect(replaceMock).toHaveBeenCalledWith("/app"));
-
-    expect(trackMock).toHaveBeenCalledWith("sign_up_confirmed", { method: "email", source: "direct" });
-  });
-
-  it("consumes the pending marks so a reload does not fire sign_up_confirmed again", async () => {
+  it("does not fire for an unconfirmed email user", async () => {
     setPendingEmailSignup();
     setUrl("?code=abc123");
-    getSessionMock.mockResolvedValue({ data: { session: { user: NEW_EMAIL_USER } }, error: null });
+    mockSessionUser({ ...EMAIL_CONFIRMED_USER, email_confirmed_at: null, confirmed_at: null });
+
+    await renderAndWaitForRedirect();
+
+    expect(trackMock).not.toHaveBeenCalled();
+  });
+
+  it("does not fire for an unconfirmed user even when the URL carries a source", async () => {
+    setUrl("?source=blog_excel&code=abc123");
+    mockSessionUser({ ...EMAIL_CONFIRMED_USER, email_confirmed_at: null, confirmed_at: null });
+
+    await renderAndWaitForRedirect();
+
+    expect(trackMock).not.toHaveBeenCalled();
+  });
+
+  it("does not fire for an existing confirmed user logging in long after confirming, and still consumes the marks", async () => {
+    setPendingEmailSignup("new@example.com");
+    setUrl("?code=abc123");
+    mockSessionUser({
+      ...EMAIL_CONFIRMED_USER,
+      created_at: "2020-01-01T00:00:00.000Z",
+      email_confirmed_at: "2020-01-01T00:05:00.000Z",
+      confirmed_at: "2020-01-01T00:05:00.000Z",
+      last_sign_in_at: "2026-09-03T10:00:01.000Z",
+    });
+
+    await renderAndWaitForRedirect();
+
+    expect(trackMock).not.toHaveBeenCalled();
+    expect(window.sessionStorage.getItem("kakebo_email_signup_pending")).toBeNull();
+  });
+
+  it("does not fire for a normal login without any signup mark or URL source", async () => {
+    setUrl("?code=abc123");
+    mockSessionUser(EMAIL_CONFIRMED_USER);
+
+    await renderAndWaitForRedirect();
+
+    expect(trackMock).not.toHaveBeenCalled();
+  });
+
+  it("does not fire when the session email differs from the pending signup email", async () => {
+    setPendingEmailSignup("someone-else@example.com");
+    setUrl("?code=abc123");
+    mockSessionUser(EMAIL_CONFIRMED_USER);
+
+    await renderAndWaitForRedirect();
+
+    expect(trackMock).not.toHaveBeenCalled();
+  });
+
+  it("does not report an email confirmation for a Google account that has a stale email mark", async () => {
+    setPendingEmailSignup();
+    setUrl("?code=abc123");
+    mockSessionUser({
+      ...EMAIL_CONFIRMED_USER,
+      app_metadata: { provider: "google" },
+    });
+
+    await renderAndWaitForRedirect();
+
+    expect(trackMock).not.toHaveBeenCalled();
+  });
+
+  it("still tracks a new Google user with the Google heuristic (not the email path)", async () => {
+    window.sessionStorage.setItem("kakebo_signup_intent", "google");
+    window.sessionStorage.setItem("kakebo_signup_source", "calculadora_ahorro");
+    setUrl("?code=abc123");
+    mockSessionUser({
+      ...NEW_USER,
+      app_metadata: { provider: "google" },
+      email_confirmed_at: NEW_USER.created_at,
+    });
+
+    await renderAndWaitForRedirect();
+
+    expect(trackMock).toHaveBeenCalledTimes(2);
+    expect(trackMock).toHaveBeenCalledWith("sign_up", { method: "google" });
+    expect(trackMock).toHaveBeenCalledWith("sign_up_confirmed", { method: "google", source: "calculadora_ahorro" });
+  });
+
+  it("does not track an existing Google user even with Google signup intent", async () => {
+    window.sessionStorage.setItem("kakebo_signup_intent", "google");
+    setUrl("?code=abc123");
+    mockSessionUser({ ...RETURNING_USER, app_metadata: { provider: "google" } });
+
+    await renderAndWaitForRedirect();
+
+    expect(trackMock).not.toHaveBeenCalled();
+  });
+
+  it("consumes the pending marks and does not fire again when the callback is reloaded", async () => {
+    setPendingEmailSignup();
+    setUrl("?code=abc123");
+    mockSessionUser(EMAIL_CONFIRMED_USER);
 
     const { unmount } = render(<AuthCallbackPage />);
     await waitFor(() => expect(replaceMock).toHaveBeenCalledWith("/app"));
@@ -227,37 +374,20 @@ describe("AuthCallbackPage sign_up_confirmed tracking for email signups", () => 
     expect(trackMock).not.toHaveBeenCalled();
   });
 
-  it("does not fire sign_up_confirmed for an existing user even with a pending email mark, and still consumes the marks", async () => {
-    setPendingEmailSignup("old@example.com");
-    setUrl("?code=abc123");
-    getSessionMock.mockResolvedValue({ data: { session: { user: { ...RETURNING_USER, email: "old@example.com" } } }, error: null });
+  it("does not fire twice when the URL still carries the source on a second run (duplicate guard)", async () => {
+    setUrl("?source=blog_excel&code=abc123");
+    mockSessionUser(EMAIL_CONFIRMED_USER);
 
-    render(<AuthCallbackPage />);
-
+    const { unmount } = render(<AuthCallbackPage />);
     await waitFor(() => expect(replaceMock).toHaveBeenCalledWith("/app"));
+    unmount();
+    expect(confirmedEvents()).toHaveLength(1);
 
-    expect(trackMock).not.toHaveBeenCalled();
-    expect(window.sessionStorage.getItem("kakebo_email_signup_pending")).toBeNull();
-  });
+    trackMock.mockClear();
+    replaceMock.mockClear();
 
-  it("does not fire sign_up_confirmed for a normal login without pending marks", async () => {
-    setUrl("?code=abc123");
-    getSessionMock.mockResolvedValue({ data: { session: { user: RETURNING_USER } }, error: null });
-
+    // Same URL (source still present), no sessionStorage marks left.
     render(<AuthCallbackPage />);
-
-    await waitFor(() => expect(replaceMock).toHaveBeenCalledWith("/app"));
-
-    expect(trackMock).not.toHaveBeenCalled();
-  });
-
-  it("does not fire sign_up_confirmed when the session email differs from the pending signup email", async () => {
-    setPendingEmailSignup("someone-else@example.com");
-    setUrl("?code=abc123");
-    getSessionMock.mockResolvedValue({ data: { session: { user: NEW_EMAIL_USER } }, error: null });
-
-    render(<AuthCallbackPage />);
-
     await waitFor(() => expect(replaceMock).toHaveBeenCalledWith("/app"));
 
     expect(trackMock).not.toHaveBeenCalled();
@@ -265,7 +395,7 @@ describe("AuthCallbackPage sign_up_confirmed tracking for email signups", () => 
 
   it("does not fire any confirmation when the callback returns an OAuth error", async () => {
     setPendingEmailSignup();
-    setUrl("?error=access_denied&error_description=denied");
+    setUrl("?source=blog_excel&error=access_denied&error_description=denied");
 
     render(<AuthCallbackPage />);
 
@@ -274,18 +404,15 @@ describe("AuthCallbackPage sign_up_confirmed tracking for email signups", () => 
     expect(trackMock).not.toHaveBeenCalled();
   });
 
-  it("fires a single sign_up_confirmed when both Google intent and an email mark are present", async () => {
+  it("fires a single sign_up_confirmed when both Google intent and an email mark are present for a Google user", async () => {
     window.sessionStorage.setItem("kakebo_signup_intent", "google");
     setPendingEmailSignup();
     setUrl("?code=abc123");
-    getSessionMock.mockResolvedValue({ data: { session: { user: NEW_EMAIL_USER } }, error: null });
+    mockSessionUser({ ...NEW_USER, email: "new@example.com" });
 
-    render(<AuthCallbackPage />);
+    await renderAndWaitForRedirect();
 
-    await waitFor(() => expect(replaceMock).toHaveBeenCalledWith("/app"));
-
-    const confirmed = trackMock.mock.calls.filter((call) => call[0] === "sign_up_confirmed");
-    expect(confirmed).toHaveLength(1);
-    expect(confirmed[0][1]).toMatchObject({ method: "google" });
+    expect(confirmedEvents()).toHaveLength(1);
+    expect(confirmedEvents()[0][1]).toMatchObject({ method: "google" });
   });
 });

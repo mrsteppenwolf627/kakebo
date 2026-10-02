@@ -2,6 +2,12 @@ const SIGNUP_INTENT_KEY = "kakebo_signup_intent";
 const SIGNUP_SOURCE_KEY = "kakebo_signup_source";
 const EMAIL_SIGNUP_PENDING_KEY = "kakebo_email_signup_pending";
 const EMAIL_SIGNUP_SOURCE_KEY = "kakebo_email_signup_source";
+const SIGNUP_CONFIRMED_TRACKED_KEY = "kakebo_signup_confirmed_tracked";
+
+// Email confirmation and the sign-in it triggers happen in the same request,
+// so a genuine confirmation has last_sign_in_at right next to the confirmation
+// timestamp. A generous window absorbs slow code exchanges.
+const EMAIL_CONFIRMATION_WINDOW_MS = 10 * 60 * 1000;
 
 export const DEFAULT_ATTRIBUTION_SOURCE = "direct";
 
@@ -82,6 +88,62 @@ export function consumeEmailSignupPending(): { email: string; source: string } |
   window.sessionStorage.removeItem(EMAIL_SIGNUP_PENDING_KEY);
   window.sessionStorage.removeItem(EMAIL_SIGNUP_SOURCE_KEY);
   return email ? { email, source } : null;
+}
+
+/**
+ * Builds the callback URL Supabase redirects to after the email confirmation
+ * link, carrying the attribution source so it survives confirming the email in
+ * a different browser (where sessionStorage is not shared).
+ */
+export function buildEmailCallbackUrl(origin: string, source?: string | null): string {
+  return `${origin}/auth/callback?source=${encodeURIComponent(resolveAttributionSource(source))}`;
+}
+
+/**
+ * Returns the source carried by the callback URL, or null when the URL has none
+ * (so callers can fall back to sessionStorage).
+ */
+export function getSourceFromSearch(search: string): string | null {
+  const value = new URLSearchParams(search).get("source")?.trim();
+  return value ? resolveAttributionSource(value) : null;
+}
+
+/**
+ * Whether a session user has really confirmed an email signup. Unlike
+ * isLikelyNewUser this does not compare against created_at, because the
+ * confirmation can happen minutes or hours after signing up. A user counts as
+ * confirmed when email_confirmed_at (or confirmed_at) is set, and, if
+ * last_sign_in_at is known, that sign-in is the confirmation one rather than a
+ * much later login of an already confirmed account.
+ */
+export function isEmailSignupConfirmed(user: {
+  email_confirmed_at?: string | null;
+  confirmed_at?: string | null;
+  last_sign_in_at?: string | null;
+}): boolean {
+  const confirmedAt = user.email_confirmed_at ?? user.confirmed_at;
+  if (!confirmedAt) return false;
+  if (!user.last_sign_in_at) return true;
+
+  const confirmed = new Date(confirmedAt).getTime();
+  const lastSignIn = new Date(user.last_sign_in_at).getTime();
+  if (Number.isNaN(confirmed) || Number.isNaN(lastSignIn)) return true;
+
+  return Math.abs(lastSignIn - confirmed) < EMAIL_CONFIRMATION_WINDOW_MS;
+}
+
+/**
+ * Duplicate guard for sign_up_confirmed: returns true the first time it is
+ * called for a user in this tab session and false afterwards, so a re-run of the
+ * callback effect (or a reload) cannot report the same confirmation twice even
+ * when the source comes from the URL.
+ */
+export function claimSignupConfirmation(userId: string | null | undefined): boolean {
+  if (typeof window === "undefined") return false;
+  const key = userId ?? "unknown";
+  if (window.sessionStorage.getItem(SIGNUP_CONFIRMED_TRACKED_KEY) === key) return false;
+  window.sessionStorage.setItem(SIGNUP_CONFIRMED_TRACKED_KEY, key);
+  return true;
 }
 
 /**

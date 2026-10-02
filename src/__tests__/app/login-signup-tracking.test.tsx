@@ -58,10 +58,12 @@ vi.mock("next-intl", () => ({
 const signUpMock = vi.fn();
 const signInWithPasswordMock = vi.fn();
 const signInWithOAuthMock = vi.fn().mockResolvedValue({ error: null });
+const resendMock = vi.fn();
 
 vi.mock("@/lib/supabase/browser", () => ({
   createClient: () => ({
     auth: {
+      resend: (...args: unknown[]) => resendMock(...args),
       signUp: (...args: unknown[]) => signUpMock(...args),
       signInWithPassword: (...args: unknown[]) => signInWithPasswordMock(...args),
       signInWithOAuth: (...args: unknown[]) => signInWithOAuthMock(...args),
@@ -86,6 +88,7 @@ describe("LoginPage sign_up tracking", () => {
     signUpMock.mockReset();
     signInWithPasswordMock.mockReset();
     signInWithOAuthMock.mockClear();
+    resendMock.mockReset();
     mockSearchParams = new URLSearchParams();
     window.sessionStorage.clear();
     delete (window as unknown as { location: unknown }).location;
@@ -157,6 +160,48 @@ describe("LoginPage sign_up tracking", () => {
     await waitFor(() => expect(callsNamed("sign_up")).toHaveLength(1));
 
     expect(callsNamed("sign_up")[0]).toEqual(["sign_up", { method: "email", source: "direct" }]);
+  });
+
+  it("includes the source in the emailRedirectTo callback URL so it survives confirming in another browser", async () => {
+    signUpMock.mockResolvedValue({ error: null });
+    mockSearchParams = new URLSearchParams("mode=signup&source=calculator_inflation");
+    render(<LoginPage />);
+
+    fillEmailPassword("new@example.com", "password123");
+    fireEvent.click(screen.getByRole("button", { name: "Crear cuenta" }));
+
+    await waitFor(() => expect(signUpMock).toHaveBeenCalled());
+
+    const options = signUpMock.mock.calls[0][0].options;
+    expect(options.emailRedirectTo).toMatch(/\/auth\/callback\?source=calculator_inflation$/);
+  });
+
+  it("uses source=direct in emailRedirectTo when the page has no ?source=", async () => {
+    signUpMock.mockResolvedValue({ error: null });
+    mockSearchParams = new URLSearchParams("mode=signup");
+    render(<LoginPage />);
+
+    fillEmailPassword("new@example.com", "password123");
+    fireEvent.click(screen.getByRole("button", { name: "Crear cuenta" }));
+
+    await waitFor(() => expect(signUpMock).toHaveBeenCalled());
+
+    expect(signUpMock.mock.calls[0][0].options.emailRedirectTo).toMatch(/\/auth\/callback\?source=direct$/);
+  });
+
+  it("keeps the source in emailRedirectTo when resending the confirmation email", async () => {
+    signUpMock.mockResolvedValue({ error: null });
+    resendMock.mockResolvedValue({ error: null });
+    mockSearchParams = new URLSearchParams("mode=signup&source=blog_excel");
+    render(<LoginPage />);
+
+    fillEmailPassword("new@example.com", "password123");
+    fireEvent.click(screen.getByRole("button", { name: "Crear cuenta" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Reenviar confirmación" }));
+
+    await waitFor(() => expect(resendMock).toHaveBeenCalled());
+
+    expect(resendMock.mock.calls[0][0].options.emailRedirectTo).toMatch(/\/auth\/callback\?source=blog_excel$/);
   });
 
   it("stores the pending email signup email and source in sessionStorage after a successful signup", async () => {
