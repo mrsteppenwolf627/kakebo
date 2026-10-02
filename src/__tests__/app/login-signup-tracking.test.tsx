@@ -76,6 +76,10 @@ function fillEmailPassword(email: string, password: string) {
   fireEvent.change(screen.getByPlaceholderText("••••••••"), { target: { value: password } });
 }
 
+function callsNamed(name: string) {
+  return trackMock.mock.calls.filter((call) => call[0] === name);
+}
+
 describe("LoginPage sign_up tracking", () => {
   beforeEach(() => {
     trackMock.mockClear();
@@ -105,7 +109,44 @@ describe("LoginPage sign_up tracking", () => {
     expect(screen.getByRole("heading", { name: "Acceso" })).toBeInTheDocument();
   });
 
-  it("fires sign_up with method email exactly once after a successful email signup", async () => {
+  it("fires login_view once on load with mode signup and the source from ?source=", () => {
+    mockSearchParams = new URLSearchParams("mode=signup&source=calculadora_ahorro");
+    render(<LoginPage />);
+
+    expect(trackMock).toHaveBeenCalledTimes(1);
+    expect(trackMock).toHaveBeenCalledWith("login_view", { mode: "signup", source: "calculadora_ahorro" });
+  });
+
+  it("fires login_view with mode login and source direct when no params are present", () => {
+    render(<LoginPage />);
+
+    expect(trackMock).toHaveBeenCalledTimes(1);
+    expect(trackMock).toHaveBeenCalledWith("login_view", { mode: "login", source: "direct" });
+  });
+
+  it("does not fire login_view again when the user toggles between login and signup", () => {
+    render(<LoginPage />);
+
+    fireEvent.click(screen.getByRole("button", { name: "¿No tienes cuenta? Créala aquí" }));
+
+    expect(callsNamed("login_view")).toHaveLength(1);
+  });
+
+  it("fires sign_up with method email and source exactly once after a successful email signup", async () => {
+    signUpMock.mockResolvedValue({ error: null });
+    mockSearchParams = new URLSearchParams("mode=signup&source=blog_excel");
+    render(<LoginPage />);
+
+    fillEmailPassword("new@example.com", "password123");
+    fireEvent.click(screen.getByRole("button", { name: "Crear cuenta" }));
+
+    await waitFor(() => expect(callsNamed("sign_up")).toHaveLength(1));
+
+    expect(callsNamed("sign_up")[0]).toEqual(["sign_up", { method: "email", source: "blog_excel" }]);
+    expect(callsNamed("sign_up_confirmed")).toHaveLength(0);
+  });
+
+  it("uses source direct on sign_up when the page has no ?source=", async () => {
     signUpMock.mockResolvedValue({ error: null });
     mockSearchParams = new URLSearchParams("mode=signup");
     render(<LoginPage />);
@@ -113,13 +154,26 @@ describe("LoginPage sign_up tracking", () => {
     fillEmailPassword("new@example.com", "password123");
     fireEvent.click(screen.getByRole("button", { name: "Crear cuenta" }));
 
-    await waitFor(() => expect(trackMock).toHaveBeenCalled());
+    await waitFor(() => expect(callsNamed("sign_up")).toHaveLength(1));
 
-    expect(trackMock).toHaveBeenCalledTimes(1);
-    expect(trackMock).toHaveBeenCalledWith("sign_up", { method: "email" });
+    expect(callsNamed("sign_up")[0]).toEqual(["sign_up", { method: "email", source: "direct" }]);
   });
 
-  it("does not fire sign_up when email signup fails", async () => {
+  it("stores the pending email signup email and source in sessionStorage after a successful signup", async () => {
+    signUpMock.mockResolvedValue({ error: null });
+    mockSearchParams = new URLSearchParams("mode=signup&source=blog_excel");
+    render(<LoginPage />);
+
+    fillEmailPassword("new@example.com", "password123");
+    fireEvent.click(screen.getByRole("button", { name: "Crear cuenta" }));
+
+    await waitFor(() => expect(callsNamed("sign_up")).toHaveLength(1));
+
+    expect(window.sessionStorage.getItem("kakebo_email_signup_pending")).toBe("new@example.com");
+    expect(window.sessionStorage.getItem("kakebo_email_signup_source")).toBe("blog_excel");
+  });
+
+  it("does not fire sign_up nor store pending marks when email signup fails", async () => {
     signUpMock.mockResolvedValue({ error: { message: "Email already registered" } });
     mockSearchParams = new URLSearchParams("mode=signup");
     render(<LoginPage />);
@@ -129,10 +183,12 @@ describe("LoginPage sign_up tracking", () => {
 
     await screen.findByText("Email already registered");
 
-    expect(trackMock).not.toHaveBeenCalled();
+    expect(callsNamed("sign_up")).toHaveLength(0);
+    expect(window.sessionStorage.getItem("kakebo_email_signup_pending")).toBeNull();
+    expect(window.sessionStorage.getItem("kakebo_email_signup_source")).toBeNull();
   });
 
-  it("does not fire sign_up on a normal email login", async () => {
+  it("does not fire sign_up nor store pending marks on a normal email login", async () => {
     signInWithPasswordMock.mockResolvedValue({ error: null });
     render(<LoginPage />);
 
@@ -141,7 +197,9 @@ describe("LoginPage sign_up tracking", () => {
 
     await waitFor(() => expect(window.location.href).toBe("/app"));
 
-    expect(trackMock).not.toHaveBeenCalled();
+    expect(callsNamed("sign_up")).toHaveLength(0);
+    expect(callsNamed("sign_up_confirmed")).toHaveLength(0);
+    expect(window.sessionStorage.getItem("kakebo_email_signup_pending")).toBeNull();
   });
 
   it("does not fire sign_up merely from clicking the signup submit button before Supabase resolves", () => {
@@ -152,25 +210,39 @@ describe("LoginPage sign_up tracking", () => {
     fillEmailPassword("new@example.com", "password123");
     fireEvent.click(screen.getByRole("button", { name: "Crear cuenta" }));
 
-    expect(trackMock).not.toHaveBeenCalled();
+    expect(callsNamed("sign_up")).toHaveLength(0);
+    expect(window.sessionStorage.getItem("kakebo_email_signup_pending")).toBeNull();
   });
 
-  it("marks Google signup intent in sessionStorage when signing up via Google in signup mode", async () => {
-    mockSearchParams = new URLSearchParams("mode=signup");
+  it("marks Google signup intent and its source in sessionStorage when signing up via Google in signup mode", async () => {
+    mockSearchParams = new URLSearchParams("mode=signup&source=calculator_503020");
     render(<LoginPage />);
 
     fireEvent.click(screen.getByRole("button", { name: /Continuar con Google/ }));
 
     await waitFor(() => expect(signInWithOAuthMock).toHaveBeenCalled());
     expect(window.sessionStorage.getItem("kakebo_signup_intent")).toBe("google");
+    expect(window.sessionStorage.getItem("kakebo_signup_source")).toBe("calculator_503020");
+  });
+
+  it("stores source direct with the Google signup intent when the page has no ?source=", async () => {
+    mockSearchParams = new URLSearchParams("mode=signup");
+    render(<LoginPage />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Continuar con Google/ }));
+
+    await waitFor(() => expect(signInWithOAuthMock).toHaveBeenCalled());
+    expect(window.sessionStorage.getItem("kakebo_signup_source")).toBe("direct");
   });
 
   it("does not mark Google signup intent when using Google from login mode", async () => {
+    mockSearchParams = new URLSearchParams("source=calculator_503020");
     render(<LoginPage />);
 
     fireEvent.click(screen.getByRole("button", { name: /Continuar con Google/ }));
 
     await waitFor(() => expect(signInWithOAuthMock).toHaveBeenCalled());
     expect(window.sessionStorage.getItem("kakebo_signup_intent")).toBeNull();
+    expect(window.sessionStorage.getItem("kakebo_signup_source")).toBeNull();
   });
 });

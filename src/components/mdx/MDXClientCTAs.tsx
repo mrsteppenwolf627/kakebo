@@ -3,6 +3,7 @@
 import React from "react";
 import { Link } from "@/i18n/routing";
 import { analytics } from "@/lib/analytics";
+import { getSourceFromHref } from "@/lib/authIntent";
 
 export function ToolCTA({ title, description, href, cta }: {
     title: string;
@@ -17,7 +18,7 @@ export function ToolCTA({ title, description, href, cta }: {
             <p className="mb-5 text-sm leading-relaxed text-muted-foreground">{description}</p>
             <Link
                 href={href as any}
-                onClick={isLoginCta ? () => analytics.track("click_cta_login", { source_page: window.location.pathname, cta_label: cta, cta_location: "blog_tool_cta" }) : undefined}
+                onClick={isLoginCta ? () => analytics.track("click_cta_login", { source_page: window.location.pathname, cta_label: cta, cta_location: "blog_tool_cta", source: getSourceFromHref(href) }) : undefined}
                 className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background sm:w-auto sm:rounded-full sm:px-6"
             >
                 {cta}
@@ -31,7 +32,7 @@ export function SimpleCTA({ href, cta }: { href: string; cta: string }) {
         <div className="not-prose my-10 flex justify-center">
             <Link
                 href={href as any}
-                onClick={() => analytics.track("click_cta_login", { source_page: window.location.pathname, cta_label: cta, cta_location: "blog_simple_cta" })}
+                onClick={() => analytics.track("click_cta_login", { source_page: window.location.pathname, cta_label: cta, cta_location: "blog_simple_cta", source: getSourceFromHref(href) })}
                 className="inline-flex w-full max-w-sm items-center justify-center rounded-2xl bg-primary px-6 py-4 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background sm:w-auto sm:rounded-full sm:px-8"
             >
                 {cta}
@@ -56,7 +57,7 @@ export function ChoiceCTA({ title, description, primaryHref, primaryCta, primary
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
                     href={primaryHref as any}
-                    onClick={() => analytics.track("click_excel_to_app", { source_page: window.location.pathname, cta_label: primaryCta, cta_location: primaryLocation, destination_path: primaryHref })}
+                    onClick={() => analytics.track("click_excel_to_app", { source_page: window.location.pathname, cta_label: primaryCta, cta_location: primaryLocation, destination_path: primaryHref, source: getSourceFromHref(primaryHref) })}
                     className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background sm:w-auto sm:rounded-full sm:px-6"
                 >
                     {primaryCta}
@@ -99,7 +100,7 @@ export function ArticleCTA({ children, href, cta }: {
             </div>
             <Link
                 href={href as any}
-                onClick={() => analytics.track("click_cta_login", { source_page: window.location.pathname, cta_label: cta, cta_location: "blog_article_cta" })}
+                onClick={() => analytics.track("click_cta_login", { source_page: window.location.pathname, cta_label: cta, cta_location: "blog_article_cta", source: getSourceFromHref(href) })}
                 className="inline-flex w-full max-w-xs items-center justify-center rounded-2xl bg-background px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-foreground sm:w-auto sm:rounded-full sm:px-8"
             >
                 {cta}

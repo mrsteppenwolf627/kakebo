@@ -3,6 +3,11 @@ import {
   markGoogleSignupIntent,
   clearGoogleSignupIntent,
   consumeGoogleSignupIntent,
+  consumeGoogleSignup,
+  markEmailSignupPending,
+  consumeEmailSignupPending,
+  getSourceFromHref,
+  resolveAttributionSource,
   isLikelyNewUser,
 } from "@/lib/authIntent";
 
@@ -27,6 +32,47 @@ describe("authIntent", () => {
 
   it("returns false from consume when no intent was ever marked", () => {
     expect(consumeGoogleSignupIntent()).toBe(false);
+  });
+
+  it("keeps the source with the Google signup intent and consumes both once", () => {
+    markGoogleSignupIntent("calculadora_ahorro");
+
+    expect(consumeGoogleSignup()).toEqual({ hadIntent: true, source: "calculadora_ahorro" });
+    expect(consumeGoogleSignup()).toEqual({ hadIntent: false, source: "direct" });
+  });
+
+  it("defaults the Google signup source to direct", () => {
+    markGoogleSignupIntent();
+
+    expect(consumeGoogleSignup()).toEqual({ hadIntent: true, source: "direct" });
+  });
+
+  it("clearing the Google intent also clears its source", () => {
+    markGoogleSignupIntent("blog");
+    clearGoogleSignupIntent();
+
+    expect(window.sessionStorage.getItem("kakebo_signup_source")).toBeNull();
+  });
+
+  it("stores and consumes the pending email signup exactly once", () => {
+    markEmailSignupPending("a@b.com", "blog_excel");
+
+    expect(window.sessionStorage.getItem("kakebo_email_signup_pending")).toBe("a@b.com");
+    expect(consumeEmailSignupPending()).toEqual({ email: "a@b.com", source: "blog_excel" });
+    expect(consumeEmailSignupPending()).toBeNull();
+    expect(window.sessionStorage.getItem("kakebo_email_signup_source")).toBeNull();
+  });
+
+  it("resolves attribution sources with a direct fallback", () => {
+    expect(resolveAttributionSource(null)).toBe("direct");
+    expect(resolveAttributionSource("  ")).toBe("direct");
+    expect(resolveAttributionSource(" blog ")).toBe("blog");
+  });
+
+  it("reads source from an href and falls back to direct", () => {
+    expect(getSourceFromHref("/login?mode=signup&source=calculadora_ahorro")).toBe("calculadora_ahorro");
+    expect(getSourceFromHref("/login")).toBe("direct");
+    expect(getSourceFromHref("/app")).toBe("direct");
   });
 
   it("treats a user whose last_sign_in_at matches created_at as new", () => {

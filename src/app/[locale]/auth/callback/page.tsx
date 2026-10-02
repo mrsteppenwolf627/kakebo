@@ -5,7 +5,12 @@ import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/browser";
 import { analytics } from "@/lib/analytics";
-import { consumeGoogleSignupIntent, isLikelyNewUser } from "@/lib/authIntent";
+import { consumeEmailSignupPending, consumeGoogleSignup, isLikelyNewUser } from "@/lib/authIntent";
+
+interface SignupContext {
+  google: { hadIntent: boolean; source: string };
+  emailPending: { email: string; source: string } | null;
+}
 
 /**
  * Client-side OAuth callback handler
@@ -21,15 +26,30 @@ export default function AuthCallbackPage() {
   const [status, setStatus] = useState("Verificando sesión...");
 
   useEffect(() => {
-    function trackSignUpIfNeeded(user: User | null | undefined, hadSignupIntent: boolean) {
-      if (!hadSignupIntent || !user) return;
-      if (isLikelyNewUser(user)) {
+    function trackSignUpIfNeeded(user: User | null | undefined, ctx: SignupContext) {
+      if (!user || !isLikelyNewUser(user)) return;
+
+      if (ctx.google.hadIntent) {
+        // sign_up is kept for compatibility with the previous Google tracking.
         analytics.track("sign_up", { method: "google" });
+        analytics.track("sign_up_confirmed", { method: "google", source: ctx.google.source });
+        return;
+      }
+
+      if (ctx.emailPending) {
+        // Ignore the mark if the session belongs to a different email.
+        const sessionEmail = user.email?.toLowerCase();
+        if (sessionEmail && sessionEmail !== ctx.emailPending.email.trim().toLowerCase()) return;
+        analytics.track("sign_up_confirmed", { method: "email", source: ctx.emailPending.source });
       }
     }
 
     async function handleCallback() {
-      const hadSignupIntent = consumeGoogleSignupIntent();
+      // Consumed up front so a reload or second effect run can never re-fire them.
+      const signupContext: SignupContext = {
+        google: consumeGoogleSignup(),
+        emailPending: consumeEmailSignupPending(),
+      };
 
       try {
         // Check for error in URL params
@@ -61,7 +81,7 @@ export default function AuthCallbackPage() {
 
           if (session) {
             console.log("[Auth Callback Client] Session found, redirecting to /app");
-            trackSignUpIfNeeded(session.user, hadSignupIntent);
+            trackSignUpIfNeeded(session.user, signupContext);
             setStatus("¡Sesión iniciada! Redirigiendo...");
             router.replace("/app");
             return;
@@ -82,7 +102,7 @@ export default function AuthCallbackPage() {
 
           if (newSession) {
             console.log("[Auth Callback Client] Session established after exchange");
-            trackSignUpIfNeeded(newSession.user, hadSignupIntent);
+            trackSignUpIfNeeded(newSession.user, signupContext);
             setStatus("¡Sesión iniciada! Redirigiendo...");
             router.replace("/app");
           } else {
@@ -94,7 +114,7 @@ export default function AuthCallbackPage() {
           const { data: { session } } = await supabase.auth.getSession();
 
           if (session) {
-            trackSignUpIfNeeded(session.user, hadSignupIntent);
+            trackSignUpIfNeeded(session.user, signupContext);
             router.replace("/app");
           } else {
             router.replace("/login");

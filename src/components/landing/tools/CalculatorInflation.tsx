@@ -12,6 +12,7 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import { analytics } from "@/lib/analytics";
+import { getSourceFromHref } from "@/lib/authIntent";
 import { useTranslations, useLocale } from "next-intl";
 import { EmbedModal } from "./EmbedModal";
 import {
@@ -20,6 +21,8 @@ import {
 } from "./CalculatorInflationHistorical";
 
 type CalculatorMode = "future" | "historical";
+
+const CTA_HREF = "/login?source=calculator_inflation";
 
 const INE_LINKS = {
     ipc: "https://www.ine.es/ipc/",
@@ -411,8 +414,8 @@ export function CalculatorInflation() {
                             </p>
                             <div className="flex flex-col sm:flex-row gap-6 justify-center">
                                 <Link
-                                    href="/login?source=calculator_inflation"
-                                    onClick={() => analytics.track("click_tool_to_app", { tool_name: "calculadora_inflacion", cta_location: "calculator_cta" })}
+                                    href={CTA_HREF}
+                                    onClick={() => analytics.track("click_tool_to_app", { tool_name: "calculadora_inflacion", cta_location: "calculator_cta", source: getSourceFromHref(CTA_HREF) })}
                                     className="inline-block bg-white text-stone-900 px-10 py-4 rounded-full font-bold hover:bg-stone-100 dark:hover:bg-stone-200 transition-all hover:scale-105"
                                 >
                                     {t('cta.buttonPrimary')}

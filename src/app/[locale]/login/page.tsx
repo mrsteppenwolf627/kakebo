@@ -1,18 +1,24 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { analytics } from "@/lib/analytics";
-import { clearGoogleSignupIntent, markGoogleSignupIntent } from "@/lib/authIntent";
+import {
+  clearGoogleSignupIntent,
+  markEmailSignupPending,
+  markGoogleSignupIntent,
+  resolveAttributionSource,
+} from "@/lib/authIntent";
 
 function LoginForm() {
   const supabase = createClient();
   const t = useTranslations("Auth");
   const searchParams = useSearchParams();
+  const source = resolveAttributionSource(searchParams.get("source"));
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +29,15 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [needsConfirm, setNeedsConfirm] = useState(false);
 
+  const loginViewTracked = useRef(false);
+  useEffect(() => {
+    if (loginViewTracked.current) return;
+    loginViewTracked.current = true;
+    analytics.track("login_view", { mode, source });
+    // Fires once per page load with the mode/source the page opened with.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   async function loginGoogle() {
     setLoading(true);
     setMsg(null);
@@ -30,7 +45,7 @@ function LoginForm() {
 
     try {
       if (mode === "signup") {
-        markGoogleSignupIntent();
+        markGoogleSignupIntent(source);
       } else {
         clearGoogleSignupIntent();
       }
@@ -91,7 +106,8 @@ function LoginForm() {
 
         if (error) throw error;
 
-        analytics.track("sign_up", { method: "email" });
+        analytics.track("sign_up", { method: "email", source });
+        markEmailSignupPending(email, source);
 
         setNeedsConfirm(true);
         setMsg(

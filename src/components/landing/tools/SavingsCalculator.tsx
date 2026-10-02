@@ -6,6 +6,9 @@ import { useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import { EmbedModal } from "./EmbedModal";
 import { analytics } from "@/lib/analytics";
+import { getSourceFromHref } from "@/lib/authIntent";
+
+const CTA_HREF = "/login?mode=signup&source=calculadora_ahorro";
 
 const fmt = (n: number) =>
     new Intl.NumberFormat("es-ES", {
@@ -611,11 +614,12 @@ export function SavingsCalculator() {
                                     {t("results.ctaTitle")}
                                 </p>
                                 <Link
-                                    href="/login?mode=signup&source=calculadora_ahorro"
+                                    href={CTA_HREF}
                                     onClick={() =>
                                         analytics.track("click_tool_to_app", {
                                             tool_name: "calculadora_ahorro",
                                             cta_location: "calculator_results",
+                                            source: getSourceFromHref(CTA_HREF),
                                         })
                                     }
                                     className="inline-block bg-background text-foreground font-semibold px-8 py-3 rounded-full hover:opacity-90 transition-opacity text-sm"

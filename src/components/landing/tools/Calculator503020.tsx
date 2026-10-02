@@ -5,8 +5,11 @@ import { Link } from "@/i18n/routing";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { analytics } from "@/lib/analytics";
+import { getSourceFromHref } from "@/lib/authIntent";
 import { useTranslations } from "next-intl";
 import { EmbedModal } from "./EmbedModal";
+
+const CTA_HREF = "/login?source=calculator_503020";
 
 export function Calculator503020() {
     const t = useTranslations("Tools.Rule503020");
@@ -166,8 +169,8 @@ export function Calculator503020() {
                         {t('cta.text')}
                     </p>
                     <Link
-                        href="/login?source=calculator_503020"
-                        onClick={() => analytics.track("click_tool_to_app", { tool_name: "regla_50_30_20", cta_location: "calculator_cta" })}
+                        href={CTA_HREF}
+                        onClick={() => analytics.track("click_tool_to_app", { tool_name: "regla_50_30_20", cta_location: "calculator_cta", source: getSourceFromHref(CTA_HREF) })}
                         className="inline-block bg-white text-stone-900 px-8 py-3 rounded-full font-medium hover:bg-stone-100 dark:hover:bg-stone-200 transition-colors"
                     >
                         {t('cta.button')}

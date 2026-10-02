@@ -49,7 +49,19 @@ describe("ChoiceCTA analytics", () => {
       cta_label: "Usar Kakebo online gratis",
       cta_location: "plantilla_excel_intro",
       destination_path: "/app",
+      source: "direct",
     });
+  });
+
+  it("propagates the source of the primary link into click_excel_to_app", () => {
+    render(<ChoiceCTA {...props} primaryHref="/login?mode=signup&source=blog_excel" />);
+
+    fireEvent.click(screen.getByRole("link", { name: "Usar Kakebo online gratis" }));
+
+    expect(trackMock).toHaveBeenCalledWith(
+      "click_excel_to_app",
+      expect.objectContaining({ source: "blog_excel" })
+    );
   });
 
   it("does not fire click_cta_login on the same click", () => {
@@ -67,6 +79,51 @@ describe("ChoiceCTA analytics", () => {
     fireEvent.click(screen.getByRole("link", { name: "Prefiero la plantilla Excel" }));
 
     expect(trackMock).not.toHaveBeenCalled();
+  });
+});
+
+describe("click_cta_login source attribution", () => {
+  it("ToolCTA sends the source from its href", () => {
+    render(<ToolCTA title="t" description="d" href="/login?source=tool_blog" cta="Empieza gratis" />);
+
+    fireEvent.click(screen.getByRole("link", { name: "Empieza gratis" }));
+
+    expect(trackMock).toHaveBeenCalledWith("click_cta_login", expect.objectContaining({ source: "tool_blog" }));
+  });
+
+  it("ToolCTA falls back to source direct when the href has none", () => {
+    render(<ToolCTA title="t" description="d" href="/login" cta="Empieza gratis" />);
+
+    fireEvent.click(screen.getByRole("link", { name: "Empieza gratis" }));
+
+    expect(trackMock).toHaveBeenCalledWith("click_cta_login", expect.objectContaining({ source: "direct" }));
+  });
+
+  it("SimpleCTA sends the source from its href", () => {
+    render(<SimpleCTA href="/login?mode=signup&source=blog_simple" cta="Empieza" />);
+
+    fireEvent.click(screen.getByRole("link", { name: "Empieza" }));
+
+    expect(trackMock).toHaveBeenCalledWith("click_cta_login", expect.objectContaining({ source: "blog_simple" }));
+  });
+
+  it("SimpleCTA falls back to source direct", () => {
+    render(<SimpleCTA href="/login" cta="Empieza" />);
+
+    fireEvent.click(screen.getByRole("link", { name: "Empieza" }));
+
+    expect(trackMock).toHaveBeenCalledWith("click_cta_login", expect.objectContaining({ source: "direct" }));
+  });
+
+  it("ArticleCTA sends the source from its href and falls back to direct", () => {
+    const { unmount } = render(<ArticleCTA href="/login?source=blog_article" cta="Ahora">x</ArticleCTA>);
+    fireEvent.click(screen.getByRole("link", { name: "Ahora" }));
+    expect(trackMock).toHaveBeenLastCalledWith("click_cta_login", expect.objectContaining({ source: "blog_article" }));
+    unmount();
+
+    render(<ArticleCTA href="/login" cta="Ahora">x</ArticleCTA>);
+    fireEvent.click(screen.getByRole("link", { name: "Ahora" }));
+    expect(trackMock).toHaveBeenLastCalledWith("click_cta_login", expect.objectContaining({ source: "direct" }));
   });
 });
 
