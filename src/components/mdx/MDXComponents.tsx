@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "@/i18n/routing";
 import React from "react";
-import { ToolCTA, SimpleCTA, DownloadCTA, ArticleCTA, ChoiceCTA } from "./MDXClientCTAs";
+import { ToolCTA, SimpleCTA, DownloadCTA, ArticleCTA, ChoiceCTA, PremiumCTA } from "./MDXClientCTAs";
 
 function CustomLink(props: any) {
     const { href, className, ...restProps } = props;
@@ -123,6 +123,7 @@ export const components = {
     ArticleCTA,
     SimpleCTA,
     DownloadCTA,
+    PremiumCTA,
     ChoiceCTA,
     FaqSection,
     FaqItem,

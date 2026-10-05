@@ -4,6 +4,7 @@ import React from "react";
 import { Link } from "@/i18n/routing";
 import { analytics } from "@/lib/analytics";
 import { getSourceFromHref } from "@/lib/authIntent";
+import { PremiumLink } from "@/components/premium/PremiumTracking";
 
 export function ToolCTA({ title, description, href, cta }: {
     title: string;
@@ -105,6 +106,25 @@ export function ArticleCTA({ children, href, cta }: {
             >
                 {cta}
             </Link>
+        </div>
+    );
+}
+
+export function PremiumCTA({ title, description, cta }: {
+    title: string;
+    description: string;
+    cta: string;
+}) {
+    return (
+        <div className="not-prose my-8 rounded-xl border border-border bg-muted/30 p-5 sm:p-6">
+            <p className="mb-1.5 font-serif font-semibold text-foreground">{title}</p>
+            <p className="mb-4 text-sm leading-relaxed text-muted-foreground">{description}</p>
+            <PremiumLink
+                ctaLocation="blog_free_template_secondary"
+                className="text-sm font-semibold text-foreground underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
+            >
+                {cta} →
+            </PremiumLink>
         </div>
     );
 }

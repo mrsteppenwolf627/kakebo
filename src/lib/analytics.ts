@@ -24,7 +24,9 @@ type EventName =
     | "savings_calculator_goal_result"
     | "inflation_calculator_mode_change"
     | "historical_inflation_calculation"
-    | "historical_inflation_error";
+    | "historical_inflation_error"
+    | "premium_product_viewed"
+    | "premium_product_cta_clicked";
 
 type EventProperties = Record<string, string | number | boolean>;
 

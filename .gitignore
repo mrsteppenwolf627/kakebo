@@ -51,3 +51,7 @@ test_agent.ps1
 # GSC raw exports (no commitear datos de Search Console)
 docs/seo/gsc_*/
 docs/seo/*.zip
+
+# Premium commercial files (never commit; never put in public/)
+/private/premium/*
+!/private/premium/README.md

@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { Link } from "@/i18n/routing";
 import { Footer } from "@/components/landing";
 import { getTranslations } from "next-intl/server";
+import { PremiumLink } from "@/components/premium/PremiumTracking";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -115,6 +116,25 @@ export default async function ToolsIndexPage({ params }: { params: Promise<{ loc
                 </div>
               </Link>
             ))}
+          </div>
+
+          {/* Premium system - secondary highlight, tools above stay primary */}
+          <div className="mt-12 rounded-3xl border border-primary/30 bg-card p-10 text-center space-y-4 shadow-sm">
+            <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
+              {locale === 'es' ? 'Nuevo sistema premium' : 'New premium system'}
+            </p>
+            <h2 className="text-2xl md:text-3xl font-serif text-foreground">Kakebo Master System</h2>
+            <p className="text-muted-foreground font-light max-w-xl mx-auto">
+              {locale === 'es'
+                ? 'Un sistema Excel completo para planificar, registrar, revisar y reflexionar durante todo el año. En preparación.'
+                : 'A complete Excel system to plan, track, review and reflect all year long. In preparation.'}
+            </p>
+            <PremiumLink
+              ctaLocation="tools_index_premium_block"
+              className="inline-block rounded-full border border-primary px-8 py-3 font-bold text-foreground transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2"
+            >
+              {locale === 'es' ? 'Ver el sistema premium' : 'See the premium system'}
+            </PremiumLink>
           </div>
 
           {/* Plantilla Excel Promotion - Consolidation of Authority */}
