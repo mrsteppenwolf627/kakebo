@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { listAllAuthUsers } from '@/lib/admin/auth-users';
 
 export async function GET() {
     try {
@@ -29,15 +30,14 @@ export async function GET() {
 
         if (profilesError) throw profilesError;
 
-        // Get emails from auth.users
-        const { data: { users: authUsers }, error: usersError } = await adminClient.auth.admin.listUsers();
-        if (usersError) throw usersError;
+        // Get emails from auth.users (paginated: listUsers() alone only returns the first 50 users).
+        const authUsers = await listAllAuthUsers(adminClient);
+        const emailById = new Map(authUsers.map((u) => [u.id, u.email]));
 
         const usersWithEmails = profiles?.map((profile) => {
-            const authUser = authUsers?.find((u) => u.id === profile.id);
             return {
                 ...profile,
-                email: authUser?.email || 'Unknown',
+                email: emailById.get(profile.id) || 'Unknown',
             };
         }) || [];
 
