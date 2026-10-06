@@ -50,15 +50,18 @@ describe.each(["es", "en"] as const)("premium landing (%s)", (locale) => {
     expect(document.querySelectorAll("h1")).toHaveLength(1);
   });
 
-  it("links only to the free template and never directly to .xlsx or .pdf files", async () => {
+  it("links only to the free template and to the tools hub, never directly to .xlsx or .pdf files", async () => {
     const { container } = await renderLanding(locale);
     const hrefs = [...container.querySelectorAll("a")].map((a) => a.getAttribute("href") ?? "");
     expect(hrefs.length).toBeGreaterThan(0);
+    expect(hrefs).toContain(FREE_PATH);
+    expect(hrefs).toContain("/herramientas");
     for (const href of hrefs) {
-      expect(href).toBe(FREE_PATH);
+      expect([FREE_PATH, "/herramientas"]).toContain(href);
       expect(href).not.toMatch(/\.(xlsx|xlsm|xls|pdf)/i);
     }
-    expect(container.innerHTML).not.toMatch(/\.(xlsx|xlsm|pdf)\b/i);
+    // The formats may be named in text (".xlsx", "PDF"), but no attribute may point to a file.
+    expect(container.innerHTML).not.toMatch(/(href|src|action|data)="[^"]*\.(xlsx|xlsm|xls|pdf)/i);
   });
 
   it("never mentions any pack file name, storage key or private path in the HTML", async () => {
@@ -118,9 +121,14 @@ describe("premium landing metadata", () => {
   it.each([
     ["es", "https://www.metodokakebo.com/herramientas/plantilla-kakebo-excel-premium"],
     ["en", "https://www.metodokakebo.com/en/herramientas/plantilla-kakebo-excel-premium"],
-  ])("(%s) is noindex,follow with correct canonical and hreflang", async (locale, canonical) => {
+  ])("(%s) is public and indexable (no robots override) with correct canonical, hreflang and social metadata", async (locale, canonical) => {
     const meta = await generateMetadata({ params: Promise.resolve({ locale }) });
-    expect(meta.robots).toEqual({ index: false, follow: true });
+    // No noindex: indexing is controlled site-wide by the locale layout (production domain only).
+    expect(meta.robots).toBeUndefined();
+    expect(String(meta.title)).toMatch(/Kakebo Master System/);
+    expect(String(meta.description)).toMatch(/9[,.]90/);
+    expect((meta.openGraph as { url?: string }).url).toBe(canonical);
+    expect((meta.twitter as { card?: string }).card).toBe("summary_large_image");
     expect(meta.alternates?.canonical).toBe(canonical);
     expect(meta.alternates?.languages).toEqual({
       es: "https://www.metodokakebo.com/herramientas/plantilla-kakebo-excel-premium",
@@ -162,5 +170,90 @@ describe("free template regression", () => {
     const file = path.join(root, "public/docs/Plantilla_Kakebo_Simplificada.xlsx");
     expect(fs.existsSync(file)).toBe(true);
     expect(fs.statSync(file).size).toBeGreaterThan(1000);
+  });
+});
+
+describe.each(["es", "en"] as const)("premium landing — pack, price and honest availability (%s)", (locale) => {
+  const text = async () => {
+    const { container } = await renderLanding(locale);
+    return container.textContent ?? "";
+  };
+
+  it("presents the three pieces of the pack, including the ebook", async () => {
+    const t = await text();
+    expect(t).toMatch(/Kakebo Master System/);
+    expect(t).toMatch(/El arte de mirar tu dinero/);
+    expect(t).toMatch(locale === "es" ? /unas 20 páginas/ : /about 20 pages/);
+    expect(t).toMatch(locale === "es" ? /Tutorial en PDF/ : /PDF tutorial/);
+    expect(t).toMatch(locale === "es" ? /Plantilla Excel premium/ : /Premium Excel template/);
+  });
+
+  it("states price with VAT included, one-time purchase, permanent access and no account", async () => {
+    const t = await text();
+    expect(t).toMatch(locale === "es" ? /9,90 € IVA incluido/ : /€9\.90 VAT included/);
+    expect(t).toMatch(locale === "es" ? /compra única/i : /one-time purchase/i);
+    expect(t).toMatch(locale === "es" ? /acceso permanente/i : /permanent access/i);
+    expect(t).toMatch(locale === "es" ? /No hace falta crear una cuenta|no hace falta registrarse/i : /do not need to create an account|do not need to sign up/i);
+  });
+
+  it("says clearly that purchase is not available yet and never offers an active buy button", async () => {
+    const { container } = await renderLanding(locale);
+    expect(container.textContent).toMatch(locale === "es" ? /todavía no (está disponible|se puede comprar)/i : /(not available yet|cannot be bought yet)/i);
+    expect(screen.queryByRole("button", { name: /^(Comprar|Buy)/ })).toBeNull();
+    for (const b of container.querySelectorAll("button")) expect(b.getAttribute("aria-disabled")).toBe("true");
+  });
+
+  it("does not expose internal implementation details or payment-provider names to the public", async () => {
+    const t = await text();
+    expect(t).not.toMatch(/Stripe|checkout|webhook|entitlement|Supabase|signed URL|URL firmada|PREMIUM_COMMERCE|private\/premium/i);
+    expect(t).not.toMatch(/\btrial\b|prueba gratuita|prueba de \d+ d/i);
+  });
+
+  it("keeps the pack separate from the app: buying it grants no app features", async () => {
+    const t = await text();
+    expect(t).toMatch(locale === "es" ? /no concede funciones de la aplicación/i : /does not grant (app features|Kakebo app features)/i);
+  });
+
+  it("structured data: Breadcrumb + Product + FAQPage, and NO offer/availability while it cannot be bought", async () => {
+    const { container } = await renderLanding(locale);
+    const schemas = [...container.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent ?? "{}"));
+    expect(schemas.map((s) => s["@type"]).sort()).toEqual(["BreadcrumbList", "FAQPage", "Product"]);
+    const product = schemas.find((s) => s["@type"] === "Product");
+    expect(product.name).toBe("Kakebo Master System");
+    expect(product).not.toHaveProperty("offers");
+    expect(JSON.stringify(schemas)).not.toMatch(/availability|InStock|PreOrder|"price"|priceCurrency|AggregateRating|"review"/i);
+    const faq = schemas.find((s) => s["@type"] === "FAQPage");
+    const visible = container.textContent ?? "";
+    for (const q of faq.mainEntity) expect(visible).toContain(q.name);
+  });
+
+  it("links back to the free template (first) and to the tools hub", async () => {
+    const { container } = await renderLanding(locale);
+    const hrefs = [...container.querySelectorAll("main a")].map((a) => a.getAttribute("href"));
+    expect(hrefs[0]).toBe(FREE_PATH);
+    expect(hrefs).toContain("/herramientas");
+  });
+});
+
+describe("free template article links to the premium landing without displacing the free download", () => {
+  const root = process.cwd();
+  it.each(["es", "en"])("(%s) keeps the free download first and links contextually to the landing", (loc) => {
+    const mdx = fs.readFileSync(path.join(root, `src/content/blog/plantilla-kakebo-excel.${loc}.mdx`), "utf8");
+    const download = mdx.indexOf("/docs/Plantilla_Kakebo_Simplificada.xlsx");
+    const firstPremiumLink = mdx.search(/herramientas\/plantilla-kakebo-excel-premium|<PremiumCTA/);
+    expect(download).toBeGreaterThan(-1);
+    expect(firstPremiumLink).toBeGreaterThan(download);
+    // CTA card + at least one inline markdown link in the body.
+    expect(mdx.match(/<PremiumCTA/g)).toHaveLength(1);
+    expect(mdx).toMatch(/\]\((\/en)?\/herramientas\/plantilla-kakebo-excel-premium\)/);
+    // The pack is described as a different, paid, not-yet-available product.
+    expect(mdx).toMatch(/9,90 € IVA incluido|€9\.90 VAT included/);
+  });
+
+  it.each(["es", "en"])("(%s) frontmatter/SEO of the free article is untouched (title, FAQ and download still there)", (loc) => {
+    const mdx = fs.readFileSync(path.join(root, `src/content/blog/plantilla-kakebo-excel.${loc}.mdx`), "utf8");
+    expect(mdx).toMatch(/^---\r?\ntitle:/);
+    expect(mdx).toMatch(/\nfaq:/);
+    expect(mdx).not.toMatch(/noindex:\s*true/);
   });
 });

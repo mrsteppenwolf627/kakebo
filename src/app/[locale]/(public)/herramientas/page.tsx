@@ -121,19 +121,19 @@ export default async function ToolsIndexPage({ params }: { params: Promise<{ loc
           {/* Premium system - secondary highlight, tools above stay primary */}
           <div className="mt-12 rounded-3xl border border-primary/30 bg-card p-10 text-center space-y-4 shadow-sm">
             <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
-              {locale === 'es' ? 'Nuevo sistema premium' : 'New premium system'}
+              {locale === 'es' ? 'Nuevo pack premium · Próximamente' : 'New premium pack · Coming soon'}
             </p>
             <h2 className="text-2xl md:text-3xl font-serif text-foreground">Kakebo Master System</h2>
             <p className="text-muted-foreground font-light max-w-xl mx-auto">
               {locale === 'es'
-                ? 'Un sistema Excel completo para planificar, registrar, revisar y reflexionar durante todo el año. En preparación.'
-                : 'A complete Excel system to plan, track, review and reflect all year long. In preparation.'}
+                ? 'Plantilla Kakebo Excel premium, ebook y tutorial en PDF para planificar, registrar y revisar tu dinero durante todo el año. 9,90 € IVA incluido, compra única. La plantilla gratuita sigue disponible.'
+                : 'A premium Kakebo Excel template, an ebook and a PDF tutorial to plan, track and review your money all year long. €9.90 VAT included, one-time purchase. The free template stays available.'}
             </p>
             <PremiumLink
               ctaLocation="tools_index_premium_block"
               className="inline-block rounded-full border border-primary px-8 py-3 font-bold text-foreground transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2"
             >
-              {locale === 'es' ? 'Ver el sistema premium' : 'See the premium system'}
+              {locale === 'es' ? 'Ver el pack Kakebo Master System' : 'See the Kakebo Master System pack'}
             </PremiumLink>
           </div>
 

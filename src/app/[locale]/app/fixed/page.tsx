@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/browser";
 import { useTranslations } from "next-intl";
+import { isYm, normalizeYm, parseDueDay } from "@/lib/fixed-expenses/validation";
 
 type FixedExpenseRow = {
   id: string;
@@ -22,25 +23,11 @@ function money(n: number) {
   return (Number(n) || 0).toFixed(2);
 }
 
-function isYm(s: string) {
-  return /^\d{4}-\d{2}$/.test(s);
-}
-
 function currentYm() {
   const d = new Date();
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
   return `${y}-${m}`;
-}
-
-function parseDueDay(v: string): number | null {
-  const t = v.trim();
-  if (!t) return null;
-  const n = Number(t);
-  if (!Number.isFinite(n)) return null;
-  const i = Math.trunc(n);
-  if (i < 1 || i > 31) return null;
-  return i;
 }
 
 type EditForm = {
@@ -130,13 +117,17 @@ export default function FixedExpensesPage() {
     if (eYm && eYm < sYm) return { ok: false as const, message: t("form.validation.endAfterStart") };
     if (args.due_day.trim() && dd === null) return { ok: false as const, message: t("form.validation.dayFormat") };
 
+    // Normalize YM format to ensure YYYY-MM (pad month with 0 if needed)
+    const normalizedStartYm = normalizeYm(sYm);
+    const normalizedEndYm = eYm ? normalizeYm(eYm) : null;
+
     return {
       ok: true as const,
       data: {
         name: nm,
         amount: amt,
-        start_ym: sYm,
-        end_ym: eYm ? eYm : null,
+        start_ym: normalizedStartYm,
+        end_ym: normalizedEndYm,
         due_day: dd,
       },
     };

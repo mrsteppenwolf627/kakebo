@@ -7,10 +7,18 @@ vi.mock("@/i18n/routing", () => ({ routing: { locales: ["en", "es"] } }));
 import sitemap from "@/app/sitemap";
 
 describe("sitemap regression", () => {
-  // Update this expectation on purpose when the premium landing goes live (noindex removed).
-  it("does not list the noindex premium landing", () => {
-    const urls = sitemap().map((e) => e.url);
-    expect(urls.some((u) => u.includes("plantilla-kakebo-excel-premium"))).toBe(false);
+  it("lists the public premium landing in Spanish and English with reciprocal alternates", () => {
+    const entries = sitemap().filter((e) => e.url.includes("plantilla-kakebo-excel-premium"));
+    expect(entries.map((e) => e.url).sort()).toEqual([
+      "https://www.metodokakebo.com/en/herramientas/plantilla-kakebo-excel-premium",
+      "https://www.metodokakebo.com/herramientas/plantilla-kakebo-excel-premium",
+    ]);
+    for (const e of entries) {
+      expect(e.alternates?.languages).toEqual({
+        en: "https://www.metodokakebo.com/en/herramientas/plantilla-kakebo-excel-premium",
+        es: "https://www.metodokakebo.com/herramientas/plantilla-kakebo-excel-premium",
+      });
+    }
   });
 
   it("still lists the free template article in Spanish and English", () => {
