@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased] - 2026-10-06 (solo documentación)
+
+### Decisión de producto documentada (NO activada)
+- **Capa gratuita:** máximo 30 gastos/mes (mes natural Europe/Madrid), sin chatbot/IA conversacional, sin informes PDF, sin funciones premium/Plus (ADR-003).
+- **Trial:** PENDIENTE DE DECISIÓN DEL PROPIETARIO; no se confirma ninguna duración.
+- **Estado técnico y de producción:** sin cambios. Producción (evidencia fechada del 2026-10-05, no re-verificada) servía `41a4c98`; promover el código posterior sin aplicar antes las migraciones compatibles podría romper la creación de gastos. Ver `docs/planning/phase3b-migration-runbook.md`.
+- La entrada 4.0.0 de abajo ("Kakebo pasa a ser gratuito", "Eliminado trial/premium") es **histórica y parcialmente sustituida** por ADR-003.
+
 ## [4.0.0] - 2026-06-15
 
 ### CAMBIO DE MODELO DE NEGOCIO — Kakebo pasa a ser gratuito

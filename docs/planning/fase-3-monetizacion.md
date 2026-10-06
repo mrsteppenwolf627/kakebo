@@ -1,8 +1,12 @@
-> **ACTUALIZACIÓN 2026-10-06 — MODO COMPATIBLE.** Este documento describe el diseño del modelo freemium completo
-> (trial de 30 días, límite de 30 gastos, fundadores). **No es lo que se aplica ahora.** Hoy Kakebo conserva su comportamiento
-> actual (trial de 14 días, sin límite de gastos, IA y PDF disponibles) y el modelo freemium vive, inactivo, en
-> `supabase/deferred/freemium/`. Procedimiento vigente: `docs/planning/phase3b-migration-runbook.md`. Donde este documento
-> diga "30 días de prueba" o "límite activo", léase como diseño futuro, con la prueba de 14 días.
+> **ACTUALIZACIÓN 2026-10-06 — DECISIÓN VIGENTE Y MODO COMPATIBLE.** Este documento describe el diseño original del modelo freemium
+> (trial de 30 días, límite de 30 gastos, fundadores). **Hoy NO se aplica.** Decisión de producto vigente para la capa gratuita:
+> **máximo 30 gastos al mes; sin chatbot/IA conversacional; sin informes PDF; sin funciones premium/Plus** (ver ADR-003 en `ADRs.md`).
+> Sigue **sin activarse**: el código y la producción conservan acceso completo (modo compatible) y el modelo vive, inactivo, en
+> `supabase/deferred/freemium/`. Procedimiento, estado de producción (evidencia fechada del 2026-10-05, no verificada de nuevo) y
+> conclusión operativa (no promover el código posterior hasta migrar y verificar): `docs/planning/phase3b-migration-runbook.md`.
+>
+> **Sustituido en este documento:** *prueba de 30 días* — **PENDIENTE DE DECISIÓN DEL PROPIETARIO** (si habrá trial y su duración; ni 30 ni 14 días están confirmados).
+> Los usuarios existentes conservan sus privilegios mediante `legacy_full` (script diferido 04). Donde el texto diga "30 días de prueba", léase como diseño histórico.
 
 # Fase 3.B — Infraestructura de acceso, fundadores, prueba y límite gratuito
 

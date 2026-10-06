@@ -1,5 +1,7 @@
 # Fase 1 — Ciclos libres
 
+> **Nota 2026-10-06 (documento histórico):** las menciones a "trial de 30 días" y a fundadores corresponden al diseño de Fase 3 de septiembre de 2026. La decisión vigente (ADR-003) mantiene el límite de 30 gastos/mes para la capa gratuita, sin IA ni PDF, y deja el trial **PENDIENTE DE DECISIÓN DEL PROPIETARIO**. Estado actual: `docs/planning/phase3b-migration-runbook.md`.
+
 **Fecha:** 2026-09-14
 **Commit base:** rama `main`, tras el commit `3365934` (Fase 0.1)
 **Alcance:** solo ciclos libres. Sin Stripe, pagos, trial, acceso fundador, límite de 30 gastos, modo consulta, correos, publicidad, afiliados ni cambios de IA.

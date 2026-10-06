@@ -1,5 +1,7 @@
 # Estado del Proyecto Kakebo AI
 
+> **Nota de producto vigente (2026-10-06, ver ADR-003 en `ADRs.md`).** Decisión del propietario para la capa gratuita: máximo 30 gastos al mes; sin chatbot/IA conversacional; sin informes PDF; sin funciones premium/Plus. **Todavía NO está activada**: el código y la producción actual conservan acceso completo. Trial: **PENDIENTE DE DECISIÓN DEL PROPIETARIO**. Procedimiento y estado de producción (evidencia fechada, no verificada de nuevo): `docs/planning/phase3b-migration-runbook.md`. Los textos de este documento que afirmen otra cosa son históricos.
+
 **Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-REMAINING-PRODUCTION-VALIDATION-01 — validación de producción conjunta superada; **las 4 imágenes de la auditoría SE Ranking del 28/07/2026 quedan optimizadas y cerradas formalmente**)  
 **Último commit aceptado:** (ver hash final de esta tarea en el mensaje de cierre)  
 **Rama operativa:** `main`

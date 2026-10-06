@@ -1,5 +1,7 @@
 # Task List
 
+> **Nota 2026-10-06 (lista histórica):** el "Reverse Trial" de 14 días de la Fase 1 fue eliminado el 2026-06-15 (ADR-001). Que existiera un trigger de 14 días **no confirma** el estado actual de producción; el trial está **PENDIENTE DE DECISIÓN DEL PROPIETARIO** (ADR-003).
+
 ## Phase 1: MVP & Reverse Trial (Completed)
 - [x] Analyze Requirements <!-- id: 0 -->
 - [x] Design Database Schema <!-- id: 1 -->

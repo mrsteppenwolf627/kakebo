@@ -1,5 +1,7 @@
 # PROJECT STATUS — metodokakebo.com
 
+> **Nota de producto vigente (2026-10-06, ver ADR-003 en `ADRs.md`).** Decisión del propietario para la capa gratuita: máximo 30 gastos al mes; sin chatbot/IA conversacional; sin informes PDF; sin funciones premium/Plus. **Todavía NO está activada**: el código y la producción actual conservan acceso completo. Trial: **PENDIENTE DE DECISIÓN DEL PROPIETARIO**. Procedimiento y estado de producción (evidencia fechada, no verificada de nuevo): `docs/planning/phase3b-migration-runbook.md`. Los textos de este documento que afirmen otra cosa son históricos.
+
 **Última actualización:** 2026-07-28 (SEO-PERF-LARGE-IMAGES-REMAINING-PRODUCTION-VALIDATION-01 — validación de producción conjunta superada; las 4 imágenes >1MB de la auditoría SE Ranking del 28/07/2026 quedan optimizadas y cerradas; ver `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_KAKEBO_AUTONOMOS_01.md`, `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_KAKEBO_VS_YNAB_01.md`, `docs/seo/SEO_PERF_LARGE_IMAGES_FIX_LIBRO_KAKEBO_PDF_01.md` y sección correspondiente en `PROJECT_STATUS.md` raíz)  
 **Rama operativa:** `main`  
 **URL producción:** https://www.metodokakebo.com

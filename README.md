@@ -44,12 +44,14 @@ La mayoría de apps de finanzas personales son "cajas negras" o cobran por funci
 
 - **Gestión de presupuestos y gastos** (mensual, categorías y sub-presupuestos)
 - **Dashboard y métricas** (visión de estado, evolución y hábitos de gasto)
-- **Copiloto IA** con herramientas: clasifica gastos, responde preguntas ("si gasto X, ¿cuánto me queda?"), y ayuda a mantener el sistema ordenado
+- **Copiloto IA** con herramientas: clasifica gastos, responde preguntas ("si gasto X, ¿cuánto me queda?"), y ayuda a mantener el sistema ordenado *(disponible hoy para todos; en la capa gratuita futura no se incluirá — ADR-003)*
 - **Auth + seguridad**: control de acceso y permisos con **Row-Level Security (RLS)** en Postgres
 
 ## Modelo de negocio
 
-**Kakebo es gratuito.** No hay trial, no hay planes de pago, no hay paywalls.
+**Estado actual (código en `main` y última evidencia de producción, 2026-10-05; modo compatible):** Kakebo es gratuito para todo usuario autenticado, sin planes de pago ni paywalls activos.
+
+**Decisión de producto vigente (ADR-003), todavía NO activada:** la capa gratuita permitirá como máximo **30 gastos al mes** (mes natural en Europa/Madrid), **sin chatbot/IA conversacional, sin informes PDF y sin funciones premium/Plus**. Los usuarios existentes conservarán sus privilegios actuales. El trial queda **PENDIENTE DE DECISIÓN DEL PROPIETARIO** (no se confirma ninguna duración). Stripe y los pagos siguen desactivados. Detalle y estado de producción en [`docs/planning/phase3b-migration-runbook.md`](docs/planning/phase3b-migration-runbook.md).
 
 La monetización futura se basa en:
 - Blog financiero con SEO orgánico
@@ -137,7 +139,7 @@ A diferencia de un Excel o una app bancaria, Kakebo:
 
 ### 📄 Reportes & Análisis
 
-- 📑 **Reportes PDF**: Genera informes mensuales detallados para guardar o imprimir.
+- 📑 **Reportes PDF**: Genera informes mensuales detallados para guardar o imprimir. *(Disponible hoy para todos; en la capa gratuita futura no se incluirá — ADR-003.)*
 - 📊 **Análisis Visual**: Gráficos de distribución (Donut) y evolución (Barras).
 - 💾 **Exportación**: Tus datos siempre disponibles, exportables también nativamente a CSV y Excel (XLS).
 
@@ -250,7 +252,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 ## 📦 Changelog
 
-### v4.0.0 (2026-06-15) — Migración a herramienta gratuita
+### v4.0.0 (2026-06-15) — Migración a herramienta gratuita *(histórico: parcialmente sustituido por ADR-003, 2026-10-06)*
 
 - Eliminado modelo SaaS y Stripe
 - Eliminados trial, pricing y paywalls
