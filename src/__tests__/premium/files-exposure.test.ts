@@ -75,10 +75,10 @@ describe("private/premium is git-ignored", () => {
 });
 
 describe("no public route serves premium files", () => {
-  it("only exposes the two guarded premium API routes", () => {
+  it("only exposes the guarded premium API routes (checkout, claim, download)", () => {
     const dir = path.join(ROOT, "src/app/api/premium");
     const routes = walk(dir).map((f) => path.relative(dir, f).split(path.sep).join("/")).sort();
-    expect(routes).toEqual(["checkout/route.ts", "download/route.ts"]);
+    expect(routes).toEqual(["checkout/route.ts", "claim/route.ts", "download/route.ts"]);
   });
 
   it("has no catch-all or file-serving routes under /api/premium", () => {

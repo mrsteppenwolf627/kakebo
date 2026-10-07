@@ -92,7 +92,7 @@ describe("/api/premium/checkout — methods and wiring", () => {
     }
   });
 
-  it("route source does not import Stripe", () => {
+  it("route source uses the shared Stripe SDK wrapper, never raw HTTP", () => {
     const src = fs.readFileSync(
       path.join(process.cwd(), "src/app/api/premium/checkout/route.ts"),
       "utf8"
@@ -101,6 +101,7 @@ describe("/api/premium/checkout — methods and wiring", () => {
       .split("\n")
       .filter((l) => /^\s*import\s/.test(l))
       .join("\n");
-    expect(imports).not.toMatch(/stripe/i);
+    expect(imports).toContain("@/lib/stripe/server");
+    expect(src).not.toContain("api.stripe.com");
   });
 });

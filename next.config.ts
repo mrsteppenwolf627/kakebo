@@ -38,6 +38,12 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Premium pack endpoints (claim/download carry one-time ids or redirect to signed URLs):
+        // never leak the URL through the Referer header. Declared after the global rule so it wins.
+        source: "/api/premium/:path*",
+        headers: [{ key: "Referrer-Policy", value: "no-referrer" }],
+      },
     ];
   },
 };

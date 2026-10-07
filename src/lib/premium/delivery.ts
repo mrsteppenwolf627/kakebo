@@ -1,5 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { PREMIUM_ACCESS_COOKIE, findPurchaseByToken, insertDownload } from "./purchases";
 import {
+  PREMIUM_PACK_ID,
   PREMIUM_SIGNED_URL_TTL_SECONDS,
   PREMIUM_STORAGE_BUCKET,
   getPackFile,
@@ -11,11 +13,9 @@ import {
  * (it reaches the Supabase service-role client).
  *
  * Three seams:
- *   1. Entitlement: has this authenticated user a CONFIRMED purchase of the pack?
- *      (NOT connected: always denies.)
+ *   1. Entitlement: does this request carry a valid guest access token of a PAID purchase?
  *   2. Storage: private Supabase Storage bucket that hands out short-lived signed URLs.
- *      (Connected, but only reachable after the entitlement check in the download route.)
- *   3. Download log: one record per file delivered. (NOT connected: no-op.)
+ *   3. Download log: one record per file delivered.
  *
  * Nothing here may be unlocked by query params, headers or client-supplied flags.
  */
@@ -25,18 +25,39 @@ import {
 // ---------------------------------------------------------------------------
 
 export type EntitlementResult =
-  | { granted: true; userId: string; purchaseId: string }
-  | { granted: false; reason: "not_implemented" | "no_purchase" | "not_authenticated" };
+  | { granted: true; purchaseId: string }
+  | { granted: false; reason: "no_purchase" | "storage_error" };
+
+function readCookie(request: Request, name: string): string | null {
+  const header = request.headers.get("cookie");
+  if (!header) return null;
+  for (const part of header.split(";")) {
+    const i = part.indexOf("=");
+    if (i > 0 && part.slice(0, i).trim() === name) return part.slice(i + 1).trim() || null;
+  }
+  return null;
+}
 
 /**
- * TODO (after Stripe): authenticate the user server-side (Supabase session) and look up a
- * purchase row for `packId` whose status was set to "paid" ONLY by the signed Stripe
- * webhook (checkout.session.completed, with metadata.product === packId). One purchase
- * grants all three files. Never trust request input to decide this.
+ * Guest entitlement (no account). The ONLY credential is the HttpOnly access cookie minted by
+ * /api/premium/claim after the signed webhook recorded a paid purchase; it is looked up by hash
+ * and must belong to a non-revoked token of a purchase with status "paid". Query params,
+ * headers and client flags are never consulted. One purchase grants all three files.
+ * Independent of app access (profiles/access_grants/Plus).
  */
-export async function verifyPackEntitlement(_packId: string): Promise<EntitlementResult> {
-  void _packId;
-  return { granted: false, reason: "not_implemented" };
+export async function verifyPackEntitlement(
+  packId: string,
+  request: Request | null = null
+): Promise<EntitlementResult> {
+  if (packId !== PREMIUM_PACK_ID || !request) return { granted: false, reason: "no_purchase" };
+  const token = readCookie(request, PREMIUM_ACCESS_COOKIE);
+  if (!token || token.length > 200) return { granted: false, reason: "no_purchase" };
+  try {
+    const found = await findPurchaseByToken(token);
+    return found ? { granted: true, purchaseId: found.purchaseId } : { granted: false, reason: "no_purchase" };
+  } catch {
+    return { granted: false, reason: "storage_error" };
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -108,16 +129,14 @@ export function getPremiumStorage(): PremiumFileStorage {
 export interface PremiumDownloadRecord {
   packId: string;
   fileId: string;
-  userId: string;
   purchaseId: string;
-  at: Date;
 }
 
-/**
- * TODO (after Stripe): insert one row per delivered file (table e.g. `premium_downloads`),
- * enforce a per-purchase download limit, and emit `digital_product_downloaded` only after
- * a successful, authorized delivery. Intentionally a no-op today.
- */
-export async function recordPackDownload(_record: PremiumDownloadRecord): Promise<void> {
-  void _record;
+/** One row per delivered file. Never throws: a logging failure must not block a paid download. */
+export async function recordPackDownload(record: PremiumDownloadRecord): Promise<void> {
+  try {
+    await insertDownload(record.purchaseId, record.fileId);
+  } catch {
+    /* intentionally swallowed; nothing sensitive to report */
+  }
 }

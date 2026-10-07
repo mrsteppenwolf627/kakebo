@@ -4,6 +4,7 @@ import { Link } from "@/i18n/routing";
 import { PremiumViewTracker } from "@/components/premium/PremiumTracking";
 import { PremiumPurchaseButton } from "@/components/premium/PremiumPurchaseButton";
 import { isPremiumCommerceEnabled } from "@/lib/premium/config";
+import { applyLiveCopy } from "@/lib/premium/landing-live-copy";
 
 const PRODUCT_SLUG = "herramientas/plantilla-kakebo-excel-premium";
 const FREE_TEMPLATE_PATH = "/blog/plantilla-kakebo-excel";
@@ -341,8 +342,10 @@ const content = {
   },
 } as const;
 
-function getContent(locale: string) {
-  return content[(locale === "en" ? "en" : "es") as Locale];
+/** Original "coming soon" copy when commerce is off; the live copy only when it is on. */
+function getContent(locale: string, commerceEnabled = isPremiumCommerceEnabled()) {
+  const l = (locale === "en" ? "en" : "es") as Locale;
+  return commerceEnabled ? applyLiveCopy(content[l], l) : content[l];
 }
 
 function localizedUrl(locale: string, slug: string) {
@@ -402,10 +405,10 @@ export default async function PremiumTemplatePage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const c = getContent(locale);
+  const commerceEnabled = isPremiumCommerceEnabled();
+  const c = getContent(locale, commerceEnabled);
   const { panel, portada } = PREVIEWS;
   const pageUrl = localizedUrl(locale, PRODUCT_SLUG);
-  const commerceEnabled = isPremiumCommerceEnabled();
 
   const breadcrumbs = {
     "@context": "https://schema.org",
@@ -417,9 +420,8 @@ export default async function PremiumTemplatePage({
     ],
   };
 
-  // Product WITHOUT `offers`: the pack cannot be bought yet, so no price, currency or availability is
-  // declared in structured data (it would be a false availability signal). Add an Offer only when the
-  // purchase is really open.
+  // Commerce off: Product WITHOUT `offers` (no price, currency or availability: it would be a false
+  // availability signal). Commerce on: an Offer consistent with the real price (9.90 EUR) and stock.
   const product = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -430,6 +432,17 @@ export default async function PremiumTemplatePage({
     url: pageUrl,
     category: "Spreadsheet template",
     brand: { "@type": "Brand", name: "MetodoKakebo.com" },
+    ...(commerceEnabled
+      ? {
+          offers: {
+            "@type": "Offer",
+            price: "9.90",
+            priceCurrency: "EUR",
+            availability: "https://schema.org/InStock",
+            url: pageUrl,
+          },
+        }
+      : {}),
   };
 
   const faqSchema = {

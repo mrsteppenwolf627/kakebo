@@ -22,8 +22,8 @@ describe("premium delivery layer fails closed", () => {
     expect(result.granted).toBe(false);
   });
 
-  it("takes no request input that could be forged", () => {
-    // Only the pack id (a constant) is accepted; no params/headers/cookies.
+  it("denies without a request (no cookie to check)", async () => {
+    expect(await verifyPackEntitlement(PREMIUM_PACK_ID)).toEqual({ granted: false, reason: "no_purchase" });
     expect(verifyPackEntitlement.length).toBe(1);
   });
 
@@ -37,9 +37,10 @@ describe("premium delivery layer fails closed", () => {
     }
   });
 
-  it("does not record downloads yet (no-op)", async () => {
+  it("never throws when the download log cannot be written", async () => {
+    delete process.env.SUPABASE_SERVICE_ROLE_KEY;
     await expect(
-      recordPackDownload({ packId: PREMIUM_PACK_ID, fileId: "excel", userId: "u", purchaseId: "p", at: new Date() })
+      recordPackDownload({ packId: PREMIUM_PACK_ID, fileId: "excel", purchaseId: "p" })
     ).resolves.toBeUndefined();
   });
 

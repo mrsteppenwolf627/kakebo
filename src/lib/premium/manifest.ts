@@ -104,3 +104,9 @@ export function getPackFile(id: string | null | undefined): PremiumPackFile | un
   if (!id) return undefined;
   return PREMIUM_PACK_FILES.find((f) => f.id === id);
 }
+
+/** Commercial terms the webhook enforces exactly (never taken from the client). */
+export const PREMIUM_PACK_AMOUNT_CENTS = 990;
+export const PREMIUM_PACK_CURRENCY = "eur";
+/** Stripe product/session metadata key that must equal `PREMIUM_PACK_ID`. */
+export const PREMIUM_PRODUCT_METADATA_KEY = "product_key";

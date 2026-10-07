@@ -8,6 +8,7 @@ import {
 import {
   getPremiumStorage,
   verifyPackEntitlement,
+  recordPackDownload,
   PremiumStorageNotConfiguredError,
 } from "@/lib/premium/delivery";
 import { apiLogger } from "@/lib/logger";
@@ -16,8 +17,7 @@ import { apiLogger } from "@/lib/logger";
 //
 // Order is deliberate and fail-closed:
 //   1. PREMIUM_COMMERCE_ENABLED must be exactly "true"  -> else 503.
-//   2. A verified entitlement for the pack               -> else 403. (Today it always denies:
-//      purchases/Stripe are not connected, so steps 3+ are unreachable.)
+//   2. A verified entitlement for the pack               -> else 403.
 //   3. `file` must be exactly excel | tutorial | ebook (manifest allowlist) -> else 400.
 //   4. Only now is a signed URL created (Supabase Storage, private bucket, 600 s) and the
 //      response is a 302 to it. The URL is never logged, rendered or returned earlier.
@@ -25,9 +25,7 @@ import { apiLogger } from "@/lib/logger";
 // Access never depends on query params: `?paid=true`, `?token=x`, `?purchase=true`, ... are
 // ignored. `file` is only a selector validated against the manifest; it can never build a path.
 //
-// TODO when commerce is connected: pass the request to verifyPackEntitlement (session cookies),
-// call recordPackDownload(...) for the single file delivered, rate-limit repeated downloads and
-// emit `digital_product_downloaded` after a successful, authorized delivery.
+// Entitlement = HttpOnly guest cookie checked against a paid, non-revoked purchase (see delivery.ts).
 
 const NO_STORE = { "Cache-Control": "no-store" };
 
@@ -43,7 +41,7 @@ export async function GET(request?: Request) {
     );
   }
 
-  const entitlement = await verifyPackEntitlement(PREMIUM_PACK_ID);
+  const entitlement = await verifyPackEntitlement(PREMIUM_PACK_ID, request ?? null);
   if (!entitlement.granted) {
     return json(
       { code: "entitlement_not_verified", message: "A verified purchase is required to download this product." },
@@ -61,6 +59,11 @@ export async function GET(request?: Request) {
     const grant = await getPremiumStorage().createDownloadGrant(file, {
       expiresInSeconds: PREMIUM_SIGNED_URL_TTL_SECONDS,
     });
+    // Only a real GET delivery is logged (HEAD probes are not downloads); the log is idempotent per
+    // (purchase, file, 10 s bucket), so a technical retry of the same request adds no extra row.
+    if (request?.method !== "HEAD") {
+      await recordPackDownload({ packId: PREMIUM_PACK_ID, fileId: file.id, purchaseId: entitlement.purchaseId });
+    }
     const redirect = NextResponse.redirect(grant.url, 302);
     redirect.headers.set("Cache-Control", "no-store");
     redirect.headers.set("Referrer-Policy", "no-referrer");
