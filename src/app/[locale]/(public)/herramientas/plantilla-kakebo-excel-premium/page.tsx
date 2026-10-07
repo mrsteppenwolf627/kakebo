@@ -28,8 +28,8 @@ const content = {
     },
     home: "Inicio",
     tools: "Herramientas",
-    eyebrow: "Plantilla Kakebo Excel Premium",
-    h1: "Más claridad para tu dinero. Menos improvisación.",
+    eyebrow: "Kakebo Master System · Pack digital",
+    h1: "Plantilla Kakebo Excel premium: más claridad para tu dinero, menos improvisación",
     subtitle:
       "Kakebo Master System es un pack digital con una plantilla Excel premium, un ebook y un tutorial en PDF para planificar, registrar y revisar tu dinero cada mes.",
     status: "Próximamente",
@@ -188,8 +188,8 @@ const content = {
     },
     home: "Home",
     tools: "Tools",
-    eyebrow: "Premium Kakebo Excel Template",
-    h1: "More clarity for your money. Less improvisation.",
+    eyebrow: "Kakebo Master System · Digital pack",
+    h1: "Premium Kakebo Excel template: more clarity for your money, less improvisation",
     subtitle:
       "Kakebo Master System is a digital pack with a premium Excel template, an ebook and a PDF tutorial to plan, track and review your money every month.",
     status: "Coming soon",

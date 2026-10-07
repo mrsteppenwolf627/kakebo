@@ -21,6 +21,17 @@ describe("sitemap regression", () => {
     }
   });
 
+  it("gives the premium landing its own lastModified without touching other core routes", () => {
+    const all = sitemap();
+    const premium = all.filter((e) => e.url.includes("plantilla-kakebo-excel-premium"));
+    for (const e of premium) {
+      expect(new Date(e.lastModified as Date).toISOString().slice(0, 10)).toBe("2026-10-07");
+      expect(e.priority).toBe(0.8);
+    }
+    const tools = all.find((e) => e.url === "https://www.metodokakebo.com/herramientas");
+    expect(new Date(tools!.lastModified as Date).toISOString().slice(0, 10)).toBe("2026-07-07");
+  });
+
   it("still lists the free template article in Spanish and English", () => {
     const urls = sitemap().map((e) => e.url);
     expect(urls.some((u) => u.endsWith("/blog/plantilla-kakebo-excel"))).toBe(true);

@@ -50,6 +50,13 @@ describe.each(["es", "en"] as const)("premium landing (%s)", (locale) => {
     expect(document.querySelectorAll("h1")).toHaveLength(1);
   });
 
+  it("H1 carries the main search intent without stuffing", async () => {
+    await renderLanding(locale);
+    const h1 = document.querySelector("h1")!.textContent ?? "";
+    expect(h1).toMatch(locale === "es" ? /plantilla Kakebo Excel premium/i : /premium Kakebo Excel template/i);
+    expect(h1.match(/kakebo/gi)).toHaveLength(1);
+  });
+
   it("links only to the free template and to the tools hub, never directly to .xlsx or .pdf files", async () => {
     const { container } = await renderLanding(locale);
     const hrefs = [...container.querySelectorAll("a")].map((a) => a.getAttribute("href") ?? "");

@@ -8,6 +8,12 @@ import { routing } from '@/i18n/routing';
 // on every build regardless of whether anything changed.
 const CORE_ROUTES_LAST_MODIFIED = new Date('2026-07-07');
 
+// Per-route overrides for core routes whose content changed after CORE_ROUTES_LAST_MODIFIED.
+// Same rule: bump manually when that page's content really changes.
+const ROUTE_LAST_MODIFIED: Record<string, Date> = {
+    '/herramientas/plantilla-kakebo-excel-premium': new Date('2026-10-07'),
+};
+
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.metodokakebo.com';
     const posts = getBlogPosts();
@@ -37,7 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             const path = route.path === '' && locale === 'es' ? '' : (locale === 'es' ? route.path : `/${locale}${route.path}`);
             sitemapEntries.push({
                 url: `${baseUrl}${path}`,
-                lastModified: CORE_ROUTES_LAST_MODIFIED,
+                lastModified: ROUTE_LAST_MODIFIED[route.path] ?? CORE_ROUTES_LAST_MODIFIED,
                 changeFrequency: route.changeFrequency,
                 priority: route.priority,
                 alternates: {
