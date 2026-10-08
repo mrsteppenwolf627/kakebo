@@ -1046,7 +1046,7 @@
             "successRate": "Tasa de éxito",
             "totalCost": "Costo total",
             "avgLatency": "Latencia media",
-            "accuracy": "Accuracy",
+            "accuracy": "Precisión",
             "accuracySubtitle": "{corrected} correcciones de {total}",
             "tokenUsage": {
                 "title": "Uso de tokens",

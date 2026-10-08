@@ -186,8 +186,8 @@ export default function AIMetricsClient() {
   return (
     <div className="space-y-6">
       {/* Date range filter */}
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-muted-foreground">{t("period")}</span>
+      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card p-3 shadow-sm">
+        <span className="text-sm text-muted-foreground mr-1">{t("period")}</span>
         {(["7d", "30d", "90d", "all"] as const).map((range) => (
           <button
             key={range}
@@ -203,7 +203,7 @@ export default function AIMetricsClient() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
         <MetricCard
           label={t("summary.totalRequests")}
           value={metrics.totalRequests.toString()}

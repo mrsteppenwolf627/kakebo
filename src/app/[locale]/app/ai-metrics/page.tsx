@@ -13,13 +13,13 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 function LoadingFallback() {
   return (
     <div className="animate-pulse space-y-4">
-      <div className="h-8 bg-black/10 rounded w-48" />
+      <div className="h-8 bg-muted rounded w-48" />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="h-24 bg-black/10 rounded" />
+          <div key={i} className="h-24 bg-muted rounded" />
         ))}
       </div>
-      <div className="h-64 bg-black/10 rounded" />
+      <div className="h-64 bg-muted rounded" />
     </div>
   );
 }
@@ -31,7 +31,7 @@ export default async function AIMetricsPage({ params: { locale } }: { params: { 
     <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold">{t("title")}</h1>
+          <h1 className="text-2xl sm:text-3xl font-serif font-medium text-foreground">{t("title")}</h1>
           <p className="text-sm text-muted-foreground mt-1">
             {t("subtitle")}
           </p>
