@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/browser";
 import { usesCycleLedger } from "@/lib/cycles/ledger-scope";
+import { useLocale } from "next-intl";
 
 type MonthRow = {
   id: string;
@@ -24,8 +25,16 @@ function ymLabel(year: number, month: number) {
   return `${year}-${String(month).padStart(2, "0")}`;
 }
 
+function cycleLabel(year: number, month: number, locale: string) {
+  return new Intl.DateTimeFormat(locale, {
+    month: "long",
+    year: "numeric",
+  }).format(new Date(year, month - 1, 1));
+}
+
 export default function HistoryPage() {
   const supabase = createClient();
+  const locale = useLocale();
 
   const [months, setMonths] = useState<MonthRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -132,13 +141,14 @@ export default function HistoryPage() {
             <div className="hidden sm:grid sm:grid-cols-12 border-b border-black/10 p-3 text-xs text-black/60">
               <div className="col-span-3">Ciclo</div>
               <div className="col-span-2">Estado</div>
-              <div className="col-span-3">Gastos</div>
-              <div className="col-span-2">Nº</div>
+              <div className="col-span-3">Importe gastado</div>
+              <div className="col-span-2">Movimientos</div>
               <div className="col-span-2 text-right">Acción</div>
             </div>
 
             {months.map((m) => {
               const a = agg[m.id] ?? { total: 0, count: 0 };
+              const label = cycleLabel(m.year, m.month, locale);
               return (
                 <div
                   key={m.id}
@@ -147,7 +157,10 @@ export default function HistoryPage() {
                   {/* Mobile Layout */}
                   <div className="sm:hidden space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium">{ymLabel(m.year, m.month)}</span>
+                      <div>
+                        <div className="font-medium capitalize">{label}</div>
+                        <div className="text-xs text-black/50 font-mono">{ymLabel(m.year, m.month)}</div>
+                      </div>
                       <span className={`text-xs px-2 py-0.5 rounded ${m.status === "closed"
                           ? "bg-black/10 text-black/60"
                           : "bg-green-100 text-green-700"
@@ -168,8 +181,18 @@ export default function HistoryPage() {
 
                   {/* Desktop Layout */}
                   <div className="hidden sm:grid sm:grid-cols-12 items-center">
-                    <div className="col-span-3 font-medium">{ymLabel(m.year, m.month)}</div>
-                    <div className="col-span-2 text-black/60">{m.status === "closed" ? "Cerrado" : "Abierto"}</div>
+                    <div className="col-span-3">
+                      <div className="font-medium capitalize">{label}</div>
+                      <div className="text-xs text-black/50 font-mono">{ymLabel(m.year, m.month)}</div>
+                    </div>
+                    <div className="col-span-2">
+                      <span className={`inline-flex rounded-full px-2 py-1 text-xs ${m.status === "closed"
+                        ? "bg-black/10 text-black/60"
+                        : "bg-green-100 text-green-700"
+                        }`}>
+                        {m.status === "closed" ? "Cerrado" : "Abierto"}
+                      </span>
+                    </div>
                     <div className="col-span-3">{a.total.toFixed(2)} €</div>
                     <div className="col-span-2 text-black/60">{a.count}</div>
                     <div className="col-span-2 text-right">
