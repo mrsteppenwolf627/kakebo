@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Loader2 } from "lucide-react";
 import ReportPDF from "./ReportPDF";
@@ -42,15 +42,30 @@ export default function ReportDialog({
     const [loading, setLoading] = useState(false);
     const [reportData, setReportData] = useState<ReportData | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const titleRef = useRef<HTMLHeadingElement>(null);
 
     useEffect(() => {
         if (!isOpen) return;
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        titleRef.current?.focus();
         const onKeyDown = (event: KeyboardEvent) => {
             if (event.key === "Escape") onClose();
         };
         window.addEventListener("keydown", onKeyDown);
-        return () => window.removeEventListener("keydown", onKeyDown);
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            window.removeEventListener("keydown", onKeyDown);
+        };
     }, [isOpen, onClose]);
+
+    useEffect(() => {
+        if (isOpen) {
+            setDate(`${initialYm}-01`);
+            setReportData(null);
+            setError(null);
+        }
+    }, [initialYm, isOpen]);
 
     if (!isOpen) return null;
 
@@ -118,9 +133,9 @@ export default function ReportDialog({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in" role="presentation" onClick={onClose}>
-            <div className="bg-card border border-border w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 rounded-xl shadow-lg space-y-6" role="dialog" aria-modal="true" aria-labelledby="report-dialog-title" onClick={(e) => e.stopPropagation()}>
-                <h2 id="report-dialog-title" className="text-xl font-serif font-medium">Informe premium</h2>
-                <p className="text-sm text-muted-foreground">Descarga un resumen verificable de tus movimientos. El modo Ciclo sigue exactamente el reparto del dashboard.</p>
+            <div className="bg-card border border-border w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 rounded-xl shadow-lg space-y-6" role="dialog" aria-modal="true" aria-labelledby="report-dialog-title" aria-describedby="report-dialog-description" onClick={(e) => e.stopPropagation()}>
+                <h2 ref={titleRef} tabIndex={-1} id="report-dialog-title" className="text-xl font-serif font-medium outline-none">Informe premium</h2>
+                <p id="report-dialog-description" className="text-sm text-muted-foreground">Descarga un resumen verificable de tus movimientos. El modo Ciclo sigue exactamente el reparto del dashboard.</p>
 
                 <div className="space-y-4">
                     {/* Range Selector */}
@@ -128,7 +143,9 @@ export default function ReportDialog({
                         {(["cycle", "day", "week", "month", "year"] as const).map((r) => (
                             <button
                                 key={r}
+                                type="button"
                                 onClick={() => { setRange(r); setReportData(null); }}
+                                aria-pressed={range === r}
                                 className={`text-sm py-2 rounded-md capitalize transition-colors ${range === r ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}
                             >
                                 {r === "cycle" ? "Ciclo" : r === "day" ? "Día" : r === "week" ? "Semana" : r === "month" ? "Mes" : "Año"}
@@ -138,8 +155,9 @@ export default function ReportDialog({
 
                     {/* Date Input */}
                     <div className="space-y-1">
-                        <label className="text-sm text-foreground font-medium">{range === "cycle" ? "Selecciona ciclo" : "Selecciona fecha"}</label>
+                        <label htmlFor="report-date" className="text-sm text-foreground font-medium">{range === "cycle" ? "Selecciona ciclo" : "Selecciona fecha"}</label>
                         <input
+                            id="report-date"
                             type={range === "cycle" || range === "month" ? "month" : range === "year" ? "number" : "date"}
                             value={range === "year" ? date.split("-")[0] : range === "cycle" || range === "month" ? date.slice(0, 7) : date}
                             onChange={(e) => {
@@ -151,6 +169,7 @@ export default function ReportDialog({
                             }}
                             min={range === "year" ? "2020" : undefined}
                             max={range === "year" ? "2030" : undefined}
+                            step={range === "year" ? "1" : undefined}
                             className="w-full border border-input bg-background rounded-md px-3 py-2 text-sm"
                         />
                     </div>
@@ -190,12 +209,13 @@ export default function ReportDialog({
                 </div>
 
                 <div className="flex items-center justify-end gap-3 pt-2">
-                    <button onClick={onClose} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">
+                    <button type="button" onClick={onClose} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">
                         Cancelar
                     </button>
 
                     {!reportData ? (
                         <button
+                            type="button"
                             onClick={generateData}
                             disabled={loading}
                             className="px-4 py-2 bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 rounded-md text-sm font-medium hover:opacity-90 disabled:opacity-50 flex items-center gap-2"
@@ -206,6 +226,7 @@ export default function ReportDialog({
                     ) : (
                         <div className="flex flex-col sm:flex-row gap-2 w-full justify-between items-center sm:items-start mt-4 border-t border-border pt-4">
                             <button
+                                type="button"
                                 onClick={() => setReportData(null)}
                                 className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground border border-border rounded-md w-full sm:w-auto text-center order-last sm:order-first mt-2 sm:mt-0"
                             >
@@ -213,12 +234,14 @@ export default function ReportDialog({
                             </button>
                             <div className="flex flex-wrap gap-2 justify-end w-full sm:w-auto">
                                 <button
+                                    type="button"
                                     onClick={() => handleDownloadCSV(false)}
                                     className="px-3 py-2 bg-stone-100 text-stone-900 border border-stone-200 dark:bg-stone-800 dark:border-stone-700 dark:text-stone-100 hover:opacity-80 rounded-md text-sm font-medium transition-opacity inline-flex items-center gap-2"
                                 >
                                     <span>📊</span> CSV
                                 </button>
                                 <button
+                                    type="button"
                                     onClick={() => handleDownloadCSV(true)}
                                     className="px-3 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-900/30 dark:border-emerald-800 dark:text-emerald-400 hover:opacity-80 rounded-md text-sm font-medium transition-opacity inline-flex items-center gap-2"
                                 >

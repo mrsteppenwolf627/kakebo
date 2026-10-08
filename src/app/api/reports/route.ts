@@ -170,6 +170,7 @@ export async function POST(request: NextRequest) {
 
     let fixedTotal = 0;
     let savingGoal = 0;
+    let baseIncome = 0;
     if (reportYm) {
       const [{ data: settings, error: settingsError }, { data: fixed, error: fixedError }] = await Promise.all([
         supabase.from("user_settings").select("monthly_income,monthly_saving_goal").eq("user_id", user.id).maybeSingle(),
@@ -177,6 +178,7 @@ export async function POST(request: NextRequest) {
       ]);
       if (settingsError) throw settingsError;
       if (fixedError) throw fixedError;
+      baseIncome = Number(settings?.monthly_income) || 0;
       savingGoal = Number(settings?.monthly_saving_goal) || 0;
       fixedTotal = (fixed ?? [])
         .filter((row) => row.active && row.start_ym <= reportYm! && (!row.end_ym || row.end_ym >= reportYm!))
@@ -185,7 +187,6 @@ export async function POST(request: NextRequest) {
 
     const totalSpent = sum(expenses);
     const totalIncome = sum(incomes);
-    const baseIncome = reportYm ? Number((await supabase.from("user_settings").select("monthly_income").eq("user_id", user.id).maybeSingle()).data?.monthly_income) || 0 : 0;
     const incomeForSummary = reportYm ? baseIncome + totalIncome : totalIncome;
     const budgetBeforeExpenses = reportYm ? incomeForSummary - fixedTotal - savingGoal : incomeForSummary;
 
