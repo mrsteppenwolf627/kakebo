@@ -9,7 +9,7 @@ export default function CancelClient() {
                 Kakebo es gratuito
             </h1>
             <p className="text-muted-foreground">
-                No tienes ninguna suscripción activa. Kakebo es ahora completamente gratuito y puedes usar todas las funcionalidades sin límites.
+                No tienes ninguna suscripción Plus activa en esta cuenta. Puedes seguir usando las funciones disponibles para tu nivel de acceso actual.
             </p>
 
             <Link
