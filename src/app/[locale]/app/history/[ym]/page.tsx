@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/i18n/routing";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
+import { usesCycleLedger } from "@/lib/cycles/ledger-scope";
 
 const KAKEBO_CATEGORIES = {
   survival: { label: "Supervivencia", color: "#dc2626" },
@@ -132,12 +133,17 @@ export default function MonthDetailPage() {
         return;
       }
 
-      const { data, error } = await supabase
+      const expenseQuery = supabase
         .from("expenses")
         .select("id,user_id,month_id,date,amount,category,note,color,created_at")
-        .eq("user_id", userId)
-        .eq("month_id", m.id)
-        .order("date", { ascending: false });
+        .eq("user_id", userId);
+      const lastDay = new Date(year, month, 0).getDate();
+      const { data, error } = usesCycleLedger(ym)
+        ? await expenseQuery.eq("month_id", m.id).order("date", { ascending: false })
+        : await expenseQuery
+          .gte("date", `${ym}-01`)
+          .lte("date", `${ym}-${String(lastDay).padStart(2, "0")}`)
+          .order("date", { ascending: false });
 
       if (error) throw error;
 

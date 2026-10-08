@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/browser";
+import { usesCycleLedger } from "@/lib/cycles/ledger-scope";
 
 type MonthRow = {
   id: string;
@@ -61,11 +62,15 @@ export default function HistoryPage() {
 
       const map: Record<string, ExpenseAgg> = {};
       for (const m of ms) {
-        const { data: exp, error: eErr } = await supabase
+        const expenseQuery = supabase
           .from("expenses")
           .select("amount")
-          .eq("user_id", userId)
-          .eq("month_id", m.id);
+          .eq("user_id", userId);
+        const { data: exp, error: eErr } = usesCycleLedger(ymLabel(m.year, m.month))
+          ? await expenseQuery.eq("month_id", m.id)
+          : await expenseQuery
+            .gte("date", `${ymLabel(m.year, m.month)}-01`)
+            .lte("date", `${ymLabel(m.year, m.month)}-${String(new Date(m.year, m.month, 0).getDate()).padStart(2, "0")}`);
 
         if (eErr) throw eErr;
 

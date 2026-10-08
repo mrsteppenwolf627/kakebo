@@ -9,6 +9,7 @@ import ManageIncomesModal from "./ManageIncomesModal";
 import TrialBanner from "./saas/TrialBanner";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { usesCycleLedger } from "@/lib/cycles/ledger-scope";
 
 type Props = {
   year: number;
@@ -177,7 +178,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       // 4) cycle spent: use the cycle relationship when it exists.
       // Falling back to the date range keeps the first-use experience working
       // before a cycle row has been created.
-      const cycleId = mo?.[0]?.id ?? null;
+      const cycleId = usesCycleLedger(ym) ? (mo?.[0]?.id ?? null) : null;
       const expenseQuery = supabase
         .from("expenses")
         .select("amount")

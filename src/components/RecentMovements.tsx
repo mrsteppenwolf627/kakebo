@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { useTranslations } from "next-intl";
+import { usesCycleLedger } from "@/lib/cycles/ledger-scope";
 
 type Expense = {
   id: string;
@@ -79,7 +80,7 @@ export default function RecentMovements({ year, month, ym }: Props) {
 
       if (cycleErr) throw cycleErr;
 
-      const cycleId = cycleRows?.[0]?.id ?? null;
+      const cycleId = usesCycleLedger(ym) ? (cycleRows?.[0]?.id ?? null) : null;
       const expenseQuery = supabase
         .from("expenses")
         .select("id,date,amount,category,note")
