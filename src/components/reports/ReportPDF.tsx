@@ -134,6 +134,13 @@ type Expense = {
     amount: number;
 };
 
+type Income = {
+    id: string;
+    date: string;
+    description: string | null;
+    amount: number;
+};
+
 type ReportData = {
     dateRange: string;
     totalSpent: number;
@@ -143,11 +150,16 @@ type ReportData = {
     budgetBeforeExpenses: number;
     availableReal: number;
     expenses: Expense[];
+    incomes: Income[];
     expensesByCategory: Record<string, number>;
 };
 
 export default function ReportPDF({ data }: { data: ReportData }) {
-    const { dateRange, totalSpent, totalIncome, fixedTotal, savingGoal, budgetBeforeExpenses, availableReal, expenses, expensesByCategory } = data;
+    const { dateRange, totalSpent, totalIncome, fixedTotal, savingGoal, budgetBeforeExpenses, availableReal, expenses, incomes, expensesByCategory } = data;
+    const movements = [
+        ...expenses.map((expense) => ({ ...expense, type: "Gasto", concept: expense.note || "-", categoryLabel: KAKEBO_META[expense.category]?.label || expense.category })),
+        ...incomes.map((income) => ({ ...income, type: "Ingreso", concept: income.description || "-", categoryLabel: "Ingreso" })),
+    ].sort((a, b) => b.date.localeCompare(a.date));
 
     // Background Image Path - ReactPDF needs absolute URL or base64 or relative to public
     // Assuming the component is run in browser, window.location.origin might be needed if using http url
@@ -195,7 +207,7 @@ export default function ReportPDF({ data }: { data: ReportData }) {
 
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Resumen financiero</Text>
-                    <Text style={styles.subtitle}>Presupuesto tras fijos y ahorro: {budgetBeforeExpenses.toFixed(2)} € · Fijos: {fixedTotal.toFixed(2)} € · Ahorro: {savingGoal.toFixed(2)} € · Movimientos: {expenses.length}</Text>
+                    <Text style={styles.subtitle}>Presupuesto tras fijos y ahorro: {budgetBeforeExpenses.toFixed(2)} € · Fijos: {fixedTotal.toFixed(2)} € · Ahorro: {savingGoal.toFixed(2)} € · Movimientos: {movements.length}</Text>
                 </View>
 
                 {/* Breakdown by Category */}
@@ -231,18 +243,16 @@ export default function ReportPDF({ data }: { data: ReportData }) {
                     <View style={styles.table}>
                         <View style={styles.tableHeader}>
                             <Text style={styles.colDate}>FECHA</Text>
-                            <Text style={styles.colCategory}>CATEGORÍA</Text>
+                            <Text style={styles.colCategory}>TIPO / CATEGORÍA</Text>
                             <Text style={styles.colNote}>CONCEPTO</Text>
                             <Text style={styles.colAmount}>IMPORTE</Text>
                         </View>
-                        {expenses.map((expense) => (
-                            <View key={expense.id} style={styles.tableRow}>
-                                <Text style={styles.colDate}>{expense.date}</Text>
-                                <Text style={styles.colCategory}>
-                                    {KAKEBO_META[expense.category]?.label || expense.category}
-                                </Text>
-                                <Text style={styles.colNote}>{expense.note || "-"}</Text>
-                                <Text style={styles.colAmount}>{expense.amount.toFixed(2)} €</Text>
+                        {movements.map((movement) => (
+                            <View key={`${movement.type}-${movement.id}`} style={styles.tableRow}>
+                                <Text style={styles.colDate}>{movement.date}</Text>
+                                <Text style={styles.colCategory}>{movement.type} · {movement.categoryLabel}</Text>
+                                <Text style={styles.colNote}>{movement.concept}</Text>
+                                <Text style={styles.colAmount}>{movement.amount.toFixed(2)} €</Text>
                             </View>
                         ))}
                     </View>

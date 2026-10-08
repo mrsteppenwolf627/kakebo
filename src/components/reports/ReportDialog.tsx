@@ -78,19 +78,29 @@ export default function ReportDialog({
     function handleDownloadCSV(isExcel: boolean) {
         if (!reportData || !reportData.expenses) return;
 
-        const headers = ["Fecha", "Concepto", "Categoría", "Importe"];
+        const headers = ["Tipo", "Fecha", "Concepto", "Categoría", "Importe"];
         const escapeCell = (value: unknown) => `"${String(value ?? "").replace(/"/g, '""')}"`;
-        const rows = reportData.expenses.map((e) => [
-            e.date,
-            escapeCell(e.note || ""),
-            CATEGORY_LABELS[e.category] || e.category,
-            e.amount
-        ]);
+        const rows = [
+            ...reportData.expenses.map((e) => [
+                "Gasto",
+                e.date,
+                e.note || "",
+                CATEGORY_LABELS[e.category] || e.category,
+                e.amount,
+            ]),
+            ...reportData.incomes.map((income) => [
+                "Ingreso",
+                income.date,
+                income.description || "",
+                "Ingreso",
+                income.amount,
+            ]),
+        ].map((row) => row.map(escapeCell));
 
         const separator = isExcel ? ";" : ",";
         const csvContent = [
             headers.join(separator),
-            ...rows.map((row: any[]) => row.join(separator))
+            ...rows.map((row) => row.join(separator))
         ].join("\n");
 
         const blobParts = isExcel ? [new Uint8Array([0xEF, 0xBB, 0xBF]), csvContent] : [csvContent];
@@ -172,7 +182,7 @@ export default function ReportDialog({
                                 </div>
                                 <div className="rounded-md bg-muted/50 p-3">
                                     <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Movimientos</div>
-                                    <div className="mt-1 text-sm font-semibold text-foreground">{reportData.expenses.length}</div>
+                                    <div className="mt-1 text-sm font-semibold text-foreground">{reportData.expenses.length + reportData.incomes.length}</div>
                                 </div>
                             </div>
                         </div>
