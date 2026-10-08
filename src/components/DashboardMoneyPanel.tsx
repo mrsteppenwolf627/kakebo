@@ -174,13 +174,17 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       setMonthId(mo?.[0]?.id ?? null);
       setMonthStatus((mo?.[0]?.status as "open" | "closed") ?? null);
 
-      // 4) month spent (expenses)
-      const { data: ex, error: exErr } = await supabase
+      // 4) cycle spent: use the cycle relationship when it exists.
+      // Falling back to the date range keeps the first-use experience working
+      // before a cycle row has been created.
+      const cycleId = mo?.[0]?.id ?? null;
+      const expenseQuery = supabase
         .from("expenses")
         .select("amount")
-        .eq("user_id", userId)
-        .gte("date", start)
-        .lte("date", end);
+        .eq("user_id", userId);
+      const { data: ex, error: exErr } = cycleId
+        ? await expenseQuery.eq("month_id", cycleId)
+        : await expenseQuery.gte("date", start).lte("date", end);
 
       if (exErr) throw exErr;
 

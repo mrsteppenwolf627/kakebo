@@ -69,14 +69,28 @@ export default function RecentMovements({ year, month, ym }: Props) {
       const lastDay = new Date(Number(ym.split("-")[0]), Number(ym.split("-")[1]), 0).getDate();
       const end = `${ym}-${String(lastDay).padStart(2, "0")}`;
 
+      const { data: cycleRows, error: cycleErr } = await supabase
+        .from("months")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("year", year)
+        .eq("month", month)
+        .limit(1);
+
+      if (cycleErr) throw cycleErr;
+
+      const cycleId = cycleRows?.[0]?.id ?? null;
+      const expenseQuery = supabase
+        .from("expenses")
+        .select("id,date,amount,category,note")
+        .eq("user_id", userId);
+      const expenseRequest = cycleId
+        ? expenseQuery.eq("month_id", cycleId)
+        : expenseQuery.gte("date", start).lte("date", end);
+
       const [{ data: expensesData, error: expensesErr }, { data: incomesData, error: incomesErr }] =
         await Promise.all([
-          supabase
-            .from("expenses")
-            .select("id,date,amount,category,note")
-            .eq("user_id", userId)
-            .gte("date", start)
-            .lte("date", end),
+          expenseRequest,
           supabase
             .from("incomes")
             .select("id,date,amount,description")

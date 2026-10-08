@@ -691,8 +691,8 @@
             },
             "inputs": {
                 "balanceLabel": "💰 Saldo actual en Banco (€)",
-                "liquidityLabel": "Liquidez real (Banco − Reservas):",
-                "liquidityDesc": "Esto es tu 'colchón' real descontando lo que ya está comprometido.",
+                "liquidityLabel": "Disponible en banco tras compromisos:",
+                "liquidityDesc": "Saldo del banco menos los gastos fijos pendientes y el ahorro pendiente.",
                 "save": "OK",
                 "savingCheck": "Ya he transferido el ahorro ({amount} €)",
                 "savingDesc": "Marca esto cuando muevas el dinero a tu cuenta de ahorro.",
@@ -753,13 +753,13 @@
                 "noBudget": "Sin presupuesto"
             },
             "list": {
-                "title": "Últimos movimientos",
+                "title": "Movimientos del ciclo",
                 "empty": "No hay gastos registrados en este ciclo.",
                 "noConcept": "Sin concepto"
             }
         },
         "RecentMovements": {
-            "title": "Últimos movimientos",
+            "title": "Movimientos del ciclo",
             "empty": "Sin movimientos en este ciclo",
             "noConcept": "Sin concepto",
             "noDescription": "Ingreso",

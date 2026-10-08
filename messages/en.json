@@ -712,8 +712,8 @@
             },
             "inputs": {
                 "balanceLabel": "💰 Current Bank Balance (€)",
-                "liquidityLabel": "Real Liquidity (Bank − Reserves):",
-                "liquidityDesc": "This is your real 'cushion' discounting what is already committed.",
+                "liquidityLabel": "Available in bank after commitments:",
+                "liquidityDesc": "Bank balance minus pending fixed expenses and pending savings.",
                 "save": "OK",
                 "savingCheck": "I have already transferred savings ({amount} €)",
                 "savingDesc": "Check this when you move money to your savings account.",
@@ -780,7 +780,7 @@
             }
         },
         "RecentMovements": {
-            "title": "Recent Movements",
+            "title": "Cycle Movements",
             "empty": "No movements in this cycle",
             "noConcept": "No concept",
             "noDescription": "Income",
