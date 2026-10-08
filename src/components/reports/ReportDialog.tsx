@@ -150,6 +150,33 @@ export default function ReportDialog({
                         El informe incluye gastos, ingresos, disponible real y desglose por categorías. Los datos se preparan de forma segura en el servidor.
                     </div>
                     {error && <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 p-3 rounded-md">{error}</div>}
+
+                    {reportData && (
+                        <div className="space-y-3 rounded-lg border border-border bg-card p-4">
+                            <div>
+                                <div className="text-sm font-medium text-foreground">Vista previa del informe</div>
+                                <div className="text-xs text-muted-foreground mt-0.5">{reportData.dateRange}</div>
+                            </div>
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <div className="rounded-md bg-muted/50 p-3">
+                                    <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Gasto</div>
+                                    <div className="mt-1 text-sm font-semibold text-foreground">{reportData.totalSpent.toFixed(2)} €</div>
+                                </div>
+                                <div className="rounded-md bg-muted/50 p-3">
+                                    <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Ingresos</div>
+                                    <div className="mt-1 text-sm font-semibold text-foreground">{reportData.totalIncome.toFixed(2)} €</div>
+                                </div>
+                                <div className="rounded-md bg-muted/50 p-3">
+                                    <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Disponible</div>
+                                    <div className={`mt-1 text-sm font-semibold ${reportData.availableReal >= 0 ? "text-foreground" : "text-destructive"}`}>{reportData.availableReal.toFixed(2)} €</div>
+                                </div>
+                                <div className="rounded-md bg-muted/50 p-3">
+                                    <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Movimientos</div>
+                                    <div className="mt-1 text-sm font-semibold text-foreground">{reportData.expenses.length}</div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex items-center justify-end gap-3 pt-2">
