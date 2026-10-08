@@ -651,8 +651,8 @@
         "Actions": {
             "addExpense": "Añadir Nuevo Gasto",
             "addIncome": "Añadir Ingreso",
-            "report": "Informe",
-            "generateReport": "Generar Informe"
+            "report": "Informe Plus",
+            "generateReport": "Generar informe premium"
         },
         "SEO": {
             "title": "Control de gastos por ciclos con el método Kakebo",

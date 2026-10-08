@@ -85,7 +85,7 @@ export default async function HomePage(props: {
               <span>{t("Actions.addIncome")}</span>
             </Link>
 
-            <ReportButton />
+            <ReportButton ym={ym} />
           </div>
 
           <MonthSelector year={year} month={month} />

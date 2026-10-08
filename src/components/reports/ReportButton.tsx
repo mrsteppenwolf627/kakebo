@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import ReportDialog from "./ReportDialog";
-import { FileText } from "lucide-react";
+import { FileText, LockKeyhole } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-export default function ReportButton() {
+export default function ReportButton({ ym }: { ym: string }) {
     const t = useTranslations("Dashboard.Actions");
     const [open, setOpen] = useState(false);
 
@@ -18,9 +18,10 @@ export default function ReportButton() {
             >
                 <FileText className="w-5 h-5 opacity-70" />
                 <span>{t("report")}</span>
+                <LockKeyhole className="w-3.5 h-3.5 opacity-60" aria-hidden="true" />
             </button>
 
-            {open && <ReportDialog isOpen={open} onClose={() => setOpen(false)} />}
+            {open && <ReportDialog isOpen={open} initialYm={ym} onClose={() => setOpen(false)} />}
         </>
     );
 }

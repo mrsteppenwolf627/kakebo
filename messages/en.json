@@ -672,8 +672,8 @@
         "Actions": {
             "addExpense": "Add New Expense",
             "addIncome": "Add Income",
-            "report": "Report",
-            "generateReport": "Generate Report"
+            "report": "Plus Report",
+            "generateReport": "Generate premium report"
         },
         "SEO": {
             "title": "Kakebo expense tracking by cycle",

@@ -1,101 +1,68 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { createClient } from "@/lib/supabase/browser";
 import { Loader2 } from "lucide-react";
 import ReportPDF from "./ReportPDF";
 
-type TimeRange = "day" | "week" | "month" | "year";
+type TimeRange = "cycle" | "day" | "week" | "month" | "year";
+
+type ReportData = {
+    dateRange: string;
+    totalSpent: number;
+    totalIncome: number;
+    fixedTotal: number;
+    savingGoal: number;
+    budgetBeforeExpenses: number;
+    availableReal: number;
+    expenses: Array<{ id: string; date: string; category: string; note: string | null; amount: number }>;
+    incomes: Array<{ id: string; date: string; description: string | null; amount: number }>;
+    expensesByCategory: Record<string, number>;
+};
 
 export default function ReportDialog({
     isOpen,
+    initialYm,
     onClose,
 }: {
     isOpen: boolean;
+    initialYm: string;
     onClose: () => void;
 }) {
-    const [range, setRange] = useState<TimeRange>("month");
-    const [date, setDate] = useState(new Date().toISOString().slice(0, 10)); // YYYY-MM-DD
+    const [range, setRange] = useState<TimeRange>("cycle");
+    const [date, setDate] = useState(`${initialYm}-01`); // YYYY-MM-DD
     const [loading, setLoading] = useState(false);
-    const [reportData, setReportData] = useState<any>(null);
+    const [reportData, setReportData] = useState<ReportData | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!isOpen) return;
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") onClose();
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [isOpen, onClose]);
 
     if (!isOpen) return null;
 
     async function generateData() {
         setLoading(true);
-        const supabase = createClient();
+        setError(null);
 
         try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) throw new Error("No user");
-
-            // Calculate start/end dates
-            const selected = new Date(date);
-            let start = "";
-            let end = "";
-            let label = "";
-
-            if (range === "day") {
-                start = date;
-                end = date;
-                label = `Reporte Diario: ${date}`;
-            } else if (range === "week") {
-                // Simple interaction: week of the selected date
-                const d = new Date(selected);
-                const day = d.getDay();
-                const diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
-                const monday = new Date(d.setDate(diff));
-                const sunday = new Date(monday);
-                sunday.setDate(monday.getDate() + 6);
-
-                start = monday.toISOString().slice(0, 10);
-                end = sunday.toISOString().slice(0, 10);
-                label = `Semana: ${start} - ${end}`;
-            } else if (range === "month") {
-                // YYYY-MM
-                const [y, m] = date.split("-");
-                start = `${y}-${m}-01`;
-                // end of month
-                const lastDay = new Date(Number(y), Number(m), 0).getDate();
-                end = `${y}-${m}-${lastDay}`;
-                label = `Mensual: ${y}-${m}`;
-            } else if (range === "year") {
-                const y = date.split("-")[0];
-                start = `${y}-01-01`;
-                end = `${y}-12-31`;
-                label = `Anual: ${y}`;
-            }
-
-            // Fetch Expenses
-            const { data: expenses, error } = await supabase
-                .from("expenses")
-                .select("*")
-                .eq("user_id", user.id)
-                .gte("date", start)
-                .lte("date", end)
-                .order("date", { ascending: false });
-
-            if (error) throw error;
-
-            // Process Data
-            const totalSpent = expenses.reduce((acc, curr) => acc + Number(curr.amount), 0);
-            const expensesByCategory: Record<string, number> = {};
-            expenses.forEach((e) => {
-                expensesByCategory[e.category] = (expensesByCategory[e.category] || 0) + Number(e.amount);
+            const response = await fetch("/api/reports", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ range, date, ym: range === "cycle" ? date.slice(0, 7) : undefined }),
             });
-
-            setReportData({
-                dateRange: label,
-                totalSpent,
-                expenses: expenses.map(e => ({ ...e, amount: Number(e.amount) })),
-                expensesByCategory
-            });
+            const payload = await response.json();
+            if (!response.ok) throw new Error(payload.error?.message || "No se pudo preparar el informe.");
+            setReportData(payload.data as ReportData);
 
         } catch (e) {
-            console.error(e);
-            alert("Error generando los datos del reporte.");
+            setError(e instanceof Error ? e.message : "No se pudo preparar el informe.");
         } finally {
             setLoading(false);
         }
@@ -105,9 +72,10 @@ export default function ReportDialog({
         if (!reportData || !reportData.expenses) return;
 
         const headers = ["Fecha", "Concepto", "Categoría", "Importe"];
-        const rows = reportData.expenses.map((e: any) => [
+        const escapeCell = (value: unknown) => `"${String(value ?? "").replace(/"/g, '""')}"`;
+        const rows = reportData.expenses.map((e) => [
             e.date,
-            `"${e.concept.replace(/"/g, '""')}"`, // escape quotes
+            escapeCell(e.note || ""),
             e.category,
             e.amount
         ]);
@@ -122,7 +90,6 @@ export default function ReportDialog({
         const blob = new Blob(blobParts, { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);
 
-        const a = document.createElement("link"); // use a tag instead of link for download
         const aTag = document.createElement("a");
         aTag.href = url;
         aTag.download = `kakebo-report-${range}-${date}.csv`;
@@ -133,34 +100,35 @@ export default function ReportDialog({
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in">
-            <div className="bg-card border border-border w-full max-w-md p-6 rounded-xl shadow-lg space-y-6" onClick={(e) => e.stopPropagation()}>
-                <h2 className="text-xl font-serif font-medium">Generar Informe PDF</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in" role="presentation" onClick={onClose}>
+            <div className="bg-card border border-border w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 rounded-xl shadow-lg space-y-6" role="dialog" aria-modal="true" aria-labelledby="report-dialog-title" onClick={(e) => e.stopPropagation()}>
+                <h2 id="report-dialog-title" className="text-xl font-serif font-medium">Informe premium</h2>
+                <p className="text-sm text-muted-foreground">Descarga un resumen verificable de tus movimientos. El modo Ciclo sigue exactamente el reparto del dashboard.</p>
 
                 <div className="space-y-4">
                     {/* Range Selector */}
-                    <div className="grid grid-cols-4 gap-2">
-                        {(["day", "week", "month", "year"] as const).map((r) => (
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                        {(["cycle", "day", "week", "month", "year"] as const).map((r) => (
                             <button
                                 key={r}
                                 onClick={() => { setRange(r); setReportData(null); }}
                                 className={`text-sm py-2 rounded-md capitalize transition-colors ${range === r ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}
                             >
-                                {r === "day" ? "Día" : r === "week" ? "Semana" : r === "month" ? "Mes" : "Año"}
+                                {r === "cycle" ? "Ciclo" : r === "day" ? "Día" : r === "week" ? "Semana" : r === "month" ? "Mes" : "Año"}
                             </button>
                         ))}
                     </div>
 
                     {/* Date Input */}
                     <div className="space-y-1">
-                        <label className="text-sm text-foreground font-medium">Selecciona Fecha</label>
+                        <label className="text-sm text-foreground font-medium">{range === "cycle" ? "Selecciona ciclo" : "Selecciona fecha"}</label>
                         <input
-                            type={range === "month" ? "month" : range === "year" ? "number" : "date"}
-                            value={range === "year" ? date.split("-")[0] : range === "month" ? date.slice(0, 7) : date}
+                            type={range === "cycle" || range === "month" ? "month" : range === "year" ? "number" : "date"}
+                            value={range === "year" ? date.split("-")[0] : range === "cycle" || range === "month" ? date.slice(0, 7) : date}
                             onChange={(e) => {
                                 let v = e.target.value;
                                 if (range === "year") v = `${v}-01-01`; // dummy full date
-                                if (range === "month" && v.length === 7) v = `${v}-01`;
+                                if ((range === "cycle" || range === "month") && v.length === 7) v = `${v}-01`;
                                 setDate(v);
                                 setReportData(null);
                             }}
@@ -172,8 +140,9 @@ export default function ReportDialog({
 
                     {/* Info */}
                     <div className="text-xs text-muted-foreground bg-muted/50 p-3 rounded-md">
-                        Se generará un PDF con el historial de gastos, gráficos básicos y un resumen financiero del periodo seleccionado.
+                        El informe incluye gastos, ingresos, disponible real y desglose por categorías. Los datos se preparan de forma segura en el servidor.
                     </div>
+                    {error && <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 p-3 rounded-md">{error}</div>}
                 </div>
 
                 <div className="flex items-center justify-end gap-3 pt-2">
@@ -213,7 +182,7 @@ export default function ReportDialog({
                                 </button>
                                 <PDFDownloadLink
                                     document={<ReportPDF data={reportData} />}
-                                    fileName={`kakebo-report-${range}-${date}.pdf`}
+                                    fileName={`kakebo-informe-${range}-${date.slice(0, 7)}.pdf`}
                                     className="px-4 py-2 bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 rounded-md text-sm font-medium hover:opacity-90 inline-flex items-center gap-2"
                                 >
                                     {({ loading: pdfLoading }) => (pdfLoading ? "Cargando..." : "📥 PDF")}

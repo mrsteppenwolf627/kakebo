@@ -120,10 +120,10 @@ const styles = StyleSheet.create({
 });
 
 const KAKEBO_META: Record<string, { label: string; color: string }> = {
-    supervivencia: { label: "Supervivencia", color: "#dc2626" },
-    opcional: { label: "Opcional", color: "#2563eb" },
-    cultura: { label: "Cultura", color: "#16a34a" },
-    extra: { label: "Extra", color: "#9333ea" },
+    survival: { label: "Supervivencia", color: "#dc2626" },
+    optional: { label: "Ocio y vicio", color: "#2563eb" },
+    culture: { label: "Cultura", color: "#16a34a" },
+    extra: { label: "Extras", color: "#9333ea" },
 };
 
 type Expense = {
@@ -137,12 +137,17 @@ type Expense = {
 type ReportData = {
     dateRange: string;
     totalSpent: number;
+    totalIncome: number;
+    fixedTotal: number;
+    savingGoal: number;
+    budgetBeforeExpenses: number;
+    availableReal: number;
     expenses: Expense[];
     expensesByCategory: Record<string, number>;
 };
 
 export default function ReportPDF({ data }: { data: ReportData }) {
-    const { dateRange, totalSpent, expenses, expensesByCategory } = data;
+    const { dateRange, totalSpent, totalIncome, fixedTotal, savingGoal, budgetBeforeExpenses, availableReal, expenses, expensesByCategory } = data;
 
     // Background Image Path - ReactPDF needs absolute URL or base64 or relative to public
     // Assuming the component is run in browser, window.location.origin might be needed if using http url
@@ -175,18 +180,22 @@ export default function ReportPDF({ data }: { data: ReportData }) {
                 {/* Summary Cards */}
                 <View style={styles.summaryGrid}>
                     <View style={styles.summaryCard}>
-                        <Text style={styles.cardLabel}>Gasto Total</Text>
+                        <Text style={styles.cardLabel}>Gasto total</Text>
                         <Text style={styles.cardValue}>{totalSpent.toFixed(2)} €</Text>
                     </View>
                     <View style={styles.summaryCard}>
-                        <Text style={styles.cardLabel}>Movimientos</Text>
-                        <Text style={styles.cardValue}>{expenses.length}</Text>
+                        <Text style={styles.cardLabel}>Ingresos</Text>
+                        <Text style={styles.cardValue}>{totalIncome.toFixed(2)} €</Text>
                     </View>
-                    {/* Placeholder for income/savings if we had them passed down */}
                     <View style={styles.summaryCard}>
-                        <Text style={styles.cardLabel}>Categorías</Text>
-                        <Text style={styles.cardValue}>{Object.keys(expensesByCategory).length}</Text>
+                        <Text style={styles.cardLabel}>Disponible</Text>
+                        <Text style={styles.cardValue}>{availableReal.toFixed(2)} €</Text>
                     </View>
+                </View>
+
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Resumen financiero</Text>
+                    <Text style={styles.subtitle}>Presupuesto tras fijos y ahorro: {budgetBeforeExpenses.toFixed(2)} € · Fijos: {fixedTotal.toFixed(2)} € · Ahorro: {savingGoal.toFixed(2)} € · Movimientos: {expenses.length}</Text>
                 </View>
 
                 {/* Breakdown by Category */}
