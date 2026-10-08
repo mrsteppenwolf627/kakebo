@@ -1162,6 +1162,7 @@
             "monthClosed": "Cycle closed",
             "monthClosedDesc": "Cannot add expenses to this period.",
             "dateHint": "The expense is assigned to this cycle; the real date you choose is never changed.",
+            "incomeDateHint": "The income will be recorded in this cycle; the real date you choose is preserved.",
             "placeholders": {
                 "conceptExpense": "Ex: groceries",
                 "conceptIncome": "Ex: January salary",

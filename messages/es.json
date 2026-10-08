@@ -1141,6 +1141,7 @@
             "monthClosed": "Ciclo cerrado",
             "monthClosedDesc": "No se pueden añadir gastos a este periodo.",
             "dateHint": "El gasto se asigna a este ciclo; la fecha real que elijas no se modifica.",
+            "incomeDateHint": "El ingreso se registrará en este ciclo; la fecha real que elijas se conserva.",
             "placeholders": {
                 "conceptExpense": "Ej: compra supermercado",
                 "conceptIncome": "Ej: Nómina enero",
