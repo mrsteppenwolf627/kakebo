@@ -100,7 +100,7 @@ export default function HistoryPage() {
           <div>
             <h1 className="text-2xl sm:text-3xl font-semibold">Histórico</h1>
             <p className="text-black/60 text-sm">
-              Meses: {months.length} · Cerrados: {closedCount}
+              Ciclos: {months.length} · Cerrados: {closedCount}
             </p>
           </div>
 
@@ -117,7 +117,7 @@ export default function HistoryPage() {
 
         {!loading && months.length === 0 && (
           <div className="border border-black/10 p-4 text-sm text-black/60">
-            Aún no tienes meses registrados. Se crean cuando guardas un gasto o cierras un mes.
+            Aún no tienes ciclos registrados. Se crean cuando guardas un gasto o cierras un ciclo.
           </div>
         )}
 
@@ -125,7 +125,7 @@ export default function HistoryPage() {
           <div className="border border-black/10 overflow-hidden">
             {/* Desktop Header */}
             <div className="hidden sm:grid sm:grid-cols-12 border-b border-black/10 p-3 text-xs text-black/60">
-              <div className="col-span-3">Mes</div>
+              <div className="col-span-3">Ciclo</div>
               <div className="col-span-2">Estado</div>
               <div className="col-span-3">Gastos</div>
               <div className="col-span-2">Nº</div>

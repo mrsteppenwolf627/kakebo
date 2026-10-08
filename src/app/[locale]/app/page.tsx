@@ -62,6 +62,9 @@ export default async function HomePage(props: {
             <p className="text-muted-foreground text-sm sm:text-base mt-2 font-light">
               {t("Header.subtitle")}
             </p>
+            <p className="text-muted-foreground/80 text-xs sm:text-sm mt-3 max-w-2xl">
+              {t("Header.periodHint")}
+            </p>
           </header>
 
           {/* Quick Actions - Mobile/Desktop Prominent Button */}

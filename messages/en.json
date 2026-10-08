@@ -662,10 +662,11 @@
             }
         },
         "title": "My Kakebo",
-        "subtitle": "Monthly Expense Tracker",
+        "subtitle": "Track your spending by Kakebo cycles, not only calendar months.",
         "Header": {
             "title": "My Kakebo",
-            "subtitle": "Monthly Expense Tracker"
+            "subtitle": "Track your spending by Kakebo cycles, not only calendar months.",
+            "periodHint": "You can close the cycle whenever you want. Each expense keeps its real date."
         },
         "Actions": {
             "addExpense": "Add New Expense",
@@ -674,23 +675,23 @@
             "generateReport": "Generate Report"
         },
         "SEO": {
-            "title": "Monthly Expense Tracking with Kakebo",
-            "p1": "<bold>Kakebo</bold> is your ultimate tool for <bold>personal expense management</bold>. Unlike complicated spreadsheets, Kakebo helps you categorize your finances into 4 essential buckets: Survival, Leisure, Culture, and Extras.",
-            "p2": "The Japanese Kakebo method encourages <bold>mindful saving</bold>. It's not about cutting costs blindly, but understanding where your money goes to make better decisions every month.",
-            "p3": "Visualize your progress with clear charts, set realistic saving goals, and achieve financial freedom step by step."
+            "title": "Kakebo expense tracking by cycle",
+            "p1": "<bold>Kakebo</bold> is your tool for <bold>personal expense management</bold>. Unlike complicated spreadsheets, Kakebo helps you categorize your finances into 4 essential buckets within each Kakebo cycle: Survival, Leisure, Culture, and Extras.",
+            "p2": "The Japanese Kakebo method encourages <bold>mindful saving</bold>. It's not about cutting costs blindly, but understanding where your money goes and making better decisions throughout each cycle.",
+            "p3": "Visualize your progress with clear charts, set realistic saving goals, and close each cycle when it makes sense for you."
         },
         "MonthSelector": {
             "today": "Go to today",
-            "prev": "Previous month",
-            "next": "Next month"
+            "prev": "Previous cycle",
+            "next": "Next cycle"
         },
         "MoneyPanel": {
-            "title": "Monthly Balance",
-            "subtitle": "Simplified financial control.",
+            "title": "Cycle summary",
+            "subtitle": "A simple view of your financial situation.",
             "cards": {
                 "incomes": {
                     "label": "Income",
-                    "desc": "This month"
+                    "desc": "In this cycle"
                 },
                 "budget": {
                     "label": "Budget",
@@ -705,7 +706,7 @@
                 },
                 "available": {
                     "label": "Real Available",
-                    "desc": "What you have left to finish the month"
+                    "desc": "What you have left in this cycle"
                 }
             },
             "inputs": {
@@ -733,7 +734,7 @@
                 "closed": "status: closed",
                 "open": "status: open",
                 "unknown": "no month record yet",
-                "closedMsg": "Month closed · Cannot add or remove expenses."
+                "closedMsg": "Cycle closed · Cannot add or remove expenses."
             },
             "stats": {
                 "expenses": "Expenses:",
@@ -742,14 +743,14 @@
             "actions": {
                 "update": "Refresh",
                 "reopen": "Reopen",
-                "close": "Close Month",
+                "close": "Close cycle",
                 "addExpense": "+ New expense",
                 "addIncome": "💰 + New income",
                 "history": "View full history",
                 "delete": "Delete"
             },
             "summary": {
-                "income": "Monthly Income",
+                "income": "Cycle income",
                 "fixed": "Fixed Expenses",
                 "usable": "Usable",
                 "available": "Available",
@@ -773,13 +774,13 @@
             },
             "list": {
                 "title": "Recent Transactions",
-                "empty": "No expenses recorded this month.",
+                "empty": "No expenses recorded in this cycle.",
                 "noConcept": "No concept"
             }
         },
         "RecentMovements": {
             "title": "Recent Movements",
-            "empty": "No movements this month",
+            "empty": "No movements in this cycle",
             "noConcept": "No concept",
             "noDescription": "Income",
             "incomeLabel": "Income"
@@ -1133,7 +1134,7 @@
                 "confidence": "{percent}% confidence"
             },
             "errors": {
-                "monthClosed": "Month closed ({ym}): cannot add expenses.",
+                "monthClosed": "Cycle closed ({ym}): cannot add expenses.",
                 "checkFailed": "Error checking month",
                 "saveFailed": "Error saving expense"
             }
@@ -1154,11 +1155,11 @@
             "concept": "Concept",
             "amount": "Amount (€)",
             "category": "Category",
-            "monthActivity": "Month: {month}",
-            "currentMonth": "Month: current",
-            "monthClosed": "Month closed",
+            "monthActivity": "Cycle: {month}",
+            "currentMonth": "Cycle: current",
+            "monthClosed": "Cycle closed",
             "monthClosedDesc": "Cannot add expenses to this period.",
-            "dateHint": "The expense is booked to this cycle; the real date you choose is never changed.",
+            "dateHint": "The expense is assigned to this cycle; the real date you choose is never changed.",
             "placeholders": {
                 "conceptExpense": "Ex: groceries",
                 "conceptIncome": "Ex: January salary",

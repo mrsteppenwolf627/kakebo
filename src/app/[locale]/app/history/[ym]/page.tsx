@@ -165,11 +165,11 @@ export default function MonthDetailPage() {
       <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-semibold">Mes {ym}</h1>
+            <h1 className="text-2xl sm:text-3xl font-semibold">Ciclo {ym}</h1>
             <p className="text-black/60 text-sm">
               {monthRow?.status
                 ? `Estado: ${monthRow.status}`
-                : "Sin registro de mes (aún)"}
+                : "Sin registro de ciclo (aún)"}
             </p>
           </div>
 
@@ -196,7 +196,7 @@ export default function MonthDetailPage() {
         {!loading && (
           <div className="border border-black/10 p-4 space-y-3">
             <div className="text-sm text-black/60">
-              Total del mes: {total.toFixed(2)} €
+              Total del ciclo: {total.toFixed(2)} €
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -236,14 +236,14 @@ export default function MonthDetailPage() {
 
         {!loading && rows.length === 0 && (
           <div className="border border-black/10 p-4 text-sm text-black/60">
-            No hay gastos vinculados a este mes (month_id). Si es un mes antiguo,
+            No hay gastos vinculados a este ciclo (month_id). Si es un ciclo antiguo,
             aún no se migraron los gastos.
           </div>
         )}
 
         {!loading && rows.length > 0 && (
           <div className="border border-black/10 p-4">
-            <div className="font-semibold mb-2">Gastos del mes</div>
+            <div className="font-semibold mb-2">Gastos del ciclo</div>
             <ul className="space-y-2">
               {rows.map((r) => {
                 const cat =

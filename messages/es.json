@@ -641,10 +641,11 @@
             }
         },
         "title": "Mi Kakebo",
-        "subtitle": "Control de gastos mensual",
+        "subtitle": "Controla tus gastos por ciclos Kakebo, no solo por meses naturales.",
         "Header": {
             "title": "Mi Kakebo",
-            "subtitle": "Control de gastos mensual"
+            "subtitle": "Controla tus gastos por ciclos Kakebo, no solo por meses naturales.",
+            "periodHint": "Puedes cerrar el ciclo cuando quieras. La fecha real de cada gasto se conserva."
         },
         "Actions": {
             "addExpense": "Añadir Nuevo Gasto",
@@ -653,23 +654,23 @@
             "generateReport": "Generar Informe"
         },
         "SEO": {
-            "title": "Control de gastos mensual con el método Kakebo",
-            "p1": "<bold>Kakebo AI</bold> es la herramienta de <bold>MetodoKakebo.com</bold> para registrar gastos mensuales, clasificarlos en cuatro categorías y revisar los hábitos de consumo. Las cuatro categorías del método Kakebo son: Supervivencia, <bold>Ocio/Vicio</bold>, Cultura y Extras.",
-            "p2": "El <bold>método Kakebo</bold> fomenta el <bold>ahorro consciente</bold>. No se trata de recortar por recortar, sino de entender a dónde va tu dinero para tomar mejores decisiones cada mes.",
-            "p3": "Visualiza tu progreso con gráficos claros, establece objetivos de ahorro realistas y toma mejores decisiones sobre tu dinero mes a mes."
+            "title": "Control de gastos por ciclos con el método Kakebo",
+            "p1": "<bold>Kakebo AI</bold> es la herramienta de <bold>MetodoKakebo.com</bold> para registrar gastos, clasificarlos en cuatro categorías y revisar los hábitos de consumo dentro de cada ciclo Kakebo. Las cuatro categorías del método Kakebo son: Supervivencia, <bold>Ocio/Vicio</bold>, Cultura y Extras.",
+            "p2": "El <bold>método Kakebo</bold> fomenta el <bold>ahorro consciente</bold>. No se trata de recortar por recortar, sino de entender a dónde va tu dinero para tomar mejores decisiones durante cada ciclo.",
+            "p3": "Visualiza tu progreso con gráficos claros, establece objetivos de ahorro realistas y cierra cada ciclo cuando tenga sentido para ti."
         },
         "MonthSelector": {
             "today": "Ir a hoy",
-            "prev": "Mes anterior",
-            "next": "Mes siguiente"
+            "prev": "Ciclo anterior",
+            "next": "Ciclo siguiente"
         },
         "MoneyPanel": {
-            "title": "Balance Mensual",
-            "subtitle": "Control financiero simplificado.",
+            "title": "Resumen del ciclo",
+            "subtitle": "Una lectura sencilla de tu situación financiera.",
             "cards": {
                 "incomes": {
                     "label": "Ingresos",
-                    "desc": "Este mes"
+                    "desc": "En este ciclo"
                 },
                 "budget": {
                     "label": "Presupuesto",
@@ -684,7 +685,7 @@
                 },
                 "available": {
                     "label": "Disponible Real",
-                    "desc": "Lo que te queda para terminar el mes"
+                    "desc": "Lo que te queda en este ciclo"
                 }
             },
             "inputs": {
@@ -712,7 +713,7 @@
                 "closed": "estado: cerrado",
                 "open": "estado: abierto",
                 "unknown": "sin registro de mes aún",
-                "closedMsg": "Mes cerrado · No se pueden añadir ni eliminar gastos."
+                "closedMsg": "Ciclo cerrado · No se pueden añadir ni eliminar gastos."
             },
             "stats": {
                 "expenses": "Gastos:",
@@ -721,14 +722,14 @@
             "actions": {
                 "update": "Actualizar",
                 "reopen": "Reabrir",
-                "close": "Cerrar Mes",
+                "close": "Cerrar ciclo",
                 "addExpense": "+ Nuevo gasto",
                 "addIncome": "💰 + Nuevo ingreso",
                 "history": "Ver histórico completo",
                 "delete": "Eliminar"
             },
             "summary": {
-                "income": "Ingreso mensual",
+                "income": "Ingresos del ciclo",
                 "fixed": "Gastos fijos",
                 "usable": "Utilizable",
                 "available": "Disponible",
@@ -752,13 +753,13 @@
             },
             "list": {
                 "title": "Últimos movimientos",
-                "empty": "No hay gastos registrados este mes.",
+                "empty": "No hay gastos registrados en este ciclo.",
                 "noConcept": "Sin concepto"
             }
         },
         "RecentMovements": {
             "title": "Últimos movimientos",
-            "empty": "Sin movimientos en este mes",
+            "empty": "Sin movimientos en este ciclo",
             "noConcept": "Sin concepto",
             "noDescription": "Ingreso",
             "incomeLabel": "Ingreso"
@@ -1112,7 +1113,7 @@
                 "confidence": "{percent}% confianza"
             },
             "errors": {
-                "monthClosed": "Mes cerrado ({ym}): no se pueden añadir gastos.",
+                "monthClosed": "Ciclo cerrado ({ym}): no se pueden añadir gastos.",
                 "checkFailed": "Error comprobando el mes",
                 "saveFailed": "Error guardando gasto"
             }
@@ -1133,11 +1134,11 @@
             "concept": "Concepto",
             "amount": "Importe (€)",
             "category": "Categoría",
-            "monthActivity": "Mes: {month}",
-            "currentMonth": "Mes: actual",
-            "monthClosed": "Mes cerrado",
+            "monthActivity": "Ciclo: {month}",
+            "currentMonth": "Ciclo: actual",
+            "monthClosed": "Ciclo cerrado",
             "monthClosedDesc": "No se pueden añadir gastos a este periodo.",
-            "dateHint": "El gasto se imputa a este ciclo; la fecha real que elijas no se modifica.",
+            "dateHint": "El gasto se asigna a este ciclo; la fecha real que elijas no se modifica.",
             "placeholders": {
                 "conceptExpense": "Ej: compra supermercado",
                 "conceptIncome": "Ej: Nómina enero",
