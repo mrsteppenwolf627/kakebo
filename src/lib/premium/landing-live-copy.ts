@@ -16,7 +16,7 @@ const LIVE = {
     status: "Compra disponible ahora. Recibirás acceso a los tres archivos tras confirmar el pago.",
     faqCanBuy: "Sí. Kakebo Master System está disponible como compra única y no requiere cuenta.",
     metaDescription:
-      "Kakebo Master System: plantilla Kakebo Excel premium, ebook y tutorial en PDF para planificar ingresos, registrar gastos y revisar cada semana. Pago único de 9,90 €. Disponible ahora.",
+      "Compra Kakebo Master System: pack con plantilla Kakebo Excel premium, ebook y tutorial en PDF. Pago único de 9,90 €, entrega digital. Disponible ahora.",
     answer:
       "Kakebo Master System es un pack digital de pago que reúne tres archivos: una plantilla Kakebo Excel premium, el ebook «El arte de mirar tu dinero» (unas 20 páginas) y un tutorial en PDF con instrucciones paso a paso. Cuesta 9,90 € en pago único, con acceso permanente a los archivos y sin necesidad de crear una cuenta. La plantilla no usa macros. Está disponible para comprar ahora.",
     priceTerm: "9,90 € en pago único.",
@@ -35,7 +35,7 @@ const LIVE = {
     status: "Available now. You will receive access to all three files after payment confirmation.",
     faqCanBuy: "Yes. Kakebo Master System is available as a one-time purchase and does not require an account.",
     metaDescription:
-      "Kakebo Master System: a premium Kakebo Excel template, ebook and PDF tutorial to plan income, track expenses and review each week. €9.90 one-time payment. Available now.",
+      "Kakebo Master System: a premium kakeibo Excel template, ebook and PDF tutorial to plan, track and review your money. €9.90 one-time payment. Available now.",
     answer:
       "Kakebo Master System is a paid digital pack with three files: a premium Kakebo Excel template, the ebook “El arte de mirar tu dinero” (about 20 pages) and a PDF tutorial with step-by-step instructions. It costs €9.90 as a one-time payment, with permanent access to the files and no account required. The template uses no macros. It is available to buy now.",
     priceTerm: "€9.90, one-time payment.",

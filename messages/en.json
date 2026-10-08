@@ -11,7 +11,7 @@
         "howItWorks": "How it Works",
         "login": "Login",
         "dashboard": "Dashboard",
-        "start": "Start",
+        "start": "Start for free",
         "account": "Account",
         "createAccount": "Create Account",
         "legal": "Legal",
@@ -44,7 +44,7 @@
     },
     "CookieBanner": {
         "text": "We use our own and third-party cookies to improve your experience and analyze the use of the website.",
-        "moreInfo": "More information",
+        "moreInfo": "Privacy policy",
         "accept": "Accept"
     },
     "Hero": {
@@ -136,8 +136,8 @@
     "Tools": {
         "Index": {
             "meta": {
-                "title": "Kakebo Tools: Savings and Inflation Calculators",
-                "description": "Free calculators to manage your finances: 50/30/20 Rule, CPI Inflation Calculator, and savings simulators."
+                "title": "Kakebo Tools: Free Savings Calculators & Kakeibo Templates",
+                "description": "Free calculators for your finances (50/30/20 rule, inflation, savings), the free kakeibo Excel template guide and the Kakebo Master System premium pack."
             },
             "header": {
                 "title": "<italic>Zen Saving</italic> Tools",
@@ -387,6 +387,74 @@
             }
         }
     },
+    "Tutorial": {
+        "title": "Kakebo Method Tutorial",
+        "subtitle": "A step-by-step guide to take control of your personal finances and start saving without effort.",
+        "metaTitle": "How to Use the Kakebo (Kakeibo) Method | Savings Tutorial",
+        "metaDescription": "Learn what the Japanese kakeibo (kakebo) budgeting method is, how to split your spending into 4 categories and start saving from the first month.",
+        "toc": {
+            "title": "Table of Contents",
+            "section1": "1. What is Kakebo?",
+            "section2": "2. The 4 spending categories",
+            "section3": "3. How to use the Dashboard",
+            "section4": "4. The Smart Financial Agent"
+        },
+        "content": {
+            "s1": {
+                "title": "What is the Kakebo Method?",
+                "p1": "Kakebo (also spelled kakeibo) is a traditional Japanese savings and money-management system designed in the early 20th century. Its premise is simple: record your expenses by hand to become aware of where your money goes.",
+                "p2": "Unlike banking apps that automate everything (which encourages detachment from spending), Kakebo asks you to write down every movement yourself. By tying expenses to specific categories, you discover your financial 'black holes'."
+            },
+            "s2": {
+                "title": "The 4 Spending Categories",
+                "intro": "For the method to work, assign a maximum budget to 4 broad groups and record your expenses in them:",
+                "c1": "<bold>Survival:</bold> Unavoidable costs. Rent, mortgage, water, electricity, groceries or the fuel you need to get to work.",
+                "c2": "<bold>Optional/Vices:</bold> What improves your life but is not strictly necessary. A drink at a bar, new clothes, restaurants or a night out.",
+                "c3": "<bold>Culture:</bold> Everything that brings lasting knowledge or emotional well-being. Books, museums, courses, Netflix or Spotify.",
+                "c4": "<bold>Extras:</bold> Unexpected or one-off costs. Birthday gifts, car repairs, holidays or breakdowns."
+            },
+            "s3": {
+                "title": "How to Use the Dashboard",
+                "p1": "On our digital platform we adapted this method so you do not need a paper notebook. The cycle starts every month:",
+                "step1": "Set your income and your monthly savings goal (the money you 'pay yourself' first).",
+                "step2": "Every time you spend, log the expense with a description and an amount.",
+                "step3": "The green bar in the middle shows the health of your savings goal: whether you are on track or at risk of missing it.",
+                "p2": "The visual panel always shows, at a glance, how much real money you have left to spend once the savings you planned are already set aside.",
+                "p3": "Below the summary you will find the list of your recent transactions, each with its category, so you can review at a glance what you have spent."
+            },
+            "s4": {
+                "title": "Boost Your Savings with the AI Agent",
+                "p1": "The big novelty of Kakebo AI is its Smart Financial Agent. When you log an expense and are unsure about its category, you can press the magic 'AI' button and our model will pick the most appropriate category based on collective behavior.",
+                "p2": "In the 'AI Agent' section you can also chat freely: ask for advice to reach your goal, ask which category an unusual expense belongs to, or have it analyze your spending pace compared with the previous month.",
+                "p3": "You can also type your expenses in natural language, for example 'I bought tobacco for 5 and got gas for 40', and the agent interprets and categorizes them for you.",
+                "p4": "It does not need access to your bank or ask for banking passwords: you record and review your expenses with total privacy."
+            }
+        },
+        "cta": {
+            "title": "Ready to start saving?",
+            "text": "Free forever, no credit card needed.",
+            "button": "Create your account now"
+        },
+        "premium": {
+            "before": "Prefer to follow the kakeibo method in a spreadsheet? Meet the ",
+            "link": "Kakebo Master System pack",
+            "after": ", with a premium Kakebo Excel template, an ebook and a PDF tutorial (€9.90 VAT included, one-time purchase)."
+        },
+        "images": {
+            "img1": {
+                "alt": "Main dashboard of the Kakebo Method showing an interactive summary of expenses and income",
+                "title": "Start controlling your expenses on the main dashboard"
+            },
+            "img2": {
+                "alt": "Spending split across the 4 Kakebo categories: Survival, Optional/Vices, Culture and Extras",
+                "title": "Learn to split your monthly expenses efficiently"
+            },
+            "img3": {
+                "alt": "Detailed list of recent transactions and expenses categorized by Artificial Intelligence",
+                "title": "Review your spending history and assess your decisions"
+            }
+        }
+    },
     "Blog": {
         "index": {
             "title": "Kakebo Academy Blog: Japanese Savings Hacks & Zen Finance (2026)",
@@ -404,17 +472,17 @@
     },
     "Landing": {
         "meta": {
-            "title": "Kakebo AI: Online Kakebo Savings App | No Bank, AI-Powered",
-            "description": "Control your expenses with the Japanese method. 100% private, no bank connection. Built-in AI. Start for free.",
-            "ogTitle": "Kakebo AI: Online Kakebo Savings App | No Bank, AI-Powered",
-            "ogDescription": "Control your expenses with the Japanese method. 100% private, no bank connection. Built-in AI. Start for free."
+            "title": "Kakebo AI: Free Online Kakeibo App | No Bank, AI-Powered",
+            "description": "Track expenses with the Japanese kakeibo method (also spelled kakebo). 100% private, no bank connection, built-in AI. Start for free.",
+            "ogTitle": "Kakebo AI: Free Online Kakeibo App | No Bank, AI-Powered",
+            "ogDescription": "Track expenses with the Japanese kakeibo method (also spelled kakebo). 100% private, no bank connection, built-in AI. Start for free."
         },
         "SEO": {
             "whatIs": {
                 "title": "What is Kakebo and what is it for?",
-                "p1": "<bold>Kakebo</bold> is a Japanese savings method based on tracking your expenses and reviewing your month with intention. It's not about fancy charts, it's about seeing the obvious: where your money goes and what you can tweak without living like a hermit.",
+                "p1": "<bold>Kakebo</bold> (also spelled <bold>kakeibo</bold>) is a Japanese savings method based on tracking your expenses and reviewing your month with intention. It's not about fancy charts, it's about seeing the obvious: where your money goes and what you can tweak without living like a hermit.",
                 "p2": "In practice, it works because it forces you to do three things most people avoid: <bold>track</bold>, <bold>categorize</bold>, and <bold>review</bold>. If you are consistent, you improve your spending control almost without realizing it.",
-                "p3": "You can calculate your savings potential with our <a href=\"/en/herramientas/calculadora-ahorro\" class=\"text-primary font-medium hover:underline\">savings calculator</a>, discover our <a href=\"/en/tutorial\" class=\"text-primary font-medium hover:underline\">step-by-step tutorial</a>, or read more tips on our <a href=\"/en/blog\" class=\"text-primary font-medium hover:underline\">official blog</a>."
+                "p3": "You can calculate your savings potential with our <a href=\"/en/herramientas/calculadora-ahorro\" class=\"text-primary font-medium hover:underline\">savings calculator</a>, discover our <a href=\"/en/tutorial\" class=\"text-primary font-medium hover:underline\">step-by-step tutorial</a>, or read more tips on our <a href=\"/en/blog\" class=\"text-primary font-medium hover:underline\">official blog</a>. If you would rather follow the method in a spreadsheet, meet the <a href=\"/en/herramientas/plantilla-kakebo-excel-premium\" class=\"text-primary font-medium hover:underline\">Kakebo Master System pack</a>, with a premium Kakebo Excel template, an ebook and a PDF tutorial."
             },
             "categories": {
                 "title": "Typical Kakebo Categories (and how to use them)",

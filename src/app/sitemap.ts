@@ -11,7 +11,10 @@ const CORE_ROUTES_LAST_MODIFIED = new Date('2026-07-07');
 // Per-route overrides for core routes whose content changed after CORE_ROUTES_LAST_MODIFIED.
 // Same rule: bump manually when that page's content really changes.
 const ROUTE_LAST_MODIFIED: Record<string, Date> = {
-    '/herramientas/plantilla-kakebo-excel-premium': new Date('2026-10-07'),
+    '': new Date('2026-10-08'),
+    '/tutorial': new Date('2026-10-08'),
+    '/herramientas': new Date('2026-10-08'),
+    '/herramientas/plantilla-kakebo-excel-premium': new Date('2026-10-08'),
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -51,7 +54,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
                         const lPath = route.path === '' && l === 'es' ? '' : (l === 'es' ? route.path : `/${l}${route.path}`);
                         acc[l] = `${baseUrl}${lPath}`;
                         return acc;
-                    }, {} as Record<string, string>)
+                    }, {
+                        // x-default points at the Spanish URL, same as the <link rel="alternate"> tags in each page.
+                        'x-default': `${baseUrl}${route.path}`,
+                    } as Record<string, string>)
                 }
             });
         });
@@ -83,7 +89,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
                         const lPath = l === 'es' ? `/blog/${post.slug}` : `/${l}/blog/${post.slug}`;
                         acc[l] = `${baseUrl}${lPath}`;
                         return acc;
-                    }, {} as Record<string, string>)
+                    }, {
+                        'x-default': `${baseUrl}/blog/${post.slug}`,
+                    } as Record<string, string>)
                 }
             });
         });

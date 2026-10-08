@@ -149,7 +149,7 @@ export function Navbar() {
               aria-haspopup="true"
               aria-controls="tools-dropdown-menu"
               aria-label={t('toolsMenuToggle')}
-              className="flex items-center justify-center p-1 -ml-0.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
+              className="flex min-h-6 min-w-6 items-center justify-center p-1.5 -ml-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${isToolsOpen ? 'rotate-180' : ''}`} aria-hidden="true">
                 <path d="m6 9 6 6 6-6" />

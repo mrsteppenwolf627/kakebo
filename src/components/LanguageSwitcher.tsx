@@ -24,7 +24,8 @@ export default function LanguageSwitcher() {
             onClick={toggleLanguage}
             disabled={isPending}
             className="flex items-center gap-2 p-2 rounded-md hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors group"
-            aria-label={isEnglish ? "Switch to Spanish" : "Switch to English"}
+            // WCAG 2.5.3 (label in name): the accessible name starts with the visible text ("EN" / "ES").
+            aria-label={isEnglish ? "EN - Switch to Spanish" : "ES - Cambiar a inglés"}
         >
             <div
                 className={`w-10 h-6 rounded-full p-1 transition-colors duration-200 ease-in-out relative ${isEnglish ? "bg-indigo-600" : "bg-stone-300"

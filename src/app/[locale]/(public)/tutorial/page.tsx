@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { useTranslations } from "next-intl";
 import ExpandableImage from "@/components/landing/ExpandableImage";
 import { Link } from "@/i18n/routing";
+import { PremiumLink } from "@/components/premium/PremiumTracking";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -108,12 +109,23 @@ export default function TutorialPage() {
                         <p>{t('content.s4.p4')}</p>
 
                         <div className="mt-12 p-8 bg-card border border-border rounded-2xl text-center shadow-lg not-prose">
-                            <h3 className="text-2xl font-serif font-bold text-foreground mb-3">¿Listo para empezar a ahorrar?</h3>
-                            <p className="text-muted-foreground mb-6">Gratis para siempre, sin necesidad de tarjeta de crédito.</p>
+                            <h3 className="text-2xl font-serif font-bold text-foreground mb-3">{t('cta.title')}</h3>
+                            <p className="text-muted-foreground mb-6">{t('cta.text')}</p>
                             <Link href="/login" className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-md hover:opacity-90 transition-opacity shadow-sm">
-                                Crea tu cuenta ahora
+                                {t('cta.button')}
                             </Link>
                         </div>
+
+                        <p className="mt-8 text-center text-sm text-muted-foreground not-prose">
+                            {t('premium.before')}
+                            <PremiumLink
+                                ctaLocation="tutorial_premium_note"
+                                className="font-semibold text-foreground underline decoration-primary underline-offset-4 hover:decoration-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2"
+                            >
+                                {t('premium.link')}
+                            </PremiumLink>
+                            {t('premium.after')}
+                        </p>
                     </div>
 
                     {/* Sticky TOCSidebar */}

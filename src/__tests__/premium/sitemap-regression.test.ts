@@ -17,19 +17,33 @@ describe("sitemap regression", () => {
       expect(e.alternates?.languages).toEqual({
         en: "https://www.metodokakebo.com/en/herramientas/plantilla-kakebo-excel-premium",
         es: "https://www.metodokakebo.com/herramientas/plantilla-kakebo-excel-premium",
+        "x-default": "https://www.metodokakebo.com/herramientas/plantilla-kakebo-excel-premium",
       });
     }
   });
 
-  it("gives the premium landing its own lastModified without touching other core routes", () => {
+  it("gives the pages whose content changed in the SEO pass their own lastModified without touching other core routes", () => {
     const all = sitemap();
+    const day = (e: { lastModified?: string | Date }) => new Date(e.lastModified as Date).toISOString().slice(0, 10);
     const premium = all.filter((e) => e.url.includes("plantilla-kakebo-excel-premium"));
     for (const e of premium) {
-      expect(new Date(e.lastModified as Date).toISOString().slice(0, 10)).toBe("2026-10-07");
+      expect(day(e)).toBe("2026-10-08");
       expect(e.priority).toBe(0.8);
     }
     const tools = all.find((e) => e.url === "https://www.metodokakebo.com/herramientas");
-    expect(new Date(tools!.lastModified as Date).toISOString().slice(0, 10)).toBe("2026-07-07");
+    expect(day(tools!)).toBe("2026-10-08");
+    // Core routes that were not edited keep the shared date.
+    const about = all.find((e) => e.url === "https://www.metodokakebo.com/sobre-nosotros");
+    expect(day(about!)).toBe("2026-07-07");
+  });
+
+  it("declares x-default (the Spanish URL) on every alternates block that has languages", () => {
+    for (const e of sitemap()) {
+      const langs = e.alternates?.languages as Record<string, string> | undefined;
+      if (!langs) continue;
+      expect(langs["x-default"]).toBeDefined();
+      expect(langs["x-default"]).toBe(langs.es);
+    }
   });
 
   it("still lists the free template article in Spanish and English", () => {

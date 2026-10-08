@@ -192,7 +192,7 @@ const content = {
     eyebrow: "Kakebo Master System · Digital pack",
     h1: "Premium Kakebo Excel template: more clarity for your money, less improvisation",
     subtitle:
-      "Kakebo Master System is a digital pack with a premium Excel template, an ebook and a PDF tutorial to plan, track and review your money every month.",
+      "Kakebo Master System is a digital pack with a premium kakeibo Excel template, an ebook and a PDF tutorial to plan, track and review your money every month.",
     status: "Coming soon",
     price: "€9.90 VAT included · one-time purchase",
     statusNote: "Nothing is charged yet: purchase will open later.",
@@ -232,7 +232,7 @@ const content = {
     what: {
       title: "What is Kakebo Master System",
       body: [
-        "Kakebo Master System is a personal finance organization system based on the Japanese Kakebo method: you plan the month first, then log what you spend, review every week and close the month with a reflection. The Excel template is the core; the ebook and the tutorial help you understand the method and use it.",
+        "Kakebo Master System is a personal finance organization system based on the Japanese kakeibo (Kakebo) method: you plan the month first, then log what you spend, review every week and close the month with a reflection. The Excel template is the core; the ebook and the tutorial help you understand the method and use it.",
         "It is meant for people who already know the free template and want a yearly system with a dashboard, savings goals, recurring expenses, accounts and net worth, or for beginners who prefer a complete structure from day one.",
       ],
     },
