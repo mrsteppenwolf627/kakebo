@@ -659,6 +659,12 @@
             "p2": "El <bold>método Kakebo</bold> fomenta el <bold>ahorro consciente</bold>. No se trata de recortar por recortar, sino de entender a dónde va tu dinero para tomar mejores decisiones durante cada ciclo.",
             "p3": "Visualiza tu progreso con gráficos claros, establece objetivos de ahorro realistas y cierra cada ciclo cuando tenga sentido para ti."
         },
+        "CycleGuide": {
+            "title": "Cómo aprovechar este ciclo",
+            "step1": "Registra cada gasto y cada ingreso cuando ocurran.",
+            "step2": "Revisa el disponible y el reparto por categorías.",
+            "step3": "Cierra el ciclo cuando hayas terminado tu revisión."
+        },
         "MonthSelector": {
             "cycleLabel": "Ciclo de {label}",
             "today": "Ir a hoy",

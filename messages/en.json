@@ -680,6 +680,12 @@
             "p2": "The Japanese Kakebo method encourages <bold>mindful saving</bold>. It's not about cutting costs blindly, but understanding where your money goes and making better decisions throughout each cycle.",
             "p3": "Visualize your progress with clear charts, set realistic saving goals, and close each cycle when it makes sense for you."
         },
+        "CycleGuide": {
+            "title": "How to use this cycle",
+            "step1": "Record each expense and income as it happens.",
+            "step2": "Review your available amount and category breakdown.",
+            "step3": "Close the cycle once you have finished your review."
+        },
         "MonthSelector": {
             "cycleLabel": "Cycle: {label}",
             "today": "Go to today",

@@ -99,25 +99,24 @@ export default async function HomePage(props: {
             <CategoryGuideCard />
           </div>
 
-          {/* SEO BLOCK - Estilo sobrio */}
-          <section className="mt-16 space-y-6 border-t border-border pt-12 text-sm text-stone-600 dark:text-stone-400">
-            <h2 className="text-xl font-serif font-normal text-foreground">
-              {t("SEO.title")}
+          <section className="mt-8 rounded-xl border border-border bg-card p-5 sm:p-6">
+            <h2 className="text-lg font-serif font-normal text-foreground">
+              {t("CycleGuide.title")}
             </h2>
-
-            <p className="leading-relaxed">
-              {t.rich("SEO.p1", {
-                bold: (chunks) => <strong className="text-stone-900">{chunks}</strong>,
-              })}
-            </p>
-
-            <p className="leading-relaxed">
-              {t.rich("SEO.p2", {
-                bold: (chunks) => <strong>{chunks}</strong>,
-              })}
-            </p>
-
-            <p className="leading-relaxed">{t("SEO.p3")}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 text-sm">
+              <div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">01</div>
+                <p className="mt-1 text-foreground">{t("CycleGuide.step1")}</p>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">02</div>
+                <p className="mt-1 text-foreground">{t("CycleGuide.step2")}</p>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">03</div>
+                <p className="mt-1 text-foreground">{t("CycleGuide.step3")}</p>
+              </div>
+            </div>
           </section>
         </div>
         <FloatingAgentChat />
