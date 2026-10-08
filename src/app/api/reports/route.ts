@@ -66,13 +66,33 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient();
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
-      .select("plus_access_until")
+      .select("is_admin,is_founder,plus_access_until")
       .eq("id", user.id)
       .single();
 
     if (profileError) throw profileError;
     const plusUntil = profile?.plus_access_until ? new Date(profile.plus_access_until) : null;
-    if (!plusUntil || Number.isNaN(plusUntil.getTime()) || plusUntil <= new Date()) {
+    const hasActivePlus = Boolean(plusUntil && !Number.isNaN(plusUntil.getTime()) && plusUntil > new Date());
+
+    // legacy_full is the explicit grant for accounts that existed before
+    // freemium activation. It must remain independent from tier/manual flags.
+    let hasLegacyAccess = false;
+    const { data: legacyGrant, error: legacyError } = await supabase
+      .from("access_grants")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("grant_type", "legacy_full")
+      .is("revoked_at", null)
+      .maybeSingle();
+
+    if (!legacyError) {
+      hasLegacyAccess = Boolean(legacyGrant);
+    } else if (legacyError.code !== "42P01") {
+      throw legacyError;
+    }
+
+    const hasReportAccess = Boolean(profile?.is_admin || profile?.is_founder || hasLegacyAccess || hasActivePlus);
+    if (!hasReportAccess) {
       return NextResponse.json(
         { error: { code: "premium_required", message: "Los informes son una función Plus. Activa una suscripción para utilizarlos." } },
         { status: 403 }

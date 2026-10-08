@@ -21,6 +21,13 @@ type ReportData = {
     expensesByCategory: Record<string, number>;
 };
 
+const CATEGORY_LABELS: Record<string, string> = {
+    survival: "Supervivencia",
+    optional: "Ocio y vicio",
+    culture: "Cultura",
+    extra: "Extras",
+};
+
 export default function ReportDialog({
     isOpen,
     initialYm,
@@ -76,7 +83,7 @@ export default function ReportDialog({
         const rows = reportData.expenses.map((e) => [
             e.date,
             escapeCell(e.note || ""),
-            e.category,
+            CATEGORY_LABELS[e.category] || e.category,
             e.amount
         ]);
 
@@ -178,7 +185,7 @@ export default function ReportDialog({
                                     onClick={() => handleDownloadCSV(true)}
                                     className="px-3 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-900/30 dark:border-emerald-800 dark:text-emerald-400 hover:opacity-80 rounded-md text-sm font-medium transition-opacity inline-flex items-center gap-2"
                                 >
-                                    <span>📉</span> Excel
+                                    <span>📉</span> CSV para Excel
                                 </button>
                                 <PDFDownloadLink
                                     document={<ReportPDF data={reportData} />}
