@@ -144,6 +144,11 @@ export default function NewIncomeClient() {
                         </div>
                     )}
 
+                    <div className="mb-6 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-foreground">
+                        <div className="font-medium">{badge}</div>
+                        <p className="mt-1 text-xs text-muted-foreground">{tCommon("incomeDateHint")}</p>
+                    </div>
+
                     <div className="space-y-6">
                         {/* Date Input */}
                         <div className="space-y-2">
@@ -154,9 +159,7 @@ export default function NewIncomeClient() {
                                 onChange={(e) => setDate(clampDateToYm(e.target.value))}
                                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                             />
-                            <p className="text-xs text-muted-foreground">
-                                {tCommon("incomeDateHint")}
-                            </p>
+                            <p className="text-xs text-muted-foreground">La fecha real se conserva aunque el ingreso se asigne a este ciclo.</p>
                         </div>
 
                         {/* Description */}

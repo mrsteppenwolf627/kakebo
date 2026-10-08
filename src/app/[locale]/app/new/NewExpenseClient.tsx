@@ -421,7 +421,7 @@ export default function NewExpensePage() {
           >
             ← {tCommon("back")}
           </button>
-          <div className="text-xs uppercase tracking-wide font-medium text-muted-foreground bg-muted px-2 py-1 rounded-sm">
+            <div className="text-xs uppercase tracking-wide font-medium text-muted-foreground bg-muted px-3 py-1.5 rounded-md border border-border">
             {badge}
           </div>
         </div>
@@ -449,7 +449,12 @@ export default function NewExpensePage() {
             </div>
           )}
 
-          <div className="space-y-6">
+            <div className="mb-6 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-foreground">
+              <div className="font-medium">{badge}</div>
+              <p className="mt-1 text-xs text-muted-foreground">{tCommon("dateHint")}</p>
+            </div>
+
+            <div className="space-y-6">
             {/* Date Input */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">{tCommon("date")}</label>
@@ -460,9 +465,7 @@ export default function NewExpensePage() {
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={inputsDisabled}
               />
-              <p className="text-xs text-muted-foreground">
-                {tCommon("dateHint")}
-              </p>
+              <p className="text-xs text-muted-foreground">La fecha real se conserva aunque el gasto se asigne a este ciclo.</p>
             </div>
 
             {/* Concept + AI */}
