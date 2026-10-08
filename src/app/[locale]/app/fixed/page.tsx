@@ -297,6 +297,9 @@ export default function FixedExpensesPage() {
             <p className="text-sm text-muted-foreground mt-1">
               {t("totalActive")} <span className="font-semibold text-foreground">{money(totalActive)} €</span>
             </p>
+            <p className="text-sm text-muted-foreground mt-2 max-w-xl">
+              {t("description")}
+            </p>
           </div>
 
           <div className="flex items-center gap-2">

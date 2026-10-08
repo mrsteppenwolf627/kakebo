@@ -746,7 +746,7 @@
                 "supervivencia": "Supervivencia",
                 "opcional": "Ocio y vicio",
                 "cultura": "Cultura",
-                "extra": "Extra",
+                "extra": "Extras",
                 "percentTotal": "{percent}% del total",
                 "budget": "Presup.: {amount} €",
                 "remaining": "Restan {amount} €",
@@ -967,6 +967,7 @@
     },
     "FixedExpenses": {
         "title": "Gastos fijos",
+        "description": "Pagos recurrentes que se descuentan antes de calcular lo que puedes gastar en cada ciclo.",
         "totalActive": "Total activo:",
         "actions": {
             "back": "Dashboard",
@@ -1184,6 +1185,7 @@
         },
         "FixedExpenses": {
             "title": "Gastos fijos",
+            "description": "Pagos recurrentes que se descuentan antes de calcular lo que puedes gastar en cada ciclo.",
             "totalActive": "Total activos:",
             "loading": "Cargando gastos fijos...",
             "none": "Aún no tienes gastos fijos.",
@@ -1228,8 +1230,8 @@
         },
         "SEO": {
             "title": "Ajustes de presupuesto y objetivo de ahorro",
-            "desc": "En esta sección puedes definir tu ingreso mensual, tu objetivo de ahorro y los presupuestos máximos por categoría del método Kakebo. Esto te permite controlar el gasto y medir la evolución de tus hábitos mes a mes.",
-            "keywords": "(Hueco SEO: texto sobre “presupuesto mensual”, “objetivo de ahorro”, “método kakebo”.)"
+            "desc": "Aquí defines el ingreso de referencia, el objetivo de ahorro y los límites de cada categoría. Estos valores se aplican a tus ciclos Kakebo y puedes revisarlos cuando cambie tu situación.",
+            "keywords": ""
         }
     },
     "Tutorial": {

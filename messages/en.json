@@ -988,6 +988,7 @@
     },
     "FixedExpenses": {
         "title": "Fixed Expenses",
+        "description": "Recurring payments deducted before calculating what you can spend in each cycle.",
         "totalActive": "Total active:",
         "actions": {
             "back": "Dashboard",
@@ -1205,6 +1206,7 @@
         },
         "FixedExpenses": {
             "title": "Fixed Expenses",
+            "description": "Recurring payments deducted before calculating what you can spend in each cycle.",
             "totalActive": "Total active:",
             "loading": "Loading fixed expenses...",
             "none": "No fixed expenses yet.",
@@ -1249,8 +1251,8 @@
         },
         "SEO": {
             "title": "Budget and Saving Goal Settings",
-            "desc": "In this section, you can define your monthly income, saving goal, and maximum budgets for each Kakebo category. This allows you to control spending and track your habits month by month.",
-            "keywords": "(SEO Placeholder: text about \"monthly budget\", \"saving goal\", \"kakebo method\".)"
+            "desc": "Set your reference income, saving goal and category limits here. These values apply to your Kakebo cycles and can be reviewed whenever your situation changes.",
+            "keywords": ""
         }
     },
     "Admin": {
