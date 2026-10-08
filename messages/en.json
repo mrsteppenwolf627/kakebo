@@ -1186,6 +1186,7 @@
     "Settings": {
         "title": "Settings",
         "General": {
+            "intro": "Set the values Kakebo will use to guide you through each cycle. You can update them whenever your income, goals, or regular expenses change.",
             "income": "Monthly Income (€)",
             "savingGoal": "Saving Goal (€)",
             "budgetsTitle": "Budgets by Category",

@@ -1165,6 +1165,7 @@
     "Settings": {
         "title": "Ajustes",
         "General": {
+            "intro": "Configura aquí los valores que Kakebo usará para orientarte en cada ciclo. Puedes cambiarlos cuando cambien tus ingresos, objetivos o gastos habituales.",
             "income": "Ingresos mensuales (€)",
             "savingGoal": "Objetivo de ahorro (€)",
             "budgetsTitle": "Presupuestos por categoría",

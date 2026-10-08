@@ -347,8 +347,11 @@ export default function SettingsClient() {
     }, [fixedRows]);
 
     return (
-        <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-xl mx-auto space-y-4 sm:space-y-6">
-            <h1 className="text-xl sm:text-2xl font-bold font-serif text-foreground">{t("title")}</h1>
+        <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-3xl mx-auto space-y-4 sm:space-y-6">
+            <div className="space-y-2">
+                <h1 className="text-xl sm:text-2xl font-bold font-serif text-foreground">{t("title")}</h1>
+                <p className="text-sm text-muted-foreground max-w-2xl">{tGen("intro")}</p>
+            </div>
 
             {err && <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md border border-destructive/20">{err}</div>}
             {ok && <div className="text-sm text-primary bg-primary/10 p-3 rounded-md border border-primary/20">{ok}</div>}
@@ -357,7 +360,8 @@ export default function SettingsClient() {
             {!loading && (
                 <>
                     <div className="space-y-5">
-                        <div className="space-y-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="border border-border rounded-lg p-4 space-y-2 bg-card">
                             <label className="block text-sm font-medium text-foreground">{tGen("income")}</label>
                             <input
                                 type="number"
@@ -372,7 +376,7 @@ export default function SettingsClient() {
                             />
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="border border-border rounded-lg p-4 space-y-2 bg-card">
                             <label className="block text-sm font-medium text-foreground">{tGen("savingGoal")}</label>
                             <input
                                 type="number"
@@ -385,6 +389,7 @@ export default function SettingsClient() {
                                     })
                                 }
                             />
+                        </div>
                         </div>
 
                         <div className="border border-border rounded-lg p-5 space-y-4 bg-card">

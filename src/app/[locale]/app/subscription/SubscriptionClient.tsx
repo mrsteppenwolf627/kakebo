@@ -4,13 +4,15 @@ import { Link } from "@/i18n/routing";
 
 export default function SubscriptionClient() {
     return (
-        <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-xl mx-auto space-y-4 sm:space-y-6">
-            <h1 className="text-xl sm:text-2xl font-bold font-serif text-foreground">
-                Tu Plan
-            </h1>
+        <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-2xl mx-auto space-y-4 sm:space-y-6">
+            <div className="space-y-2">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Cuenta</p>
+                <h1 className="text-xl sm:text-2xl font-bold font-serif text-foreground">Tu Plan</h1>
+                <p className="text-sm text-muted-foreground">Consulta de un vistazo qué tienes disponible en Kakebo.</p>
+            </div>
 
-            <div className="border rounded-lg p-6 space-y-6 border-primary/50 bg-primary/5">
-                <div>
+            <div className="border rounded-2xl p-5 sm:p-7 space-y-6 border-primary/30 bg-primary/5 shadow-sm">
+                <div className="space-y-2">
                     <h2 className="text-lg font-semibold text-foreground mb-2">
                         Acceso Completo Gratuito
                     </h2>
@@ -19,21 +21,21 @@ export default function SubscriptionClient() {
                     </p>
                 </div>
 
-                <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                        <span className="text-green-500">✓</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3">
+                        <span className="text-green-600 font-semibold">✓</span>
                         <span className="text-sm text-foreground">Registro ilimitado de gastos e ingresos</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                        <span className="text-green-500">✓</span>
+                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3">
+                        <span className="text-green-600 font-semibold">✓</span>
                         <span className="text-sm text-foreground">Agente Financiero IA</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                        <span className="text-green-500">✓</span>
+                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3">
+                        <span className="text-green-600 font-semibold">✓</span>
                         <span className="text-sm text-foreground">Informes PDF</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                        <span className="text-green-500">✓</span>
+                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3">
+                        <span className="text-green-600 font-semibold">✓</span>
                         <span className="text-sm text-foreground">Control de gastos fijos</span>
                     </div>
                 </div>
