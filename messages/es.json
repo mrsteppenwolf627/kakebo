@@ -844,7 +844,7 @@
             "widget": "Asistente Kakebo",
             "full": "Asistente Financiero"
         },
-        "subtitle": "GPT-4o-mini & Agentes",
+        "subtitle": "Pregúntame por tus gastos, categorías y ciclos.",
         "actions": {
             "clear": "Borrar chat",
             "send": "Enviar",
@@ -866,7 +866,7 @@
             "placeholderWidget": "Escribe aquí...",
             "placeholderFull": "Pregunta algo sobre tus finanzas..."
         },
-        "disclaimer": "Los agentes de IA pueden cometer errores.",
+        "disclaimer": "La IA puede equivocarse. Revisa sus respuestas antes de guardar cambios.",
         "error": "Error",
         "confirmation": {
             "title": "Confirmar cambio propuesto por la IA",
@@ -1022,7 +1022,7 @@
     },
     "AIMetrics": {
         "title": "Métricas IA",
-        "subtitle": "Panel de evaluación y monitoreo del modelo de IA",
+        "subtitle": "Panel técnico para revisar el funcionamiento del asistente y sus datos de uso.",
         "loading": "Cargando métricas...",
         "error": "Error al cargar métricas",
         "retry": "Reintentar",

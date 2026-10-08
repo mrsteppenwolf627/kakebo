@@ -865,7 +865,7 @@
             "widget": "Kakebo Assistant",
             "full": "Financial Assistant"
         },
-        "subtitle": "GPT-4o-mini & Agents",
+        "subtitle": "Ask me about your spending, categories and cycles.",
         "actions": {
             "clear": "Clear chat",
             "send": "Send",
@@ -887,7 +887,7 @@
             "placeholderWidget": "Type here...",
             "placeholderFull": "Ask something about your finances..."
         },
-        "disclaimer": "AI agents can make mistakes.",
+        "disclaimer": "AI can make mistakes. Review its answers before saving changes.",
         "error": "Error",
         "confirmation": {
             "title": "Confirm AI-proposed change",
@@ -1043,7 +1043,7 @@
     },
     "AIMetrics": {
         "title": "AI Metrics",
-        "subtitle": "Evaluation and monitoring dashboard for the AI model",
+        "subtitle": "Technical panel for reviewing the assistant and its usage data.",
         "loading": "Loading metrics...",
         "error": "Error loading metrics",
         "retry": "Retry",
