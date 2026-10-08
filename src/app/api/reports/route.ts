@@ -87,7 +87,12 @@ export async function POST(request: NextRequest) {
 
     if (!legacyError) {
       hasLegacyAccess = Boolean(legacyGrant);
-    } else if (legacyError.code !== "42P01") {
+    } else if (legacyError.code === "42P01" || legacyError.code === "PGRST205") {
+      return NextResponse.json(
+        { error: { code: "access_model_not_ready", message: "El sistema de permisos premium todavía no está preparado." } },
+        { status: 503 }
+      );
+    } else {
       throw legacyError;
     }
 
