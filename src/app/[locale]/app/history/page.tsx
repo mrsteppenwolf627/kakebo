@@ -164,7 +164,7 @@ export default function HistoryPage() {
                   {/* Desktop Layout */}
                   <div className="hidden sm:grid sm:grid-cols-12 items-center">
                     <div className="col-span-3 font-medium">{ymLabel(m.year, m.month)}</div>
-                    <div className="col-span-2 text-black/60">{m.status}</div>
+                    <div className="col-span-2 text-black/60">{m.status === "closed" ? "Cerrado" : "Abierto"}</div>
                     <div className="col-span-3">{a.total.toFixed(2)} €</div>
                     <div className="col-span-2 text-black/60">{a.count}</div>
                     <div className="col-span-2 text-right">

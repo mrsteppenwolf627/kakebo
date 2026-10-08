@@ -26,9 +26,9 @@ type Movement = Expense | Income;
 
 const KAKEBO_CATEGORIES: Record<string, { label: string; color: string }> = {
   supervivencia: { label: "Supervivencia", color: "#fca5a5" },
-  opcional: { label: "Opcional", color: "#93c5fd" },
+  opcional: { label: "Ocio y vicio", color: "#93c5fd" },
   cultura: { label: "Cultura", color: "#86efac" },
-  extra: { label: "Extra", color: "#d8b4fe" },
+  extra: { label: "Extras", color: "#d8b4fe" },
 };
 
 const API_TO_FRONTEND: Record<string, string> = {

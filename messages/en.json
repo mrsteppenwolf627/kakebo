@@ -681,6 +681,7 @@
             "p3": "Visualize your progress with clear charts, set realistic saving goals, and close each cycle when it makes sense for you."
         },
         "MonthSelector": {
+            "cycleLabel": "Cycle: {label}",
             "today": "Go to today",
             "prev": "Previous cycle",
             "next": "Next cycle"

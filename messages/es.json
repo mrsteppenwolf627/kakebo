@@ -660,6 +660,7 @@
             "p3": "Visualiza tu progreso con gráficos claros, establece objetivos de ahorro realistas y cierra cada ciclo cuando tenga sentido para ti."
         },
         "MonthSelector": {
+            "cycleLabel": "Ciclo de {label}",
             "today": "Ir a hoy",
             "prev": "Ciclo anterior",
             "next": "Ciclo siguiente"
@@ -743,7 +744,7 @@
             },
             "categories": {
                 "supervivencia": "Supervivencia",
-                "opcional": "Opcional",
+                "opcional": "Ocio y vicio",
                 "cultura": "Cultura",
                 "extra": "Extra",
                 "percentTotal": "{percent}% del total",
@@ -856,8 +857,8 @@
             "full": "¡Hola! Soy tu asistente Kakebo."
         },
         "suggestions": {
-            "totalSpent": "¿Cuánto he gastado este mes en total?",
-            "totalSpentShort": "¿Gasto total del mes?",
+            "totalSpent": "¿Cuánto he gastado en este ciclo en total?",
+            "totalSpentShort": "¿Gasto total del ciclo?",
             "analyzeFood": "Analiza mis patrones de gasto en comida",
             "analyzeFoodShort": "Analiza gastos en comida"
         },
@@ -1090,7 +1091,7 @@
                 "survival": "Supervivencia",
                 "optional": "Opcional",
                 "culture": "Cultura",
-                "extra": "Extra"
+                "extra": "Extras"
             }
         }
     },
@@ -1146,9 +1147,9 @@
             },
             "categories": {
                 "supervivencia": "Supervivencia",
-                "opcional": "Opcional",
+                "opcional": "Ocio y vicio",
                 "cultura": "Cultura",
-                "extra": "Extra"
+                "extra": "Extras"
             }
         }
     },
@@ -1159,9 +1160,9 @@
             "savingGoal": "Objetivo de ahorro (€)",
             "budgetsTitle": "Presupuestos por categoría",
             "budgetSurvival": "Supervivencia (€)",
-            "budgetOptional": "Opcional (€)",
+            "budgetOptional": "Ocio y vicio (€)",
             "budgetCulture": "Cultura (€)",
-            "budgetExtra": "Extra (€)",
+            "budgetExtra": "Extras (€)",
             "saveButton": "Guardar ajustes",
             "saving": "Guardando...",
             "success": "Ajustes guardados.",
@@ -1223,7 +1224,7 @@
                 "activated": "Activado.",
                 "deactivated": "Desactivado."
             },
-            "info": "Los gastos fijos se aplican al mes si <strong>start_ym ≤ ym</strong> y <strong>end_ym</strong> está vacío o <strong>end_ym ≥ ym</strong>."
+            "info": "Los gastos fijos se aplican al ciclo si <strong>start_ym ≤ ym</strong> y <strong>end_ym</strong> está vacío o <strong>end_ym ≥ ym</strong>."
         },
         "SEO": {
             "title": "Ajustes de presupuesto y objetivo de ahorro",

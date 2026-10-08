@@ -7,10 +7,10 @@ import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 
 const KAKEBO_CATEGORIES = {
-  supervivencia: { label: "Supervivencia", color: "#dc2626" },
-  opcional: { label: "Opcional", color: "#2563eb" },
-  cultura: { label: "Cultura", color: "#16a34a" },
-  extra: { label: "Extra", color: "#9333ea" },
+  survival: { label: "Supervivencia", color: "#dc2626" },
+  optional: { label: "Ocio y vicio", color: "#2563eb" },
+  culture: { label: "Cultura", color: "#16a34a" },
+  extra: { label: "Extras", color: "#9333ea" },
 } as const;
 
 type CategoryKey = keyof typeof KAKEBO_CATEGORIES;
@@ -78,9 +78,9 @@ export default function MonthDetailPage() {
 
   const totalsByCategory = useMemo(() => {
     const base: Record<CategoryKey, number> = {
-      supervivencia: 0,
-      opcional: 0,
-      cultura: 0,
+      survival: 0,
+      optional: 0,
+      culture: 0,
       extra: 0,
     };
 
@@ -168,7 +168,7 @@ export default function MonthDetailPage() {
             <h1 className="text-2xl sm:text-3xl font-semibold">Ciclo {ym}</h1>
             <p className="text-black/60 text-sm">
               {monthRow?.status
-                ? `Estado: ${monthRow.status}`
+                ? `Estado: ${monthRow.status === "closed" ? "cerrado" : "abierto"}`
                 : "Sin registro de ciclo (aún)"}
             </p>
           </div>
@@ -236,8 +236,7 @@ export default function MonthDetailPage() {
 
         {!loading && rows.length === 0 && (
           <div className="border border-black/10 p-4 text-sm text-black/60">
-            No hay gastos vinculados a este ciclo (month_id). Si es un ciclo antiguo,
-            aún no se migraron los gastos.
+            No hay gastos vinculados a este ciclo.
           </div>
         )}
 

@@ -274,7 +274,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       const nextYm = `${nextYear}-${String(nextMonth).padStart(2, "0")}`;
 
       const ok = window.confirm(
-        `Vas a CERRAR el mes ${ym}.\n\nSe abrirá automáticamente el siguiente ciclo (${nextYm}) para que puedas registrar gastos de inmediato.\n\n¿Continuar?`
+        `Vas a CERRAR el ciclo ${ym}.\n\nSe abrirá automáticamente el siguiente ciclo (${nextYm}) para que puedas registrar gastos de inmediato.\n\n¿Continuar?`
       );
       if (!ok) return;
 
@@ -334,7 +334,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       if (!monthId) return;
 
       const ok = window.confirm(
-        `Vas a REABRIR el mes ${ym}. Podrás volver a añadir y eliminar gastos.\n\n¿Continuar?`
+        `Vas a REABRIR el ciclo ${ym}. Podrás volver a añadir y eliminar gastos.\n\n¿Continuar?`
       );
       if (!ok) return;
 
@@ -453,20 +453,20 @@ export default function DashboardMoneyPanel({ ym }: Props) {
                   onClick={reopenMonth}
                   disabled={closingMonth}
                   className="flex items-center gap-1.5 border border-border bg-card rounded-md px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:border-primary/50 disabled:opacity-50 transition-colors"
-                  title="Reabrir mes"
+                  title="Reabrir ciclo"
                 >
                   <LockOpen className="w-3.5 h-3.5" />
-                  {closingMonth ? "…" : "Reabrir mes"}
+                  {closingMonth ? "…" : "Reabrir ciclo"}
                 </button>
               ) : (
                 <button
                   onClick={closeMonth}
                   disabled={closingMonth}
                   className="flex items-center gap-1.5 border border-stone-800 bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 rounded-md px-3 py-1.5 text-xs hover:opacity-90 disabled:opacity-50 transition-colors shadow-sm"
-                  title="Cerrar mes"
+                  title="Cerrar ciclo"
                 >
                   <Lock className="w-3.5 h-3.5" />
-                  {closingMonth ? "…" : "Cerrar mes"}
+                  {closingMonth ? "…" : "Cerrar ciclo"}
                 </button>
               )
             )}
