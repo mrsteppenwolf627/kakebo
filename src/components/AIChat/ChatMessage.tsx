@@ -38,7 +38,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
                                         key={tool}
                                         className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-muted text-muted-foreground border border-border"
                                     >
-                                        🛠️ {tool}
+                                        Herramienta: {tool}
                                     </span>
                                 ))}
                             </div>
@@ -52,9 +52,9 @@ export function ChatMessage({ message }: ChatMessageProps) {
                         {/* Footer con métricas (solo para dev/debug o si el usuario quiere ver detalles) */}
                         {!isUser && message.metrics && (
                             <div className="mt-3 pt-2 border-t border-border flex items-center gap-3 text-[10px] text-muted-foreground/70">
-                                <span>⏱️ {message.metrics.latencyMs}ms</span>
-                                <span>💰 ${message.metrics.costUsd?.toFixed(5)}</span>
-                                {message.intent && <span>🎯 {message.intent}</span>}
+                                <span>Latencia: {message.metrics.latencyMs} ms</span>
+                                <span>Coste: ${message.metrics.costUsd?.toFixed(5)}</span>
+                                {message.intent && <span>Intención: {message.intent}</span>}
                             </div>
                         )}
                     </div>

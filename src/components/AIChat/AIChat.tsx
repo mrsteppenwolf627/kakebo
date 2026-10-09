@@ -68,7 +68,7 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                 <div className="flex items-center gap-3">
                     {mode === 'full' && (
                         <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                            <span className="text-lg">🤖</span>
+                            <span className="text-lg" aria-hidden="true">✦</span>
                         </div>
                     )}
                     <div>
@@ -83,7 +83,13 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                 <div className="flex items-center gap-2">
                     {mode !== 'widget' && (
                         <button
-                            onClick={clearHistory}
+                            onClick={() => {
+                                if (messages.length === 0 || window.confirm('¿Borrar la conversación actual?')) {
+                                    clearHistory();
+                                }
+                            }}
+                            type="button"
+                            aria-label={t('actions.clear')}
                             className="text-xs text-muted-foreground hover:text-destructive transition-colors px-3 py-1 rounded-md hover:bg-muted"
                         >
                             {t('actions.clear')}
@@ -92,6 +98,8 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                     {mode === 'widget' && onClose && (
                         <button
                             onClick={onClose}
+                            type="button"
+                            aria-label="Cerrar"
                             className="text-primary-foreground/80 hover:text-primary-foreground transition-colors p-1"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -108,7 +116,7 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                 {messages.length === 0 && (
                     <div className="flex flex-col h-full items-center justify-center text-muted-foreground space-y-4 p-8 mx-auto max-w-2xl opacity-70">
                         <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
-                            <span className="text-2xl">👋</span>
+                            <span className="text-2xl" aria-hidden="true">✦</span>
                         </div>
                         <p className="font-medium text-foreground text-center">
                             {mode === 'widget' ? t('welcome.widget') : t('welcome.full')}
@@ -189,9 +197,12 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                         placeholder={mode === 'widget' ? t('input.placeholderWidget') : t('input.placeholderFull')}
                         disabled={isLoading || !!pendingConfirmationId}
                         className={`flex-1 ${mode === 'widget' ? 'p-2 text-sm' : 'p-3 px-4'} rounded-xl border border-border bg-muted/30 text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-shadow disabled:bg-muted disabled:text-muted-foreground placeholder:text-muted-foreground/60`}
+                        maxLength={1000}
+                        aria-label={mode === 'widget' ? t('input.placeholderWidget') : t('input.placeholderFull')}
                     />
                     <button
                         type="submit"
+                        aria-label={t('actions.send')}
                         disabled={!inputValue.trim() || isLoading || !!pendingConfirmationId}
                         className={`bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50 ${mode === 'widget' ? 'p-2 rounded-lg' : 'p-3 px-6 rounded-xl'} font-medium transition-all shadow-sm flex items-center justify-center`}
                     >

@@ -109,7 +109,7 @@ export default function HistoryPage() {
 
   return (
     <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
-      <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
+      <div className="max-w-5xl mx-auto space-y-5 sm:space-y-7">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
             <h1 className="text-2xl sm:text-3xl font-serif font-medium text-foreground">Histórico</h1>
@@ -120,18 +120,18 @@ export default function HistoryPage() {
 
           <Link
             href="/app"
-            className="border border-border bg-card px-3 py-2 text-sm rounded-lg hover:bg-muted text-foreground text-center transition-colors"
+            className="border border-border bg-card px-3 py-2 text-sm rounded-lg hover:bg-muted text-foreground text-center transition-colors shadow-sm"
           >
             ← Dashboard
           </Link>
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:max-w-md">
-          <div className="border border-border bg-card rounded-xl p-4 shadow-sm">
+          <div className="border border-border bg-card rounded-xl p-4 shadow-sm transition-colors hover:border-primary/30">
             <div className="text-xs uppercase tracking-wide text-muted-foreground">Ciclos registrados</div>
             <div className="text-2xl font-semibold text-foreground mt-1">{months.length}</div>
           </div>
-          <div className="border border-border bg-card rounded-xl p-4 shadow-sm">
+          <div className="border border-border bg-card rounded-xl p-4 shadow-sm transition-colors hover:border-primary/30">
             <div className="text-xs uppercase tracking-wide text-muted-foreground">Ciclos cerrados</div>
             <div className="text-2xl font-semibold text-foreground mt-1">{closedCount}</div>
           </div>

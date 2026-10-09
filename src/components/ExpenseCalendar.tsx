@@ -490,7 +490,7 @@ export default function ExpenseCalendar({
 
   return (
     <div className="space-y-6">
-      <div className="border border-border rounded-lg p-6 sm:p-8 space-y-6 bg-card/90 backdrop-blur-sm shadow-sm transition-colors">
+      <div className="border border-border rounded-xl p-6 sm:p-8 space-y-6 bg-card/90 backdrop-blur-sm shadow-sm transition-colors">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-border pb-4">
           <div>
             <div className="text-sm text-muted-foreground font-light mb-2">
@@ -542,7 +542,7 @@ export default function ExpenseCalendar({
         </div>
 
         {/* Finanzas del mes */}
-        <div className="border border-border rounded-lg p-5 sm:p-6 space-y-3 bg-muted/30">
+        <div className="border border-border rounded-xl p-5 sm:p-6 space-y-3 bg-muted/30 shadow-sm">
           <div className="flex items-center justify-between text-sm gap-2">
             <span className="text-muted-foreground font-light">{t("summary.income")}</span>
             <span className="font-mono text-foreground">
@@ -633,7 +633,7 @@ export default function ExpenseCalendar({
               budget != null && budget > 0 ? Math.min(100, (spent / budget) * 100) : 0;
 
             return (
-              <div key={key} className="border border-border bg-card p-4 rounded-lg shadow-sm flex flex-col gap-3 transition-colors">
+              <div key={key} className="border border-border bg-card p-4 rounded-xl shadow-sm flex flex-col gap-3 transition-colors hover:border-primary/30">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
                     <span
@@ -672,7 +672,7 @@ export default function ExpenseCalendar({
         </div>
 
         {/* Chart */}
-        <div className="border border-border p-6 rounded-lg bg-card shadow-sm relative overflow-hidden">
+        <div className="border border-border p-6 rounded-xl bg-card shadow-sm relative overflow-hidden">
           <div className="font-medium text-foreground mb-4">Distribución por categorías</div>
           <SpendingChart
             title="Gasto por categoría"
@@ -711,7 +711,7 @@ export default function ExpenseCalendar({
         {loading && <div className="text-sm text-muted-foreground animate-pulse">Cargando datos del mes...</div>}
 
         {/* Lista */}
-        <div className="border border-border p-4 sm:p-6 rounded-lg bg-card shadow-sm relative overflow-hidden">
+        <div className="border border-border p-4 sm:p-6 rounded-xl bg-card shadow-sm relative overflow-hidden">
           <div className="font-medium text-foreground mb-4 text-sm sm:text-base">{t("list.title")}</div>
 
           {rows.length === 0 && !loading && (
@@ -723,7 +723,7 @@ export default function ExpenseCalendar({
               {rows.map((r) => (
                 <li
                   key={r.id}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 text-sm py-3 first:pt-0 last:pb-0"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 text-sm py-3 first:pt-0 last:pb-0 transition-colors hover:bg-muted/30"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="font-medium text-foreground truncate">{r.note || t("list.noConcept")}</div>

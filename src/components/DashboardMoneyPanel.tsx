@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation";
 import { Lock, LockOpen } from "lucide-react";
 import { createClient } from "@/lib/supabase/browser";
 import ManageIncomesModal from "./ManageIncomesModal";
-import TrialBanner from "./saas/TrialBanner";
+import SpendingChart from "./SpendingChart";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
 import { usesCycleLedger } from "@/lib/cycles/ledger-scope";
 
 type Props = {
@@ -31,6 +30,27 @@ type FixedExpenseRow = {
   end_ym: string | null;
   due_day: number | null;
 };
+
+const DASHBOARD_CATEGORIES = [
+  { key: "survival", label: "Supervivencia", color: "#fca5a5" },
+  { key: "optional", label: "Opcional", color: "#93c5fd" },
+  { key: "culture", label: "Cultura", color: "#86efac" },
+  { key: "extra", label: "Extra", color: "#d8b4fe" },
+] as const;
+
+function normalizeDashboardCategory(value: unknown) {
+  const category = String(value ?? "").toLowerCase();
+  const aliases: Record<string, string> = {
+    supervivencia: "survival",
+    opcional: "optional",
+    cultura: "culture",
+    extra: "extra",
+    survival: "survival",
+    optional: "optional",
+    culture: "culture",
+  };
+  return aliases[category] ?? "extra";
+}
 
 function num(v: any) {
   const n = Number(v);
@@ -63,8 +83,11 @@ function monthRangeFromYm(ym: string) {
   // último día real del mes (evita el famoso 2026-02-31)
   const lastDay = new Date(y, m, 0).getDate(); // m aquí es 1..12, y Date usa "día 0" del mes siguiente
   const end = `${ym}-${String(lastDay).padStart(2, "0")}`;
+  const nextMonth = m === 12 ? 1 : m + 1;
+  const nextYear = m === 12 ? y + 1 : y;
+  const endExclusive = `${nextYear}-${String(nextMonth).padStart(2, "0")}-01`;
 
-  return { y, m, start, end };
+  return { y, m, start, end, endExclusive };
 }
 
 export default function DashboardMoneyPanel({ ym }: Props) {
@@ -88,6 +111,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
   // gastos del mes (Kakebo)
   const [monthSpent, setMonthSpent] = useState(0);
+  const [categoryTotals, setCategoryTotals] = useState<Record<string, number>>({});
 
   // input UI
   const [balanceInput, setBalanceInput] = useState<string>("");
@@ -112,7 +136,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       const userId = sessionRes.session?.user?.id;
       if (!userId) throw new Error("Auth session missing");
 
-      const { y, m, start, end } = monthRangeFromYm(ym);
+      const { y, m, start, end, endExclusive } = monthRangeFromYm(ym);
 
       // 1) settings (legacy income + saving goal)
       const { data: us, error: usErr } = await supabase
@@ -139,7 +163,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
         .select("amount")
         .eq("user_id", userId)
         .gte("date", start)
-        .lt("date", end);
+        .lt("date", endExclusive);
 
       if (incomeErr) throw incomeErr;
 
@@ -181,7 +205,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       const cycleId = usesCycleLedger(ym) ? (mo?.[0]?.id ?? null) : null;
       const expenseQuery = supabase
         .from("expenses")
-        .select("amount")
+        .select("amount,category")
         .eq("user_id", userId);
       const { data: ex, error: exErr } = cycleId
         ? await expenseQuery.eq("month_id", cycleId)
@@ -189,7 +213,13 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
       if (exErr) throw exErr;
 
-      const spent = (ex ?? []).reduce((acc: number, r: any) => acc + num(r.amount), 0);
+      const totals = (ex ?? []).reduce((acc: Record<string, number>, r: any) => {
+        const key = normalizeDashboardCategory(r.category);
+        acc[key] = (acc[key] ?? 0) + num(r.amount);
+        return acc;
+      }, {});
+      const spent = Object.values(totals).reduce((acc, value) => acc + value, 0);
+      setCategoryTotals(totals);
       setMonthSpent(spent);
     } catch (e: any) {
       setErr(e?.message ?? "Error cargando panel");
@@ -433,7 +463,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
   return (
     <section className="space-y-6">
 
-      <div className="border border-border rounded-lg p-6 sm:p-8 space-y-6 bg-card">
+      <div className="border border-border rounded-xl p-6 sm:p-8 space-y-6 bg-card shadow-sm">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 border-b border-border pb-4">
           <div>
@@ -482,10 +512,10 @@ export default function DashboardMoneyPanel({ ym }: Props) {
         {okMsg && <div className="text-sm text-foreground bg-muted border border-border p-3 rounded-md">{okMsg}</div>}
 
         {/* Main Stats - 4 Cards Responsive Layout (v3.12.0) */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
 
           {/* Card 1: Ingresos */}
-          <div className="border border-border bg-muted/20 p-5 rounded-md">
+          <div className="border border-border bg-muted/20 p-5 rounded-lg transition-colors hover:border-primary/30">
             <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide">
               {t("cards.incomes.label")}
             </div>
@@ -498,7 +528,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
           </div>
 
           {/* Card 2: Budget */}
-          <div className="border border-border bg-muted/20 p-5 rounded-md relative group">
+          <div className="border border-border bg-muted/20 p-5 rounded-lg relative group transition-colors hover:border-primary/30">
             <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide flex justify-between items-center">
               <span>{t("cards.budget.label")}</span>
               <button
@@ -524,7 +554,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
           </div>
 
           {/* Card 2: Spent */}
-          <div className="border border-border bg-muted/20 p-5 rounded-md">
+          <div className="border border-border bg-muted/20 p-5 rounded-lg transition-colors hover:border-primary/30">
             <div className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wide">{t("cards.spent.label")}</div>
             <div className="text-2xl font-serif text-foreground mb-1">{money(monthSpent)} €</div>
             <div className="text-[10px] text-muted-foreground">
@@ -533,7 +563,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
           </div>
 
           {/* Card 3: Remaining (Highlighted) */}
-          <div className="border border-border bg-card shadow-sm p-5 relative overflow-hidden group rounded-md">
+          <div className="border border-primary/30 bg-primary/5 shadow-sm p-5 relative overflow-hidden group rounded-lg">
             <div className="absolute top-0 right-0 w-16 h-16 bg-muted/30 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
             <div className="relative z-10">
               <div className="text-xs text-foreground font-bold mb-1 uppercase tracking-wide">{t("cards.available.label")}</div>
@@ -548,7 +578,7 @@ export default function DashboardMoneyPanel({ ym }: Props) {
         </div>
 
         {/* Input de Banco y Ahorro */}
-        <div className="bg-muted/10 border border-border p-4 sm:p-5 mt-6 rounded-lg">
+        <div className="bg-muted/10 border border-border p-4 sm:p-5 mt-6 rounded-xl shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
 
             {/* Liquidez / Banco */}
@@ -605,6 +635,18 @@ export default function DashboardMoneyPanel({ ym }: Props) {
 
           </div>
         </div>
+
+        <section className="border border-border bg-card p-5 sm:p-6 rounded-xl shadow-sm">
+          <div className="mb-4">
+            <h3 className="font-serif text-lg text-foreground">Distribución del gasto</h3>
+            <p className="mt-1 text-xs text-muted-foreground">Visualiza cómo se reparte el gasto de este ciclo.</p>
+          </div>
+          <SpendingChart
+            title="Distribución por categoría"
+            categories={[...DASHBOARD_CATEGORIES]}
+            totals={categoryTotals}
+          />
+        </section>
 
         {/* Modals */}
         {showIncomeModal && (

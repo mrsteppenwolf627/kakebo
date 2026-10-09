@@ -13,10 +13,10 @@ export default function ReportButton({ ym }: { ym: string }) {
         <>
             <button
                 onClick={() => setOpen(true)}
-                className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 bg-stone-100 text-stone-900 dark:bg-stone-800/80 dark:text-stone-50 dark:border dark:border-stone-700 text-sm font-medium rounded-md shadow-sm hover:bg-stone-200 dark:hover:bg-stone-700 transition-all active:scale-95 border border-transparent dark:hover:border-stone-600"
+                className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 bg-card text-foreground border border-border text-sm font-medium rounded-lg shadow-sm hover:border-primary/40 hover:bg-muted transition-all active:scale-95"
                 title={t("generateReport")}
             >
-                <FileText className="w-5 h-5 opacity-70" />
+                <FileText className="w-5 h-5 text-primary" strokeWidth={1.8} />
                 <span>{t("report")}</span>
                 <LockKeyhole className="w-3.5 h-3.5 opacity-60" aria-hidden="true" />
             </button>

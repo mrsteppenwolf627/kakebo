@@ -4,7 +4,7 @@ import { Link } from "@/i18n/routing";
 
 export default function SubscriptionClient() {
     return (
-        <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-2xl mx-auto space-y-4 sm:space-y-6">
+        <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-2xl mx-auto space-y-5 sm:space-y-7">
             <div className="space-y-2">
                 <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Cuenta</p>
                 <h1 className="text-xl sm:text-2xl font-bold font-serif text-foreground">Tu plan</h1>
@@ -22,19 +22,19 @@ export default function SubscriptionClient() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3">
+                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3 transition-colors hover:border-primary/30">
                         <span className="text-green-600 font-semibold">✓</span>
                         <span className="text-sm text-foreground">Registro de gastos e ingresos</span>
                     </div>
-                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3">
+                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3 transition-colors hover:border-primary/30">
                         <span className="text-green-600 font-semibold">✓</span>
                         <span className="text-sm text-foreground">Dashboard y control por ciclos</span>
                     </div>
-                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3">
+                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3 transition-colors hover:border-primary/30">
                         <span className="text-green-600 font-semibold">✓</span>
                         <span className="text-sm text-foreground">Histórico de movimientos</span>
                     </div>
-                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3">
+                    <div className="flex items-start gap-3 rounded-lg border border-border/70 bg-background/60 p-3 transition-colors hover:border-primary/30">
                         <span className="text-green-600 font-semibold">✓</span>
                         <span className="text-sm text-foreground">Gastos fijos, categorías y ajustes</span>
                     </div>

@@ -179,7 +179,7 @@ export default function MonthDetailPage() {
 
   return (
     <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
-      <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
+      <div className="max-w-5xl mx-auto space-y-5 sm:space-y-7">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
             <h1 className="text-2xl sm:text-3xl font-semibold capitalize">Ciclo de {cycleTitle}</h1>
@@ -199,14 +199,14 @@ export default function MonthDetailPage() {
           <div className="flex items-center gap-2">
             <Link
               href="/app/history"
-              className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white"
+              className="border border-border bg-card rounded-lg px-3 py-2 text-sm text-foreground shadow-sm hover:bg-muted transition-colors"
             >
               ← Historial
             </Link>
 
             <button
               onClick={load}
-              className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white"
+              className="border border-border bg-card rounded-lg px-3 py-2 text-sm text-foreground shadow-sm hover:bg-muted transition-colors"
             >
               Recargar
             </button>
@@ -217,7 +217,7 @@ export default function MonthDetailPage() {
         {loading && <div className="text-sm text-black/60">Cargando…</div>}
 
         {!loading && (
-          <div className="border border-black/10 p-4 space-y-3">
+          <div className="border border-border bg-card rounded-xl p-4 space-y-3 shadow-sm">
             <div>
               <div className="text-xs uppercase tracking-wide text-black/50">Total gastado en el ciclo</div>
               <div className="text-2xl font-semibold mt-1">{total.toFixed(2)} €</div>
@@ -232,7 +232,7 @@ export default function MonthDetailPage() {
                 return (
                   <div
                     key={key}
-                    className="border border-black/10 p-3 flex items-center justify-between gap-3"
+                    className="border border-border bg-card rounded-lg p-3 flex items-center justify-between gap-3 transition-colors hover:bg-muted/40"
                   >
                     <div className="flex items-center gap-2">
                       <span

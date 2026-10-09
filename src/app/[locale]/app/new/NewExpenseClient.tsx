@@ -427,7 +427,7 @@ export default function NewExpensePage() {
         </div>
 
         {/* Main Card */}
-        <div className="bg-card border border-border rounded-xl shadow-sm p-6 sm:p-8">
+        <div className="bg-card border border-border rounded-xl shadow-sm p-6 sm:p-8 transition-shadow hover:shadow-md">
           <div className="mb-8">
             <h1 className="text-2xl sm:text-3xl font-serif text-foreground font-medium mb-2">{tExpense("title")}</h1>
             <p className="text-sm text-muted-foreground">{tExpense("subtitle")}</p>
@@ -597,7 +597,7 @@ export default function NewExpensePage() {
                 type="button"
                 onClick={saveExpense}
                 disabled={saving || inputsDisabled || checking}
-                className="w-full inline-flex items-center justify-center rounded-md bg-stone-900 dark:bg-stone-50 px-8 py-3 text-sm font-medium text-stone-50 dark:text-stone-900 shadow transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                className="w-full inline-flex items-center justify-center rounded-lg bg-stone-900 dark:bg-stone-50 px-8 py-3 text-sm font-medium tracking-wide text-stone-50 dark:text-stone-900 shadow transition-all hover:-translate-y-0.5 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
               >
                 {checking ? tExpense("checking") : saving ? tExpense("saving") : tExpense("submit")}
               </button>

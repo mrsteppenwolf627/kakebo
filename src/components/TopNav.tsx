@@ -5,6 +5,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { BookOpen, CirclePlus, Menu, WalletCards, X } from "lucide-react";
 import UserMenu from "./UserMenu";
 import { useTranslations } from "next-intl";
 
@@ -14,13 +15,13 @@ export default function TopNav() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const items = [
-    { href: "/", label: t('home') },
-    { href: "/tutorial", label: t('tutorial') },
-    { href: "/app", label: t('dashboard') },
-    { href: "/app/agent", label: t('agent') },
-    { href: "/app/fixed", label: t('fixed') },
-    { href: "/app/history", label: t('history') },
-    { href: "/app/ai-metrics", label: t('analysis') },
+    { href: "/", label: t("home") },
+    { href: "/tutorial", label: t("tutorial") },
+    { href: "/app", label: t("dashboard") },
+    { href: "/app/agent", label: t("agent") },
+    { href: "/app/fixed", label: t("fixed") },
+    { href: "/app/history", label: t("history") },
+    { href: "/app/ai-metrics", label: t("analysis") },
   ];
 
   function isActive(href: string) {
@@ -28,30 +29,36 @@ export default function TopNav() {
     return pathname === href || pathname.startsWith(`${href}/`);
   }
 
-  // Close menu on route change
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional side-effect on navigation
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- close on navigation
     setMenuOpen(false);
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
-      <div className="max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-        {/* Logo + Desktop Nav */}
-        <div className="flex h-16 items-center px-4 md:px-6">
-          <Link href="/app" className="mr-6 flex items-center gap-2 font-serif text-lg font-semibold tracking-tight transition-colors hover:text-primary">
-            <span>🏮</span>
+    <header className="sticky top-0 z-50 isolate border-b border-border bg-background/90 backdrop-blur-md">
+      <div className="mx-auto flex h-16 w-full max-w-none items-center justify-between px-4 md:px-8">
+        <div className="flex h-16 min-w-0 items-center">
+          <Link
+            href="/app"
+            className="mr-5 flex shrink-0 items-center gap-2.5 font-serif text-lg font-semibold tracking-tight text-foreground transition-colors hover:text-primary md:mr-7"
+          >
+            <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary">
+              <WalletCards className="h-4 w-4" strokeWidth={1.7} />
+            </span>
             <span>Kakebo</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-4 text-sm font-medium lg:gap-6 overflow-x-auto no-scrollbar">
+
+          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 px-3 text-xs xl:flex lg:gap-1 lg:text-sm">
             {items.map((it) => (
               <Link
                 key={it.href}
                 href={it.href}
-                className={`text-sm whitespace-nowrap transition-colors duration-200 ${isActive(it.href)
-                  ? "text-foreground font-medium decoration-foreground underline underline-offset-4 decoration-1"
-                  : "text-muted-foreground hover:text-foreground"
-                  }`}
+                aria-current={isActive(it.href) ? "page" : undefined}
+                className={`relative whitespace-nowrap rounded-md px-1.5 py-2 transition-colors duration-200 lg:px-2 ${
+                  isActive(it.href)
+                    ? "bg-primary/10 font-medium text-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
               >
                 {it.label}
               </Link>
@@ -59,81 +66,82 @@ export default function TopNav() {
           </nav>
         </div>
 
-        {/* Right Side: Nuevo + UserMenu */}
-        {/* Right Side: Nuevo + UserMenu */}
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
           <Link
             href="/app/new"
-            className="hidden md:inline-flex items-center px-3 py-1.5 text-xs sm:text-sm bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 hover:opacity-90 transition-colors whitespace-nowrap rounded-md shadow-sm"
+            className="hidden items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground shadow-sm transition-all hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring xl:inline-flex sm:text-sm"
           >
-            {t('newExpense')}
+            <CirclePlus className="h-3.5 w-3.5" strokeWidth={2} />
+            {t("newExpense")}
           </Link>
           <Link
             href="/app/new-income"
-            className="hidden md:inline-flex items-center px-3 py-1.5 text-xs sm:text-sm border border-stone-200 dark:border-stone-800 bg-background hover:bg-muted transition-colors whitespace-nowrap rounded-md shadow-sm"
+            className="hidden items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-xs font-medium text-foreground shadow-sm transition-colors hover:border-primary/40 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring xl:inline-flex sm:text-sm"
           >
-            {t('newIncome')}
+            <BookOpen className="h-3.5 w-3.5 text-primary" strokeWidth={1.9} />
+            {t("newIncome")}
           </Link>
 
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden items-center gap-1 xl:flex">
             <LanguageSwitcher />
             <ThemeToggle />
           </div>
 
-          {/* Delegamos Auth a UserMenu */}
           <UserMenu />
 
-          {/* Mobile Menu Toggle */}
           <button
+            type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 text-muted-foreground hover:text-foreground"
-            aria-label="Menú"
+            className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground xl:hidden"
+            aria-label={menuOpen ? "Cerrar menu" : "Abrir menu"}
+            aria-expanded={menuOpen}
           >
-            {menuOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 18 18" /></svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>
-            )}
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Navigation Dropdown */}
       {menuOpen && (
-        <div className="md:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-background border-b border-border shadow-sm z-50 overflow-y-auto animate-in slide-in-from-top-2">
-          <div className="px-4 py-4 space-y-4">
+        <div className="fixed inset-x-0 top-16 z-[100] min-h-[calc(100vh-4rem)] w-full overflow-y-auto border-b border-border bg-background shadow-xl backdrop-blur-md animate-in slide-in-from-top-2 xl:hidden">
+          <div className="space-y-4 px-4 py-5">
             {items.map((it) => (
               <Link
                 key={it.href}
                 href={it.href}
-                className={`block text-lg ${isActive(it.href)
-                  ? "text-foreground font-serif font-medium"
-                  : "text-muted-foreground"
-                  }`}
+                aria-current={isActive(it.href) ? "page" : undefined}
+                className={`block rounded-md px-3 py-3 text-base transition-colors ${
+                  isActive(it.href)
+                    ? "bg-primary/10 font-serif font-medium text-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
               >
                 {it.label}
               </Link>
             ))}
-            <div className="h-px bg-border my-2" />
+
+            <div className="my-2 h-px bg-border" />
             <div className="flex items-center justify-between py-2">
-              <span className="text-sm text-muted-foreground">{t('configuration')}</span>
-              <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">{t("configuration")}</span>
+              <div className="flex items-center gap-1">
                 <LanguageSwitcher />
                 <ThemeToggle />
               </div>
             </div>
-            <div className="h-px bg-border my-2" />
+            <div className="my-2 h-px bg-border" />
+
             <Link
               href="/app/new"
-              className="block text-center w-full py-3 bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 font-medium rounded-md"
+              className="flex w-full items-center justify-center gap-2 rounded-md bg-primary py-3 font-medium text-primary-foreground shadow-sm"
             >
-              {t('newExpenseLong')}
+              <CirclePlus className="h-4 w-4" />
+              {t("newExpenseLong")}
             </Link>
             <Link
               href="/app/new-income"
-              className="block text-center w-full py-3 border border-stone-200 dark:border-stone-800 bg-background font-medium rounded-md"
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-border bg-card py-3 font-medium text-foreground"
             >
-              {t('newIncomeLong')}
+              <BookOpen className="h-4 w-4 text-primary" />
+              {t("newIncomeLong")}
             </Link>
           </div>
         </div>
@@ -141,4 +149,3 @@ export default function TopNav() {
     </header>
   );
 }
-

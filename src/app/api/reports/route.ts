@@ -66,7 +66,8 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient();
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
-      .select("is_admin,is_founder,plus_access_until")
+      // select("*"): tolera columnas de acceso que aún no existen en BD (modo compatible).
+      .select("*")
       .eq("id", user.id)
       .single();
 
@@ -88,10 +89,11 @@ export async function POST(request: NextRequest) {
     if (!legacyError) {
       hasLegacyAccess = Boolean(legacyGrant);
     } else if (legacyError.code === "42P01" || legacyError.code === "PGRST205") {
-      return NextResponse.json(
-        { error: { code: "access_model_not_ready", message: "El sistema de permisos premium todavía no está preparado." } },
-        { status: 503 }
-      );
+      // Modo compatible: mientras no se active formalmente el modelo
+      // freemium, todos los usuarios autenticados conservan el acceso
+      // completo, incluidos los informes. Las migraciones diferidas crean
+      // access_grants cuando llegue el momento de activar los permisos.
+      hasLegacyAccess = true;
     } else {
       throw legacyError;
     }

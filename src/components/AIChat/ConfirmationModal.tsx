@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 
 interface ConfirmationModalProps {
@@ -35,6 +35,16 @@ export function ConfirmationModal({
     errorMessage,
 }: ConfirmationModalProps) {
     const t = useTranslations("Agent.confirmation");
+    const cancelRef = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+        cancelRef.current?.focus();
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape" && !isSubmitting) onCancel();
+        };
+        document.addEventListener("keydown", onKeyDown);
+        return () => document.removeEventListener("keydown", onKeyDown);
+    }, [isSubmitting, onCancel]);
 
     return (
         <div
@@ -73,6 +83,7 @@ export function ConfirmationModal({
                     <button
                         type="button"
                         onClick={onCancel}
+                        ref={cancelRef}
                         disabled={isSubmitting}
                         className="flex-1 border border-border text-foreground rounded-md px-4 py-2 text-sm font-medium hover:bg-muted transition-colors disabled:opacity-50"
                     >

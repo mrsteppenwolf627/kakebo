@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { useTranslations } from "next-intl";
+import { Banknote, CheckCircle2, PiggyBank, WalletCards } from "lucide-react";
 
 type Step = "welcome" | "income" | "savings" | "done";
 
@@ -22,6 +23,11 @@ export default function OnboardingTour() {
             try {
                 const { data: session } = await supabase.auth.getSession();
                 if (!session.session?.user) return;
+
+                const dismissed = window.localStorage.getItem(
+                    `kakebo:onboarding-dismissed:${session.session.user.id}`
+                );
+                if (dismissed === "1") return;
 
                 const { data, error } = await supabase
                     .from("user_settings")
@@ -81,6 +87,11 @@ export default function OnboardingTour() {
     };
 
     const handleSkip = () => {
+        void supabase.auth.getUser().then(({ data }) => {
+            if (data.user) {
+                window.localStorage.setItem(`kakebo:onboarding-dismissed:${data.user.id}`, "1");
+            }
+        });
         setStep(null);
     };
 
@@ -97,7 +108,7 @@ export default function OnboardingTour() {
                     {step === "welcome" && (
                         <>
                             <div className="w-16 h-16 bg-primary/20 text-primary flex items-center justify-center rounded-full text-3xl mb-2">
-                                🏮
+                                <WalletCards className="h-8 w-8" aria-hidden="true" />
                             </div>
                             <h2 className="text-2xl sm:text-3xl font-serif text-foreground font-bold tracking-tight">
                                 {t("welcome.title", { fallback: "¡Bienvenido a Kakebo!" })}
@@ -125,7 +136,7 @@ export default function OnboardingTour() {
                     {step === "income" && (
                         <>
                             <div className="w-16 h-16 bg-emerald-500/20 text-emerald-600 flex items-center justify-center rounded-full text-3xl mb-2">
-                                💰
+                                <Banknote className="h-8 w-8" aria-hidden="true" />
                             </div>
                             <h2 className="text-2xl font-serif text-foreground font-bold tracking-tight">
                                 {t("income.title", { fallback: "¿Cuáles son tus ingresos mensuales?" })}
@@ -167,7 +178,7 @@ export default function OnboardingTour() {
                     {step === "savings" && (
                         <>
                             <div className="w-16 h-16 bg-blue-500/20 text-blue-600 flex items-center justify-center rounded-full text-3xl mb-2">
-                                🎯
+                                <PiggyBank className="h-8 w-8" aria-hidden="true" />
                             </div>
                             <h2 className="text-2xl font-serif text-foreground font-bold tracking-tight">
                                 {t("savings.title", { fallback: "¿Cuánto quieres ahorrar?" })}
@@ -210,7 +221,7 @@ export default function OnboardingTour() {
                     {step === "done" && (
                         <>
                             <div className="w-20 h-20 bg-emerald-500/20 text-emerald-500 flex items-center justify-center rounded-full text-4xl mb-2 animate-bounce">
-                                ✨
+                                <CheckCircle2 className="h-10 w-10" aria-hidden="true" />
                             </div>
                             <h2 className="text-3xl font-serif text-foreground font-bold tracking-tight">
                                 {t("done.title", { fallback: "¡Todo Listo!" })}

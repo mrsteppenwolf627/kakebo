@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { createClient } from "@/lib/supabase/browser";
 import AIMetricsChart from "@/components/AIMetricsChart";
 import AILogsList from "@/components/AILogsList";
 import { AIMetrics, AILogEntry } from "@/lib/ai/metrics";
@@ -26,7 +25,6 @@ function getDateRangeStart(range: DateRange): string | undefined {
 }
 
 export default function AIMetricsClient() {
-  const supabase = useMemo(() => createClient(), []);
   const t = useTranslations("AIMetrics");
 
   const [metrics, setMetrics] = useState<AIMetrics | null>(null);
@@ -109,7 +107,7 @@ export default function AIMetricsClient() {
       } else {
         setMigrationResult(data.error?.message || "Error en migración");
       }
-    } catch (err) {
+    } catch {
       setMigrationResult("Error de conexión");
     } finally {
       setMigrating(false);
@@ -164,7 +162,7 @@ export default function AIMetricsClient() {
 
   if (error) {
     return (
-      <div className="border border-red-300 bg-red-50 p-4 text-red-700">
+      <div className="border border-destructive/20 bg-destructive/10 p-4 rounded-xl text-destructive">
         <div className="font-medium">Error</div>
         <div className="text-sm">{error}</div>
         <button
@@ -179,7 +177,7 @@ export default function AIMetricsClient() {
 
   if (!metrics) {
     return (
-      <div className="text-black/50">{t("noData")}</div>
+      <div className="rounded-xl border border-border bg-card p-5 text-muted-foreground shadow-sm">{t("noData")}</div>
     );
   }
 
@@ -193,7 +191,7 @@ export default function AIMetricsClient() {
             key={range}
             onClick={() => setDateRange(range)}
             className={`px-3 py-1.5 text-sm border rounded-md transition-colors ${dateRange === range
-              ? "bg-foreground text-background border-foreground font-medium"
+              ? "bg-primary text-primary-foreground border-primary font-medium shadow-sm"
               : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/50"
               }`}
           >

@@ -2,116 +2,110 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ChevronDown, LogIn, LogOut, Settings, UserRound } from "lucide-react";
 import { createClient } from "@/lib/supabase/browser";
 import type { User } from "@supabase/supabase-js";
 
 export default function UserMenu() {
-  const supabase = createClient();
   const router = useRouter();
-
   const [user, setUser] = useState<User | null>(null);
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
+    const supabase = createClient();
 
-    async function load() {
-      const { data } = await supabase.auth.getUser();
-      if (!mounted) return;
-      setUser(data.user ?? null);
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
       setLoading(false);
-    }
-
-    load();
-
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
     });
 
-    return () => {
-      mounted = false;
-      sub.subscription.unsubscribe();
-    };
-  }, [supabase]);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   async function logout() {
+    const supabase = createClient();
     await supabase.auth.signOut();
     setOpen(false);
     router.push("/login");
     router.refresh();
   }
 
-  function goLogin() {
-    setOpen(false);
-    router.push("/login");
-  }
-
   if (loading) {
-    return <div className="text-sm text-stone-500 px-2 font-mono">...</div>;
+    return <div className="px-2 font-mono text-sm text-muted-foreground">...</div>;
   }
 
   if (!user) {
     return (
       <button
-        onClick={goLogin}
-        className="ml-4 px-4 py-2 text-sm border border-stone-300 hover:border-stone-900 transition-colors text-stone-600 hover:text-stone-900"
+        type="button"
+        onClick={() => router.push("/login")}
+        className="ml-1 inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:border-primary/40 hover:bg-muted"
       >
+        <LogIn className="h-3.5 w-3.5 text-primary" strokeWidth={1.9} />
         Entrar
       </button>
     );
   }
 
-  const label = user.email ? user.email.split('@')[0] : "Cuenta";
+  const label = user.user_metadata?.full_name || user.email?.split("@")[0] || "Cuenta";
+  const initial = label.charAt(0).toUpperCase();
 
   return (
-    <div className="relative ml-2 md:ml-4">
+    <div className="relative">
       <button
-        onClick={() => setOpen(!open)}
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        aria-label={`Abrir menu de ${label}`}
         aria-expanded={open}
-        aria-haspopup="menu"
-        className={`flex items-center gap-2 px-3 py-1.5 text-sm border transition-colors ${open ? "border-stone-900 text-stone-900" : "border-stone-200 text-stone-600 hover:border-stone-400"
-          }`}
+        className="flex items-center gap-2 rounded-md px-1.5 py-1.5 text-sm text-foreground transition-colors hover:bg-muted"
       >
-        <div className="w-5 h-5 bg-stone-200 flex items-center justify-center text-xs font-serif text-stone-600">
-          {label[0].toUpperCase()}
-        </div>
-        <span className="hidden sm:inline-block">{label}</span>
+        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-sm font-semibold text-primary">
+          {initial || <UserRound className="h-4 w-4" />}
+        </span>
+        <span className="hidden max-w-28 truncate font-medium sm:inline">{label}</span>
+        <ChevronDown
+          className={`hidden h-3.5 w-3.5 text-muted-foreground transition-transform sm:block ${open ? "rotate-180" : ""}`}
+          aria-hidden="true"
+        />
       </button>
 
       {open && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div role="menu" className="absolute right-0 mt-2 w-64 border border-stone-200 bg-stone-50 z-50 p-1 animate-in fade-in zoom-in-95 duration-100 shadow-md">
-
-            <div className="px-3 py-2 text-xs text-stone-500 border-b border-stone-200 mb-1 font-mono break-all">
-              {user.email}
-            </div>
-
-            <button
-              onClick={() => {
-                setOpen(false);
-                router.push('/app/settings');
-              }}
-              role="menuitem"
-              className="w-full text-left px-3 py-2 text-sm text-stone-700 hover:bg-stone-200 transition-colors"
-            >
-              Ajustes de Kakebo
-            </button>
-
-            <div className="h-px bg-stone-200 my-1" />
-
-            <button
-              onClick={logout}
-              role="menuitem"
-              className="w-full text-left px-3 py-2 text-sm text-red-700 hover:bg-red-50 transition-colors"
-            >
-              Cerrar sesión
-            </button>
+        <div
+          role="menu"
+          className="absolute right-0 mt-2 w-64 overflow-hidden rounded-lg border border-border bg-popover py-1 shadow-lg"
+        >
+          <div className="border-b border-border px-4 py-3">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Cuenta</p>
+            <p className="mt-1 truncate text-sm font-medium text-foreground">{user.email}</p>
           </div>
-        </>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => router.push("/app/settings")}
+            className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-foreground transition-colors hover:bg-muted"
+          >
+            <Settings className="h-4 w-4 text-primary" strokeWidth={1.8} />
+            Ajustes
+          </button>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={logout}
+            className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-destructive transition-colors hover:bg-destructive/10"
+          >
+            <LogOut className="h-4 w-4" strokeWidth={1.8} />
+            Cerrar sesion
+          </button>
+        </div>
       )}
     </div>
   );
 }
-

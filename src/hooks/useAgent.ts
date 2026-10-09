@@ -33,7 +33,8 @@ export function useAgent(): UseAgentReturn {
     const [error, setError] = useState<string | null>(null);
 
     const sendMessage = useCallback(async (content: string) => {
-        if (!content.trim()) return;
+        const trimmed = content.trim();
+        if (!trimmed || trimmed.length > 1000 || isLoading) return;
 
         setIsLoading(true);
         setError(null);
@@ -42,7 +43,7 @@ export function useAgent(): UseAgentReturn {
         const userMsg: AgentMessage = {
             id: crypto.randomUUID(),
             role: 'user',
-            content,
+            content: trimmed,
             timestamp: Date.now(),
         };
 
@@ -63,7 +64,7 @@ export function useAgent(): UseAgentReturn {
                 },
                 credentials: 'include', // Ensure cookies are sent for authentication
                 body: JSON.stringify({
-                    message: content,
+                    message: trimmed,
                     history: historyPayload,
                 }),
             });
@@ -98,7 +99,7 @@ export function useAgent(): UseAgentReturn {
         } finally {
             setIsLoading(false);
         }
-    }, [messages]);
+    }, [messages, isLoading]);
 
     const clearHistory = useCallback(() => {
         setMessages([]);
@@ -415,12 +416,13 @@ export function useAgentStream(): UseAgentStreamReturn {
 
     const sendMessage = useCallback(
         async (content: string) => {
-            if (!content.trim()) return;
+            const trimmed = content.trim();
+            if (!trimmed || trimmed.length > 1000 || isLoading || pendingConfirmationIdRef.current) return;
 
             const userMsg: AgentMessage = {
                 id: crypto.randomUUID(),
                 role: 'user',
-                content,
+                content: trimmed,
                 timestamp: Date.now(),
             };
             setMessages((prev) => [...prev, userMsg]);
@@ -430,9 +432,9 @@ export function useAgentStream(): UseAgentStreamReturn {
                 content: m.content,
             }));
 
-            await runStream({ message: content, history: historySnapshot });
+            await runStream({ message: trimmed, history: historySnapshot });
         },
-        [messages, runStream]
+        [messages, runStream, isLoading]
     );
 
     const confirmAction = useCallback(async () => {

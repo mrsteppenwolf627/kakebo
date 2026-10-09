@@ -1,6 +1,4 @@
 "use client";
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useEffect, useRef, useState } from "react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Loader2 } from "lucide-react";
@@ -133,20 +131,20 @@ export default function ReportDialog({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in" role="presentation" onClick={onClose}>
-            <div className="bg-card border border-border w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 rounded-xl shadow-lg space-y-6" role="dialog" aria-modal="true" aria-labelledby="report-dialog-title" aria-describedby="report-dialog-description" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-card border border-border w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 rounded-2xl shadow-xl space-y-6" role="dialog" aria-modal="true" aria-labelledby="report-dialog-title" aria-describedby="report-dialog-description" onClick={(e) => e.stopPropagation()}>
                 <h2 ref={titleRef} tabIndex={-1} id="report-dialog-title" className="text-xl font-serif font-medium outline-none">Informe premium</h2>
                 <p id="report-dialog-description" className="text-sm text-muted-foreground">Descarga un resumen verificable de tus movimientos. El modo Ciclo sigue exactamente el reparto del dashboard.</p>
 
                 <div className="space-y-4">
                     {/* Range Selector */}
-                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 rounded-xl bg-muted/40 p-1">
                         {(["cycle", "day", "week", "month", "year"] as const).map((r) => (
                             <button
                                 key={r}
                                 type="button"
                                 onClick={() => { setRange(r); setReportData(null); }}
                                 aria-pressed={range === r}
-                                className={`text-sm py-2 rounded-md capitalize transition-colors ${range === r ? "bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}
+                                className={`text-sm py-2 rounded-lg capitalize transition-colors ${range === r ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:bg-card/70"}`}
                             >
                                 {r === "cycle" ? "Ciclo" : r === "day" ? "Día" : r === "week" ? "Semana" : r === "month" ? "Mes" : "Año"}
                             </button>
@@ -175,7 +173,7 @@ export default function ReportDialog({
                     </div>
 
                     {/* Info */}
-                    <div className="text-xs text-muted-foreground bg-muted/50 p-3 rounded-md">
+                    <div className="text-xs text-muted-foreground bg-primary/5 border border-primary/10 p-3 rounded-lg">
                         El informe incluye gastos, ingresos, disponible real y desglose por categorías. Los datos se preparan de forma segura en el servidor.
                     </div>
                     {error && <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 p-3 rounded-md">{error}</div>}
@@ -238,21 +236,21 @@ export default function ReportDialog({
                                     onClick={() => handleDownloadCSV(false)}
                                     className="px-3 py-2 bg-stone-100 text-stone-900 border border-stone-200 dark:bg-stone-800 dark:border-stone-700 dark:text-stone-100 hover:opacity-80 rounded-md text-sm font-medium transition-opacity inline-flex items-center gap-2"
                                 >
-                                    <span>📊</span> CSV
+                                    <span aria-hidden="true">↓</span> CSV
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => handleDownloadCSV(true)}
                                     className="px-3 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-900/30 dark:border-emerald-800 dark:text-emerald-400 hover:opacity-80 rounded-md text-sm font-medium transition-opacity inline-flex items-center gap-2"
                                 >
-                                    <span>📉</span> CSV para Excel
+                                    <span aria-hidden="true">↓</span> CSV para Excel
                                 </button>
                                 <PDFDownloadLink
                                     document={<ReportPDF data={reportData} />}
                                     fileName={`kakebo-informe-${range}-${date.slice(0, 7)}.pdf`}
                                     className="px-4 py-2 bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 rounded-md text-sm font-medium hover:opacity-90 inline-flex items-center gap-2"
                                 >
-                                    {({ loading: pdfLoading }) => (pdfLoading ? "Cargando..." : "📥 PDF")}
+                                    {({ loading: pdfLoading }) => (pdfLoading ? "Cargando..." : "↓ PDF")}
                                 </PDFDownloadLink>
                             </div>
                         </div>

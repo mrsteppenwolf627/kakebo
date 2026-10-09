@@ -151,8 +151,8 @@ export default function FixedExpensesClient() {
   }, []);
 
   return (
-    <main className="min-h-screen px-6 py-10">
-      <div className="max-w-5xl mx-auto space-y-6">
+    <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10">
+      <div className="max-w-5xl mx-auto space-y-6 sm:space-y-7">
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-3xl font-semibold">Gastos fijos</h1>
@@ -164,13 +164,13 @@ export default function FixedExpensesClient() {
           <div className="flex items-center gap-2">
             <Link
               href="/app"
-              className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white"
+              className="border border-border bg-card rounded-lg px-3 py-2 text-sm text-foreground shadow-sm hover:bg-muted transition-colors"
             >
               Volver
             </Link>
             <button
               onClick={load}
-              className="border border-black px-3 py-2 text-sm hover:bg-black hover:text-white"
+              className="border border-border bg-card rounded-lg px-3 py-2 text-sm text-foreground shadow-sm hover:bg-muted transition-colors"
             >
               Recargar
             </button>
@@ -180,7 +180,7 @@ export default function FixedExpensesClient() {
         {err && <div className="text-sm text-red-600">{err}</div>}
         {loading && <div className="text-sm text-black/60">Cargando…</div>}
 
-        <div className="border border-black/10 p-4 space-y-3 rounded-lg">
+        <div className="border border-border bg-card p-4 space-y-3 rounded-xl shadow-sm">
           <div className="font-semibold">Añadir gasto fijo</div>
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
             <input
@@ -218,7 +218,7 @@ export default function FixedExpensesClient() {
           </button>
         </div>
 
-        <div className="border border-black/10 p-4 rounded-lg">
+        <div className="border border-border bg-card p-4 rounded-xl shadow-sm">
           <div className="font-semibold mb-2">Lista</div>
 
           {rows.length === 0 && !loading && (

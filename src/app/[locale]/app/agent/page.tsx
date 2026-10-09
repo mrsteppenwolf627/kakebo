@@ -3,7 +3,6 @@
 import { Suspense } from 'react';
 import { AIChat } from '@/components/AIChat/AIChat';
 import SubscriptionGuard from '@/components/saas/SubscriptionGuard';
-import TrialBanner from '@/components/saas/TrialBanner';
 
 export default function AgentPage() {
     return (

@@ -347,7 +347,7 @@ export default function SettingsClient() {
     }, [fixedRows]);
 
     return (
-        <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-3xl mx-auto space-y-4 sm:space-y-6">
+        <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-3xl mx-auto space-y-5 sm:space-y-7">
             <div className="space-y-2">
                 <h1 className="text-xl sm:text-2xl font-bold font-serif text-foreground">{t("title")}</h1>
                 <p className="text-sm text-muted-foreground max-w-2xl">{tGen("intro")}</p>
@@ -361,7 +361,7 @@ export default function SettingsClient() {
                 <>
                     <div className="space-y-5">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="border border-border rounded-lg p-4 space-y-2 bg-card">
+                        <div className="border border-border rounded-xl p-4 space-y-2 bg-card shadow-sm transition-colors hover:border-primary/30">
                             <label className="block text-sm font-medium text-foreground">{tGen("income")}</label>
                             <input
                                 type="number"
@@ -376,7 +376,7 @@ export default function SettingsClient() {
                             />
                         </div>
 
-                        <div className="border border-border rounded-lg p-4 space-y-2 bg-card">
+                        <div className="border border-border rounded-xl p-4 space-y-2 bg-card shadow-sm transition-colors hover:border-primary/30">
                             <label className="block text-sm font-medium text-foreground">{tGen("savingGoal")}</label>
                             <input
                                 type="number"
@@ -392,7 +392,7 @@ export default function SettingsClient() {
                         </div>
                         </div>
 
-                        <div className="border border-border rounded-lg p-5 space-y-4 bg-card">
+                        <div className="border border-border rounded-xl p-5 space-y-4 bg-card shadow-sm">
                             <div className="font-semibold text-foreground">{tGen("budgetsTitle")}</div>
 
                             <div className="space-y-2">
@@ -456,7 +456,7 @@ export default function SettingsClient() {
                             </div>
                         </div>
 
-                        <div className="border border-border rounded-lg p-5 space-y-3 bg-card">
+                        <div className="border border-border rounded-xl p-5 space-y-3 bg-card shadow-sm">
                             <div className="font-semibold text-foreground">{tGen("aiConfirmTitle")}</div>
                             <label className="flex items-start gap-3 cursor-pointer">
                                 <input
@@ -475,7 +475,7 @@ export default function SettingsClient() {
                             <p className="text-xs text-muted-foreground">{tGen("aiConfirmDesc")}</p>
                         </div>
 
-                        <div className="border border-border rounded-lg p-5 space-y-3 bg-card">
+                        <div className="border border-border rounded-xl p-5 space-y-3 bg-card shadow-sm">
                             <div className="font-semibold text-foreground">{tGen("collectiveLearningTitle")}</div>
                             <label className="flex items-start gap-3 cursor-pointer">
                                 <input

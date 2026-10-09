@@ -71,15 +71,16 @@ export default function SpendingChart({
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-3">
         <div>
+          <div className="text-sm font-medium text-foreground">{title}</div>
           <div className="text-xs text-muted-foreground">
             Total: <span className="font-medium text-foreground">{total.toFixed(2)} €</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-1 bg-stone-100 p-0.5 rounded-md">
+        <div className="flex items-center gap-1 bg-muted p-0.5 rounded-md">
           <button
             onClick={() => setMode("bar")}
-            className={`px-3 py-1 text-xs rounded-sm transition-all ${mode === "bar" ? "bg-white text-stone-900 shadow-sm font-medium" : "text-stone-500 hover:text-stone-700"
+            className={`px-3 py-1 text-xs rounded-sm transition-all ${mode === "bar" ? "bg-card text-foreground shadow-sm font-medium" : "text-muted-foreground hover:text-foreground"
               }`}
             title="Ver barras"
           >
@@ -87,7 +88,7 @@ export default function SpendingChart({
           </button>
           <button
             onClick={() => setMode("pie")}
-            className={`px-3 py-1 text-xs rounded-sm transition-all ${mode === "pie" ? "bg-white text-stone-900 shadow-sm font-medium" : "text-stone-500 hover:text-stone-700"
+            className={`px-3 py-1 text-xs rounded-sm transition-all ${mode === "pie" ? "bg-card text-foreground shadow-sm font-medium" : "text-muted-foreground hover:text-foreground"
               }`}
             title="Ver gráfico circular"
           >
