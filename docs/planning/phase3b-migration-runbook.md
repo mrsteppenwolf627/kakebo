@@ -1,6 +1,15 @@
 # Fase 3.B — Runbook de migraciones (MODO COMPATIBLE)
 
-> Estado: **preparado y probado en local; NO aplicado a Supabase; NO desplegado**. Revisión documental: 2026-10-06.
+> **Actualización 2026-10-09 (verificación de solo lectura, sustituye a §1):** en Supabase **existen** los objetos de las
+> migraciones compatibles (`fn_create_expense`, `fn_recompute_plus_access_until`, `founder_cutoff`, `subscriptions`,
+> `expense_monthly_usage`, `stripe_webhook_events`, `first_expense_activations`, trigger `trg_protect_profile_access_columns`)
+> y el esquema de backup `phase3b_backup`; no aparecen en el registro de migraciones (aplicadas por SQL Editor), así que su
+> aplicación se deduce de los objetos. Las 4 migraciones del pack premium (`20261007000001..04`) constan aplicadas el 2026-10-08.
+> **No existen** `fn_resolve_access_state` ni `access_grants` (freemium no activado). Vercel: `www.metodokakebo.com` sirve
+> el commit `90c300e` (CLI, 2026-10-08), no `41a4c98`. **Pendiente:** ejecutar §12–13 (`phase3b_verify.sql`, 0 FAIL) y
+> registrar el resultado. Detalle: `docs/handoff/ESTADO_2026-10-09.md` §0.
+>
+> Estado original (2026-10-06, histórico): **preparado y probado en local; NO aplicado a Supabase; NO desplegado**.
 > Nada de este documento activa el modelo freemium. Ejecutar cualquier SQL contra Supabase requiere
 > autorización explícita del propietario.
 > **Limitación de verificación:** el estado de Vercel y Supabase descrito aquí es **evidencia fechada** (2026-10-05),
@@ -29,7 +38,7 @@ de 30 días (diseño de Fase 3, septiembre de 2026) son valores **históricos o 
 confirmado la definición actual de `handle_new_user` en producción. El script diferido `01_access_foundation.sql` contiene
 `interval '14 days'` como **valor provisional heredado**: debe revisarse (y decidirse si hay trial) **antes** de aplicarlo.
 
-## 1. Evidencia fechada de producción (no re-verificada el 2026-10-06)
+## 1. Evidencia fechada de producción (2026-10-05 — SUPERADA por la verificación del 2026-10-09, ver cabecera)
 
 - **Vercel (comprobación documentada del 2026-10-05):** el dominio público servía el deployment **41a4c98**
   (rollback manual del 2026-10-01, con la nota "Supabase migrations pendientes; rollback temporal hasta aplicar la base de datos").

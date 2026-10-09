@@ -82,6 +82,7 @@ Los usuarios existentes antes de la activación conservan sus privilegios actual
 ### Estado
 
 - **No activada.** Hoy el código (`canUsePremium` → true; `access-state.ts` sin cablear) y la producción conservan acceso completo, sin límite de gastos. El modelo está preparado, inactivo, en `supabase/deferred/freemium/`; las migraciones compatibles `20260916`, `20260917` y `20261001` no alteran el comportamiento.
+- **Actualización 2026-10-09 (verificada en solo lectura):** producción sirve el commit `90c300e` y Supabase ya tiene `fn_create_expense` y las tablas de las migraciones compatibles; `access_grants` no existe (decisión sigue **no activada**). Ver `docs/handoff/ESTADO_2026-10-09.md` §0. Texto original, superado:
 - Producción (evidencia fechada del 2026-10-05, no re-verificada): Vercel servía el deployment `41a4c98` y a Supabase le faltaban funciones y tablas que requiere el código posterior. **Conclusión operativa: mantener la producción actual y no promover el código posterior hasta aplicar las migraciones compatibles y verificarlas.** Ver `docs/planning/phase3b-migration-runbook.md`.
 - Stripe, checkout y pagos permanecen desactivados. Cualquier activación de cobro requiere su propia implementación y revisión legal.
 

@@ -12,7 +12,7 @@ Vas a ayudarme a seguir desarrollando **Kakebo** (metodokakebo.com), mi app web 
 Reglas de trabajo:
 
 1. **No inventes el estado del proyecto.** Si algo no está en este documento, pregúntame o pídeme que te pegue el archivo concreto.
-2. **Distingue siempre "hecho en código" de "desplegado en producción".** Gran parte del trabajo reciente está en código pero **no** aplicado en Supabase ni desplegado en Vercel.
+2. **Distingue siempre LOCAL, PREVIEW (Vercel) y PRODUCCIÓN.** El trabajo más reciente (`feat/app-visual-refresh`) está en local y en una Preview, **no** en producción. No afirmes estados de producción sin evidencia fechada.
 3. **Nunca propongas aplicar migraciones o promover código a producción sin pasar por el runbook** (`docs/planning/phase3b-migration-runbook.md`): backup → aplicar en orden → verificar → tener rollback.
 4. Cambios pequeños, un objetivo por tarea, con commits convencionales (`feat(...)`, `fix(...)`, `docs(...)`).
 5. Respóndeme en español.
@@ -96,7 +96,7 @@ supabase/manual-ops/, rollback/, verification/, tests/ → scripts de operación
 
 ## 4. Lo último hecho (6–9 octubre 2026) — ramas `feat/premium-pack-landing` y `feat/app-visual-refresh`
 
-> `feat/premium-pack-landing` tiene 27 commits por encima de `main`. `feat/app-visual-refresh` parte de ella y añade el trabajo del 09/10. **Ninguna está fusionada en `main` ni en producción.** La más reciente es `feat/app-visual-refresh`.
+> `feat/premium-pack-landing` tiene 27 commits por encima de `main`. `feat/app-visual-refresh` parte de ella y añade el trabajo del 09/10. **Ninguna está fusionada en `main`.** Producción sirve un commit intermedio de `feat/premium-pack-landing` (`90c300e`, desplegado por CLI el 08/10), **no** el trabajo de `feat/app-visual-refresh`. La más reciente es `feat/app-visual-refresh`.
 
 ### 4.1 Pack premium + Stripe (07/10, commit `306bfbd`)
 - `POST /api/premium/checkout`: crea Checkout Session de Stripe (pago único) solo con config del servidor (price id por env).
@@ -104,8 +104,8 @@ supabase/manual-ops/, rollback/, verification/, tests/ → scripts de operación
 - `GET /api/premium/claim`: canjea el id de la sesión por una cookie HttpOnly **una sola vez** (función SQL atómica) y redirige a URL limpia.
 - `GET /api/premium/download`: requiere token válido de compra pagada; URLs firmadas del bucket privado `kakebo-premium`; log por archivo entregado.
 - Landing `/plantilla-kakebo-excel-premium`: copia "disponible ya" + JSON-LD Product/Offer **solo si** `PREMIUM_COMMERCE_ENABLED=true`; si no, "Próximamente".
-- Migraciones nuevas `20261007000001..04` (purchases, grants service_role, claim de un solo uso, dedupe de descargas) → **no aplicadas en producción**.
-- **El comercio sigue desactivado por defecto.**
+- Migraciones nuevas `20261007000001..04` (purchases, grants service_role, claim de un solo uso, dedupe de descargas) → **aplicadas en producción el 08/10** (registro de migraciones de Supabase, verificado el 09/10).
+- **El comercio está desactivado por defecto en código.** El valor real de `PREMIUM_COMMERCE_ENABLED` en Vercel no se ha verificado.
 
 ### 4.2 SEO landing premium (07–08/10)
 Metadata, headings y keyword targeting de la landing premium; ajustes en blog (plantilla Excel, guía método Kakebo), herramientas y sitemap. Tests de regresión SEO.
@@ -143,11 +143,12 @@ Validación extraída a `src/lib/fixed-expenses/validation.ts`; se acepta "2026-
 - **Trial: pendiente de decisión del propietario** (el valor de 14 días en `01_access_foundation.sql` es provisional).
 - Hoy el código y producción dan acceso completo. El modelo vive inactivo en `supabase/deferred/freemium/` (orden: 01 → 02 → 04 → 03; solo el 03 activa el límite; requieren `SET kakebo.freemium_activation = 'confirmed'`).
 
-### Producción (evidencia del 05/10/2026, no re-verificada)
-- Vercel servía el deployment `41a4c98` (rollback manual del 01/10 por migraciones pendientes).
-- En Supabase **faltaban**: `fn_create_expense`, `fn_resolve_access_state`, `fn_recompute_plus_access_until`, tablas `founder_cutoff`, `subscriptions`, `expense_monthly_usage`, `stripe_webhook_events`, `first_expense_activations`.
-- **El código posterior a `41a4c98` depende de `fn_create_expense`: desplegarlo sin migrar antes rompería la creación de gastos.**
-- Stripe/checkout/descarga premium: desactivados.
+### Producción (verificado en solo lectura el 09/10/2026 — sustituye la evidencia del 05/10)
+- `www.metodokakebo.com` sirve el deployment `dpl_A7TBxEEJGddr1nSvFXePAV6dGsFS`, commit **`90c300e`** (rama `feat/premium-pack-landing`), desplegado por **CLI** el 08/10 09:15 UTC. **Ya no es `41a4c98`.**
+- En Supabase **existen**: `fn_create_expense`, `fn_recompute_plus_access_until`, tablas `founder_cutoff`, `subscriptions`, `expense_monthly_usage`, `stripe_webhook_events`, `first_expense_activations`, trigger `trg_protect_profile_access_columns`, esquema de backup `phase3b_backup`, tablas del pack premium y de Fase 2 (`ai_pending_actions`).
+- **No existen**: `fn_resolve_access_state` ni `access_grants` (freemium diferido, no activado) ni la columna `profiles.is_admin`.
+- **No verificado:** `phase3b_verify.sql`, `handle_new_user`, `PREMIUM_COMMERCE_ENABLED` en Vercel, ni la creación de gastos en producción.
+- Detalle: `docs/handoff/ESTADO_2026-10-09.md` §0.
 
 ### Ramas
 - `main` (GitHub): último commit `c3a7300` (06/10).
@@ -160,10 +161,10 @@ Validación extraída a `src/lib/fixed-expenses/validation.ts`; se acepta "2026-
 ## 6. Riesgos y pendientes detectados
 
 1. **Informes PDF — resuelto el 09/10:** `/api/reports` funciona en modo compatible (sin `access_grants` → acceso para todos los autenticados) y ya no pide la columna inexistente `profiles.is_admin`. Pendiente menor: sin sesión devuelve 500 en vez de 401.
-2. **Orden de despliegue obligatorio:** migraciones compatibles 3.B (`20260916`, `20260917`, `20261001`) → migraciones pack premium (`20261007000001..04`) → verificar (`supabase/verification/phase3b_verify.sql`) → promover código. Todo con backup y rollback (`supabase/rollback/`).
-3. **Fusionar `feat/app-visual-refresh` en `main`** (incluye `feat/premium-pack-landing`), solo después de migrar y probar la preview con sesión.
+2. **Verificación antes de fusionar:** las migraciones compatibles 3.B y las del pack premium ya constan en la BD (09/10), pero falta ejecutar `supabase/verification/phase3b_verify.sql` (0 FAIL) siguiendo el runbook. No aplicar nada de `supabase/deferred/freemium/`.
+3. **Fusionar `feat/app-visual-refresh` en `main`** (incluye `feat/premium-pack-landing`), solo después de verificar y de probar la Preview con sesión. Ver "Punto exacto de reanudación" en `docs/handoff/ESTADO_2026-10-09.md` §8.
 4. **Activar comercio premium:** configurar en Vercel `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, price id del pack, endpoint de webhook en Stripe, `PREMIUM_COMMERCE_ENABLED=true`; probar compra real/test de punta a punta; textos legales, IVA y factura.
-5. **Fase 2 IA**: confirmar en producción (migraciones `20260914_*`, despliegue y verificación).
+5. **Fase 2 IA**: sus tablas/columnas existen en la BD (09/10); falta confirmar el comportamiento en producción.
 6. **Decisión de trial** (sí/no y duración) antes de aplicar el freemium.
 7. **Cablear permisos IA/PDF por estado de acceso** en la app (`src/lib/auth/access-state.ts` existe pero no está conectado; `canUsePremium` devuelve siempre true).
 8. Excepción de octubre 2026 en `ledger-scope.ts`: quitarla cuando el ciclo de octubre se cierre.

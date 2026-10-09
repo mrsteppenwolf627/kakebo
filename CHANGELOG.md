@@ -1,5 +1,24 @@
 # Changelog
 
+## [Unreleased] - 2026-10-09 — rama `feat/app-visual-refresh` (Preview, sin merge a `main`, no en producción)
+
+### Cambiado (commit `dd04464`, solo app interna)
+- Rediseño visual de la navegación interna (`TopNav`, `UserMenu`) con correcciones responsive de escritorio y móvil.
+- Tarjetas, estilos y gráficos del dashboard; "Distribución por categoría" con normalización de categorías reales (supervivencia/opcional/cultura/extra), respetando el ciclo.
+- Retirados los botones flotantes de gasto, ingreso (`FloatingAddButton`) y agente IA (`FloatingAgentChat`); el agente sigue en `/app/agent`.
+- Mejoras de onboarding, agente IA (`AIChat`, `ChatMessage`, `ConfirmationModal`, `useAgent`), accesibilidad y visuales del informe Premium.
+- Sin cambios en la web pública/indexada, fondos ni temas claro/oscuro.
+
+### Corregido
+- `src/app/api/reports/route.ts`: la ruta consultaba `profiles.is_admin`, columna inexistente en la BD → 500. La consulta ya no depende de ella. Sin `access_grants`, los informes siguen abiertos a usuarios autenticados (modo compatible). Verificado en local: ciclo 2026-10 → 200 y PDF descargado.
+
+### Documentación
+- Continuidad y estado por entorno: `docs/handoff/ESTADO_2026-10-09.md`; prompt para IA: `docs/handoff/CONTEXTO_IA.md`.
+- Corregida la evidencia de producción (verificación de solo lectura del 2026-10-09): producción sirve `90c300e`, no `41a4c98`; Supabase ya tiene `fn_create_expense` y las tablas de las migraciones compatibles; freemium no activado.
+
+### Validaciones
+- `npm run lint` 0 errores (66 avisos preexistentes); `npm run build` correcto; `npm test` 1.444 pasan, 2 fallan (preexistentes: `ai-logs-migration`, `calculate-whatif`), 4 omitidos.
+
 ## [Unreleased] - 2026-10-06 (solo documentación)
 
 ### Decisión de producto documentada (NO activada)
