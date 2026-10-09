@@ -1,12 +1,14 @@
 # Kakebo AI Agent - Context Document
 
-**Last Updated:** 2026-10-06
+**Last Updated:** 2026-10-09
 
 **Version:** 3.12 - Decisión de capa gratuita documentada (ADR-003, NO activada) + Fase 3.B en modo compatible (preparada, NO aplicada); Hotfix 2.1: resolución determinista de "ciclo anterior"
 
 ---
 
 ## ⚠️ Estado operativo vigente (leer primero)
+
+> **Actualización 2026-10-09 — leer antes que nada:** el trabajo del 06 al 09/10 (Stripe del pack premium, informes premium, rediseño de la app interna y corrección de `/api/reports`) está en la rama `feat/app-visual-refresh`, **sin fusionar en `main` y sin desplegar en producción**; no se ha aplicado ninguna migración. Estado completo, pendientes y cómo montar el entorno en otro ordenador: [`docs/handoff/ESTADO_2026-10-09.md`](docs/handoff/ESTADO_2026-10-09.md). Prompt de contexto para asistentes de IA: [`docs/handoff/CONTEXTO_IA.md`](docs/handoff/CONTEXTO_IA.md).
 
 Este bloque resume el estado **confirmado más reciente** (Fase 0 + Fase 0.1 + Fase 1 + Fase 1.1 + Fase 2 + Hotfix 2.1, 2026-09-15; actualizado el 2026-10-06 con la decisión de capa gratuita y el estado de la Fase 3.B). **Todo lo que hay debajo de este bloque — incluidas las propias entradas de fase y todas las secciones `P0.x`/`P1.x`/`Project Overview` más antiguas — es registro histórico (antecedentes).** Es útil como evidencia y trazabilidad de lo que se hizo y cuándo, pero **no debe usarse por sí solo para inferir el estado actual del producto**: ante cualquier contradicción, prevalece lo indicado aquí y en el código fuente, no el texto histórico. Las entradas históricas que contradicen este bloque se han anotado en su sitio en vez de borrarse.
 
