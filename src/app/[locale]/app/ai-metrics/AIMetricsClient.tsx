@@ -6,6 +6,7 @@ import AIMetricsChart from "@/components/AIMetricsChart";
 import AILogsList from "@/components/AILogsList";
 import { AIMetrics, AILogEntry } from "@/lib/ai/metrics";
 import { useTranslations } from "next-intl";
+import { PlusRequiredNotice } from "@/components/plus/PlusRequiredNotice";
 
 type DateRange = "7d" | "30d" | "90d" | "all";
 
@@ -33,6 +34,7 @@ export default function AIMetricsClient() {
   const [logs, setLogs] = useState<AILogEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [plusRequired, setPlusRequired] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange>("30d");
 
   // Embedding migration state
@@ -55,9 +57,13 @@ export default function AIMetricsClient() {
       }
 
       const response = await fetch(`/api/ai/metrics?${params.toString()}`);
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
+        if (response.status === 403 && data?.error?.code === "PLUS_REQUIRED") {
+          setPlusRequired(true);
+          return;
+        }
         throw new Error(data.error?.message || t("error"));
       }
 
@@ -158,6 +164,14 @@ export default function AIMetricsClient() {
             ))}
           </div>
         </div>
+      </div>
+    );
+  }
+
+  if (plusRequired) {
+    return (
+      <div className="max-w-xl mx-auto p-4">
+        <PlusRequiredNotice />
       </div>
     );
   }

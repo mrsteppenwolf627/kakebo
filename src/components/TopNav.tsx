@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import UserMenu from "./UserMenu";
 import { useTranslations } from "next-intl";
 
-export default function TopNav() {
+export default function TopNav({ showPlan = false }: { showPlan?: boolean }) {
   const t = useTranslations("Navigation");
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -81,7 +81,7 @@ export default function TopNav() {
           </div>
 
           {/* Delegamos Auth a UserMenu */}
-          <UserMenu />
+          <UserMenu showPlan={showPlan} />
 
           {/* Mobile Menu Toggle */}
           <button

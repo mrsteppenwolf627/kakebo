@@ -160,8 +160,8 @@ describe("POST /api/stripe/checkout", () => {
     expect(params.subscription_data.trial_period_days).toBeUndefined();
     expect(params.subscription_data.trial_end).toBeUndefined();
     expect(params.payment_method_collection).toBeUndefined();
-    expect(params.success_url).toMatch(/^https:\/\/kakebo\.test\/es\/settings\?plus=success&session_id=\{CHECKOUT_SESSION_ID\}$/);
-    expect(params.cancel_url).toBe("https://kakebo.test/es/settings?plus=cancelled");
+    expect(params.success_url).toBe("https://kakebo.test/app/subscription?plus=success&session_id={CHECKOUT_SESSION_ID}");
+    expect(params.cancel_url).toBe("https://kakebo.test/app/subscription?plus=cancelled");
 
     // El customer queda guardado en billing_customers, pero NO se concede acceso (sigue en trial).
     expect(await rows(`SELECT stripe_customer_id FROM billing_customers WHERE user_id='${u.id}'`)).toHaveLength(1);
@@ -230,7 +230,7 @@ describe("POST /api/stripe/checkout", () => {
   it("locale en -> URLs en /en/", async () => {
     h.currentUser = await newUser();
     await checkoutPOST(jsonReq("/api/stripe/checkout", { interval: "year", locale: "en" }));
-    expect(h.stripe.checkout.sessions.create.mock.calls[0][0].success_url).toContain("https://kakebo.test/en/settings");
+    expect(h.stripe.checkout.sessions.create.mock.calls[0][0].success_url).toContain("https://kakebo.test/en/app/subscription");
   });
 
   it("NEXT_PUBLIC_SITE_URL no seguro (http no local) -> error y sin llamar a Stripe", async () => {
@@ -255,7 +255,7 @@ describe("POST /api/stripe/portal", () => {
     expect((await res.json()).data.url).toContain("billing.stripe.test");
     expect(h.stripe.billingPortal.sessions.create).toHaveBeenCalledWith({
       customer: "cus_portalmine1",
-      return_url: "https://kakebo.test/es/settings",
+      return_url: "https://kakebo.test/app/subscription",
       configuration: "bpc_test123",
     });
   });

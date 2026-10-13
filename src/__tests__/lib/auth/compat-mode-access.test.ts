@@ -60,17 +60,25 @@ describe("modo compatible — acceso de los usuarios existentes", () => {
   });
 });
 
+// Capa de acceso Plus (protegida por PLUS_SUBSCRIPTIONS_ENABLED / solo presentación): únicos archivos que conocen los estados.
+const ACCESS_LAYER = [
+  "src/lib/auth/access-state.ts",
+  "src/lib/auth/require-access.ts",
+  "src/lib/plus/access-view.ts",
+  "src/components/plus/PlanClient.tsx",
+];
+
 describe("modo compatible — no hay enforcement comercial en el código de la app", () => {
   it("solo require-access.ts (protegido por PLUS_SUBSCRIPTIONS_ENABLED) importa el resolvedor freemium (access-state)", () => {
     const importers = appFiles
-      .filter((f) => rel(f) !== "src/lib/auth/access-state.ts" && rel(f) !== "src/lib/auth/require-access.ts")
+      .filter((f) => !ACCESS_LAYER.includes(rel(f)))
       .filter((f) => /from\s+["']@\/lib\/auth\/access-state["']|from\s+["'][./]*access-state["']/.test(read(f)));
     expect(importers.map(rel)).toEqual([]);
   });
 
   it("ningún código de producción conoce el límite de 30 gastos salvo access-state.ts y require-access.ts (diferido)", () => {
     const withLimit = appFiles
-      .filter((f) => rel(f) !== "src/lib/auth/access-state.ts" && rel(f) !== "src/lib/auth/require-access.ts")
+      .filter((f) => !ACCESS_LAYER.includes(rel(f)))
       .filter((f) => /FREE_MONTHLY_EXPENSE_LIMIT|free_readonly|free_under_limit/.test(read(f)));
     expect(withLimit.map(rel)).toEqual([]);
   });
