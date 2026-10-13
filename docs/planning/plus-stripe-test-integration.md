@@ -13,6 +13,10 @@ Estado: implementada y probada con Stripe TEST simulado y SQL real (PGlite). **S
 
 Los IDs de producto/precio no son secretos. Los de **producción (LIVE) se crearán más adelante**, en una fase aparte y con autorización.
 
+### Ajuste de configuración del portal (Bloque 5)
+
+La validación real contra Stripe TEST detectó que la configuración del portal (`bpc_1UQ5mK3o8LT24HJFJNE5PQjk`) permitía **cambiar la cantidad** de la suscripción (`adjustable_quantity.enabled = true`, sin máximo), es decir, comprar varias unidades de Plus. Se ha desactivado: ahora el portal solo permite cambiar entre los dos precios Plus (mensual y anual) del producto Kakebo Plus, con prorrateo, además de actualizar el método de pago, cancelar al final del periodo y ver facturas. El E2E real lo comprueba (`adjustable_quantity.enabled === false`). Al crear la configuración LIVE hay que aplicar el mismo ajuste.
+
 ## Variables de entorno (solo nombres; nunca valores en Git)
 
 | Variable | Uso |
@@ -40,6 +44,10 @@ El webhook del pack Excel/PDF sigue usando `STRIPE_WEBHOOK_SECRET`, `STRIPE_PREM
 ## Eventos
 
 `checkout.session.completed` (solo vincula customer↔usuario, no concede acceso), `customer.subscription.created|updated|deleted`, `invoice.paid`, `invoice.payment_failed`. La suscripción se recupera en Stripe y se normaliza; solo se aceptan suscripciones con un único item cuyo precio sea el mensual o el anual de Plus.
+
+## Pruebas E2E reales (opt-in)
+
+`src/__tests__/e2e/plus-stripe-real.e2e.test.ts` valida contra Stripe TEST real (clientes con test clocks, suscripciones, eventos, portal y Checkout) usando el código real de las rutas y las migraciones reales sobre una base PGlite. No corre en `npm test` (11 pruebas omitidas); se ejecuta con `PLUS_E2E_STRIPE_TEST=1` y `STRIPE_SECRET_KEY` de TEST (aborta con cualquier otra clave). Limpia los test clocks y los clientes que crea. No usa Supabase staging/producción ni Vercel. Limitación: los eventos reales se re-firman en local; no prueba la entrega HTTP de Stripe, la página de Checkout con tarjeta ni la interfaz en navegador.
 
 ## Pendiente antes de producción
 
