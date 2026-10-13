@@ -16,10 +16,11 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { ApiError, apiErrors } from "@/lib/api/errors";
 import type { AccessState } from "./access-state";
 
-export type AccessFeature = "ai" | "export_reports" | "plus_features" | "billing";
+export type AccessFeature = "ai" | "ai_search" | "export_reports" | "plus_features" | "billing";
 
 const FEATURE_PERMISSION: Record<AccessFeature, string> = {
   ai: "can_use_ai",
+  ai_search: "can_use_ai",
   export_reports: "can_export_reports",
   plus_features: "can_use_plus_features",
   billing: "can_manage_billing",
@@ -27,6 +28,7 @@ const FEATURE_PERMISSION: Record<AccessFeature, string> = {
 
 const FEATURE_LABEL: Record<AccessFeature, string> = {
   ai: "el asistente IA",
+  ai_search: "la búsqueda inteligente",
   export_reports: "los informes PDF",
   plus_features: "las funciones Plus",
   billing: "la gestión de la suscripción",
