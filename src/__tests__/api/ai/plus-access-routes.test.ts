@@ -1,5 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import fs from "node:fs";
+import path from "node:path";
 import { NextRequest } from "next/server";
 
 /**
@@ -54,6 +56,8 @@ vi.mock("@/lib/ai", () => ({
   getAIMetrics: vi.fn(async () => { work(); return {}; }),
   getRecentLogs: vi.fn(async () => []),
   getLearningMetrics: vi.fn(async () => ({})),
+  searchExpensesByText: vi.fn(async () => { work(); return { results: [], queryTokens: 0, queryCostUsd: 0 }; }),
+  recordCorrection: vi.fn(async () => { work(); return {}; }),
 }));
 
 import { POST as agentPOST } from "@/app/api/ai/agent/route";
@@ -62,6 +66,9 @@ import { POST as streamPOST } from "@/app/api/ai/agent-v2/stream/route";
 import { POST as assistantPOST } from "@/app/api/ai/assistant/route";
 import { POST as classifyPOST } from "@/app/api/ai/classify/route";
 import { GET as metricsGET } from "@/app/api/ai/metrics/route";
+import { POST as searchPOST } from "@/app/api/ai/search/route";
+import { POST as feedbackPOST } from "@/app/api/ai/feedback/route";
+import { POST as cancelConfirmationPOST } from "@/app/api/ai/agent-v2/cancel-confirmation/route";
 
 const mk = (url: string, body?: unknown, method = "POST") =>
   new NextRequest(`http://localhost${url}`, {
@@ -77,6 +84,13 @@ const routes: [string, () => Promise<Response>][] = [
   ["/api/ai/assistant", () => assistantPOST(mk("/api/ai/assistant", { message: "hola", history: [] }))],
   ["/api/ai/classify", () => classifyPOST(mk("/api/ai/classify", { text: "café" }))],
   ["/api/ai/metrics", () => metricsGET(mk("/api/ai/metrics", undefined, "GET"))],
+  ["/api/ai/search", () => searchPOST(mk("/api/ai/search", { query: "supermercado" }))],
+];
+
+// Rutas que DEBEN seguir abiertas a cualquier usuario autenticado (no son funciones Plus).
+const openRoutes: [string, () => Promise<Response>][] = [
+  ["/api/ai/feedback", () => feedbackPOST(mk("/api/ai/feedback", { logId: "00000000-0000-0000-0000-000000000001", correctedCategory: "optional" }))],
+  ["/api/ai/agent-v2/cancel-confirmation", () => cancelConfirmationPOST(mk("/api/ai/agent-v2/cancel-confirmation", { confirmationId: "x" }))],
 ];
 
 const perms = (premium: boolean) => ({
@@ -112,7 +126,7 @@ describe("flag encendido (valor exacto \"true\")", () => {
   beforeEach(() => vi.stubEnv("PLUS_SUBSCRIPTIONS_ENABLED", "true"));
 
   for (const state of ["free_under_limit", "free_readonly"]) {
-    it(`usuario gratuito (${state}): las 6 rutas de IA devuelven 403 PLUS_REQUIRED y no ejecutan nada`, async () => {
+    it(`usuario gratuito (${state}): las 7 rutas de IA devuelven 403 PLUS_REQUIRED y no ejecutan nada`, async () => {
       h.rpcResult = access(state, false);
       for (const [name, call] of routes) {
         const res = await call();
@@ -127,7 +141,7 @@ describe("flag encendido (valor exacto \"true\")", () => {
   }
 
   for (const state of ["trialing", "legacy_full", "plus_active", "plus_canceled_pending", "founder"]) {
-    it(`usuario ${state}: las 6 rutas de IA le dejan pasar`, async () => {
+    it(`usuario ${state}: las 7 rutas de IA le dejan pasar`, async () => {
       h.rpcResult = access(state, true);
       for (const [name, call] of routes) {
         const res = await call();
@@ -137,6 +151,34 @@ describe("flag encendido (valor exacto \"true\")", () => {
       }
     });
   }
+
+  it("/api/ai/search: bloqueada para gratis; permitida para trial, Plus, legacy_full y founder", async () => {
+    h.rpcResult = access("free_under_limit", false);
+    expect((await searchPOST(mk("/api/ai/search", { query: "super" }))).status).toBe(403);
+    expect(h.worked.count).toBe(0);
+    for (const state of ["trialing", "plus_active", "plus_canceled_pending", "legacy_full", "founder"]) {
+      h.rpcResult = access(state, true);
+      const res = await searchPOST(mk("/api/ai/search", { query: "super" }));
+      expect(res.status, state).toBe(200);
+    }
+  });
+
+  it("/api/ai/feedback y cancel-confirmation siguen abiertas para un usuario gratuito (sin consultar acceso)", async () => {
+    h.rpcResult = access("free_readonly", false);
+    for (const [name, call] of openRoutes) {
+      const res = await call();
+      expect(res.status, name).not.toBe(403);
+      expect(res.status, name).not.toBe(503);
+    }
+    expect(h.rpcCalls).toHaveLength(0);
+  });
+
+  it("las rutas de mantenimiento de embeddings no usan requireAccess", () => {
+    for (const f of ["migrate-embeddings", "process-embeddings", "feedback", "agent-v2/cancel-confirmation"]) {
+      const src = fs.readFileSync(path.join(process.cwd(), "src/app/api/ai", f, "route.ts"), "utf8");
+      expect(src, f).not.toMatch(/requireAccess/);
+    }
+  });
 
   it("sin sesión: 401 en todas las rutas y no se consulta el acceso", async () => {
     h.user = null;
