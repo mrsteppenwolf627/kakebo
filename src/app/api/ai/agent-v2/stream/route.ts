@@ -34,6 +34,7 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { requireAuth } from "@/lib/api";
+import { requireAccess, accessErrorResponse } from "@/lib/auth/require-access";
 import { processFunctionCallingStream } from "@/lib/agents-v2/stream-caller";
 
 // ─── Request schema (matches agent-v2 for compatibility) ─────────────────────
@@ -80,6 +81,18 @@ export async function POST(request: NextRequest) {
   } catch {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  // Plus (solo con PLUS_SUBSCRIPTIONS_ENABLED="true"); con el interruptor apagado no hace nada.
+  try {
+    await requireAccess("ai", supabase);
+  } catch (error) {
+    const denied = accessErrorResponse(error);
+    if (denied) return denied;
+    return new Response(JSON.stringify({ error: "Internal error" }), {
+      status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }

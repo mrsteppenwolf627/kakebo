@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { requireAccess } from "@/lib/auth/require-access";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { processMessage, Message } from "@/lib/ai";
 import { z } from "zod";
@@ -56,6 +57,7 @@ export const POST = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
     const supabase = await createClient();
+    await requireAccess("ai", supabase);
 
     const body = await request.json();
     const input = assistantRequestSchema.parse(body);

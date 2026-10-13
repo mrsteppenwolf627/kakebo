@@ -19,8 +19,8 @@ const read = (dir: string, f: string) => fs.readFileSync(path.join(dir, f), "utf
 const FORBIDDEN_NAME = /freemium|enforce_expense_limit|legacy_access|close_direct|usage_backfill|access_foundation/i;
 
 describe("migraciones Plus: guardas", () => {
-  it("existen 5 migraciones y 5 rollbacks emparejados por versión", () => {
-    expect(plus).toHaveLength(5);
+  it("existen 6 migraciones y 6 rollbacks emparejados por versión", () => {
+    expect(plus).toHaveLength(6);
     expect(rollbacks.map((f) => f.replace(".rollback.sql", ".sql"))).toEqual(plus);
   });
 
@@ -59,7 +59,7 @@ describe("migraciones Plus: guardas", () => {
     expect(new Set(plusVersions).size).toBe(plusVersions.length);
     const maxOther = all.filter((f) => !plus.includes(f)).map((f) => f.split("_")[0]).sort().pop()!;
     expect(plusVersions.every((v) => v > maxOther)).toBe(true);
-    expect(all.slice(-5)).toEqual(plus);
+    expect(all.slice(-6)).toEqual(plus);
     // Una versión con fecha posterior a hoy bloquearía las siguientes migraciones (orden). Margen de 1 día.
     const limit = new Date(Date.now() + 24 * 3600 * 1000).toISOString().replace(/\D/g, "").slice(0, 14);
     for (const f of plus) expect(f.split("_")[0] <= limit, f).toBe(true);
