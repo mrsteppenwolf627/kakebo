@@ -31,8 +31,9 @@
         "secure": "Secure",
         "home": "Home",
         "agent": "AI Agent",
-        "fixed": "Fixed",
-        "analysis": "Analysis",
+        "fixed": "Fixed expenses",
+        "history": "History",
+        "analysis": "AI analysis",
         "newExpense": "+ Expense",
         "newIncome": "+ Income",
         "newExpenseLong": "+ New Expense",
@@ -662,10 +663,11 @@
             }
         },
         "title": "My Kakebo",
-        "subtitle": "Monthly Expense Tracker",
+        "subtitle": "Track your spending by Kakebo cycles, not only calendar months.",
         "Header": {
             "title": "My Kakebo",
-            "subtitle": "Monthly Expense Tracker"
+            "subtitle": "Track your spending by Kakebo cycles, not only calendar months.",
+            "periodHint": "You can close the cycle whenever you want. Each expense keeps its real date."
         },
         "Actions": {
             "addExpense": "Add New Expense",
@@ -674,23 +676,30 @@
             "generateReport": "Generate Report"
         },
         "SEO": {
-            "title": "Monthly Expense Tracking with Kakebo",
-            "p1": "<bold>Kakebo</bold> is your ultimate tool for <bold>personal expense management</bold>. Unlike complicated spreadsheets, Kakebo helps you categorize your finances into 4 essential buckets: Survival, Leisure, Culture, and Extras.",
-            "p2": "The Japanese Kakebo method encourages <bold>mindful saving</bold>. It's not about cutting costs blindly, but understanding where your money goes to make better decisions every month.",
-            "p3": "Visualize your progress with clear charts, set realistic saving goals, and achieve financial freedom step by step."
+            "title": "Kakebo expense tracking by cycle",
+            "p1": "<bold>Kakebo</bold> is your tool for <bold>personal expense management</bold>. Unlike complicated spreadsheets, Kakebo helps you categorize your finances into 4 essential buckets within each Kakebo cycle: Survival, Leisure, Culture, and Extras.",
+            "p2": "The Japanese Kakebo method encourages <bold>mindful saving</bold>. It's not about cutting costs blindly, but understanding where your money goes and making better decisions throughout each cycle.",
+            "p3": "Visualize your progress with clear charts, set realistic saving goals, and close each cycle when it makes sense for you."
+        },
+        "CycleGuide": {
+            "title": "How to use this cycle",
+            "step1": "Record each expense and income as it happens.",
+            "step2": "Review your available amount and category breakdown.",
+            "step3": "Close the cycle once you have finished your review."
         },
         "MonthSelector": {
+            "cycleLabel": "Cycle: {label}",
             "today": "Go to today",
-            "prev": "Previous month",
-            "next": "Next month"
+            "prev": "Previous cycle",
+            "next": "Next cycle"
         },
         "MoneyPanel": {
-            "title": "Monthly Balance",
-            "subtitle": "Simplified financial control.",
+            "title": "Cycle summary",
+            "subtitle": "A simple view of your financial situation.",
             "cards": {
                 "incomes": {
                     "label": "Income",
-                    "desc": "This month"
+                    "desc": "In this cycle"
                 },
                 "budget": {
                     "label": "Budget",
@@ -705,13 +714,13 @@
                 },
                 "available": {
                     "label": "Real Available",
-                    "desc": "What you have left to finish the month"
+                    "desc": "What you have left in this cycle"
                 }
             },
             "inputs": {
                 "balanceLabel": "💰 Current Bank Balance (€)",
-                "liquidityLabel": "Real Liquidity (Bank − Reserves):",
-                "liquidityDesc": "This is your real 'cushion' discounting what is already committed.",
+                "liquidityLabel": "Available in bank after commitments:",
+                "liquidityDesc": "Bank balance minus pending fixed expenses and pending savings.",
                 "save": "OK",
                 "savingCheck": "I have already transferred savings ({amount} €)",
                 "savingDesc": "Check this when you move money to your savings account.",
@@ -733,7 +742,7 @@
                 "closed": "status: closed",
                 "open": "status: open",
                 "unknown": "no month record yet",
-                "closedMsg": "Month closed · Cannot add or remove expenses."
+                "closedMsg": "Cycle closed · Cannot add or remove expenses."
             },
             "stats": {
                 "expenses": "Expenses:",
@@ -742,14 +751,14 @@
             "actions": {
                 "update": "Refresh",
                 "reopen": "Reopen",
-                "close": "Close Month",
+                "close": "Close cycle",
                 "addExpense": "+ New expense",
                 "addIncome": "💰 + New income",
                 "history": "View full history",
                 "delete": "Delete"
             },
             "summary": {
-                "income": "Monthly Income",
+                "income": "Cycle income",
                 "fixed": "Fixed Expenses",
                 "usable": "Usable",
                 "available": "Available",
@@ -773,13 +782,13 @@
             },
             "list": {
                 "title": "Recent Transactions",
-                "empty": "No expenses recorded this month.",
+                "empty": "No expenses recorded in this cycle.",
                 "noConcept": "No concept"
             }
         },
         "RecentMovements": {
-            "title": "Recent Movements",
-            "empty": "No movements this month",
+            "title": "Cycle Movements",
+            "empty": "No movements in this cycle",
             "noConcept": "No concept",
             "noDescription": "Income",
             "incomeLabel": "Income"
@@ -863,7 +872,7 @@
             "widget": "Kakebo Assistant",
             "full": "Financial Assistant"
         },
-        "subtitle": "GPT-4o-mini & Agents",
+        "subtitle": "Ask me about your spending, categories and cycles.",
         "actions": {
             "clear": "Clear chat",
             "send": "Send",
@@ -885,7 +894,7 @@
             "placeholderWidget": "Type here...",
             "placeholderFull": "Ask something about your finances..."
         },
-        "disclaimer": "AI agents can make mistakes.",
+        "disclaimer": "AI can make mistakes. Review its answers before saving changes.",
         "error": "Error",
         "confirmation": {
             "title": "Confirm AI-proposed change",
@@ -986,6 +995,7 @@
     },
     "FixedExpenses": {
         "title": "Fixed Expenses",
+        "description": "Recurring payments deducted before calculating what you can spend in each cycle.",
         "totalActive": "Total active:",
         "actions": {
             "back": "Dashboard",
@@ -1040,7 +1050,7 @@
     },
     "AIMetrics": {
         "title": "AI Metrics",
-        "subtitle": "Evaluation and monitoring dashboard for the AI model",
+        "subtitle": "Technical panel for reviewing the assistant and its usage data.",
         "loading": "Loading metrics...",
         "error": "Error loading metrics",
         "retry": "Retry",
@@ -1133,7 +1143,7 @@
                 "confidence": "{percent}% confidence"
             },
             "errors": {
-                "monthClosed": "Month closed ({ym}): cannot add expenses.",
+                "monthClosed": "Cycle closed ({ym}): cannot add expenses.",
                 "checkFailed": "Error checking month",
                 "saveFailed": "Error saving expense"
             }
@@ -1154,11 +1164,12 @@
             "concept": "Concept",
             "amount": "Amount (€)",
             "category": "Category",
-            "monthActivity": "Month: {month}",
-            "currentMonth": "Month: current",
-            "monthClosed": "Month closed",
+            "monthActivity": "Cycle: {month}",
+            "currentMonth": "Cycle: current",
+            "monthClosed": "Cycle closed",
             "monthClosedDesc": "Cannot add expenses to this period.",
-            "dateHint": "The expense is booked to this cycle; the real date you choose is never changed.",
+            "dateHint": "The expense is assigned to this cycle; the real date you choose is never changed.",
+            "incomeDateHint": "The income will be recorded in this cycle; the real date you choose is preserved.",
             "placeholders": {
                 "conceptExpense": "Ex: groceries",
                 "conceptIncome": "Ex: January salary",
@@ -1203,6 +1214,7 @@
         },
         "FixedExpenses": {
             "title": "Fixed Expenses",
+            "description": "Recurring payments deducted before calculating what you can spend in each cycle.",
             "totalActive": "Total active:",
             "loading": "Loading fixed expenses...",
             "none": "No fixed expenses yet.",
@@ -1247,8 +1259,8 @@
         },
         "SEO": {
             "title": "Budget and Saving Goal Settings",
-            "desc": "In this section, you can define your monthly income, saving goal, and maximum budgets for each Kakebo category. This allows you to control spending and track your habits month by month.",
-            "keywords": "(SEO Placeholder: text about \"monthly budget\", \"saving goal\", \"kakebo method\".)"
+            "desc": "Set your reference income, saving goal and category limits here. These values apply to your Kakebo cycles and can be reviewed whenever your situation changes.",
+            "keywords": ""
         }
     },
     "Admin": {

@@ -19,8 +19,14 @@ export default function TopNav() {
     { href: "/app", label: t('dashboard') },
     { href: "/app/agent", label: t('agent') },
     { href: "/app/fixed", label: t('fixed') },
+    { href: "/app/history", label: t('history') },
     { href: "/app/ai-metrics", label: t('analysis') },
   ];
+
+  function isActive(href: string) {
+    if (href === "/app") return pathname === "/app";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
 
   // Close menu on route change
   useEffect(() => {
@@ -42,7 +48,7 @@ export default function TopNav() {
               <Link
                 key={it.href}
                 href={it.href}
-                className={`text-sm whitespace-nowrap transition-colors duration-200 ${pathname === it.href
+                className={`text-sm whitespace-nowrap transition-colors duration-200 ${isActive(it.href)
                   ? "text-foreground font-medium decoration-foreground underline underline-offset-4 decoration-1"
                   : "text-muted-foreground hover:text-foreground"
                   }`}
@@ -100,7 +106,7 @@ export default function TopNav() {
               <Link
                 key={it.href}
                 href={it.href}
-                className={`block text-lg ${pathname === it.href
+                className={`block text-lg ${isActive(it.href)
                   ? "text-foreground font-serif font-medium"
                   : "text-muted-foreground"
                   }`}

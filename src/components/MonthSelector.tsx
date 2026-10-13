@@ -69,7 +69,7 @@ export default function MonthSelector({
         </div>
         <div>
           <div className="font-serif font-normal capitalize text-lg sm:text-xl text-foreground">
-            {label}
+            {t("cycleLabel", { label })}
           </div>
           <div className="text-xs text-muted-foreground font-mono">{currentYm}</div>
         </div>

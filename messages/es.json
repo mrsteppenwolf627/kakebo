@@ -31,8 +31,9 @@
         "secure": "Seguro",
         "home": "Inicio",
         "agent": "Agente IA",
-        "fixed": "Fijos",
-        "analysis": "Análisis",
+        "fixed": "Gastos fijos",
+        "history": "Histórico",
+        "analysis": "Análisis IA",
         "newExpense": "+ Gasto",
         "newIncome": "+ Ingreso",
         "newExpenseLong": "+ Nuevo Gasto",
@@ -641,10 +642,11 @@
             }
         },
         "title": "Mi Kakebo",
-        "subtitle": "Control de gastos mensual",
+        "subtitle": "Controla tus gastos por ciclos Kakebo, no solo por meses naturales.",
         "Header": {
             "title": "Mi Kakebo",
-            "subtitle": "Control de gastos mensual"
+            "subtitle": "Controla tus gastos por ciclos Kakebo, no solo por meses naturales.",
+            "periodHint": "Puedes cerrar el ciclo cuando quieras. La fecha real de cada gasto se conserva."
         },
         "Actions": {
             "addExpense": "Añadir Nuevo Gasto",
@@ -653,23 +655,30 @@
             "generateReport": "Generar Informe"
         },
         "SEO": {
-            "title": "Control de gastos mensual con el método Kakebo",
-            "p1": "<bold>Kakebo AI</bold> es la herramienta de <bold>MetodoKakebo.com</bold> para registrar gastos mensuales, clasificarlos en cuatro categorías y revisar los hábitos de consumo. Las cuatro categorías del método Kakebo son: Supervivencia, <bold>Ocio/Vicio</bold>, Cultura y Extras.",
-            "p2": "El <bold>método Kakebo</bold> fomenta el <bold>ahorro consciente</bold>. No se trata de recortar por recortar, sino de entender a dónde va tu dinero para tomar mejores decisiones cada mes.",
-            "p3": "Visualiza tu progreso con gráficos claros, establece objetivos de ahorro realistas y toma mejores decisiones sobre tu dinero mes a mes."
+            "title": "Control de gastos por ciclos con el método Kakebo",
+            "p1": "<bold>Kakebo AI</bold> es la herramienta de <bold>MetodoKakebo.com</bold> para registrar gastos, clasificarlos en cuatro categorías y revisar los hábitos de consumo dentro de cada ciclo Kakebo. Las cuatro categorías del método Kakebo son: Supervivencia, <bold>Ocio/Vicio</bold>, Cultura y Extras.",
+            "p2": "El <bold>método Kakebo</bold> fomenta el <bold>ahorro consciente</bold>. No se trata de recortar por recortar, sino de entender a dónde va tu dinero para tomar mejores decisiones durante cada ciclo.",
+            "p3": "Visualiza tu progreso con gráficos claros, establece objetivos de ahorro realistas y cierra cada ciclo cuando tenga sentido para ti."
+        },
+        "CycleGuide": {
+            "title": "Cómo aprovechar este ciclo",
+            "step1": "Registra cada gasto y cada ingreso cuando ocurran.",
+            "step2": "Revisa el disponible y el reparto por categorías.",
+            "step3": "Cierra el ciclo cuando hayas terminado tu revisión."
         },
         "MonthSelector": {
+            "cycleLabel": "Ciclo de {label}",
             "today": "Ir a hoy",
-            "prev": "Mes anterior",
-            "next": "Mes siguiente"
+            "prev": "Ciclo anterior",
+            "next": "Ciclo siguiente"
         },
         "MoneyPanel": {
-            "title": "Balance Mensual",
-            "subtitle": "Control financiero simplificado.",
+            "title": "Resumen del ciclo",
+            "subtitle": "Una lectura sencilla de tu situación financiera.",
             "cards": {
                 "incomes": {
                     "label": "Ingresos",
-                    "desc": "Este mes"
+                    "desc": "En este ciclo"
                 },
                 "budget": {
                     "label": "Presupuesto",
@@ -684,13 +693,13 @@
                 },
                 "available": {
                     "label": "Disponible Real",
-                    "desc": "Lo que te queda para terminar el mes"
+                    "desc": "Lo que te queda en este ciclo"
                 }
             },
             "inputs": {
                 "balanceLabel": "💰 Saldo actual en Banco (€)",
-                "liquidityLabel": "Liquidez real (Banco − Reservas):",
-                "liquidityDesc": "Esto es tu 'colchón' real descontando lo que ya está comprometido.",
+                "liquidityLabel": "Disponible en banco tras compromisos:",
+                "liquidityDesc": "Saldo del banco menos los gastos fijos pendientes y el ahorro pendiente.",
                 "save": "OK",
                 "savingCheck": "Ya he transferido el ahorro ({amount} €)",
                 "savingDesc": "Marca esto cuando muevas el dinero a tu cuenta de ahorro.",
@@ -712,7 +721,7 @@
                 "closed": "estado: cerrado",
                 "open": "estado: abierto",
                 "unknown": "sin registro de mes aún",
-                "closedMsg": "Mes cerrado · No se pueden añadir ni eliminar gastos."
+                "closedMsg": "Ciclo cerrado · No se pueden añadir ni eliminar gastos."
             },
             "stats": {
                 "expenses": "Gastos:",
@@ -721,14 +730,14 @@
             "actions": {
                 "update": "Actualizar",
                 "reopen": "Reabrir",
-                "close": "Cerrar Mes",
+                "close": "Cerrar ciclo",
                 "addExpense": "+ Nuevo gasto",
                 "addIncome": "💰 + Nuevo ingreso",
                 "history": "Ver histórico completo",
                 "delete": "Eliminar"
             },
             "summary": {
-                "income": "Ingreso mensual",
+                "income": "Ingresos del ciclo",
                 "fixed": "Gastos fijos",
                 "usable": "Utilizable",
                 "available": "Disponible",
@@ -742,23 +751,23 @@
             },
             "categories": {
                 "supervivencia": "Supervivencia",
-                "opcional": "Opcional",
+                "opcional": "Ocio y vicio",
                 "cultura": "Cultura",
-                "extra": "Extra",
+                "extra": "Extras",
                 "percentTotal": "{percent}% del total",
                 "budget": "Presup.: {amount} €",
                 "remaining": "Restan {amount} €",
                 "noBudget": "Sin presupuesto"
             },
             "list": {
-                "title": "Últimos movimientos",
-                "empty": "No hay gastos registrados este mes.",
+                "title": "Movimientos del ciclo",
+                "empty": "No hay gastos registrados en este ciclo.",
                 "noConcept": "Sin concepto"
             }
         },
         "RecentMovements": {
-            "title": "Últimos movimientos",
-            "empty": "Sin movimientos en este mes",
+            "title": "Movimientos del ciclo",
+            "empty": "Sin movimientos en este ciclo",
             "noConcept": "Sin concepto",
             "noDescription": "Ingreso",
             "incomeLabel": "Ingreso"
@@ -842,7 +851,7 @@
             "widget": "Asistente Kakebo",
             "full": "Asistente Financiero"
         },
-        "subtitle": "GPT-4o-mini & Agentes",
+        "subtitle": "Pregúntame por tus gastos, categorías y ciclos.",
         "actions": {
             "clear": "Borrar chat",
             "send": "Enviar",
@@ -855,8 +864,8 @@
             "full": "¡Hola! Soy tu asistente Kakebo."
         },
         "suggestions": {
-            "totalSpent": "¿Cuánto he gastado este mes en total?",
-            "totalSpentShort": "¿Gasto total del mes?",
+            "totalSpent": "¿Cuánto he gastado en este ciclo en total?",
+            "totalSpentShort": "¿Gasto total del ciclo?",
             "analyzeFood": "Analiza mis patrones de gasto en comida",
             "analyzeFoodShort": "Analiza gastos en comida"
         },
@@ -864,7 +873,7 @@
             "placeholderWidget": "Escribe aquí...",
             "placeholderFull": "Pregunta algo sobre tus finanzas..."
         },
-        "disclaimer": "Los agentes de IA pueden cometer errores.",
+        "disclaimer": "La IA puede equivocarse. Revisa sus respuestas antes de guardar cambios.",
         "error": "Error",
         "confirmation": {
             "title": "Confirmar cambio propuesto por la IA",
@@ -965,6 +974,7 @@
     },
     "FixedExpenses": {
         "title": "Gastos fijos",
+        "description": "Pagos recurrentes que se descuentan antes de calcular lo que puedes gastar en cada ciclo.",
         "totalActive": "Total activo:",
         "actions": {
             "back": "Dashboard",
@@ -1019,7 +1029,7 @@
     },
     "AIMetrics": {
         "title": "Métricas IA",
-        "subtitle": "Panel de evaluación y monitoreo del modelo de IA",
+        "subtitle": "Panel técnico para revisar el funcionamiento del asistente y sus datos de uso.",
         "loading": "Cargando métricas...",
         "error": "Error al cargar métricas",
         "retry": "Reintentar",
@@ -1089,7 +1099,7 @@
                 "survival": "Supervivencia",
                 "optional": "Opcional",
                 "culture": "Cultura",
-                "extra": "Extra"
+                "extra": "Extras"
             }
         }
     },
@@ -1112,7 +1122,7 @@
                 "confidence": "{percent}% confianza"
             },
             "errors": {
-                "monthClosed": "Mes cerrado ({ym}): no se pueden añadir gastos.",
+                "monthClosed": "Ciclo cerrado ({ym}): no se pueden añadir gastos.",
                 "checkFailed": "Error comprobando el mes",
                 "saveFailed": "Error guardando gasto"
             }
@@ -1133,11 +1143,12 @@
             "concept": "Concepto",
             "amount": "Importe (€)",
             "category": "Categoría",
-            "monthActivity": "Mes: {month}",
-            "currentMonth": "Mes: actual",
-            "monthClosed": "Mes cerrado",
+            "monthActivity": "Ciclo: {month}",
+            "currentMonth": "Ciclo: actual",
+            "monthClosed": "Ciclo cerrado",
             "monthClosedDesc": "No se pueden añadir gastos a este periodo.",
-            "dateHint": "El gasto se imputa a este ciclo; la fecha real que elijas no se modifica.",
+            "dateHint": "El gasto se asigna a este ciclo; la fecha real que elijas no se modifica.",
+            "incomeDateHint": "El ingreso se registrará en este ciclo; la fecha real que elijas se conserva.",
             "placeholders": {
                 "conceptExpense": "Ej: compra supermercado",
                 "conceptIncome": "Ej: Nómina enero",
@@ -1145,9 +1156,9 @@
             },
             "categories": {
                 "supervivencia": "Supervivencia",
-                "opcional": "Opcional",
+                "opcional": "Ocio y vicio",
                 "cultura": "Cultura",
-                "extra": "Extra"
+                "extra": "Extras"
             }
         }
     },
@@ -1158,9 +1169,9 @@
             "savingGoal": "Objetivo de ahorro (€)",
             "budgetsTitle": "Presupuestos por categoría",
             "budgetSurvival": "Supervivencia (€)",
-            "budgetOptional": "Opcional (€)",
+            "budgetOptional": "Ocio y vicio (€)",
             "budgetCulture": "Cultura (€)",
-            "budgetExtra": "Extra (€)",
+            "budgetExtra": "Extras (€)",
             "saveButton": "Guardar ajustes",
             "saving": "Guardando...",
             "success": "Ajustes guardados.",
@@ -1182,6 +1193,7 @@
         },
         "FixedExpenses": {
             "title": "Gastos fijos",
+            "description": "Pagos recurrentes que se descuentan antes de calcular lo que puedes gastar en cada ciclo.",
             "totalActive": "Total activos:",
             "loading": "Cargando gastos fijos...",
             "none": "Aún no tienes gastos fijos.",
@@ -1222,12 +1234,12 @@
                 "activated": "Activado.",
                 "deactivated": "Desactivado."
             },
-            "info": "Los gastos fijos se aplican al mes si <strong>start_ym ≤ ym</strong> y <strong>end_ym</strong> está vacío o <strong>end_ym ≥ ym</strong>."
+            "info": "Los gastos fijos se aplican al ciclo si <strong>start_ym ≤ ym</strong> y <strong>end_ym</strong> está vacío o <strong>end_ym ≥ ym</strong>."
         },
         "SEO": {
             "title": "Ajustes de presupuesto y objetivo de ahorro",
-            "desc": "En esta sección puedes definir tu ingreso mensual, tu objetivo de ahorro y los presupuestos máximos por categoría del método Kakebo. Esto te permite controlar el gasto y medir la evolución de tus hábitos mes a mes.",
-            "keywords": "(Hueco SEO: texto sobre “presupuesto mensual”, “objetivo de ahorro”, “método kakebo”.)"
+            "desc": "Aquí defines el ingreso de referencia, el objetivo de ahorro y los límites de cada categoría. Estos valores se aplican a tus ciclos Kakebo y puedes revisarlos cuando cambie tu situación.",
+            "keywords": ""
         }
     },
     "Tutorial": {

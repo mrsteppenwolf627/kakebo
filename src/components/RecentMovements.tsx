@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { useTranslations } from "next-intl";
+import { usesCycleLedger } from "@/lib/cycles/ledger-scope";
 
 type Expense = {
   id: string;
@@ -26,9 +27,9 @@ type Movement = Expense | Income;
 
 const KAKEBO_CATEGORIES: Record<string, { label: string; color: string }> = {
   supervivencia: { label: "Supervivencia", color: "#fca5a5" },
-  opcional: { label: "Opcional", color: "#93c5fd" },
+  opcional: { label: "Ocio y vicio", color: "#93c5fd" },
   cultura: { label: "Cultura", color: "#86efac" },
-  extra: { label: "Extra", color: "#d8b4fe" },
+  extra: { label: "Extras", color: "#d8b4fe" },
 };
 
 const API_TO_FRONTEND: Record<string, string> = {
@@ -69,14 +70,28 @@ export default function RecentMovements({ year, month, ym }: Props) {
       const lastDay = new Date(Number(ym.split("-")[0]), Number(ym.split("-")[1]), 0).getDate();
       const end = `${ym}-${String(lastDay).padStart(2, "0")}`;
 
+      const { data: cycleRows, error: cycleErr } = await supabase
+        .from("months")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("year", year)
+        .eq("month", month)
+        .limit(1);
+
+      if (cycleErr) throw cycleErr;
+
+      const cycleId = usesCycleLedger(ym) ? (cycleRows?.[0]?.id ?? null) : null;
+      const expenseQuery = supabase
+        .from("expenses")
+        .select("id,date,amount,category,note")
+        .eq("user_id", userId);
+      const expenseRequest = cycleId
+        ? expenseQuery.eq("month_id", cycleId)
+        : expenseQuery.gte("date", start).lte("date", end);
+
       const [{ data: expensesData, error: expensesErr }, { data: incomesData, error: incomesErr }] =
         await Promise.all([
-          supabase
-            .from("expenses")
-            .select("id,date,amount,category,note")
-            .eq("user_id", userId)
-            .gte("date", start)
-            .lte("date", end),
+          expenseRequest,
           supabase
             .from("incomes")
             .select("id,date,amount,description")

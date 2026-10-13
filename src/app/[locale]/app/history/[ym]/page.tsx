@@ -5,12 +5,14 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/i18n/routing";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
+import { usesCycleLedger } from "@/lib/cycles/ledger-scope";
+import { useLocale } from "next-intl";
 
 const KAKEBO_CATEGORIES = {
-  supervivencia: { label: "Supervivencia", color: "#dc2626" },
-  opcional: { label: "Opcional", color: "#2563eb" },
-  cultura: { label: "Cultura", color: "#16a34a" },
-  extra: { label: "Extra", color: "#9333ea" },
+  survival: { label: "Supervivencia", color: "#dc2626" },
+  optional: { label: "Ocio y vicio", color: "#2563eb" },
+  culture: { label: "Cultura", color: "#16a34a" },
+  extra: { label: "Extras", color: "#9333ea" },
 } as const;
 
 type CategoryKey = keyof typeof KAKEBO_CATEGORIES;
@@ -48,10 +50,20 @@ function parseYM(ym: string) {
 
 export default function MonthDetailPage() {
   const supabase = createClient();
+  const locale = useLocale();
   const params = useParams<{ ym: string }>();
   const router = useRouter();
 
   const ym = params?.ym ?? "";
+
+  const cycleTitle = useMemo(() => {
+    if (!ym || !isValidYM(ym)) return "";
+    const { year: cycleYear, month: cycleMonth } = parseYM(ym);
+    return new Intl.DateTimeFormat(locale, {
+      month: "long",
+      year: "numeric",
+    }).format(new Date(cycleYear, cycleMonth - 1, 1));
+  }, [ym, locale]);
 
   // ✅ blindaje: si ym no es válido, fuera
   useEffect(() => {
@@ -78,9 +90,9 @@ export default function MonthDetailPage() {
 
   const totalsByCategory = useMemo(() => {
     const base: Record<CategoryKey, number> = {
-      supervivencia: 0,
-      opcional: 0,
-      cultura: 0,
+      survival: 0,
+      optional: 0,
+      culture: 0,
       extra: 0,
     };
 
@@ -132,12 +144,17 @@ export default function MonthDetailPage() {
         return;
       }
 
-      const { data, error } = await supabase
+      const expenseQuery = supabase
         .from("expenses")
         .select("id,user_id,month_id,date,amount,category,note,color,created_at")
-        .eq("user_id", userId)
-        .eq("month_id", m.id)
-        .order("date", { ascending: false });
+        .eq("user_id", userId);
+      const lastDay = new Date(year, month, 0).getDate();
+      const { data, error } = usesCycleLedger(ym)
+        ? await expenseQuery.eq("month_id", m.id).order("date", { ascending: false })
+        : await expenseQuery
+          .gte("date", `${ym}-01`)
+          .lte("date", `${ym}-${String(lastDay).padStart(2, "0")}`)
+          .order("date", { ascending: false });
 
       if (error) throw error;
 
@@ -165,11 +182,17 @@ export default function MonthDetailPage() {
       <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-semibold">Mes {ym}</h1>
+            <h1 className="text-2xl sm:text-3xl font-semibold capitalize">Ciclo de {cycleTitle}</h1>
+            <p className="text-xs text-black/50 font-mono mt-1">{ym}</p>
             <p className="text-black/60 text-sm">
-              {monthRow?.status
-                ? `Estado: ${monthRow.status}`
-                : "Sin registro de mes (aún)"}
+              {monthRow?.status ? (
+                <span className={`inline-flex rounded-full px-2 py-1 text-xs ${monthRow.status === "closed"
+                  ? "bg-black/10 text-black/60"
+                  : "bg-green-100 text-green-700"
+                  }`}>
+                  {monthRow.status === "closed" ? "Ciclo cerrado" : "Ciclo abierto"}
+                </span>
+              ) : "Sin registro de ciclo (aún)"}
             </p>
           </div>
 
@@ -195,8 +218,9 @@ export default function MonthDetailPage() {
 
         {!loading && (
           <div className="border border-black/10 p-4 space-y-3">
-            <div className="text-sm text-black/60">
-              Total del mes: {total.toFixed(2)} €
+            <div>
+              <div className="text-xs uppercase tracking-wide text-black/50">Total gastado en el ciclo</div>
+              <div className="text-2xl font-semibold mt-1">{total.toFixed(2)} €</div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -219,12 +243,18 @@ export default function MonthDetailPage() {
                       <div className="text-sm font-medium">{cat.label}</div>
                     </div>
 
-                    <div className="text-right">
+                    <div className="text-right min-w-24">
                       <div className="text-sm font-semibold">
                         {value.toFixed(2)} €
                       </div>
                       <div className="text-xs text-black/60">
                         {pct.toFixed(0)}%
+                      </div>
+                      <div className="h-1.5 bg-black/5 rounded-full overflow-hidden mt-2">
+                        <div
+                          className="h-full rounded-full"
+                          style={{ width: `${pct}%`, backgroundColor: cat.color }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -236,14 +266,13 @@ export default function MonthDetailPage() {
 
         {!loading && rows.length === 0 && (
           <div className="border border-black/10 p-4 text-sm text-black/60">
-            No hay gastos vinculados a este mes (month_id). Si es un mes antiguo,
-            aún no se migraron los gastos.
+            No hay gastos vinculados a este ciclo.
           </div>
         )}
 
         {!loading && rows.length > 0 && (
           <div className="border border-black/10 p-4">
-            <div className="font-semibold mb-2">Gastos del mes</div>
+            <div className="font-semibold mb-2">Gastos del ciclo</div>
             <ul className="space-y-2">
               {rows.map((r) => {
                 const cat =

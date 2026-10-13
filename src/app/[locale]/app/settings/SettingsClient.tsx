@@ -513,6 +513,9 @@ export default function SettingsClient() {
                                 </span>
                             </div>
                         </div>
+                        <p className="text-sm text-muted-foreground max-w-2xl">
+                            {tFixed("description")}
+                        </p>
 
                         {fixedErr && <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md border border-destructive/20">{fixedErr}</div>}
                         {fixedOk && (
@@ -676,7 +679,7 @@ export default function SettingsClient() {
                         )}
                     </section>
 
-                    {/* ✅ BLOQUE SEO */}
+                    {/* Ayuda contextual */}
                     <section className="mt-12 border-t border-border pt-8 space-y-3 text-sm text-muted-foreground">
                         <h2 className="text-lg font-semibold text-foreground">
                             {tSeo("title")}
@@ -684,9 +687,6 @@ export default function SettingsClient() {
                         <p>
                             {tSeo("desc")}
                         </p>
-                        <div className="text-xs opacity-50">
-                            {tSeo("keywords")}
-                        </div>
                     </section>
                 </>
             )}

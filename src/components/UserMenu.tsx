@@ -68,6 +68,8 @@ export default function UserMenu() {
     <div className="relative ml-2 md:ml-4">
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-haspopup="menu"
         className={`flex items-center gap-2 px-3 py-1.5 text-sm border transition-colors ${open ? "border-stone-900 text-stone-900" : "border-stone-200 text-stone-600 hover:border-stone-400"
           }`}
       >
@@ -80,23 +82,28 @@ export default function UserMenu() {
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 mt-2 w-64 border border-stone-200 bg-stone-50 z-50 p-1 animate-in fade-in zoom-in-95 duration-100 shadow-md">
+          <div role="menu" className="absolute right-0 mt-2 w-64 border border-stone-200 bg-stone-50 z-50 p-1 animate-in fade-in zoom-in-95 duration-100 shadow-md">
 
             <div className="px-3 py-2 text-xs text-stone-500 border-b border-stone-200 mb-1 font-mono break-all">
               {user.email}
             </div>
 
             <button
-              onClick={() => router.push('/app/settings')} // Assuming a profile/settings page
+              onClick={() => {
+                setOpen(false);
+                router.push('/app/settings');
+              }}
+              role="menuitem"
               className="w-full text-left px-3 py-2 text-sm text-stone-700 hover:bg-stone-200 transition-colors"
             >
-              Configuración de Cuenta
+              Ajustes de Kakebo
             </button>
 
             <div className="h-px bg-stone-200 my-1" />
 
             <button
               onClick={logout}
+              role="menuitem"
               className="w-full text-left px-3 py-2 text-sm text-red-700 hover:bg-red-50 transition-colors"
             >
               Cerrar sesión

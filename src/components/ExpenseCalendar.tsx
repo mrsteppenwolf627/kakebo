@@ -364,7 +364,7 @@ export default function ExpenseCalendar({
       const nextYm = `${nextYear}-${pad2(nextMonth)}`;
 
       const ok = window.confirm(
-        `Vas a CERRAR el mes ${ym}.\n\nSe abrirá automáticamente el siguiente ciclo (${nextYm}) para que puedas registrar gastos de inmediato.\n\n¿Continuar?`
+        `Vas a CERRAR el ciclo ${ym}.\n\nSe abrirá automáticamente el siguiente ciclo (${nextYm}) para que puedas registrar gastos de inmediato.\n\n¿Continuar?`
       );
       if (!ok) return;
 
@@ -414,14 +414,14 @@ export default function ExpenseCalendar({
 
       const m = await getMonth(userId);
       if (!m) {
-        setErr("No existe registro de mes para reabrir.");
+        setErr("No existe registro de ciclo para reabrir.");
         return;
       }
 
       if (m.status === "open") return;
 
       const ok = window.confirm(
-        `Vas a REABRIR el mes ${ym}. Podrás volver a añadir y eliminar gastos.\n\n¿Continuar?`
+        `Vas a REABRIR el ciclo ${ym}. Podrás volver a añadir y eliminar gastos.\n\n¿Continuar?`
       );
       if (!ok) return;
 
