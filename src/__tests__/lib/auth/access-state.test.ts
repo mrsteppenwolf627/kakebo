@@ -138,10 +138,10 @@ describe("getAccessPermissions — permisos de IA y exportación", () => {
     expect(getAccessPermissions("plus_active").canExport).toBe(true);
   });
 
-  it("trialing: IA permitida, exportación NO permitida", () => {
+  it("trialing: acceso premium completo (IA y exportación)", () => {
     const perms = getAccessPermissions("trialing");
     expect(perms.canUseAI).toBe(true);
-    expect(perms.canExport).toBe(false);
+    expect(perms.canExport).toBe(true);
   });
 
   it("free_under_limit: sin IA, sin exportación, pero puede crear/editar gastos", () => {
@@ -164,6 +164,7 @@ describe("getAccessPermissions — permisos de IA y exportación", () => {
   it("ningún estado permite gestionar pago salvo los dos estados Plus", () => {
     const states = [
       "founder",
+      "legacy_full",
       "plus_active",
       "plus_canceled_pending",
       "trialing",

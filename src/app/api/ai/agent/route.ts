@@ -10,6 +10,7 @@ import {
 } from "@/lib/api";
 import { processAgentMessage } from "@/lib/agents";
 import { canUsePremium, Profile } from "@/lib/auth/access-control";
+import { requireAccess } from "@/lib/auth/require-access";
 
 /**
  * Request schema for agent endpoint
@@ -80,6 +81,9 @@ export const POST = withLogging(async (request: NextRequest) => {
 
     // Get Supabase client
     const supabase = await createClient();
+
+    // Plus (solo con PLUS_SUBSCRIPTIONS_ENABLED="true"); con el interruptor apagado no hace nada.
+    await requireAccess("ai", supabase);
 
     // Check Premium Access (Reverse Trial / Subscription)
     const { data: profile } = await supabase

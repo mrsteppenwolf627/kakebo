@@ -119,11 +119,11 @@ beforeAll(async () => {
 }, 60_000);
 
 describe("migraciones Plus: orden y aplicación", () => {
-  it("hay exactamente 5 migraciones plus con versiones ordenadas y no futuras", () => {
-    expect(plusMigrations).toHaveLength(5);
+  it("hay exactamente 6 migraciones plus con versiones ordenadas y no futuras", () => {
+    expect(plusMigrations).toHaveLength(6);
     for (const f of plusMigrations) expect(f.slice(0, 8) <= "20261231").toBe(true);
     const all = fs.readdirSync(MIG_DIR).filter((f) => f.endsWith(".sql")).sort();
-    expect(all.slice(-5)).toEqual(plusMigrations);
+    expect(all.slice(-6)).toEqual(plusMigrations);
   });
 });
 
@@ -453,7 +453,7 @@ describe("rollbacks", () => {
       .filter((f) => f.endsWith(".rollback.sql"))
       .sort()
       .reverse();
-    expect(files).toHaveLength(5);
+    expect(files).toHaveLength(6);
     const before = (await q<{ c: number }>(`SELECT count(*)::int c FROM public.billing_customers`))[0].c;
     expect(before).toBeGreaterThan(0);
     for (const f of files) await db.exec(fs.readFileSync(path.join(process.cwd(), "supabase", "rollback", "plus", f), "utf8"));

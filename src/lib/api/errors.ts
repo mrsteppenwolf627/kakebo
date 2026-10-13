@@ -1,5 +1,5 @@
 import { ZodError } from "zod";
-import { responses } from "./responses";
+import { responses, errorResponse } from "./responses";
 import { NextResponse } from "next/server";
 import { apiLogger } from "@/lib/logger";
 
@@ -18,6 +18,9 @@ export class ApiError extends Error {
   }
 }
 
+export const PLUS_REQUIRED_CODE = "PLUS_REQUIRED";
+export const ACCESS_UNAVAILABLE_CODE = "ACCESS_UNAVAILABLE";
+
 /**
  * Predefined API errors for common scenarios
  */
@@ -32,6 +35,16 @@ export const apiErrors = {
     new ApiError("CONFLICT", message, 409),
   validation: (message: string, details?: unknown) =>
     new ApiError("VALIDATION_ERROR", message, 422, details),
+  /** El usuario autenticado no tiene Plus (ni trial, ni legacy_full) para esta función. */
+  plusRequired: (message: string, details?: unknown) =>
+    new ApiError(PLUS_REQUIRED_CODE, message, 403, details),
+  /** No se pudo determinar el acceso (fail-closed): no se concede ni se revela nada. */
+  accessUnavailable: () =>
+    new ApiError(
+      ACCESS_UNAVAILABLE_CODE,
+      "No se pudo comprobar tu acceso. Inténtalo de nuevo en unos instantes.",
+      503
+    ),
 };
 
 /**
@@ -81,6 +94,10 @@ export function handleApiError(error: unknown): NextResponse {
 
   // Handle custom API errors
   if (error instanceof ApiError) {
+    // Errores de acceso Plus: conservan su código para que el cliente distinga "hazte Plus" de un 403 genérico.
+    if (error.code === PLUS_REQUIRED_CODE || error.code === ACCESS_UNAVAILABLE_CODE) {
+      return errorResponse(error.code, error.message, error.status, error.details);
+    }
     switch (error.status) {
       case 401:
         return responses.unauthorized(error.message);

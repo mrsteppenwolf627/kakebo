@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { requireAccess } from "@/lib/auth/require-access";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { classifyExpenseSchema, classifyExpensesBatchSchema } from "@/lib/schemas";
 import { classifyExpense, classifyExpenses, logAIInteraction } from "@/lib/ai";
@@ -27,6 +28,7 @@ export const POST = withLogging(async (request: NextRequest) => {
     // Auth is required for classification to track usage per user
     const user = await requireAuth();
     const supabase = await createClient();
+    await requireAccess("ai", supabase);
 
     const body = await request.json();
 

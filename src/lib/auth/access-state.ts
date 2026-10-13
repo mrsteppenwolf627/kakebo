@@ -22,6 +22,7 @@
 
 export type AccessState =
   | "founder"
+  | "legacy_full"
   | "plus_active"
   | "plus_canceled_pending"
   | "trialing"
@@ -35,6 +36,11 @@ export type AccessState =
  */
 export interface AccessProfile {
   is_founder: boolean;
+  /**
+   * Concesión permanente `legacy_full` (access_grants sin revocar) de los usuarios previos a la activación.
+   * Prioridad: founder > legacy_full > plus.
+   */
+  hasLegacyFullGrant?: boolean;
   /** ISO 8601. `null` si nunca hubo/hay una suscripción de pago vigente. */
   plus_access_until: string | null;
   /**
@@ -77,6 +83,10 @@ export function resolveAccessState(
 
   if (profile.is_founder) {
     return "founder";
+  }
+
+  if (profile.hasLegacyFullGrant) {
+    return "legacy_full";
   }
 
   if (profile.plus_access_until) {
@@ -123,6 +133,14 @@ export const ACCESS_PERMISSIONS: Record<AccessState, AccessPermissions> = {
     canExport: true,
     canManageBilling: false,
   },
+  legacy_full: {
+    canCreateExpense: true,
+    canEditOrDeleteExpense: true,
+    canViewExpenses: true,
+    canUseAI: true,
+    canExport: true,
+    canManageBilling: false,
+  },
   plus_active: {
     canCreateExpense: true,
     canEditOrDeleteExpense: true,
@@ -144,7 +162,8 @@ export const ACCESS_PERMISSIONS: Record<AccessState, AccessPermissions> = {
     canEditOrDeleteExpense: true,
     canViewExpenses: true,
     canUseAI: true,
-    canExport: false,
+    // Decisión de negocio: el trial incluye el acceso premium completo (IA e informes).
+    canExport: true,
     canManageBilling: false,
   },
   free_under_limit: {
