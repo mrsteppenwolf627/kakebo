@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { apiErrors, errorResponse, handleApiError, requireAuth, responses, withLogging } from "@/lib/api";
 import { getStripe } from "@/lib/stripe/server";
 import { isPlusSubscriptionsEnabled } from "@/lib/auth/require-access";
-import { getBillingCustomerId, getPlusPriceIds, getSiteUrl, isLiveStripeKey } from "@/lib/stripe/plus";
+import { appUrl, getBillingCustomerId, getPlusPriceIds, getSiteUrl, isLiveStripeKey } from "@/lib/stripe/plus";
 
 /**
  * POST /api/stripe/checkout — inicia el Checkout de Kakebo Plus (suscripción).
@@ -71,8 +71,8 @@ export const POST = withLogging(async (request: NextRequest) => {
       client_reference_id: user.id,
       metadata: { user_id: user.id, plan_interval: input.interval },
       subscription_data: { metadata: { user_id: user.id } },
-      success_url: `${site}/${input.locale}/settings?plus=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${site}/${input.locale}/settings?plus=cancelled`,
+      success_url: `${appUrl(site, input.locale, "/app/subscription")}?plus=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appUrl(site, input.locale, "/app/subscription")}?plus=cancelled`,
       locale: input.locale,
     });
 

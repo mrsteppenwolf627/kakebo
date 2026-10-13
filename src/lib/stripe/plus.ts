@@ -51,6 +51,11 @@ export function getSiteUrl(env: Record<string, string | undefined> = process.env
   return url.origin;
 }
 
+/** URL absoluta de una página de la app respetando el prefijo de idioma (es = sin prefijo, en = /en). */
+export function appUrl(site: string, locale: "es" | "en", pathname: string): string {
+  return `${site}${locale === "en" ? "/en" : ""}${pathname}`;
+}
+
 /** ¿La clave de Stripe configurada es de producción (live)? */
 export function isLiveStripeKey(env: Record<string, string | undefined> = process.env): boolean {
   const key = env.STRIPE_SECRET_KEY ?? "";

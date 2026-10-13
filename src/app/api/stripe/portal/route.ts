@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { apiErrors, errorResponse, handleApiError, requireAuth, responses, withLogging } from "@/lib/api";
 import { getStripe } from "@/lib/stripe/server";
 import { isPlusSubscriptionsEnabled } from "@/lib/auth/require-access";
-import { getBillingCustomerId, getSiteUrl } from "@/lib/stripe/plus";
+import { appUrl, getBillingCustomerId, getSiteUrl } from "@/lib/stripe/plus";
 
 /**
  * POST /api/stripe/portal — abre el Customer Portal de Stripe del PROPIO usuario.
@@ -33,7 +33,7 @@ export const POST = withLogging(async (request: NextRequest) => {
     const configuration = process.env.STRIPE_PLUS_PORTAL_CONFIGURATION_ID;
     const session = await getStripe().billingPortal.sessions.create({
       customer: customerId,
-      return_url: `${getSiteUrl()}/${input.locale}/settings`,
+      return_url: appUrl(getSiteUrl(), input.locale, "/app/subscription"),
       ...(configuration ? { configuration } : {}),
     });
     return responses.ok({ url: session.url });

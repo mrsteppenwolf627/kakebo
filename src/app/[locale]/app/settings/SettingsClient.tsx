@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 type UserSettingsRow = {
     user_id: string;
@@ -69,12 +70,13 @@ function parseNumberOrNull(v: string) {
     return v === "" ? null : Number(v);
 }
 
-export default function SettingsClient() {
+export default function SettingsClient({ showPlanLink = false }: { showPlanLink?: boolean }) {
     const supabase = useMemo(() => createClient(), []);
     const t = useTranslations("Settings");
     const tGen = useTranslations("Settings.General");
     const tFixed = useTranslations("Settings.FixedExpenses");
     const tSeo = useTranslations("Settings.SEO");
+    const tPlus = useTranslations("Plus");
 
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -349,6 +351,16 @@ export default function SettingsClient() {
     return (
         <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-xl mx-auto space-y-4 sm:space-y-6">
             <h1 className="text-xl sm:text-2xl font-bold font-serif text-foreground">{t("title")}</h1>
+
+            {showPlanLink && (
+                <Link
+                    href="/app/subscription"
+                    className="flex items-center justify-between rounded-md border border-border px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2"
+                >
+                    <span>{tPlus("navPlan")}</span>
+                    <span aria-hidden="true">→</span>
+                </Link>
+            )}
 
             {err && <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md border border-destructive/20">{err}</div>}
             {ok && <div className="text-sm text-primary bg-primary/10 p-3 rounded-md border border-primary/20">{ok}</div>}
