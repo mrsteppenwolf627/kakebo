@@ -6,7 +6,7 @@
 -- (el límite de 30 gastos, el backfill de uso, `legacy_full` y el cierre del INSERT directo son pasos de activación posteriores).
 --
 -- Prioridad del resolver (la primera que se cumple):
---   founder > legacy_full > plus_active > plus_canceled_pending > trialing > free_under_limit > free_readonly
+--   founder > legacy_full > plus_active > plus_canceled_pending > free_under_limit > free_readonly
 --
 -- Derecho de acceso Plus (fn_subscription_entitlement), evaluado SIEMPRE sobre `subscriptions` (nunca por la mera existencia
 -- de una fila; el estado se valida):
@@ -18,10 +18,9 @@
 --   * cualquier otro estado (incomplete, incomplete_expired, canceled, unpaid, paused, desconocido) -> sin acceso
 --   Nunca se revoca por un error de webhook: el acceso solo caduca por tiempo o por un estado verificado en Stripe.
 --
--- Trial y límite gratuito: el trial lo marca profiles.trial_ends_at (14 días; handle_new_user v2). El contador gratuito
--- (expense_monthly_usage, mes natural Europe/Madrid) solo se evalúa en los estados free_*; los gastos creados durante el
--- trial NO deben consumir el límite (lo garantizará fn_create_expense v2 y el reinicio de contadores en la activación,
--- ambos fuera de este bloque).
+-- Sin trial: las cuentas nuevas empiezan en la capa gratuita y `profiles.trial_ends_at` NO se lee para decidir acceso
+-- (columna legada). El contador gratuito (expense_monthly_usage, mes natural Europe/Madrid) solo se evalúa en los
+-- estados free_*.
 --
 -- Rollback: supabase/rollback/plus/20261013113040_plus_access_resolver.rollback.sql
 
@@ -123,10 +122,6 @@ BEGIN
     RETURN CASE WHEN v_ent.cancel_pending THEN 'plus_canceled_pending' ELSE 'plus_active' END;
   END IF;
 
-  IF v_profile.trial_ends_at IS NOT NULL AND p_now < v_profile.trial_ends_at THEN
-    RETURN 'trialing';
-  END IF;
-
   v_period := to_char(p_now AT TIME ZONE 'Europe/Madrid', 'YYYY-MM');
 
   SELECT u.count INTO v_count
@@ -142,7 +137,7 @@ END;
 $$;
 
 COMMENT ON FUNCTION public.fn_resolve_access_state(uuid, timestamptz) IS
-  'Plus foundation v2: founder > legacy_full > plus_active > plus_canceled_pending > trialing > free_under_limit > free_readonly. Solo service_role; el cliente usa fn_my_access().';
+  'Plus foundation v2: founder > legacy_full > plus_active > plus_canceled_pending > free_under_limit > free_readonly. Solo service_role; el cliente usa fn_my_access().';
 
 REVOKE ALL ON FUNCTION public.fn_resolve_access_state(uuid, timestamptz) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.fn_resolve_access_state(uuid, timestamptz) TO service_role;
@@ -161,7 +156,6 @@ DECLARE
   v_uid      uuid := auth.uid();
   v_now      timestamptz := now();
   v_state    text;
-  v_profile  public.profiles;
   v_ent      record;
   v_period   text;
   v_used     integer;
@@ -172,10 +166,9 @@ BEGIN
   END IF;
 
   v_state := public.fn_resolve_access_state(v_uid, v_now);
-  SELECT * INTO v_profile FROM public.profiles WHERE id = v_uid;
   SELECT * INTO v_ent FROM public.fn_subscription_entitlement(v_uid, v_now);
 
-  v_premium := v_state IN ('founder', 'legacy_full', 'plus_active', 'plus_canceled_pending', 'trialing');
+  v_premium := v_state IN ('founder', 'legacy_full', 'plus_active', 'plus_canceled_pending');
 
   v_used := NULL;
   IF v_state IN ('free_under_limit', 'free_readonly') THEN
@@ -189,9 +182,6 @@ BEGIN
   RETURN jsonb_build_object(
     'state', v_state,
     'is_premium', v_premium,
-    'trial_ends_at', CASE WHEN v_state = 'trialing' THEN v_profile.trial_ends_at END,
-    'trial_days_left', CASE WHEN v_state = 'trialing'
-      THEN GREATEST(0, ceil(extract(epoch FROM (v_profile.trial_ends_at - v_now)) / 86400.0))::int END,
     'plus_access_until', CASE WHEN v_state IN ('plus_active', 'plus_canceled_pending') THEN v_ent.access_until END,
     'cancel_at_period_end', v_state = 'plus_canceled_pending',
     'free_expenses_used', v_used,

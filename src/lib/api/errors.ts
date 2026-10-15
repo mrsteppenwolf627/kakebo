@@ -35,7 +35,7 @@ export const apiErrors = {
     new ApiError("CONFLICT", message, 409),
   validation: (message: string, details?: unknown) =>
     new ApiError("VALIDATION_ERROR", message, 422, details),
-  /** El usuario autenticado no tiene Plus (ni trial, ni legacy_full) para esta función. */
+  /** El usuario autenticado no tiene Plus (ni legacy_full) para esta función. */
   plusRequired: (message: string, details?: unknown) =>
     new ApiError(PLUS_REQUIRED_CODE, message, 403, details),
   /** No se pudo determinar el acceso (fail-closed): no se concede ni se revela nada. */

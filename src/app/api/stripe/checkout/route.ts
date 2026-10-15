@@ -12,8 +12,7 @@ import { appUrl, getBillingCustomerId, getPlusPriceIds, getSiteUrl, isLiveStripe
  * El navegador SOLO elige el intervalo ("month" | "year") y, opcionalmente, el idioma. El precio, el customer y el
  * usuario se resuelven en el servidor; cualquier otra clave del cuerpo (price_id, user_id, customer_id...) se rechaza.
  * Esta ruta NO concede acceso: el acceso lo decide el webhook / sync tras verificar la suscripción en Stripe.
- * No usa trial de Stripe: el trial de 14 días es interno de Kakebo, así que si el usuario paga durante él se cobra
- * de inmediato.
+ * No usa trial de Stripe ni de Kakebo: las cuentas nuevas empiezan en la capa gratuita y Plus se activa al pagar.
  */
 const bodySchema = z
   .object({

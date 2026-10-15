@@ -42,7 +42,7 @@ const perms = (premium: boolean, billing = false) => ({
   can_create_expense: true, can_use_ai: premium, can_export_reports: premium, can_use_plus_features: premium, can_manage_billing: billing,
 });
 const access = (state: MyAccess["state"], o: Partial<MyAccess> = {}): MyAccess => ({
-  state, is_premium: state !== "free_under_limit" && state !== "free_readonly", trial_ends_at: null, trial_days_left: null,
+  state, is_premium: state !== "free_under_limit" && state !== "free_readonly", 
   plus_access_until: null, cancel_at_period_end: false, free_expenses_used: null, free_expenses_limit: 30,
   permissions: perms(state !== "free_under_limit" && state !== "free_readonly"), ...o,
 });
@@ -93,9 +93,11 @@ describe("getPlusAccessView — flag", () => {
 });
 
 describe("buildPlusView — estados", () => {
-  it("trial: días y fecha; nada de datos de Plus", () => {
-    const v = buildPlusView(access("trialing", { trial_days_left: 9, trial_ends_at: "2026-10-27T00:00:00Z" }), null, false);
-    expect(v).toMatchObject({ state: "trialing", trialDaysLeft: 9, trialEndsAt: "2026-10-27T00:00:00Z", planInterval: null, plusAccessUntil: null, pastDue: false, canUseAi: true });
+  it("sin trial: la vista no expone campos de trial", () => {
+    const v = buildPlusView(access("free_under_limit", { free_expenses_used: 3 }), null, false);
+    expect(v).not.toHaveProperty("trialEndsAt");
+    expect(v).not.toHaveProperty("trialDaysLeft");
+    expect(v).toMatchObject({ state: "free_under_limit", planInterval: null, plusAccessUntil: null, pastDue: false, canUseAi: false });
   });
   it("Plus mensual / anual", () => {
     expect(buildPlusView(access("plus_active", { plus_access_until: "2026-11-01T00:00:00Z" }), sub({ plan_interval: "annual" }), true).planInterval).toBe("annual");
@@ -119,7 +121,7 @@ describe("buildPlusView — estados", () => {
   });
   it("isAiBlocked solo con estado conocido sin permiso de IA", () => {
     expect(isAiBlocked(buildPlusView(access("free_readonly"), null, false))).toBe(true);
-    expect(isAiBlocked(buildPlusView(access("trialing"), null, false))).toBe(false);
+    expect(isAiBlocked(buildPlusView(access("plus_active"), null, false))).toBe(false);
     expect(isAiBlocked({ status: "error" })).toBe(false);
     expect(isAiBlocked({ status: "unauthenticated" })).toBe(false);
   });

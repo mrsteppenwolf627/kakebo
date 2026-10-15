@@ -12,12 +12,10 @@ import { PortalButton } from "./PortalButton";
  */
 export function UpgradePanel({
   locale,
-  showChargeNote = false,
   loginHref = "/login",
   redirect = (url: string) => window.location.assign(url),
 }: {
   locale: "es" | "en";
-  showChargeNote?: boolean;
   loginHref?: string;
   redirect?: (url: string) => void;
 }) {
@@ -90,7 +88,6 @@ export function UpgradePanel({
         )}
       </fieldset>
 
-      {showChargeNote && <p className="text-sm text-muted-foreground">{t("trialChargeNote")}</p>}
 
       <button
         type="button"

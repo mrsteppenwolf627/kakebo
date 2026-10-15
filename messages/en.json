@@ -1185,7 +1185,7 @@
     },
     "Plus": {
         "metaTitle": "My plan",
-        "metaDesc": "Check your Kakebo plan, your Plus trial and manage your subscription.",
+        "metaDesc": "Check your Kakebo plan and manage your subscription.",
         "navPlan": "My plan",
         "title": "Your plan",
         "subtitle": "Check your access to Kakebo and manage your Plus subscription.",
@@ -1193,18 +1193,12 @@
         "backToDashboard": "Back to dashboard",
         "state_founder": "Founder",
         "state_legacy_full": "Lifetime Plus",
-        "state_trialing": "Plus trial",
         "state_plus_active": "Plus active",
         "state_plus_canceled_pending": "Plus · cancellation pending",
         "state_past_due": "Plus · payment pending",
         "state_free": "Free plan",
         "founderDesc": "You have full access to Kakebo and every Plus feature. You don't need to subscribe.",
         "legacyDesc": "Because you were a Kakebo user before the Plus plan, you keep Plus access permanently. You don't have to pay or do anything.",
-        "trialDays": "You have {days} days left of your trial with full Plus access.",
-        "trialDaysOne": "You have 1 day left of your trial with full Plus access.",
-        "trialEnds": "Your trial ends on {date}.",
-        "trialAfter": "After the trial you'll continue on the free plan (up to {limit} expenses per month, no AI or PDF reports) unless you subscribe.",
-        "trialChargeNote": "If you subscribe during the trial, you are charged immediately and move to Plus.",
         "planMonthly": "Monthly plan",
         "planAnnual": "Annual plan",
         "planUnknown": "Plus plan",
@@ -1271,7 +1265,7 @@
         "plusRequiredDesc": "This feature is part of Kakebo Plus. Your message and data are kept: you can subscribe to continue.",
         "seePlans": "See plans",
         "aiBlockedTitle": "The AI assistant is a Plus feature",
-        "aiBlockedDesc": "With Kakebo Plus you can chat with the financial assistant. Your trial has ended or your free plan doesn't include it."
+        "aiBlockedDesc": "With Kakebo Plus you can chat with the financial assistant. Your free plan doesn't include it."
     },
     "UserMenu": {
         "signIn": "Sign in",

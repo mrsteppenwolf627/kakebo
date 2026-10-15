@@ -156,17 +156,17 @@ describe("POST /api/stripe/checkout", () => {
     expect(params.client_reference_id).toBe(u.id);
     expect(params.metadata.user_id).toBe(u.id);
     expect(params.subscription_data.metadata.user_id).toBe(u.id);
-    // Pago durante el trial interno => cobro inmediato: NO hay trial de Stripe ni recogida diferida del método de pago.
+    // Sin trial (ni de Stripe ni interno): cobro inmediato, sin recogida diferida del método de pago.
     expect(params.subscription_data.trial_period_days).toBeUndefined();
     expect(params.subscription_data.trial_end).toBeUndefined();
     expect(params.payment_method_collection).toBeUndefined();
     expect(params.success_url).toBe("https://kakebo.test/app/subscription?plus=success&session_id={CHECKOUT_SESSION_ID}");
     expect(params.cancel_url).toBe("https://kakebo.test/app/subscription?plus=cancelled");
 
-    // El customer queda guardado en billing_customers, pero NO se concede acceso (sigue en trial).
+    // El customer queda guardado en billing_customers, pero NO se concede acceso (sigue en la capa gratuita).
     expect(await rows(`SELECT stripe_customer_id FROM billing_customers WHERE user_id='${u.id}'`)).toHaveLength(1);
     expect(await rows(`SELECT 1 FROM subscriptions WHERE user_id='${u.id}'`)).toHaveLength(0);
-    expect(await state(u.id)).toBe("trialing");
+    expect(await state(u.id)).toBe("free_under_limit");
   });
 
   it("reutiliza el customer propio (no crea otro)", async () => {
@@ -434,10 +434,10 @@ describe("POST /api/webhooks/stripe-subscriptions", () => {
     expect((await rows<{ plan_interval: string }>(`SELECT plan_interval FROM subscriptions WHERE user_id='${u.id}'`))[0].plan_interval).toBe("monthly");
   });
 
-  it("pago durante el trial: el usuario en trial que paga pasa a plus_active de inmediato (y conserva el trial sin límite de gasto)", async () => {
+  it("cuenta nueva (free, sin trial) que paga: pasa a plus_active de inmediato", async () => {
     const u = await newUser();
     await link(u, "cus_trialpay");
-    expect(await state(u.id)).toBe("trialing");
+    expect(await state(u.id)).toBe("free_under_limit");
     const sub = makeSub({ id: "sub_trialpay", customer: "cus_trialpay", user: u.id, price: PRICE_Y, end: nowS() + 365 * DAY });
     h.stripe.subscriptions.retrieve.mockResolvedValue(sub);
     await hook(makeEvent("customer.subscription.created", sub));

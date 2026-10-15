@@ -40,7 +40,7 @@ import { useAgent, useAgentStream } from "@/hooks/useAgent";
 const noComments = (src: string) => src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
 const json = (status: number, body: unknown) => new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
 const ready = (o: Record<string, unknown>) =>
-  ({ status: "ready", state: "free_under_limit", isPremium: false, trialEndsAt: null, trialDaysLeft: null, plusAccessUntil: null, cancelAtPeriodEnd: false,
+  ({ status: "ready", state: "free_under_limit", isPremium: false, plusAccessUntil: null, cancelAtPeriodEnd: false,
     planInterval: null, pastDue: false, graceEndsAt: null, freeExpensesUsed: 3, freeExpensesLimit: 30, canUseAi: false, canExportReports: false,
     hasBillingAccount: false, ...o }) as PlusView;
 

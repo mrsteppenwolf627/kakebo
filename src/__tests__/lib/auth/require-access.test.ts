@@ -60,7 +60,7 @@ describe("requireAccess", () => {
       expect(rpc).not.toHaveBeenCalled();
     });
 
-    for (const state of ["founder", "legacy_full", "plus_active", "plus_canceled_pending", "trialing"]) {
+    for (const state of ["founder", "legacy_full", "plus_active", "plus_canceled_pending"]) {
       it(`${state}: permitido para todas las funciones premium`, async () => {
         on();
         for (const f of ["ai", "export_reports", "plus_features"] as AccessFeature[]) {
@@ -132,10 +132,10 @@ describe("access-state.ts (espejo TypeScript): legacy_full y prioridades", () =>
       canUseAI: true, canExport: true, canManageBilling: false,
     });
   });
-  it("trial vigente concede IA e informes; trial caducado vuelve a la capa gratuita", () => {
-    expect(r({ trial_ends_at: "2026-10-20T00:00:00Z" })).toBe("trialing");
-    expect(getAccessPermissions("trialing")).toMatchObject({ canUseAI: true, canExport: true });
+  it("sin trial: trial_ends_at (legado) no concede IA ni informes; manda el contador gratuito", () => {
+    expect(r({ trial_ends_at: "2026-10-20T00:00:00Z" }, 0)).toBe("free_under_limit");
     expect(r({ trial_ends_at: "2026-10-01T00:00:00Z" }, 29)).toBe("free_under_limit");
     expect(r({ trial_ends_at: "2026-10-01T00:00:00Z" }, 30)).toBe("free_readonly");
+    expect(getAccessPermissions("free_under_limit")).toMatchObject({ canUseAI: false, canExport: false });
   });
 });

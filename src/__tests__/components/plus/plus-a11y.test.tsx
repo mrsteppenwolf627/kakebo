@@ -28,14 +28,13 @@ import { PlusRequiredNotice } from "@/components/plus/PlusRequiredNotice";
 import StripeSuccessHandler from "@/components/saas/StripeSuccessHandler";
 
 const base: PlusViewReady = {
-  status: "ready", state: "free_under_limit", isPremium: false, trialEndsAt: null, trialDaysLeft: null, plusAccessUntil: null,
+  status: "ready", state: "free_under_limit", isPremium: false, plusAccessUntil: null,
   cancelAtPeriodEnd: false, planInterval: null, pastDue: false, graceEndsAt: null, freeExpensesUsed: 3, freeExpensesLimit: 30,
   canUseAi: false, canExportReports: false, hasBillingAccount: true,
 };
 const states: [string, Partial<PlusViewReady>][] = [
   ["founder", { state: "founder", isPremium: true }],
   ["legacy_full", { state: "legacy_full", isPremium: true }],
-  ["trialing", { state: "trialing", trialDaysLeft: 5, trialEndsAt: "2026-10-27T12:00:00Z" }],
   ["plus_active", { state: "plus_active", planInterval: "annual", plusAccessUntil: "2027-10-13T00:00:00Z" }],
   ["plus_canceled_pending", { state: "plus_canceled_pending", cancelAtPeriodEnd: true, planInterval: "monthly", plusAccessUntil: "2026-11-13T00:00:00Z" }],
   ["past_due", { state: "plus_active", pastDue: true, planInterval: "monthly", plusAccessUntil: "2026-11-13T00:00:00Z", graceEndsAt: "2026-10-16T00:00:00Z" }],

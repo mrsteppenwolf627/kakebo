@@ -84,21 +84,6 @@ export function PlanClient({ view, locale }: { view: PlusViewReady; locale: "es"
     );
   }
 
-  if (state === "trialing") {
-    const days = view.trialDaysLeft ?? 0;
-    return (
-      <div className="space-y-6">
-        <Card label={t("state_trialing")}>
-          <Badge>{t("state_trialing")}</Badge>
-          <p className="text-base font-semibold text-foreground">{days === 1 ? t("trialDaysOne") : t("trialDays", { days })}</p>
-          {view.trialEndsAt && <p className="text-sm text-foreground">{t("trialEnds", { date: d(view.trialEndsAt) })}</p>}
-          <p className="text-sm text-muted-foreground">{t("trialAfter", { limit: view.freeExpensesLimit })}</p>
-        </Card>
-        <UpgradePanel locale={locale} showChargeNote />
-      </div>
-    );
-  }
-
   // free_under_limit | free_readonly
   const used = view.freeExpensesUsed ?? 0;
   const limit = view.freeExpensesLimit;

@@ -5,7 +5,7 @@
 > `supabase/deferred/freemium/`. Procedimiento, estado de producción (evidencia fechada del 2026-10-05, no verificada de nuevo) y
 > conclusión operativa (no promover el código posterior hasta migrar y verificar): `docs/planning/phase3b-migration-runbook.md`.
 >
-> **Sustituido en este documento:** *prueba de 30 días* — **PENDIENTE DE DECISIÓN DEL PROPIETARIO** (si habrá trial y su duración; ni 30 ni 14 días están confirmados).
+> **Sustituido en este documento:** *prueba de 30 días* — **DECIDIDO (2026-10-15): no habrá trial.** Las cuentas nuevas empiezan en la capa gratuita y Plus se activa solo al pagar.
 > Los usuarios existentes conservan sus privilegios mediante `legacy_full` (script diferido 04). Donde el texto diga "30 días de prueba", léase como diseño histórico.
 
 # Fase 3.B — Infraestructura de acceso, fundadores, prueba y límite gratuito

@@ -48,8 +48,8 @@ describe("StripeSuccessHandler — retorno de Checkout", () => {
     expect(vi.mocked(fetch)).toHaveBeenCalledTimes(3);
   });
 
-  it("un 200 que no es Plus (p. ej. sigue en trial) NO se presenta como confirmado", async () => {
-    vi.mocked(fetch).mockResolvedValue(ok("trialing"));
+  it("un 200 que no es Plus (p. ej. sigue en la capa gratuita) NO se presenta como confirmado", async () => {
+    vi.mocked(fetch).mockResolvedValue(ok("free_under_limit"));
     render(<StripeSuccessHandler status="success" sessionId={SID} delays={fast} />);
     await screen.findByText(text("delayedTitle"));
     expect(screen.queryByText(text("confirmedTitle"))).toBeNull();

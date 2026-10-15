@@ -23,8 +23,6 @@ export interface PlusViewReady {
   status: "ready";
   state: AccessState;
   isPremium: boolean;
-  trialEndsAt: string | null;
-  trialDaysLeft: number | null;
   plusAccessUntil: string | null;
   cancelAtPeriodEnd: boolean;
   planInterval: "monthly" | "annual" | null;
@@ -54,8 +52,6 @@ export function buildPlusView(access: MyAccess, sub: SubscriptionRow | null, has
     status: "ready",
     state: access.state,
     isPremium: access.is_premium,
-    trialEndsAt: access.state === "trialing" ? access.trial_ends_at : null,
-    trialDaysLeft: access.state === "trialing" ? access.trial_days_left : null,
     plusAccessUntil: isPlus ? access.plus_access_until : null,
     cancelAtPeriodEnd: access.state === "plus_canceled_pending",
     planInterval: isPlus ? sub?.plan_interval ?? null : null,

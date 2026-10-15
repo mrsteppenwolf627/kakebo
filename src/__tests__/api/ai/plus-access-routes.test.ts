@@ -140,7 +140,7 @@ describe("flag encendido (valor exacto \"true\")", () => {
     });
   }
 
-  for (const state of ["trialing", "legacy_full", "plus_active", "plus_canceled_pending", "founder"]) {
+  for (const state of ["legacy_full", "plus_active", "plus_canceled_pending", "founder"]) {
     it(`usuario ${state}: las 7 rutas de IA le dejan pasar`, async () => {
       h.rpcResult = access(state, true);
       for (const [name, call] of routes) {
@@ -152,11 +152,11 @@ describe("flag encendido (valor exacto \"true\")", () => {
     });
   }
 
-  it("/api/ai/search: bloqueada para gratis; permitida para trial, Plus, legacy_full y founder", async () => {
+  it("/api/ai/search: bloqueada para gratis; permitida para Plus, legacy_full y founder", async () => {
     h.rpcResult = access("free_under_limit", false);
     expect((await searchPOST(mk("/api/ai/search", { query: "super" }))).status).toBe(403);
     expect(h.worked.count).toBe(0);
-    for (const state of ["trialing", "plus_active", "plus_canceled_pending", "legacy_full", "founder"]) {
+    for (const state of ["plus_active", "plus_canceled_pending", "legacy_full", "founder"]) {
       h.rpcResult = access(state, true);
       const res = await searchPOST(mk("/api/ai/search", { query: "super" }));
       expect(res.status, state).toBe(200);

@@ -19,7 +19,7 @@ import { PlusRequiredNotice } from "@/components/plus/PlusRequiredNotice";
 import SubscriptionGuard from "@/components/saas/SubscriptionGuard";
 
 const base: PlusViewReady = {
-  status: "ready", state: "free_under_limit", isPremium: false, trialEndsAt: null, trialDaysLeft: null, plusAccessUntil: null,
+  status: "ready", state: "free_under_limit", isPremium: false, plusAccessUntil: null,
   cancelAtPeriodEnd: false, planInterval: null, pastDue: false, graceEndsAt: null, freeExpensesUsed: 12, freeExpensesLimit: 30,
   canUseAi: false, canExportReports: false, hasBillingAccount: false,
 };
@@ -58,19 +58,11 @@ describe.each(["es", "en"] as const)("PlanClient — estados de acceso (%s)", (l
     expect(buttons()).toEqual([]);
   });
 
-  it("trial: etiqueta, días restantes, fecha de fin, botón de suscripción y aviso de cobro inmediato", () => {
-    render(<PlanClient view={view({ state: "trialing", isPremium: true, trialDaysLeft: 9, trialEndsAt: "2026-10-27T12:00:00Z" })} locale={locale} />);
-    expect(screen.getAllByText(T("state_trialing")).length).toBeGreaterThan(0);
-    expect(screen.getByText(T("trialDays", { days: 9 }))).toBeInTheDocument();
-    const date = locale === "es" ? "27 de octubre de 2026" : "27 October 2026";
-    expect(screen.getByText(T("trialEnds", { date }))).toBeInTheDocument();
-    expect(screen.getByText(T("trialChargeNote"))).toBeInTheDocument();
+  it("sin trial: una cuenta nueva ve el plan gratuito y el botón de suscripción, sin textos de prueba", () => {
+    const { container } = render(<PlanClient view={view({ state: "free_under_limit", freeExpensesUsed: 0 })} locale={locale} />);
+    expect(screen.getAllByText(T("state_free")).length).toBeGreaterThan(0);
     expect(hasButton(T("subscribeButton"))).toBe(true);
-  });
-
-  it("trial con 1 día: texto en singular", () => {
-    render(<PlanClient view={view({ state: "trialing", trialDaysLeft: 1, trialEndsAt: "2026-10-14T12:00:00Z" })} locale={locale} />);
-    expect(screen.getByText(T("trialDaysOne"))).toBeInTheDocument();
+    expect(container.textContent ?? "").not.toMatch(/prueba|trial/i);
   });
 
   it.each([["monthly", "planMonthly"], ["annual", "planAnnual"]] as const)("Plus activo %s: plan, fecha de renovación y «Gestionar suscripción»", (interval, key) => {

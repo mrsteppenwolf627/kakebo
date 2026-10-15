@@ -127,16 +127,24 @@ describe("migraciones Plus: orden y aplicación", () => {
   });
 });
 
-describe("trial de 14 días y estados gratuitos", () => {
-  it("usuario nuevo: trial_started_at = now() y trial de 14 días", async () => {
-    const id = await newUser("trial");
-    const [p] = await q<{ d: number; s: boolean }>(
-      `SELECT extract(epoch FROM (trial_ends_at - trial_started_at))/86400 d, trial_started_at IS NOT NULL s FROM public.profiles WHERE id='${id}'`,
+describe("sin trial y estados gratuitos", () => {
+  it("usuario nuevo: sin trial (trial_started_at y trial_ends_at NULL), tier free y estado free_under_limit", async () => {
+    const id = await newUser("notrial");
+    const [p] = await q<{ s: boolean; e: boolean; t: string }>(
+      `SELECT trial_started_at IS NULL s, trial_ends_at IS NULL e, tier t FROM public.profiles WHERE id='${id}'`,
     );
     expect(p.s).toBe(true);
-    expect(Math.round(p.d)).toBe(14);
+    expect(p.e).toBe(true);
+    expect(p.t).toBe("free");
     const [{ t }] = await q<{ t: string }>(`SELECT public.fn_resolve_access_state('${id}', now()) t`);
-    expect(t).toBe("trialing");
+    expect(t).toBe("free_under_limit");
+  });
+
+  it("un trial_ends_at futuro heredado (columna legada) no concede acceso", async () => {
+    const id = await newUser("legacytrial");
+    await db.exec(`UPDATE public.profiles SET trial_ends_at = now() + interval '5 days' WHERE id='${id}'`);
+    const [{ t }] = await q<{ t: string }>(`SELECT public.fn_resolve_access_state('${id}', now()) t`);
+    expect(t).toBe("free_under_limit");
   });
 
   it("usuario previo no se modifica por las migraciones", async () => {
@@ -356,7 +364,9 @@ describe("RLS y protección de campos de acceso", () => {
     await db.exec(`INSERT INTO public.access_grants (user_id, grant_type) VALUES ('${b}','legacy_full')`);
     await asUser(a);
     const [mine] = await q<{ r: any }>(`SELECT public.fn_my_access() r`);
-    expect(mine.r.state).toBe("trialing");
+    expect(mine.r.state).toBe("free_under_limit");
+    expect(mine.r).not.toHaveProperty("trial_ends_at");
+    expect(mine.r).not.toHaveProperty("trial_days_left");
     expect(mine.r.permissions.can_manage_billing).toBe(false);
     expect(await denied(`SELECT public.fn_my_access('${b}')`)).not.toBe("ALLOWED");
     await asUser(b);

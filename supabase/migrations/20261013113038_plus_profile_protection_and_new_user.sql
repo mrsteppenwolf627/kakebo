@@ -8,7 +8,8 @@
 --    (política RLS existente) y, sin esta protección, podría apuntar su portal de facturación a otro cliente de Stripe.
 --    El trigger se mantiene (mismo nombre, BEFORE INSERT OR UPDATE).
 --
--- 2. handle_new_user v2: alta con trial de 14 días y `trial_started_at` informado (v1 solo informaba trial_ends_at).
+-- 2. handle_new_user v2: alta directa en la capa gratuita, SIN trial (decisión cerrada: Plus solo se activa al pagar).
+--    - `trial_started_at` y `trial_ends_at` quedan en NULL (la v1 de producción informaba trial_ends_at = now() + 14 días).
 --    - NO modifica usuarios existentes (solo actúa al crear un usuario; ON CONFLICT DO NOTHING lo hace idempotente).
 --    - CREATE OR REPLACE conserva propietario y privilegios de ejecución actuales de la función.
 --    - Añade SET search_path (endurecimiento de SECURITY DEFINER).
@@ -71,13 +72,8 @@ SECURITY DEFINER
 SET search_path = public, pg_temp
 AS $$
 BEGIN
-  INSERT INTO public.profiles (id, tier, trial_started_at, trial_ends_at)
-  VALUES (
-    new.id,
-    'free',
-    now(),
-    now() + interval '14 days'
-  )
+  INSERT INTO public.profiles (id, tier)
+  VALUES (new.id, 'free')
   ON CONFLICT (id) DO NOTHING;
 
   RETURN new;
@@ -85,4 +81,4 @@ END;
 $$;
 
 COMMENT ON FUNCTION public.handle_new_user() IS
-  'Plus foundation v2: alta de usuario nuevo en la capa gratuita con trial de 14 días (trial_started_at = now(), trial_ends_at = now() + 14 días). No toca usuarios existentes.';
+  'Plus foundation v2: alta de usuario nuevo directamente en la capa gratuita, sin trial (trial_started_at y trial_ends_at quedan en NULL). No toca usuarios existentes.';

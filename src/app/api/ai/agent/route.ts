@@ -85,7 +85,7 @@ export const POST = withLogging(async (request: NextRequest) => {
     // Plus (solo con PLUS_SUBSCRIPTIONS_ENABLED="true"); con el interruptor apagado no hace nada.
     await requireAccess("ai", supabase);
 
-    // Check Premium Access (Reverse Trial / Subscription)
+    // Check Premium Access (Subscription)
     const { data: profile } = await supabase
       .from("profiles")
       .select("*")

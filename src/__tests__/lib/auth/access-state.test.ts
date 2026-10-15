@@ -51,26 +51,29 @@ describe("resolveAccessState — prioridad de los 6 estados", () => {
     ).toBe("plus_canceled_pending");
   });
 
-  it("trialing cuando trial_ends_at está en el futuro y no hay founder ni Plus vigente", () => {
+  it("sin trial: un trial_ends_at futuro (columna legada) NO concede acceso; cuenta nueva en free_under_limit", () => {
     const profile = baseProfile({
       trial_ends_at: new Date(NOW.getTime() + 1000 * 60 * 60 * 24 * 5).toISOString(),
     });
     expect(
       resolveAccessState(profile, { expensesThisMonth: 0, now: NOW })
-    ).toBe("trialing");
+    ).toBe("free_under_limit");
+    expect(
+      resolveAccessState(profile, { expensesThisMonth: 30, now: NOW })
+    ).toBe("free_readonly");
   });
 
-  it("un plus_access_until ya vencido no bloquea caer a trialing si el trial sigue vigente", () => {
+  it("un plus_access_until ya vencido cae a la capa gratuita aunque trial_ends_at siga en el futuro", () => {
     const profile = baseProfile({
       plus_access_until: new Date(NOW.getTime() - 1000).toISOString(),
       trial_ends_at: new Date(NOW.getTime() + 1000 * 60 * 60 * 24).toISOString(),
     });
     expect(
       resolveAccessState(profile, { expensesThisMonth: 0, now: NOW })
-    ).toBe("trialing");
+    ).toBe("free_under_limit");
   });
 
-  it("free_under_limit cuando no hay founder/Plus/trial vigente y quedan menos de 30 gastos este mes", () => {
+  it("free_under_limit cuando no hay founder/Plus vigente y quedan menos de 30 gastos este mes", () => {
     const profile = baseProfile();
     expect(
       resolveAccessState(profile, { expensesThisMonth: 29, now: NOW })
@@ -138,12 +141,6 @@ describe("getAccessPermissions — permisos de IA y exportación", () => {
     expect(getAccessPermissions("plus_active").canExport).toBe(true);
   });
 
-  it("trialing: acceso premium completo (IA y exportación)", () => {
-    const perms = getAccessPermissions("trialing");
-    expect(perms.canUseAI).toBe(true);
-    expect(perms.canExport).toBe(true);
-  });
-
   it("free_under_limit: sin IA, sin exportación, pero puede crear/editar gastos", () => {
     const perms = getAccessPermissions("free_under_limit");
     expect(perms.canUseAI).toBe(false);
@@ -167,7 +164,6 @@ describe("getAccessPermissions — permisos de IA y exportación", () => {
       "legacy_full",
       "plus_active",
       "plus_canceled_pending",
-      "trialing",
       "free_under_limit",
       "free_readonly",
     ] as const;

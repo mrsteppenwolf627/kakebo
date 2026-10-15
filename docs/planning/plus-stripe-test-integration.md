@@ -31,7 +31,7 @@ El webhook del pack Excel/PDF sigue usando `STRIPE_WEBHOOK_SECRET`, `STRIPE_PREM
 
 ## Rutas
 
-- `POST /api/stripe/checkout` — sesión obligatoria; cuerpo estricto `{ interval: "month"|"year", locale?: "es"|"en" }`. Precio resuelto en servidor, customer desde `billing_customers`, `client_reference_id` y `metadata.user_id`. Sin trial de Stripe (el trial de 14 días es interno: si paga durante él se cobra de inmediato). **No concede acceso.** 409 si ya hay una suscripción vigente.
+- `POST /api/stripe/checkout` — sesión obligatoria; cuerpo estricto `{ interval: "month"|"year", locale?: "es"|"en" }`. Precio resuelto en servidor, customer desde `billing_customers`, `client_reference_id` y `metadata.user_id`. Sin trial de Stripe ni de Kakebo (decisión 2026-10-15: las cuentas nuevas empiezan en free y Plus se activa al pagar; cobro inmediato). **No concede acceso.** 409 si ya hay una suscripción vigente.
 - `POST /api/stripe/portal` — sesión obligatoria; customer siempre desde `billing_customers`; no exige estar en estado Plus (para poder arreglar un pago fallido).
 - `POST /api/stripe/sync` — `{ session_id }`; recupera sesión y suscripción en Stripe, verifica `client_reference_id`, `metadata.user_id` y customer del propio usuario y aplica con `fn_apply_subscription_event`. Cualquier discrepancia → 403 genérico.
 - `POST /api/webhooks/stripe-subscriptions` — firma verificada antes de leer el evento; entorno live/test comprobado; 500 ante fallos (Stripe reintenta); fallos anotados con `fn_record_webhook_failure`.

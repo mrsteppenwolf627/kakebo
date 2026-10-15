@@ -39,7 +39,6 @@ const KNOWN_STATES: readonly AccessState[] = [
   "legacy_full",
   "plus_active",
   "plus_canceled_pending",
-  "trialing",
   "free_under_limit",
   "free_readonly",
 ];
@@ -47,8 +46,6 @@ const KNOWN_STATES: readonly AccessState[] = [
 export interface MyAccess {
   state: AccessState;
   is_premium: boolean;
-  trial_ends_at: string | null;
-  trial_days_left: number | null;
   plus_access_until: string | null;
   cancel_at_period_end: boolean;
   free_expenses_used: number | null;
