@@ -17,6 +17,8 @@ const plusMigrations = fs
   .readdirSync(MIG_DIR)
   .filter((f) => /^\d{14}_plus_.*\.sql$/.test(f))
   .sort();
+// Backfill aplicado en producción el 15/10/2026 (decisión de producto): fichero exacto, fuera del comportamiento SQL probado aquí.
+const BACKFILL = "20261015120000_backfill_plus_legacy_access.sql";
 
 const BASE = `
 CREATE ROLE anon NOLOGIN; CREATE ROLE authenticated NOLOGIN; CREATE ROLE service_role NOLOGIN BYPASSRLS;
@@ -119,11 +121,11 @@ beforeAll(async () => {
 }, 60_000);
 
 describe("migraciones Plus: orden y aplicación", () => {
-  it("hay exactamente 6 migraciones plus con versiones ordenadas y no futuras", () => {
+  it("hay exactamente 6 migraciones plus (+ el backfill) con versiones ordenadas y no futuras", () => {
     expect(plusMigrations).toHaveLength(6);
     for (const f of plusMigrations) expect(f.slice(0, 8) <= "20261231").toBe(true);
     const all = fs.readdirSync(MIG_DIR).filter((f) => f.endsWith(".sql")).sort();
-    expect(all.slice(-6)).toEqual(plusMigrations);
+    expect(all.slice(-7)).toEqual([...plusMigrations, BACKFILL]);
   });
 });
 
@@ -463,7 +465,7 @@ describe("rollbacks", () => {
       .filter((f) => f.endsWith(".rollback.sql"))
       .sort()
       .reverse();
-    expect(files).toHaveLength(6);
+    expect(files).toHaveLength(7);
     const before = (await q<{ c: number }>(`SELECT count(*)::int c FROM public.billing_customers`))[0].c;
     expect(before).toBeGreaterThan(0);
     for (const f of files) await db.exec(fs.readFileSync(path.join(process.cwd(), "supabase", "rollback", "plus", f), "utf8"));

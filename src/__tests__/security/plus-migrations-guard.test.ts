@@ -16,22 +16,30 @@ const plus = fs.readdirSync(MIG_DIR).filter((f) => /_plus_.*\.sql$/.test(f)).sor
 const rollbacks = fs.existsSync(RB_DIR) ? fs.readdirSync(RB_DIR).sort() : [];
 const read = (dir: string, f: string) => fs.readFileSync(path.join(dir, f), "utf8");
 
+// Excepción acotada a ESTE fichero exacto: el backfill `legacy_full` se aplicó en producción (kakebo-ahorro) el 15/10/2026
+// por decisión de producto (acceso permanente para los 171 usuarios existentes, incluidos los 14 con trial vigente).
+// No relaja nada para ningún otro fichero.
+const BACKFILL = "20261015120000_backfill_plus_legacy_access.sql";
+const BACKFILL_ROLLBACK = BACKFILL.replace(".sql", ".rollback.sql");
+
 const FORBIDDEN_NAME = /freemium|enforce_expense_limit|legacy_access|close_direct|usage_backfill|access_foundation/i;
 
 describe("migraciones Plus: guardas", () => {
-  it("existen 6 migraciones y 6 rollbacks emparejados por versión", () => {
-    expect(plus).toHaveLength(6);
+  it("existen 7 migraciones (6 de fundación + backfill) y 7 rollbacks emparejados por versión", () => {
+    expect(plus).toHaveLength(7);
+    expect(plus).toContain(BACKFILL);
+    expect(rollbacks).toHaveLength(7);
     expect(rollbacks.map((f) => f.replace(".rollback.sql", ".sql"))).toEqual(plus);
   });
 
   it("los nombres no contienen términos de activación prohibidos", () => {
-    for (const f of [...plus, ...rollbacks]) expect(f).not.toMatch(FORBIDDEN_NAME);
+    for (const f of [...plus, ...rollbacks].filter((n) => n !== BACKFILL && n !== BACKFILL_ROLLBACK)) expect(f).not.toMatch(FORBIDDEN_NAME);
   });
 
   it("ninguna migración nueva activa límites, backfill ni legacy_full masivo", () => {
     for (const f of plus) {
       const sql = read(MIG_DIR, f).replace(/--[^\n]*/g, "");
-      expect(sql, f).not.toMatch(/INSERT\s+INTO\s+public\.access_grants[\s\S]*SELECT/i);
+      if (f !== BACKFILL) expect(sql, f).not.toMatch(/INSERT\s+INTO\s+public\.access_grants[\s\S]*SELECT/i);
       expect(sql, f).not.toMatch(/INSERT\s+INTO\s+public\.expense_monthly_usage/i);
       expect(sql, f).not.toMatch(/(CREATE\s+OR\s+REPLACE\s+FUNCTION|DROP\s+FUNCTION(\s+IF\s+EXISTS)?)\s+public\.fn_create_expense/i);
       expect(sql, f).not.toMatch(/REVOKE\s+INSERT\s+ON\s+(TABLE\s+)?public\.expenses/i);
@@ -59,7 +67,7 @@ describe("migraciones Plus: guardas", () => {
     expect(new Set(plusVersions).size).toBe(plusVersions.length);
     const maxOther = all.filter((f) => !plus.includes(f)).map((f) => f.split("_")[0]).sort().pop()!;
     expect(plusVersions.every((v) => v > maxOther)).toBe(true);
-    expect(all.slice(-6)).toEqual(plus);
+    expect(all.slice(-7)).toEqual(plus);
     // Una versión con fecha posterior a hoy bloquearía las siguientes migraciones (orden). Margen de 1 día.
     const limit = new Date(Date.now() + 24 * 3600 * 1000).toISOString().replace(/\D/g, "").slice(0, 14);
     for (const f of plus) expect(f.split("_")[0] <= limit, f).toBe(true);
