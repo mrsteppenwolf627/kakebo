@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 
 interface EmbedModalProps {
@@ -15,6 +16,7 @@ const FOCUSABLE =
 export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
     const tCommon = useTranslations("Tools.Common.embed");
     const [copied, setCopied] = useState(false);
+    const overlayRef = useRef<HTMLDivElement>(null);
     const dialogRef = useRef<HTMLDivElement>(null);
     const closeButtonRef = useRef<HTMLButtonElement>(null);
     const onCloseRef = useRef(onClose);
@@ -24,10 +26,18 @@ export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
     }, [onClose]);
 
     // Foco: al abrir entra en el diálogo, Tab/Shift+Tab se quedan dentro, Escape cierra
-    // y al cerrar el foco vuelve exactamente al control que lo abrió.
+    // y al cerrar el foco vuelve exactamente al control que lo abrió. Mientras está abierto, el resto
+    // del documento queda `inert` (sin foco, sin clics y fuera del árbol de accesibilidad).
     useEffect(() => {
         if (!isOpen) return;
         const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        const overlay = overlayRef.current;
+        const madeInert: Element[] = [];
+        for (const child of Array.from(document.body.children)) {
+            if (child === overlay || child.hasAttribute("inert")) continue;
+            child.setAttribute("inert", "");
+            madeInert.push(child);
+        }
         closeButtonRef.current?.focus();
 
         const onKeyDown = (e: KeyboardEvent) => {
@@ -62,11 +72,12 @@ export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
         document.addEventListener("keydown", onKeyDown);
         return () => {
             document.removeEventListener("keydown", onKeyDown);
+            madeInert.forEach((child) => child.removeAttribute("inert"));
             opener?.focus();
         };
     }, [isOpen]);
 
-    if (!isOpen) return null;
+    if (!isOpen || typeof document === "undefined") return null;
 
     const embedCode = `<iframe src="https://kakebo.ai/es${toolPath}" width="100%" height="800" frameborder="0" style="border:1px solid #e7e5e4; border-radius:12px; max-width: 100%;"></iframe><p style="text-align:center;font-size:12px;color:#a8a29e;margin-top:8px;"><a href="https://kakebo.ai" target="_blank" style="color:#a8a29e;text-decoration:underline;">Powered by Kakebo</a></p>`;
 
@@ -78,8 +89,9 @@ export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
         }
     };
 
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm" onClick={onClose}>
+    // Portal a <body>: el diálogo queda fuera de la calculadora, de modo que el resto de la página puede marcarse inert.
+    return createPortal(
+        <div ref={overlayRef} className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm" onClick={onClose}>
             <div
                 ref={dialogRef}
                 role="dialog"
@@ -138,6 +150,7 @@ export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
                     </button>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

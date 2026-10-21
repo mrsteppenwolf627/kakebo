@@ -30,7 +30,7 @@ vi.mock("@/lib/ai/auto-embeddings", () => ({
     generatePendingEmbeddingsMock(...args),
 }));
 
-const createServiceClientMock = vi.fn(() => ({ __serviceClient: true }));
+const createServiceClientMock = vi.fn((..._args: unknown[]) => ({ __serviceClient: true }));
 vi.mock("@supabase/supabase-js", () => ({
   createClient: (...args: unknown[]) => createServiceClientMock(...args),
 }));

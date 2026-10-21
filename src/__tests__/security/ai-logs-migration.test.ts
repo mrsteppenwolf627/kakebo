@@ -30,7 +30,9 @@ const MIGRATION_PATH = path.resolve(
 const METRICS_TS_PATH = path.resolve(__dirname, "..", "..", "lib", "ai", "metrics.ts");
 
 describe("Migración ai_logs (turn metrics, Fase 2.I) — segura con y sin la tabla existente", () => {
-  const sql = fs.readFileSync(MIGRATION_PATH, "utf8");
+  // El repositorio guarda el SQL con LF, pero en Windows (core.autocrlf) se extrae con CRLF y el `\r` final
+  // impide que `--.*$` quite los comentarios línea a línea. Se normaliza para que la prueba no dependa del SO.
+  const sql = fs.readFileSync(MIGRATION_PATH, "utf8").replace(/\r\n/g, "\n");
 
   /**
    * Quita bloques `DO $$ ... $$;` y líneas de comentario `-- ...` (que

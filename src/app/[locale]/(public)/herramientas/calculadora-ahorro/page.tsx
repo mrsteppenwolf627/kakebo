@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { Navbar } from "@/components/landing/Navbar";
+import { ToolMessages } from "@/components/i18n/ToolMessages";
 import { SavingsCalculator } from "@/components/landing/tools/SavingsCalculator";
 import { Link } from "@/i18n/routing";
 import { getTranslations } from 'next-intl/server';
@@ -106,7 +106,6 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
 
     return (
         <main className="min-h-screen bg-background">
-            <Navbar />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify([SCHEMA, HOW_TO_SCHEMA, FAQ_SCHEMA]) }}
@@ -116,7 +115,9 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_SCHEMA) }}
             />
             <div className="pt-32 pb-0 px-6">
-                <SavingsCalculator />
+                <ToolMessages locale={locale} tools={{ Savings: true }}>
+                    <SavingsCalculator />
+                </ToolMessages>
             </div>
 
             {/* Server-rendered editorial sections: formula, HowTo + FAQ */}

@@ -16,6 +16,11 @@ vi.mock("@/i18n/routing", () => ({
 }));
 
 vi.mock("@/components/landing/Navbar", () => ({ Navbar: () => null }));
+// ToolMessages es un Server Component asíncrono (se prueba aparte en tool-messages.test.tsx):
+// aquí se sustituye por un paso directo y el proveedor del test ya lleva todos los mensajes.
+vi.mock("@/components/i18n/ToolMessages", () => ({
+  ToolMessages: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
 
 vi.mock("next-intl/server", () => ({
   getTranslations: async ({ locale, namespace }: { locale: string; namespace: string }) =>

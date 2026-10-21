@@ -40,9 +40,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       statusBarStyle: "default",
       title: "Kakebo AI",
     },
+    // Tamaños declarados = tamaño real del archivo (lo comprueba src/__tests__/seo/icons.test.ts).
     icons: {
-      icon: "/icon.png",
-      apple: "/icon.png",
+      icon: [{ url: "/icon.png", sizes: "192x192", type: "image/png" }],
+      apple: [{ url: "/icon.png", sizes: "192x192", type: "image/png" }],
     },
     openGraph: {
       title: t("ogTitle"),
@@ -117,9 +118,10 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  // Providing all messages to the client
-  // side is the easiest way to get started
-  const messages = await getMessages();
+  // Se envían al cliente todos los mensajes salvo `Tools`: ese namespace solo lo usan las calculadoras,
+  // que lo reciben de ToolMessages en sus propias páginas (ver src/components/i18n/ToolMessages.tsx).
+  const allMessages = await getMessages();
+  const messages = Object.fromEntries(Object.entries(allMessages).filter(([namespace]) => namespace !== "Tools"));
 
   return (
     <html lang={locale} className={`${inter.variable} ${playfair.variable} overflow-x-hidden`} suppressHydrationWarning>

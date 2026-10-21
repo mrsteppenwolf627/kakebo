@@ -4,7 +4,7 @@ import { PATCH } from "@/app/api/months/[id]/route";
 
 // Mock Supabase client
 const mockSupabase = {
-  from: vi.fn(() => mockSupabase),
+  from: vi.fn((_table: string) => mockSupabase),
   select: vi.fn(() => mockSupabase),
   insert: vi.fn(() => mockSupabase),
   update: vi.fn(() => mockSupabase),
