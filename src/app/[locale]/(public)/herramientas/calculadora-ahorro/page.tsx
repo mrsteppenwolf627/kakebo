@@ -41,7 +41,7 @@ const SCHEMA = {
     "name": "Calculadora de Ahorro Mensual",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Web",
-    "dateModified": "2026-07-08",
+    "dateModified": "2026-10-21",
     "offers": {
         "@type": "Offer",
         "price": "0",
@@ -177,6 +177,51 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
             {/* Server-rendered editorial sections: HowTo + FAQ */}
             <section className="pb-20 px-6">
                 <div className="max-w-3xl mx-auto space-y-16">
+
+                    {/* Formula, assumptions and limits */}
+                    <div className="space-y-6">
+                        <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground">
+                            Fórmula, supuestos y límites de la estimación
+                        </h2>
+                        <div className="space-y-6 text-sm text-muted-foreground font-light leading-relaxed">
+                            <div className="space-y-2">
+                                <h3 className="text-base font-semibold text-foreground">Cómo se calcula</h3>
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li><strong className="font-semibold text-foreground">Margen real</strong> = ingresos netos − gastos fijos − gastos variables.</li>
+                                    <li><strong className="font-semibold text-foreground">Tasa de ahorro</strong> = margen real ÷ ingresos netos × 100. Se muestra redondeada al entero más cercano.</li>
+                                    <li><strong className="font-semibold text-foreground">Referencia Kakebo</strong> = 20 % de tus ingresos netos, y la diferencia entre tu margen real y esa cifra.</li>
+                                    <li><strong className="font-semibold text-foreground">Meses hasta tu objetivo</strong> = objetivo ÷ margen real, redondeado hacia arriba.</li>
+                                    <li><strong className="font-semibold text-foreground">Ahorro mensual necesario</strong> = objetivo ÷ plazo en meses, redondeado hacia arriba.</li>
+                                </ul>
+                            </div>
+                            <div className="space-y-2">
+                                <h3 className="text-base font-semibold text-foreground">Supuestos</h3>
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>Los importes se tratan como mensuales y constantes: un mes típico, no un mes concreto.</li>
+                                    <li>Los ingresos son netos, es decir, lo que recibes después de impuestos y retenciones.</li>
+                                    <li>No se aplican intereses, rentabilidad ni inflación: el dinero ahorrado se suma sin crecer ni perder valor.</li>
+                                    <li>Los gastos variables son un promedio que tú estimas; cuanto más real sea ese promedio, más útil será el resultado.</li>
+                                </ul>
+                            </div>
+                            <div className="space-y-2">
+                                <h3 className="text-base font-semibold text-foreground">Límites</h3>
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>Es una estimación orientativa, no asesoramiento financiero, fiscal ni de inversión.</li>
+                                    <li>Con ingresos irregulares, el resultado cambiará de un mes a otro; conviene repetir el cálculo con un promedio de varios meses.</li>
+                                    <li>Si tus gastos igualan o superan tus ingresos, el margen es cero o negativo y la calculadora no puede estimar cuándo alcanzarás un objetivo.</li>
+                                    <li>No tiene en cuenta imprevistos, pagos anuales (seguros, impuestos) ni cambios futuros de precios o salario.</li>
+                                    <li>El cálculo se hace en tu navegador y los importes que escribes no se almacenan en la página.</li>
+                                </ul>
+                            </div>
+                            <div className="space-y-2">
+                                <h3 className="text-base font-semibold text-foreground">Cómo leer el porcentaje</h3>
+                                <p>
+                                    Menos del 10 %: margen ajustado. Entre el 10 % y el 19 %: por debajo del 20 % que recomienda el método Kakebo.
+                                    Del 20 % en adelante: alcanzas o superas ese mínimo. En el apartado «¿Cómo interpretar el resultado?» de la calculadora tienes qué hacer en cada caso.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
                     {/* How to use */}
                     <div className="space-y-6">

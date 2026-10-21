@@ -151,7 +151,8 @@
                 "title": "Embed this calculator in your blog",
                 "desc": "Copy the following HTML code and insert it into your website's editor. It's free, won't break your design, and will help your readers.",
                 "copy": "Copy iframe code",
-                "copied": "Copied!"
+                "copied": "Copied!",
+                "close": "Close"
             }
         },
         "Inflation": {

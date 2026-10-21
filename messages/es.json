@@ -151,7 +151,8 @@
                 "title": "Inserta esta calculadora en tu blog",
                 "desc": "Copia el siguiente código HTML e insértalo en el editor de tu página web. Es gratis, no altera tu diseño y ayudará a tus lectores.",
                 "copy": "Copiar código iframe",
-                "copied": "¡Copiado!"
+                "copied": "¡Copiado!",
+                "close": "Cerrar"
             }
         },
         "Inflation": {

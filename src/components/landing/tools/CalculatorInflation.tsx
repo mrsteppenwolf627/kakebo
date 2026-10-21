@@ -28,7 +28,7 @@ const INE_LINKS = {
     ipc: "https://www.ine.es/ipc/",
     irav: "https://www.ine.es/jaxiT3/Tabla.htm?t=72975",
     rentTool: "https://www.ine.es/dyngs/IPC/es/index.htm?cid=1436",
-    varipc: "https://www.ine.es/varipc/",
+    varipc: "https://www.ine.es/varipc/index.do",
 };
 
 function externalLink(href: string) {

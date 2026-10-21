@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
 interface EmbedModalProps {
@@ -12,6 +12,15 @@ interface EmbedModalProps {
 export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
     const tCommon = useTranslations("Tools.Common.embed");
     const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+        if (!isOpen) return;
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") onClose();
+        };
+        document.addEventListener("keydown", onKeyDown);
+        return () => document.removeEventListener("keydown", onKeyDown);
+    }, [isOpen, onClose]);
 
     if (!isOpen) return null;
 
@@ -27,19 +36,21 @@ export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm" onClick={onClose}>
-            <div className="bg-card w-full max-w-lg rounded-2xl shadow-xl border border-border p-6 overflow-hidden relative" onClick={e => e.stopPropagation()}>
+            <div role="dialog" aria-modal="true" aria-labelledby="embed-modal-title" className="bg-card w-full max-w-lg rounded-2xl shadow-xl border border-border p-6 overflow-hidden relative" onClick={e => e.stopPropagation()}>
                 {/* Close button */}
                 <button
+                    type="button"
                     onClick={onClose}
+                    aria-label={tCommon('close')}
                     className="absolute top-4 right-4 text-muted-foreground hover:text-foreground p-2 rounded-full hover:bg-muted transition-colors"
                 >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
 
                 <div className="mb-6">
-                    <h3 className="text-xl font-serif font-bold text-foreground mb-2">
+                    <h3 id="embed-modal-title" className="text-xl font-serif font-bold text-foreground mb-2">
                         {tCommon('title')}
                     </h3>
                     <p className="text-sm text-muted-foreground">

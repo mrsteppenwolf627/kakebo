@@ -4,9 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
-import { EmbedModal } from "./EmbedModal";
+import dynamic from "next/dynamic";
+import NextLink from "next/link";
 import { analytics } from "@/lib/analytics";
 import { getSourceFromHref } from "@/lib/authIntent";
+
+// El modal de embed solo se necesita al pulsar el botón: se carga bajo demanda.
+const EmbedModal = dynamic(() => import("./EmbedModal").then((m) => m.EmbedModal));
 
 const CTA_HREF = "/login?mode=signup&source=calculadora_ahorro";
 
@@ -16,6 +20,13 @@ const fmt = (n: number) =>
         currency: "EUR",
         maximumFractionDigits: 0,
     }).format(n);
+
+// Contexto de página no sensible, común a todos los eventos de la calculadora.
+// Solo ruta (sin query ni hash) y título del documento; nunca importes introducidos por el usuario.
+const pageContext = () => ({
+    page_path: typeof window !== "undefined" ? window.location.pathname : "",
+    page_title: typeof document !== "undefined" ? document.title : "",
+});
 
 const incomeRange = (n: number) =>
     n < 1000 ? "<1000" : n < 2000 ? "1000-2000" : n < 3000 ? "2000-3000" : "3000+";
@@ -43,9 +54,12 @@ export function SavingsCalculator() {
     const hasTrackedUse = useRef(false);
     const hasTrackedCalculate = useRef(false);
     const hasTrackedGoal = useRef(false);
+    const hasTrackedView = useRef(false);
 
     useEffect(() => {
-        analytics.track("tool_viewed", { tool_name: "calculadora_ahorro" });
+        if (hasTrackedView.current) return;
+        hasTrackedView.current = true;
+        analytics.track("tool_viewed", { tool_name: "calculadora_ahorro", ...pageContext() });
     }, []);
 
     // Core calculations
@@ -79,7 +93,7 @@ export function SavingsCalculator() {
     const trackInteraction = () => {
         if (!hasTrackedUse.current) {
             hasTrackedUse.current = true;
-            analytics.track("use_savings_calculator", { tool_name: "calculadora_ahorro" });
+            analytics.track("use_savings_calculator", { tool_name: "calculadora_ahorro", ...pageContext() });
         }
         hasTrackedCalculate.current = false;
     };
@@ -89,6 +103,7 @@ export function SavingsCalculator() {
             hasTrackedCalculate.current = true;
             analytics.track("savings_calculator_calculate", {
                 tool_name: "calculadora_ahorro",
+                ...pageContext(),
                 income_range: incomeRange(income),
                 real_margin_range: marginRange(margenReal),
                 savings_rate_range: rateRange(savingsRate),
@@ -104,6 +119,7 @@ export function SavingsCalculator() {
             hasTrackedGoal.current = true;
             analytics.track("savings_calculator_goal_result", {
                 tool_name: "calculadora_ahorro",
+                ...pageContext(),
                 months_to_goal: mesesParaObjetivo > 120 ? "120+" : String(mesesParaObjetivo),
                 savings_rate_range: rateRange(savingsRate),
                 result_status: status,
@@ -147,25 +163,25 @@ export function SavingsCalculator() {
             label: t("results.statusDeficit"),
         },
         zero: {
-            color: "text-amber-600 dark:text-amber-400",
+            color: "text-amber-700 dark:text-amber-400",
             bg: "bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800",
             icon: "—",
             label: t("results.statusZero"),
         },
         tight: {
-            color: "text-amber-600 dark:text-amber-400",
+            color: "text-amber-700 dark:text-amber-400",
             bg: "bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800",
             icon: "↗",
             label: t("results.statusTight"),
         },
         below_target: {
-            color: "text-primary",
+            color: "text-[#9a5a3a] dark:text-primary",
             bg: "bg-primary/5 border-primary/20",
             icon: "↑",
             label: t("results.statusBelowTarget"),
         },
         good: {
-            color: "text-emerald-600 dark:text-emerald-400",
+            color: "text-emerald-700 dark:text-emerald-400",
             bg: "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800",
             icon: "✓",
             label: t("results.statusGood"),
@@ -228,6 +244,7 @@ export function SavingsCalculator() {
                             </span>
                             <input
                                 id="sc-income"
+                                aria-describedby="sc-income-desc"
                                 type="number"
                                 min="0"
                                 step="100"
@@ -237,7 +254,7 @@ export function SavingsCalculator() {
                                 className={`${inputClass} pl-8 pr-3`}
                             />
                         </div>
-                        <p className="text-xs text-muted-foreground">{t("inputs.incomeDesc")}</p>
+                        <p id="sc-income-desc" className="text-xs text-muted-foreground">{t("inputs.incomeDesc")}</p>
                     </div>
 
                     {/* Fixed expenses */}
@@ -254,6 +271,7 @@ export function SavingsCalculator() {
                             </span>
                             <input
                                 id="sc-fixed"
+                                aria-describedby="sc-fixed-desc"
                                 type="number"
                                 min="0"
                                 step="50"
@@ -263,7 +281,7 @@ export function SavingsCalculator() {
                                 className={`${inputClass} pl-8 pr-3`}
                             />
                         </div>
-                        <p className="text-xs text-muted-foreground">{t("inputs.fixedDesc")}</p>
+                        <p id="sc-fixed-desc" className="text-xs text-muted-foreground">{t("inputs.fixedDesc")}</p>
                     </div>
 
                     {/* Variable expenses */}
@@ -280,6 +298,7 @@ export function SavingsCalculator() {
                             </span>
                             <input
                                 id="sc-variable"
+                                aria-describedby="sc-variable-desc"
                                 type="number"
                                 min="0"
                                 step="50"
@@ -289,15 +308,16 @@ export function SavingsCalculator() {
                                 className={`${inputClass} pl-8 pr-3`}
                             />
                         </div>
-                        <p className="text-xs text-muted-foreground">{t("inputs.variableDesc")}</p>
+                        <p id="sc-variable-desc" className="text-xs text-muted-foreground">{t("inputs.variableDesc")}</p>
                     </div>
 
                     {/* Goal toggle section */}
                     <div className="border-t border-border pt-6 space-y-4">
                         <button
                             onClick={handleGoalToggle}
-                            className="flex items-center gap-2 text-sm text-primary font-medium hover:text-primary/80 transition-colors"
+                            className="flex items-center gap-2 text-sm text-[#9a5a3a] dark:text-primary font-medium hover:opacity-80 transition-colors"
                             aria-expanded={showGoal}
+                            aria-controls="sc-goal-fields"
                         >
                             <span
                                 className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center text-xs leading-none flex-shrink-0"
@@ -309,7 +329,7 @@ export function SavingsCalculator() {
                         </button>
 
                         {showGoal && (
-                            <div className="space-y-4">
+                            <div id="sc-goal-fields" className="space-y-4">
                                 <div className="space-y-2">
                                     <label
                                         htmlFor="sc-goal"
@@ -323,6 +343,7 @@ export function SavingsCalculator() {
                                         </span>
                                         <input
                                             id="sc-goal"
+                                aria-describedby="sc-goal-desc"
                                             type="number"
                                             min="0"
                                             step="500"
@@ -333,7 +354,7 @@ export function SavingsCalculator() {
                                             className={`${inputClass} pl-8 pr-3`}
                                         />
                                     </div>
-                                    <p className="text-xs text-muted-foreground">
+                                    <p id="sc-goal-desc" className="text-xs text-muted-foreground">
                                         {t("inputs.totalGoalDesc")}
                                     </p>
                                 </div>
@@ -347,6 +368,7 @@ export function SavingsCalculator() {
                                     </label>
                                     <input
                                         id="sc-months"
+                                aria-describedby="sc-months-desc"
                                         type="number"
                                         min="1"
                                         max="240"
@@ -357,7 +379,7 @@ export function SavingsCalculator() {
                                         onBlur={handleInputBlur}
                                         className={`${inputClass} px-3`}
                                     />
-                                    <p className="text-xs text-muted-foreground">
+                                    <p id="sc-months-desc" className="text-xs text-muted-foreground">
                                         {t("inputs.monthsDesc")}
                                     </p>
                                 </div>
@@ -430,10 +452,10 @@ export function SavingsCalculator() {
                                         <p
                                             className={`text-5xl font-serif ${
                                                 savingsRate >= 20
-                                                    ? "text-emerald-600 dark:text-emerald-400"
+                                                    ? "text-emerald-700 dark:text-emerald-400"
                                                     : savingsRate >= 10
-                                                    ? "text-primary"
-                                                    : "text-amber-600 dark:text-amber-400"
+                                                    ? "text-[#9a5a3a] dark:text-primary"
+                                                    : "text-amber-700 dark:text-amber-400"
                                             }`}
                                         >
                                             {savingsRate > 0 ? `${Math.round(savingsRate)}%` : "0%"}
@@ -522,8 +544,8 @@ export function SavingsCalculator() {
                                             <p
                                                 className={`text-2xl font-serif ${
                                                     margenReal >= income * 0.2
-                                                        ? "text-emerald-600 dark:text-emerald-400"
-                                                        : "text-amber-600 dark:text-amber-400"
+                                                        ? "text-emerald-700 dark:text-emerald-400"
+                                                        : "text-amber-700 dark:text-amber-400"
                                                 }`}
                                             >
                                                 {margenReal >= income * 0.2 ? "+" : ""}
@@ -584,8 +606,8 @@ export function SavingsCalculator() {
                                                         <p
                                                             className={`text-xs font-medium ${
                                                                 diferenciaConPlazo >= 0
-                                                                    ? "text-emerald-600 dark:text-emerald-400"
-                                                                    : "text-amber-600 dark:text-amber-400"
+                                                                    ? "text-emerald-700 dark:text-emerald-400"
+                                                                    : "text-amber-700 dark:text-amber-400"
                                                             }`}
                                                         >
                                                             {diferenciaConPlazo >= 0
@@ -618,6 +640,7 @@ export function SavingsCalculator() {
                                     onClick={() =>
                                         analytics.track("click_tool_to_app", {
                                             tool_name: "calculadora_ahorro",
+                                            ...pageContext(),
                                             cta_location: "calculator_results",
                                             source: getSourceFromHref(CTA_HREF),
                                         })
@@ -641,27 +664,27 @@ export function SavingsCalculator() {
                     <div className="border-l-4 border-l-red-500 dark:border-l-red-400 bg-card border border-border rounded-r-xl p-4 space-y-1">
                         <p className="text-sm font-semibold text-red-700 dark:text-red-400">Déficit</p>
                         <p className="text-sm text-muted-foreground">Tus gastos superan tus ingresos. No queda margen para el ahorro.</p>
-                        <p className="text-xs text-muted-foreground/70">→ Revisa primero los gastos fijos; si son inamovibles, busca vías de ingreso adicional.</p>
+                        <p className="text-xs text-muted-foreground">→ Revisa primero los gastos fijos; si son inamovibles, busca vías de ingreso adicional.</p>
                     </div>
                     <div className="border-l-4 border-l-amber-500 dark:border-l-amber-400 bg-card border border-border rounded-r-xl p-4 space-y-1">
                         <p className="text-sm font-semibold text-amber-700 dark:text-amber-400">Margen cero</p>
                         <p className="text-sm text-muted-foreground">Los gastos consumen exactamente tus ingresos. Un imprevisto provocaría deuda.</p>
-                        <p className="text-xs text-muted-foreground/70">→ Identifica el gasto variable más prescindible. Reducir 50-100 € ya crea margen.</p>
+                        <p className="text-xs text-muted-foreground">→ Identifica el gasto variable más prescindible. Reducir 50-100 € ya crea margen.</p>
                     </div>
                     <div className="border-l-4 border-l-amber-400 dark:border-l-amber-300 bg-card border border-border rounded-r-xl p-4 space-y-1">
-                        <p className="text-sm font-semibold text-amber-600 dark:text-amber-300">Margen ajustado (menos del 10%)</p>
+                        <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">Margen ajustado (menos del 10%)</p>
                         <p className="text-sm text-muted-foreground">Ahorras algo, pero cualquier imprevisto lo elimina.</p>
-                        <p className="text-xs text-muted-foreground/70">→ Construye primero un fondo de seguridad de 1-2 meses de gastos fijos.</p>
+                        <p className="text-xs text-muted-foreground">→ Construye primero un fondo de seguridad de 1-2 meses de gastos fijos.</p>
                     </div>
                     <div className="border-l-4 border-l-primary bg-card border border-border rounded-r-xl p-4 space-y-1">
-                        <p className="text-sm font-semibold text-primary">Por debajo del objetivo Kakebo (10-19%)</p>
+                        <p className="text-sm font-semibold text-[#9a5a3a] dark:text-primary">Por debajo del objetivo Kakebo (10-19%)</p>
                         <p className="text-sm text-muted-foreground">Ahorras, pero por debajo del 20% recomendado por el método Kakebo.</p>
-                        <p className="text-xs text-muted-foreground/70">→ Revisa si hay gastos variables reducibles sin afectar tu calidad de vida.</p>
+                        <p className="text-xs text-muted-foreground">→ Revisa si hay gastos variables reducibles sin afectar tu calidad de vida.</p>
                     </div>
                     <div className="border-l-4 border-l-emerald-500 dark:border-l-emerald-400 bg-card border border-border rounded-r-xl p-4 space-y-1">
                         <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">Margen saludable (20% o más)</p>
                         <p className="text-sm text-muted-foreground">Alcanzas o superas el objetivo mínimo del método Kakebo.</p>
-                        <p className="text-xs text-muted-foreground/70">→ Asigna el exceso a un objetivo concreto: fondo de emergencia, viaje, inversión.</p>
+                        <p className="text-xs text-muted-foreground">→ Asigna el exceso a un objetivo concreto: fondo de emergencia, viaje, inversión.</p>
                     </div>
                 </div>
             </div>
@@ -735,13 +758,16 @@ export function SavingsCalculator() {
                         </Link>
                     </li>
                     <li>
-                        <Link
+                        {/* Este artículo solo existe en español (no hay cuentas-remuneradas.en.mdx):
+                            se usa un enlace sin prefijo de idioma (URL canónica en español) para no generar
+                            /en/blog/cuentas-remuneradas (404) ni la redirección /es/... */}
+                        <NextLink
                             href="/blog/cuentas-remuneradas"
                             className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
                         >
                             <span>{t("content.link5")}</span>
                             <ArrowRight className="w-4 h-4 flex-none text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-primary" />
-                        </Link>
+                        </NextLink>
                     </li>
                     <li>
                         <Link
@@ -755,11 +781,13 @@ export function SavingsCalculator() {
                 </ul>
             </div>
 
-            <EmbedModal
-                isOpen={isEmbedOpen}
-                onClose={() => setIsEmbedOpen(false)}
-                toolPath="/herramientas/calculadora-ahorro"
-            />
+            {isEmbedOpen && (
+                <EmbedModal
+                    isOpen={isEmbedOpen}
+                    onClose={() => setIsEmbedOpen(false)}
+                    toolPath="/herramientas/calculadora-ahorro"
+                />
+            )}
         </div>
     );
 }
