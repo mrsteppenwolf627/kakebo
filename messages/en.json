@@ -46,7 +46,8 @@
     "CookieBanner": {
         "text": "We use our own and third-party cookies to improve your experience and analyze the use of the website.",
         "moreInfo": "Privacy policy",
-        "accept": "Accept"
+        "accept": "Accept",
+        "reject": "Reject"
     },
     "Hero": {
         "badge": "Track expenses with intention",
@@ -151,7 +152,8 @@
                 "title": "Embed this calculator in your blog",
                 "desc": "Copy the following HTML code and insert it into your website's editor. It's free, won't break your design, and will help your readers.",
                 "copy": "Copy iframe code",
-                "copied": "Copied!"
+                "copied": "Copied!",
+                "close": "Close"
             }
         },
         "Inflation": {
@@ -295,21 +297,64 @@
             },
             "header": {
                 "title": "Kakebo Savings Calculator",
-                "subtitle": "Discover how you should distribute your salary to save effortlessly using the Japanese method."
+                "subtitle": "Calculate how much you can save each month based on your real situation: income, fixed and variable expenses."
+            },
+            "intro": {
+                "lead": "A monthly savings calculator works out how much money you can really save each month based on your actual situation, not a theoretical split.",
+                "formulaLabel": "Real margin formula",
+                "formulaText": "Real margin = Net income − Fixed expenses − Variable expenses",
+                "vs5030": "Unlike the 50/30/20 rule, which splits income into theoretical percentages, this calculator starts from your real expenses. With €2,000 of income, €800 of fixed expenses and €500 of variable ones, the real margin is €700 (35%). The Kakebo method takes that margin as the basis for planning monthly savings toward the 20% goal."
             },
             "inputs": {
                 "title": "Your Monthly Numbers",
                 "income": "Net Monthly Income",
                 "incomeDesc": "Your paycheck and other fixed income.",
                 "fixed": "Current Fixed Expenses (Approx.)",
-                "fixedDesc": "Rent, mortgage, electricity, water, internet..."
+                "fixedDesc": "Rent, mortgage, electricity, water, internet...",
+                "variable": "Monthly variable expenses",
+                "variableDesc": "Food, leisure, daily transport, clothes, subscriptions...",
+                "goalToggle": "Add savings goal",
+                "goalHide": "Remove goal",
+                "totalGoal": "Total goal",
+                "totalGoalDesc": "Emergency fund, trip, home down payment...",
+                "months": "Time to reach it",
+                "monthsUnit": "months",
+                "monthsDesc": "In how many months you want to reach it (optional)."
             },
             "tips": {
                 "title": "The Kakebo Secret",
                 "desc": "The method doesn't tell you 'don't spend', it tells you 'spend with intention'. The key is moving money from 'Vice' to 'Culture' or 'Savings'."
             },
             "results": {
-                "title": "Your Ideal Distribution",
+                "empty": "Enter your income to calculate your savings margin.",
+                "margin": "Real savings margin",
+                "marginDesc": "Income minus all your expenses",
+                "savingsRate": "Savings rate",
+                "savingsRateDesc": "Share of your income available to save",
+                "breakdown": {
+                    "title": "How your income is split",
+                    "fixed": "Fixed",
+                    "variable": "Variable",
+                    "margin": "Margin",
+                    "aria": "Breakdown: fixed expenses {fixed}%, variable expenses {variable}%, margin {margin}%"
+                },
+                "statusGood": "Healthy margin. Your savings rate is above the 20% recommended by the Kakebo method.",
+                "statusBelowTarget": "You have a margin, but it is below the 20% recommended by Kakebo. Review your variable expenses.",
+                "statusTight": "Very tight margin (less than 10% of your income). Any unexpected expense can put your savings at risk.",
+                "statusZero": "Your margin is zero. Your expenses use up exactly your income.",
+                "statusDeficit": "Your expenses exceed your income. Review your fixed or variable expenses before setting a savings goal.",
+                "kakebo20": "Kakebo target (20%)",
+                "kakebo20Desc": "Kakebo method reference",
+                "difference": "Your margin vs. Kakebo 20%",
+                "differenceDesc": "Positive: you exceed the target. Negative: you are short of margin.",
+                "goalTitle": "Your savings goal",
+                "goalMonths": "Estimated time",
+                "goalMonthsDesc": "months at your current margin",
+                "goalNeeded": "Savings needed in",
+                "goalNeedsMargin": "To estimate the time to your goal, you first need a positive margin.",
+                "goalViable": "Your current margin is enough for this timeline.",
+                "goalNotViable": "You are {extra} short per month, or extend the timeline.",
+                "disclaimer": "Approximate estimate. It does not account for income changes or unexpected expenses.",
                 "savingPotential": "Savings Capacity",
                 "recommended": "20% Recommended",
                 "categories": {
@@ -321,12 +366,45 @@
                 "ctaButton": "Create my Free Kakebo"
             },
             "content": {
-                "whyTitle": "Why use the 50/30/20 rule with Kakebo?",
-                "whyText1": "The calculator uses an adaptation of the popular 50/30/20 budgetary rule applied to the Kakebo method. This rule suggests that 50% of your income should go to basic needs (Survival), 30% to wants (Leisure + Culture), and 20% to savings (Extra).",
-                "whyText2": "However, Kakebo goes beyond percentages. It invites you to reflect: Did that 'Leisure' expense make you happy? Could you move part of the 'Survival' budget to 'Culture'? The <bold>savings calculator</bold> gives you the numerical starting point; the Kakebo App helps you maintain the habit.",
-                "interlinkingTitle": "Improve your financial control:",
+                "whyTitle": "What is the monthly savings calculator for?",
+                "whyText1": "Unlike a simple theoretical 50/30/20 split, this calculator works with your real situation: you enter your income, fixed expenses and variable expenses, and get the exact margin you have available to save each month.",
+                "whyText2": "The <bold>Kakebo method</bold> is not just about writing down expenses, but about understanding your financial structure. The calculator helps you tell whether the problem lies in fixed expenses (hard to cut in the short term), in variable ones (where you have more room to act), or whether you simply need to adjust the timeline of your goals.",
+                "interlinkingTitle": "Keep improving your savings plan:",
+                "link0": "How to build a personal budget step by step",
                 "link1": "Kakebo Method for Freelancers (Irregular income)",
-                "link2": "How to save as a couple without fighting"
+                "link2": "How to save as a couple without fighting",
+                "link3": "How much value does your money lose to inflation?",
+                "link4": "15 techniques to save money every month",
+                "link5": "What is a high-interest savings account and when does it make sense",
+                "link6": "How to eliminate small everyday expenses"
+            },
+            "interpretation": {
+                "title": "How to interpret the result",
+                "deficit": {
+                    "label": "Deficit",
+                    "text": "Your expenses exceed your income. There is no margin left to save.",
+                    "action": "→ Review fixed expenses first; if they cannot be changed, look for additional sources of income."
+                },
+                "zero": {
+                    "label": "Zero margin",
+                    "text": "Your expenses use up exactly your income. An unexpected cost would lead to debt.",
+                    "action": "→ Identify the most dispensable variable expense. Cutting €50-100 already creates margin."
+                },
+                "tight": {
+                    "label": "Tight margin (under 10%)",
+                    "text": "You save something, but any unexpected cost wipes it out.",
+                    "action": "→ First build a safety fund of 1-2 months of fixed expenses."
+                },
+                "belowTarget": {
+                    "label": "Below the Kakebo target (10-19%)",
+                    "text": "You save, but below the 20% recommended by the Kakebo method.",
+                    "action": "→ Check whether any variable expenses can be reduced without affecting your quality of life."
+                },
+                "good": {
+                    "label": "Healthy margin (20% or more)",
+                    "text": "You reach or exceed the minimum target of the Kakebo method.",
+                    "action": "→ Assign the surplus to a specific goal: emergency fund, trip, investment."
+                }
             }
         },
         "Rule503020": {

@@ -46,7 +46,8 @@
     "CookieBanner": {
         "text": "Utilizamos cookies propias y de terceros para mejorar tu experiencia y analizar el uso de la web.",
         "moreInfo": "Política de privacidad",
-        "accept": "Aceptar"
+        "accept": "Aceptar",
+        "reject": "Rechazar"
     },
     "Hero": {
         "badge": "Registra gastos con intención",
@@ -151,7 +152,8 @@
                 "title": "Inserta esta calculadora en tu blog",
                 "desc": "Copia el siguiente código HTML e insértalo en el editor de tu página web. Es gratis, no altera tu diseño y ayudará a tus lectores.",
                 "copy": "Copiar código iframe",
-                "copied": "¡Copiado!"
+                "copied": "¡Copiado!",
+                "close": "Cerrar"
             }
         },
         "Inflation": {
@@ -333,7 +335,8 @@
                     "title": "Distribución de tus ingresos",
                     "fixed": "Fijos",
                     "variable": "Variables",
-                    "margin": "Margen"
+                    "margin": "Margen",
+                    "aria": "Distribución: gastos fijos {fixed}%, gastos variables {variable}%, margen {margin}%"
                 },
                 "statusGood": "Margen saludable. Tu tasa de ahorro supera el 20% que recomienda el método Kakebo.",
                 "statusBelowTarget": "Tu margen existe, pero está por debajo del 20% que recomienda Kakebo. Revisa tus gastos variables.",
@@ -374,6 +377,34 @@
                 "link4": "15 técnicas para ahorrar dinero cada mes",
                 "link5": "Qué es una cuenta remunerada y cuándo tiene sentido",
                 "link6": "Cómo eliminar los gastos hormiga"
+            },
+            "interpretation": {
+                "title": "¿Cómo interpretar el resultado?",
+                "deficit": {
+                    "label": "Déficit",
+                    "text": "Tus gastos superan tus ingresos. No queda margen para el ahorro.",
+                    "action": "→ Revisa primero los gastos fijos; si son inamovibles, busca vías de ingreso adicional."
+                },
+                "zero": {
+                    "label": "Margen cero",
+                    "text": "Los gastos consumen exactamente tus ingresos. Un imprevisto provocaría deuda.",
+                    "action": "→ Identifica el gasto variable más prescindible. Reducir 50-100 € ya crea margen."
+                },
+                "tight": {
+                    "label": "Margen ajustado (menos del 10%)",
+                    "text": "Ahorras algo, pero cualquier imprevisto lo elimina.",
+                    "action": "→ Construye primero un fondo de seguridad de 1-2 meses de gastos fijos."
+                },
+                "belowTarget": {
+                    "label": "Por debajo del objetivo Kakebo (10-19%)",
+                    "text": "Ahorras, pero por debajo del 20% recomendado por el método Kakebo.",
+                    "action": "→ Revisa si hay gastos variables reducibles sin afectar tu calidad de vida."
+                },
+                "good": {
+                    "label": "Margen saludable (20% o más)",
+                    "text": "Alcanzas o superas el objetivo mínimo del método Kakebo.",
+                    "action": "→ Asigna el exceso a un objetivo concreto: fondo de emergencia, viaje, inversión."
+                }
             }
         },
         "Rule503020": {

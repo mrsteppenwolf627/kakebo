@@ -1,6 +1,9 @@
+import { analyticsAllowed } from "@/lib/consent";
+
 declare global {
     interface Window {
         gtag?: (...args: unknown[]) => void;
+        dataLayer?: unknown[];
     }
 }
 
@@ -49,9 +52,18 @@ class Analytics {
         if (this.isDev) {
             console.log(`[Analytics] ${name}`, properties);
         }
-        if (typeof window !== "undefined" && typeof window.gtag === "function") {
-            window.gtag("event", name, properties);
+        if (typeof window === "undefined" || !analyticsAllowed()) return;
+        // Con consentimiento, gtag.js puede no haberse cargado todavía (p. ej. tool_viewed al hidratar).
+        // Se crea el mismo stub que el script de inicialización: encola en dataLayer y gtag.js lo procesa al cargar.
+        if (typeof window.gtag !== "function") {
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () {
+                // gtag.js solo procesa objetos `arguments`, no arrays.
+                // eslint-disable-next-line prefer-rest-params
+                window.dataLayer!.push(arguments);
+            };
         }
+        window.gtag("event", name, properties);
     }
 }
 

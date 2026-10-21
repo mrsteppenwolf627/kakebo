@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 interface EmbedModalProps {
@@ -9,9 +9,62 @@ interface EmbedModalProps {
     toolPath: string;
 }
 
+const FOCUSABLE =
+    'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
     const tCommon = useTranslations("Tools.Common.embed");
     const [copied, setCopied] = useState(false);
+    const dialogRef = useRef<HTMLDivElement>(null);
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
+    const onCloseRef = useRef(onClose);
+
+    useEffect(() => {
+        onCloseRef.current = onClose;
+    }, [onClose]);
+
+    // Foco: al abrir entra en el diálogo, Tab/Shift+Tab se quedan dentro, Escape cierra
+    // y al cerrar el foco vuelve exactamente al control que lo abrió.
+    useEffect(() => {
+        if (!isOpen) return;
+        const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        closeButtonRef.current?.focus();
+
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                e.preventDefault();
+                onCloseRef.current();
+                return;
+            }
+            if (e.key !== "Tab") return;
+            const dialog = dialogRef.current;
+            if (!dialog) return;
+            const items = Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE));
+            if (items.length === 0) {
+                e.preventDefault();
+                return;
+            }
+            const first = items[0];
+            const last = items[items.length - 1];
+            const active = document.activeElement;
+            if (!dialog.contains(active)) {
+                e.preventDefault();
+                first.focus();
+            } else if (e.shiftKey && active === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && active === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        };
+
+        document.addEventListener("keydown", onKeyDown);
+        return () => {
+            document.removeEventListener("keydown", onKeyDown);
+            opener?.focus();
+        };
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
@@ -27,19 +80,29 @@ export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm" onClick={onClose}>
-            <div className="bg-card w-full max-w-lg rounded-2xl shadow-xl border border-border p-6 overflow-hidden relative" onClick={e => e.stopPropagation()}>
+            <div
+                ref={dialogRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="embed-modal-title"
+                className="bg-card w-full max-w-lg rounded-2xl shadow-xl border border-border p-6 overflow-hidden relative"
+                onClick={e => e.stopPropagation()}
+            >
                 {/* Close button */}
                 <button
+                    ref={closeButtonRef}
+                    type="button"
                     onClick={onClose}
+                    aria-label={tCommon('close')}
                     className="absolute top-4 right-4 text-muted-foreground hover:text-foreground p-2 rounded-full hover:bg-muted transition-colors"
                 >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
 
                 <div className="mb-6">
-                    <h3 className="text-xl font-serif font-bold text-foreground mb-2">
+                    <h3 id="embed-modal-title" className="text-xl font-serif font-bold text-foreground mb-2">
                         {tCommon('title')}
                     </h3>
                     <p className="text-sm text-muted-foreground">
@@ -53,19 +116,20 @@ export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
                     </pre>
 
                     <button
+                        type="button"
                         onClick={handleCopy}
                         className="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
                     >
                         {copied ? (
                             <>
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                                 {tCommon('copied')}
                             </>
                         ) : (
                             <>
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                                 </svg>
                                 {tCommon('copy')}

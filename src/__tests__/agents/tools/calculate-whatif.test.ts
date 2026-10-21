@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { calculateWhatIf } from "@/lib/agents/tools/calculate-whatif";
 
 describe("calculateWhatIf", () => {
@@ -6,12 +6,19 @@ describe("calculateWhatIf", () => {
   const userId = "test-user-123";
 
   beforeEach(() => {
+    // Reloj fijo: los tests usan fechas objetivo absolutas y no deben depender de la fecha real de ejecución.
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-02-12T12:00:00Z"));
     mockSupabase = {
       from: vi.fn().mockReturnThis(),
       insert: vi.fn().mockReturnThis(),
       select: vi.fn().mockReturnThis(),
       single: vi.fn().mockReturnThis(),
     };
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("should create a scenario with monthly savings calculation", async () => {
