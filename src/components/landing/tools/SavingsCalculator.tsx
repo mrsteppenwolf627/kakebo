@@ -53,10 +53,9 @@ export function SavingsCalculator() {
     const [months, setMonths] = useState<number>(12);
 
     const hasTrackedUse = useRef(false);
-    const hasTrackedCalculate = useRef(false);
-    const hasTrackedGoal = useRef(false);
+    const calcDirty = useRef(false);
+    const goalDirty = useRef(false);
     const hasTrackedView = useRef(false);
-    const hasInteracted = useRef(false);
     const lastCtaClick = useRef(0);
 
     useEffect(() => {
@@ -93,29 +92,32 @@ export function SavingsCalculator() {
     const diferenciaConPlazo =
         ahorroNecesario !== null ? margenReal - ahorroNecesario : null;
 
-    // Unidad de cada evento (los payloads no llevan datos del cálculo, así que repetirlos solo inflaría el recuento):
+    // Unidad de cada evento (los payloads no llevan datos del cálculo; la deduplicación usa solo el estado del ciclo
+    // de interacción, nunca los valores ni un hash de ellos):
     // - use_savings_calculator: primera interacción real (cambiar un campo o abrir el objetivo), una vez por carga.
-    // - savings_calculator_calculate: primer cálculo completado, una vez por carga. "Completado" = la persona ya ha
-    //   modificado algo, ha terminado de editar (el foco sale del formulario o pulsa «Ver mi resultado»), hay ingresos
-    //   y ningún importe es negativo. Los cambios intermedios, las pulsaciones y los blur entre campos no cuentan.
-    // - savings_calculator_goal_result: primer resultado de objetivo válido mostrado en un cálculo completado.
-    // Cada flag solo se marca si el evento se entregó (con consentimiento); sin consentimiento no se envía nada
-    // ni se reenvía después de aceptar.
-    const sendOnce = (flag: { current: boolean }, name: Parameters<typeof analytics.track>[0]) => {
-        if (flag.current) return;
-        if (analytics.track(name, { tool_name: "calculadora_ahorro", ...pageContext() })) flag.current = true;
-    };
+    // - savings_calculator_calculate: una vez por ciclo «modificación → cálculo completado». Un campo modificado marca
+    //   el ciclo como pendiente (dirty); "completado" = el foco sale del formulario (no al pasar de un campo a otro) o
+    //   se pulsa «Ver mi resultado», con ingresos y sin importes negativos. Al enviarse, el ciclo queda cerrado y una
+    //   nueva modificación abre otro. Pulsaciones, blur intermedios, re-render e hidratación no emiten nada.
+    // - savings_calculator_goal_result: mismo ciclo, pero marcado solo al modificar el objetivo o el plazo, y solo con
+    //   un resultado de objetivo válido (margen positivo y plazo válido) dentro de un cálculo completado.
+    // El ciclo solo se cierra si el evento se entregó (hay consentimiento): sin consentimiento no se envía nada, y lo
+    // pendiente no se reenvía al aceptar; la siguiente modificación completada sí cuenta.
+    const sendEvent = (name: Parameters<typeof analytics.track>[0]) =>
+        analytics.track(name, { tool_name: "calculadora_ahorro", ...pageContext() });
 
     const trackInteraction = () => {
-        hasInteracted.current = true;
-        sendOnce(hasTrackedUse, "use_savings_calculator");
+        if (hasTrackedUse.current) return;
+        if (sendEvent("use_savings_calculator")) hasTrackedUse.current = true;
     };
 
     const trackCompletedCalculation = () => {
         const valid = income > 0 && fixedExpenses >= 0 && variableExpenses >= 0 && totalGoal >= 0;
-        if (!hasInteracted.current || !valid) return;
-        sendOnce(hasTrackedCalculate, "savings_calculator_calculate");
-        if (showGoal && mesesParaObjetivo !== null) sendOnce(hasTrackedGoal, "savings_calculator_goal_result");
+        if (!valid) return;
+        if (calcDirty.current && sendEvent("savings_calculator_calculate")) calcDirty.current = false;
+        if (goalDirty.current && showGoal && mesesParaObjetivo !== null && !monthsInvalid) {
+            if (sendEvent("savings_calculator_goal_result")) goalDirty.current = false;
+        }
     };
 
     const handlePanelBlur = (e: React.FocusEvent<HTMLElement>) => {
@@ -133,9 +135,11 @@ export function SavingsCalculator() {
     };
 
     const handleInput =
-        (setter: (v: number) => void) =>
+        (setter: (v: number) => void, goalField = false) =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
             setter(Number(e.target.value));
+            calcDirty.current = true;
+            if (goalField) goalDirty.current = true;
             trackInteraction();
         };
 
@@ -383,7 +387,7 @@ export function SavingsCalculator() {
                                             step="500"
                                             value={totalGoal || ""}
                                             placeholder="0"
-                                            onChange={handleInput(setTotalGoal)}
+                                            onChange={handleInput(setTotalGoal, true)}
                                             className={`${inputClass} pl-8 pr-3`}
                                         />
                                     </div>
@@ -414,7 +418,7 @@ export function SavingsCalculator() {
                                         step="1"
                                         value={months || ""}
                                         placeholder="12"
-                                        onChange={handleInput(setMonths)}
+                                        onChange={handleInput(setMonths, true)}
                                         className={`${inputClass} px-3`}
                                     />
                                     <p id="sc-months-desc" className="text-xs text-muted-foreground">

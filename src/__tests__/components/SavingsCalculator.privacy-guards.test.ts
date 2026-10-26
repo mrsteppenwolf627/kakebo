@@ -9,9 +9,9 @@ const page = fs.readFileSync(path.join(SRC, "app", "[locale]", "(public)", "herr
 // Guardas estáticas: complementan las pruebas de payload en tiempo de ejecución.
 describe("calculadora de ahorro: privacidad de los datos introducidos", () => {
   it("cada analytics.track solo usa los parámetros permitidos y solo existen los 5 eventos", () => {
-    // Llamadas directas (tool_viewed, CTA) y envíos de un solo uso (sendOnce / sendOnce(flag, "nombre")).
+    // Llamadas directas (tool_viewed, CTA) y envíos de un solo uso (sendEvent("nombre")).
     const direct = [...source.matchAll(/analytics\.track\(\s*"([a-z_]+)"\s*,\s*\{([\s\S]*?)\}\s*\)/g)];
-    const once = [...source.matchAll(/sendOnce\(\s*\w+\s*,\s*"([a-z_]+)"\s*\)/g)].map((m) => m[1]);
+    const once = [...source.matchAll(/sendEvent\(\s*"([a-z_]+)"\s*\)/g)].map((m) => m[1]);
     expect([...direct.map((c) => c[1]), ...once].sort()).toEqual([
       "click_tool_to_app",
       "savings_calculator_calculate",

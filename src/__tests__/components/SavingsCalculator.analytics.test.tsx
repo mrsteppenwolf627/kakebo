@@ -77,24 +77,50 @@ describe.each(["es", "en"] as const)("SavingsCalculator analytics, contrato del 
     expect(callsOf("savings_calculator_calculate")).toHaveLength(0);
   });
 
-  it("savings_calculator_calculate: una vez por cálculo completado, aunque haya varios blur y cambios después", () => {
-    renderCalculator(locale);
+  it("savings_calculator_calculate: primer cálculo válido, un evento; blur repetidos, re-render y salir sin cambios no añaden", () => {
+    const { rerender } = renderCalculator(locale);
     setValue("sc-income", "2100");
     leavePanel();
-    leavePanel();
-    setValue("sc-fixed", "901");
-    leavePanel("sc-fixed");
-    setValue("sc-variable", "433");
-    leavePanel("sc-variable");
     expect(callsOf("savings_calculator_calculate")).toEqual([["savings_calculator_calculate", context(locale)]]);
+    leavePanel();
+    leavePanel("sc-fixed");
+    rerender(tree(locale));
+    rerender(tree(locale));
+    leavePanel();
+    expect(callsOf("savings_calculator_calculate")).toHaveLength(1);
   });
 
-  it("savings_calculator_calculate: «Ver mi resultado» también completa el cálculo, una sola vez", () => {
+  it("savings_calculator_calculate: modificar un campo y volver a completar emite un segundo evento", () => {
     renderCalculator(locale);
     setValue("sc-income", "2100");
-    const see = screen.getByRole("button", { name: labels(locale).inputs.seeResult });
-    fireEvent.click(see);
-    fireEvent.click(see);
+    leavePanel();
+    setValue("sc-fixed", "901");
+    expect(callsOf("savings_calculator_calculate")).toHaveLength(1); // aún editando
+    fireEvent.blur(document.getElementById("sc-fixed") as HTMLInputElement, { relatedTarget: document.getElementById("sc-variable") });
+    expect(callsOf("savings_calculator_calculate")).toHaveLength(1); // blur entre campos
+    leavePanel("sc-variable");
+    expect(callsOf("savings_calculator_calculate")).toHaveLength(2);
+  });
+
+  it("savings_calculator_calculate: tres ciclos de modificación y cálculo emiten tres eventos (con varias pulsaciones por ciclo)", () => {
+    renderCalculator(locale);
+    for (const [id, values] of [
+      ["sc-income", ["2", "21", "210", "2100"]],
+      ["sc-fixed", ["9", "90", "901"]],
+      ["sc-variable", ["4", "43", "433"]],
+    ] as const) {
+      for (const v of values) setValue(id, v);
+      leavePanel(id);
+      leavePanel(id);
+    }
+    expect(callsOf("savings_calculator_calculate")).toHaveLength(3);
+    expect(callsOf("use_savings_calculator")).toHaveLength(1);
+  });
+
+  it("savings_calculator_calculate: «Ver mi resultado» completa el ciclo y el blur posterior no lo repite", () => {
+    renderCalculator(locale);
+    setValue("sc-income", "2100");
+    fireEvent.click(screen.getByRole("button", { name: labels(locale).inputs.seeResult }));
     leavePanel();
     expect(callsOf("savings_calculator_calculate")).toHaveLength(1);
   });
@@ -115,18 +141,49 @@ describe.each(["es", "en"] as const)("SavingsCalculator analytics, contrato del 
     expect(callsOf("savings_calculator_calculate")).toHaveLength(1);
   });
 
-  it("savings_calculator_goal_result: una vez, solo con un resultado de objetivo válido y un cálculo completado", () => {
+  it("savings_calculator_goal_result: cero eventos con el objetivo a medio escribir; uno al completarlo", () => {
     renderCalculator(locale);
     openGoal(locale);
     setValue("sc-goal", "3");
     setValue("sc-goal", "30");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(0);
     setValue("sc-goal", "3000");
-    expect(callsOf("savings_calculator_goal_result")).toHaveLength(0); // aún escribiendo
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(0);
     leavePanel("sc-goal");
-    leavePanel("sc-goal");
-    setValue("sc-goal", "3500");
     leavePanel("sc-goal");
     expect(callsOf("savings_calculator_goal_result")).toEqual([["savings_calculator_goal_result", context(locale)]]);
+  });
+
+  it("savings_calculator_goal_result: cambiar el objetivo o el plazo y completar otro resultado emite otro evento; cambiar solo ingresos no", () => {
+    renderCalculator(locale);
+    openGoal(locale);
+    setValue("sc-goal", "3000");
+    leavePanel("sc-goal");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(1);
+    setValue("sc-income", "2200"); // modifica el cálculo, no el objetivo
+    leavePanel();
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(1);
+    expect(callsOf("savings_calculator_calculate")).toHaveLength(2);
+    setValue("sc-goal", "3500");
+    leavePanel("sc-goal");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(2);
+    setValue("sc-months", "18");
+    leavePanel("sc-months");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(3);
+  });
+
+  it("savings_calculator_goal_result: no se envía con el plazo inválido", () => {
+    renderCalculator(locale);
+    openGoal(locale);
+    setValue("sc-goal", "3000");
+    setValue("sc-months", "");
+    leavePanel("sc-months");
+    setValue("sc-months", "300");
+    leavePanel("sc-months");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(0);
+    setValue("sc-months", "12");
+    leavePanel("sc-months");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(1);
   });
 
   it("savings_calculator_goal_result: no se envía sin margen positivo", () => {
@@ -196,7 +253,7 @@ describe.each(["es", "en"] as const)("SavingsCalculator analytics, contrato del 
 });
 
 describe("SavingsCalculator analytics sin consentimiento (el módulo no entrega nada)", () => {
-  it("no marca eventos como enviados: tras aceptar, la siguiente interacción sí se registra y solo una vez", () => {
+  it("no se envía nada y no se cierra el ciclo: tras aceptar, el siguiente cálculo completado se registra una sola vez", () => {
     delivered = false;
     renderCalculator("es");
     setValue("sc-income", "2100");
