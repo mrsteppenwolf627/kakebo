@@ -100,7 +100,7 @@ describe("ToolMessages: las calculadoras reciben sus mensajes aunque el layout r
 describe("guardas de código", () => {
   it("el layout raíz excluye el namespace Tools de los mensajes del cliente", () => {
     const layout = read("app", "[locale]", "layout.tsx");
-    expect(layout).toMatch(/filter\(\(\[namespace\]\) => namespace !== "Tools"\)/);
+    expect(layout).toMatch(/pickClientMessages\(await getMessages\(\)\)/);
     expect(layout).toMatch(/<NextIntlClientProvider messages=\{messages\}>/);
   });
 

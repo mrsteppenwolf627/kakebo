@@ -1,16 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
 import NextLink from "next/link";
 import { Link } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import { analytics } from "@/lib/analytics";
 import { getSourceFromHref } from "@/lib/authIntent";
-
-// El modal de embed solo se necesita al pulsar el botón: se carga bajo demanda.
-const EmbedModal = dynamic(() => import("./EmbedModal").then((m) => m.EmbedModal));
 
 const CTA_HREF = "/login?mode=signup&source=calculadora_ahorro";
 
@@ -45,9 +41,7 @@ export function SavingsCalculator() {
     const t = useTranslations("Tools.Savings");
     const locale = useLocale();
     const fmt = (n: number) => formatEuro(n, locale);
-    const tEmbed = useTranslations("Tools.Common.embed");
 
-    const [isEmbedOpen, setIsEmbedOpen] = useState(false);
     const [income, setIncome] = useState<number>(2000);
     const [fixedExpenses, setFixedExpenses] = useState<number>(800);
     const [variableExpenses, setVariableExpenses] = useState<number>(500);
@@ -380,30 +374,6 @@ export function SavingsCalculator() {
                                 </div>
                             </div>
                         )}
-                    </div>
-
-                    {/* Embed button */}
-                    <div className="border-t border-border pt-4">
-                        <button
-                            onClick={() => setIsEmbedOpen(true)}
-                            className="w-full inline-flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors p-3 border border-dashed border-border rounded-lg"
-                        >
-                            <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                                />
-                            </svg>
-                            {tEmbed("button")}
-                        </button>
                     </div>
                 </aside>
 
@@ -770,14 +740,6 @@ export function SavingsCalculator() {
                     </li>
                 </ul>
             </div>
-
-            {isEmbedOpen && (
-                <EmbedModal
-                    isOpen={isEmbedOpen}
-                    onClose={() => setIsEmbedOpen(false)}
-                    toolPath="/herramientas/calculadora-ahorro"
-                />
-            )}
         </div>
     );
 }

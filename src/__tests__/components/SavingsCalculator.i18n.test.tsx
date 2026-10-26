@@ -145,13 +145,16 @@ describe("la experiencia inglesa no contiene texto fijo en español", () => {
     }
   });
 
-  it("el modal en inglés está en inglés", async () => {
-    const { container } = renderCalculator("en");
-    fireEvent.click(screen.getByRole("button", { name: enMessages.Tools.Common.embed.button }));
-    const dialog = await screen.findByRole("dialog");
-    expect(dialog.textContent).not.toMatch(SPANISH_CHARS);
-    expect(screen.getByRole("button", { name: "Close" })).toBeTruthy();
-    expect(container).toBeTruthy();
+  it("no ofrece el código de embed (su destino no es verificable) en ninguno de los dos idiomas", () => {
+    for (const locale of ["es", "en"] as const) {
+      renderCalculator(locale);
+      const embedButton = (esMessages.Tools.Common.embed.button + "|" + enMessages.Tools.Common.embed.button).split("|");
+      for (const label of embedButton) {
+        expect(screen.queryByRole("button", { name: label })).toBeNull();
+      }
+      expect(screen.queryByRole("dialog")).toBeNull();
+      cleanup();
+    }
   });
 
   it("los importes se formatean según el idioma", () => {

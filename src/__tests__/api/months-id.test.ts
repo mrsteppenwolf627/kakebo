@@ -1,14 +1,22 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import { NextRequest } from "next/server";
 import { PATCH } from "@/app/api/months/[id]/route";
 
 // Mock Supabase client
-const mockSupabase = {
-  from: vi.fn((_table: string) => mockSupabase),
-  select: vi.fn(() => mockSupabase),
-  insert: vi.fn(() => mockSupabase),
-  update: vi.fn(() => mockSupabase),
-  eq: vi.fn(() => mockSupabase),
+type MockSupabase = {
+  from: Mock<(table: string) => MockSupabase>;
+  select: Mock<() => MockSupabase>;
+  insert: Mock<() => MockSupabase>;
+  update: Mock<() => MockSupabase>;
+  eq: Mock<() => MockSupabase>;
+  single: Mock;
+};
+const mockSupabase: MockSupabase = {
+  from: vi.fn<(table: string) => MockSupabase>(() => mockSupabase),
+  select: vi.fn<() => MockSupabase>(() => mockSupabase),
+  insert: vi.fn<() => MockSupabase>(() => mockSupabase),
+  update: vi.fn<() => MockSupabase>(() => mockSupabase),
+  eq: vi.fn<() => MockSupabase>(() => mockSupabase),
   single: vi.fn(),
 };
 

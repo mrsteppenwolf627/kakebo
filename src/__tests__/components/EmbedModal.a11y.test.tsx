@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { useState } from "react";
 import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import fs from "node:fs";
+import path from "node:path";
 import { NextIntlClientProvider } from "next-intl";
 import esMessages from "../../../messages/es.json";
 import enMessages from "../../../messages/en.json";
@@ -195,7 +197,6 @@ describe("EmbedModal en las demás calculadoras que lo reutilizan", () => {
   const cases = [
     { name: "Calculator503020", load: async () => (await import("@/components/landing/tools/Calculator503020")).Calculator503020 },
     { name: "CalculatorInflation", load: async () => (await import("@/components/landing/tools/CalculatorInflation")).CalculatorInflation },
-    { name: "SavingsCalculator", load: async () => (await import("@/components/landing/tools/SavingsCalculator")).SavingsCalculator },
   ];
 
   it.each(cases)("$name: abre el modal accesible, atrapa el foco, cierra con Escape y devuelve el foco", async ({ load }) => {
@@ -226,5 +227,54 @@ describe("EmbedModal en las demás calculadoras que lo reutilizan", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(document.querySelector("[inert]")).toBeNull();
     expect(document.activeElement).toBe(opener);
+  });
+});
+
+describe("EmbedModal: ES/EN, ciclo completo y limpieza", () => {
+  it.each(["es", "en"] as const)("(%s) texto traducido, Tab y Shift+Tab cíclicos, Escape y foco al invocador", (locale) => {
+    const t = messagesFor(locale).Tools.Common.embed;
+    render(<Harness locale={locale} />);
+    const opener = openModal();
+    const dialog = screen.getByRole("dialog", { name: t.title });
+    expect(dialog.textContent).toContain(t.desc);
+    const close = screen.getByRole("button", { name: t.close });
+    const copy = screen.getByRole("button", { name: t.copy });
+    expect(document.activeElement).toBe(close);
+    copy.focus();
+    expect(tab()).toBe(false);
+    expect(document.activeElement).toBe(close);
+    expect(tab(true)).toBe(false);
+    expect(document.activeElement).toBe(copy);
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(document.activeElement).toBe(opener);
+  });
+
+  it("al desmontarse abierto retira el listener de teclado e inert y devuelve el foco", () => {
+    const onClose = vi.fn();
+    const outside = document.createElement("button");
+    document.body.appendChild(outside);
+    outside.focus();
+    const { unmount } = render(
+      <NextIntlClientProvider locale="es" messages={esMessages}>
+        <EmbedModal isOpen onClose={onClose} toolPath="/x" />
+      </NextIntlClientProvider>
+    );
+    expect(outside.hasAttribute("inert")).toBe(true);
+    unmount();
+    expect(outside.hasAttribute("inert")).toBe(false);
+    expect(document.activeElement).toBe(outside);
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(onClose).not.toHaveBeenCalled();
+    outside.remove();
+  });
+});
+
+describe("embed: no se presenta como funcional un destino no verificable", () => {
+  it("la calculadora de ahorro no ofrece el embed y no referencia el modal ni el dominio de destino", () => {
+    const src = fs.readFileSync(
+      path.resolve(__dirname, "..", "..", "components", "landing", "tools", "SavingsCalculator.tsx"),
+      "utf8"
+    );
+    expect(src).not.toMatch(/EmbedModal|Tools\.Common\.embed|kakebo\.ai/);
   });
 });

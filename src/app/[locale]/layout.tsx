@@ -103,6 +103,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import { pickClientMessages } from '@/i18n/client-messages';
 
 export default async function LocaleLayout({
   children,
@@ -118,10 +119,9 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  // Se envían al cliente todos los mensajes salvo `Tools`: ese namespace solo lo usan las calculadoras,
-  // que lo reciben de ToolMessages en sus propias páginas (ver src/components/i18n/ToolMessages.tsx).
-  const allMessages = await getMessages();
-  const messages = Object.fromEntries(Object.entries(allMessages).filter(([namespace]) => namespace !== "Tools"));
+  // Al cliente solo van los namespaces que leen componentes cliente (ver src/i18n/client-messages.ts).
+  // Las calculadoras reciben `Tools` de ToolMessages en sus propias páginas.
+  const messages = pickClientMessages(await getMessages());
 
   return (
     <html lang={locale} className={`${inter.variable} ${playfair.variable} overflow-x-hidden`} suppressHydrationWarning>
