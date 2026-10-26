@@ -319,7 +319,13 @@
                 "totalGoalDesc": "Emergency fund, trip, home down payment...",
                 "months": "Time to reach it",
                 "monthsUnit": "months",
-                "monthsDesc": "In how many months you want to reach it (optional)."
+                "monthsDesc": "In how many months you want to reach it (optional).",
+                "exampleNote": "We've left an example so you can see how it works. Replace the amounts with your own: the result updates as you type.",
+                "privacyNote": "The amounts you type stay in your browser: they are not stored or sent.",
+                "goalHint": "Optional: add an amount to see in how many months you would reach it. If you also set a time frame, you will see how much you would need to save each month.",
+                "errorNegative": "Enter an amount of 0 or more.",
+                "errorMonths": "Enter a whole number of months between 1 and 240 to see the monthly saving needed.",
+                "seeResult": "See my result"
             },
             "tips": {
                 "title": "The Kakebo Secret",
@@ -362,6 +368,15 @@
                     "optional": "Leisure and Vice (20%)",
                     "culture": "Culture (10%)"
                 },
+                "regionLabel": "Your calculation result",
+                "summary": "With these figures you have {margin} left each month, {rate}% of your income.",
+                "summaryDeficit": "With these figures you spend {deficit} more than you earn each month.",
+                "ctaDeficit": "To see where every euro goes, record your real expenses day by day in your Kakebo.",
+                "ctaZero": "To find some margin, record your real expenses day by day in your Kakebo.",
+                "ctaTight": "To protect your margin, record your expenses day by day and spot deviations early.",
+                "ctaBelowTarget": "To get closer to 20%, record your variable expenses day by day and review them each month.",
+                "ctaGood": "To keep your margin, record your expenses day by day and check each month that you are on target.",
+                "ctaNote": "Free. You already have this result without signing up.",
                 "ctaTitle": "Want to track this daily automatically?",
                 "ctaButton": "Create my Free Kakebo"
             },

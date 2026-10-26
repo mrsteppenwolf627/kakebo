@@ -319,7 +319,13 @@
                 "totalGoalDesc": "Fondo de emergencia, viaje, entrada de piso...",
                 "months": "Plazo para alcanzarlo",
                 "monthsUnit": "meses",
-                "monthsDesc": "En cuántos meses quieres alcanzarlo (opcional)."
+                "monthsDesc": "En cuántos meses quieres alcanzarlo (opcional).",
+                "exampleNote": "Hemos dejado un ejemplo para que veas cómo funciona. Sustituye los importes por los tuyos: el resultado se actualiza mientras escribes.",
+                "privacyNote": "Los importes que escribes se quedan en tu navegador: no se guardan ni se envían.",
+                "goalHint": "Opcional: añade una cantidad para ver en cuántos meses la alcanzarías. Si además indicas un plazo, verás cuánto tendrías que ahorrar cada mes.",
+                "errorNegative": "Introduce un importe igual o mayor que 0.",
+                "errorMonths": "Introduce un plazo entero entre 1 y 240 meses para ver el ahorro mensual necesario.",
+                "seeResult": "Ver mi resultado"
             },
             "tips": {
                 "title": "El secreto Kakebo",
@@ -362,6 +368,15 @@
                     "optional": "Ocio y Vicio (20%)",
                     "culture": "Cultura (10%)"
                 },
+                "regionLabel": "Resultado de tu cálculo",
+                "summary": "Con estos datos te quedan {margin} al mes, un {rate}% de tus ingresos.",
+                "summaryDeficit": "Con estos datos gastas {deficit} más de lo que ingresas cada mes.",
+                "ctaDeficit": "Para ver en qué se va cada euro, registra tus gastos reales día a día en tu Kakebo.",
+                "ctaZero": "Para encontrar margen, registra tus gastos reales día a día en tu Kakebo.",
+                "ctaTight": "Para proteger tu margen, registra tus gastos día a día y detecta pronto los desvíos.",
+                "ctaBelowTarget": "Para acercarte al 20%, registra tus gastos variables día a día y revísalos cada mes.",
+                "ctaGood": "Para mantener tu margen, registra tus gastos día a día y revisa cada mes que sigues en tu objetivo.",
+                "ctaNote": "Gratis. Este resultado ya lo tienes sin registrarte.",
                 "ctaTitle": "¿Quieres llevar este control día a día?",
                 "ctaButton": "Crear mi Kakebo Gratis"
             },

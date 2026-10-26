@@ -76,8 +76,8 @@ export function SavingsCalculator() {
             : "good";
 
     // Bar widths (capped so fixed + variable ≤ 100%)
-    const fixedPct = income > 0 ? Math.min(100, (fixedExpenses / income) * 100) : 0;
-    const varPct = income > 0 ? Math.min(100 - fixedPct, (variableExpenses / income) * 100) : 0;
+    const fixedPct = income > 0 ? Math.max(0, Math.min(100, (fixedExpenses / income) * 100)) : 0;
+    const varPct = income > 0 ? Math.max(0, Math.min(100 - fixedPct, (variableExpenses / income) * 100)) : 0;
     const marginBarPct = Math.max(0, 100 - fixedPct - varPct);
 
     // Goal calculations
@@ -178,6 +178,23 @@ export function SavingsCalculator() {
     };
     const sc = statusConfig[status];
 
+    // Validación solo informativa: no altera el cálculo, que sigue exactamente igual.
+    const negative = { income: income < 0, fixed: fixedExpenses < 0, variable: variableExpenses < 0, goal: totalGoal < 0 };
+    const monthsInvalid = showGoal && totalGoal > 0 && (!Number.isInteger(months) || months < 1 || months > 240);
+    const resultsRef = useRef<HTMLDivElement>(null);
+    const focusResults = () => {
+        resultsRef.current?.focus();
+        const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+        resultsRef.current?.scrollIntoView?.({ block: "start", behavior: reduceMotion ? "auto" : "smooth" });
+    };
+    const ctaByStatus: Record<Status, string> = {
+        deficit: t("results.ctaDeficit"),
+        zero: t("results.ctaZero"),
+        tight: t("results.ctaTight"),
+        below_target: t("results.ctaBelowTarget"),
+        good: t("results.ctaGood"),
+    };
+
     const inputClass =
         "w-full rounded-lg border border-input bg-background py-2.5 text-foreground text-base focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all";
 
@@ -218,6 +235,10 @@ export function SavingsCalculator() {
                     <h2 className="text-base font-semibold text-foreground font-serif">
                         {t("inputs.title")}
                     </h2>
+                    <div className="space-y-1">
+                        <p className="text-sm text-muted-foreground">{t("inputs.exampleNote")}</p>
+                        <p className="text-xs text-muted-foreground">{t("inputs.privacyNote")}</p>
+                    </div>
 
                     {/* Income */}
                     <div className="space-y-2">
@@ -233,7 +254,8 @@ export function SavingsCalculator() {
                             </span>
                             <input
                                 id="sc-income"
-                                aria-describedby="sc-income-desc"
+                                aria-describedby={negative.income ? "sc-income-desc sc-income-error" : "sc-income-desc"}
+                                aria-invalid={negative.income}
                                 type="number"
                                 min="0"
                                 step="100"
@@ -244,6 +266,11 @@ export function SavingsCalculator() {
                             />
                         </div>
                         <p id="sc-income-desc" className="text-xs text-muted-foreground">{t("inputs.incomeDesc")}</p>
+                        {negative.income && (
+                            <p id="sc-income-error" role="alert" className="text-xs font-medium text-red-600 dark:text-red-400">
+                                {t("inputs.errorNegative")}
+                            </p>
+                        )}
                     </div>
 
                     {/* Fixed expenses */}
@@ -260,7 +287,8 @@ export function SavingsCalculator() {
                             </span>
                             <input
                                 id="sc-fixed"
-                                aria-describedby="sc-fixed-desc"
+                                aria-describedby={negative.fixed ? "sc-fixed-desc sc-fixed-error" : "sc-fixed-desc"}
+                                aria-invalid={negative.fixed}
                                 type="number"
                                 min="0"
                                 step="50"
@@ -271,6 +299,11 @@ export function SavingsCalculator() {
                             />
                         </div>
                         <p id="sc-fixed-desc" className="text-xs text-muted-foreground">{t("inputs.fixedDesc")}</p>
+                        {negative.fixed && (
+                            <p id="sc-fixed-error" role="alert" className="text-xs font-medium text-red-600 dark:text-red-400">
+                                {t("inputs.errorNegative")}
+                            </p>
+                        )}
                     </div>
 
                     {/* Variable expenses */}
@@ -287,7 +320,8 @@ export function SavingsCalculator() {
                             </span>
                             <input
                                 id="sc-variable"
-                                aria-describedby="sc-variable-desc"
+                                aria-describedby={negative.variable ? "sc-variable-desc sc-variable-error" : "sc-variable-desc"}
+                                aria-invalid={negative.variable}
                                 type="number"
                                 min="0"
                                 step="50"
@@ -298,6 +332,11 @@ export function SavingsCalculator() {
                             />
                         </div>
                         <p id="sc-variable-desc" className="text-xs text-muted-foreground">{t("inputs.variableDesc")}</p>
+                        {negative.variable && (
+                            <p id="sc-variable-error" role="alert" className="text-xs font-medium text-red-600 dark:text-red-400">
+                                {t("inputs.errorNegative")}
+                            </p>
+                        )}
                     </div>
 
                     {/* Goal toggle section */}
@@ -307,6 +346,7 @@ export function SavingsCalculator() {
                             className="flex items-center gap-2 text-sm text-[#9a5a3a] dark:text-primary font-medium hover:opacity-80 transition-colors"
                             aria-expanded={showGoal}
                             aria-controls="sc-goal-fields"
+                            aria-describedby="sc-goal-hint"
                         >
                             <span
                                 className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center text-xs leading-none flex-shrink-0"
@@ -316,6 +356,7 @@ export function SavingsCalculator() {
                             </span>
                             {showGoal ? t("inputs.goalHide") : t("inputs.goalToggle")}
                         </button>
+                        <p id="sc-goal-hint" className="text-xs text-muted-foreground">{t("inputs.goalHint")}</p>
 
                         {showGoal && (
                             <div id="sc-goal-fields" className="space-y-4">
@@ -332,7 +373,8 @@ export function SavingsCalculator() {
                                         </span>
                                         <input
                                             id="sc-goal"
-                                aria-describedby="sc-goal-desc"
+                                            aria-describedby={negative.goal ? "sc-goal-desc sc-goal-error" : "sc-goal-desc"}
+                                            aria-invalid={negative.goal}
                                             type="number"
                                             min="0"
                                             step="500"
@@ -346,6 +388,11 @@ export function SavingsCalculator() {
                                     <p id="sc-goal-desc" className="text-xs text-muted-foreground">
                                         {t("inputs.totalGoalDesc")}
                                     </p>
+                                    {negative.goal && (
+                                        <p id="sc-goal-error" role="alert" className="text-xs font-medium text-red-600 dark:text-red-400">
+                                            {t("inputs.errorNegative")}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="space-y-2">
@@ -357,7 +404,8 @@ export function SavingsCalculator() {
                                     </label>
                                     <input
                                         id="sc-months"
-                                aria-describedby="sc-months-desc"
+                                        aria-describedby={monthsInvalid ? "sc-months-desc sc-months-error" : "sc-months-desc"}
+                                        aria-invalid={monthsInvalid}
                                         type="number"
                                         min="1"
                                         max="240"
@@ -371,14 +419,36 @@ export function SavingsCalculator() {
                                     <p id="sc-months-desc" className="text-xs text-muted-foreground">
                                         {t("inputs.monthsDesc")}
                                     </p>
+                                    {monthsInvalid && (
+                                        <p id="sc-months-error" role="alert" className="text-xs font-medium text-red-600 dark:text-red-400">
+                                            {t("inputs.errorMonths")}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         )}
                     </div>
+
+                    {/* En móvil el resultado queda debajo del formulario: acceso directo con teclado y táctil */}
+                    {income > 0 && (
+                        <button
+                            type="button"
+                            onClick={focusResults}
+                            className="lg:hidden w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
+                        >
+                            {t("inputs.seeResult")}
+                        </button>
+                    )}
                 </aside>
 
                 {/* Results area */}
-                <div className="lg:col-span-8 space-y-6">
+                <div
+                    ref={resultsRef}
+                    tabIndex={-1}
+                    role="region"
+                    aria-label={t("results.regionLabel")}
+                    className="lg:col-span-8 space-y-6 scroll-mt-24 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background rounded-2xl"
+                >
                     {income === 0 ? (
                         <div className="bg-card border border-border rounded-2xl p-12 text-center">
                             <p className="text-muted-foreground font-light text-lg">
@@ -390,6 +460,12 @@ export function SavingsCalculator() {
                             {/* Main result card */}
                             <div className="bg-card border border-border rounded-2xl p-8 md:p-10 shadow-sm space-y-8 relative overflow-hidden">
                                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/20 via-primary to-primary/20" />
+
+                                <p className="text-base md:text-lg font-medium text-foreground">
+                                    {margenReal < 0
+                                        ? t("results.summaryDeficit", { deficit: fmt(-margenReal) })
+                                        : t("results.summary", { margin: fmt(margenReal), rate: Math.round(savingsRate) })}
+                                </p>
 
                                 {/* Margin + rate */}
                                 <div className="grid sm:grid-cols-2 gap-6">
@@ -604,6 +680,7 @@ export function SavingsCalculator() {
                                 <p className="text-sm font-light text-background/70">
                                     {t("results.ctaTitle")}
                                 </p>
+                                <p className="text-sm text-background/90 max-w-md mx-auto">{ctaByStatus[status]}</p>
                                 <Link
                                     href={CTA_HREF}
                                     onClick={() =>
@@ -613,10 +690,11 @@ export function SavingsCalculator() {
                                             source: getSourceFromHref(CTA_HREF),
                                         })
                                     }
-                                    className="inline-block bg-background text-foreground font-semibold px-8 py-3 rounded-full hover:opacity-90 transition-opacity text-sm"
+                                    className="inline-block bg-background text-foreground font-semibold px-8 py-3 rounded-full hover:opacity-90 transition-opacity text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-foreground"
                                 >
                                     {t("results.ctaButton")}
                                 </Link>
+                                <p className="text-xs text-background/70">{t("results.ctaNote")}</p>
                             </div>
                         </>
                     )}
