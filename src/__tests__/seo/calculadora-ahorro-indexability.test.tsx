@@ -87,3 +87,31 @@ describe("calculadora de ahorro: indexabilidad verificable desde código", () =>
     expect(anchors.map((a) => a.getAttribute("href"))).toContain("/sobre-nosotros");
   });
 });
+
+describe("calculadora de ahorro: metadatos SEO por idioma", () => {
+  it("EN: title y description describen la calculadora de margen real", async () => {
+    const meta = await metadataFor("en");
+    expect(meta.title).toBe("Monthly Savings Calculator: Real Savings Margin | Kakebo");
+    expect(meta.description).toBe(
+      "Calculate your real monthly savings margin from net income and fixed and variable expenses. Set a savings goal and estimate the time needed. Free."
+    );
+  });
+
+  it("ES: title y description originales sin cambios", async () => {
+    const meta = await metadataFor("es");
+    expect(meta.title).toBe("Calculadora de Ahorro Mensual Gratis");
+    expect(meta.description).toBe(
+      "Calcula tu margen de ahorro real: ingresos menos gastos fijos y variables. También cuánto tiempo necesitas para tu objetivo. Gratis, sin registro."
+    );
+  });
+
+  it("canonical y hreflang no cambian", async () => {
+    const en = await metadataFor("en");
+    const es = await metadataFor("es");
+    expect(en.alternates?.canonical).toBe(EN_URL);
+    expect(es.alternates?.canonical).toBe(ES_URL);
+    const expected = { es: ES_URL, en: EN_URL, "x-default": ES_URL };
+    expect(en.alternates?.languages).toEqual(expected);
+    expect(es.alternates?.languages).toEqual(expected);
+  });
+});
