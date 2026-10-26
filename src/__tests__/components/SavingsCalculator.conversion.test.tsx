@@ -5,7 +5,7 @@ import esMessages from "../../../messages/es.json";
 import enMessages from "../../../messages/en.json";
 
 const trackMock = vi.fn();
-vi.mock("@/lib/analytics", () => ({ analytics: { track: (...args: unknown[]) => trackMock(...args) } }));
+vi.mock("@/lib/analytics", () => ({ analytics: { track: (...args: unknown[]) => (trackMock(...args), true) } }));
 vi.mock("@/i18n/routing", () => ({
   Link: ({ href, children, onClick, ...rest }: { href: string; children: React.ReactNode; onClick?: () => void; [key: string]: unknown }) => (
     <a href={href} onClick={onClick} {...rest}>

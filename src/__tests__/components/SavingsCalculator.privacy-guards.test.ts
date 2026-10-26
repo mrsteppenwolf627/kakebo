@@ -8,17 +8,21 @@ const page = fs.readFileSync(path.join(SRC, "app", "[locale]", "(public)", "herr
 
 // Guardas estáticas: complementan las pruebas de payload en tiempo de ejecución.
 describe("calculadora de ahorro: privacidad de los datos introducidos", () => {
-  it("cada analytics.track solo usa los parámetros permitidos", () => {
-    const calls = [...source.matchAll(/analytics\.track\(\s*"([a-z_]+)"\s*,\s*\{([\s\S]*?)\}\s*\)/g)];
-    expect(calls.map((c) => c[1]).sort()).toEqual([
+  it("cada analytics.track solo usa los parámetros permitidos y solo existen los 5 eventos", () => {
+    // Llamadas directas (tool_viewed, CTA) y envíos de un solo uso (sendOnce / sendOnce(flag, "nombre")).
+    const direct = [...source.matchAll(/analytics\.track\(\s*"([a-z_]+)"\s*,\s*\{([\s\S]*?)\}\s*\)/g)];
+    const once = [...source.matchAll(/sendOnce\(\s*\w+\s*,\s*"([a-z_]+)"\s*\)/g)].map((m) => m[1]);
+    expect([...direct.map((c) => c[1]), ...once].sort()).toEqual([
       "click_tool_to_app",
       "savings_calculator_calculate",
       "savings_calculator_goal_result",
       "tool_viewed",
       "use_savings_calculator",
     ]);
+    // La única llamada genérica a track dentro de sendOnce lleva solo el contexto de página.
+    expect(source).toMatch(/analytics\.track\(name, \{ tool_name: "calculadora_ahorro", \.\.\.pageContext\(\) \}\)/);
     const allowed = new Set(["tool_name", "page_path", "page_title", "source", "...pageContext()"]);
-    for (const [, name, body] of calls) {
+    for (const [, name, body] of direct) {
       const keys = body
         .split(/,\s*(?![^()]*\))/)
         .map((entry) => entry.trim())
@@ -27,6 +31,13 @@ describe("calculadora de ahorro: privacidad de los datos introducidos", () => {
       for (const key of keys) expect(allowed.has(key), `${name} usa el parámetro no permitido «${key}»`).toBe(true);
       if (name !== "click_tool_to_app") expect(keys).not.toContain("source");
     }
+  });
+
+  it("el source del CTA es una constante fija, no derivada del resultado", () => {
+    expect(source).toContain('const CTA_SOURCE = "calculadora_ahorro";');
+    expect(source).toMatch(/source: CTA_SOURCE/);
+    expect(source).not.toMatch(/source: (?!CTA_SOURCE)/);
+    expect(source).toContain("source=" + "calculadora_ahorro");
   });
 
   it("pageContext solo expone ruta y título del documento", () => {

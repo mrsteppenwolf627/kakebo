@@ -6,9 +6,12 @@ import { Link } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import { analytics } from "@/lib/analytics";
-import { getSourceFromHref } from "@/lib/authIntent";
 
 const CTA_HREF = "/login?mode=signup&source=calculadora_ahorro";
+// `source` del CTA: constante fija, nunca derivada del resultado ni de lo que escribe la persona.
+const CTA_SOURCE = "calculadora_ahorro";
+// Un segundo clic dentro de esta ventana (doble clic) no genera otro evento.
+const CTA_CLICK_DEDUPE_MS = 2000;
 
 const NUMBER_LOCALES: Record<string, string> = { es: "es-ES", en: "en-IE" };
 
@@ -53,6 +56,8 @@ export function SavingsCalculator() {
     const hasTrackedCalculate = useRef(false);
     const hasTrackedGoal = useRef(false);
     const hasTrackedView = useRef(false);
+    const hasInteracted = useRef(false);
+    const lastCtaClick = useRef(0);
 
     useEffect(() => {
         if (hasTrackedView.current) return;
@@ -88,31 +93,42 @@ export function SavingsCalculator() {
     const diferenciaConPlazo =
         ahorroNecesario !== null ? margenReal - ahorroNecesario : null;
 
+    // Unidad de cada evento (los payloads no llevan datos del cálculo, así que repetirlos solo inflaría el recuento):
+    // - use_savings_calculator: primera interacción real (cambiar un campo o abrir el objetivo), una vez por carga.
+    // - savings_calculator_calculate: primer cálculo completado, una vez por carga. "Completado" = la persona ya ha
+    //   modificado algo, ha terminado de editar (el foco sale del formulario o pulsa «Ver mi resultado»), hay ingresos
+    //   y ningún importe es negativo. Los cambios intermedios, las pulsaciones y los blur entre campos no cuentan.
+    // - savings_calculator_goal_result: primer resultado de objetivo válido mostrado en un cálculo completado.
+    // Cada flag solo se marca si el evento se entregó (con consentimiento); sin consentimiento no se envía nada
+    // ni se reenvía después de aceptar.
+    const sendOnce = (flag: { current: boolean }, name: Parameters<typeof analytics.track>[0]) => {
+        if (flag.current) return;
+        if (analytics.track(name, { tool_name: "calculadora_ahorro", ...pageContext() })) flag.current = true;
+    };
+
     const trackInteraction = () => {
-        if (!hasTrackedUse.current) {
-            hasTrackedUse.current = true;
-            analytics.track("use_savings_calculator", { tool_name: "calculadora_ahorro", ...pageContext() });
-        }
-        hasTrackedCalculate.current = false;
+        hasInteracted.current = true;
+        sendOnce(hasTrackedUse, "use_savings_calculator");
     };
 
-    const trackCalculate = () => {
-        if (!hasTrackedCalculate.current && income > 0) {
-            hasTrackedCalculate.current = true;
-            analytics.track("savings_calculator_calculate", {
-                tool_name: "calculadora_ahorro",
-                ...pageContext(),
-            });
-        }
+    const trackCompletedCalculation = () => {
+        const valid = income > 0 && fixedExpenses >= 0 && variableExpenses >= 0 && totalGoal >= 0;
+        if (!hasInteracted.current || !valid) return;
+        sendOnce(hasTrackedCalculate, "savings_calculator_calculate");
+        if (showGoal && mesesParaObjetivo !== null) sendOnce(hasTrackedGoal, "savings_calculator_goal_result");
     };
 
-    const trackGoalResult = () => {
-        if (!hasTrackedGoal.current && mesesParaObjetivo !== null) {
-            hasTrackedGoal.current = true;
-            analytics.track("savings_calculator_goal_result", {
-                tool_name: "calculadora_ahorro",
-                ...pageContext(),
-            });
+    const handlePanelBlur = (e: React.FocusEvent<HTMLElement>) => {
+        // Solo cuenta cuando el foco sale del formulario, no al pasar de un campo a otro.
+        if (e.relatedTarget instanceof Node && e.currentTarget.contains(e.relatedTarget)) return;
+        trackCompletedCalculation();
+    };
+
+    const handleCtaClick = () => {
+        const now = Date.now();
+        if (now - lastCtaClick.current < CTA_CLICK_DEDUPE_MS) return;
+        if (analytics.track("click_tool_to_app", { tool_name: "calculadora_ahorro", ...pageContext(), source: CTA_SOURCE })) {
+            lastCtaClick.current = now;
         }
     };
 
@@ -123,22 +139,11 @@ export function SavingsCalculator() {
             trackInteraction();
         };
 
-    const handleInputBlur = () => {
-        trackCalculate();
-    };
-
     const handleGoalToggle = () => {
         const next = !showGoal;
         setShowGoal(next);
         if (next) trackInteraction();
     };
-
-    useEffect(() => {
-        if (showGoal && totalGoal > 0 && margenReal > 0) {
-            trackGoalResult();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [showGoal, totalGoal, margenReal]);
 
     // Status display config
     const statusConfig: Record<
@@ -183,6 +188,7 @@ export function SavingsCalculator() {
     const monthsInvalid = showGoal && totalGoal > 0 && (!Number.isInteger(months) || months < 1 || months > 240);
     const resultsRef = useRef<HTMLDivElement>(null);
     const focusResults = () => {
+        trackCompletedCalculation();
         resultsRef.current?.focus();
         const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
         resultsRef.current?.scrollIntoView?.({ block: "start", behavior: reduceMotion ? "auto" : "smooth" });
@@ -231,7 +237,7 @@ export function SavingsCalculator() {
             {/* Calculator grid */}
             <div className="grid lg:grid-cols-12 gap-8 items-start">
                 {/* Inputs sidebar */}
-                <aside className="lg:col-span-4 bg-card border border-border rounded-2xl p-8 shadow-sm space-y-6 lg:sticky lg:top-24">
+                <aside onBlur={handlePanelBlur} className="lg:col-span-4 bg-card border border-border rounded-2xl p-8 shadow-sm space-y-6 lg:sticky lg:top-24">
                     <h2 className="text-base font-semibold text-foreground font-serif">
                         {t("inputs.title")}
                     </h2>
@@ -261,7 +267,6 @@ export function SavingsCalculator() {
                                 step="100"
                                 value={income}
                                 onChange={handleInput(setIncome)}
-                                onBlur={handleInputBlur}
                                 className={`${inputClass} pl-8 pr-3`}
                             />
                         </div>
@@ -294,7 +299,6 @@ export function SavingsCalculator() {
                                 step="50"
                                 value={fixedExpenses}
                                 onChange={handleInput(setFixedExpenses)}
-                                onBlur={handleInputBlur}
                                 className={`${inputClass} pl-8 pr-3`}
                             />
                         </div>
@@ -327,7 +331,6 @@ export function SavingsCalculator() {
                                 step="50"
                                 value={variableExpenses}
                                 onChange={handleInput(setVariableExpenses)}
-                                onBlur={handleInputBlur}
                                 className={`${inputClass} pl-8 pr-3`}
                             />
                         </div>
@@ -381,7 +384,6 @@ export function SavingsCalculator() {
                                             value={totalGoal || ""}
                                             placeholder="0"
                                             onChange={handleInput(setTotalGoal)}
-                                            onBlur={handleInputBlur}
                                             className={`${inputClass} pl-8 pr-3`}
                                         />
                                     </div>
@@ -413,7 +415,6 @@ export function SavingsCalculator() {
                                         value={months || ""}
                                         placeholder="12"
                                         onChange={handleInput(setMonths)}
-                                        onBlur={handleInputBlur}
                                         className={`${inputClass} px-3`}
                                     />
                                     <p id="sc-months-desc" className="text-xs text-muted-foreground">
@@ -683,13 +684,7 @@ export function SavingsCalculator() {
                                 <p className="text-sm text-background/90 max-w-md mx-auto">{ctaByStatus[status]}</p>
                                 <Link
                                     href={CTA_HREF}
-                                    onClick={() =>
-                                        analytics.track("click_tool_to_app", {
-                                            tool_name: "calculadora_ahorro",
-                                            ...pageContext(),
-                                            source: getSourceFromHref(CTA_HREF),
-                                        })
-                                    }
+                                    onClick={handleCtaClick}
                                     className="inline-block bg-background text-foreground font-semibold px-8 py-3 rounded-full hover:opacity-90 transition-opacity text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background focus-visible:ring-offset-2 focus-visible:ring-offset-foreground"
                                 >
                                     {t("results.ctaButton")}
