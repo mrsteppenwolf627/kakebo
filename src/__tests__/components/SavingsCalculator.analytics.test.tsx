@@ -233,14 +233,40 @@ describe.each(["es", "en"] as const)("SavingsCalculator analytics, contrato del 
     renderCalculator(locale);
     openGoal(locale);
     setValue("sc-goal", "3000");
-    for (const bad of ["300", "2.5", "-4"]) {
+    for (const bad of ["0", "300", "241", "2.5", "-4"]) {
       setValue("sc-months", bad);
+      leavePanel("sc-months");
       leavePanel("sc-months");
     }
     expect(callsOf("savings_calculator_goal_result")).toHaveLength(0);
     setValue("sc-months", "12");
     leavePanel("sc-months");
+    leavePanel("sc-months");
     expect(callsOf("savings_calculator_goal_result")).toHaveLength(1);
+  });
+
+  it.each(["1", "240"])("savings_calculator_goal_result: los límites del plazo (%s) son válidos", (limit) => {
+    renderCalculator(locale);
+    openGoal(locale);
+    setValue("sc-goal", "3000");
+    setValue("sc-months", limit);
+    leavePanel("sc-months");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(1);
+  });
+
+  it("el plazo 0 se distingue del vacío: 0 muestra el error de plazo y no emite; vaciar el campo (sin plazo) sí emite", () => {
+    renderCalculator(locale);
+    openGoal(locale);
+    setValue("sc-goal", "3000");
+    setValue("sc-months", "0");
+    leavePanel("sc-months");
+    expect((document.getElementById("sc-months") as HTMLInputElement).value).toBe("0");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(0);
+    setValue("sc-months", "");
+    leavePanel("sc-months");
+    expect((document.getElementById("sc-months") as HTMLInputElement).value).toBe("");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(1);
+    expect(JSON.stringify(trackMock.mock.calls)).not.toMatch(/3000|"0"/);
   });
 
   it("savings_calculator_goal_result: sin plazo en déficit o sin ingresos, cero eventos", () => {

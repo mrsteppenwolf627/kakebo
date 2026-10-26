@@ -50,7 +50,11 @@ export function SavingsCalculator() {
     const [variableExpenses, setVariableExpenses] = useState<number>(500);
     const [showGoal, setShowGoal] = useState(false);
     const [totalGoal, setTotalGoal] = useState<number>(0);
-    const [months, setMonths] = useState<number>(12);
+    // El plazo se guarda como texto para distinguir «vacío» (objetivo sin plazo) de «0» (inválido): Number("") === 0.
+    const [monthsInput, setMonthsInput] = useState<string>("12");
+    const [monthsBad, setMonthsBad] = useState(false); // el navegador rechazó el texto (p. ej. «1e»)
+    const monthsEmpty = monthsInput.trim() === "" && !monthsBad;
+    const months = monthsInput.trim() === "" ? 0 : Number(monthsInput);
 
     const hasTrackedUse = useRef(false);
     const calcDirty = useRef(false);
@@ -101,7 +105,8 @@ export function SavingsCalculator() {
     //   nueva modificación abre otro. Pulsaciones, blur intermedios, re-render e hidratación no emiten nada.
     // - savings_calculator_goal_result: mismo ciclo, pero marcado solo al modificar el objetivo o el plazo, y solo con
     //   un resultado de objetivo válido dentro de un cálculo completado: margen positivo y, o bien plazo válido, o bien
-    //   sin plazo (campo vacío) con los meses estimados mostrados. Un plazo escrito e inválido no cuenta.
+    //   sin plazo (campo vacío) con los meses estimados mostrados. Un plazo escrito e inválido (0, negativo, decimal,
+    //   mayor de 240 o texto no numérico) no cuenta.
     // El ciclo solo se cierra si el evento se entregó (hay consentimiento): sin consentimiento no se envía nada, y lo
     // pendiente no se reenvía al aceptar; la siguiente modificación completada sí cuenta.
     const sendEvent = (name: Parameters<typeof analytics.track>[0]) =>
@@ -118,7 +123,7 @@ export function SavingsCalculator() {
         if (calcDirty.current && sendEvent("savings_calculator_calculate")) calcDirty.current = false;
         // Con plazo válido, o sin plazo (campo vacío) cuando se muestran los meses estimados. Un plazo escrito pero
         // inválido no genera resultado de objetivo.
-        const deadlineOk = months === 0 || !monthsInvalid;
+        const deadlineOk = monthsEmpty || !monthsInvalid;
         if (goalDirty.current && showGoal && mesesParaObjetivo !== null && deadlineOk) {
             if (sendEvent("savings_calculator_goal_result")) goalDirty.current = false;
         }
@@ -193,7 +198,7 @@ export function SavingsCalculator() {
 
     // Validación solo informativa: no altera el cálculo, que sigue exactamente igual.
     const negative = { income: income < 0, fixed: fixedExpenses < 0, variable: variableExpenses < 0, goal: totalGoal < 0 };
-    const monthsInvalid = showGoal && totalGoal > 0 && (!Number.isInteger(months) || months < 1 || months > 240);
+    const monthsInvalid = showGoal && totalGoal > 0 && (monthsBad || !Number.isInteger(months) || months < 1 || months > 240);
     const resultsRef = useRef<HTMLDivElement>(null);
     const focusResults = () => {
         trackCompletedCalculation();
@@ -420,9 +425,15 @@ export function SavingsCalculator() {
                                         min="1"
                                         max="240"
                                         step="1"
-                                        value={months || ""}
+                                        value={monthsInput}
                                         placeholder="12"
-                                        onChange={handleInput(setMonths, true)}
+                                        onChange={(e) => {
+                                            setMonthsInput(e.target.value);
+                                            setMonthsBad(e.target.validity.badInput);
+                                            calcDirty.current = true;
+                                            goalDirty.current = true;
+                                            trackInteraction();
+                                        }}
                                         className={`${inputClass} px-3`}
                                     />
                                     <p id="sc-months-desc" className="text-xs text-muted-foreground">
