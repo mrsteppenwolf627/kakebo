@@ -100,7 +100,8 @@ export function SavingsCalculator() {
     //   se pulsa «Ver mi resultado», con ingresos y sin importes negativos. Al enviarse, el ciclo queda cerrado y una
     //   nueva modificación abre otro. Pulsaciones, blur intermedios, re-render e hidratación no emiten nada.
     // - savings_calculator_goal_result: mismo ciclo, pero marcado solo al modificar el objetivo o el plazo, y solo con
-    //   un resultado de objetivo válido (margen positivo y plazo válido) dentro de un cálculo completado.
+    //   un resultado de objetivo válido dentro de un cálculo completado: margen positivo y, o bien plazo válido, o bien
+    //   sin plazo (campo vacío) con los meses estimados mostrados. Un plazo escrito e inválido no cuenta.
     // El ciclo solo se cierra si el evento se entregó (hay consentimiento): sin consentimiento no se envía nada, y lo
     // pendiente no se reenvía al aceptar; la siguiente modificación completada sí cuenta.
     const sendEvent = (name: Parameters<typeof analytics.track>[0]) =>
@@ -115,7 +116,10 @@ export function SavingsCalculator() {
         const valid = income > 0 && fixedExpenses >= 0 && variableExpenses >= 0 && totalGoal >= 0;
         if (!valid) return;
         if (calcDirty.current && sendEvent("savings_calculator_calculate")) calcDirty.current = false;
-        if (goalDirty.current && showGoal && mesesParaObjetivo !== null && !monthsInvalid) {
+        // Con plazo válido, o sin plazo (campo vacío) cuando se muestran los meses estimados. Un plazo escrito pero
+        // inválido no genera resultado de objetivo.
+        const deadlineOk = months === 0 || !monthsInvalid;
+        if (goalDirty.current && showGoal && mesesParaObjetivo !== null && deadlineOk) {
             if (sendEvent("savings_calculator_goal_result")) goalDirty.current = false;
         }
     };

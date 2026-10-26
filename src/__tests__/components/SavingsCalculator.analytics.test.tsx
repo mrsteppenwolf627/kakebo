@@ -172,18 +172,89 @@ describe.each(["es", "en"] as const)("SavingsCalculator analytics, contrato del 
     expect(callsOf("savings_calculator_goal_result")).toHaveLength(3);
   });
 
-  it("savings_calculator_goal_result: no se envía con el plazo inválido", () => {
+  it("savings_calculator_goal_result: objetivo con plazo válido, un evento", () => {
     renderCalculator(locale);
     openGoal(locale);
     setValue("sc-goal", "3000");
+    setValue("sc-months", "12");
+    leavePanel("sc-months");
+    expect(callsOf("savings_calculator_goal_result")).toEqual([["savings_calculator_goal_result", context(locale)]]);
+  });
+
+  it("savings_calculator_goal_result: objetivo sin plazo con meses estimados, un evento (y sin repetir)", () => {
+    const { rerender } = renderCalculator(locale);
+    openGoal(locale);
+    setValue("sc-goal", "3500");
     setValue("sc-months", "");
     leavePanel("sc-months");
-    setValue("sc-months", "300");
     leavePanel("sc-months");
+    rerender(tree(locale));
+    leavePanel("sc-goal");
+    expect(callsOf("savings_calculator_goal_result")).toEqual([["savings_calculator_goal_result", context(locale)]]);
+  });
+
+  it("savings_calculator_goal_result: objetivo sin plazo vacío, parcial, cero o negativo: cero eventos", () => {
+    renderCalculator(locale);
+    openGoal(locale);
+    setValue("sc-months", "");
+    leavePanel("sc-months"); // objetivo vacío
+    setValue("sc-goal", "0");
+    leavePanel("sc-goal");
+    setValue("sc-goal", "-3000");
+    leavePanel("sc-goal");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(0);
+  });
+
+  it("savings_calculator_goal_result: sin plazo, cambiar el objetivo y recalcular emite un segundo evento", () => {
+    renderCalculator(locale);
+    openGoal(locale);
+    setValue("sc-months", "");
+    setValue("sc-goal", "3000");
+    leavePanel("sc-goal");
+    setValue("sc-goal", "6000");
+    leavePanel("sc-goal");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(2);
+  });
+
+  it("savings_calculator_goal_result: pasar de sin plazo a un plazo (y cambiarlo) emite un evento por cambio", () => {
+    renderCalculator(locale);
+    openGoal(locale);
+    setValue("sc-months", "");
+    setValue("sc-goal", "3000");
+    leavePanel("sc-goal");
+    setValue("sc-months", "12");
+    leavePanel("sc-months");
+    setValue("sc-months", "18");
+    leavePanel("sc-months");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(3);
+  });
+
+  it("savings_calculator_goal_result: un plazo escrito e inválido (fuera de rango, decimal, negativo) no emite; uno válido después sí", () => {
+    renderCalculator(locale);
+    openGoal(locale);
+    setValue("sc-goal", "3000");
+    for (const bad of ["300", "2.5", "-4"]) {
+      setValue("sc-months", bad);
+      leavePanel("sc-months");
+    }
     expect(callsOf("savings_calculator_goal_result")).toHaveLength(0);
     setValue("sc-months", "12");
     leavePanel("sc-months");
     expect(callsOf("savings_calculator_goal_result")).toHaveLength(1);
+  });
+
+  it("savings_calculator_goal_result: sin plazo en déficit o sin ingresos, cero eventos", () => {
+    renderCalculator(locale);
+    openGoal(locale);
+    setValue("sc-months", "");
+    setValue("sc-goal", "3000");
+    setValue("sc-variable", "2500");
+    leavePanel("sc-variable");
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(0);
+    setValue("sc-variable", "500");
+    setValue("sc-income", "0");
+    leavePanel();
+    expect(callsOf("savings_calculator_goal_result")).toHaveLength(0);
   });
 
   it("savings_calculator_goal_result: no se envía sin margen positivo", () => {
