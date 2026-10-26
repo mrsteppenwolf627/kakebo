@@ -290,8 +290,8 @@
         },
         "Savings": {
             "meta": {
-                "title": "Kakebo Savings Calculator: Distribute your salary",
-                "description": "Discover the ideal distribution of your income according to the Japanese Kakebo method. Calculate how much you should spend on survival, leisure, culture, and savings.",
+                "title": "Monthly Savings Calculator: Real Savings Margin | Kakebo",
+                "description": "Calculate your real monthly savings margin from net income and fixed and variable expenses. Set a savings goal and estimate the time needed. Free.",
                 "ogTitle": "Kakebo Savings Calculator: Your Ideal Salary",
                 "ogDescription": "Distribute your payroll with the Japanese method: 50% Survival, 20% Leisure, 10% Culture, 20% Savings."
             },
