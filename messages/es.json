@@ -1302,7 +1302,46 @@
         "comingSoonTitle": "Preparando el escáner",
         "comingSoonDescription": "Tu plan incluye esta función. La subida y lectura de tickets se habilitarán cuando termine la integración segura del servicio de reconocimiento.",
         "unavailableTitle": "El escáner no está disponible ahora",
-        "unavailableDescription": "No hemos podido comprobar tu acceso. No se ha subido ni guardado ningún ticket. Inténtalo de nuevo más tarde."
+        "unavailableDescription": "No hemos podido comprobar tu acceso. No se ha subido ni guardado ningún ticket. Inténtalo de nuevo más tarde.",
+        "localeCode": "es",
+        "flow": {
+            "startTitle": "Añade un ticket",
+            "startIntro": "Haz una foto o elige una imagen. Revisarás todos los datos antes de añadir cualquier gasto.",
+            "takePhoto": "Tomar una foto",
+            "chooseImage": "Elegir una imagen",
+            "uploading": "Subiendo el ticket de forma privada…",
+            "processing": "Leyendo el ticket…",
+            "reviewTitle": "Revisa el ticket",
+            "reviewIntro": "Corrige cualquier dato antes de confirmar. Nada se añadirá hasta que pulses confirmar.",
+            "merchant": "Comercio",
+            "date": "Fecha",
+            "total": "Total (€)",
+            "lines": "Artículos",
+            "description": "Descripción",
+            "amount": "Importe (€)",
+            "category": "Categoría",
+            "chooseCategory": "Selecciona una categoría",
+            "suggested": "Sugerida: {category}. Revísala antes de confirmar.",
+            "reviewNotice": "Es una estimación de lectura automática: revisa los datos y las categorías.",
+            "saving": "Guardando…",
+            "confirm": "Confirmar gastos",
+            "discard": "Descartar ticket",
+            "doneTitle": "Ticket confirmado",
+            "confirmed": "Se han creado {count} gastos tras tu confirmación.",
+            "newTicket": "Escanear otro ticket",
+            "errors": {
+                "type": "Elige una imagen JPG o PNG.",
+                "size": "La imagen debe ocupar menos de 4 MB.",
+                "required": "Completa comercio, fecha, total y una categoría para cada artículo.",
+                "generic": "No se ha podido procesar el ticket. Puedes intentarlo de nuevo o introducir el gasto a mano."
+            }
+        },
+        "categories": {
+            "survival": "Supervivencia",
+            "optional": "Ocio y vicio",
+            "culture": "Cultura",
+            "extra": "Extras"
+        }
     },
     "UserMenu": {
         "signIn": "Entrar",

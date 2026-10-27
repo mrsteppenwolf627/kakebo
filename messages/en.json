@@ -1370,7 +1370,46 @@
         "comingSoonTitle": "Receipt scanning is being prepared",
         "comingSoonDescription": "Your plan includes this feature. Upload and receipt reading will be enabled once the secure recognition-service integration is complete.",
         "unavailableTitle": "Receipt scanning is unavailable right now",
-        "unavailableDescription": "We could not verify your access. No receipt was uploaded or saved. Please try again later."
+        "unavailableDescription": "We could not verify your access. No receipt was uploaded or saved. Please try again later.",
+        "localeCode": "en",
+        "flow": {
+            "startTitle": "Add a receipt",
+            "startIntro": "Take a photo or choose an image. You will review every field before adding any expense.",
+            "takePhoto": "Take a photo",
+            "chooseImage": "Choose an image",
+            "uploading": "Uploading the receipt privately…",
+            "processing": "Reading the receipt…",
+            "reviewTitle": "Review the receipt",
+            "reviewIntro": "Correct any field before confirming. Nothing is added until you confirm.",
+            "merchant": "Merchant",
+            "date": "Date",
+            "total": "Total (€)",
+            "lines": "Items",
+            "description": "Description",
+            "amount": "Amount (€)",
+            "category": "Category",
+            "chooseCategory": "Choose a category",
+            "suggested": "Suggested: {category}. Review it before confirming.",
+            "reviewNotice": "Automatic reading is an estimate: review the fields and categories.",
+            "saving": "Saving…",
+            "confirm": "Confirm expenses",
+            "discard": "Discard receipt",
+            "doneTitle": "Receipt confirmed",
+            "confirmed": "{count} expenses were created after your confirmation.",
+            "newTicket": "Scan another receipt",
+            "errors": {
+                "type": "Choose a JPG or PNG image.",
+                "size": "The image must be smaller than 4 MB.",
+                "required": "Complete the merchant, date, total and a category for every item.",
+                "generic": "The receipt could not be processed. Try again or enter the expense manually."
+            }
+        },
+        "categories": {
+            "survival": "Survival",
+            "optional": "Optional",
+            "culture": "Culture",
+            "extra": "Extras"
+        }
     },
     "UserMenu": {
         "signIn": "Sign in",

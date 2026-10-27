@@ -3,6 +3,7 @@ import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getScannerAccess } from "@/lib/auth/require-access";
+import ScannerClient from "@/components/scanner/ScannerClient";
 
 export const dynamic = "force-dynamic";
 
@@ -41,10 +42,7 @@ export default async function ScannerPage() {
                 </Link>
               </>
             ) : state === "allowed" ? (
-              <>
-                <h2 className="text-xl font-serif font-normal text-foreground">{t("comingSoonTitle")}</h2>
-                <p className="mt-2 text-muted-foreground">{t("comingSoonDescription")}</p>
-              </>
+              <ScannerClient />
             ) : (
               <>
                 <h2 className="text-xl font-serif font-normal text-foreground">{t("unavailableTitle")}</h2>
