@@ -5,11 +5,13 @@ import { requireScannerAccess } from "@/lib/auth/require-access";
 import { createScannerTicket } from "@/lib/scanner/persistence";
 import { noStore, requireIdempotencyKey, scannerPersistenceError } from "@/lib/scanner/http";
 import { scannerStartTicketSchema } from "@/lib/scanner/http";
+import { assertScannerSameOrigin } from "@/lib/scanner/csrf";
 
 export const dynamic = "force-dynamic";
 
 export const POST = withLogging(async (request: NextRequest) => {
   try {
+    assertScannerSameOrigin(request);
     const supabase = await createClient();
     await requireScannerAccess(supabase);
     const key = requireIdempotencyKey(request.headers.get("idempotency-key"));

@@ -24,7 +24,7 @@ const PATH = `${USER.id}/${TICKET}/33333333-3333-4333-8333-333333333333`;
 function request(body: unknown) {
   return new Request("http://localhost/api/scanner/tickets/" + TICKET + "/complete-upload", {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", origin: "http://localhost" },
     body: JSON.stringify(body),
   });
 }

@@ -4,6 +4,7 @@ import { apiErrors, handleApiError, responses, withLogging } from "@/lib/api";
 import { requireScannerAccess } from "@/lib/auth/require-access";
 import { noStore } from "@/lib/scanner/http";
 import { PrivateTicketBucket } from "@/lib/scanner/storage-adapter";
+import { assertScannerSameOrigin } from "@/lib/scanner/csrf";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,7 @@ type RouteContext = { params: Promise<{ ticketId: string }> };
 
 export const POST = withLogging(async (request: NextRequest, context: RouteContext) => {
   try {
+    assertScannerSameOrigin(request);
     const { ticketId } = await context.params;
     if (!UUID.test(ticketId)) throw apiErrors.notFound("Ticket");
     if (request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json") {

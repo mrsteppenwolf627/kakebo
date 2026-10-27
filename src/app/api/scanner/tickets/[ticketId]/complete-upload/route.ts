@@ -5,6 +5,7 @@ import { requireScannerAccess } from "@/lib/auth/require-access";
 import { noStore, scannerPersistenceError } from "@/lib/scanner/http";
 import { registerScannerUpload } from "@/lib/scanner/persistence";
 import { PrivateTicketBucket } from "@/lib/scanner/storage-adapter";
+import { assertScannerSameOrigin } from "@/lib/scanner/csrf";
 import { z } from "zod";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +17,7 @@ type RouteContext = { params: Promise<{ ticketId: string }> };
 /** Confirma una subida directa solo después de comprobar el objeto privado en Storage. */
 export const POST = withLogging(async (request: NextRequest, context: RouteContext) => {
   try {
+    assertScannerSameOrigin(request);
     const { ticketId } = await context.params;
     if (!UUID.test(ticketId)) throw apiErrors.notFound("Ticket");
     if (request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json") {
