@@ -6,8 +6,12 @@ import { SCANNER_ALLOWED_MIME, SCANNER_MAX_UPLOAD_BYTES } from "./storage-adapte
 export const scannerStartTicketSchema = z.strictObject({
   source: z.enum(["camera", "image", "pdf"]),
   locale: z.enum(["es", "en"]),
-  declaredMime: z.string().trim().min(1).max(100),
+  declaredMime: z.enum(SCANNER_ALLOWED_MIME),
   declaredSizeBytes: z.number().int().nonnegative().max(SCANNER_MAX_UPLOAD_BYTES),
+}).superRefine((value, ctx) => {
+  if (value.source === "pdf") {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["source"], message: "PDF no está habilitado para el bucket actual." });
+  }
 });
 
 const UUID_V4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
