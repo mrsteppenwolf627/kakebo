@@ -1321,6 +1321,13 @@
             "amount": "Importe (€)",
             "category": "Categoría",
             "chooseCategory": "Selecciona una categoría",
+            "split": "Repartir este artículo",
+            "splitParts": "Reparto por categorías",
+            "addPart": "Añadir parte",
+            "removePart": "Eliminar parte",
+            "cancelSplit": "Quitar reparto",
+            "splitTotal": "Repartido: {current} € de {expected} €",
+            "totalMismatch": "Los artículos suman {current} €, pero el total es {expected} €.",
             "suggested": "Sugerida: {category}. Revísala antes de confirmar.",
             "reviewNotice": "Es una estimación de lectura automática: revisa los datos y las categorías.",
             "saving": "Guardando…",
@@ -1332,7 +1339,8 @@
             "errors": {
                 "type": "Elige una imagen JPG o PNG.",
                 "size": "La imagen debe ocupar menos de 4 MB.",
-                "required": "Completa comercio, fecha, total y una categoría para cada artículo.",
+                "required": "Completa comercio, fecha y total.",
+                "categories": "Selecciona una categoría para cada artículo y asegúrate de que cada reparto cuadra.",
                 "generic": "No se ha podido procesar el ticket. Puedes intentarlo de nuevo o introducir el gasto a mano."
             }
         },

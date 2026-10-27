@@ -1389,6 +1389,13 @@
             "amount": "Amount (€)",
             "category": "Category",
             "chooseCategory": "Choose a category",
+            "split": "Split this item",
+            "splitParts": "Split by category",
+            "addPart": "Add part",
+            "removePart": "Remove part",
+            "cancelSplit": "Remove split",
+            "splitTotal": "Split: €{current} of €{expected}",
+            "totalMismatch": "Items add up to €{current}, but the total is €{expected}.",
             "suggested": "Suggested: {category}. Review it before confirming.",
             "reviewNotice": "Automatic reading is an estimate: review the fields and categories.",
             "saving": "Saving…",
@@ -1400,7 +1407,8 @@
             "errors": {
                 "type": "Choose a JPG or PNG image.",
                 "size": "The image must be smaller than 4 MB.",
-                "required": "Complete the merchant, date, total and a category for every item.",
+                "required": "Complete the merchant, date and total.",
+                "categories": "Choose a category for every item and make sure each split adds up.",
                 "generic": "The receipt could not be processed. Try again or enter the expense manually."
             }
         },
