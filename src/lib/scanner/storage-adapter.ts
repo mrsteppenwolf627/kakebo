@@ -37,6 +37,7 @@ export interface StorageBucketApi {
   createSignedUploadUrl?: (
     path: string
   ) => Promise<{ data: { signedUrl: string; token: string; path: string } | null; error: { message: string } | null }>;
+  download?: (path: string) => Promise<{ data: Blob | null; error: { message: string } | null }>;
   remove(paths: string[]): Promise<{ data: unknown; error: { message: string } | null }>;
   list(
     folder: string,
@@ -52,6 +53,7 @@ export type StorageErrorCode = "INVALID_INPUT" | "TOO_LARGE" | "UNSUPPORTED_TYPE
 export type UploadResult = { ok: true; objectPath: string } | { ok: false; code: StorageErrorCode };
 export type SignedReadResult = { ok: true; url: string; expiresInSeconds: number } | { ok: false; code: StorageErrorCode };
 export type SignedUploadResult = { ok: true; path: string; url: string; token: string; maxBytes: number } | { ok: false; code: StorageErrorCode };
+export type ReadObjectResult = { ok: true; bytes: Uint8Array; contentType: string | null } | { ok: false; code: StorageErrorCode };
 
 export function buildObjectPath(userId: string, ticketId: string, objectId: string = crypto.randomUUID()): string | null {
   if (![userId, ticketId, objectId].every((v) => UUID.test(v))) return null;
@@ -124,4 +126,27 @@ export class PrivateTicketBucket implements PrivateTicketStorage {
     if (error || !data) return { ok: false };
     return { ok: true, exists: data.some((o) => o.name === name) };
   }
+
+  /** Lee temporalmente un original privado para validarlo o enviarlo al OCR; nunca se persiste ni se registra. */
+  async readObject(objectPath: string): Promise<ReadObjectResult> {
+    if (!PATH.test(objectPath) || typeof this.bucket.download !== "function") return { ok: false, code: "STORAGE_ERROR" };
+    const { data, error } = await this.bucket.download(objectPath);
+    if (error || !data) return { ok: false, code: "STORAGE_ERROR" };
+    const bytes = new Uint8Array(await data.arrayBuffer());
+    if (bytes.length === 0) return { ok: false, code: "INVALID_INPUT" };
+    if (bytes.length > SCANNER_MAX_UPLOAD_BYTES) return { ok: false, code: "TOO_LARGE" };
+    return { ok: true, bytes, contentType: data.type || null };
+  }
+}
+
+/** Comprueba la firma mínima del archivo; el MIME declarado por el cliente nunca basta. */
+export function hasSupportedFileSignature(bytes: Uint8Array, contentType: string): boolean {
+  if (contentType === "image/jpeg") return bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+  if (contentType === "image/png") return bytes.length >= 8 && bytes.slice(0, 8).every((value, index) => value === [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a][index]);
+  if (contentType === "image/heic" || contentType === "image/heif") {
+    if (bytes.length < 12 || String.fromCharCode(...bytes.slice(4, 8)) !== "ftyp") return false;
+    const brand = String.fromCharCode(...bytes.slice(8, 12));
+    return ["heic", "heix", "hevc", "hevx", "heif", "mif1"].includes(brand);
+  }
+  return false;
 }
