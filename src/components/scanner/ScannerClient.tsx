@@ -58,6 +58,8 @@ export default function ScannerClient() {
   const [date, setDate] = useState("");
   const [total, setTotal] = useState("");
   const [lines, setLines] = useState<Line[]>([]);
+  const [draftDirty, setDraftDirty] = useState(false);
+  const [confirmKey, setConfirmKey] = useState<string | null>(null);
   const [confirmMessage, setConfirmMessage] = useState<string | null>(null);
   const [quota, setQuota] = useState<{ remaining: number; limit: number } | null>(null);
   const [pending, setPending] = useState<PendingTicket[]>([]);
@@ -77,6 +79,7 @@ export default function ScannerClient() {
   const reset = () => {
     setTicket(null); setStep("idle"); setError(null); setConfirmMessage(null);
     setMerchant(""); setDate(""); setTotal(""); setLines([]);
+    setDraftDirty(false); setConfirmKey(null);
   };
 
   const processFile = async (file: File, source: Source) => {
@@ -110,7 +113,7 @@ export default function ScannerClient() {
       const loaded = await api<{ ticket: Ticket }>(`/api/scanner/tickets/${created.ticketId}`);
       setTicket(loaded.ticket); setMerchant(loaded.ticket.merchant ?? ""); setDate(loaded.ticket.date ?? "");
       setTotal(loaded.ticket.totalCents === null ? "" : String(loaded.ticket.totalCents / 100));
-      setLines(loaded.ticket.lines); setStep("review");
+      setLines(loaded.ticket.lines); setDraftDirty(false); setConfirmKey(crypto.randomUUID()); setStep("review");
     } catch (cause) {
       setError(cause instanceof Error && cause.message !== "REQUEST_FAILED" ? cause.message : t("flow.errors.generic"));
       setStep("idle");
@@ -124,15 +127,16 @@ export default function ScannerClient() {
       if (loaded.ticket.status !== "needs_review") throw new Error(t("flow.pendingNotReady"));
       setTicket(loaded.ticket); setMerchant(loaded.ticket.merchant ?? ""); setDate(loaded.ticket.date ?? "");
       setTotal(loaded.ticket.totalCents === null ? "" : String(loaded.ticket.totalCents / 100));
-      setLines(loaded.ticket.lines); setStep("review");
+      setLines(loaded.ticket.lines); setDraftDirty(false); setConfirmKey(crypto.randomUUID()); setStep("review");
     } catch (cause) { setError(cause instanceof Error ? cause.message : t("flow.errors.generic")); }
     finally { setBusy(false); }
   };
 
-  const updateLine = (id: string, patch: Partial<Line>) => setLines((current) => current.map((line) => line.id === id ? { ...line, ...patch } : line));
+  const updateLine = (id: string, patch: Partial<Line>) => { setDraftDirty(true); setLines((current) => current.map((line) => line.id === id ? { ...line, ...patch } : line)); };
 
   const saveDraft = async (): Promise<number> => {
     if (!ticket) throw new Error("NO_TICKET");
+    if (!draftDirty) return ticket.draftVersion;
     const totalCents = centsFromInput(total);
     if (!merchant.trim() || !date || totalCents === null) throw new Error(t("flow.errors.required"));
     if (!lines.every((line) => line.category || (line.allocations.length >= 2 && line.allocations.every((part) => part.category && part.amountCents > 0) && line.allocations.reduce((sum, part) => sum + part.amountCents, 0) === line.amountCents))) {
@@ -146,6 +150,7 @@ export default function ScannerClient() {
       })) }),
     });
     setTicket({ ...ticket, draftVersion: result.draftVersion, merchant: merchant.trim(), date, totalCents });
+    setDraftDirty(false);
     return result.draftVersion;
   };
 
@@ -154,9 +159,11 @@ export default function ScannerClient() {
     setBusy(true); setError(null); setConfirmMessage(null);
     try {
       const draftVersion = await saveDraft();
+      const key = confirmKey ?? crypto.randomUUID();
+      if (!confirmKey) setConfirmKey(key);
       const result = await api<{ expenses: unknown[] }>(`/api/scanner/tickets/${ticket.id}/confirm`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ confirmKey: crypto.randomUUID(), draftVersion, userConfirmed: true }),
+        body: JSON.stringify({ confirmKey: key, draftVersion, userConfirmed: true }),
       });
       setConfirmMessage(t("flow.confirmed", { count: result.expenses.length })); setStep("confirmed");
     } catch (cause) { setError(cause instanceof Error ? cause.message : t("flow.errors.generic")); }
@@ -197,10 +204,10 @@ export default function ScannerClient() {
     {(step === "uploading" || step === "processing") && <p className="mt-5 text-sm text-muted-foreground" role="status">{step === "uploading" ? t("flow.uploading") : t("flow.processing")}</p>}
     {step === "review" && ticket && <form className="mt-5 space-y-5" onSubmit={(event) => { event.preventDefault(); void confirm(); }}>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm text-foreground">{t("flow.merchant")}<input id="scanner-merchant" value={merchant} onChange={(event) => setMerchant(event.target.value)} maxLength={120} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2" /></label>
-        <label className="text-sm text-foreground">{t("flow.date")}<input id="scanner-date" type="date" value={date} onChange={(event) => setDate(event.target.value)} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2" /></label>
+        <label className="text-sm text-foreground">{t("flow.merchant")}<input id="scanner-merchant" value={merchant} onChange={(event) => { setDraftDirty(true); setMerchant(event.target.value); }} maxLength={120} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2" /></label>
+        <label className="text-sm text-foreground">{t("flow.date")}<input id="scanner-date" type="date" value={date} onChange={(event) => { setDraftDirty(true); setDate(event.target.value); }} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2" /></label>
       </div>
-      <label className="block text-sm text-foreground">{t("flow.total")}<input id="scanner-total" inputMode="decimal" value={total} onChange={(event) => setTotal(event.target.value)} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2" /></label>
+      <label className="block text-sm text-foreground">{t("flow.total")}<input id="scanner-total" inputMode="decimal" value={total} onChange={(event) => { setDraftDirty(true); setTotal(event.target.value); }} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2" /></label>
       <fieldset className="space-y-3"><legend className="text-sm font-medium text-foreground">{t("flow.lines")}</legend>
         {lines.map((line) => <div key={line.id} className="rounded-md border border-border p-3">
           <label className="block text-sm text-foreground">{t("flow.description")}<input value={line.description} onChange={(event) => updateLine(line.id, { description: event.target.value })} maxLength={200} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2" /></label>
