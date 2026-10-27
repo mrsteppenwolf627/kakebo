@@ -1,0 +1,150 @@
+{
+  "phase": 2,
+  "branch": "feature/ticket-scanner-fase-2",
+  "consulted_on": "2026-10-27",
+  "status": "specification only; nothing implemented",
+  "legend": {
+    "DEMOSTRADO": "verified by reading the repository",
+    "PROPUESTO": "new design, does not exist today",
+    "NO DEMOSTRADO": "no evidence in repository or consulted sources"
+  },
+  "related_docs": [
+    "product-requirements.md",
+    "state-machine.md",
+    "mvp-scope.md",
+    "decision-log.md",
+    "provider-benchmark.md",
+    "provider-benchmark.json",
+    "provider-synthetic-test-cases.md",
+    "data-flow.md",
+    "threat-model.md",
+    "privacy-security-architecture.md"
+  ],
+  "repo_evidence": [
+    {"topic": "session", "path": "src/lib/api/auth.ts", "status": "DEMOSTRADO"},
+    {"topic": "entitlement states", "path": "src/lib/auth/access-state.ts", "status": "DEMOSTRADO"},
+    {"topic": "requireAccess is fail-closed only when PLUS_SUBSCRIPTIONS_ENABLED is exactly true; otherwise does not restrict", "path": "src/lib/auth/require-access.ts", "status": "DEMOSTRADO"},
+    {"topic": "no ticket_scanner AccessFeature exists", "path": "src/lib/auth/require-access.ts", "status": "DEMOSTRADO"},
+    {"topic": "fn_my_access permissions (is_premium, can_use_plus_features)", "path": "supabase/migrations/20261013113040_plus_access_resolver.sql", "status": "DEMOSTRADO"},
+    {"topic": "freemium prepared but inactive; production evidence dated 2026-10-05, not re-verified", "path": "ADRs.md", "status": "DEMOSTRADO"},
+    {"topic": "expense schema has no merchant, tax, payment method, items or ticket link", "path": "src/lib/schemas/expense.ts", "status": "DEMOSTRADO"},
+    {"topic": "fn_create_expense creates one expense per call and increments monthly counter (Europe/Madrid)", "path": "supabase/migrations/20260916_phase3b_monetization_foundation.sql", "status": "DEMOSTRADO"},
+    {"topic": "expenses table DDL and RLS", "path": "supabase/migrations", "status": "NO DEMOSTRADO"},
+    {"topic": "single-use atomic pending action, service role with explicit user_id, expiry computed on read", "path": "src/lib/agents-v2/pending-actions.ts", "status": "DEMOSTRADO"},
+    {"topic": "private bucket, 600 s signed URL, no-store (premium pack)", "path": "src/app/api/premium/download/route.ts", "status": "DEMOSTRADO"},
+    {"topic": "user file uploads", "path": "src", "status": "do not exist"},
+    {"topic": "rate limiting", "path": "src", "status": "not found"},
+    {"topic": "cron or scheduler", "path": "vercel.json, .github", "status": "NO DEMOSTRADO"},
+    {"topic": "backups", "path": "-", "status": "NO DEMOSTRADO"},
+    {"topic": "logger records error message and stack", "path": "src/lib/logger.ts", "status": "DEMOSTRADO"},
+    {"topic": "tool params are logged (precedent to avoid)", "path": "src/lib/ai/tool-executor.ts:27,78", "status": "DEMOSTRADO"},
+    {"topic": "analytics sanitizer exists only for the savings calculator", "path": "src/lib/analytics.ts", "status": "DEMOSTRADO"},
+    {"topic": "CSP connect-src allows *.supabase.co; frame-src and object-src none", "path": "next.config.ts", "status": "DEMOSTRADO"}
+  ],
+  "external_sources": [
+    {"url": "https://vercel.com/docs/functions/limitations", "consulted": "2026-10-27", "fact": "function request/response body max 4.5 MB; default max duration 300 s with Fluid compute"},
+    {"url": "https://supabase.com/docs/guides/storage/uploads/standard-uploads", "consulted": "2026-10-27", "fact": "standard upload recommended up to 6 MB; TUS recommended for larger files"},
+    {"url": "https://supabase.com/docs/guides/storage/security/access-control", "consulted": "2026-10-27", "fact": "uploads denied without RLS policies; service key bypasses RLS; encryption at rest not stated on the page"}
+  ],
+  "product_decisions": {
+    "entitlement": {
+      "in_code": "Plus via fn_my_access (is_premium / can_use_plus_features)",
+      "blocked_decision": "Is Premium the same as Plus? Price? (P1)",
+      "default_when_flag_off": "PROPUESTO: deny"
+    },
+    "free_users": "blocked UI without file input; server denies with 403 PLUS_REQUIRED",
+    "daily_limit": {
+      "value": 5,
+      "day_options": ["UTC", "user_timezone", "Europe/Madrid"],
+      "recommended_provisional": "Europe/Madrid",
+      "decided": false
+    },
+    "quota_consumption": {
+      "options": ["upload_accepted", "sent_to_ocr", "expense_confirmed"],
+      "recommended_provisional": "sent_to_ocr, idempotent ledger keyed by (ticket_id, kind), refund on system failure",
+      "decided": false
+    }
+  },
+  "states": ["initiated", "uploaded", "processing", "needs_review", "confirmed", "failed", "expired", "deleted"],
+  "transitions": [
+    ["initiated", "uploaded"], ["initiated", "expired"], ["initiated", "deleted"],
+    ["uploaded", "processing"], ["uploaded", "expired"], ["uploaded", "deleted"],
+    ["processing", "needs_review"], ["processing", "failed"],
+    ["failed", "processing"], ["failed", "deleted"], ["failed", "expired"],
+    ["needs_review", "confirmed"], ["needs_review", "deleted"], ["needs_review", "expired"],
+    ["confirmed", "deleted"], ["expired", "deleted"]
+  ],
+  "ttl_proposals": {
+    "initiated": "15 min",
+    "uploaded": "1 h",
+    "processing_timeout": "5 min",
+    "failed": "1 h",
+    "needs_review": "24 h",
+    "retained_original": "pending",
+    "max_retries": 2,
+    "note": "parameters, not decided"
+  },
+  "phase0_state_changes_pending_approval": {
+    "added": ["initiated"],
+    "removed": ["ready_for_review", "discarded"],
+    "state_machine_md_edited": false
+  },
+  "file_validation": {
+    "detect_type_by_bytes": true,
+    "allowed_types": ["image/jpeg", "image/png", "image/webp", "application/pdf"],
+    "heic": "pending",
+    "max_size_and_pages": "pending",
+    "reject": ["encrypted pdf", "pdf with javascript", "embedded files"],
+    "strip_exif": true,
+    "antivirus": "NO DEMOSTRADO",
+    "vercel_function_body_limit_mb": 4.5
+  },
+  "entities": [
+    {"name": "Ticket", "sensitivity": "S2", "fields": ["id", "user_id", "status", "source", "locale", "idempotency_key", "quota_day", "retain_original", "created_at", "updated_at", "expires_at", "confirmed_at", "deleted_at", "deletion_reason"], "unique": [["user_id", "idempotency_key"]], "indexes": [["user_id", "status"], ["expires_at"]], "cascade": "account deletion removes ticket and dependents"},
+    {"name": "TicketFile", "sensitivity": "S3", "fields": ["id", "ticket_id", "storage_path", "mime_detected", "size_bytes", "page_count", "sha256", "exif_stripped", "scan_status", "deleted_at", "deletion_verified_at"], "indexes": [["ticket_id"], ["sha256"]]},
+    {"name": "OcrAttempt", "sensitivity": "S1", "fields": ["id", "ticket_id", "attempt_no", "provider_id", "provider_region", "adapter_version", "parser_version", "status", "error_code", "provider_request_id", "pages_billed", "latency_ms", "requested_at", "completed_at", "raw_ref"], "unique": [["ticket_id", "attempt_no"], ["provider_id", "provider_request_id"]]},
+    {"name": "NormalizedReceipt", "sensitivity": "S3", "fields": ["ticket_id", "attempt_id", "schema_version", "merchant", "date", "currency", "total", "tax", "payment_method", "items", "field_confidence", "review_flags"], "unique": [["ticket_id"]]},
+    {"name": "ReviewAction", "sensitivity": "S2", "fields": ["id", "ticket_id", "user_id", "action", "field_path", "created_at"], "note": "stores no financial values"},
+    {"name": "ExpenseLink", "sensitivity": "S2", "fields": ["ticket_id", "expense_id", "allocation_index", "item_ids", "user_id", "created_at"], "unique": [["ticket_id", "allocation_index"], ["expense_id"]], "depends_on": "expenses schema (NO DEMOSTRADO)"},
+    {"name": "QuotaLedger", "sensitivity": "S1", "fields": ["id", "user_id", "ticket_id", "quota_day", "tz", "kind", "units", "created_at"], "unique": [["ticket_id", "kind"]]},
+    {"name": "RetentionRequest", "sensitivity": "S2", "fields": ["id", "ticket_id", "user_id", "requested_ttl", "status", "requested_at", "expires_at", "executed_at", "deletion_verified_at"]}
+  ],
+  "ocr_provider_interface": {
+    "name": "ReceiptOcrProvider",
+    "provider_decided": false,
+    "candidates_from_phase1": ["google_document_ai_expense_parser_eu", "aws_textract_analyzeexpense_eu"],
+    "output": "versioned normalized JSON with per-field confidence"
+  },
+  "never_in": ["analytics", "logs", "urls", "localStorage", "cookies"],
+  "costs": {
+    "phase1_reference": "provider-benchmark.md section 3",
+    "note": "150 tickets per month may exceed the margin with the Google reference price; monthly quota and price are not fixed",
+    "controls": ["daily quota ledger", "retry cap", "page cap", "open-ticket cap", "rate limit", "global daily spend cutoff", "alerts"]
+  },
+  "blockers": [
+    {"id": 1, "priority": "P1", "item": "Premium/Plus equivalence and price"},
+    {"id": 2, "priority": "P1", "item": "Day timezone and quota consumption"},
+    {"id": 3, "priority": "P1", "item": "Expense model and ticket link"},
+    {"id": 4, "priority": "P1", "item": "OCR provider, DPA, region, retention, training"},
+    {"id": 5, "priority": "P1", "item": "Private storage, encryption, cleanup, backup"},
+    {"id": 6, "priority": "P1", "item": "Free/premium authorization"},
+    {"id": 7, "priority": "P2", "item": "File limits and antivirus"},
+    {"id": 8, "priority": "P2", "item": "Optional retention policy"},
+    {"id": 9, "priority": "P1", "item": "Editorial/legal review (no compliance claimed)"},
+    {"id": 10, "priority": "P2", "item": "Rate limiting and cost alerts"},
+    {"id": 11, "priority": "P2", "item": "OpenAI as subprocessor for classification"}
+  ],
+  "not_demonstrated": [
+    "Vercel plan and effective limits",
+    "scheduler",
+    "Supabase Storage encryption at rest and key management",
+    "signed upload URLs and allowed_mime_types",
+    "DB and Storage backups",
+    "antivirus",
+    "expenses schema and RLS",
+    "privacy policy content",
+    "image libraries",
+    "log drains",
+    "OCR DPA and subprocessors"
+  ]
+}

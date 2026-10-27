@@ -77,3 +77,30 @@ Solo se registran como **cerradas** las decisiones indicadas expresamente en el 
 - `requireAccess` solo activa restricciones con `PLUS_SUBSCRIPTIONS_ENABLED === "true"`. Con el interruptor apagado, **ninguna comprobación de Premium se aplica** (`src/lib/auth/require-access.ts`). El escáner no debería quedar abierto con el interruptor apagado: decisión pendiente (recomendación: denegar siempre si no se puede probar Premium).
 - `ACCESS_PERMISSIONS` en `src/lib/auth/access-state.ts` no incluye permiso de escáner; habría que añadir uno o reutilizar `can_use_plus_features`.
 - Los estados `founder` y `legacy_full` también tienen acceso total; habría que decidir si el escáner está incluido para ellos.
+
+## 7. Decisiones derivadas de la Fase 2 (privacidad, seguridad y arquitectura)
+
+Añadido en la rama `feature/ticket-scanner-fase-2`. No se ha borrado ni modificado nada de lo anterior. Detalle en [`privacy-security-architecture.md`](privacy-security-architecture.md), [`data-flow.md`](data-flow.md) y [`threat-model.md`](threat-model.md). Ninguna de estas entradas es una decisión cerrada del propietario: son propuestas o pendientes.
+
+| # | Tema | Estado | Propuesta / recomendación provisional | Bloquea |
+|---|---|---|---|---|
+| F2-1 | Escáner denegado por defecto si no se puede probar el entitlement, incluso con `PLUS_SUBSCRIPTIONS_ENABLED` apagado (hoy `requireAccess` no restringe con el interruptor apagado: `src/lib/auth/require-access.ts`) | Propuesta (refina la recomendación de la sección 6) | Denegar por defecto | Implementación |
+| F2-2 | Zona del «día» de los 5 tickets | Pendiente | `Europe/Madrid` calculada en servidor (coherente con `expense_monthly_usage`). Alternativas: UTC, zona del usuario | Implementación (P1) |
+| F2-3 | Momento de consumo de cuota (refina P4) | Pendiente | Al pasar de `uploaded` a `processing`, con libro idempotente `(ticket_id, kind)` y reembolso por fallos del sistema | Implementación (P1) |
+| F2-4 | Lista de estados: añadir `initiated`; sustituir `ready_for_review` y `discarded` por una marca dentro de `needs_review` y por `deleted` con motivo | Pendiente de aprobación. **No se ha editado `state-machine.md`** | Adoptar la lista de Fase 2 | Implementación |
+| F2-5 | Subida directa privada para archivos que superen los 4,5 MB de cuerpo de función de Vercel (https://vercel.com/docs/functions/limitations, consultado 2026-10-27) | Propuesta | Subida directa con autorización de un solo uso; mecanismo de Supabase NO DEMOSTRADO | Implementación (P2) |
+| F2-6 | Interfaz propia `ReceiptOcrProvider` con JSON normalizado y confianza por campo; proveedor sin hardcodear | Propuesta | Adoptar | — |
+| F2-7 | Planificador de limpieza/expiración | Pendiente; NO DEMOSTRADO que exista | Elegir entre tareas de plataforma, `pg_cron` o limpieza perezosa | Implementación (P1) |
+| F2-8 | Antivirus y reencodado sin EXIF | Pendiente; NO DEMOSTRADO | Decidir antes de aceptar archivos | Implementación (P2) |
+| F2-9 | Clasificación de artículos: reglas con categorías existentes frente a LLM (OpenAI es un subprocesador no evaluado en Fase 1) | Pendiente | Preferir sin LLM hasta la revisión de privacidad | Revisión legal |
+| F2-10 | Qué se conserva del borrador normalizado tras confirmar | Pendiente | Depende del modelo de gastos (P7) | Modelo de datos |
+| F2-11 | Lista blanca de eventos de analítica del escáner y test | Propuesta | Solo conteos y estados no financieros | — |
+| F2-12 | Tope diario global de coste OCR con corte | Propuesta | Adoptar; valor pendiente | Coste |
+
+### Información que falta (añadida por la Fase 2)
+
+Plan de Vercel y límites efectivos; cifrado en reposo, claves, URLs firmadas de subida y `allowed_mime_types` en Supabase Storage; backups de DB y Storage; librerías de imagen disponibles; contenido de la política de privacidad; drenajes de logs.
+
+### Bloqueos (añadidos por la Fase 2)
+
+Los P1/P2 de la sección G de `privacy-security-architecture.md`. La revisión editorial y legal sigue pendiente; ningún documento afirma cumplimiento legal.
