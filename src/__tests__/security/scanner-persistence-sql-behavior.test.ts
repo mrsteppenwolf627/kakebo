@@ -391,6 +391,21 @@ describe("procesamiento OCR y devolución de cuota", () => {
   });
 });
 
+describe("descarte explícito", () => {
+  it("elimina el borrador y deja un tombstone idempotente cuando el objeto ya no existe", async () => {
+    const t = await uploadedTicket(A);
+    await db.exec(`UPDATE public.scanner_tickets SET status='needs_review', has_draft=true WHERE id='${t}'`);
+    await db.exec(`INSERT INTO public.scanner_ticket_lines (ticket_id,user_id,position,kind,amount_cents,category) VALUES ('${t}','${A}',0,'item',100,'survival')`);
+    await asUser(A);
+    expect(await rpc(`public.fn_scanner_discard_ticket('${t}')`)).toMatchObject({ ok: true, idempotent: false });
+    expect(await rpc(`public.fn_scanner_discard_ticket('${t}')`)).toMatchObject({ ok: true, idempotent: true });
+    await asRole("service_role");
+    expect(await q(`SELECT status,has_draft,object_path FROM public.scanner_tickets WHERE id='${t}'`)).toEqual([{ status: "deleted", has_draft: false, object_path: null }]);
+    expect(await q(`SELECT id FROM public.scanner_ticket_lines WHERE ticket_id='${t}'`)).toHaveLength(0);
+    await reset();
+  });
+});
+
 describe("limpieza: caducados 24 h y ciclos cerrados (solo service_role)", () => {
   it("los clientes no pueden invocar las funciones de limpieza", async () => {
     for (const role of ["anon", "authenticated"]) {

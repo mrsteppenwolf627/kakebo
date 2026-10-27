@@ -15,12 +15,12 @@ export interface RpcClientLike {
 export type PersistenceErrorCode =
   | "UNAUTHENTICATED" | "INVALID_KEY" | "NO_OPEN_CYCLE" | "TICKET_NOT_FOUND" | "ILLEGAL_TRANSITION"
   | "INVALID_PATH" | "INVALID_CYCLE" | "CYCLE_CLOSED" | "TICKET_EXPIRED" | "QUOTA_EXCEEDED"
-  | "INVALID_REASON" | "VERSION_CONFLICT" | "VALIDATION_ERROR" | "IDEMPOTENCY_KEY_REUSED" | "BACKEND_ERROR";
+  | "INVALID_REASON" | "VERSION_CONFLICT" | "VALIDATION_ERROR" | "IDEMPOTENCY_KEY_REUSED" | "STORAGE_NOT_DELETED" | "BACKEND_ERROR";
 
 const KNOWN: ReadonlySet<string> = new Set<PersistenceErrorCode>([
   "UNAUTHENTICATED", "INVALID_KEY", "NO_OPEN_CYCLE", "TICKET_NOT_FOUND", "ILLEGAL_TRANSITION", "INVALID_PATH",
   "INVALID_CYCLE", "CYCLE_CLOSED", "TICKET_EXPIRED", "QUOTA_EXCEEDED", "INVALID_REASON", "VERSION_CONFLICT",
-  "VALIDATION_ERROR", "IDEMPOTENCY_KEY_REUSED",
+  "VALIDATION_ERROR", "IDEMPOTENCY_KEY_REUSED", "STORAGE_NOT_DELETED",
 ]);
 
 export type PersistenceFailure = { ok: false; code: PersistenceErrorCode };
@@ -93,6 +93,9 @@ export const failScannerProcessing = (client: RpcClientLike, ticketId: string, r
     p_ticket_id: ticketId,
     p_reason: reason,
   });
+
+export const discardScannerTicket = (client: RpcClientLike, ticketId: string) =>
+  call<{ idempotent: boolean }>(client, "fn_scanner_discard_ticket", { p_ticket_id: ticketId });
 
 export interface ScannerDraftLineInput {
   kind: "item" | "adjustment";

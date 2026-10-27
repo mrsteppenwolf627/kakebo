@@ -24,6 +24,7 @@ DROP FUNCTION IF EXISTS public.fn_scanner_confirm_ticket(uuid, uuid, integer);
 DROP FUNCTION IF EXISTS public.fn_scanner_replace_draft(uuid, integer, text, date, bigint, jsonb);
 DROP FUNCTION IF EXISTS public.fn_scanner_apply_ocr_result(uuid, text, date, bigint, text, jsonb);
 DROP FUNCTION IF EXISTS public.fn_scanner_fail_processing(uuid, text);
+DROP FUNCTION IF EXISTS public.fn_scanner_discard_ticket(uuid);
 DROP FUNCTION IF EXISTS public.fn_scanner_finalize_confirmed_original(uuid);
 DROP FUNCTION IF EXISTS public.fn_scanner_quota_status();
 DROP FUNCTION IF EXISTS public.fn_scanner_start_processing(uuid);

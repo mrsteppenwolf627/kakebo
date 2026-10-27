@@ -36,6 +36,7 @@ export function scannerPersistenceError(code: PersistenceErrorCode): ApiError {
     case "IDEMPOTENCY_KEY_REUSED": return apiErrors.validation("La clave de idempotencia ya se usó con otra operación.");
     case "INVALID_KEY": return apiErrors.validation("Clave de idempotencia inválida.");
     case "VALIDATION_ERROR": return apiErrors.validation("Los datos del ticket no son válidos.");
+    case "STORAGE_NOT_DELETED": return apiErrors.conflict("No se pudo verificar el borrado del archivo.");
     case "UNAUTHENTICATED": return apiErrors.unauthorized();
     default: return apiErrors.accessUnavailable();
   }

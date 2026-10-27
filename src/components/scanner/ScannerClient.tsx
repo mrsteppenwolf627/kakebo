@@ -136,6 +136,16 @@ export default function ScannerClient() {
     finally { setBusy(false); }
   };
 
+  const discard = async () => {
+    if (!ticket || busy) return;
+    setBusy(true); setError(null);
+    try {
+      await api(`/api/scanner/tickets/${ticket.id}/discard`, { method: "DELETE" });
+      reset();
+    } catch (cause) { setError(cause instanceof Error ? cause.message : t("flow.errors.generic")); }
+    finally { setBusy(false); }
+  };
+
   const totalCents = centsFromInput(total);
   const lineTotal = lines.reduce((sum, line) => sum + line.amountCents, 0);
   const canConfirm = Boolean(ticket && merchant.trim() && date && totalCents !== null && lines.length > 0 && lineTotal === totalCents && lines.every((line) => line.category || (line.allocations.length >= 2 && line.allocations.every((part) => part.category && part.amountCents > 0) && line.allocations.reduce((sum, part) => sum + part.amountCents, 0) === line.amountCents)));
@@ -170,7 +180,7 @@ export default function ScannerClient() {
       </fieldset>
       {totalCents !== null && lineTotal !== totalCents && <p className="rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive" role="alert">{t("flow.totalMismatch", { current: (lineTotal / 100).toFixed(2), expected: (totalCents / 100).toFixed(2) })}</p>}
       <p className="text-sm text-muted-foreground">{t("flow.reviewNotice")}</p>
-      <div className="flex flex-wrap gap-3"><button type="submit" disabled={!canConfirm || busy} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2">{busy ? t("flow.saving") : t("flow.confirm")}</button><button type="button" onClick={reset} disabled={busy} className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground disabled:opacity-50">{t("flow.discard")}</button></div>
+      <div className="flex flex-wrap gap-3"><button type="submit" disabled={!canConfirm || busy} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2">{busy ? t("flow.saving") : t("flow.confirm")}</button><button type="button" onClick={() => void discard()} disabled={busy} className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground disabled:opacity-50">{t("flow.discard")}</button></div>
     </form>}
   </section>;
 }

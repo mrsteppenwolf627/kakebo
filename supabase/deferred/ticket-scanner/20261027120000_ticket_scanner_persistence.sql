@@ -635,6 +635,40 @@ BEGIN
 END
 $$;
 
+-- Descarte explícito del propietario. La ruta HTTP borra y verifica el objeto
+-- privado antes de llamar; esta segunda defensa comprueba storage.objects en la
+-- misma transacción y deja solo un tombstone mínimo.
+CREATE OR REPLACE FUNCTION public.fn_scanner_discard_ticket(p_ticket_id uuid)
+RETURNS jsonb
+LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+  v_uid uuid := auth.uid();
+  v_t public.scanner_tickets;
+BEGIN
+  IF v_uid IS NULL THEN RETURN jsonb_build_object('ok', false, 'code', 'UNAUTHENTICATED'); END IF;
+  SELECT * INTO v_t FROM public.scanner_tickets WHERE id = p_ticket_id AND user_id = v_uid FOR UPDATE;
+  IF NOT FOUND THEN RETURN jsonb_build_object('ok', false, 'code', 'TICKET_NOT_FOUND'); END IF;
+  IF v_t.status = 'deleted' THEN RETURN jsonb_build_object('ok', true, 'idempotent', true); END IF;
+  IF v_t.status = 'confirmed' THEN RETURN jsonb_build_object('ok', false, 'code', 'ILLEGAL_TRANSITION'); END IF;
+  IF v_t.object_path IS NOT NULL AND EXISTS (
+    SELECT 1 FROM storage.objects WHERE bucket_id = 'kakebo-ticket-temp' AND name = v_t.object_path
+  ) THEN
+    RETURN jsonb_build_object('ok', false, 'code', 'STORAGE_NOT_DELETED');
+  END IF;
+  DELETE FROM public.scanner_ticket_lines WHERE ticket_id = v_t.id;
+  UPDATE public.scanner_tickets
+  SET status = 'deleted', status_reason = 'user_discarded', has_draft = false,
+      object_path = NULL,
+      original_storage = CASE WHEN original_storage = 'none' THEN 'none' ELSE 'deleted_verified' END,
+      deletion_verified_at = CASE WHEN original_storage = 'none' THEN deletion_verified_at ELSE now() END,
+      deleted_at = now(), updated_at = now()
+  WHERE id = v_t.id;
+  RETURN jsonb_build_object('ok', true, 'idempotent', false);
+END
+$$;
+
 -- Confirma un borrador revisado y crea todos los gastos de sus grupos en UNA transacción.
 -- La llamada a fn_create_expense y el vínculo idempotente quedan dentro de esta función.
 CREATE OR REPLACE FUNCTION public.fn_scanner_confirm_ticket(
@@ -875,6 +909,7 @@ REVOKE ALL ON FUNCTION public.fn_scanner_confirm_ticket(uuid, uuid, integer) FRO
 REVOKE ALL ON FUNCTION public.fn_scanner_replace_draft(uuid, integer, text, date, bigint, jsonb) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_apply_ocr_result(uuid, text, date, bigint, text, jsonb) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_fail_processing(uuid, text) FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.fn_scanner_discard_ticket(uuid) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_cleanup_candidates(timestamptz, integer) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_mark_deletion_pending(uuid, text)        FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_finalize_deletion(uuid, text)            FROM PUBLIC, anon, authenticated;
@@ -889,6 +924,7 @@ GRANT EXECUTE ON FUNCTION public.fn_scanner_confirm_ticket(uuid, uuid, integer) 
 GRANT EXECUTE ON FUNCTION public.fn_scanner_replace_draft(uuid, integer, text, date, bigint, jsonb) TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_apply_ocr_result(uuid, text, date, bigint, text, jsonb) TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_fail_processing(uuid, text) TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION public.fn_scanner_discard_ticket(uuid) TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_cleanup_candidates(timestamptz, integer) TO service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_mark_deletion_pending(uuid, text)        TO service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_finalize_deletion(uuid, text)            TO service_role;
