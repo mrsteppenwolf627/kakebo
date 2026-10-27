@@ -125,11 +125,8 @@ retención real puede superar 24 h (hasta ~48 h); decisión a confirmar.
 `expense-contract.ts` fija solo la proyección plan → entradas (`createExpenseSchema`: una por categoría > 0, `amount` en euros,
 `month_id` = ciclo) y la interfaz `ScannerExpenseWriter`. **No hay ruta ni escritura.** Bloqueos:
 
-1. El esquema observado de `expenses` no incluye `month_id` ni `subcategory`, pero `POST /api/expenses` y `fn_create_expense`
-   (migración 3B) los requieren. Hay que averiguar si la base real tiene aplicada la fase 3B antes de escribir nada.
-2. `expenses` no tiene columna de trazabilidad hacia el ticket. Sin ella (o sin tabla de vínculo con FK demostrada a
-   `expenses(id)`), un fallo entre crear gastos y marcar `confirmed` puede duplicar gastos al reintentar. Por eso **no** se
-   crea `scanner_expense_links` en esta migración.
+1. El esquema extraído del backup local demuestra `expenses.month_id`, `expenses.subcategory`, `months.id` y `fn_create_expense`; la evidencia reproducible está en `docs/ticket-scanner/production-schema-evidence.md`.
+2. `expenses` no tiene columna de trazabilidad hacia el ticket. Debe añadirse una tabla de vínculo y una función de confirmación atómica antes de crear gastos desde el escáner. La migración de Fase 7 se mantiene sin esa escritura hasta probarla en staging.
 3. Debe ser una función atómica única (gastos + `confirmed` + vínculo), que respete el límite gratuito de `fn_create_expense`.
 
 ## 7. Azure Receipt
@@ -149,6 +146,6 @@ previos sin cumplir: DPA, región, subprocesadores, retención, benchmark sinté
 
 ## 9. Pendientes de decisión / siguientes pasos
 
-DPA/región/subprocesadores de Azure; cron y `CRON_SECRET`; ventana entre cierre de ciclo y limpieza (§4); esquema real de
-`expenses` y trazabilidad (§6); reembolso de cuota y límite de reintentos; flag/ruta de usuario del escáner y acceso Plus
+DPA/región/subprocesadores de Azure; cron y `CRON_SECRET`; ventana entre cierre de ciclo y limpieza (§4); trazabilidad
+ticket→gasto (§6); reembolso de cuota y límite de reintentos; flag/ruta de usuario del escáner y acceso Plus
 (`access.ts` sigue sin enganchar a ninguna ruta).

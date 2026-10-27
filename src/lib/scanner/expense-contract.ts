@@ -1,12 +1,11 @@
 /**
  * Contrato de creación de gastos tras la confirmación (Fase 7). SOLO contrato: no escribe en `expenses`.
  *
- * ESTADO: BLOQUEADO para implementación real (ver docs/ticket-scanner/phase-7-persistence.md §6).
- *  - El esquema OBSERVADO de `expenses` (id, user_id, date, amount, category, note, created_at, color) no
- *    muestra `month_id` ni `subcategory`, pero el código (POST /api/expenses → `fn_create_expense`) los usa.
- *    No se sabe si la base real tiene aplicada la fase 3B. Sin eso no hay vía segura ni atómica de crear gastos.
- *  - `expenses` no tiene columna de trazabilidad hacia el ticket y este repo no modifica `expenses`, así que una
- *    caída entre crear gastos y marcar el ticket `confirmed` podría duplicar gastos al reintentar.
+ * ESTADO: la estructura de `expenses` y `months` está demostrada en el esquema extraído del backup local
+ * (ver docs/ticket-scanner/production-schema-evidence.md). La escritura real sigue pendiente porque falta
+ * implementar y probar la función atómica de confirmación y su tabla de vínculo ticket→gasto.
+ * `expenses` no tiene columna de trazabilidad hacia el ticket; una caída entre crear gastos y marcar el ticket
+ * `confirmed` podría duplicar gastos si no se resuelve en una única transacción idempotente.
  *
  * Lo que sí fija este módulo, con el esquema real de la aplicación (`createExpenseSchema`, categorías de
  * `common.ts`): cómo se proyecta el plan agrupado por las cuatro categorías a entradas de gasto.
