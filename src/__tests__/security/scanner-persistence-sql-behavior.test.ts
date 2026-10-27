@@ -338,6 +338,23 @@ describe("confirmación atómica ticket → gastos", () => {
     expect(await rpc(`public.fn_scanner_confirm_ticket('${t2}','${uuid()}',0)`)).toMatchObject({ ok: false, code: "VALIDATION_ERROR" });
     await reset();
   });
+
+  it("rechaza un reparto de línea cuya suma no coincide con el importe de la línea", async () => {
+    const t = await uploadedTicket(A);
+    await db.exec(`UPDATE public.scanner_tickets
+      SET status='needs_review', has_draft=true, draft_version=1,
+          merchant='Comercio', receipt_date='2026-10-27', total_cents=100
+      WHERE id='${t}'`);
+    await db.exec(`INSERT INTO public.scanner_ticket_lines
+      (ticket_id,user_id,position,kind,amount_cents,allocations)
+      VALUES ('${t}','${A}',0,'item',100,
+        '[{"category":"survival","amountCents":60},{"category":"optional","amountCents":30}]'::jsonb)`);
+    await asUser(A);
+    const expensesBefore = await q(`SELECT id FROM public.expenses WHERE user_id='${A}'`);
+    expect(await rpc(`public.fn_scanner_confirm_ticket('${t}','${uuid()}',1)`)).toMatchObject({ ok: false, code: "VALIDATION_ERROR" });
+    expect(await q(`SELECT id FROM public.expenses WHERE user_id='${A}'`)).toHaveLength(expensesBefore.length);
+    await reset();
+  });
 });
 
 describe("limpieza: caducados 24 h y ciclos cerrados (solo service_role)", () => {

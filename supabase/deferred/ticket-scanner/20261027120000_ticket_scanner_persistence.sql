@@ -509,6 +509,17 @@ BEGIN
       )
   ) THEN RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR'); END IF;
 
+  -- Cada línea dividida debe cuadrar por sí misma con su importe. La suma global
+  -- no basta: de lo contrario una parte podría quedar sin asignar a una categoría.
+  IF EXISTS (
+    SELECT 1
+    FROM public.scanner_ticket_lines l
+    CROSS JOIN LATERAL jsonb_array_elements(l.allocations) part
+    WHERE l.ticket_id = v_t.id
+    GROUP BY l.id, l.amount_cents
+    HAVING COALESCE(SUM((part->>'amountCents')::bigint), 0) <> l.amount_cents
+  ) THEN RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR'); END IF;
+
   SELECT COALESCE(SUM(amount_cents), 0) INTO v_sum
   FROM (
     SELECT l.amount_cents FROM public.scanner_ticket_lines l
