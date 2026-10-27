@@ -136,3 +136,32 @@ Comportamiento de la captura de cámara dentro de la PWA instalada; modo sin con
 ### Bloqueos (añadidos por la Fase 3)
 
 F3-1 a F3-6 y F3-12 impiden pasar a implementación. La revisión editorial y legal del copy sigue pendiente.
+
+## 9. Decisiones derivadas de la Fase 4 (arquitectura técnica)
+
+Añadido en la rama `feature/ticket-scanner-fase-4`. No se ha borrado ni reescrito ninguna entrada anterior. Detalle en [`technical-architecture.md`](technical-architecture.md), [`data-model.md`](data-model.md), [`api-contracts.md`](api-contracts.md) e [`implementation-plan.md`](implementation-plan.md). Todo es propuesta; nada está implementado.
+
+| # | Tema | Estado | Propuesta / recomendación provisional | Bloquea |
+|---|---|---|---|---|
+| F4-1 | Mecanismo de cola/trabajo: procesamiento en línea, tabla de intentos con lease, o cola de plataforma | **Pendiente** | Tabla de intentos con lease (J2); el planificador sigue NO DEMOSTRADO | Slices 5 y 8 |
+| F4-2 | Importes en céntimos enteros y moneda EUR con restricción; conversión a expenses.amount solo en la confirmación | Propuesta | Adoptar; la escala real de expenses.amount es NO DEMOSTRADA | Slice 7 |
+| F4-3 | Vínculo ticket↔gasto en tabla propia scanner_expense_links, sin alterar expenses | Propuesta (continúa P7) | Adoptar; depende del esquema real | Slice 7 |
+| F4-4 | Creación de N gastos llamando a fn_create_expense dentro de una función de confirmación; que la llamada anidada funcione con auth.uid() es NO DEMOSTRADO | Pendiente de prueba | Probar con PGlite antes de adoptar; alternativa: insertar directamente replicando validaciones | Slice 7 |
+| F4-5 | Cuota: contador atómico por usuario y día más libro idempotente por (ticket, tipo); consumo en uploaded a processing; reembolso solo por fallo del sistema | Propuesta (continúa F2-2 y F2-3; el día sigue PENDIENTE) | Adoptar el diseño; el día es decisión del propietario | Slice 8 |
+| F4-6 | El borrador conserva el origen (ocr, user, rule) y la confianza por campo; las ediciones del usuario prevalecen siempre | Propuesta (continúa F3-10) | Adoptar | Slice 6 |
+| F4-7 | Línea de ajuste explícita para diferencias aceptadas entre suma de líneas y total; nunca se crea sola | Propuesta (continúa F3-9) | Adoptar; tolerancia de redondeo PENDIENTE | Slice 6 |
+| F4-8 | Contratos versionados bajo /api/v1/scanner con Idempotency-Key, If-Match y validación de Origin en mutaciones; hoy ninguna ruta valida Origin (NO DEMOSTRADO) | Propuesta | Adoptar | Slices 1 a 11 |
+| F4-9 | Descartar y borrar el original no exigen acceso vigente al plan, solo propiedad | Propuesta | Adoptar, para que el usuario pueda borrar sus datos si pierde el plan | Slices 8 y 9 |
+| F4-10 | ReceiptOcrProvider recibe bytes y devuelve JSON normalizado versionado; sin proveedor ni SDK elegidos; fallback desactivado por defecto porque cada proveedor adicional es un subprocesador | Propuesta (continúa F2-6) | Adoptar | Slice 4 |
+| F4-11 | Clasificación separada del OCR, por reglas y sin LLM por defecto; el clasificador actual con respaldo GPT no se reutiliza | Propuesta (continúa F2-9) | Adoptar | Slice 5 |
+| F4-12 | Auditoría técnica sin carga libre y sin datos financieros; el borrador se purga tras un plazo posterior a confirmar | Propuesta; plazos PENDIENTES | Adoptar el diseño | Slice 3 |
+| F4-13 | Deltas de estados respecto a Fase 0 documentados sin editar state-machine.md | Propuesta (continúa F2-4) | Aprobar la lista de Fase 4 | Slice 3 |
+| F4-14 | Fase 5 no debe comenzar la implementación hasta cerrar los P1 que afectan a las slices 1 y 3; solo la slice 0 puede avanzar con autorización | Recomendación | Mantener | Fase 5 |
+
+### Información que falta (añadida por la Fase 4)
+
+Esquema real y políticas de expenses y months; escala de expenses.amount; mecanismo de subida directa, cifrado en reposo y backups de Supabase Storage; planificador y cola; atributos de la cookie de sesión; plan y límites efectivos de Vercel; librerías de imagen y PDF; facturación del proveedor ante reintentos; si la llamada anidada a fn_create_expense funciona.
+
+### Bloqueos (añadidos por la Fase 4)
+
+Los P1 y P2 resumidos en la sección 11 de technical-architecture.md. No se declara cumplimiento legal.
