@@ -104,3 +104,35 @@ Plan de Vercel y límites efectivos; cifrado en reposo, claves, URLs firmadas de
 ### Bloqueos (añadidos por la Fase 2)
 
 Los P1/P2 de la sección G de `privacy-security-architecture.md`. La revisión editorial y legal sigue pendiente; ningún documento afirma cumplimiento legal.
+
+## 8. Decisiones derivadas de la Fase 3 (UX y especificación funcional)
+
+Añadido en la rama `feature/ticket-scanner-fase-3`. No se ha borrado ni reescrito ninguna entrada anterior. Detalle en [`ux-functional-spec.md`](ux-functional-spec.md), [`ux-wireflows.md`](ux-wireflows.md) y [`ux-copy-es-en.md`](ux-copy-es-en.md). Nada de esto es una decisión cerrada del propietario.
+
+| # | Tema | Estado | Propuesta / recomendación provisional | Bloquea |
+|---|---|---|---|---|
+| F3-1 | Jerarquía de entitlement aplicada al escáner (founder, legacy_full, plus_active, plus_canceled_pending, free_*) | **Pendiente** | La especificación no asume qué estados tienen acceso | Implementación (P1) |
+| F3-2 | Contenido exacto del plan Premium/Plus, su nombre en la interfaz y el precio | **Pendiente** | El copy usa el marcador `{PLAN_NAME}` y no cita precio | Copy final, pantalla bloqueada |
+| F3-3 | Límites de archivo, páginas y formatos | **Pendiente** | Marcadores `{MAX_SIZE}`, `{MAX_PAGES}`, `{FORMATS}`; sin cifras | Validación y errores |
+| F3-4 | Definición del día y consumo de cuota | **Pendiente** (continúa F2-2 y F2-3) | Copy de cuota con `{DAILY_LIMIT}` y reinicio PENDIENTE | Pantalla de límite |
+| F3-5 | Equivalencia con el modelo de gastos: vínculo ticket↔gasto, agrupado (un gasto por categoría propuesto), contenido de la nota, máximo de gastos | **Pendiente** | Depende del esquema real de `expenses` (NO DEMOSTRADO) | Confirmación y reparto |
+| F3-6 | Proveedor OCR y revisión de privacidad | **Pendiente** | Copy de privacidad condicionado; sin nombre de proveedor | Textos de privacidad |
+| F3-7 | Pantalla bloqueada para gratuitos: función visible, enlace a explicación, sin selector ni cámara en el DOM | Propuesta | Adoptar; distinta del patrón actual de SubscriptionGuard, que oculta el contenido | — |
+| F3-8 | El escáner no debe quedar abierto con el interruptor de Plus apagado (el patrón actual isAiBlocked no bloquea en ese caso) | Propuesta (refuerza F2-1) | Denegar por defecto | Implementación |
+| F3-9 | Confirmación con revisión obligatoria; «Confirmar» bloqueado si falta comercio, fecha o total, categoría, reparto incompleto, ciclo cerrado o suma de artículos distinta del total sin resolver | Propuesta | Adoptar; tolerancia de redondeo pendiente | — |
+| F3-10 | Las ediciones del usuario nunca se sobrescriben por el OCR; no se inventan valores | Propuesta | Adoptar | — |
+| F3-11 | Sin deshacer tras confirmar en el MVP; los gastos se editan o borran con los flujos existentes; borrar un gasto no recupera el original eliminado | Propuesta (continúa P8) | Adoptar | — |
+| F3-12 | Retención del original: opción explícita, no premarcada, con opciones de duración | **Pendiente** | Marcador `{RETENTION_OPTIONS}`; copy de borrado condicionado a que esté implementado y verificado | Pantalla de confirmación |
+| F3-13 | Umbrales de confianza unknown/low/medium/high | **Pendiente** | Dependen del proveedor y de las pruebas sintéticas | Revisión |
+| F3-14 | Posición de la entrada en la navegación y nombre de ruta (`/app/scan` provisional) | **Pendiente** | Panel y alta manual primero; TopNav ya tiene 7 elementos | Navegación |
+| F3-15 | Patrón de diálogo accesible (no existe en el repo) y requisitos de foco | Propuesta | Definirlo antes de usar S8a y S9 como diálogos | Implementación |
+| F3-16 | Instrumentación: lista blanca de parámetros no sensibles y prohibición explícita de datos financieros | Propuesta (continúa F2-11) | Eventos solo si son necesarios; con consentimiento | — |
+| F3-17 | Textos fijos en español en pantallas existentes (FloatingAddButton, NewExpenseClient) | Observación | Fuera de alcance de esta fase; el escáner exige paridad de claves ES/EN | — |
+
+### Información que falta (añadida por la Fase 3)
+
+Comportamiento de la captura de cámara dentro de la PWA instalada; modo sin conexión; patrón de diálogo accesible; contraste real; si el proveedor devolverá confianza por campo.
+
+### Bloqueos (añadidos por la Fase 3)
+
+F3-1 a F3-6 y F3-12 impiden pasar a implementación. La revisión editorial y legal del copy sigue pendiente.
