@@ -251,3 +251,10 @@ Añadido en la rama `feature/ticket-scanner-fase-6` (desde `8295836`). No se ha 
 ### 11.5 Migraciones
 
 Ninguna creada ni ejecutada.
+
+## 12. Fase 7: persistencia privada y cuota por ciclo (solo local)
+
+Detalle, evidencia observada y bloqueos en [phase-7-persistence.md](phase-7-persistence.md). Resumen: migración y rollback
+escritos pero **no ejecutados** (`supabase/deferred/ticket-scanner/`); bucket exacto `kakebo-ticket-temp`; cuota de 5 por
+`months.id`; limpieza protegida con `CRON_SECRET`; endpoint de cierre de ciclo **no modificado**; creación de gastos
+**bloqueada** (el esquema observado de `expenses` no muestra `month_id` ni permite trazabilidad); Azure sigue desactivado.
