@@ -39,7 +39,7 @@ export interface CleanupSummary {
 }
 
 const ORIGINAL: readonly string[] = ["none", "present", "deletion_pending", "deleted_verified"];
-const isReason = (r: string): r is CleanupReason => r === "ttl_expired" || r === "cycle_closed";
+const isReason = (r: string): r is CleanupReason => r === "ttl_expired" || r === "cycle_closed" || r === "post_confirm";
 
 /** Convierte una fila SQL en el modelo de `retention.ts`; `null` si la fila no es válida. */
 export function toRetainedTicket(row: CleanupCandidateRow): { item: RetainedTicket; reason: CleanupReason } | null {
@@ -83,8 +83,13 @@ export async function runScannerCleanup(deps: CleanupDeps): Promise<CleanupSumma
       continue;
     }
     const outcome = await deleteWithVerification(deps.storage, parsed.item, parsed.reason);
-    const fn = outcome.ok ? "fn_scanner_finalize_deletion" : "fn_scanner_mark_deletion_pending";
-    const res = await deps.admin.rpc(fn, { p_ticket_id: row.ticket_id, p_reason: parsed.reason });
+    const fn = outcome.ok
+      ? parsed.reason === "post_confirm" ? "fn_scanner_finalize_confirmed_original" : "fn_scanner_finalize_deletion"
+      : "fn_scanner_mark_deletion_pending";
+    const args = parsed.reason === "post_confirm"
+      ? { p_ticket_id: row.ticket_id }
+      : { p_ticket_id: row.ticket_id, p_reason: parsed.reason };
+    const res = await deps.admin.rpc(fn, args);
     const persisted = !res.error && (res.data as { ok?: boolean } | null)?.ok === true;
     if (outcome.ok && persisted) summary.deleted++;
     else if (!outcome.ok && outcome.code === "DELETION_NOT_VERIFIED") summary.retryLater++;

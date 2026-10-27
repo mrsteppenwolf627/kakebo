@@ -20,11 +20,14 @@ DROP POLICY IF EXISTS "scanner_ticket_temp_delete_own" ON storage.objects;
 DROP FUNCTION IF EXISTS public.fn_scanner_finalize_deletion(uuid, text);
 DROP FUNCTION IF EXISTS public.fn_scanner_mark_deletion_pending(uuid, text);
 DROP FUNCTION IF EXISTS public.fn_scanner_cleanup_candidates(timestamptz, integer);
+DROP FUNCTION IF EXISTS public.fn_scanner_confirm_ticket(uuid, uuid, integer);
+DROP FUNCTION IF EXISTS public.fn_scanner_finalize_confirmed_original(uuid);
 DROP FUNCTION IF EXISTS public.fn_scanner_quota_status();
 DROP FUNCTION IF EXISTS public.fn_scanner_start_processing(uuid);
 DROP FUNCTION IF EXISTS public.fn_scanner_register_upload(uuid, text);
 DROP FUNCTION IF EXISTS public.fn_scanner_create_ticket(uuid);
 
 DROP TABLE IF EXISTS public.scanner_quota_ledger;
+DROP TABLE IF EXISTS public.scanner_expense_links;
 DROP TABLE IF EXISTS public.scanner_ticket_lines;
 DROP TABLE IF EXISTS public.scanner_tickets;

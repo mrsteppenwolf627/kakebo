@@ -62,7 +62,7 @@ export function selectPendingForCycle(tickets: readonly RetainedTicket[], cycleI
   return tickets.filter((t) => t.cycleId === cycleId && isPending(t));
 }
 
-export type CleanupReason = Extract<TicketStatusReason, "ttl_expired" | "cycle_closed">;
+export type CleanupReason = Extract<TicketStatusReason, "ttl_expired" | "cycle_closed"> | "post_confirm";
 
 export type CleanupOutcome =
   | { ok: true; item: RetainedTicket }
@@ -79,6 +79,9 @@ export async function deleteWithVerification(
   reason: CleanupReason
 ): Promise<CleanupOutcome> {
   let ticket = item.ticket;
+  if (reason === "post_confirm" && ticket.status !== "confirmed") {
+    return { ok: false, code: "ILLEGAL_TRANSITION", item };
+  }
   // Caducidad: pasa por `expired` donde la máquina lo permite; `processing` va directo a borrado.
   if (reason === "ttl_expired" && ticket.status !== "processing" && ticket.status !== "expired") {
     const moved = transitionTicket(ticket, "expired", { reason });
@@ -97,6 +100,10 @@ export async function deleteWithVerification(
   } else if (ticket.originalStorage === "deletion_pending") {
     // Sin ruta conocida no se puede verificar nada.
     return { ok: false, code: "DELETION_NOT_VERIFIED", item: { ...item, ticket } };
+  }
+
+  if (reason === "post_confirm") {
+    return { ok: true, item: { ...item, ticket: { ...ticket, hasDraft: false }, objectPath: null } };
   }
 
   const done = transitionTicket(ticket, "deleted", { reason });

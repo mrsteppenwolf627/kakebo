@@ -61,6 +61,17 @@ BEGIN
     RAISE EXCEPTION 'scanner preflight: months necesita user_id y status';
   END IF;
 
+  IF to_regclass('public.expenses') IS NULL
+     OR NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'expenses' AND column_name = 'month_id')
+     OR NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'expenses' AND column_name = 'amount')
+     OR NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'expenses' AND column_name = 'category') THEN
+    RAISE EXCEPTION 'scanner preflight: expenses necesita month_id, amount y category';
+  END IF;
+
+  IF to_regprocedure('public.fn_create_expense(uuid,date,numeric,text,text,text,text)') IS NULL THEN
+    RAISE EXCEPTION 'scanner preflight: fn_create_expense no está disponible';
+  END IF;
+
   IF to_regclass('storage.buckets') IS NOT NULL
      AND EXISTS (SELECT 1 FROM storage.buckets WHERE id = 'kakebo-ticket-temp' AND public IS TRUE) THEN
     RAISE EXCEPTION 'scanner preflight: el bucket kakebo-ticket-temp es PÚBLICO; debe ser privado';
@@ -89,6 +100,10 @@ CREATE TABLE IF NOT EXISTS public.scanner_tickets (
   object_path           text        CHECK (object_path IS NULL OR char_length(object_path) <= 200),
   has_draft             boolean     NOT NULL DEFAULT false,
   draft_version         integer     NOT NULL DEFAULT 0 CHECK (draft_version >= 0),
+  merchant              text        CHECK (merchant IS NULL OR char_length(merchant) <= 120),
+  receipt_date          date,
+  total_cents           bigint      CHECK (total_cents IS NULL OR total_cents > 0),
+  currency              text        NOT NULL DEFAULT 'EUR' CHECK (currency = 'EUR'),
   idempotency_key       uuid        NOT NULL,
   confirm_key           uuid,
   created_at            timestamptz NOT NULL DEFAULT now(),
@@ -156,18 +171,39 @@ CREATE INDEX IF NOT EXISTS scanner_quota_ledger_cycle_idx ON public.scanner_quot
 COMMENT ON TABLE public.scanner_quota_ledger IS
   'Libro de cuota del escáner por ciclo (months.id). Límite 5 por ciclo; se reinicia solo al cambiar de ciclo. Sin acceso directo desde clientes.';
 
+CREATE TABLE IF NOT EXISTS public.scanner_expense_links (
+  id          uuid        PRIMARY KEY DEFAULT gen_random_uuid(),
+  ticket_id   uuid        NOT NULL REFERENCES public.scanner_tickets(id) ON DELETE CASCADE,
+  user_id     uuid        NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  cycle_id    uuid        NOT NULL REFERENCES public.months(id),
+  expense_id  uuid        NOT NULL REFERENCES public.expenses(id) ON DELETE CASCADE,
+  group_no    smallint    NOT NULL CHECK (group_no > 0 AND group_no <= 4),
+  category    text        NOT NULL CHECK (category IN ('survival','optional','culture','extra')),
+  amount_cents bigint     NOT NULL CHECK (amount_cents > 0),
+  created_at  timestamptz NOT NULL DEFAULT now(),
+  CONSTRAINT scanner_expense_links_ticket_group_unique UNIQUE (ticket_id, group_no),
+  CONSTRAINT scanner_expense_links_expense_unique UNIQUE (expense_id)
+);
+
+CREATE INDEX IF NOT EXISTS scanner_expense_links_user_created_idx
+  ON public.scanner_expense_links (user_id, created_at);
+
+COMMENT ON TABLE public.scanner_expense_links IS
+  'Vínculo idempotente entre un ticket confirmado y los gastos creados. No contiene la imagen ni texto OCR.';
+
 -- ---------------------------------------------------------------------------
 -- 2. Privilegios y RLS
 -- ---------------------------------------------------------------------------
 ALTER TABLE public.scanner_tickets      ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.scanner_ticket_lines ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.scanner_quota_ledger ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.scanner_expense_links ENABLE ROW LEVEL SECURITY;
 
-REVOKE ALL ON public.scanner_tickets, public.scanner_ticket_lines, public.scanner_quota_ledger
+REVOKE ALL ON public.scanner_tickets, public.scanner_ticket_lines, public.scanner_quota_ledger, public.scanner_expense_links
   FROM PUBLIC, anon, authenticated;
 GRANT SELECT ON public.scanner_tickets TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.scanner_ticket_lines TO authenticated;
-GRANT ALL ON public.scanner_tickets, public.scanner_ticket_lines, public.scanner_quota_ledger TO service_role;
+GRANT ALL ON public.scanner_tickets, public.scanner_ticket_lines, public.scanner_quota_ledger, public.scanner_expense_links TO service_role;
 -- scanner_quota_ledger: ni lectura ni escritura para clientes (el usuario consulta fn_scanner_quota_status()).
 
 DROP POLICY IF EXISTS "scanner_tickets_select_own" ON public.scanner_tickets;
@@ -352,6 +388,120 @@ $$;
 -- 4. Funciones de limpieza (SOLO service_role)
 -- ---------------------------------------------------------------------------
 
+-- Confirma un borrador revisado y crea todos los gastos de sus grupos en UNA transacción.
+-- La llamada a fn_create_expense y el vínculo idempotente quedan dentro de esta función.
+CREATE OR REPLACE FUNCTION public.fn_scanner_confirm_ticket(
+  p_ticket_id uuid,
+  p_confirm_key uuid,
+  p_draft_version integer
+)
+RETURNS jsonb
+LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+  v_uid       uuid := auth.uid();
+  v_t         public.scanner_tickets;
+  v_cycle     text;
+  v_group     record;
+  v_expense   public.expenses;
+  v_expenses  jsonb := '[]'::jsonb;
+  v_sum       bigint := 0;
+  v_group_no  smallint := 0;
+BEGIN
+  IF v_uid IS NULL THEN RETURN jsonb_build_object('ok', false, 'code', 'UNAUTHENTICATED'); END IF;
+  IF p_ticket_id IS NULL OR p_confirm_key IS NULL OR p_draft_version IS NULL OR p_draft_version < 0 THEN
+    RETURN jsonb_build_object('ok', false, 'code', 'INVALID_KEY');
+  END IF;
+
+  SELECT * INTO v_t FROM public.scanner_tickets WHERE id = p_ticket_id AND user_id = v_uid FOR UPDATE;
+  IF NOT FOUND THEN RETURN jsonb_build_object('ok', false, 'code', 'TICKET_NOT_FOUND'); END IF;
+
+  IF v_t.status = 'confirmed' THEN
+    IF v_t.confirm_key <> p_confirm_key THEN
+      RETURN jsonb_build_object('ok', false, 'code', 'IDEMPOTENCY_KEY_REUSED');
+    END IF;
+    SELECT COALESCE(jsonb_agg(jsonb_build_object('expenseId', expense_id, 'category', category,
+                                                  'amountCents', amount_cents) ORDER BY group_no), '[]'::jsonb)
+      INTO v_expenses FROM public.scanner_expense_links WHERE ticket_id = v_t.id;
+    RETURN jsonb_build_object('ok', true, 'idempotent', true, 'status', 'confirmed', 'expenses', v_expenses);
+  END IF;
+
+  IF v_t.status <> 'needs_review' THEN RETURN jsonb_build_object('ok', false, 'code', 'ILLEGAL_TRANSITION'); END IF;
+  IF v_t.draft_version <> p_draft_version THEN RETURN jsonb_build_object('ok', false, 'code', 'VERSION_CONFLICT'); END IF;
+  IF v_t.merchant IS NULL OR char_length(btrim(v_t.merchant)) = 0 OR v_t.receipt_date IS NULL
+     OR v_t.total_cents IS NULL OR v_t.currency <> 'EUR' THEN
+    RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR');
+  END IF;
+
+  SELECT status INTO v_cycle FROM public.months WHERE id = v_t.cycle_id AND user_id = v_uid FOR UPDATE;
+  IF NOT FOUND OR v_cycle IS NULL THEN RETURN jsonb_build_object('ok', false, 'code', 'INVALID_CYCLE'); END IF;
+  IF v_cycle <> 'open' THEN RETURN jsonb_build_object('ok', false, 'code', 'CYCLE_CLOSED'); END IF;
+
+  IF EXISTS (
+    SELECT 1 FROM public.scanner_ticket_lines l
+    WHERE l.ticket_id = v_t.id
+      AND (jsonb_typeof(l.allocations) <> 'array'
+        OR (jsonb_array_length(l.allocations) = 0 AND l.category IS NULL)
+        OR (jsonb_array_length(l.allocations) > 0 AND l.category IS NOT NULL)
+        OR EXISTS (
+          SELECT 1 FROM jsonb_array_elements(l.allocations) part
+          WHERE jsonb_typeof(part) <> 'object'
+             OR part->>'category' NOT IN ('survival','optional','culture','extra')
+             OR part->>'amountCents' IS NULL
+             OR part->>'amountCents' !~ '^-?[0-9]+$'
+        )
+      )
+  ) THEN RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR'); END IF;
+
+  SELECT COALESCE(SUM(amount_cents), 0) INTO v_sum
+  FROM (
+    SELECT l.amount_cents FROM public.scanner_ticket_lines l
+    WHERE l.ticket_id = v_t.id AND jsonb_array_length(l.allocations) = 0 AND l.category IS NOT NULL
+    UNION ALL
+    SELECT (part->>'amountCents')::bigint
+    FROM public.scanner_ticket_lines l CROSS JOIN LATERAL jsonb_array_elements(l.allocations) part
+    WHERE l.ticket_id = v_t.id
+  ) parts;
+  IF v_sum <> v_t.total_cents OR v_sum <= 0 THEN RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR'); END IF;
+
+  FOR v_group IN
+    SELECT category, SUM(amount_cents)::bigint AS amount_cents
+    FROM (
+      SELECT l.category, l.amount_cents FROM public.scanner_ticket_lines l
+      WHERE l.ticket_id = v_t.id AND jsonb_array_length(l.allocations) = 0
+      UNION ALL
+      SELECT part->>'category', (part->>'amountCents')::bigint
+      FROM public.scanner_ticket_lines l CROSS JOIN LATERAL jsonb_array_elements(l.allocations) part
+      WHERE l.ticket_id = v_t.id
+    ) grouped_parts
+    GROUP BY category ORDER BY category
+  LOOP
+    v_group_no := v_group_no + 1;
+    IF v_group.amount_cents <= 0 OR v_group_no > 4 THEN
+      RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR');
+    END IF;
+    SELECT * INTO v_expense FROM public.fn_create_expense(
+      v_t.cycle_id, v_t.receipt_date, v_group.amount_cents / 100.0, v_group.category,
+      btrim(v_t.merchant), NULL, NULL
+    );
+    INSERT INTO public.scanner_expense_links (ticket_id, user_id, cycle_id, expense_id, group_no, category, amount_cents)
+    VALUES (v_t.id, v_uid, v_t.cycle_id, v_expense.id, v_group_no, v_group.category, v_group.amount_cents);
+    v_expenses := v_expenses || jsonb_build_array(jsonb_build_object(
+      'expenseId', v_expense.id, 'category', v_group.category, 'amountCents', v_group.amount_cents));
+  END LOOP;
+
+  IF v_group_no = 0 THEN RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR'); END IF;
+
+  UPDATE public.scanner_tickets
+  SET status = 'confirmed', confirm_key = p_confirm_key, confirmed_at = now(), has_draft = false,
+      original_storage = CASE WHEN original_storage = 'present' THEN 'deletion_pending' ELSE original_storage END,
+      updated_at = now()
+  WHERE id = v_t.id;
+  RETURN jsonb_build_object('ok', true, 'idempotent', false, 'status', 'confirmed', 'expenses', v_expenses);
+END
+$$;
+
 -- Candidatos: caducados (24 h) o pendientes de un ciclo CERRADO. Derivado del estado real de months, no de un
 -- hook en el cierre: da igual cómo se cerrara el ciclo. Incluye los que ya están `expired` por reintentar.
 CREATE OR REPLACE FUNCTION public.fn_scanner_cleanup_candidates(p_now timestamptz DEFAULT now(), p_limit integer DEFAULT 100)
@@ -364,11 +514,13 @@ SET search_path = public, pg_temp
 AS $$
   SELECT t.id, t.user_id, t.cycle_id, t.status, t.status_reason, t.attempt_count, t.original_storage,
          t.has_draft, t.object_path, t.created_at,
-         CASE WHEN m.status = 'closed' THEN 'cycle_closed' ELSE 'ttl_expired' END
+         CASE WHEN t.status = 'confirmed' THEN 'post_confirm'
+              WHEN m.status = 'closed' THEN 'cycle_closed' ELSE 'ttl_expired' END
   FROM public.scanner_tickets t
   JOIN public.months m ON m.id = t.cycle_id
-  WHERE t.status IN ('initiated','uploaded','processing','needs_review','failed','expired')
-    AND (m.status = 'closed' OR t.expires_at <= p_now)
+  WHERE (t.status IN ('initiated','uploaded','processing','needs_review','failed','expired')
+         AND (m.status = 'closed' OR t.expires_at <= p_now))
+     OR (t.status = 'confirmed' AND t.original_storage = 'deletion_pending')
   ORDER BY t.created_at
   LIMIT LEAST(GREATEST(COALESCE(p_limit, 100), 1), 500)
 $$;
@@ -382,16 +534,41 @@ AS $$
 DECLARE
   v_t public.scanner_tickets;
 BEGIN
-  IF p_reason NOT IN ('ttl_expired','cycle_closed') THEN RETURN jsonb_build_object('ok', false, 'code', 'INVALID_REASON'); END IF;
+  IF p_reason NOT IN ('ttl_expired','cycle_closed','post_confirm') THEN RETURN jsonb_build_object('ok', false, 'code', 'INVALID_REASON'); END IF;
   SELECT * INTO v_t FROM public.scanner_tickets WHERE id = p_ticket_id FOR UPDATE;
   IF NOT FOUND THEN RETURN jsonb_build_object('ok', false, 'code', 'TICKET_NOT_FOUND'); END IF;
-  IF v_t.status IN ('deleted','confirmed') THEN RETURN jsonb_build_object('ok', true, 'idempotent', true); END IF;
+  IF v_t.status = 'deleted' THEN RETURN jsonb_build_object('ok', true, 'idempotent', true); END IF;
+  IF v_t.status = 'confirmed' AND p_reason <> 'post_confirm' THEN RETURN jsonb_build_object('ok', true, 'idempotent', true); END IF;
 
   UPDATE public.scanner_tickets
   SET status = CASE WHEN p_reason = 'ttl_expired' AND status NOT IN ('processing','expired') THEN 'expired' ELSE status END,
-      status_reason = p_reason,
+      status_reason = CASE WHEN p_reason = 'post_confirm' THEN status_reason ELSE p_reason END,
       original_storage = CASE WHEN original_storage = 'present' THEN 'deletion_pending' ELSE original_storage END,
       updated_at = now()
+  WHERE id = v_t.id;
+  RETURN jsonb_build_object('ok', true, 'idempotent', false);
+END
+$$;
+
+-- Cierra el borrado del original después de confirmar un gasto. Mantiene el ticket confirmado como tombstone
+-- de trazabilidad; el llamador debe haber comprobado de forma independiente que el objeto ya no existe.
+CREATE OR REPLACE FUNCTION public.fn_scanner_finalize_confirmed_original(p_ticket_id uuid)
+RETURNS jsonb
+LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE v_t public.scanner_tickets;
+BEGIN
+  SELECT * INTO v_t FROM public.scanner_tickets WHERE id = p_ticket_id FOR UPDATE;
+  IF NOT FOUND THEN RETURN jsonb_build_object('ok', false, 'code', 'TICKET_NOT_FOUND'); END IF;
+  IF v_t.status <> 'confirmed' THEN RETURN jsonb_build_object('ok', false, 'code', 'ILLEGAL_TRANSITION'); END IF;
+  IF v_t.original_storage = 'deleted_verified' THEN RETURN jsonb_build_object('ok', true, 'idempotent', true); END IF;
+  IF v_t.original_storage <> 'deletion_pending' THEN RETURN jsonb_build_object('ok', false, 'code', 'ORIGINAL_NOT_PENDING'); END IF;
+
+  DELETE FROM public.scanner_ticket_lines WHERE ticket_id = v_t.id;
+  UPDATE public.scanner_tickets
+  SET original_storage = 'deleted_verified', deletion_verified_at = now(), object_path = NULL,
+      has_draft = false, updated_at = now()
   WHERE id = v_t.id;
   RETURN jsonb_build_object('ok', true, 'idempotent', false);
 END
@@ -435,17 +612,21 @@ REVOKE ALL ON FUNCTION public.fn_scanner_create_ticket(uuid)            FROM PUB
 REVOKE ALL ON FUNCTION public.fn_scanner_register_upload(uuid, text)    FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_start_processing(uuid)         FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_quota_status()                 FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.fn_scanner_confirm_ticket(uuid, uuid, integer) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_cleanup_candidates(timestamptz, integer) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_mark_deletion_pending(uuid, text)        FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_finalize_deletion(uuid, text)            FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.fn_scanner_finalize_confirmed_original(uuid)         FROM PUBLIC, anon, authenticated;
 
 GRANT EXECUTE ON FUNCTION public.fn_scanner_create_ticket(uuid)         TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_register_upload(uuid, text) TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_start_processing(uuid)      TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_quota_status()              TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION public.fn_scanner_confirm_ticket(uuid, uuid, integer) TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_cleanup_candidates(timestamptz, integer) TO service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_mark_deletion_pending(uuid, text)        TO service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_finalize_deletion(uuid, text)            TO service_role;
+GRANT EXECUTE ON FUNCTION public.fn_scanner_finalize_confirmed_original(uuid)         TO service_role;
 
 -- ---------------------------------------------------------------------------
 -- 6. storage.objects — SOLO el bucket `kakebo-ticket-temp` (privado, creado a mano)

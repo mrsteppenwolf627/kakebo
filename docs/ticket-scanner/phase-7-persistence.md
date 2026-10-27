@@ -29,7 +29,7 @@ que no aparecen en lo observado.
 | Envoltorios de las funciones SQL | `src/lib/scanner/persistence.ts` |
 | Servicio de limpieza | `src/lib/scanner/cleanup.ts` |
 | Endpoint de limpieza protegido | `src/app/api/scanner/cleanup/route.ts` |
-| Contrato de creación de gastos | `src/lib/scanner/expense-contract.ts` |
+| Contrato y confirmación atómica de gastos | `src/lib/scanner/expense-contract.ts`, `src/lib/scanner/persistence.ts`, función `fn_scanner_confirm_ticket` |
 | Tests | `src/__tests__/security/scanner-persistence-sql-behavior.test.ts`, `src/__tests__/lib/scanner/phase7.test.ts` |
 
 ### 2.1 Migración
@@ -87,7 +87,9 @@ comprueban iguales en tests. **No implementado:** reembolso por fallo del sistem
 
 `runScannerCleanup` pide candidatos a `fn_scanner_cleanup_candidates` (caducados por `expires_at` **o** pendientes de un
 `months.status = 'closed'`), reutiliza `deleteWithVerification` y solo llama a `fn_scanner_finalize_deletion` cuando la ausencia
-del objeto se comprobó; si no, `fn_scanner_mark_deletion_pending` y se reintenta en la siguiente ejecución. Es idempotente.
+del objeto se comprobó; si no, `fn_scanner_mark_deletion_pending` y se reintenta en la siguiente ejecución. Los originales
+marcados `deletion_pending` tras una confirmación usan `post_confirm` y `fn_scanner_finalize_confirmed_original`: el ticket
+permanece confirmado y solo se purgan el original y el borrador. Es idempotente.
 
 Endpoint `GET|POST /api/scanner/cleanup`: exige `Authorization: Bearer <CRON_SECRET>` (comparación en tiempo constante, mínimo 16
 caracteres). Falla cerrado: sin secreto configurado → 401 sin tocar nada. No acepta el secreto por query string. Devuelve solo
@@ -126,8 +128,8 @@ retención real puede superar 24 h (hasta ~48 h); decisión a confirmar.
 `month_id` = ciclo) y la interfaz `ScannerExpenseWriter`. **No hay ruta ni escritura.** Bloqueos:
 
 1. El esquema extraído del backup local demuestra `expenses.month_id`, `expenses.subcategory`, `months.id` y `fn_create_expense`; la evidencia reproducible está en `docs/ticket-scanner/production-schema-evidence.md`.
-2. `expenses` no tiene columna de trazabilidad hacia el ticket. Debe añadirse una tabla de vínculo y una función de confirmación atómica antes de crear gastos desde el escáner. La migración de Fase 7 se mantiene sin esa escritura hasta probarla en staging.
-3. Debe ser una función atómica única (gastos + `confirmed` + vínculo), que respete el límite gratuito de `fn_create_expense`.
+2. La migración diferida añade `scanner_expense_links` y `fn_scanner_confirm_ticket`. La función exige propietario, versión, fecha, comercio, total EUR y ciclo abierto; crea los grupos mediante `fn_create_expense`, registra los IDs y marca `confirmed` en una única transacción.
+3. La confirmación ya está probada en PGlite con dos grupos, repetición idempotente, clave reutilizada, versión obsoleta, ciclo cerrado y borrador incompleto. Sigue pendiente una prueba contra staging antes de aplicar la migración en cualquier entorno remoto.
 
 ## 7. Azure Receipt
 

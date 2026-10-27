@@ -66,9 +66,9 @@ export function planToExpenseInputs(args: {
 }
 
 /**
- * Escritor que implementará la función atómica de servidor cuando el esquema esté demostrado. Debe crear TODOS
- * los gastos del ticket y marcar `confirmed` en una única transacción, e ignorar `groupKey` ya procesadas.
- * Hoy NO existe implementación: no hay ruta que lo invoque.
+ * La migración diferida implementa la función SQL atómica que crea TODOS los gastos y marca `confirmed`.
+ * Esta interfaz queda como contrato del futuro endpoint: todavía no existe una ruta HTTP que la invoque y
+ * `groupKey` se conserva como base de idempotencia por grupo.
  */
 export interface ScannerExpenseWriter {
   createAll(input: Extract<ExpenseContractResult, { ok: true }>): Promise<{ ok: true; expenseIds: string[] } | { ok: false; code: string }>;

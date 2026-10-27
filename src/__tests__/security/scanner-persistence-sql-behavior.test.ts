@@ -36,10 +36,25 @@ CREATE TABLE public.months (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(), user_id uuid NOT NULL REFERENCES auth.users(id),
   year int4 NOT NULL, month int4 NOT NULL, status text NOT NULL DEFAULT 'open',
   created_at timestamptz DEFAULT now(), closed_at timestamptz, income numeric);
--- expenses: columnas observadas (SIN month_id). Solo para comprobar que la migración no la toca.
+-- expenses: columnas demostradas por el backup local.
 CREATE TABLE public.expenses (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(), user_id uuid, date date, amount numeric,
-  category text, note text, created_at timestamptz DEFAULT now(), color text);
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(), user_id uuid, month_id uuid, date date, amount numeric(12,2),
+  category text, note text, created_at timestamptz DEFAULT now(), color text, subcategory text);
+CREATE OR REPLACE FUNCTION public.fn_create_expense(
+  p_month_id uuid, p_date date, p_amount numeric, p_category text,
+  p_note text DEFAULT NULL, p_color text DEFAULT NULL, p_subcategory text DEFAULT NULL
+) RETURNS public.expenses LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $$
+DECLARE v_uid uuid := auth.uid(); v_row public.expenses;
+BEGIN
+  IF v_uid IS NULL THEN RAISE EXCEPTION 'no user'; END IF;
+  IF NOT EXISTS (SELECT 1 FROM public.months WHERE id = p_month_id AND user_id = v_uid AND status = 'open') THEN
+    RAISE EXCEPTION 'invalid month';
+  END IF;
+  INSERT INTO public.expenses (user_id, month_id, date, amount, category, note, color, subcategory)
+  VALUES (v_uid, p_month_id, p_date, p_amount, p_category, p_note, p_color, p_subcategory)
+  RETURNING * INTO v_row;
+  RETURN v_row;
+END $$;
 -- maqueta de Supabase Storage (bucket PRIVADO, 0 políticas)
 CREATE SCHEMA storage;
 GRANT USAGE ON SCHEMA storage TO anon, authenticated, service_role;
@@ -111,7 +126,7 @@ describe("migración: preflight y aislamiento", () => {
     const cols = await q<{ column_name: string }>(
       `SELECT column_name FROM information_schema.columns WHERE table_schema='public' AND table_name='expenses' ORDER BY ordinal_position`
     );
-    expect(cols.map((c) => c.column_name)).toEqual(["id", "user_id", "date", "amount", "category", "note", "created_at", "color"]);
+    expect(cols.map((c) => c.column_name)).toEqual(["id", "user_id", "month_id", "date", "amount", "category", "note", "created_at", "color", "subcategory"]);
   });
 
   it("aborta si el bucket es público", { timeout: 30_000 }, async () => {
@@ -129,12 +144,13 @@ describe("migración: preflight y aislamiento", () => {
 
   it("RLS activada y sin acceso anon", async () => {
     const rls = await q<{ relname: string; relrowsecurity: boolean }>(
-      `SELECT relname, relrowsecurity FROM pg_class WHERE relname IN ('scanner_tickets','scanner_ticket_lines','scanner_quota_ledger') ORDER BY 1`
+      `SELECT relname, relrowsecurity FROM pg_class WHERE relname IN ('scanner_tickets','scanner_ticket_lines','scanner_quota_ledger','scanner_expense_links') ORDER BY 1`
     );
     expect(rls.every((r) => r.relrowsecurity)).toBe(true);
     for (const sql of [
       `SELECT * FROM public.scanner_tickets`,
       `SELECT * FROM public.scanner_ticket_lines`,
+      `SELECT * FROM public.scanner_expense_links`,
       `SELECT public.fn_scanner_create_ticket('${uuid()}')`,
     ]) {
       await asRole("anon");
@@ -266,6 +282,61 @@ describe("líneas editables", () => {
     // categoría fuera de las cuatro: rechazada por CHECK
     await asUser(A);
     expect(await denied(`INSERT INTO public.scanner_ticket_lines (ticket_id,user_id,position,kind,amount_cents,category) VALUES ('${t}','${A}',3,'item',100,'otra')`)).toBe("23514");
+  });
+});
+
+describe("confirmación atómica ticket → gastos", () => {
+  it("crea un gasto por grupo, vincula los IDs y es idempotente", async () => {
+    const t = await uploadedTicket(A);
+    await db.exec(`UPDATE public.scanner_tickets
+      SET status='needs_review', has_draft=true, draft_version=3,
+          merchant='Supermercado de prueba', receipt_date='2026-10-27', total_cents=1250
+      WHERE id='${t}'`);
+    await db.exec(`INSERT INTO public.scanner_ticket_lines
+      (ticket_id,user_id,position,kind,amount_cents,category)
+      VALUES ('${t}','${A}',0,'item',1000,'survival'),('${t}','${A}',1,'item',250,'optional')`);
+
+    const key = uuid();
+    await asUser(A);
+    const first = await rpc(`public.fn_scanner_confirm_ticket('${t}','${key}',3)`);
+    expect(first).toMatchObject({ ok: true, idempotent: false, status: "confirmed" });
+    expect(first.expenses).toHaveLength(2);
+    expect(await q(`SELECT id FROM public.expenses WHERE user_id='${A}'`)).toHaveLength(2);
+    await asRole("service_role");
+    expect(await q(`SELECT ticket_id FROM public.scanner_expense_links WHERE ticket_id='${t}'`)).toHaveLength(2);
+
+    await asUser(A);
+    const again = await rpc(`public.fn_scanner_confirm_ticket('${t}','${key}',3)`);
+    expect(again).toMatchObject({ ok: true, idempotent: true, status: "confirmed" });
+    expect(await q(`SELECT id FROM public.expenses WHERE user_id='${A}'`)).toHaveLength(2);
+    expect(await rpc(`public.fn_scanner_confirm_ticket('${t}','${uuid()}',3)`)).toMatchObject({ ok: false, code: "IDEMPOTENCY_KEY_REUSED" });
+    await reset();
+  });
+
+  it("rechaza versión obsoleta, ciclo cerrado y borrador incompleto", async () => {
+    const t = await uploadedTicket(A);
+    await db.exec(`UPDATE public.scanner_tickets
+      SET status='needs_review', has_draft=true, draft_version=2,
+          merchant='Comercio', receipt_date='2026-10-27', total_cents=100
+      WHERE id='${t}'`);
+    await db.exec(`INSERT INTO public.scanner_ticket_lines
+      (ticket_id,user_id,position,kind,amount_cents,category)
+      VALUES ('${t}','${A}',0,'item',100,'survival')`);
+    await asUser(A);
+    expect(await rpc(`public.fn_scanner_confirm_ticket('${t}','${uuid()}',1)`)).toMatchObject({ ok: false, code: "VERSION_CONFLICT" });
+    await reset();
+
+    await db.exec(`UPDATE public.months SET status='closed', closed_at=now() WHERE id='${cycleA}'`);
+    await asUser(A);
+    expect(await rpc(`public.fn_scanner_confirm_ticket('${t}','${uuid()}',2)`)).toMatchObject({ ok: false, code: "CYCLE_CLOSED" });
+    await reset();
+
+    cycleA = (await q<{ id: string }>(`INSERT INTO public.months (user_id,year,month,status) VALUES ('${A}',2026,11,'open') RETURNING id`))[0].id;
+    const t2 = await uploadedTicket(A);
+    await db.exec(`UPDATE public.scanner_tickets SET status='needs_review', has_draft=true, draft_version=0 WHERE id='${t2}'`);
+    await asUser(A);
+    expect(await rpc(`public.fn_scanner_confirm_ticket('${t2}','${uuid()}',0)`)).toMatchObject({ ok: false, code: "VALIDATION_ERROR" });
+    await reset();
   });
 });
 
@@ -410,7 +481,7 @@ describe("rollback", () => {
     expect(fns).toHaveLength(0);
     const pol = await q(`SELECT 1 FROM pg_policies WHERE schemaname='storage'`);
     expect(pol).toHaveLength(0);
-    expect(await q(`SELECT 1 FROM public.months`)).toHaveLength(3);
+    expect((await q(`SELECT 1 FROM public.months`)).length).toBeGreaterThanOrEqual(3);
     // y se puede volver a aplicar
     await db.exec(MIGRATION);
   });

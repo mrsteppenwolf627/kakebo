@@ -15,11 +15,12 @@ export interface RpcClientLike {
 export type PersistenceErrorCode =
   | "UNAUTHENTICATED" | "INVALID_KEY" | "NO_OPEN_CYCLE" | "TICKET_NOT_FOUND" | "ILLEGAL_TRANSITION"
   | "INVALID_PATH" | "INVALID_CYCLE" | "CYCLE_CLOSED" | "TICKET_EXPIRED" | "QUOTA_EXCEEDED"
-  | "INVALID_REASON" | "BACKEND_ERROR";
+  | "INVALID_REASON" | "VERSION_CONFLICT" | "VALIDATION_ERROR" | "IDEMPOTENCY_KEY_REUSED" | "BACKEND_ERROR";
 
 const KNOWN: ReadonlySet<string> = new Set<PersistenceErrorCode>([
   "UNAUTHENTICATED", "INVALID_KEY", "NO_OPEN_CYCLE", "TICKET_NOT_FOUND", "ILLEGAL_TRANSITION", "INVALID_PATH",
-  "INVALID_CYCLE", "CYCLE_CLOSED", "TICKET_EXPIRED", "QUOTA_EXCEEDED", "INVALID_REASON",
+  "INVALID_CYCLE", "CYCLE_CLOSED", "TICKET_EXPIRED", "QUOTA_EXCEEDED", "INVALID_REASON", "VERSION_CONFLICT",
+  "VALIDATION_ERROR", "IDEMPOTENCY_KEY_REUSED",
 ]);
 
 export type PersistenceFailure = { ok: false; code: PersistenceErrorCode };
@@ -50,6 +51,25 @@ export const startScannerProcessing = (client: RpcClientLike, ticketId: string) 
   call<{ idempotent: boolean; used?: number; remaining?: number }>(client, "fn_scanner_start_processing", {
     p_ticket_id: ticketId,
   });
+
+export interface ScannerExpenseResult {
+  expenseId: string;
+  category: string;
+  amountCents: number;
+}
+
+/** Confirma el borrador revisado y crea sus gastos dentro de una única transacción SQL. */
+export const confirmScannerTicket = (
+  client: RpcClientLike,
+  ticketId: string,
+  confirmKey: string,
+  draftVersion: number,
+) =>
+  call<{ status: "confirmed"; idempotent: boolean; expenses: ScannerExpenseResult[] }>(
+    client,
+    "fn_scanner_confirm_ticket",
+    { p_ticket_id: ticketId, p_confirm_key: confirmKey, p_draft_version: draftVersion },
+  );
 
 export interface ScannerQuotaStatus {
   cycleId: CycleId;

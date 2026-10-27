@@ -8,7 +8,7 @@ import {
   buildObjectPath,
   type StorageBucketApi,
 } from "@/lib/scanner/storage-adapter";
-import { createScannerTicket, getScannerQuotaStatus, startScannerProcessing, type RpcClientLike } from "@/lib/scanner/persistence";
+import { confirmScannerTicket, createScannerTicket, getScannerQuotaStatus, startScannerProcessing, type RpcClientLike } from "@/lib/scanner/persistence";
 import { runScannerCleanup, toRetainedTicket, type CleanupCandidateRow } from "@/lib/scanner/cleanup";
 import { planToExpenseInputs } from "@/lib/scanner/expense-contract";
 import { SCANNER_CYCLE_TICKET_LIMIT } from "@/lib/scanner/quota";
@@ -115,12 +115,14 @@ describe("persistence (envoltorios RPC)", () => {
     expect(await startScannerProcessing(rpcOf({ ok: false, code: "QUOTA_EXCEEDED" }), T)).toEqual({ ok: false, code: "QUOTA_EXCEEDED" });
     expect(await startScannerProcessing(rpcOf({ ok: false, code: "algo raro con datos" }), T)).toEqual({ ok: false, code: "BACKEND_ERROR" });
     expect(await startScannerProcessing(rpcOf(null, { message: "relation scanner_tickets does not exist" }), T)).toEqual({ ok: false, code: "BACKEND_ERROR" });
+    expect(await confirmScannerTicket(rpcOf({ ok: false, code: "VALIDATION_ERROR" }), T, C, 0)).toEqual({ ok: false, code: "VALIDATION_ERROR" });
   });
 
   it("pasa solo parámetros de ticket/clave; nunca un user_id", async () => {
     const rpc = vi.fn(async () => ({ data: { ok: true, idempotent: false }, error: null }));
     await startScannerProcessing({ rpc }, T);
     await createScannerTicket({ rpc }, U);
+    await confirmScannerTicket({ rpc }, T, C, 0);
     for (const [, args] of rpc.mock.calls as unknown as [string, Record<string, unknown>][]) {
       expect(Object.keys(args).some((k) => k.includes("user"))).toBe(false);
     }
@@ -219,6 +221,18 @@ describe("limpieza", () => {
     expect(none.calls).toHaveLength(1);
     const gone = admin([row()]); // el objeto ya no existe
     expect(await runScannerCleanup({ admin: gone.client, storage: new PrivateTicketBucket(s.client), now: NOW })).toMatchObject({ deleted: 1 });
+  });
+
+  it("borra el original después de confirmar sin convertir el ticket confirmado en deleted", async () => {
+    const s = fakeStorage();
+    const r = row({ status: "confirmed", original_storage: "deletion_pending", reason: "post_confirm" });
+    s.objects.set(r.object_path!, 5);
+    const a = admin([r]);
+    const out = await runScannerCleanup({ admin: a.client, storage: new PrivateTicketBucket(s.client), now: NOW });
+    expect(out).toEqual({ candidates: 1, deleted: 1, retryLater: 0, skipped: 0 });
+    expect(s.objects.size).toBe(0);
+    expect(a.calls.map((c) => c.fn)).toEqual(["fn_scanner_cleanup_candidates", "fn_scanner_finalize_confirmed_original"]);
+    expect(a.calls[1].args).toEqual({ p_ticket_id: T });
   });
 
   it("descarta filas no válidas sin tocar storage; error del backend se reporta sin detalle", async () => {
