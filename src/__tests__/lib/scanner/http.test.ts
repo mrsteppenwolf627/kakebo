@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { scannerPersistenceError, requireIdempotencyKey, scannerStartTicketSchema } from "@/lib/scanner/http";
+import { scannerPersistenceError, requireIdempotencyKey, scannerStartTicketSchema, SCANNER_PILOT_MAX_UPLOAD_BYTES } from "@/lib/scanner/http";
 
 describe("scanner HTTP contracts", () => {
   it("requires a UUID v4 idempotency key", () => {
@@ -14,6 +14,8 @@ describe("scanner HTTP contracts", () => {
     expect(scannerStartTicketSchema.safeParse({ source: "image", locale: "es", declaredMime: "image/jpeg", declaredSizeBytes: 100, extra: true }).success).toBe(false);
     expect(scannerStartTicketSchema.safeParse({ source: "image", locale: "es", declaredMime: "image/jpeg", declaredSizeBytes: -1 }).success).toBe(false);
     expect(scannerStartTicketSchema.safeParse({ source: "pdf", locale: "es", declaredMime: "image/jpeg", declaredSizeBytes: 100 }).success).toBe(false);
+    expect(scannerStartTicketSchema.safeParse({ source: "image", locale: "es", declaredMime: "image/jpeg", declaredSizeBytes: SCANNER_PILOT_MAX_UPLOAD_BYTES }).success).toBe(true);
+    expect(scannerStartTicketSchema.safeParse({ source: "image", locale: "es", declaredMime: "image/jpeg", declaredSizeBytes: SCANNER_PILOT_MAX_UPLOAD_BYTES + 1 }).success).toBe(false);
   });
 
   it("maps persistence failures to neutral HTTP errors", () => {

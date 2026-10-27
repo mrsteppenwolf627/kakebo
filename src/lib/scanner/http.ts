@@ -1,13 +1,16 @@
 import { z } from "zod";
 import { apiErrors, type ApiError } from "@/lib/api/errors";
 import type { PersistenceErrorCode, PersistenceFailure } from "./persistence";
-import { SCANNER_ALLOWED_MIME, SCANNER_MAX_UPLOAD_BYTES } from "./storage-adapter";
+import { SCANNER_ALLOWED_MIME } from "./storage-adapter";
+
+/** Límite operativo del piloto gratuito Azure F0; no es el límite futuro del bucket. */
+export const SCANNER_PILOT_MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
 
 export const scannerStartTicketSchema = z.strictObject({
   source: z.enum(["camera", "image", "pdf"]),
   locale: z.enum(["es", "en"]),
   declaredMime: z.enum(SCANNER_ALLOWED_MIME),
-  declaredSizeBytes: z.number().int().nonnegative().max(SCANNER_MAX_UPLOAD_BYTES),
+  declaredSizeBytes: z.number().int().nonnegative().max(SCANNER_PILOT_MAX_UPLOAD_BYTES),
 }).superRefine((value, ctx) => {
   if (value.source === "pdf") {
     ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["source"], message: "PDF no está habilitado para el bucket actual." });

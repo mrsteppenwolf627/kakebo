@@ -183,6 +183,24 @@ Hay una selección provisional (Google, con AWS como alternativa) para empezar u
 | Margen: OCR podría superar el ingreso con uso alto | Puede obligar a rebajar la cuota |
 | Premium frente a Plus y precio (Fase 0) | Sin cerrar |
 
+## 12. Verificación oficial adicional del candidato Azure (2026-10-27)
+
+La documentación oficial consultada después del benchmark permite precisar varios puntos, sin convertirlos en aprobación de producción:
+
+- Document Intelligence Receipt v4 admite PDF e imágenes JPEG/JPG, PNG, BMP, TIFF y HEIF; el nivel gratuito F0 limita el archivo a 4 MB y procesa como máximo las dos primeras páginas de un PDF/TIFF.
+- La documentación de idiomas confirma español (`es`) para el motor de lectura que sustenta los modelos de documentos; el modelo Receipt extrae comercio, fecha, impuestos y total, pero el método de pago sigue sin estar demostrado como campo fiable para este producto.
+- Azure indica que almacena temporalmente entrada y resultados en la misma región y que los elimina automáticamente 24 horas después; también documenta una operación para solicitar el borrado anticipado.
+- Esto hace que Azure sea técnicamente apto para un piloto sintético de coste cero dentro de F0, sujeto a límites y a la configuración real de la cuenta. No demuestra DPA revisado, subprocesadores, benchmark de precisión, ausencia de cargos accidentales ni autorización para datos reales.
+
+Fuentes oficiales verificadas:
+
+- https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/prebuilt/receipt?view=doc-intel-4.0.0
+- https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/service-limits?view=doc-intel-4.0.0
+- https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/language-support/ocr?view=doc-intel-4.0.0
+- https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/document-intelligence/data-privacy-security
+
+Consecuencia técnica para esta rama: el adaptador Azure existe pero está desactivado por defecto y exige dos activaciones explícitas; la API local no permite PDF mientras el bucket privado real no lo admita, y el proveedor rechaza cargas superiores a 4 MB en el nivel gratuito.
+
 ## Modificaciones a documentos de Fase 0
 
 Ninguna.
