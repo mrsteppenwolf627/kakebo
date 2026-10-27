@@ -443,6 +443,106 @@ $$;
 -- 4. Funciones de limpieza (SOLO service_role)
 -- ---------------------------------------------------------------------------
 
+-- Reemplaza el borrador completo con control optimista de versión.
+-- Solo se permite en needs_review; valida cada línea y reparto antes de borrar
+-- las líneas anteriores, por lo que una petición inválida es atómica.
+CREATE OR REPLACE FUNCTION public.fn_scanner_replace_draft(
+  p_ticket_id uuid,
+  p_draft_version integer,
+  p_merchant text,
+  p_receipt_date date,
+  p_total_cents bigint,
+  p_lines jsonb
+)
+RETURNS jsonb
+LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+  v_uid uuid := auth.uid();
+  v_t public.scanner_tickets;
+  v_line jsonb;
+  v_part jsonb;
+  v_position smallint := 0;
+  v_alloc_sum bigint;
+  v_amount bigint;
+  v_allocations jsonb;
+BEGIN
+  IF v_uid IS NULL THEN RETURN jsonb_build_object('ok', false, 'code', 'UNAUTHENTICATED'); END IF;
+  IF p_ticket_id IS NULL OR p_draft_version IS NULL OR p_draft_version < 0 THEN
+    RETURN jsonb_build_object('ok', false, 'code', 'INVALID_KEY');
+  END IF;
+  IF p_lines IS NULL OR jsonb_typeof(p_lines) <> 'array' OR jsonb_array_length(p_lines) > 100
+     OR (p_merchant IS NOT NULL AND char_length(p_merchant) > 120)
+     OR (p_total_cents IS NOT NULL AND p_total_cents <= 0) THEN
+    RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR');
+  END IF;
+
+  SELECT * INTO v_t FROM public.scanner_tickets WHERE id = p_ticket_id AND user_id = v_uid FOR UPDATE;
+  IF NOT FOUND THEN RETURN jsonb_build_object('ok', false, 'code', 'TICKET_NOT_FOUND'); END IF;
+  IF v_t.status <> 'needs_review' THEN RETURN jsonb_build_object('ok', false, 'code', 'ILLEGAL_TRANSITION'); END IF;
+  IF v_t.draft_version <> p_draft_version THEN RETURN jsonb_build_object('ok', false, 'code', 'VERSION_CONFLICT'); END IF;
+
+  FOR v_line IN SELECT value FROM jsonb_array_elements(p_lines)
+  LOOP
+    IF jsonb_typeof(v_line) <> 'object'
+       OR v_line->>'amountCents' IS NULL OR v_line->>'amountCents' !~ '^-?[0-9]+$'
+       OR (v_line->>'amountCents')::bigint = 0
+       OR v_line->>'kind' NOT IN ('item','adjustment')
+       OR v_line->'allocations' IS NULL OR jsonb_typeof(v_line->'allocations') <> 'array'
+       OR (v_line->>'description' IS NOT NULL AND char_length(v_line->>'description') > 200)
+       OR (v_line->>'categoryProposal' IS NOT NULL AND v_line->>'categoryProposal' NOT IN ('survival','optional','culture','extra'))
+       OR (v_line->>'category' IS NOT NULL AND v_line->>'category' NOT IN ('survival','optional','culture','extra')) THEN
+      RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR');
+    END IF;
+
+    v_amount := (v_line->>'amountCents')::bigint;
+    v_allocations := v_line->'allocations';
+    IF jsonb_array_length(v_allocations) = 0 THEN
+      IF v_line->>'category' IS NULL THEN RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR'); END IF;
+    ELSE
+      IF v_line->>'category' IS NOT NULL OR jsonb_array_length(v_allocations) < 2 THEN
+        RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR');
+      END IF;
+      v_alloc_sum := 0;
+      FOR v_part IN SELECT value FROM jsonb_array_elements(v_allocations)
+      LOOP
+        IF jsonb_typeof(v_part) <> 'object'
+           OR v_part->>'category' NOT IN ('survival','optional','culture','extra')
+           OR v_part->>'amountCents' IS NULL OR v_part->>'amountCents' !~ '^-?[0-9]+$'
+           OR (v_part->>'amountCents')::bigint = 0 THEN
+          RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR');
+        END IF;
+        v_alloc_sum := v_alloc_sum + (v_part->>'amountCents')::bigint;
+      END LOOP;
+      IF v_alloc_sum <> v_amount THEN RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR'); END IF;
+    END IF;
+    v_position := v_position + 1;
+  END LOOP;
+
+  DELETE FROM public.scanner_ticket_lines WHERE ticket_id = v_t.id;
+  v_position := 0;
+  FOR v_line IN SELECT value FROM jsonb_array_elements(p_lines)
+  LOOP
+    INSERT INTO public.scanner_ticket_lines (
+      ticket_id, user_id, position, kind, description, amount_cents,
+      category_proposal, category, allocations
+    ) VALUES (
+      v_t.id, v_uid, v_position, v_line->>'kind', NULLIF(v_line->>'description',''),
+      (v_line->>'amountCents')::bigint, NULLIF(v_line->>'categoryProposal',''),
+      NULLIF(v_line->>'category',''), COALESCE(v_line->'allocations','[]'::jsonb)
+    );
+    v_position := v_position + 1;
+  END LOOP;
+
+  UPDATE public.scanner_tickets
+  SET merchant = p_merchant, receipt_date = p_receipt_date, total_cents = p_total_cents,
+      draft_version = draft_version + 1, has_draft = true, updated_at = now()
+  WHERE id = v_t.id;
+  RETURN jsonb_build_object('ok', true, 'draftVersion', v_t.draft_version + 1);
+END
+$$;
+
 -- Confirma un borrador revisado y crea todos los gastos de sus grupos en UNA transacción.
 -- La llamada a fn_create_expense y el vínculo idempotente quedan dentro de esta función.
 CREATE OR REPLACE FUNCTION public.fn_scanner_confirm_ticket(
@@ -680,6 +780,7 @@ REVOKE ALL ON FUNCTION public.fn_scanner_register_upload(uuid, text)    FROM PUB
 REVOKE ALL ON FUNCTION public.fn_scanner_start_processing(uuid)         FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_quota_status()                 FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_confirm_ticket(uuid, uuid, integer) FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.fn_scanner_replace_draft(uuid, integer, text, date, bigint, jsonb) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_cleanup_candidates(timestamptz, integer) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_mark_deletion_pending(uuid, text)        FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_finalize_deletion(uuid, text)            FROM PUBLIC, anon, authenticated;
@@ -691,6 +792,7 @@ GRANT EXECUTE ON FUNCTION public.fn_scanner_register_upload(uuid, text) TO authe
 GRANT EXECUTE ON FUNCTION public.fn_scanner_start_processing(uuid)      TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_quota_status()              TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_confirm_ticket(uuid, uuid, integer) TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION public.fn_scanner_replace_draft(uuid, integer, text, date, bigint, jsonb) TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_cleanup_candidates(timestamptz, integer) TO service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_mark_deletion_pending(uuid, text)        TO service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_finalize_deletion(uuid, text)            TO service_role;

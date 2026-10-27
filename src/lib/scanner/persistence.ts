@@ -69,6 +69,29 @@ export const startScannerProcessing = (client: RpcClientLike, ticketId: string) 
     p_ticket_id: ticketId,
   });
 
+export interface ScannerDraftLineInput {
+  kind: "item" | "adjustment";
+  description: string | null;
+  amountCents: number;
+  categoryProposal: "survival" | "optional" | "culture" | "extra" | null;
+  category: "survival" | "optional" | "culture" | "extra" | null;
+  allocations: readonly { category: "survival" | "optional" | "culture" | "extra"; amountCents: number }[];
+}
+
+export const replaceScannerDraft = (
+  client: RpcClientLike,
+  ticketId: string,
+  draftVersion: number,
+  draft: { merchant: string | null; date: string | null; totalCents: number | null; lines: readonly ScannerDraftLineInput[] },
+) => call<{ draftVersion: number }>(client, "fn_scanner_replace_draft", {
+  p_ticket_id: ticketId,
+  p_draft_version: draftVersion,
+  p_merchant: draft.merchant,
+  p_receipt_date: draft.date,
+  p_total_cents: draft.totalCents,
+  p_lines: draft.lines,
+});
+
 export interface ScannerExpenseResult {
   expenseId: string;
   category: string;
