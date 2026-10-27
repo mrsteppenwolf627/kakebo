@@ -69,6 +69,31 @@ export const startScannerProcessing = (client: RpcClientLike, ticketId: string) 
     p_ticket_id: ticketId,
   });
 
+export interface ScannerOcrLineInput {
+  description: string | null;
+  amountCents: number;
+  categoryProposal: "survival" | "optional" | "culture" | "extra" | null;
+}
+
+export const applyScannerOcrResult = (
+  client: RpcClientLike,
+  ticketId: string,
+  receipt: { merchant: string | null; date: string | null; totalCents: number | null; currency: string; lines: readonly ScannerOcrLineInput[] },
+) => call<{ draftVersion: number; idempotent: boolean }>(client, "fn_scanner_apply_ocr_result", {
+  p_ticket_id: ticketId,
+  p_merchant: receipt.merchant,
+  p_receipt_date: receipt.date,
+  p_total_cents: receipt.totalCents,
+  p_currency: receipt.currency,
+  p_lines: receipt.lines,
+});
+
+export const failScannerProcessing = (client: RpcClientLike, ticketId: string, reason: "provider_failed" | "validation_rejected") =>
+  call<{ idempotent: boolean }>(client, "fn_scanner_fail_processing", {
+    p_ticket_id: ticketId,
+    p_reason: reason,
+  });
+
 export interface ScannerDraftLineInput {
   kind: "item" | "adjustment";
   description: string | null;

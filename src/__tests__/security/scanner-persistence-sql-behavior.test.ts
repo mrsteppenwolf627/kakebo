@@ -357,6 +357,40 @@ describe("confirmación atómica ticket → gastos", () => {
   });
 });
 
+describe("procesamiento OCR y devolución de cuota", () => {
+  it("guarda solo el resultado normalizado, propone categorías y abre revisión", async () => {
+    const t = await uploadedTicket(A);
+    await db.exec(`UPDATE public.scanner_tickets SET status='processing' WHERE id='${t}'`);
+    await asUser(A);
+    const result = await rpc(`public.fn_scanner_apply_ocr_result(
+      '${t}', 'Comercio', '2026-10-27', 1250, 'EUR',
+      '[{"description":"Leche","amountCents":500,"categoryProposal":"survival"},{"description":"Entrada","amountCents":750,"categoryProposal":null}]'::jsonb
+    )`);
+    expect(result).toMatchObject({ ok: true, idempotent: false, draftVersion: 1 });
+    expect(await q<{ status: string; currency: string; draft_version: number }>(`SELECT status,currency,draft_version FROM public.scanner_tickets WHERE id='${t}'`)).toEqual([
+      { status: "needs_review", currency: "EUR", draft_version: 1 },
+    ]);
+    expect(await q<{ description: string; category_proposal: string | null }>(`SELECT description,category_proposal FROM public.scanner_ticket_lines WHERE ticket_id='${t}' ORDER BY position`)).toEqual([
+      { description: "Leche", category_proposal: "survival" },
+      { description: "Entrada", category_proposal: null },
+    ]);
+    expect(await rpc(`public.fn_scanner_apply_ocr_result('${t}', 'Otro', '2026-10-27', 1, 'EUR', '[{"description":"x","amountCents":1}]'::jsonb)`)).toMatchObject({ ok: true, idempotent: true });
+    await reset();
+  });
+
+  it("marca fallido y devuelve la cuota una sola vez", async () => {
+    const t = await uploadedTicket(A);
+    await asUser(A);
+    expect(await rpc(`public.fn_scanner_start_processing('${t}')`)).toMatchObject({ ok: true, idempotent: false });
+    expect(await rpc(`public.fn_scanner_fail_processing('${t}', 'provider_failed')`)).toMatchObject({ ok: true, idempotent: false });
+    expect(await rpc(`public.fn_scanner_fail_processing('${t}', 'provider_failed')`)).toMatchObject({ ok: true, idempotent: true });
+    await asRole("service_role");
+    expect(await q<{ kind: string }>(`SELECT kind FROM public.scanner_quota_ledger WHERE ticket_id='${t}' ORDER BY kind`)).toEqual([{ kind: "consume" }, { kind: "refund" }]);
+    expect(await q<{ status: string; status_reason: string }>(`SELECT status,status_reason FROM public.scanner_tickets WHERE id='${t}'`)).toEqual([{ status: "failed", status_reason: "provider_failed" }]);
+    await reset();
+  });
+});
+
 describe("limpieza: caducados 24 h y ciclos cerrados (solo service_role)", () => {
   it("los clientes no pueden invocar las funciones de limpieza", async () => {
     for (const role of ["anon", "authenticated"]) {

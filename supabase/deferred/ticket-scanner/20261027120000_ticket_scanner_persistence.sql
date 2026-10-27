@@ -543,6 +543,98 @@ BEGIN
 END
 $$;
 
+-- Guarda el resultado normalizado del OCR y abre la revisión humana.
+-- El proveedor no puede escribir directamente: solo recibe campos ya normalizados
+-- y sin respuesta cruda. Las categorías entran como propuesta, nunca como decisión.
+CREATE OR REPLACE FUNCTION public.fn_scanner_apply_ocr_result(
+  p_ticket_id uuid,
+  p_merchant text,
+  p_receipt_date date,
+  p_total_cents bigint,
+  p_currency text,
+  p_lines jsonb
+)
+RETURNS jsonb
+LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+  v_uid uuid := auth.uid();
+  v_t public.scanner_tickets;
+  v_line jsonb;
+  v_position smallint := 0;
+BEGIN
+  IF v_uid IS NULL THEN RETURN jsonb_build_object('ok', false, 'code', 'UNAUTHENTICATED'); END IF;
+  IF p_lines IS NULL OR jsonb_typeof(p_lines) <> 'array' OR jsonb_array_length(p_lines) > 100
+     OR p_currency <> 'EUR' OR (p_merchant IS NOT NULL AND char_length(p_merchant) > 120)
+     OR (p_total_cents IS NOT NULL AND p_total_cents <= 0) THEN
+    RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR');
+  END IF;
+  SELECT * INTO v_t FROM public.scanner_tickets WHERE id = p_ticket_id AND user_id = v_uid FOR UPDATE;
+  IF NOT FOUND THEN RETURN jsonb_build_object('ok', false, 'code', 'TICKET_NOT_FOUND'); END IF;
+  IF v_t.status = 'needs_review' AND v_t.has_draft THEN
+    RETURN jsonb_build_object('ok', true, 'idempotent', true, 'draftVersion', v_t.draft_version);
+  END IF;
+  IF v_t.status <> 'processing' THEN RETURN jsonb_build_object('ok', false, 'code', 'ILLEGAL_TRANSITION'); END IF;
+  IF jsonb_array_length(p_lines) = 0 THEN RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR'); END IF;
+
+  FOR v_line IN SELECT value FROM jsonb_array_elements(p_lines)
+  LOOP
+    IF jsonb_typeof(v_line) <> 'object'
+       OR v_line->>'amountCents' IS NULL OR v_line->>'amountCents' !~ '^-?[0-9]+$'
+       OR (v_line->>'amountCents')::bigint = 0
+       OR (v_line->>'description' IS NOT NULL AND char_length(v_line->>'description') > 200)
+       OR (v_line->>'categoryProposal' IS NOT NULL AND v_line->>'categoryProposal' NOT IN ('survival','optional','culture','extra')) THEN
+      RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR');
+    END IF;
+  END LOOP;
+
+  DELETE FROM public.scanner_ticket_lines WHERE ticket_id = v_t.id;
+  FOR v_line IN SELECT value FROM jsonb_array_elements(p_lines)
+  LOOP
+    INSERT INTO public.scanner_ticket_lines (
+      ticket_id, user_id, position, kind, description, amount_cents, category_proposal, category, allocations
+    ) VALUES (
+      v_t.id, v_uid, v_position, 'item', NULLIF(v_line->>'description',''),
+      (v_line->>'amountCents')::bigint, NULLIF(v_line->>'categoryProposal',''), NULL, '[]'::jsonb
+    );
+    v_position := v_position + 1;
+  END LOOP;
+  UPDATE public.scanner_tickets
+  SET status = 'needs_review', status_reason = NULL, has_draft = true, draft_version = 1,
+      merchant = p_merchant, receipt_date = p_receipt_date, total_cents = p_total_cents,
+      currency = 'EUR', updated_at = now()
+  WHERE id = v_t.id;
+  RETURN jsonb_build_object('ok', true, 'idempotent', false, 'draftVersion', 1);
+END
+$$;
+
+-- Error de procesamiento: deja el ticket reintentable y devuelve una vez la cuota consumida.
+CREATE OR REPLACE FUNCTION public.fn_scanner_fail_processing(p_ticket_id uuid, p_reason text DEFAULT 'provider_failed')
+RETURNS jsonb
+LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+  v_uid uuid := auth.uid();
+  v_t public.scanner_tickets;
+BEGIN
+  IF v_uid IS NULL THEN RETURN jsonb_build_object('ok', false, 'code', 'UNAUTHENTICATED'); END IF;
+  IF p_reason NOT IN ('provider_failed','validation_rejected') THEN RETURN jsonb_build_object('ok', false, 'code', 'INVALID_REASON'); END IF;
+  SELECT * INTO v_t FROM public.scanner_tickets WHERE id = p_ticket_id AND user_id = v_uid FOR UPDATE;
+  IF NOT FOUND THEN RETURN jsonb_build_object('ok', false, 'code', 'TICKET_NOT_FOUND'); END IF;
+  IF v_t.status = 'failed' THEN RETURN jsonb_build_object('ok', true, 'idempotent', true); END IF;
+  IF v_t.status <> 'processing' THEN RETURN jsonb_build_object('ok', false, 'code', 'ILLEGAL_TRANSITION'); END IF;
+  IF EXISTS (SELECT 1 FROM public.scanner_quota_ledger WHERE ticket_id = v_t.id AND kind = 'consume')
+     AND NOT EXISTS (SELECT 1 FROM public.scanner_quota_ledger WHERE ticket_id = v_t.id AND kind = 'refund') THEN
+    INSERT INTO public.scanner_quota_ledger (user_id, cycle_id, ticket_id, kind)
+    VALUES (v_uid, v_t.cycle_id, v_t.id, 'refund');
+  END IF;
+  UPDATE public.scanner_tickets SET status = 'failed', status_reason = p_reason, updated_at = now() WHERE id = v_t.id;
+  RETURN jsonb_build_object('ok', true, 'idempotent', false);
+END
+$$;
+
 -- Confirma un borrador revisado y crea todos los gastos de sus grupos en UNA transacción.
 -- La llamada a fn_create_expense y el vínculo idempotente quedan dentro de esta función.
 CREATE OR REPLACE FUNCTION public.fn_scanner_confirm_ticket(
@@ -781,6 +873,8 @@ REVOKE ALL ON FUNCTION public.fn_scanner_start_processing(uuid)         FROM PUB
 REVOKE ALL ON FUNCTION public.fn_scanner_quota_status()                 FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_confirm_ticket(uuid, uuid, integer) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_replace_draft(uuid, integer, text, date, bigint, jsonb) FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.fn_scanner_apply_ocr_result(uuid, text, date, bigint, text, jsonb) FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.fn_scanner_fail_processing(uuid, text) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_cleanup_candidates(timestamptz, integer) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_mark_deletion_pending(uuid, text)        FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_finalize_deletion(uuid, text)            FROM PUBLIC, anon, authenticated;
@@ -793,6 +887,8 @@ GRANT EXECUTE ON FUNCTION public.fn_scanner_start_processing(uuid)      TO authe
 GRANT EXECUTE ON FUNCTION public.fn_scanner_quota_status()              TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_confirm_ticket(uuid, uuid, integer) TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_replace_draft(uuid, integer, text, date, bigint, jsonb) TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION public.fn_scanner_apply_ocr_result(uuid, text, date, bigint, text, jsonb) TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION public.fn_scanner_fail_processing(uuid, text) TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_cleanup_candidates(timestamptz, integer) TO service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_mark_deletion_pending(uuid, text)        TO service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_finalize_deletion(uuid, text)            TO service_role;
