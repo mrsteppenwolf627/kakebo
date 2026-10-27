@@ -1292,6 +1292,18 @@
         "aiBlockedTitle": "El asistente de IA es una función Plus",
         "aiBlockedDesc": "Con Kakebo Plus puedes conversar con el asistente financiero. Tu prueba ha terminado o tu plan gratuito no la incluye."
     },
+    "Scanner": {
+        "eyebrow": "Herramienta Plus",
+        "title": "Escanear un ticket",
+        "intro": "Convierte un ticket en gastos revisables y decide qué se añade a tu ciclo.",
+        "plusTitle": "El escáner es una función Plus",
+        "plusDescription": "Con Plus podrás revisar y confirmar los datos del ticket antes de añadirlos como gastos. No se añadirá nada sin tu confirmación.",
+        "seePlans": "Ver planes Plus",
+        "comingSoonTitle": "Preparando el escáner",
+        "comingSoonDescription": "Tu plan incluye esta función. La subida y lectura de tickets se habilitarán cuando termine la integración segura del servicio de reconocimiento.",
+        "unavailableTitle": "El escáner no está disponible ahora",
+        "unavailableDescription": "No hemos podido comprobar tu acceso. No se ha subido ni guardado ningún ticket. Inténtalo de nuevo más tarde."
+    },
     "UserMenu": {
         "signIn": "Entrar",
         "account": "Cuenta",

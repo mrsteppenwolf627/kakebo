@@ -1360,6 +1360,18 @@
         "aiBlockedTitle": "The AI assistant is a Plus feature",
         "aiBlockedDesc": "With Kakebo Plus you can chat with the financial assistant. Your free plan doesn't include it."
     },
+    "Scanner": {
+        "eyebrow": "Plus feature",
+        "title": "Scan a receipt",
+        "intro": "Turn a receipt into reviewable expenses and decide what gets added to your cycle.",
+        "plusTitle": "Receipt scanning is a Plus feature",
+        "plusDescription": "With Plus, you will review and confirm the receipt data before it is added as expenses. Nothing is added without your confirmation.",
+        "seePlans": "See Plus plans",
+        "comingSoonTitle": "Receipt scanning is being prepared",
+        "comingSoonDescription": "Your plan includes this feature. Upload and receipt reading will be enabled once the secure recognition-service integration is complete.",
+        "unavailableTitle": "Receipt scanning is unavailable right now",
+        "unavailableDescription": "We could not verify your access. No receipt was uploaded or saved. Please try again later."
+    },
     "UserMenu": {
         "signIn": "Sign in",
         "account": "Account",
