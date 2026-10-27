@@ -1375,6 +1375,12 @@
         "flow": {
             "startTitle": "Add a receipt",
             "startIntro": "Take a photo or choose an image. You will review every field before adding any expense.",
+            "quota": "You have {remaining} of {limit} receipts left in this cycle.",
+            "pendingTitle": "Pending receipts",
+            "unknownMerchant": "Merchant not identified",
+            "readyToReview": "Ready to review",
+            "inProgress": "Processing",
+            "pendingNotReady": "This receipt is still being processed.",
             "takePhoto": "Take a photo",
             "chooseImage": "Choose an image",
             "uploading": "Uploading the receipt privately…",

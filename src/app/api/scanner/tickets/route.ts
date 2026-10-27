@@ -9,6 +9,33 @@ import { assertScannerSameOrigin } from "@/lib/scanner/csrf";
 
 export const dynamic = "force-dynamic";
 
+export const GET = withLogging(async () => {
+  try {
+    const supabase = await createClient();
+    await requireScannerAccess(supabase);
+    const { data, error } = await supabase
+      .from("scanner_tickets")
+      .select("id,status,status_reason,merchant,receipt_date,total_cents,currency,expires_at,updated_at")
+      .neq("status", "deleted")
+      .order("updated_at", { ascending: false })
+      .limit(20);
+    if (error) throw apiErrors.accessUnavailable();
+    return noStore(responses.ok({ tickets: (data ?? []).map((ticket) => ({
+      id: ticket.id,
+      status: ticket.status,
+      statusReason: ticket.status_reason,
+      merchant: ticket.merchant,
+      date: ticket.receipt_date,
+      totalCents: ticket.total_cents,
+      currency: ticket.currency,
+      expiresAt: ticket.expires_at,
+      updatedAt: ticket.updated_at,
+    })) }));
+  } catch (error) {
+    return handleApiError(error);
+  }
+});
+
 export const POST = withLogging(async (request: NextRequest) => {
   try {
     assertScannerSameOrigin(request);

@@ -1307,6 +1307,12 @@
         "flow": {
             "startTitle": "Añade un ticket",
             "startIntro": "Haz una foto o elige una imagen. Revisarás todos los datos antes de añadir cualquier gasto.",
+            "quota": "Te quedan {remaining} de {limit} tickets en este ciclo.",
+            "pendingTitle": "Tickets pendientes",
+            "unknownMerchant": "Comercio sin identificar",
+            "readyToReview": "Listo para revisar",
+            "inProgress": "En proceso",
+            "pendingNotReady": "Este ticket todavía se está procesando.",
             "takePhoto": "Tomar una foto",
             "chooseImage": "Elegir una imagen",
             "uploading": "Subiendo el ticket de forma privada…",

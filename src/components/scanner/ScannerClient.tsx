@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 type Category = "survival" | "optional" | "culture" | "extra";
@@ -24,6 +24,7 @@ type Ticket = {
   currency: string | null;
   lines: Line[];
 };
+type PendingTicket = { id: string; status: string; merchant: string | null; date: string | null; totalCents: number | null; currency: string | null };
 
 type ApiResponse<T> = { success: true; data: T } | { success: false; error?: { message?: string } };
 
@@ -58,6 +59,20 @@ export default function ScannerClient() {
   const [total, setTotal] = useState("");
   const [lines, setLines] = useState<Line[]>([]);
   const [confirmMessage, setConfirmMessage] = useState<string | null>(null);
+  const [quota, setQuota] = useState<{ remaining: number; limit: number } | null>(null);
+  const [pending, setPending] = useState<PendingTicket[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    Promise.all([
+      api<{ remaining: number; limit: number }>("/api/scanner/quota"),
+      api<{ tickets: PendingTicket[] }>("/api/scanner/tickets"),
+    ]).then(([quotaResult, ticketsResult]) => {
+      if (!active) return;
+      setQuota(quotaResult); setPending(ticketsResult.tickets);
+    }).catch(() => undefined);
+    return () => { active = false; };
+  }, []);
 
   const reset = () => {
     setTicket(null); setStep("idle"); setError(null); setConfirmMessage(null);
@@ -100,6 +115,18 @@ export default function ScannerClient() {
       setError(cause instanceof Error && cause.message !== "REQUEST_FAILED" ? cause.message : t("flow.errors.generic"));
       setStep("idle");
     } finally { setBusy(false); }
+  };
+
+  const openPending = async (ticketId: string) => {
+    setBusy(true); setError(null);
+    try {
+      const loaded = await api<{ ticket: Ticket }>(`/api/scanner/tickets/${ticketId}`);
+      if (loaded.ticket.status !== "needs_review") throw new Error(t("flow.pendingNotReady"));
+      setTicket(loaded.ticket); setMerchant(loaded.ticket.merchant ?? ""); setDate(loaded.ticket.date ?? "");
+      setTotal(loaded.ticket.totalCents === null ? "" : String(loaded.ticket.totalCents / 100));
+      setLines(loaded.ticket.lines); setStep("review");
+    } catch (cause) { setError(cause instanceof Error ? cause.message : t("flow.errors.generic")); }
+    finally { setBusy(false); }
   };
 
   const updateLine = (id: string, patch: Partial<Line>) => setLines((current) => current.map((line) => line.id === id ? { ...line, ...patch } : line));
@@ -157,12 +184,16 @@ export default function ScannerClient() {
     <h2 className="text-xl font-serif font-normal text-foreground">{step === "review" ? t("flow.reviewTitle") : t("flow.startTitle")}</h2>
     <p className="mt-2 text-muted-foreground">{step === "review" ? t("flow.reviewIntro") : t("flow.startIntro")}</p>
     {error && <p className="mt-4 rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive" role="alert">{error}</p>}
-    {step === "idle" && <div className="mt-5 flex flex-wrap gap-3">
+    {step === "idle" && <>
+      {quota && <p className="mt-4 rounded-md bg-muted/30 p-3 text-sm text-muted-foreground">{t("flow.quota", { remaining: quota.remaining, limit: quota.limit })}</p>}
+      {pending.length > 0 && <div className="mt-5 space-y-2"><h3 className="text-sm font-medium text-foreground">{t("flow.pendingTitle")}</h3>{pending.map((item) => <button type="button" key={item.id} onClick={() => void openPending(item.id)} className="block w-full rounded-md border border-border p-3 text-left text-sm hover:bg-muted/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground"><span className="font-medium text-foreground">{item.merchant || t("flow.unknownMerchant")}</span><span className="ml-2 text-muted-foreground">{item.status === "needs_review" ? t("flow.readyToReview") : t("flow.inProgress")}</span></button>)}</div>}
+      <div className="mt-5 flex flex-wrap gap-3">
       <input ref={cameraRef} className="sr-only" type="file" accept="image/jpeg,image/png" capture="environment" onChange={(event) => { const file = event.target.files?.[0]; if (file) void processFile(file, "camera"); event.target.value = ""; }} />
       <input ref={imageRef} className="sr-only" type="file" accept="image/jpeg,image/png" onChange={(event) => { const file = event.target.files?.[0]; if (file) void processFile(file, "image"); event.target.value = ""; }} />
       <button type="button" disabled={busy} onClick={() => cameraRef.current?.click()} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2">{t("flow.takePhoto")}</button>
       <button type="button" disabled={busy} onClick={() => imageRef.current?.click()} className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2">{t("flow.chooseImage")}</button>
-    </div>}
+      </div>
+    </>}
     {(step === "uploading" || step === "processing") && <p className="mt-5 text-sm text-muted-foreground" role="status">{step === "uploading" ? t("flow.uploading") : t("flow.processing")}</p>}
     {step === "review" && ticket && <form className="mt-5 space-y-5" onSubmit={(event) => { event.preventDefault(); void confirm(); }}>
       <div className="grid gap-4 sm:grid-cols-2">

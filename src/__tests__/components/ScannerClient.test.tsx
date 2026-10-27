@@ -25,6 +25,8 @@ describe("ScannerClient", () => {
   it("sube, procesa, permite repartir un artículo y confirma solo cuando las sumas cuadran", async () => {
     const fetchMock = vi.mocked(global.fetch);
     fetchMock
+      .mockResolvedValueOnce(json({ remaining: 5, limit: 5 }) as Response)
+      .mockResolvedValueOnce(json({ tickets: [] }) as Response)
       .mockResolvedValueOnce(json({ ticketId: TICKET_ID }) as Response)
       .mockResolvedValueOnce(json({ upload: { url: "https://storage.test/upload", path: PATH } }) as Response)
       .mockResolvedValueOnce({ ok: true, status: 200 } as Response)
@@ -52,8 +54,8 @@ describe("ScannerClient", () => {
     await waitFor(() => expect(screen.getByRole("button", { name: messages.Scanner.flow.confirm })).toBeEnabled());
     fireEvent.click(screen.getByRole("button", { name: messages.Scanner.flow.confirm }));
     await waitFor(() => expect(screen.getByRole("heading", { name: messages.Scanner.flow.doneTitle })).toBeTruthy());
-    expect(fetchMock).toHaveBeenCalledTimes(8);
-    expect(fetchMock.mock.calls[7][1]).toMatchObject({ method: "POST" });
-    expect(JSON.parse(String(fetchMock.mock.calls[7][1]?.body))).toMatchObject({ userConfirmed: true, draftVersion: 2 });
+    expect(fetchMock).toHaveBeenCalledTimes(10);
+    expect(fetchMock.mock.calls[9][1]).toMatchObject({ method: "POST" });
+    expect(JSON.parse(String(fetchMock.mock.calls[9][1]?.body))).toMatchObject({ userConfirmed: true, draftVersion: 2 });
   });
 });
