@@ -1,0 +1,410 @@
+{
+  "generated_on": "2026-10-27",
+  "status": "NO DEMOSTRADO",
+  "assumptions": {
+    "pages_per_ticket": 1,
+    "retries": 0,
+    "currency": "USD",
+    "note": "Costes sin impuestos ni cómputo propio; null = no verificable."
+  },
+  "providers": [
+    {
+      "id": "azure",
+      "name": "Azure Document Intelligence — prebuilt-receipt (API v4.0 GA 2024-11-30)",
+      "criteria": {
+        "fields": "Documentado: nombre del comercio, teléfono, fecha de transacción, impuestos, total; v4.0 añade ReceiptType, TaxDetails (NetAmount, Rate, Description) y CountryRegion. Esquema completo en repositorio de ejemplos de Microsoft (no leído). Método de pago: NO DEMOSTRADO.",
+        "items": "El modelo devuelve líneas (Items); detalle de campos (descripción, cantidad, precio) solo figura en la tabla de la v2.1; para v4.0 NO DEMOSTRADO en lo consultado.",
+        "confidence": "NO DEMOSTRADO en la página consultada (el servicio suele devolver confianza por campo: inferencia).",
+        "languages": "Remite a la página language-support (no leída). Español en recibos: NO DEMOSTRADO.",
+        "formats": "PDF y imágenes JPEG/JPG, PNG, BMP, TIFF, HEIF (documentado). Imagen 50x50 a 10.000x10.000 px.",
+        "limits": "S0: 500 MB y 2.000 páginas; F0: 4 MB y solo 2 primeras páginas. Análisis por defecto de todas las páginas (documentado).",
+        "latency": "Asíncrono (POST analyze + GET resultado; no consultar más de cada 2 s). Latencia medida: NO DEMOSTRADO.",
+        "price": "NO DEMOSTRADO: la página de precios devuelve '$-' para prebuilt. Facturación por página.",
+        "free": "F0: 0–500 páginas gratis/mes, solo primeras 2 páginas por solicitud, 1 TPS (documentado).",
+        "quotas": "S0: 15 TPS de análisis por defecto, ampliable (documentado). Niveles de compromiso 20.000/100.000/500.000 págs./mes con precio no visible.",
+        "regions": "Se procesa en la misma región donde se creó el recurso (documentado). Disponibilidad de región UE concreta: NO DEMOSTRADO (inferencia: existen regiones europeas de Azure).",
+        "retention": "Entrada y resultados se guardan cifrados temporalmente 24 h y se borran automáticamente; la API 'Delete Analyze Result' los borra antes (documentado).",
+        "training": "NO DEMOSTRADO en la página consultada.",
+        "deletion": "Borrado explícito por API y automático a 24 h (documentado).",
+        "encryption": "TLS en tránsito (la página indica TLS 1.3 requerido por el cliente); cifrado temporal en Azure Storage (documentado).",
+        "dpa": "Remite al Microsoft Trust Center; DPA y subprocesadores: NO DEMOSTRADO en lo consultado.",
+        "swap": "Medio-alto: SDK/REST propios; esquema de campos propio. Aislable con una capa de adaptación a un esquema interno.",
+        "risks": "Ticket completo (comercio, últimos dígitos de tarjeta, posible fidelización) sale a la nube de Microsoft; almacenamiento temporal compartido por región con aislamiento lógico."
+      },
+      "sources": [
+        {
+          "url": "https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/prebuilt/receipt",
+          "consulted": "2026-10-27",
+          "kind": "documentado"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/service-limits",
+          "consulted": "2026-10-27",
+          "kind": "documentado"
+        },
+        {
+          "url": "https://azure.microsoft.com/en-us/pricing/details/ai-document-intelligence/",
+          "consulted": "2026-10-27",
+          "kind": "documentado (precio ausente)"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/document-intelligence/data-privacy-security",
+          "consulted": "2026-10-27",
+          "kind": "documentado"
+        }
+      ]
+    },
+    {
+      "id": "google",
+      "name": "Google Document AI — Expense Parser (EXPENSE_PROCESSOR)",
+      "criteria": {
+        "fields": "Documentado: supplier_name/address/city/phone, receipt_date, purchase_time, total_amount, total_tax_amount, net_amount, tip_amount, currency, payment_type, credit_card_last_four_digits.",
+        "items": "Documentado: line_item con amount, description, product_code; quantity en versiones v1.3.2/v1.4/v1.4.2.",
+        "confidence": "NO DEMOSTRADO en lo consultado (inferencia: las entidades de Document AI incluyen confianza).",
+        "languages": "Documentado: alemán, inglés, español, francés, japonés y neerlandés; italiano y portugués en algunas versiones.",
+        "formats": "La página del procesador remite a 'Supported files' (no leída). PDF e imagen: NO DEMOSTRADO formalmente.",
+        "limits": "Expense Parser: 10 páginas online y 10 en lote (la sección v1.4 menciona 15 online: discrepancia interna). Tamaño: 40 MB online, 1 GB lote (documentado).",
+        "latency": "Online síncrono y lote asíncrono (documentado). Latencia medida: NO DEMOSTRADO.",
+        "price": "La página oficial lista Expense parser a 0,10 $ por 'count' (según el resultado de búsqueda; la página no pudo leerse completa). La unidad 'count' no está definida: 0,01 $/pág. o 0,10 $/pág. NO DEMOSTRADO.",
+        "free": "NO DEMOSTRADO.",
+        "quotas": "Cuotas por minuto: NO DEMOSTRADO (página aparte).",
+        "regions": "Documentado: eu, us, asia-southeast1, australia-southeast1, northamerica-northeast1.",
+        "retention": "Almacenamiento tras procesar online: NO DEMOSTRADO. Cloud DPA: borrado a más tardar 180 días tras instrucción o fin de contrato (documentado, texto del DPA).",
+        "training": "Solo respuesta de un foro comunitario de Google (no oficial): no se usa para entrenar salvo opt-in. NO DEMOSTRADO oficialmente.",
+        "deletion": "DPA: máximo 180 días (documentado). Borrado inmediato por API: NO DEMOSTRADO.",
+        "encryption": "NO DEMOSTRADO en lo consultado.",
+        "dpa": "Existe Cloud Data Processing Addendum (documentado); cobertura de Document AI en el Apéndice 4: NO DEMOSTRADO (texto truncado).",
+        "swap": "Medio-alto: API propia y esquema propio de entidades.",
+        "risks": "La versión v1.4 fue discontinuada en EE. UU. y UE el 30-04-2025: usar v1.4.2 o superior y vigilar el ciclo de vida de versiones. v1.3.2 en Public Preview."
+      },
+      "sources": [
+        {
+          "url": "https://docs.cloud.google.com/document-ai/docs/processors-list",
+          "consulted": "2026-10-27",
+          "kind": "documentado"
+        },
+        {
+          "url": "https://docs.cloud.google.com/document-ai/limits",
+          "consulted": "2026-10-27",
+          "kind": "documentado"
+        },
+        {
+          "url": "https://cloud.google.com/document-ai/pricing",
+          "consulted": "2026-10-27",
+          "kind": "no legible completo; precio por fuente secundaria de búsqueda"
+        },
+        {
+          "url": "https://cloud.google.com/terms/data-processing-addendum",
+          "consulted": "2026-10-27",
+          "kind": "documentado parcialmente"
+        }
+      ]
+    },
+    {
+      "id": "aws",
+      "name": "AWS Textract — AnalyzeExpense",
+      "criteria": {
+        "fields": "Documentado: VENDOR_NAME, INVOICE_RECEIPT_DATE, TOTAL, SUBTOTAL, TAX, GRATUITY, SERVICE_CHARGE, DISCOUNT, VENDOR_VAT_NUMBER, etc. Método de pago: no hay campo estándar listado (NO DEMOSTRADO).",
+        "items": "Documentado: líneas EXPENSE_ROW con ITEM, QUANTITY, PRICE, UNIT_PRICE, PRODUCT_CODE.",
+        "confidence": "Documentado: Confidence por tipo y por valor.",
+        "languages": "Conflicto documental: las FAQ indican que Analyze Expense funciona con facturas y recibos 'en inglés'; la lista de límites declara español para detección de texto en general. Para tickets en español: NO DEMOSTRADO y riesgo alto.",
+        "formats": "JPEG, PNG, PDF, TIFF (documentado).",
+        "limits": "Síncrono: 10 MB y 1 página en PDF/TIFF; asíncrono: 500 MB y 3.000 páginas (documentado).",
+        "latency": "Síncrono (AnalyzeExpense) y asíncrono (StartExpenseAnalysis). Latencia medida: NO DEMOSTRADO.",
+        "price": "0,01 $/pág. primer millón/mes; 0,008 $ después (Oregón; otras regiones NO DEMOSTRADO).",
+        "free": "100 páginas/mes durante 3 meses para clientes nuevos de AWS (documentado).",
+        "quotas": "TPS por defecto: NO DEMOSTRADO. Sin mínimo mensual documentado.",
+        "regions": "EE. UU., GovCloud, Canadá, varias UE y Asia-Pacífico (documentado en FAQ).",
+        "retention": "El contenido puede almacenarse y usarse para mejorar servicios salvo opt-out mediante política de AWS Organizations (documentado).",
+        "training": "Sí por defecto (mejora continua), con opt-out por política de AWS Organizations (documentado).",
+        "deletion": "Borrado de entradas solicitando a AWS Support (documentado): sin API de borrado inmediato.",
+        "encryption": "En reposo y en tránsito (documentado).",
+        "dpa": "NO DEMOSTRADO en lo consultado (AWS ofrece DPA en general: inferencia).",
+        "swap": "Medio: SDK de AWS; esquema propio.",
+        "risks": "Idioma en tickets españoles; uso por defecto del contenido para mejora, que exige configurar opt-out antes de cualquier dato real."
+      },
+      "sources": [
+        {
+          "url": "https://aws.amazon.com/textract/pricing/",
+          "consulted": "2026-10-27",
+          "kind": "documentado"
+        },
+        {
+          "url": "https://docs.aws.amazon.com/textract/latest/dg/invoices-receipts.html",
+          "consulted": "2026-10-27",
+          "kind": "documentado"
+        },
+        {
+          "url": "https://docs.aws.amazon.com/textract/latest/dg/limits-document.html",
+          "consulted": "2026-10-27",
+          "kind": "documentado"
+        },
+        {
+          "url": "https://aws.amazon.com/textract/faqs/",
+          "consulted": "2026-10-27",
+          "kind": "documentado"
+        }
+      ]
+    },
+    {
+      "id": "mindee",
+      "name": "Mindee — Receipt OCR",
+      "criteria": {
+        "fields": "Producto Receipt OCR existe (página de producto no leída en detalle). Campos exactos: NO DEMOSTRADO.",
+        "items": "NO DEMOSTRADO en lo consultado.",
+        "confidence": "La página de precios indica que una página con puntuación de confianza cuesta 1,5 créditos (documentado): la confianza es un extra de coste.",
+        "languages": "NO DEMOSTRADO.",
+        "formats": "NO DEMOSTRADO.",
+        "limits": "NO DEMOSTRADO.",
+        "latency": "NO DEMOSTRADO.",
+        "price": "Starter 44/mes (facturación anual) por 6.000 créditos; Pro 116/mes; 1 página = 1 crédito; coste de recibo por modelo requiere login; moneda sin símbolo en la página. Exceso: 'desde 0,05 $' por crédito (FAQ) o tarifa del plan +20% (página): inconsistente.",
+        "free": "Sin nivel gratuito permanente; prueba de 14 días (documentado).",
+        "quotas": "Los créditos caducan al final del periodo (documentado). Inconsistencia entre FAQ (500–10.000 créditos) y tramos (6.000–300.000).",
+        "regions": "Opción Europa para procesar solo en centros de datos de la UE y opción UE/EE. UU. (documentado en docs de Mindee, vía búsqueda); 'data processing localization' en plan Pro.",
+        "retention": "Resultados de la API: retención configurable, 12 h por defecto, mínimo 1 h, máximo 24 h (documentado, vía búsqueda). Archivo original: NO DEMOSTRADO.",
+        "training": "NO DEMOSTRADO; hay función de aprendizaje continuo con feedback.",
+        "deletion": "Borrado automático tras el periodo configurado (documentado para resultados).",
+        "encryption": "NO DEMOSTRADO.",
+        "dpa": "NO DEMOSTRADO: pedir DPA y lista de subprocesadores por escrito.",
+        "swap": "Alto: API REST sencilla; modelo de crédito propio.",
+        "risks": "Documentación contradictoria en precios y créditos; sin garantía pública de exclusión de entrenamiento."
+      },
+      "sources": [
+        {
+          "url": "https://www.mindee.com/pricing",
+          "consulted": "2026-10-27",
+          "kind": "documentado"
+        },
+        {
+          "url": "https://docs.mindee.com/models/data-processing-policies",
+          "consulted": "2026-10-27",
+          "kind": "documentado (vía resultado de búsqueda)"
+        },
+        {
+          "url": "https://mindee.com/product/receipt-ocr-api",
+          "consulted": "2026-10-27",
+          "kind": "no leída en detalle"
+        }
+      ]
+    },
+    {
+      "id": "veryfi",
+      "name": "Veryfi — Receipt OCR (alternativa relevante: especializada en recibos y con SOC 2 Tipo 2 declarado)",
+      "criteria": {
+        "fields": "NO DEMOSTRADO en lo consultado (producto especializado en recibos).",
+        "items": "NO DEMOSTRADO.",
+        "confidence": "NO DEMOSTRADO.",
+        "languages": "NO DEMOSTRADO.",
+        "formats": "NO DEMOSTRADO.",
+        "limits": "Una transacción cubre un documento de hasta 15 páginas; más páginas, cuenta personalizada (documentado).",
+        "latency": "NO DEMOSTRADO.",
+        "price": "Gratis hasta 100 recibos/mes; Starter 0,08 $/recibo con mínimo 500 $/mes (−0,01 $ con 12 meses); Growth no publicado (documentado).",
+        "free": "100 recibos/mes sin tarjeta (documentado).",
+        "quotas": "Mínimo de 500 $/mes en Starter.",
+        "regions": "NO DEMOSTRADO.",
+        "retention": "NO DEMOSTRADO; el plan Growth menciona 'custom retention'.",
+        "training": "NO DEMOSTRADO; la empresa afirma entrenar sobre millones de documentos reales y de forma continua.",
+        "deletion": "NO DEMOSTRADO.",
+        "encryption": "TLS 1.2/1.3 en tránsito y AES en reposo (declaración de Veryfi, vía búsqueda).",
+        "dpa": "SOC 2 Tipo 2, RGPD, CCPA y HIPAA declarados por el proveedor; informe bajo petición (declaración, no verificada).",
+        "swap": "Alto.",
+        "risks": "Mínimo de 500 $/mes desproporcionado para un piloto; retención y entrenamiento sin documentar."
+      },
+      "sources": [
+        {
+          "url": "https://www.veryfi.com/pricing/",
+          "consulted": "2026-10-27",
+          "kind": "documentado"
+        },
+        {
+          "url": "https://www.veryfi.com/security/enterprise-security-framework/",
+          "consulted": "2026-10-27",
+          "kind": "declaración del proveedor (vía búsqueda)"
+        }
+      ]
+    },
+    {
+      "id": "free",
+      "name": "Alternativa de coste cero para prototipo: Tesseract OCR / PaddleOCR (local, código abierto) + reglas",
+      "criteria": {
+        "fields": "Inferencia (sin fuente consultada en esta investigación): solo texto OCR; proveedor, fecha, total e IVA exigirían reglas/regex propias.",
+        "items": "Inferencia: separación de artículos propia, frágil con tickets largos.",
+        "confidence": "Inferencia: confianza por palabra del OCR, no por campo semántico.",
+        "languages": "Inferencia: Tesseract y PaddleOCR tienen paquetes de español e inglés.",
+        "formats": "Imagen; PDF requiere rasterizar (inferencia).",
+        "limits": "Los que imponga el servidor propio.",
+        "latency": "Depende del hardware; en serverless de Vercel puede ser inviable por tamaño de paquete (inferencia, no verificada).",
+        "price": "0 $ de licencia; coste de cómputo propio.",
+        "free": "Sin cuota.",
+        "quotas": "Sin cuotas externas.",
+        "regions": "Las que elija el equipo.",
+        "retention": "Ninguna externa: los datos no salen de la infraestructura propia (ventaja de privacidad).",
+        "training": "Ninguno externo.",
+        "deletion": "Control total.",
+        "encryption": "Responsabilidad propia.",
+        "dpa": "No aplica (sin tercero).",
+        "swap": "Alto, porque la capa de extracción es propia.",
+        "risks": "Menor precisión; mantenimiento de reglas por comercio; no vale como estimación de calidad de proveedores gestionados. Los datos de la prueba deben ser sintéticos igualmente."
+      },
+      "sources": [
+        {
+          "url": "(sin consulta en esta sesión)",
+          "consulted": "2026-10-27",
+          "kind": "inferencia"
+        }
+      ]
+    }
+  ],
+  "cost_models": {
+    "aws": "AWS Textract AnalyzeExpense (EE. UU. Oregón: 0,01 $/pág.)",
+    "google_low": "Google Expense Parser — hipótesis baja (0,10 $ por 10 págs. = 0,01 $/pág.)",
+    "google_high": "Google Expense Parser — hipótesis alta (0,10 $ por pág.)",
+    "azure": "Azure Document Intelligence Receipt (precio no publicado en la página consultada)",
+    "mindee": "Mindee Starter 6.000 créditos = 44/mes (facturación anual, 1 crédito/pág.); exceso: cota alta 0,05 $/crédito",
+    "veryfi": "Veryfi Starter: 0,08 $/ticket, mínimo 500 $/mes"
+  },
+  "monthly_cost_usd": {
+    "aws": {
+      "10u_5t": 0.5,
+      "10u_10t": 1,
+      "10u_20t": 2,
+      "10u_50t": 5,
+      "10u_150t": 15,
+      "100u_5t": 5,
+      "100u_10t": 10,
+      "100u_20t": 20,
+      "100u_50t": 50,
+      "100u_150t": 150,
+      "500u_5t": 25,
+      "500u_10t": 50,
+      "500u_20t": 100,
+      "500u_50t": 250,
+      "500u_150t": 750,
+      "1000u_5t": 50,
+      "1000u_10t": 100,
+      "1000u_20t": 200,
+      "1000u_50t": 500,
+      "1000u_150t": 1500
+    },
+    "google_low": {
+      "10u_5t": 0.5,
+      "10u_10t": 1,
+      "10u_20t": 2,
+      "10u_50t": 5,
+      "10u_150t": 15,
+      "100u_5t": 5,
+      "100u_10t": 10,
+      "100u_20t": 20,
+      "100u_50t": 50,
+      "100u_150t": 150,
+      "500u_5t": 25,
+      "500u_10t": 50,
+      "500u_20t": 100,
+      "500u_50t": 250,
+      "500u_150t": 750,
+      "1000u_5t": 50,
+      "1000u_10t": 100,
+      "1000u_20t": 200,
+      "1000u_50t": 500,
+      "1000u_150t": 1500
+    },
+    "google_high": {
+      "10u_5t": 5,
+      "10u_10t": 10,
+      "10u_20t": 20,
+      "10u_50t": 50,
+      "10u_150t": 150,
+      "100u_5t": 50,
+      "100u_10t": 100,
+      "100u_20t": 200,
+      "100u_50t": 500,
+      "100u_150t": 1500,
+      "500u_5t": 250,
+      "500u_10t": 500,
+      "500u_20t": 1000,
+      "500u_50t": 2500,
+      "500u_150t": 7500,
+      "1000u_5t": 500,
+      "1000u_10t": 1000,
+      "1000u_20t": 2000,
+      "1000u_50t": 5000,
+      "1000u_150t": 15000
+    },
+    "azure": {
+      "10u_5t": null,
+      "10u_10t": null,
+      "10u_20t": null,
+      "10u_50t": null,
+      "10u_150t": null,
+      "100u_5t": null,
+      "100u_10t": null,
+      "100u_20t": null,
+      "100u_50t": null,
+      "100u_150t": null,
+      "500u_5t": null,
+      "500u_10t": null,
+      "500u_20t": null,
+      "500u_50t": null,
+      "500u_150t": null,
+      "1000u_5t": null,
+      "1000u_10t": null,
+      "1000u_20t": null,
+      "1000u_50t": null,
+      "1000u_150t": null
+    },
+    "mindee": {
+      "10u_5t": 44,
+      "10u_10t": 44,
+      "10u_20t": 44,
+      "10u_50t": 44,
+      "10u_150t": 44,
+      "100u_5t": 44,
+      "100u_10t": 44,
+      "100u_20t": 44,
+      "100u_50t": 44,
+      "100u_150t": 494,
+      "500u_5t": 44,
+      "500u_10t": 44,
+      "500u_20t": 244,
+      "500u_50t": 994,
+      "500u_150t": 3494,
+      "1000u_5t": 44,
+      "1000u_10t": 244,
+      "1000u_20t": 744,
+      "1000u_50t": 2244,
+      "1000u_150t": 7244
+    },
+    "veryfi": {
+      "10u_5t": 500,
+      "10u_10t": 500,
+      "10u_20t": 500,
+      "10u_50t": 500,
+      "10u_150t": 500,
+      "100u_5t": 500,
+      "100u_10t": 500,
+      "100u_20t": 500,
+      "100u_50t": 500,
+      "100u_150t": 1200,
+      "500u_5t": 500,
+      "500u_10t": 500,
+      "500u_20t": 800,
+      "500u_50t": 2000,
+      "500u_150t": 6000,
+      "1000u_5t": 500,
+      "1000u_10t": 800,
+      "1000u_20t": 1600,
+      "1000u_50t": 4000,
+      "1000u_150t": 12000
+    }
+  },
+  "recommendation": {
+    "pilot": "azure-document-intelligence-receipt",
+    "alternative": "google-document-ai-expense-parser-eu",
+    "third": "mindee-eu",
+    "discarded": [
+      "aws-textract-analyzeexpense",
+      "veryfi"
+    ]
+  },
+  "decision": "NO DEMOSTRADO"
+}
