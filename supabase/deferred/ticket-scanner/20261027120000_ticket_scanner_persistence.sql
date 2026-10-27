@@ -88,6 +88,11 @@ CREATE TABLE IF NOT EXISTS public.scanner_tickets (
   -- Ciclo = months.id del ciclo abierto en el momento de crear el ticket. NO ACTION: no se puede borrar un
   -- ciclo con tickets vivos (evita huérfanos de storage); el borrado de usuario cascada por ambas vías.
   cycle_id              uuid        NOT NULL REFERENCES public.months(id),
+  source                text        NOT NULL DEFAULT 'image' CHECK (source IN ('camera','image','pdf')),
+  locale                text        NOT NULL DEFAULT 'es' CHECK (locale IN ('es','en')),
+  declared_mime         text        NOT NULL DEFAULT 'image/jpeg'
+    CHECK (declared_mime IN ('image/jpeg','image/png','image/heic','image/heif')),
+  declared_size_bytes   integer     NOT NULL DEFAULT 0 CHECK (declared_size_bytes >= 0 AND declared_size_bytes <= 4194304),
   status                text        NOT NULL DEFAULT 'initiated'
     CHECK (status IN ('initiated','uploaded','processing','needs_review','confirmed','failed','expired','deleted')),
   status_reason         text
@@ -276,6 +281,56 @@ BEGIN
 
   INSERT INTO public.scanner_tickets (user_id, cycle_id, idempotency_key)
   VALUES (v_uid, v_cycle, p_idempotency_key)
+  ON CONFLICT (user_id, idempotency_key) DO NOTHING
+  RETURNING * INTO v_ticket;
+  IF NOT FOUND THEN
+    SELECT * INTO v_ticket FROM public.scanner_tickets WHERE user_id = v_uid AND idempotency_key = p_idempotency_key;
+    RETURN jsonb_build_object('ok', true, 'idempotent', true, 'ticketId', v_ticket.id, 'cycleId', v_ticket.cycle_id);
+  END IF;
+  RETURN jsonb_build_object('ok', true, 'idempotent', false, 'ticketId', v_ticket.id, 'cycleId', v_ticket.cycle_id);
+END
+$$;
+
+-- Variante que conserva los metadatos declarados por el cliente. El servidor sigue
+-- validándolos y Storage se comprueba de nuevo al cerrar la subida; no se confía en
+-- el MIME ni en el tamaño declarados para enviar el archivo a OCR.
+CREATE OR REPLACE FUNCTION public.fn_scanner_create_ticket_v2(
+  p_idempotency_key uuid,
+  p_source text,
+  p_locale text,
+  p_declared_mime text,
+  p_declared_size_bytes integer
+)
+RETURNS jsonb
+LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+  v_uid    uuid := auth.uid();
+  v_cycle  uuid;
+  v_ticket public.scanner_tickets;
+BEGIN
+  IF v_uid IS NULL THEN RETURN jsonb_build_object('ok', false, 'code', 'UNAUTHENTICATED'); END IF;
+  IF p_idempotency_key IS NULL THEN RETURN jsonb_build_object('ok', false, 'code', 'INVALID_KEY'); END IF;
+  IF p_source NOT IN ('camera','image','pdf') OR p_locale NOT IN ('es','en')
+     OR p_declared_mime NOT IN ('image/jpeg','image/png','image/heic','image/heif')
+     OR p_declared_size_bytes IS NULL OR p_declared_size_bytes < 0 OR p_declared_size_bytes > 4194304
+     OR p_source = 'pdf' THEN
+    RETURN jsonb_build_object('ok', false, 'code', 'VALIDATION_ERROR');
+  END IF;
+
+  SELECT * INTO v_ticket FROM public.scanner_tickets WHERE user_id = v_uid AND idempotency_key = p_idempotency_key;
+  IF FOUND THEN
+    RETURN jsonb_build_object('ok', true, 'idempotent', true, 'ticketId', v_ticket.id, 'cycleId', v_ticket.cycle_id);
+  END IF;
+
+  SELECT id INTO v_cycle FROM public.months
+  WHERE user_id = v_uid AND status = 'open'
+  ORDER BY year DESC, month DESC LIMIT 1;
+  IF v_cycle IS NULL THEN RETURN jsonb_build_object('ok', false, 'code', 'NO_OPEN_CYCLE'); END IF;
+
+  INSERT INTO public.scanner_tickets (user_id, cycle_id, source, locale, declared_mime, declared_size_bytes, idempotency_key)
+  VALUES (v_uid, v_cycle, p_source, p_locale, p_declared_mime, p_declared_size_bytes, p_idempotency_key)
   ON CONFLICT (user_id, idempotency_key) DO NOTHING
   RETURNING * INTO v_ticket;
   IF NOT FOUND THEN
@@ -609,6 +664,7 @@ $$;
 -- 5. ACL de funciones (en Supabase las funciones nuevas heredan EXECUTE para anon/authenticated)
 -- ---------------------------------------------------------------------------
 REVOKE ALL ON FUNCTION public.fn_scanner_create_ticket(uuid)            FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.fn_scanner_create_ticket_v2(uuid,text,text,text,integer) FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_register_upload(uuid, text)    FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_start_processing(uuid)         FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.fn_scanner_quota_status()                 FROM PUBLIC, anon, authenticated;
@@ -619,6 +675,7 @@ REVOKE ALL ON FUNCTION public.fn_scanner_finalize_deletion(uuid, text)          
 REVOKE ALL ON FUNCTION public.fn_scanner_finalize_confirmed_original(uuid)         FROM PUBLIC, anon, authenticated;
 
 GRANT EXECUTE ON FUNCTION public.fn_scanner_create_ticket(uuid)         TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION public.fn_scanner_create_ticket_v2(uuid,text,text,text,integer) TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_register_upload(uuid, text) TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_start_processing(uuid)      TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.fn_scanner_quota_status()              TO authenticated, service_role;

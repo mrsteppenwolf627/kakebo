@@ -25,6 +25,7 @@ DROP FUNCTION IF EXISTS public.fn_scanner_finalize_confirmed_original(uuid);
 DROP FUNCTION IF EXISTS public.fn_scanner_quota_status();
 DROP FUNCTION IF EXISTS public.fn_scanner_start_processing(uuid);
 DROP FUNCTION IF EXISTS public.fn_scanner_register_upload(uuid, text);
+DROP FUNCTION IF EXISTS public.fn_scanner_create_ticket_v2(uuid, text, text, text, integer);
 DROP FUNCTION IF EXISTS public.fn_scanner_create_ticket(uuid);
 
 DROP TABLE IF EXISTS public.scanner_quota_ledger;

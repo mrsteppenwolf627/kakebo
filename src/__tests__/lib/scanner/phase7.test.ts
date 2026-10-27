@@ -128,6 +128,25 @@ describe("persistence (envoltorios RPC)", () => {
     }
   });
 
+  it("conserva los metadatos declarados con la RPC versionada", async () => {
+    const rpc = vi.fn(async (fn: string, args: Record<string, unknown>) => {
+      expect(fn).toBe("fn_scanner_create_ticket_v2");
+      expect(args).toMatchObject({
+        p_source: "image",
+        p_locale: "es",
+        p_declared_mime: "image/jpeg",
+        p_declared_size_bytes: 128,
+      });
+      return { data: { ok: true, ticketId: T, cycleId: C, idempotent: false }, error: null };
+    });
+    await expect(createScannerTicket({ rpc }, U, {
+      source: "image",
+      locale: "es",
+      declaredMime: "image/jpeg",
+      declaredSizeBytes: 128,
+    })).resolves.toMatchObject({ ok: true, ticketId: T });
+  });
+
   it("el límite de SQL y el de TypeScript deben coincidir", async () => {
     const good = rpcOf({ ok: true, cycleId: C, limit: 5, used: 2, remaining: 3 });
     expect(await getScannerQuotaStatus(good)).toMatchObject({ ok: true, remaining: 3 });

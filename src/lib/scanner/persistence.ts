@@ -38,10 +38,27 @@ async function call<T extends object>(
   return { ok: false, code: typeof row.code === "string" && KNOWN.has(row.code) ? (row.code as PersistenceErrorCode) : "BACKEND_ERROR" };
 }
 
-export const createScannerTicket = (client: RpcClientLike, idempotencyKey: string) =>
-  call<{ ticketId: string; cycleId: CycleId; idempotent: boolean }>(client, "fn_scanner_create_ticket", {
-    p_idempotency_key: idempotencyKey,
-  });
+export interface ScannerTicketInput {
+  source: "camera" | "image" | "pdf";
+  locale: "es" | "en";
+  declaredMime: string;
+  declaredSizeBytes: number;
+}
+
+export const createScannerTicket = (client: RpcClientLike, idempotencyKey: string, input?: ScannerTicketInput) =>
+  call<{ ticketId: string; cycleId: CycleId; idempotent: boolean }>(
+    client,
+    input ? "fn_scanner_create_ticket_v2" : "fn_scanner_create_ticket",
+    input
+      ? {
+          p_idempotency_key: idempotencyKey,
+          p_source: input.source,
+          p_locale: input.locale,
+          p_declared_mime: input.declaredMime,
+          p_declared_size_bytes: input.declaredSizeBytes,
+        }
+      : { p_idempotency_key: idempotencyKey },
+  );
 
 export const registerScannerUpload = (client: RpcClientLike, ticketId: string, objectPath: string) =>
   call<{ idempotent: boolean }>(client, "fn_scanner_register_upload", { p_ticket_id: ticketId, p_object_path: objectPath });

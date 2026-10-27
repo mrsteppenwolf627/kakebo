@@ -18,8 +18,8 @@ export const POST = withLogging(async (request: NextRequest) => {
     if (request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json") {
       throw apiErrors.badRequest("El tipo de contenido debe ser application/json.");
     }
-    scannerStartTicketSchema.parse(await request.json());
-    const result = await createScannerTicket(supabase, key);
+    const input = scannerStartTicketSchema.parse(await request.json());
+    const result = await createScannerTicket(supabase, key, input);
     if (!result.ok) throw scannerPersistenceError(result.code);
     const response = result.idempotent
       ? responses.ok({ ticketId: result.ticketId, cycleId: result.cycleId, status: "initiated", idempotent: true })

@@ -35,6 +35,7 @@ export function scannerPersistenceError(code: PersistenceErrorCode): ApiError {
     case "VERSION_CONFLICT": return apiErrors.conflict("El borrador ha cambiado.");
     case "IDEMPOTENCY_KEY_REUSED": return apiErrors.validation("La clave de idempotencia ya se usó con otra operación.");
     case "INVALID_KEY": return apiErrors.validation("Clave de idempotencia inválida.");
+    case "VALIDATION_ERROR": return apiErrors.validation("Los datos del ticket no son válidos.");
     case "UNAUTHENTICATED": return apiErrors.unauthorized();
     default: return apiErrors.accessUnavailable();
   }
