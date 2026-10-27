@@ -11,13 +11,15 @@
  * es idempotente por `(ticketId, kind)`, como en data-model.md §2.8.
  */
 
+import type { CycleId } from "./cycle";
+
 export const SCANNER_CYCLE_TICKET_LIMIT = 5;
 
 export type QuotaKind = "consume" | "refund";
 
 export interface QuotaLedgerEntry {
   readonly ticketId: string;
-  readonly cycleId: string;
+  readonly cycleId: CycleId;
   readonly kind: QuotaKind;
 }
 
@@ -37,7 +39,7 @@ export type QuotaResult =
 
 const isId = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0;
 
-export function quotaUsed(ledger: QuotaLedger, cycleId: string): number {
+export function quotaUsed(ledger: QuotaLedger, cycleId: CycleId): number {
   let used = 0;
   for (const entry of ledger) {
     if (entry.cycleId !== cycleId) continue;
@@ -48,7 +50,7 @@ export function quotaUsed(ledger: QuotaLedger, cycleId: string): number {
 
 export function getQuotaStatus(
   ledger: QuotaLedger,
-  cycleId: string,
+  cycleId: CycleId,
   limit: number = SCANNER_CYCLE_TICKET_LIMIT
 ): QuotaStatus {
   const used = quotaUsed(ledger, cycleId);
@@ -62,7 +64,7 @@ export function getQuotaStatus(
 export function consumeQuota(
   ledger: QuotaLedger,
   ticketId: string,
-  cycleId: string,
+  cycleId: CycleId,
   limit: number = SCANNER_CYCLE_TICKET_LIMIT
 ): QuotaResult {
   if (!isId(ticketId)) return { ok: false, code: "INVALID_TICKET" };

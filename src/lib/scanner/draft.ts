@@ -117,6 +117,95 @@ export function splitLine(line: DraftLine, parts: readonly DraftAllocation[]): L
   return { ok: true, line: { ...line, category: null, allocations: parts.map((p) => ({ ...p })) } };
 }
 
+/**
+ * Edición completa del borrador antes de confirmar: comercio, fecha, total,
+ * líneas (alta, baja, descripción, importe) y categorías. Cada edición válida
+ * incrementa `version`, de modo que `confirmDraft` exige que la persona confirme
+ * la versión que está viendo. Las ediciones de importe anulan la categoría y las
+ * divisiones de esa línea (hay que volver a decidirlas).
+ */
+export type DraftEdit =
+  | { type: "setMerchant"; merchant: string | null }
+  | { type: "setDate"; date: string | null }
+  | { type: "setTotal"; totalCents: number | null }
+  | { type: "setLineDescription"; lineId: string; description: string | null }
+  | { type: "setLineAmount"; lineId: string; amountCents: number }
+  | { type: "addLine"; description: string | null; amountCents: number }
+  | { type: "removeLine"; lineId: string }
+  | { type: "setLineCategory"; lineId: string; category: unknown }
+  | { type: "splitLine"; lineId: string; parts: readonly DraftAllocation[] };
+
+export type DraftEditErrorCode = LineEditErrorCode | "NOT_EDITABLE" | "LINE_NOT_FOUND" | "INVALID_VALUE";
+
+export type DraftEditResult = { ok: true; draft: ReceiptDraft } | { ok: false; code: DraftEditErrorCode };
+
+const MAX_TEXT = 200;
+const validText = (v: string | null): boolean => v === null || (typeof v === "string" && v.length <= MAX_TEXT);
+
+export function applyDraftEdit(
+  ticket: Pick<TicketState, "status">,
+  draft: ReceiptDraft,
+  edit: DraftEdit,
+  newLineId: () => string
+): DraftEditResult {
+  if (ticket.status !== "needs_review") return { ok: false, code: "NOT_EDITABLE" };
+  const bump = (patch: Partial<ReceiptDraft>): DraftEditResult => ({
+    ok: true,
+    draft: { ...draft, ...patch, version: draft.version + 1 },
+  });
+  const withLine = (lineId: string, fn: (l: DraftLine) => LineEditResult | DraftLine): DraftEditResult => {
+    const current = draft.lines.find((l) => l.id === lineId);
+    if (!current) return { ok: false, code: "LINE_NOT_FOUND" };
+    const next = fn(current);
+    if ("ok" in next) {
+      if (!next.ok) return next;
+      return bump({ lines: draft.lines.map((l) => (l.id === lineId ? next.line : l)) });
+    }
+    return bump({ lines: draft.lines.map((l) => (l.id === lineId ? next : l)) });
+  };
+
+  switch (edit.type) {
+    case "setMerchant":
+      return validText(edit.merchant) ? bump({ merchant: edit.merchant }) : { ok: false, code: "INVALID_VALUE" };
+    case "setDate":
+      // Se acepta cualquier cadena razonable; `validateDraft` rechaza fechas inexistentes al confirmar.
+      return validText(edit.date) ? bump({ date: edit.date }) : { ok: false, code: "INVALID_VALUE" };
+    case "setTotal":
+      return edit.totalCents === null || isCents(edit.totalCents)
+        ? bump({ totalCents: edit.totalCents })
+        : { ok: false, code: "INVALID_VALUE" };
+    case "setLineDescription":
+      return validText(edit.description)
+        ? withLine(edit.lineId, (l) => ({ ...l, description: edit.description }))
+        : { ok: false, code: "INVALID_VALUE" };
+    case "setLineAmount":
+      return isCents(edit.amountCents)
+        ? withLine(edit.lineId, (l) => ({ ...l, amountCents: edit.amountCents, category: null, allocations: [] }))
+        : { ok: false, code: "INVALID_VALUE" };
+    case "addLine": {
+      if (!validText(edit.description) || !isCents(edit.amountCents)) return { ok: false, code: "INVALID_VALUE" };
+      const added: DraftLine = {
+        id: newLineId(),
+        kind: "item",
+        description: edit.description,
+        amountCents: edit.amountCents,
+        categoryProposal: null,
+        category: null,
+        allocations: [],
+      };
+      return bump({ lines: [...draft.lines, added] });
+    }
+    case "removeLine":
+      return draft.lines.some((l) => l.id === edit.lineId)
+        ? bump({ lines: draft.lines.filter((l) => l.id !== edit.lineId) })
+        : { ok: false, code: "LINE_NOT_FOUND" };
+    case "setLineCategory":
+      return withLine(edit.lineId, (l) => assignLineCategory(l, edit.category));
+    case "splitLine":
+      return withLine(edit.lineId, (l) => splitLine(l, edit.parts));
+  }
+}
+
 /** Reparto efectivo de una línea: sus partes, o su categoría única; vacío si no está decidida. */
 export function effectiveAllocations(line: DraftLine): readonly DraftAllocation[] {
   if (line.allocations.length >= 2) return line.allocations;

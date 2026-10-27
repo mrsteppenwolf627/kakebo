@@ -203,3 +203,51 @@ Añadido en la rama `feature/ticket-scanner-fase-5`. No se ha borrado ni reescri
 | Enganche a analytics y logger | No se modifican `analytics.ts` ni `logger.ts` en esta fase | `sanitizeScannerAnalyticsEvent` y `toSafeLogContext` quedan como contrato sin llamar |
 | Proveedor OCR | Ver F5-5 | Solo la interfaz `ReceiptOcrProvider` |
 | Copy de la pantalla bloqueada, umbrales de confianza y plazos | F3-2, F3-13, TTL de estados | No implementado |
+
+## 11. Decisiones confirmadas y contratos de la Fase 6
+
+Añadido en la rama `feature/ticket-scanner-fase-6` (desde `8295836`). No se ha reescrito ninguna entrada anterior. Detalle técnico en [`implementation-foundation.md`](implementation-foundation.md).
+
+### 11.1 Decisiones cerradas (confirmadas por el propietario)
+
+| # | Decisión | Supera / matiza |
+|---|---|---|
+| F6-1 | Categorías: las cuatro de la API (`survival`, `optional`, `culture`, `extra`) | Cierra la discrepancia de §10.3 |
+| F6-2 | `cycleId` es el `months.id` del ciclo financiero actual (el `open` de `getOpenMonth`) | Cierra el bloqueo «`cycleId` real» de §10.4 |
+| F6-3 | Fallo técnico de subida u OCR: se devuelve el ticket consumido. Fallo atribuible al archivo: queda consumido | Concreta F4-5 |
+| F6-4 | Ticket abandonado: máximo 24 h y borrado automático | Cierra el TTL pendiente de §10.4 para tickets pendientes |
+| F6-5 | Al cerrar el ciclo se cancelan y borran los tickets pendientes de ese ciclo | Nuevo |
+| F6-6 | Antes de crear gasto la persona puede editar comercio, fecha, total, líneas, importes y categorías; la confirmación humana sigue siendo obligatoria | Amplía F5-6 |
+| F6-7 | Azure Document Intelligence Receipt es el proveedor del piloto, **desactivado**: sin credenciales ni envío de tickets reales hasta tener DPA, región, retención, subprocesadores y benchmark | Confirma F5-5 |
+| F6-8 | Cancelar el plan mantiene el acceso hasta el final del periodo pagado | Confirma F5-1 |
+| F6-9 | Descarga local en el formato original; Kakebo no conserva la imagen online tras confirmar | Confirma F5-3 |
+| F6-10 | El piloto usa solo tickets sintéticos o completamente anonimizados | Nuevo |
+
+### 11.2 Implementado (lógica pura; sin migraciones, rutas, UI ni red)
+
+- `cycle.ts`: tipo `CycleId` (= `months.id`) y `cycleIdFromMonth`; ciclo cerrado, ausente o con id inseguro se rechaza. `quota.ts` y `workflow.ts` lo usan.
+- `workflow.ts`: `isTechnicalFailure` (`transient`, `quota`, `config`), `refundOnUploadFailure`; `failProcessing` ya reembolsaba con `systemFault`.
+- `retention.ts`: `TICKET_RETENTION_MS` (24 h), `PrivateTicketStorage` (privado por tipo), `deleteWithVerification`, `purgeExpired`, `cancelPendingOnCycleClose`. Un borrado no verificado deja el ticket en `deletion_pending`. Motivo nuevo `cycle_closed` en `ticket-state.ts`.
+- `draft.ts`: `applyDraftEdit`, solo en `needs_review`, con versión incremental.
+- `azure-receipt-contract.ts`: adaptador desactivado (`PILOT_NOT_ENABLED`), `evaluatePilotReadiness`, `isPilotDataAllowed`. No define ningún mapeo a la API de Azure.
+- Acceso: sin cambios; `resolveScannerAccess` ya permite `plus_canceled_pending`, y un test lo cubre contra `resolveAccessState` (fin de periodo = `plus_access_until`).
+
+### 11.3 Archivos reales utilizados
+
+`src/lib/months.ts` (`MonthRow`, `getOpenMonth`, `ensureNextCycleOpen`), `src/app/api/months/[id]/route.ts` (cierre de ciclo por `PATCH` con `status: "closed"`), `src/lib/schemas/common.ts` (`categorySchema`), `src/lib/auth/access-state.ts` (solo lectura).
+
+### 11.4 Bloqueos abiertos (no se inventa nada para sortearlos)
+
+| Bloqueo | Qué falta |
+|---|---|
+| Persistencia de la cuota | No se escribe migración: el DDL de `months` no está en ninguna migración del repo, así que el tipo de `months.id` y una FK compatible NO están demostrados. Cuota solo en libro en memoria |
+| Supabase Storage | No existe bucket, política ni cifrado demostrados; `PrivateTicketStorage` no tiene implementación |
+| Cron / job de limpieza | No hay `vercel.json`, crons ni planificador; `purgeExpired` no se ejecuta solo |
+| Endpoint de cierre | `PATCH /api/months/[id]` no llama a la cancelación de tickets; engancharlo toca lógica de ciclos y exige decidir la transaccionalidad |
+| Creación de gastos | Esquema real de `expenses` y llamada anidada a `fn_create_expense` siguen NO DEMOSTRADOS |
+| Piloto Azure | DPA, región, retención, subprocesadores, benchmark sintético/anonimizado y credenciales (no integradas) |
+| Heredados de §10.4 | Límite de reintentos, enganche a analytics/logger, copy, umbrales de confianza |
+
+### 11.5 Migraciones
+
+Ninguna creada ni ejecutada.

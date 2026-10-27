@@ -29,6 +29,7 @@ export const TICKET_STATUS_REASONS = [
   "ttl_expired",
   "validation_rejected",
   "provider_failed",
+  "cycle_closed",
 ] as const;
 export type TicketStatusReason = (typeof TICKET_STATUS_REASONS)[number];
 

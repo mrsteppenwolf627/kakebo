@@ -33,3 +33,37 @@ Se prohíben claves, binarios y cadenas con importes, porcentajes o URLs firmada
 ## Límites de esta fase y reversibilidad
 
 Sin migraciones, endpoints, UI, SDK ni secretos, y sin tocar Stripe ni Premium. Revertir = borrar `src/lib/scanner/`, `src/__tests__/lib/scanner/` y las dos secciones de docs.
+
+---
+
+# Fase 6 — Ciclo real, retención y contratos
+
+**Estado: lógica pura y contratos.** Sin migraciones, rutas, UI, SDK, red ni secretos. Decisiones: [`decision-log.md`](decision-log.md) §11.
+
+| Módulo | Novedad |
+|---|---|
+| `cycle.ts` | `CycleId` (= `months.id` del ciclo `open`), `isCycleId`, `cycleIdFromMonth(month)` → `NO_OPEN_CYCLE`, `CYCLE_CLOSED`, `INVALID_CYCLE` |
+| `quota.ts` / `workflow.ts` | Usan `CycleId`; el límite de 5 es por `months.id`. `isTechnicalFailure`, `refundOnUploadFailure` |
+| `retention.ts` | `TICKET_RETENTION_MS` (24 h), `PrivateTicketStorage`, `RetainedTicket`, `selectExpired`, `selectPendingForCycle`, `deleteWithVerification`, `purgeExpired`, `cancelPendingOnCycleClose` |
+| `draft.ts` | `DraftEdit`, `applyDraftEdit` (solo `needs_review`; cada edición sube `version`; cambiar un importe anula categoría y reparto de la línea) |
+| `azure-receipt-contract.ts` | Adaptador desactivado, `evaluatePilotReadiness`, `isPilotDataAllowed` (solo sintético/anonimizado) |
+
+## Retención
+
+Pendientes = `initiated`, `uploaded`, `processing`, `needs_review`, `failed`. Caducan a las 24 h exactas desde la creación; los confirmados no caducan (su original ya está `deletion_pending`). Caducidad: `expired` → `deleted`, salvo `processing`, que va directo a borrado. Cierre de ciclo: solo pendientes de ese `cycleId`, motivo `cycle_closed`. En ambos casos `deleted` exige que `exists` confirme la ausencia tras `remove`; si falla, el ticket queda `deletion_pending` y se reintenta.
+
+## Archivos reales utilizados
+
+`src/lib/months.ts`, `src/app/api/months/[id]/route.ts` (cierre), `src/lib/schemas/common.ts`, `src/lib/auth/access-state.ts` (lectura).
+
+## Bloqueos abiertos
+
+Persistencia de cuota (DDL de `months` ausente del repo), Supabase Storage (sin bucket demostrado), cron/planificador (ninguno), enganche en el endpoint de cierre, esquema de `expenses` y prerrequisitos contractuales del piloto Azure. Detalle en decision-log §11.4.
+
+## Privacidad
+
+Ningún módulo nuevo escribe en analytics, logs, URL ni almacenamiento del navegador; las rutas de objeto son opacas y los resultados llevan códigos, no valores. Los tests usan solo datos ficticios.
+
+## Reversibilidad
+
+Revertir = borrar `cycle.ts`, `retention.ts`, `azure-receipt-contract.ts`, `phase6.test.ts`, las adiciones en `draft.ts`/`workflow.ts` y el motivo `cycle_closed`, más estas secciones.
