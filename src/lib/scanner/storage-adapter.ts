@@ -34,6 +34,9 @@ export interface StorageBucketApi {
     path: string,
     expiresIn: number
   ): Promise<{ data: { signedUrl: string } | null; error: { message: string } | null }>;
+  createSignedUploadUrl?: (
+    path: string
+  ) => Promise<{ data: { signedUrl: string; token: string; path: string } | null; error: { message: string } | null }>;
   remove(paths: string[]): Promise<{ data: unknown; error: { message: string } | null }>;
   list(
     folder: string,
@@ -48,6 +51,7 @@ export interface StorageClientLike {
 export type StorageErrorCode = "INVALID_INPUT" | "TOO_LARGE" | "UNSUPPORTED_TYPE" | "STORAGE_ERROR";
 export type UploadResult = { ok: true; objectPath: string } | { ok: false; code: StorageErrorCode };
 export type SignedReadResult = { ok: true; url: string; expiresInSeconds: number } | { ok: false; code: StorageErrorCode };
+export type SignedUploadResult = { ok: true; path: string; url: string; token: string; maxBytes: number } | { ok: false; code: StorageErrorCode };
 
 export function buildObjectPath(userId: string, ticketId: string, objectId: string = crypto.randomUUID()): string | null {
   if (![userId, ticketId, objectId].every((v) => UUID.test(v))) return null;
@@ -93,6 +97,15 @@ export class PrivateTicketBucket implements PrivateTicketStorage {
     const { data, error } = await this.bucket.createSignedUrl(objectPath, ttl);
     if (error || !data?.signedUrl) return { ok: false, code: "STORAGE_ERROR" };
     return { ok: true, url: data.signedUrl, expiresInSeconds: ttl };
+  }
+
+  /** Autoriza una sola subida a una ruta opaca. Si el cliente no soporta URLs firmadas, falla cerrado. */
+  async createUploadUrl(userId: string, ticketId: string): Promise<SignedUploadResult> {
+    const objectPath = buildObjectPath(userId, ticketId);
+    if (!objectPath || typeof this.bucket.createSignedUploadUrl !== "function") return { ok: false, code: "STORAGE_ERROR" };
+    const { data, error } = await this.bucket.createSignedUploadUrl(objectPath);
+    if (error || !data?.signedUrl || !data.token || data.path !== objectPath) return { ok: false, code: "STORAGE_ERROR" };
+    return { ok: true, path: objectPath, url: data.signedUrl, token: data.token, maxBytes: SCANNER_MAX_UPLOAD_BYTES };
   }
 
   async remove(objectPath: string): Promise<{ ok: boolean }> {
