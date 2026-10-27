@@ -165,3 +165,41 @@ Esquema real y políticas de expenses y months; escala de expenses.amount; mecan
 ### Bloqueos (añadidos por la Fase 4)
 
 Los P1 y P2 resumidos en la sección 11 de technical-architecture.md. No se declara cumplimiento legal.
+
+## 10. Decisiones confirmadas por el propietario y base de la Fase 5
+
+Añadido en la rama `feature/ticket-scanner-fase-5`. No se ha borrado ni reescrito ninguna entrada anterior; esta sección **supera** las entradas indicadas. Detalle técnico en [`implementation-foundation.md`](implementation-foundation.md).
+
+### 10.1 Decisiones cerradas (confirmadas por el propietario)
+
+| # | Decisión | Supera / matiza |
+|---|---|---|
+| F5-1 | El escáner forma parte del **único plan de pago** de Kakebo. Usuarios gratuitos ven la función pero no la usan: pantalla explicativa de acceso restringido | C4 («Premium») y P1: el plan es el único de pago, el existente (Plus). El nombre en interfaz sigue pendiente (F3-2) |
+| F5-2 | Límite de **5 tickets por ciclo** de la aplicación, reiniciado **exclusivamente al cerrar ciclo**, no por día | C7 (5 diarios), P3, F2-2, F3-4, F4-5: el «día» deja de aplicar; el reinicio lo marca el cambio de `cycleId` |
+| F5-3 | Imágenes **solo temporales** en almacenamiento privado/cifrado durante procesamiento y revisión; se **eliminan tras confirmar**. Si la persona quiere conservarla, la **descarga a su dispositivo**; Kakebo no la almacena online | C14 (conservación voluntaria online), P9, F3-12, `PUT /retention` (api-contracts §12) y `scanner_retention_requests` con `keep_original` (data-model §2.9): ya no aplican |
+| F5-4 | No se envían datos financieros a Analytics; ES/EN | Confirma C16 |
+| F5-5 | Proveedor candidato para un piloto futuro: **Azure Document Intelligence Receipt**. **No se integra**: faltan DPA, credenciales, región, retención, subprocesadores y benchmark con documentos anonimizados | `provider-benchmark.md` §7 apuntaba a Google y dejaba Azure de reserva. El benchmark sigue NO EJECUTADO y no se ha reevaluado |
+| F5-6 | La clasificación solo propone; la persona revisa y confirma antes de crear gastos | Confirma C8, F3-9, F3-10 |
+
+### 10.2 Implementado en la Fase 5 (solo lógica pura)
+
+`src/lib/scanner/`: `ocr-contract.ts`, `ticket-state.ts` (lista de Fase 4, F4-13), `quota.ts`, `workflow.ts`, `draft.ts`, `privacy.ts`, `access.ts`. Tests en `src/__tests__/lib/scanner/`. Ninguna ruta, tabla, migración, pantalla ni cambio en Stripe, Premium, analytics o logger existentes.
+
+### 10.3 Discrepancias detectadas y cómo se resolvieron
+
+- **Nombres de categoría:** los docs de Fase 4 y `src/lib/schemas/common.ts` usan `survival | optional | culture | extra`; `src/lib/types.ts` (heredado) usa `general | wants | culture | extras`. Se usa `categorySchema` de `common.ts`, el de la API.
+- **`confirmed → deleted`** exige borrado verificado del original (I16); `deleted` es inalcanzable con la imagen `present` o `deletion_pending`.
+- **Acceso:** `founder` y `legacy_full` devuelven `undecided` y **no** se permiten hasta resolver F3-1 (denegar por defecto, F2-1). No se ha creado ningún permiso nuevo.
+
+### 10.4 Bloqueos (no se inventa nada para sortearlos)
+
+| Bloqueo | Qué falta | Estado en código |
+|---|---|---|
+| Persistencia de la cuota | No hay tabla ni función atómica; el diseño de data-model §2.8 (`quota_day`) debe rediseñarse a `cycle_id`. No se escribe migración | Solo libro en memoria, puro |
+| `cycleId` real | Los ciclos son filas `months` (`src/lib/months.ts`); aquí `cycleId` es una cadena opaca. Falta decidir si es `months.id` | Parámetro del llamador |
+| Creación de gastos | Esquema real de `expenses` NO DEMOSTRADO (P1 nº 3) | `confirmDraft` devuelve un plan, no crea gastos |
+| Almacenamiento y borrado reales | Mecanismo de Storage, cifrado y planificador de limpieza NO DEMOSTRADOS | Solo el estado `originalStorage` |
+| Límite de reintentos | `{MAX_RETRIES}` pendiente | `failed → processing` se deniega si no se pasa `maxRetries` |
+| Enganche a analytics y logger | No se modifican `analytics.ts` ni `logger.ts` en esta fase | `sanitizeScannerAnalyticsEvent` y `toSafeLogContext` quedan como contrato sin llamar |
+| Proveedor OCR | Ver F5-5 | Solo la interfaz `ReceiptOcrProvider` |
+| Copy de la pantalla bloqueada, umbrales de confianza y plazos | F3-2, F3-13, TTL de estados | No implementado |
