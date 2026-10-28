@@ -1,0 +1,165 @@
+{
+  "phase": 3,
+  "branch": "feature/ticket-scanner-fase-3",
+  "base_commit": "e0cc228",
+  "status": "specification only; no components, code, dependencies or migrations",
+  "legend": {
+    "DEMOSTRADO": "verified in the repository",
+    "PROPUESTO": "new design",
+    "NO DEMOSTRADO": "no evidence",
+    "PENDIENTE": "open owner decision"
+  },
+  "related_docs": [
+    "ux-functional-spec.md",
+    "ux-wireflows.md",
+    "ux-copy-es-en.md",
+    "decision-log.md",
+    "privacy-security-architecture.md",
+    "data-flow.md",
+    "threat-model.md",
+    "provider-benchmark.md"
+  ],
+  "repo_evidence": [
+    {"topic": "top navigation items and mobile menu", "path": "src/components/TopNav.tsx", "status": "DEMOSTRADO"},
+    {"topic": "app layout with TopNav", "path": "src/app/[locale]/app/layout.tsx", "status": "DEMOSTRADO"},
+    {"topic": "dashboard quick actions (add expense, add income)", "path": "src/app/[locale]/app/page.tsx", "status": "DEMOSTRADO"},
+    {"topic": "floating action buttons with hardcoded Spanish aria-labels", "path": "src/components/FloatingAddButton.tsx", "status": "DEMOSTRADO"},
+    {"topic": "expense form: labels without htmlFor/id, error block without role or aria-live, hardcoded Spanish text", "path": "src/app/[locale]/app/new/NewExpenseClient.tsx", "status": "DEMOSTRADO"},
+    {"topic": "category labels ES/EN", "path": "messages/es.json, messages/en.json (Transaction.Common.categories)", "status": "DEMOSTRADO"},
+    {"topic": "categories and subcategories", "path": "src/lib/schemas/common.ts, src/lib/subcategories.ts", "status": "DEMOSTRADO"},
+    {"topic": "expense create/read/update/delete API", "path": "src/app/api/expenses/route.ts, src/app/api/expenses/[id]/route.ts", "status": "DEMOSTRADO"},
+    {"topic": "locked pattern hides content and shows PlusRequiredNotice", "path": "src/components/saas/SubscriptionGuard.tsx", "status": "DEMOSTRADO"},
+    {"topic": "server-computed blocked flag; does not block when PLUS_SUBSCRIPTIONS_ENABLED is off", "path": "src/lib/plus/access-view.ts, src/app/[locale]/app/agent/page.tsx", "status": "DEMOSTRADO"},
+    {"topic": "subscription page and upgrade panel", "path": "src/app/[locale]/app/subscription/page.tsx, src/components/plus/UpgradePanel.tsx", "status": "DEMOSTRADO"},
+    {"topic": "structural a11y tests with axe in jsdom (no contrast or layout)", "path": "src/__tests__/components/plus/plus-a11y.test.tsx", "status": "DEMOSTRADO"},
+    {"topic": "accessible dialog pattern", "path": "src/components", "status": "NO DEMOSTRADO"},
+    {"topic": "i18n es/en without language detection", "path": "src/i18n/routing.ts, src/i18n/request.ts", "status": "DEMOSTRADO"},
+    {"topic": "currency formatting is inconsistent (toFixed vs Intl)", "path": "src/app/[locale]/app/history/page.tsx, src/lib/plus/pricing.ts", "status": "DEMOSTRADO"},
+    {"topic": "analytics consent", "path": "src/lib/consent.ts, src/components/landing/CookieBanner.tsx", "status": "DEMOSTRADO"},
+    {"topic": "analytics free-form properties, sanitizer only for calculators", "path": "src/lib/analytics.ts", "status": "DEMOSTRADO"},
+    {"topic": "PWA manifest standalone; no service worker; no navigator.onLine", "path": "src/app/manifest.ts", "status": "DEMOSTRADO"},
+    {"topic": "offline behavior", "path": "-", "status": "NO DEMOSTRADO"},
+    {"topic": "camera capture inside installed PWA", "path": "-", "status": "NO DEMOSTRADO"}
+  ],
+  "entry_points": [
+    {"id": "dashboard", "location": "src/app/[locale]/app/page.tsx", "status": "PROPUESTO"},
+    {"id": "new_expense_secondary_link", "location": "src/app/[locale]/app/new/NewExpenseClient.tsx", "status": "PROPUESTO"},
+    {"id": "top_nav", "location": "src/components/TopNav.tsx", "status": "PENDIENTE"},
+    {"id": "floating_button", "location": "src/components/FloatingAddButton.tsx", "status": "PENDIENTE"}
+  ],
+  "routes_proposed": ["/app/scan", "/app/scan/[ticketId]"],
+  "screens": [
+    {"id": "S1", "name": "home", "audience": "access"},
+    {"id": "S2", "name": "plan_explainer", "audience": "free", "no_file_input_in_dom": true},
+    {"id": "S3", "name": "choose_source", "audience": "access"},
+    {"id": "S4", "name": "file_preview", "audience": "access"},
+    {"id": "S5", "name": "uploading", "audience": "access"},
+    {"id": "S6", "name": "file_error", "audience": "access"},
+    {"id": "S7", "name": "processing", "audience": "access"},
+    {"id": "S8", "name": "review", "audience": "access"},
+    {"id": "S8a", "name": "split_item", "audience": "access"},
+    {"id": "S9", "name": "confirmation", "audience": "access"},
+    {"id": "S10", "name": "done", "audience": "access"},
+    {"id": "S11", "name": "quota_reached", "audience": "access"},
+    {"id": "S12", "name": "offline", "audience": "access"},
+    {"id": "S13", "name": "expired", "audience": "access"},
+    {"id": "S14", "name": "discarded", "audience": "access"},
+    {"id": "S15", "name": "error", "audience": "access"}
+  ],
+  "free_user_rules": [
+    "feature visible with textual lock indicator, not color only",
+    "primary control is a link to the explainer, never a file picker",
+    "no input type=file, capture or camera call in DOM for free users",
+    "server rejects every scanner route for free users",
+    "scanner stays locked unless access is proven, even if PLUS_SUBSCRIPTIONS_ENABLED is off"
+  ],
+  "input_sources": {
+    "camera": {"control": "file input with camera capture", "behavior_in_pwa": "NO DEMOSTRADO"},
+    "image": {"types": "PENDIENTE"},
+    "pdf": {"max_pages": "PENDIENTE", "type_validated_in_server": true},
+    "multipage_photos": "out of MVP"
+  },
+  "review": {
+    "required_fields": ["merchant", "date", "total", "category_per_expense"],
+    "optional_fields": ["tax", "payment_method", "items"],
+    "confidence_levels": ["unknown", "low", "medium", "high"],
+    "confidence_thresholds": "PENDIENTE",
+    "confirm_blocked_when": [
+      "missing or invalid merchant, date or total",
+      "expense without category",
+      "incomplete split",
+      "closed cycle for the receipt date",
+      "items do not add up to total and not resolved"
+    ],
+    "tolerance_for_rounding": "PENDIENTE",
+    "user_edits_never_overwritten_by_ocr": true,
+    "no_invented_values": true,
+    "currency": "EUR only",
+    "non_euro_receipt": "blocks confirmation until resolved; policy PENDIENTE"
+  },
+  "split_rules": {
+    "min_parts": 2,
+    "max_parts": "PENDIENTE",
+    "parts_sum_must_equal_item_amount": true,
+    "expenses_grouping": "PENDIENTE (one expense per resulting category proposed)",
+    "date_of_expenses": "receipt date",
+    "note_content": "PENDIENTE"
+  },
+  "duplicates": {"behavior": "non-destructive warning, never blocks", "actions": ["discard", "continue"]},
+  "retention_ui": {
+    "default": "original deleted after confirmation (copy conditioned on verified implementation)",
+    "keep_original": "explicit, not preselected, duration options PENDIENTE",
+    "undo_before_confirm": true,
+    "undo_after_confirm": false,
+    "delete_expense_restores_original": false
+  },
+  "minimization": ["no NIF", "no merchant address", "no holder name", "no card digits shown", "no user file names", "no location permission"],
+  "accessibility_requirements": {
+    "claim": "technical requirements only; no conformance claimed",
+    "keyboard_only_flow": true,
+    "label_for_every_field": true,
+    "focus_to_h1_on_screen_change": true,
+    "dialog": {"focus_trap": true, "escape_closes": true, "return_focus": true, "background_inert": true, "existing_pattern": "NO DEMOSTRADO"},
+    "live_regions": {"polite": ["progress milestones", "ready to review", "saved"], "alert": ["blocking errors"], "no_financial_data_in_announcements": true},
+    "touch_target_min_px": 44,
+    "zoom_200_percent_no_loss": true,
+    "orientation_not_locked": true,
+    "reduced_motion": true,
+    "not_color_only": true,
+    "verification": ["axe in jsdom for structure", "manual keyboard", "VoiceOver/TalkBack", "real-browser contrast"]
+  },
+  "analytics": {
+    "consent_required": true,
+    "allowed_params": ["tool_name", "page_path", "page_title", "source", "state"],
+    "state_values_non_financial": ["locked", "quota_reached", "offline", "error"],
+    "proposed_events": ["scanner_opened", "scanner_blocked_viewed", "scanner_source_selected", "scanner_ticket_submitted", "scanner_ticket_confirmed", "scanner_error"],
+    "existing_events_reused": ["expense_created (entry_method)"],
+    "forbidden": [
+      "income", "expenses", "goals", "amounts", "percentages", "receipt dates", "merchant", "categories", "items", "item counts",
+      "payment method", "tax", "confidence per field", "duplicate detected", "totals mismatch", "any derived value", "provider name"
+    ],
+    "whitelist_test_required": true,
+    "implemented": false
+  },
+  "copy": {
+    "file": "ux-copy-es-en.md",
+    "namespace_proposed": "Scanner",
+    "key_parity_es_en_required": true,
+    "placeholders_pending": ["{PLAN_NAME}", "{FORMATS}", "{MAX_SIZE}", "{MAX_PAGES}", "{MAX_RETRIES}", "{RETENTION_OPTIONS}", "{DAILY_LIMIT}", "{LONG_WAIT_THRESHOLD}", "{MAX_SPLITS}"],
+    "conditioned_texts": ["retention.*", "privacy.provider", "privacy.minimal", "privacy.analytics", "locked.noAccessNote"],
+    "never_written": ["provider name", "accuracy claims", "processing time", "encrypted", "guaranteed", "price", "legal compliance"]
+  },
+  "pending_decisions": [
+    "entitlement hierarchy (founder, legacy_full, plus_active, plus_canceled_pending)",
+    "exact Premium/Plus plan contents, name and price",
+    "file size, page and format limits",
+    "day boundary and quota consumption",
+    "expense model link and grouping",
+    "OCR provider and privacy review",
+    "retention options and TTL",
+    "confidence thresholds",
+    "navigation placement and route names",
+    "accessible dialog pattern",
+    "camera behavior in installed PWA"
+  ]
+}

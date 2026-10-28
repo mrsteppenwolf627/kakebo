@@ -3,7 +3,13 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import { ApiError } from "@/lib/api/errors";
-import { requireAccess, isPlusSubscriptionsEnabled, type AccessFeature } from "@/lib/auth/require-access";
+import {
+  getScannerAccess,
+  requireAccess,
+  requireScannerAccess,
+  isPlusSubscriptionsEnabled,
+  type AccessFeature,
+} from "@/lib/auth/require-access";
 import { resolveAccessState, getAccessPermissions, type AccessProfile } from "@/lib/auth/access-state";
 
 const fake = (opts: { user?: boolean; rpc?: { data: unknown; error: unknown } }) => {
@@ -113,6 +119,53 @@ describe("requireAccess", () => {
         await expect(requireAccess("ai", client)).rejects.toMatchObject({ code: "ACCESS_UNAVAILABLE", status: 503 });
       }
     });
+  });
+});
+
+describe("scanner access", () => {
+  it("consulta siempre la sesión y fn_my_access, aunque el interruptor Plus esté apagado", async () => {
+    const { client, rpc } = fake({ rpc: allow("plus_active", ALL) });
+    const result = await getScannerAccess(client);
+
+    expect(result).toMatchObject({ enforced: true, access: { state: "plus_active" }, decision: { allowed: true, reason: "allowed" } });
+    expect(rpc.mock.calls).toEqual([["fn_my_access"]]);
+  });
+
+  it("free users receive a Plus-required error and never pass the scanner guard", async () => {
+    const { client } = fake({ rpc: allow("free_under_limit", NONE) });
+    await expect(requireScannerAccess(client)).rejects.toMatchObject({
+      code: "PLUS_REQUIRED",
+      status: 403,
+      details: { feature: "ticket_scanner", state: "free_under_limit", upgrade: true },
+    });
+  });
+
+  it("active and cancellation-pending Plus users are allowed", async () => {
+    for (const state of ["plus_active", "plus_canceled_pending"]) {
+      const { client } = fake({ rpc: allow(state, ALL) });
+      await expect(requireScannerAccess(client)).resolves.toMatchObject({ decision: { allowed: true, reason: "allowed" } });
+    }
+  });
+
+  it("founder and legacy full states are allowed as premium access", async () => {
+    for (const state of ["founder", "legacy_full"]) {
+      const { client } = fake({ rpc: allow(state, ALL) });
+      await expect(requireScannerAccess(client)).resolves.toMatchObject({ decision: { allowed: true, reason: "allowed" } });
+    }
+  });
+
+  it("unauthenticated, RPC failure and malformed access fail closed", async () => {
+    const unauthenticated = fake({ user: false, rpc: allow("plus_active", ALL) });
+    await expect(getScannerAccess(unauthenticated.client)).rejects.toMatchObject({ code: "UNAUTHORIZED", status: 401 });
+
+    for (const rpc of [
+      { data: null, error: { message: "boom" } },
+      { data: { state: "unknown", permissions: ALL }, error: null },
+      { data: { state: "plus_active" }, error: null },
+    ]) {
+      const { client } = fake({ rpc });
+      await expect(getScannerAccess(client)).rejects.toMatchObject({ code: "ACCESS_UNAVAILABLE", status: 503 });
+    }
   });
 });
 

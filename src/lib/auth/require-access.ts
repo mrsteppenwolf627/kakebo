@@ -15,6 +15,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { ApiError, apiErrors } from "@/lib/api/errors";
 import type { AccessState } from "./access-state";
+import { resolveScannerAccess, type ScannerAccessDecision } from "@/lib/scanner/access";
 
 export type AccessFeature = "ai" | "ai_search" | "export_reports" | "plus_features" | "billing";
 
@@ -57,6 +58,12 @@ export interface AccessResult {
   /** `false` con el interruptor apagado: no se ha comprobado nada. */
   enforced: boolean;
   access: MyAccess | null;
+}
+
+export interface ScannerAccessResult {
+  enforced: true;
+  access: MyAccess;
+  decision: ScannerAccessDecision;
 }
 
 /** Solo el valor exacto "true" activa las restricciones. */
@@ -110,6 +117,40 @@ export async function requireAccess(
   }
 
   return { enforced: true, access };
+}
+
+/**
+ * Acceso del escáner: se aplica siempre, incluso si PLUS_SUBSCRIPTIONS_ENABLED está apagado.
+ * El escáner deniega por defecto estados desconocidos, founder y legacy_full hasta que el producto los incluya
+ * expresamente. No recibe user_id: la identidad procede exclusivamente de la sesión Supabase.
+ */
+export async function getScannerAccess(supabase: SupabaseClient): Promise<ScannerAccessResult> {
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+  if (authError || !user) throw apiErrors.unauthorized();
+
+  const { data, error } = await supabase.rpc("fn_my_access");
+  const access = error ? null : parseMyAccess(data);
+  if (!access) throw apiErrors.accessUnavailable();
+
+  return { enforced: true, access, decision: resolveScannerAccess(access.state) };
+}
+
+/** Protege una ruta del escáner; no depende del interruptor global de Plus. */
+export async function requireScannerAccess(supabase: SupabaseClient): Promise<ScannerAccessResult> {
+  const result = await getScannerAccess(supabase);
+  if (!result.decision.allowed) {
+    if (result.decision.reason === "plan_required") {
+      throw apiErrors.plusRequired(
+        "Necesitas Plus para usar el escáner de tickets.",
+        { feature: "ticket_scanner", state: result.access.state, upgrade: true },
+      );
+    }
+    throw apiErrors.accessUnavailable();
+  }
+  return result;
 }
 
 /** Respuesta JSON equivalente para rutas que no usan handleApiError (p. ej. streaming SSE). */

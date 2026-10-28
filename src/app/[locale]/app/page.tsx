@@ -48,6 +48,7 @@ export default async function HomePage(props: {
   const ym = `${year}-${pad2(month)}`;
 
   const t = await getTranslations("Dashboard");
+  const tScanner = await getTranslations("Scanner");
 
   return (
     <AuthGate>
@@ -86,6 +87,14 @@ export default async function HomePage(props: {
             </Link>
 
             <ReportButton />
+
+            <Link
+              href="/app/scanner"
+              className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 border border-border bg-card text-foreground text-sm font-medium rounded-md shadow-sm hover:bg-muted transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2"
+            >
+              <span className="text-lg" aria-hidden="true">🧾</span>
+              <span>{tScanner("title")}</span>
+            </Link>
           </div>
 
           <MonthSelector year={year} month={month} />

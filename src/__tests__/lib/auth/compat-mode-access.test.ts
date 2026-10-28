@@ -66,6 +66,8 @@ const ACCESS_LAYER = [
   "src/lib/auth/require-access.ts",
   "src/lib/plus/access-view.ts",
   "src/components/plus/PlanClient.tsx",
+  // Escáner (Fase 6): decisión de acceso de solo lectura sobre AccessState; no está enganchada a ninguna ruta.
+  "src/lib/scanner/access.ts",
 ];
 
 describe("modo compatible — no hay enforcement comercial en el código de la app", () => {
