@@ -6,6 +6,7 @@ import { createScannerTicket } from "@/lib/scanner/persistence";
 import { noStore, requireIdempotencyKey, scannerPersistenceError } from "@/lib/scanner/http";
 import { scannerStartTicketSchema } from "@/lib/scanner/http";
 import { assertScannerSameOrigin } from "@/lib/scanner/csrf";
+import { getOpenMonth, getOrCreateMonth } from "@/lib/months";
 
 export const dynamic = "force-dynamic";
 
@@ -46,6 +47,28 @@ export const POST = withLogging(async (request: NextRequest) => {
       throw apiErrors.badRequest("El tipo de contenido debe ser application/json.");
     }
     const input = scannerStartTicketSchema.parse(await request.json());
+
+    // Bootstrap the first cycle just like the manual expense flow does. The
+    // scanner is allowed to be the user's first expense, so requiring an
+    // already-open `months` row would make a new Plus account unusable.
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw apiErrors.unauthorized();
+    const openMonth = await getOpenMonth(supabase, user.id);
+    if (!openMonth) {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Europe/Madrid",
+        year: "numeric",
+        month: "2-digit",
+      }).formatToParts(new Date());
+      const year = Number(parts.find((part) => part.type === "year")?.value);
+      const month = Number(parts.find((part) => part.type === "month")?.value);
+      if (!Number.isInteger(year) || !Number.isInteger(month)) {
+        throw scannerPersistenceError("NO_OPEN_CYCLE");
+      }
+      const { row } = await getOrCreateMonth(supabase, user.id, year, month);
+      if (row.status !== "open") throw scannerPersistenceError("NO_OPEN_CYCLE");
+    }
+
     const result = await createScannerTicket(supabase, key, input);
     if (!result.ok) throw scannerPersistenceError(result.code);
     const response = result.idempotent
