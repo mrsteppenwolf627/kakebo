@@ -147,10 +147,10 @@ describe("scanner access", () => {
     }
   });
 
-  it("founder and legacy states remain explicitly undecided, not silently granted", async () => {
+  it("founder and legacy full states are allowed as premium access", async () => {
     for (const state of ["founder", "legacy_full"]) {
       const { client } = fake({ rpc: allow(state, ALL) });
-      await expect(requireScannerAccess(client)).rejects.toMatchObject({ code: "ACCESS_UNAVAILABLE", status: 503 });
+      await expect(requireScannerAccess(client)).resolves.toMatchObject({ decision: { allowed: true, reason: "allowed" } });
     }
   });
 

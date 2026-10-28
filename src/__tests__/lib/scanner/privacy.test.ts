@@ -147,9 +147,9 @@ describe("acceso (entitlement existente, solo lectura)", () => {
     expect(resolveScannerAccess("free_under_limit")).toEqual({ allowed: false, reason: "plan_required" });
     expect(resolveScannerAccess("free_readonly")).toEqual({ allowed: false, reason: "plan_required" });
   });
-  it("founder/legacy quedan sin decidir y lo desconocido se deniega", () => {
-    expect(resolveScannerAccess("founder")).toEqual({ allowed: false, reason: "undecided" });
-    expect(resolveScannerAccess("legacy_full")).toEqual({ allowed: false, reason: "undecided" });
+  it("founder/legacy full tienen acceso premium y lo desconocido se deniega", () => {
+    expect(resolveScannerAccess("founder")).toEqual({ allowed: true, reason: "allowed" });
+    expect(resolveScannerAccess("legacy_full")).toEqual({ allowed: true, reason: "allowed" });
     expect(resolveScannerAccess(null)).toEqual({ allowed: false, reason: "unavailable" });
     expect(resolveScannerAccess("otro" as never)).toEqual({ allowed: false, reason: "unavailable" });
   });
