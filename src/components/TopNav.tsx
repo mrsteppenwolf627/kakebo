@@ -4,14 +4,19 @@ import { Link } from "@/i18n/routing";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import UserMenu from "./UserMenu";
 import { useTranslations } from "next-intl";
+import { createClient } from "@/lib/supabase/browser";
 
 export default function TopNav({ showPlan = false }: { showPlan?: boolean }) {
   const t = useTranslations("Navigation");
+  const tMenu = useTranslations("UserMenu");
   const pathname = usePathname();
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const supabase = createClient();
 
   const items = [
     { href: "/", label: t('home') },
@@ -33,6 +38,31 @@ export default function TopNav({ showPlan = false }: { showPlan?: boolean }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional side-effect on navigation
     setMenuOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    supabase.auth.getUser().then(({ data }) => {
+      if (mounted) setIsAuthenticated(Boolean(data.user));
+    });
+
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (mounted) setIsAuthenticated(Boolean(session?.user));
+    });
+
+    return () => {
+      mounted = false;
+      subscription.subscription.unsubscribe();
+    };
+  }, [supabase]);
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    setIsAuthenticated(false);
+    setMenuOpen(false);
+    router.push("/login");
+    router.refresh();
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
@@ -135,6 +165,15 @@ export default function TopNav({ showPlan = false }: { showPlan?: boolean }) {
             >
               {t('newIncomeLong')}
             </Link>
+            {isAuthenticated && (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="block w-full py-3 text-center border border-red-200 text-red-700 dark:border-red-900/60 dark:text-red-300 font-medium rounded-md hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40"
+              >
+                {tMenu("logout")}
+              </button>
+            )}
           </div>
         </div>
       )}
