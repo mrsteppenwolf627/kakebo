@@ -246,7 +246,7 @@ export function Navbar() {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"
-            aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-label={isMenuOpen ? t('menuClose') : t('menuOpen')}
             className="flex items-center justify-center w-11 h-11 -mr-2 text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
           >
             {isMenuOpen ? (
@@ -262,9 +262,9 @@ export function Navbar() {
       {isMenuOpen && (
         <div
           id="mobile-menu"
-          className="md:hidden fixed top-16 left-0 right-0 bottom-0 bg-background border-t border-border z-[99] overflow-y-auto overflow-x-hidden animate-in slide-in-from-top-2"
+          className="md:hidden fixed inset-x-0 top-16 bottom-0 z-[99] overflow-y-auto overscroll-contain border-t border-border bg-background animate-in slide-in-from-top-2"
         >
-          <div className="p-4 flex flex-col gap-5">
+          <div className="mx-auto flex min-h-full w-full max-w-6xl flex-col gap-5 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:px-6">
             {/* Primary Navigation */}
             <nav aria-label="Menú principal" className="flex flex-col gap-1">
               <Link

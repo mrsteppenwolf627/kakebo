@@ -40,6 +40,8 @@
         "newIncomeLong": "+ Nuevo Ingreso",
         "configuration": "Configuración",
         "language": "Idioma",
+        "menuOpen": "Abrir menú",
+        "menuClose": "Cerrar menú",
         "tutorial": "Tutorial",
         "about": "Sobre Nosotros"
     },

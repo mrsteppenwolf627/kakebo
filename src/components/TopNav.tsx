@@ -116,8 +116,10 @@ export default function TopNav({ showPlan = false }: { showPlan?: boolean }) {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 text-muted-foreground hover:text-foreground"
-            aria-label="Menú"
+            className="md:hidden flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+            aria-label={menuOpen ? t('menuClose') : t('menuOpen')}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
           >
             {menuOpen ? (
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 18 18" /></svg>
@@ -130,46 +132,52 @@ export default function TopNav({ showPlan = false }: { showPlan?: boolean }) {
 
       {/* Mobile Navigation Dropdown */}
       {menuOpen && (
-        <div className="md:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-background border-b border-border shadow-sm z-50 overflow-y-auto animate-in slide-in-from-top-2">
-          <div className="px-4 py-4 space-y-4">
+        <div
+          id="mobile-navigation"
+          className="md:hidden fixed inset-x-0 top-16 bottom-0 z-50 overflow-y-auto overscroll-contain border-b border-border bg-background shadow-lg animate-in slide-in-from-top-2"
+        >
+          <div className="mx-auto flex min-h-full w-full max-w-6xl flex-col gap-5 px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 sm:px-6">
             {items.map((it) => (
               <Link
                 key={it.href}
                 href={it.href}
-                className={`block text-lg ${isActive(it.href)
-                  ? "text-foreground font-serif font-medium"
+                onClick={() => setMenuOpen(false)}
+                className={`flex min-h-12 items-center rounded-md border-b border-border/60 px-3 text-base transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${isActive(it.href)
+                  ? "font-serif font-medium text-foreground"
                   : "text-muted-foreground"
                   }`}
               >
                 {it.label}
               </Link>
             ))}
-            <div className="h-px bg-border my-2" />
-            <div className="flex items-center justify-between py-2">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
               <span className="text-sm text-muted-foreground">{t('configuration')}</span>
               <div className="flex items-center gap-2">
                 <LanguageSwitcher />
                 <ThemeToggle />
               </div>
             </div>
-            <div className="h-px bg-border my-2" />
-            <Link
-              href="/app/new"
-              className="block text-center w-full py-3 bg-stone-900 text-stone-50 dark:bg-stone-50 dark:text-stone-900 font-medium rounded-md"
-            >
-              {t('newExpenseLong')}
-            </Link>
-            <Link
-              href="/app/new-income"
-              className="block text-center w-full py-3 border border-stone-200 dark:border-stone-800 bg-background font-medium rounded-md"
-            >
-              {t('newIncomeLong')}
-            </Link>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <Link
+                href="/app/new"
+                onClick={() => setMenuOpen(false)}
+                className="flex min-h-12 items-center justify-center rounded-md bg-stone-900 px-4 py-3 text-center font-medium text-stone-50 shadow-sm transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 dark:bg-stone-50 dark:text-stone-900"
+              >
+                {t('newExpenseLong')}
+              </Link>
+              <Link
+                href="/app/new-income"
+                onClick={() => setMenuOpen(false)}
+                className="flex min-h-12 items-center justify-center rounded-md border border-stone-200 bg-background px-4 py-3 text-center font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 dark:border-stone-800"
+              >
+                {t('newIncomeLong')}
+              </Link>
+            </div>
             {isAuthenticated && (
               <button
                 type="button"
                 onClick={handleLogout}
-                className="block w-full py-3 text-center border border-red-200 text-red-700 dark:border-red-900/60 dark:text-red-300 font-medium rounded-md hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40"
+                className="flex min-h-12 w-full items-center justify-center rounded-md border border-red-200 px-4 py-3 text-center font-medium text-red-700 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 dark:border-red-900/60 dark:text-red-300 dark:hover:bg-red-950/30"
               >
                 {tMenu("logout")}
               </button>
