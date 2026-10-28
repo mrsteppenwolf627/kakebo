@@ -15,7 +15,6 @@ export default function TopNav({ showPlan = false }: { showPlan?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const supabase = createClient();
 
   const items = [
@@ -39,26 +38,8 @@ export default function TopNav({ showPlan = false }: { showPlan?: boolean }) {
     setMenuOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    let mounted = true;
-
-    supabase.auth.getUser().then(({ data }) => {
-      if (mounted) setIsAuthenticated(Boolean(data.user));
-    });
-
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (mounted) setIsAuthenticated(Boolean(session?.user));
-    });
-
-    return () => {
-      mounted = false;
-      subscription.subscription.unsubscribe();
-    };
-  }, [supabase]);
-
   async function handleLogout() {
     await supabase.auth.signOut();
-    setIsAuthenticated(false);
     setMenuOpen(false);
     router.push("/login");
     router.refresh();
@@ -173,15 +154,13 @@ export default function TopNav({ showPlan = false }: { showPlan?: boolean }) {
                 {t('newIncomeLong')}
               </Link>
             </div>
-            {isAuthenticated && (
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="flex min-h-12 w-full items-center justify-center rounded-md border border-red-200 px-4 py-3 text-center font-medium text-red-700 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 dark:border-red-900/60 dark:text-red-300 dark:hover:bg-red-950/30"
-              >
-                {tMenu("logout")}
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="flex min-h-12 w-full items-center justify-center rounded-md border border-red-200 px-4 py-3 text-center font-medium text-red-700 transition-colors hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 dark:border-red-900/60 dark:text-red-300 dark:hover:bg-red-950/30"
+            >
+              {tMenu("logout")}
+            </button>
           </div>
         </div>
       )}

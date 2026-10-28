@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 
 export function Navbar() {
   const t = useTranslations("Navigation");
+  const tMenu = useTranslations("UserMenu");
   const supabase = createClient();
   const router = useRouter();
   const pathname = usePathname();
@@ -83,6 +84,14 @@ export function Navbar() {
     e.preventDefault();
     router.push("/app");
     closeMenu();
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setSession(null);
+    closeMenu();
+    router.push("/login");
+    router.refresh();
   };
 
   return (
@@ -349,12 +358,21 @@ export function Navbar() {
               </div>
 
               {session ? (
-                <button
-                  onClick={handleDashboardClick}
-                  className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md shadow-sm text-center transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
-                >
-                  {t('goToDashboard')}
-                </button>
+                <div className="grid grid-cols-1 gap-3">
+                  <button
+                    onClick={handleDashboardClick}
+                    className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md shadow-sm text-center transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background"
+                  >
+                    {t('goToDashboard')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="w-full py-3 border border-red-200 text-red-700 dark:border-red-900/60 dark:text-red-300 font-medium rounded-md text-center transition-colors hover:bg-red-50 dark:hover:bg-red-950/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 focus-visible:ring-offset-2 ring-offset-background"
+                  >
+                    {tMenu('logout')}
+                  </button>
+                </div>
               ) : (
                 <div className="grid grid-cols-2 gap-3">
                   <Link
