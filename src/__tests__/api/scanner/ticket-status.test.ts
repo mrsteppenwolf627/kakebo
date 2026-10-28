@@ -28,12 +28,12 @@ describe("scanner ticket status", () => {
       total_cents: 1234, currency: "EUR", original_storage: "present", expires_at: null, updated_at: "2026-10-27T12:00:00Z",
       object_path: "must-not-be-selected",
     }, error: null });
-    linesResult.mockResolvedValue({ data: [{ id: "line", position: 0, kind: "item", description: "Pan", amount_cents: 1234, category_proposal: "survival", category: null, allocations: [] }], error: null });
+    linesResult.mockResolvedValue({ data: [{ id: "line", position: 0, kind: "item", description: "Pan", amount_cents: 1234, category_proposal: "survival", category: null, allocations: [], include_in_expenses: true }], error: null });
 
     const response = await GET(new Request("http://localhost/api/scanner/tickets/" + TICKET) as never, { params: Promise.resolve({ ticketId: TICKET }) });
     expect(response.status).toBe(200);
     const body = await response.json();
-    expect(body.data.ticket.lines[0]).toMatchObject({ amountCents: 1234, categoryProposal: "survival" });
+    expect(body.data.ticket.lines[0]).toMatchObject({ amountCents: 1234, categoryProposal: "survival", includeInExpenses: true });
     expect(JSON.stringify(body)).not.toContain("object_path");
     expect(JSON.stringify(body)).not.toContain("must-not-be-selected");
   });

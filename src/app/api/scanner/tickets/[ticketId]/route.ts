@@ -26,7 +26,7 @@ export const GET = withLogging(async (_request, context: RouteContext) => {
 
     const { data: lines, error: linesError } = await supabase
       .from("scanner_ticket_lines")
-      .select("id,position,kind,description,amount_cents,category_proposal,category,allocations")
+      .select("id,position,kind,description,amount_cents,category_proposal,category,allocations,include_in_expenses")
       .eq("ticket_id", ticketId)
       .order("position", { ascending: true });
     if (linesError) throw apiErrors.accessUnavailable();
@@ -56,6 +56,7 @@ export const GET = withLogging(async (_request, context: RouteContext) => {
           categoryProposal: line.category_proposal,
           category: line.category,
           allocations: line.allocations,
+          includeInExpenses: line.include_in_expenses,
         })),
       },
     }));

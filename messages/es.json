@@ -1338,6 +1338,10 @@
             "totalMismatch": "Los artículos suman {current} €, pero el total es {expected} €.",
             "suggested": "Sugerida: {category}. Revísala antes de confirmar.",
             "reviewNotice": "Es una estimación de lectura automática: revisa los datos y las categorías.",
+            "includeLine": "Añadir esta línea a mis gastos",
+            "excludeLine": "No añadir esta línea a mis gastos",
+            "excludedHelp": "Esta línea se conservará en la revisión, pero no se convertirá en un gasto.",
+            "selectedTotal": "Total que se añadirá a tu Kakebo: {amount} €",
             "saving": "Guardando…",
             "confirm": "Confirmar gastos",
             "discard": "Descartar ticket",
@@ -1349,6 +1353,7 @@
                 "size": "La imagen debe ocupar menos de 4 MB.",
                 "required": "Completa comercio, fecha y total.",
                 "categories": "Selecciona una categoría para cada artículo y asegúrate de que cada reparto cuadra.",
+                "noIncludedLines": "Selecciona al menos una línea para añadirla a tus gastos.",
                 "generic": "No se ha podido procesar el ticket. Puedes intentarlo de nuevo o introducir el gasto a mano."
             }
         },

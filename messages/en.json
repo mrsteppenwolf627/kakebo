@@ -1406,6 +1406,10 @@
             "totalMismatch": "Items add up to €{current}, but the total is €{expected}.",
             "suggested": "Suggested: {category}. Review it before confirming.",
             "reviewNotice": "Automatic reading is an estimate: review the fields and categories.",
+            "includeLine": "Add this line to my expenses",
+            "excludeLine": "Do not add this line to my expenses",
+            "excludedHelp": "This line stays visible for review but will not become an expense.",
+            "selectedTotal": "Total to add to your Kakebo: €{amount}",
             "saving": "Saving…",
             "confirm": "Confirm expenses",
             "discard": "Discard receipt",
@@ -1417,6 +1421,7 @@
                 "size": "The image must be smaller than 4 MB.",
                 "required": "Complete the merchant, date and total.",
                 "categories": "Choose a category for every item and make sure each split adds up.",
+                "noIncludedLines": "Select at least one line to add to your expenses.",
                 "generic": "The receipt could not be processed. Try again or enter the expense manually."
             }
         },

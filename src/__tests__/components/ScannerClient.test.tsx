@@ -47,6 +47,11 @@ describe("ScannerClient", () => {
 
     await waitFor(() => expect(screen.getByRole("heading", { name: messages.Scanner.flow.reviewTitle })).toBeTruthy());
     expect(screen.getByRole("button", { name: messages.Scanner.flow.confirm })).toBeDisabled();
+    const includeLine = screen.getByRole("checkbox", { name: messages.Scanner.flow.includeLine });
+    fireEvent.click(includeLine);
+    expect(screen.getByRole("checkbox", { name: messages.Scanner.flow.excludeLine })).toBeTruthy();
+    expect(screen.getByRole("button", { name: messages.Scanner.flow.confirm })).toBeDisabled();
+    fireEvent.click(screen.getByRole("checkbox", { name: messages.Scanner.flow.excludeLine }));
     fireEvent.click(screen.getByRole("button", { name: messages.Scanner.flow.split }));
 
     const selects = screen.getAllByRole("combobox");

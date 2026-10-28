@@ -13,6 +13,7 @@ type Line = {
   categoryProposal: Category | null;
   category: Category | null;
   allocations: { category: Category | null; amountCents: number }[];
+  includeInExpenses: boolean;
 };
 type Ticket = {
   id: string;
@@ -27,6 +28,10 @@ type Ticket = {
 type PendingTicket = { id: string; status: string; merchant: string | null; date: string | null; totalCents: number | null; currency: string | null };
 
 type ApiResponse<T> = { success: true; data: T } | { success: false; error?: { message?: string } };
+
+function normalizeLines(lines: Line[]): Line[] {
+  return lines.map((line) => ({ ...line, includeInExpenses: line.includeInExpenses !== false }));
+}
 
 async function api<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, { ...init, cache: "no-store" });
@@ -113,7 +118,7 @@ export default function ScannerClient() {
       const loaded = await api<{ ticket: Ticket }>(`/api/scanner/tickets/${created.ticketId}`);
       setTicket(loaded.ticket); setMerchant(loaded.ticket.merchant ?? ""); setDate(loaded.ticket.date ?? "");
       setTotal(loaded.ticket.totalCents === null ? "" : String(loaded.ticket.totalCents / 100));
-      setLines(loaded.ticket.lines); setDraftDirty(false); setConfirmKey(crypto.randomUUID()); setStep("review");
+      setLines(normalizeLines(loaded.ticket.lines)); setDraftDirty(false); setConfirmKey(crypto.randomUUID()); setStep("review");
     } catch (cause) {
       setError(cause instanceof Error && cause.message !== "REQUEST_FAILED" ? cause.message : t("flow.errors.generic"));
       setStep("idle");
@@ -127,7 +132,7 @@ export default function ScannerClient() {
       if (loaded.ticket.status !== "needs_review") throw new Error(t("flow.pendingNotReady"));
       setTicket(loaded.ticket); setMerchant(loaded.ticket.merchant ?? ""); setDate(loaded.ticket.date ?? "");
       setTotal(loaded.ticket.totalCents === null ? "" : String(loaded.ticket.totalCents / 100));
-      setLines(loaded.ticket.lines); setDraftDirty(false); setConfirmKey(crypto.randomUUID()); setStep("review");
+      setLines(normalizeLines(loaded.ticket.lines)); setDraftDirty(false); setConfirmKey(crypto.randomUUID()); setStep("review");
     } catch (cause) { setError(cause instanceof Error ? cause.message : t("flow.errors.generic")); }
     finally { setBusy(false); }
   };
@@ -139,14 +144,16 @@ export default function ScannerClient() {
     if (!draftDirty) return ticket.draftVersion;
     const totalCents = centsFromInput(total);
     if (!merchant.trim() || !date || totalCents === null) throw new Error(t("flow.errors.required"));
-    if (!lines.every((line) => line.category || (line.allocations.length >= 2 && line.allocations.every((part) => part.category && part.amountCents > 0) && line.allocations.reduce((sum, part) => sum + part.amountCents, 0) === line.amountCents))) {
+    const includedLines = lines.filter((line) => line.includeInExpenses);
+    if (includedLines.length === 0) throw new Error(t("flow.errors.noIncludedLines"));
+    if (!includedLines.every((line) => line.category || (line.allocations.length >= 2 && line.allocations.every((part) => part.category && part.amountCents > 0) && line.allocations.reduce((sum, part) => sum + part.amountCents, 0) === line.amountCents))) {
       throw new Error(t("flow.errors.categories"));
     }
     const result = await api<{ draftVersion: number }>(`/api/scanner/tickets/${ticket.id}/draft`, {
       method: "PATCH", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ draftVersion: ticket.draftVersion, merchant: merchant.trim(), date, totalCents, lines: lines.map((line) => ({
         kind: line.kind, description: line.description || null, amountCents: line.amountCents,
-        categoryProposal: line.categoryProposal, category: line.category, allocations: line.allocations as { category: Category; amountCents: number }[],
+        categoryProposal: line.categoryProposal, category: line.category, allocations: line.allocations as { category: Category; amountCents: number }[], includeInExpenses: line.includeInExpenses,
       })) }),
     });
     setTicket({ ...ticket, draftVersion: result.draftVersion, merchant: merchant.trim(), date, totalCents });
@@ -181,8 +188,10 @@ export default function ScannerClient() {
   };
 
   const totalCents = centsFromInput(total);
+  const includedLines = lines.filter((line) => line.includeInExpenses);
+  const includedTotal = includedLines.reduce((sum, line) => sum + line.amountCents, 0);
   const lineTotal = lines.reduce((sum, line) => sum + line.amountCents, 0);
-  const canConfirm = Boolean(ticket && merchant.trim() && date && totalCents !== null && lines.length > 0 && lineTotal === totalCents && lines.every((line) => line.category || (line.allocations.length >= 2 && line.allocations.every((part) => part.category && part.amountCents > 0) && line.allocations.reduce((sum, part) => sum + part.amountCents, 0) === line.amountCents)));
+  const canConfirm = Boolean(ticket && merchant.trim() && date && totalCents !== null && includedLines.length > 0 && includedTotal > 0 && includedTotal <= totalCents && includedLines.every((line) => line.category || (line.allocations.length >= 2 && line.allocations.every((part) => part.category && part.amountCents > 0) && line.allocations.reduce((sum, part) => sum + part.amountCents, 0) === line.amountCents)));
   const categories: Category[] = ["survival", "optional", "culture", "extra"];
 
   if (step === "confirmed") return <section className="mt-8 rounded-xl border border-border bg-card p-5 sm:p-6" aria-live="polite"><h2 className="text-xl font-serif text-foreground">{t("flow.doneTitle")}</h2><p className="mt-2 text-muted-foreground">{confirmMessage}</p><button type="button" onClick={reset} className="mt-5 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2">{t("flow.newTicket")}</button></section>;
@@ -209,15 +218,18 @@ export default function ScannerClient() {
       </div>
       <label className="block text-sm text-foreground">{t("flow.total")}<input id="scanner-total" inputMode="decimal" value={total} onChange={(event) => { setDraftDirty(true); setTotal(event.target.value); }} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2" /></label>
       <fieldset className="space-y-3"><legend className="text-sm font-medium text-foreground">{t("flow.lines")}</legend>
-        {lines.map((line) => <div key={line.id} className="rounded-md border border-border p-3">
-          <label className="block text-sm text-foreground">{t("flow.description")}<input value={line.description} onChange={(event) => updateLine(line.id, { description: event.target.value })} maxLength={200} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2" /></label>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2"><label className="text-sm text-foreground">{t("flow.amount")}<input inputMode="decimal" value={(line.amountCents / 100).toFixed(2)} onChange={(event) => { const cents = centsFromInput(event.target.value); if (cents !== null) updateLine(line.id, { amountCents: cents }); }} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2" /></label>{line.allocations.length === 0 && <label className="text-sm text-foreground">{t("flow.category")}<select value={line.category ?? ""} onChange={(event) => updateLine(line.id, { category: (event.target.value || null) as Category | null })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2"><option value="">{t("flow.chooseCategory")}</option>{categories.map((category) => <option key={category} value={category}>{t(`categories.${category}`)}</option>)}</select></label>}</div>
-          {line.allocations.length === 0 ? <button type="button" className="mt-3 text-sm font-medium text-primary underline-offset-4 hover:underline" onClick={() => updateLine(line.id, { category: null, allocations: [{ category: null, amountCents: 0 }, { category: null, amountCents: 0 }] })}>{t("flow.split")}</button> : <div className="mt-3 rounded-md bg-muted/30 p-3"><p className="text-sm font-medium text-foreground">{t("flow.splitParts")}</p>{line.allocations.map((part, index) => <div key={`${line.id}-part-${index}`} className="mt-2 grid gap-2 sm:grid-cols-[1fr_8rem_auto]"><label className="sr-only" htmlFor={`${line.id}-part-category-${index}`}>{t("flow.category")}</label><select id={`${line.id}-part-category-${index}`} value={part.category ?? ""} onChange={(event) => { const next = [...line.allocations]; next[index] = { ...part, category: (event.target.value || null) as Category | null }; updateLine(line.id, { allocations: next, category: null }); }} className="rounded-md border border-border bg-background px-3 py-2 text-sm"><option value="">{t("flow.chooseCategory")}</option>{categories.map((category) => <option key={category} value={category}>{t(`categories.${category}`)}</option>)}</select><label className="sr-only" htmlFor={`${line.id}-part-amount-${index}`}>{t("flow.amount")}</label><input id={`${line.id}-part-amount-${index}`} inputMode="decimal" value={part.amountCents ? (part.amountCents / 100).toFixed(2) : ""} onChange={(event) => { const next = [...line.allocations]; next[index] = { ...part, amountCents: centsFromInput(event.target.value) ?? 0 }; updateLine(line.id, { allocations: next, category: null }); }} className="rounded-md border border-border bg-background px-3 py-2 text-sm" /><button type="button" aria-label={t("flow.removePart")} disabled={line.allocations.length <= 2} onClick={() => updateLine(line.id, { allocations: line.allocations.filter((_, partIndex) => partIndex !== index) })} className="rounded-md border border-border px-3 text-sm disabled:opacity-50">−</button></div>)}<div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground"><span>{t("flow.splitTotal", { current: (line.allocations.reduce((sum, part) => sum + part.amountCents, 0) / 100).toFixed(2), expected: (line.amountCents / 100).toFixed(2) })}</span><button type="button" onClick={() => updateLine(line.id, { allocations: [...line.allocations, { category: null, amountCents: 0 }] })} className="font-medium text-primary underline-offset-4 hover:underline">{t("flow.addPart")}</button><button type="button" onClick={() => updateLine(line.id, { allocations: [], category: null })} className="font-medium text-primary underline-offset-4 hover:underline">{t("flow.cancelSplit")}</button></div></div>}
-          {line.categoryProposal && <p className="mt-2 text-xs text-muted-foreground">{t("flow.suggested", { category: t(`categories.${line.categoryProposal}`) })}</p>}
+        {lines.map((line) => <div key={line.id} className={`rounded-md border border-border p-3 ${line.includeInExpenses ? "" : "opacity-70"}`}>
+          <label className="flex items-center gap-2 text-sm font-medium text-foreground"><input type="checkbox" checked={line.includeInExpenses} onChange={(event) => updateLine(line.id, { includeInExpenses: event.target.checked, category: event.target.checked ? line.category : null, allocations: event.target.checked ? line.allocations : [] })} />{line.includeInExpenses ? t("flow.includeLine") : t("flow.excludeLine")}</label>
+          <label className="mt-3 block text-sm text-foreground">{t("flow.description")}<input value={line.description} disabled={!line.includeInExpenses} onChange={(event) => updateLine(line.id, { description: event.target.value })} maxLength={200} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 disabled:cursor-not-allowed disabled:opacity-60" /></label>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2"><label className="text-sm text-foreground">{t("flow.amount")}<input inputMode="decimal" disabled={!line.includeInExpenses} value={(line.amountCents / 100).toFixed(2)} onChange={(event) => { const cents = centsFromInput(event.target.value); if (cents !== null) updateLine(line.id, { amountCents: cents }); }} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 disabled:cursor-not-allowed disabled:opacity-60" /></label>{line.allocations.length === 0 && line.includeInExpenses && <label className="text-sm text-foreground">{t("flow.category")}<select value={line.category ?? ""} onChange={(event) => updateLine(line.id, { category: (event.target.value || null) as Category | null })} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2"><option value="">{t("flow.chooseCategory")}</option>{categories.map((category) => <option key={category} value={category}>{t(`categories.${category}`)}</option>)}</select></label>}</div>
+          {line.includeInExpenses && (line.allocations.length === 0 ? <button type="button" className="mt-3 text-sm font-medium text-primary underline-offset-4 hover:underline" onClick={() => updateLine(line.id, { category: null, allocations: [{ category: null, amountCents: 0 }, { category: null, amountCents: 0 }] })}>{t("flow.split")}</button> : <div className="mt-3 rounded-md bg-muted/30 p-3"><p className="text-sm font-medium text-foreground">{t("flow.splitParts")}</p>{line.allocations.map((part, index) => <div key={`${line.id}-part-${index}`} className="mt-2 grid gap-2 sm:grid-cols-[1fr_8rem_auto]"><label className="sr-only" htmlFor={`${line.id}-part-category-${index}`}>{t("flow.category")}</label><select id={`${line.id}-part-category-${index}`} value={part.category ?? ""} onChange={(event) => { const next = [...line.allocations]; next[index] = { ...part, category: (event.target.value || null) as Category | null }; updateLine(line.id, { allocations: next, category: null }); }} className="rounded-md border border-border bg-background px-3 py-2 text-sm"><option value="">{t("flow.chooseCategory")}</option>{categories.map((category) => <option key={category} value={category}>{t(`categories.${category}`)}</option>)}</select><label className="sr-only" htmlFor={`${line.id}-part-amount-${index}`}>{t("flow.amount")}</label><input id={`${line.id}-part-amount-${index}`} inputMode="decimal" value={part.amountCents ? (part.amountCents / 100).toFixed(2) : ""} onChange={(event) => { const next = [...line.allocations]; next[index] = { ...part, amountCents: centsFromInput(event.target.value) ?? 0 }; updateLine(line.id, { allocations: next, category: null }); }} className="rounded-md border border-border bg-background px-3 py-2 text-sm" /><button type="button" aria-label={t("flow.removePart")} disabled={line.allocations.length <= 2} onClick={() => updateLine(line.id, { allocations: line.allocations.filter((_, partIndex) => partIndex !== index) })} className="rounded-md border border-border px-3 text-sm disabled:opacity-50">−</button></div>)}<div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground"><span>{t("flow.splitTotal", { current: (line.allocations.reduce((sum, part) => sum + part.amountCents, 0) / 100).toFixed(2), expected: (line.amountCents / 100).toFixed(2) })}</span><button type="button" onClick={() => updateLine(line.id, { allocations: [...line.allocations, { category: null, amountCents: 0 }] })} className="font-medium text-primary underline-offset-4 hover:underline">{t("flow.addPart")}</button><button type="button" onClick={() => updateLine(line.id, { allocations: [], category: null })} className="font-medium text-primary underline-offset-4 hover:underline">{t("flow.cancelSplit")}</button></div></div>)}
+          {line.includeInExpenses && line.categoryProposal && <p className="mt-2 text-xs text-muted-foreground">{t("flow.suggested", { category: t(`categories.${line.categoryProposal}`) })}</p>}
+          {!line.includeInExpenses && <p className="mt-2 text-xs text-muted-foreground">{t("flow.excludedHelp")}</p>}
         </div>)}
       </fieldset>
-      {totalCents !== null && lineTotal !== totalCents && <p className="rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive" role="alert">{t("flow.totalMismatch", { current: (lineTotal / 100).toFixed(2), expected: (totalCents / 100).toFixed(2) })}</p>}
+      {totalCents !== null && includedLines.length === lines.length && lineTotal !== totalCents && <p className="rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive" role="alert">{t("flow.totalMismatch", { current: (lineTotal / 100).toFixed(2), expected: (totalCents / 100).toFixed(2) })}</p>}
       <p className="text-sm text-muted-foreground">{t("flow.reviewNotice")}</p>
+      <p className="text-sm text-muted-foreground">{t("flow.selectedTotal", { amount: (includedTotal / 100).toFixed(2) })}</p>
       <div className="flex flex-wrap gap-3"><button type="submit" disabled={!canConfirm || busy} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2">{busy ? t("flow.saving") : t("flow.confirm")}</button><button type="button" onClick={() => void discard()} disabled={busy} className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground disabled:opacity-50">{t("flow.discard")}</button></div>
     </form>}
   </section>;
