@@ -167,15 +167,22 @@ en servidor y no debe sustituirse por un bypass de cliente.
 
 ### Estado actual y límites
 
-- **Entorno de trabajo:** Preview de Vercel para la rama del escáner.
-- **Base de datos de prueba:** proyecto Supabase de staging.
+- **Código publicado:** integrado en `main` y servido mediante el flujo
+  automático de Vercel. El estado real del deployment debe verificarse en
+  Vercel; un commit local no demuestra que un deployment esté listo.
+- **Entorno de prueba recomendado:** Preview de Vercel con una cuenta Plus de
+  prueba y un ciclo abierto. La producción no debe usarse para pruebas con
+  tickets reales.
 - **OCR piloto:** Azure Document Intelligence, modelo `prebuilt-receipt`.
 - **Plan Azure:** Free F0; no se ha elegido un plan de pago.
 - **País y moneda iniciales:** España y euros.
 - **Cuota:** hasta 5 tickets por ciclo, no por fecha del calendario. El ciclo se
   reinicia cuando el usuario cierra su ciclo en la aplicación.
 - **Tamaño máximo de imagen:** 5 MiB.
-- **Tipos admitidos:** JPEG, PNG, HEIC y HEIF.
+- **Tipos permitidos por Storage:** JPEG, PNG, HEIC y HEIF. La interfaz actual
+  de captura/selección limita el envío a JPEG y PNG; si se amplía la interfaz
+  a HEIC/HEIF, hay que actualizar también selector, validación, pruebas y esta
+  documentación.
 - **Imágenes:** se guardan temporalmente en un bucket privado y se eliminan
   después de la confirmación o del abandono. Nunca se sirven como archivos
   públicos.
@@ -220,6 +227,7 @@ esperar que pueda usar el escáner: ese bloqueo es intencionado.
 | Seguridad HTTP y esquemas Zod | `src/lib/scanner/http.ts` |
 | Procesamiento y limpieza | `src/lib/scanner/cleanup.ts` |
 | Migración diferida de staging | `supabase/deferred/ticket-scanner/20261027120000_ticket_scanner_persistence.sql` |
+| Exclusión de líneas y reparto de gastos | `supabase/deferred/ticket-scanner/20261028170000_ticket_line_inclusion.sql` |
 | Rollback de la migración | `supabase/rollback/scanner/20261027120000_ticket_scanner_persistence.rollback.sql` |
 | Contratos y arquitectura | `docs/ticket-scanner/` |
 | Tests del dominio y APIs | `src/__tests__/` y `src/lib/scanner/` |
@@ -241,7 +249,7 @@ se documentan los nombres y su finalidad:
 | `SCANNER_OCR_ENABLED` | Activa el adaptador OCR | `.env.local` / Vercel Preview |
 | `SCANNER_OCR_REAL_DATA_APPROVED` | Permite el uso explícito del OCR piloto | `.env.local` / Vercel Preview |
 | `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT` | Endpoint del recurso Azure OCR | `.env.local` / Vercel Preview |
-| `AZURE_DOCUMENT_INTELLIGENCE_KEY` | Clave secreta del recurso Azure OCR | Secret de Vercel Preview |
+| `AZURE_DOCUMENT_INTELLIGENCE_KEY` | Clave secreta del recurso Azure OCR | Secret del entorno que ejecuta OCR; nunca cliente ni Git |
 | `PLUS_SUBSCRIPTIONS_ENABLED` | Activa el sistema de suscripciones Plus | Solo cuando el flujo de billing de staging esté preparado |
 | `STRIPE_SECRET_KEY` | Clave Stripe TEST para staging | Secret; nunca usar una clave LIVE en Preview |
 | `STRIPE_PLUS_PRICE_MONTHLY_ID` | Precio mensual Plus de TEST | Vercel Preview |
@@ -266,8 +274,11 @@ npm run dev
 
 La clave anterior es solo un ejemplo de carga local: el proceso de la
 aplicación debe recibir una cadena y no debe registrarse el valor. En Vercel,
-`AZURE_DOCUMENT_INTELLIGENCE_KEY` se crea como **Secret** y se marca solo para
-**Preview** de la rama del escáner. No debe marcarse Production.
+`AZURE_DOCUMENT_INTELLIGENCE_KEY` se crea como **Secret** en el entorno que
+ejecuta el OCR. Para que funcione en producción debe existir también en
+**Production**; los deployments anteriores no reciben variables añadidas
+posteriormente y necesitan un nuevo deployment. El valor nunca debe aparecer
+en README, logs, capturas, comandos compartidos o código cliente.
 
 ### Supabase: esquema y Storage
 
@@ -351,23 +362,46 @@ Tests especialmente relacionados con esta funcionalidad:
 - `src/__tests__/security/`
 
 La validación debe separar siempre tres niveles: tests automatizados, Preview
-con sesión y datos reales de prueba, y Producción. Un build correcto no
-demuestra que Azure, Supabase Storage, OAuth, Stripe o la sesión de usuario
-estén configurados en el entorno remoto.
+con sesión y datos de prueba, y Producción. Un build correcto no demuestra que
+Azure, Supabase Storage, OAuth, Stripe o la sesión de usuario estén
+configurados en el entorno remoto.
 
-### Preview de Vercel
+### Checklist de diagnóstico en producción
 
-El preview actual se genera desde la rama `feature/ticket-scanner-fase-8`.
-Después de modificar variables de entorno hay que crear un nuevo deployment de
-Preview; los deployments anteriores no reciben automáticamente las variables
-nuevas. La URL concreta cambia entre deployments y debe consultarse en Vercel.
+Comprobar en este orden, sin imprimir secretos:
+
+1. El deployment de Vercel está listo y contiene el commit esperado.
+2. En Vercel están definidas, para el entorno correcto, las variables públicas
+   de Supabase, la clave de servicio server-side, los dos interruptores OCR y
+   el endpoint/clave de Azure. La clave no se comprueba pegándola en el
+   navegador.
+3. En Supabase existe `kakebo-ticket-temp`, es privado, tiene límite de 5 MiB
+   y conserva sus tres políticas privadas.
+4. La cuenta de prueba tiene acceso Plus, sesión válida y un ciclo abierto.
+5. El flujo funciona de principio a fin: seleccionar JPEG/PNG, subir,
+   procesar, revisar, excluir una línea, asignar categorías y confirmar.
+6. Tras confirmar, se crean solo los gastos incluidos y la imagen temporal no
+   queda disponible públicamente.
+7. Si falla la limpieza de abandonados, revisar `CRON_SECRET` y la ejecución
+   del cron; la ruta de limpieza no se invoca desde el navegador.
+
+### Preview y producción en Vercel
+
+El Preview sirve para validar una rama aislada; Producción sirve el deployment
+asociado a `main`. La URL concreta de cada Preview cambia entre deployments y
+debe consultarse en Vercel. Después de modificar variables de entorno hay que
+crear un nuevo deployment del entorno correspondiente: los deployments
+anteriores no reciben automáticamente las variables nuevas.
 
 Reglas operativas:
 
-- no añadir las variables OCR a Production;
-- no probar el escáner contra el dominio público;
+- no copiar secretos entre entornos ni ponerlos en el repositorio;
+- no probar con datos reales si el entorno, la retención y el proveedor no
+  están aprobados para ese uso;
 - comprobar que el deployment muestra `Environment: Preview`, la rama correcta
   y el commit esperado;
+- para producción, comprobar de forma equivalente que el deployment está
+  asociado a `main` y figura como listo;
 - si `/app/scanner` redirige a `/login`, iniciar sesión en ese mismo dominio de
   Preview; las cookies de otro deployment no garantizan una sesión compartida;
 - Google OAuth requiere que el proveedor Google esté habilitado en el proyecto
