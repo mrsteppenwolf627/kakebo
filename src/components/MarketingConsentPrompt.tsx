@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
@@ -10,8 +10,12 @@ export default function MarketingConsentPrompt() {
   const [consent, setConsent] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const decisionMade = useRef(false);
+  const requestStarted = useRef(false);
 
   useEffect(() => {
+    if (requestStarted.current) return;
+    requestStarted.current = true;
     let cancelled = false;
     fetch("/api/communication-preferences")
       .then(async (response) => {
@@ -19,8 +23,10 @@ export default function MarketingConsentPrompt() {
         return response.json();
       })
       .then(({ preferences }) => {
-        if (cancelled) return;
-        if (!preferences?.privacy_policy_version || preferences.privacy_policy_version !== "2026-11-02") {
+        if (cancelled || decisionMade.current) return;
+        const acknowledged = preferences?.privacy_policy_acknowledged_at &&
+          preferences?.privacy_policy_version === "2026-11-02";
+        if (!acknowledged) {
           setOpen(true);
         }
       })
@@ -46,6 +52,7 @@ export default function MarketingConsentPrompt() {
         }),
       });
       if (!response.ok) throw new Error("save failed");
+      decisionMade.current = true;
       setOpen(false);
     } catch {
       setError(t("error"));
