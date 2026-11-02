@@ -327,6 +327,75 @@ export async function searchExpensesByText(
   queryTokens: number;
   queryCostUsd: number;
 }> {
+  // OpenAI embeddings are no longer available in production. Use a local,
+  // zero-cost lexical search over the user's expenses instead. This keeps the
+  // search feature operational without sending financial data to another API.
+  if (typeof (supabase as SupabaseClient & { from?: unknown }).from === "function") {
+    const stopWords = new Set([
+      "a", "al", "de", "del", "el", "en", "la", "las", "los", "por", "para",
+      "qué", "que", "cuánto", "cuanto", "gasto", "gastos", "compra", "compras",
+    ]);
+    const tokens = query
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .split(/[^a-z0-9áéíóúüñ]+/i)
+      .filter((token) => token.length >= 2 && !stopWords.has(token));
+
+    let dbQuery = supabase
+      .from("expenses")
+      .select("id,date,amount,note,category")
+      .eq("user_id", userId)
+      .order("date", { ascending: false })
+      .limit(Math.max((options.limit || 5) * 20, 100));
+
+    if (options.filters?.categories?.length) {
+      dbQuery = dbQuery.in("category", options.filters.categories);
+    }
+    if (options.filters?.dateStart) dbQuery = dbQuery.gte("date", options.filters.dateStart);
+    if (options.filters?.dateEnd) dbQuery = dbQuery.lte("date", options.filters.dateEnd);
+    if (options.filters?.amountMin !== undefined) dbQuery = dbQuery.gte("amount", options.filters.amountMin);
+    if (options.filters?.amountMax !== undefined) dbQuery = dbQuery.lte("amount", options.filters.amountMax);
+
+    const { data, error } = await dbQuery;
+    if (error) throw error;
+
+    const categoryAliases: Record<string, string[]> = {
+      comida: ["supervivencia", "survival"],
+      alimentacion: ["supervivencia", "survival"],
+      supermercado: ["supervivencia", "survival"],
+      ocio: ["opcional", "optional", "cultura", "culture"],
+      cultura: ["cultura", "culture"],
+    };
+    const expandedTokens = new Set(tokens);
+    for (const token of tokens) {
+      for (const alias of categoryAliases[token] || []) expandedTokens.add(alias);
+    }
+
+    const results = (data || [])
+      .map((expense) => {
+        const haystack = `${expense.note || ""} ${expense.category || ""} ${expense.date || ""}`
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+        const matches = [...expandedTokens].filter((token) => haystack.includes(token));
+        const similarity = expandedTokens.size === 0 ? 0 : matches.length / expandedTokens.size;
+        return {
+          expense_id: expense.id,
+          note: expense.note || "",
+          amount: expense.amount,
+          category: expense.category,
+          date: expense.date,
+          similarity,
+        } satisfies SimilarExpense;
+      })
+      .filter((expense) => expense.similarity > 0)
+      .sort((a, b) => b.similarity - a.similarity || b.date.localeCompare(a.date))
+      .slice(0, options.limit || 5);
+
+    return { results, queryTokens: tokens.length, queryCostUsd: 0 };
+  }
+
   // Generate embedding for query
   const { embedding, tokens, costUsd } = await generateEmbedding(query);
 

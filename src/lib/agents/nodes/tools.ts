@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { SupabaseClient } from "@supabase/supabase-js";
-import { openai, DEFAULT_MODEL } from "@/lib/ai/client";
+import { DEFAULT_MODEL } from "@/lib/ai/client";
+import { createProviderCompletion } from "@/lib/ai/provider";
 import { apiLogger } from "@/lib/logger";
 import { AgentState, ToolResult } from "../state";
 import { getParameterExtractionPrompt } from "../prompts";
@@ -35,7 +36,7 @@ async function extractToolParams(
   try {
     const prompt = getParameterExtractionPrompt(toolName, userMessage);
 
-    const response = await openai.chat.completions.create({
+    const response = await createProviderCompletion({
       model: DEFAULT_MODEL,
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" },

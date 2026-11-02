@@ -1,4 +1,5 @@
-import { openai, DEFAULT_MODEL } from "@/lib/ai/client";
+import { DEFAULT_MODEL } from "@/lib/ai/client";
+import { createProviderCompletion } from "@/lib/ai/provider";
 import { apiLogger } from "@/lib/logger";
 import { AgentState, IntentType } from "../state";
 import { getIntentClassificationPrompt } from "../prompts";
@@ -25,7 +26,7 @@ async function classifyIntent(
       ? `Previous context:\n${previousMessages}\n\nNew message: "${userMessage}"`
       : `"${userMessage}"`;
 
-    const response = await openai.chat.completions.create({
+    const response = await createProviderCompletion({
       model: DEFAULT_MODEL,
       messages: [
         { role: "system", content: systemPrompt },

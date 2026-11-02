@@ -1,5 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import { openai, DEFAULT_MODEL, calculateCost, ModelId } from "./client";
+import { DEFAULT_MODEL, calculateCost, ModelId } from "./client";
+import { createProviderCompletion } from "./provider";
 import { ASSISTANT_TOOLS, ToolName } from "./tools";
 import { executeTool, ToolResult } from "./tool-executor";
 import { apiLogger } from "@/lib/logger";
@@ -97,7 +98,7 @@ export async function processMessage(
 
   try {
     // First API call - may request tool calls
-    let completion = await openai.chat.completions.create({
+    let completion = await createProviderCompletion({
       model,
       messages,
       tools: ASSISTANT_TOOLS,
@@ -148,7 +149,7 @@ export async function processMessage(
       messages.push(...toolMessages);
 
       // Get next response from AI
-      completion = await openai.chat.completions.create({
+      completion = await createProviderCompletion({
         model,
         messages,
         tools: ASSISTANT_TOOLS,

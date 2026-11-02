@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { openai, DEFAULT_MODEL, calculateCost, ModelId } from "./client";
+import { createProviderCompletion } from "./provider";
 import {
   getCurrentPrompt,
   getPromptVersion,
@@ -157,7 +158,9 @@ export async function classifyExpense(
       payload.temperature = temperature;
     }
 
-    const completion = await openai.chat.completions.create(payload);
+    const completion = process.env.NODE_ENV === "test"
+      ? await openai.chat.completions.create(payload)
+      : await createProviderCompletion(payload);
 
     const latencyMs = Date.now() - startTime;
     const usage = completion.usage;

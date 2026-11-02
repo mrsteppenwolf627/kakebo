@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { openai, DEFAULT_MODEL } from "@/lib/ai/client";
+import { DEFAULT_MODEL } from "@/lib/ai/client";
+import { createProviderCompletion } from "@/lib/ai/provider";
 import { apiLogger } from "@/lib/logger";
 import { AgentState } from "../state";
 import {
@@ -33,7 +34,7 @@ async function generateNaturalResponse(
       // No tools were called - general question
       const prompt = getGeneralResponsePrompt(userMessage);
 
-      const response = await openai.chat.completions.create({
+      const response = await createProviderCompletion({
         model: DEFAULT_MODEL,
         messages: [{ role: "user", content: prompt }],
         temperature: 0.7, // Slightly higher for more natural conversation
@@ -48,7 +49,7 @@ async function generateNaturalResponse(
     // Synthesize from tool results
     const prompt = getResponseSynthesisPrompt(userMessage, toolResults);
 
-    const response = await openai.chat.completions.create({
+    const response = await createProviderCompletion({
       model: DEFAULT_MODEL,
       messages: [
         {

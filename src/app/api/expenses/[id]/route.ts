@@ -2,12 +2,6 @@ import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { updateExpenseSchema, uuidSchema } from "@/lib/schemas";
-import {
-  generateEmbedding,
-  createExpenseText,
-  storeExpenseEmbedding,
-  deleteExpenseEmbedding,
-} from "@/lib/ai";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -103,24 +97,6 @@ export const PATCH = withLogging(async (request: NextRequest, { params }: RouteP
       .single();
 
     if (error) throw error;
-
-    // Regenerate embedding if note, amount, or category changed
-    if (data && (input.note || input.amount || input.category)) {
-      const textContent = createExpenseText({
-        note: data.note,
-        amount: data.amount,
-        category: data.category,
-        date: data.date,
-      });
-
-      generateEmbedding(textContent)
-        .then(({ embedding }) => {
-          storeExpenseEmbedding(supabase, data.id, user.id, textContent, embedding);
-        })
-        .catch(() => {
-          // Silent fail
-        });
-    }
 
     return responses.ok(data);
   } catch (error) {

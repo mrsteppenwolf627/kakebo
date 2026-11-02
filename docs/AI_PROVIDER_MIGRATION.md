@@ -31,9 +31,10 @@ el razonamiento adicional compensa el coste.
   escritura mantienen el mismo flujo de seguridad.
 - Las pruebas y el fallback local siguen pudiendo usar OpenAI si no hay clave
   Anthropic disponible.
-- Las embeddings siguen usando OpenAI por ahora. Anthropic no ofrece un
-  servicio propio de embeddings, por lo que migrarlas requiere una decisión
-  separada sobre proveedor y reindexación.
+- La búsqueda semántica vectorial externa se ha sustituido por búsqueda local
+  sin coste basada en texto, categoría, fecha e importe. Así no depende de
+  OpenAI ni de otra clave de pago; la búsqueda pierde matices semánticos, pero
+  sigue disponible y no falla por credenciales.
 - Las rutas antiguas que llaman directamente a OpenAI no se activan desde el
   flujo web principal y quedan fuera de esta primera fase.
 

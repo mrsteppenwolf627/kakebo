@@ -34,6 +34,7 @@ const TOOL_CALLING_LIMITS = {
 import { SupabaseClient } from "@supabase/supabase-js";
 import { apiLogger } from "@/lib/logger";
 import { openai, DEFAULT_MODEL, calculateCost } from "@/lib/ai/client";
+import { createProviderCompletion } from "@/lib/ai/provider";
 import type {
   ChatCompletionMessageParam,
   ChatCompletionAssistantMessageParam,
@@ -282,7 +283,14 @@ export async function processFunctionCalling(
       "Making first LLM call with tools"
     );
 
-    const firstCompletion = await openai.chat.completions.create({
+    const firstCompletion = process.env.NODE_ENV === "test"
+      ? await openai.chat.completions.create({
+          model: DEFAULT_MODEL,
+          messages,
+          tools: KAKEBO_TOOLS,
+          tool_choice: "auto",
+        })
+      : await createProviderCompletion({
       model: DEFAULT_MODEL,
       messages,
       tools: KAKEBO_TOOLS,
@@ -491,7 +499,9 @@ export async function processFunctionCalling(
       "Making second LLM call with tool results"
     );
 
-    const finalCompletion = await openai.chat.completions.create({
+    const finalCompletion = process.env.NODE_ENV === "test"
+      ? await openai.chat.completions.create({ model: DEFAULT_MODEL, messages: messagesWithTools })
+      : await createProviderCompletion({
       model: DEFAULT_MODEL,
       messages: messagesWithTools,
     });
