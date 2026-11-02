@@ -9,7 +9,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js" alt="Next.js" />
   <img src="https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?style=flat-square&logo=openai" alt="OpenAI" />
+  <img src="https://img.shields.io/badge/Anthropic-Claude-D97757?style=flat-square" alt="Anthropic Claude" />
   <img src="https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=flat-square&logo=supabase" alt="Supabase" />
   <img src="https://img.shields.io/badge/License-Proprietary-red?style=flat-square" alt="License" />
 </p>
@@ -28,8 +28,8 @@
 
 **Kakebo** es una app **full-stack** de budgeting inspirada en el método Kakeibo, construida como **producto real** (no demo) y diseñada para demostrar capacidades de **AI + automatización + data + UX**.
 
-- **Demo:** <<www.metodokakebo.com>>
-- **Stack:** Next.js + TypeScript + Tailwind, Supabase (Postgres/RLS), OpenAI (tool/function calling + streaming), Vercel
+- **Demo:** [www.metodokakebo.com](https://www.metodokakebo.com)
+- **Stack:** Next.js + TypeScript + Tailwind, Supabase (Postgres/RLS), Anthropic Claude (tool/function calling + streaming), Vercel
 - **Rol:** End-to-end (producto, arquitectura, DB, frontend, backend, IA, despliegue)
 
 ## Problema
@@ -124,7 +124,7 @@ A diferencia de un Excel o una app bancaria, Kakebo:
 🤖 "✅ Actualizado: importe modificado"
 ```
 
-**Powered by GPT-4o-mini con Function Calling + herramientas especializadas**
+**Powered by Anthropic Claude con herramientas especializadas y streaming**
 
 </details>
 
@@ -196,8 +196,25 @@ NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_anon_key
 SUPABASE_SERVICE_ROLE_KEY=tu_service_role_key
 
-# OpenAI (AI Copilot)
-OPENAI_API_KEY=sk-proj-...
+# Anthropic (AI Copilot)
+AI_PROVIDER=anthropic
+ANTHROPIC_API_KEY=...
+ANTHROPIC_MODEL=claude-3-5-haiku-latest
+ANTHROPIC_MAX_TOKENS=2048
+
+# Marketing email (Resend)
+MARKETING_MAIL_PROVIDER=resend
+RESEND_API_KEY=...
+MARKETING_MAIL_FROM_EMAIL=hola@metodokakebo.com
+MARKETING_MAIL_FROM_NAME=Kakebo
+MARKETING_MAIL_REPLY_TO=aitor@aitor.xyz
+MARKETING_UNSUBSCRIBE_SECRET=...
+MARKETING_MANUAL_SEND_ENABLED=false
+MARKETING_AUTOMATION_ENABLED=false
+MARKETING_AUTOMATION_BATCH_SIZE=100
+MARKETING_NEWS_ENABLED=false
+MARKETING_CYCLE_START_DATE=2026-11-02
+CRON_SECRET=...
 
 # Admin & Config
 NEXT_PUBLIC_ADMIN_EMAILS=tu-email@ejemplo.com
@@ -230,7 +247,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 - 🟢 **Next.js API Routes**
 - 🐘 **PostgreSQL** (Supabase)
 - 🔐 **Supabase Auth**
-- 🧠 **OpenAI API** (GPT-4o-mini)
+- 🧠 **Anthropic API** (Claude)
 - 🔍 **pgvector** (embeddings)
 
 </td>
@@ -240,6 +257,21 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ---
 
 ## 📖 Documentación
+
+### ✉️ Marketingmail
+
+El sistema de comunicaciones funciona con Resend y solo envía mensajes a usuarios que hayan dado consentimiento explícito en `communication_preferences`.
+
+- Plantilla visual: [`src/lib/marketing-mail/templates.ts`](src/lib/marketing-mail/templates.ts)
+- Campañas y audiencia: [`src/lib/marketing-mail/campaigns.ts`](src/lib/marketing-mail/campaigns.ts)
+- Cron semanal: [`src/app/api/cron/marketing/route.ts`](src/app/api/cron/marketing/route.ts)
+- Configuración del cron: [`vercel.json`](vercel.json)
+- Plan y calendario: [`docs/marketing-email-plan.md`](docs/marketing-email-plan.md)
+- Auditoría de entregas: tabla Supabase `marketing_email_events`
+
+El calendario es de ocho semanas, con un máximo de un email semanal: recordatorio, consejo, recordatorio, resumen mensual, consejo, recordatorio, novedades si existe una novedad real y resumen mensual. El ciclo se repite automáticamente.
+
+Para activar o pausar el cron en Vercel se cambia `MARKETING_AUTOMATION_ENABLED`. El endpoint exige además `CRON_SECRET`; una campaña no se duplica para el mismo usuario dentro del mismo ciclo y todos los emails incluyen baja individual.
 
 ### 📚 Guías Principales
 
