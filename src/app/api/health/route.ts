@@ -12,10 +12,10 @@ export async function GET() {
   let dbStatus = "ok";
   try {
     // This endpoint is intentionally unauthenticated. Use the server-only
-    // admin client so RLS for user-owned settings does not report a healthy
-    // production database as unavailable to anonymous monitoring checks.
+    // admin client and a table present in the production schema so RLS and
+    // user-owned tables do not produce a false negative.
     const supabase = createAdminClient();
-    const { error } = await supabase.from("user_settings").select("id").limit(1);
+    const { error } = await supabase.from("expenses").select("id").limit(1);
     if (error) {
       dbStatus = "error";
     }
