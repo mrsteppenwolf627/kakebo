@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { Shield, Check, X, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import MarketingAudienceCard from "@/components/MarketingAudienceCard";
 
 interface VIPUser {
     id: string;
@@ -149,6 +150,8 @@ export default function AdminClient() {
                         {t("subtitle")}
                     </p>
                 </header>
+
+                <MarketingAudienceCard />
 
                 {/* Grant VIP Access */}
                 <div className="bg-card border border-border rounded-xl shadow-sm p-6 space-y-4">

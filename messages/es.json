@@ -1353,6 +1353,18 @@
             "revokeConfirm": "¿Revocar acceso VIP de {email}?",
             "revokeSuccess": "Acceso VIP revocado de {email}",
             "revokeError": "Error al revocar acceso VIP"
+        },
+        "marketing": {
+            "title": "Marketingmail",
+            "description": "Audiencia con consentimiento explícito. Los envíos siguen desactivados hasta configurar y validar el proveedor.",
+            "refresh": "Actualizar",
+            "error": "No se pudo cargar la audiencia.",
+            "preferences": "Preferencias",
+            "optedIn": "Aceptan emails",
+            "optedOut": "Bajas",
+            "events": "Eventos",
+            "recipients": "Destinatarios autorizados",
+            "empty": "Todavía no hay usuarios autorizados."
         }
     },
     "Layout": {

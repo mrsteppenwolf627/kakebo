@@ -1306,6 +1306,18 @@
             "revokeConfirm": "Revoke VIP access from {email}?",
             "revokeSuccess": "VIP access revoked from {email}",
             "revokeError": "Error revoking VIP access"
+        },
+        "marketing": {
+            "title": "Marketingmail",
+            "description": "Audience with explicit consent. Sending remains disabled until the provider is configured and validated.",
+            "refresh": "Refresh",
+            "error": "The audience could not be loaded.",
+            "preferences": "Preferences",
+            "optedIn": "Email opt-ins",
+            "optedOut": "Unsubscribes",
+            "events": "Events",
+            "recipients": "Authorized recipients",
+            "empty": "There are no authorized users yet."
         }
     },
     "Layout": {
