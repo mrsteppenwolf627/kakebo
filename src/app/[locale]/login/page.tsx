@@ -29,6 +29,7 @@ function LoginForm() {
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [needsConfirm, setNeedsConfirm] = useState(false);
+  const [marketingEmailConsent, setMarketingEmailConsent] = useState(false);
 
   const loginViewTracked = useRef(false);
   useEffect(() => {
@@ -46,7 +47,7 @@ function LoginForm() {
 
     try {
       if (mode === "signup") {
-        markGoogleSignupIntent(source);
+        markGoogleSignupIntent(source, marketingEmailConsent);
       } else {
         clearGoogleSignupIntent();
       }
@@ -76,7 +77,7 @@ function LoginForm() {
         type: "signup",
         email,
         options: {
-          emailRedirectTo: buildEmailCallbackUrl(window.location.origin, source),
+          emailRedirectTo: buildEmailCallbackUrl(window.location.origin, source, marketingEmailConsent),
         },
       });
 
@@ -101,14 +102,14 @@ function LoginForm() {
           email,
           password,
           options: {
-            emailRedirectTo: buildEmailCallbackUrl(window.location.origin, source),
+            emailRedirectTo: buildEmailCallbackUrl(window.location.origin, source, marketingEmailConsent),
           },
         });
 
         if (error) throw error;
 
         analytics.track("sign_up", { method: "email", source });
-        markEmailSignupPending(email, source);
+        markEmailSignupPending(email, source, marketingEmailConsent);
 
         setNeedsConfirm(true);
         setMsg(
@@ -309,6 +310,23 @@ function LoginForm() {
                 placeholder="tu@email.com"
               />
             </div>
+
+            {mode === "signup" && (
+              <label className="flex items-start gap-3 text-xs text-stone-600 font-light">
+                <input
+                  type="checkbox"
+                  checked={marketingEmailConsent}
+                  onChange={(event) => setMarketingEmailConsent(event.target.checked)}
+                  className="mt-0.5 h-4 w-4 accent-stone-900"
+                />
+                <span>
+                  {t('form.marketingConsent')} {" "}
+                  <Link href="/privacy" className="underline hover:text-stone-900">
+                    {t('form.marketingConsentPrivacy')}
+                  </Link>
+                </span>
+              </label>
+            )}
 
             <div className="space-y-2">
               <label className="text-xs text-stone-600 font-light">{t('form.passwordLabel')}</label>

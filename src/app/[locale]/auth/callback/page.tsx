@@ -10,16 +10,17 @@ import {
   consumeEmailSignupPending,
   consumeGoogleSignup,
   getSourceFromSearch,
+  getMarketingConsentFromSearch,
   isEmailSignupConfirmed,
   isLikelyNewUser,
 } from "@/lib/authIntent";
 
 interface SignupContext {
-  google: { hadIntent: boolean; source: string };
+  google: { hadIntent: boolean; source: string; marketingEmailConsent?: boolean };
   // Present when this callback may be an email signup confirmation: either the
   // confirmation link carried a source in the URL or the same browser left a
   // pending mark. email is only known from the pending mark.
-  emailSignup: { email: string | null; source: string } | null;
+  emailSignup: { email: string | null; source: string; marketingEmailConsent?: boolean } | null;
 }
 
 /**
@@ -64,6 +65,21 @@ export default function AuthCallbackPage() {
       analytics.track("sign_up_confirmed", { method: "email", source: ctx.emailSignup.source });
     }
 
+    async function saveMarketingConsent(user: User | null | undefined, ctx: SignupContext) {
+      if (!user || (!ctx.google.hadIntent && !ctx.emailSignup)) return;
+      const consent = ctx.google.hadIntent
+        ? ctx.google.marketingEmailConsent ?? false
+        : ctx.emailSignup?.marketingEmailConsent ?? false;
+      await fetch("/api/communication-preferences", {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          marketingEmailConsent: consent,
+          consentSource: "signup",
+        }),
+      });
+    }
+
     async function handleCallback() {
       // Consumed up front so a reload or second effect run can never re-fire them.
       const google = consumeGoogleSignup();
@@ -71,11 +87,16 @@ export default function AuthCallbackPage() {
       // The URL source (set in emailRedirectTo) wins because it survives confirming in another
       // browser; sessionStorage is the fallback for links without it.
       const urlSource = getSourceFromSearch(window.location.search);
+      const urlMarketingConsent = getMarketingConsentFromSearch(window.location.search);
       const signupContext: SignupContext = {
         google,
         emailSignup:
           urlSource || emailPending
-            ? { email: emailPending?.email ?? null, source: urlSource ?? emailPending?.source ?? "direct" }
+            ? {
+                email: emailPending?.email ?? null,
+                source: urlSource ?? emailPending?.source ?? "direct",
+                marketingEmailConsent: urlMarketingConsent || emailPending?.marketingEmailConsent || false,
+              }
             : null,
       };
 
@@ -110,6 +131,7 @@ export default function AuthCallbackPage() {
           if (session) {
             console.log("[Auth Callback Client] Session found, redirecting to /app");
             trackSignUpIfNeeded(session.user, signupContext);
+            await saveMarketingConsent(session.user, signupContext);
             setStatus("¡Sesión iniciada! Redirigiendo...");
             router.replace("/app");
             return;
@@ -131,6 +153,7 @@ export default function AuthCallbackPage() {
           if (newSession) {
             console.log("[Auth Callback Client] Session established after exchange");
             trackSignUpIfNeeded(newSession.user, signupContext);
+            await saveMarketingConsent(newSession.user, signupContext);
             setStatus("¡Sesión iniciada! Redirigiendo...");
             router.replace("/app");
           } else {
@@ -143,6 +166,7 @@ export default function AuthCallbackPage() {
 
           if (session) {
             trackSignUpIfNeeded(session.user, signupContext);
+            await saveMarketingConsent(session.user, signupContext);
             router.replace("/app");
           } else {
             router.replace("/login");

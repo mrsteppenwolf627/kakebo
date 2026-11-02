@@ -635,6 +635,8 @@
             "divider": "Or with email",
             "emailLabel": "Email",
             "passwordLabel": "Password",
+            "marketingConsent": "I want to receive optional Kakebo emails with reminders, tips, and news.",
+            "marketingConsentPrivacy": "Learn more",
             "submitLogin": "Enter",
             "submitSignup": "Create account",
             "toggleToSignup": "Don't have an account? Create one here",

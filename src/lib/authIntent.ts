@@ -2,6 +2,7 @@ const SIGNUP_INTENT_KEY = "kakebo_signup_intent";
 const SIGNUP_SOURCE_KEY = "kakebo_signup_source";
 const EMAIL_SIGNUP_PENDING_KEY = "kakebo_email_signup_pending";
 const EMAIL_SIGNUP_SOURCE_KEY = "kakebo_email_signup_source";
+const MARKETING_CONSENT_KEY = "kakebo_marketing_email_consent";
 const SIGNUP_CONFIRMED_TRACKED_KEY = "kakebo_signup_confirmed_tracked";
 
 // Email confirmation and the sign-in it triggers happen in the same request,
@@ -37,16 +38,18 @@ export function getSourceFromHref(href: string): string {
  * (as opposed to a normal login), so the callback page can tell them apart.
  * The attribution source travels with it so the callback can report it.
  */
-export function markGoogleSignupIntent(source?: string | null) {
+export function markGoogleSignupIntent(source?: string | null, marketingEmailConsent = false) {
   if (typeof window === "undefined") return;
   window.sessionStorage.setItem(SIGNUP_INTENT_KEY, "google");
   window.sessionStorage.setItem(SIGNUP_SOURCE_KEY, resolveAttributionSource(source));
+  window.sessionStorage.setItem(MARKETING_CONSENT_KEY, marketingEmailConsent ? "true" : "false");
 }
 
 export function clearGoogleSignupIntent() {
   if (typeof window === "undefined") return;
   window.sessionStorage.removeItem(SIGNUP_INTENT_KEY);
   window.sessionStorage.removeItem(SIGNUP_SOURCE_KEY);
+  window.sessionStorage.removeItem(MARKETING_CONSENT_KEY);
 }
 
 /**
@@ -54,13 +57,15 @@ export function clearGoogleSignupIntent() {
  * reload of the callback page (or a second effect run) can never observe them
  * again.
  */
-export function consumeGoogleSignup(): { hadIntent: boolean; source: string } {
+export function consumeGoogleSignup(): { hadIntent: boolean; source: string; marketingEmailConsent?: boolean } {
   if (typeof window === "undefined") return { hadIntent: false, source: DEFAULT_ATTRIBUTION_SOURCE };
   const hadIntent = window.sessionStorage.getItem(SIGNUP_INTENT_KEY) === "google";
   const source = resolveAttributionSource(window.sessionStorage.getItem(SIGNUP_SOURCE_KEY));
+  const marketingEmailConsent = window.sessionStorage.getItem(MARKETING_CONSENT_KEY) === "true";
   window.sessionStorage.removeItem(SIGNUP_INTENT_KEY);
   window.sessionStorage.removeItem(SIGNUP_SOURCE_KEY);
-  return { hadIntent, source };
+  window.sessionStorage.removeItem(MARKETING_CONSENT_KEY);
+  return marketingEmailConsent ? { hadIntent, source, marketingEmailConsent: true } : { hadIntent, source };
 }
 
 export function consumeGoogleSignupIntent(): boolean {
@@ -71,23 +76,27 @@ export function consumeGoogleSignupIntent(): boolean {
  * Remembers that an email signup was accepted and is waiting for the user to
  * confirm it from the email link.
  */
-export function markEmailSignupPending(email: string, source?: string | null) {
+export function markEmailSignupPending(email: string, source?: string | null, marketingEmailConsent = false) {
   if (typeof window === "undefined") return;
   window.sessionStorage.setItem(EMAIL_SIGNUP_PENDING_KEY, email);
   window.sessionStorage.setItem(EMAIL_SIGNUP_SOURCE_KEY, resolveAttributionSource(source));
+  window.sessionStorage.setItem(MARKETING_CONSENT_KEY, marketingEmailConsent ? "true" : "false");
 }
 
 /**
  * Reads and immediately deletes the pending email signup marks. Returns null
  * when no email signup was pending.
  */
-export function consumeEmailSignupPending(): { email: string; source: string } | null {
+export function consumeEmailSignupPending(): { email: string; source: string; marketingEmailConsent?: boolean } | null {
   if (typeof window === "undefined") return null;
   const email = window.sessionStorage.getItem(EMAIL_SIGNUP_PENDING_KEY);
   const source = resolveAttributionSource(window.sessionStorage.getItem(EMAIL_SIGNUP_SOURCE_KEY));
+  const marketingEmailConsent = window.sessionStorage.getItem(MARKETING_CONSENT_KEY) === "true";
   window.sessionStorage.removeItem(EMAIL_SIGNUP_PENDING_KEY);
   window.sessionStorage.removeItem(EMAIL_SIGNUP_SOURCE_KEY);
-  return email ? { email, source } : null;
+  window.sessionStorage.removeItem(MARKETING_CONSENT_KEY);
+  if (!email) return null;
+  return marketingEmailConsent ? { email, source, marketingEmailConsent: true } : { email, source };
 }
 
 /**
@@ -95,8 +104,10 @@ export function consumeEmailSignupPending(): { email: string; source: string } |
  * link, carrying the attribution source so it survives confirming the email in
  * a different browser (where sessionStorage is not shared).
  */
-export function buildEmailCallbackUrl(origin: string, source?: string | null): string {
-  return `${origin}/auth/callback?source=${encodeURIComponent(resolveAttributionSource(source))}`;
+export function buildEmailCallbackUrl(origin: string, source?: string | null, marketingEmailConsent = false): string {
+  const params = new URLSearchParams({ source: resolveAttributionSource(source) });
+  if (marketingEmailConsent) params.set("marketing", "1");
+  return `${origin}/auth/callback?${params.toString()}`;
 }
 
 /**
@@ -106,6 +117,10 @@ export function buildEmailCallbackUrl(origin: string, source?: string | null): s
 export function getSourceFromSearch(search: string): string | null {
   const value = new URLSearchParams(search).get("source")?.trim();
   return value ? resolveAttributionSource(value) : null;
+}
+
+export function getMarketingConsentFromSearch(search: string): boolean {
+  return new URLSearchParams(search).get("marketing") === "1";
 }
 
 /**

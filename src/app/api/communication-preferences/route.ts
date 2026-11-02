@@ -33,6 +33,7 @@ export const PATCH = withLogging(async (request: NextRequest) => {
     const now = new Date().toISOString();
 
     const marketingEmailConsent = body.marketingEmailConsent === true;
+    const consentSource = body.consentSource === "signup" ? "signup" : "in_app_prompt";
     const privacyPolicyAcknowledged = body.privacyPolicyAcknowledged === true;
 
     const { data: existingPreferences, error: existingError } = await supabase
@@ -50,7 +51,7 @@ export const PATCH = withLogging(async (request: NextRequest) => {
         ? now
         : existingPreferences?.marketing_email_consent_at ?? null,
       marketing_email_consent_source: marketingEmailConsent
-        ? "in_app_prompt"
+        ? consentSource
         : existingPreferences?.marketing_email_consent_source ?? null,
       marketing_email_policy_version: marketingEmailConsent
         ? CURRENT_PRIVACY_POLICY_VERSION

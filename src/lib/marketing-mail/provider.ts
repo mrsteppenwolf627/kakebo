@@ -2,6 +2,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export type MarketingEmail = {
+  userId?: string;
   to: string;
   subject: string;
   html: string;
@@ -91,6 +92,7 @@ async function recordMarketingEvent(
 ): Promise<void> {
   try {
     await createAdminClient().from("marketing_email_events").insert({
+      user_id: email.userId || null,
       campaign_key: email.campaignKey,
       event_type: details.eventType,
       provider: details.provider || "brevo",
