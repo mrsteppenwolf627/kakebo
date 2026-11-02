@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export type MarketingEmail = {
   to: string;
@@ -52,7 +53,30 @@ export async function sendMarketingEmail(email: MarketingEmail): Promise<{ provi
     }),
   });
 
-  if (!response.ok) throw new Error(`Brevo returned HTTP ${response.status}`);
+  if (!response.ok) {
+    const error = new Error(`Brevo returned HTTP ${response.status}`);
+    await recordMarketingEvent(email, { eventType: "failed", errorCode: String(response.status) });
+    throw error;
+  }
   const data = (await response.json()) as { messageId?: string };
+  await recordMarketingEvent(email, { eventType: "sent", providerMessageId: data.messageId });
   return { provider: "brevo", messageId: data.messageId };
+}
+
+async function recordMarketingEvent(
+  email: MarketingEmail,
+  details: { eventType: string; providerMessageId?: string; errorCode?: string },
+): Promise<void> {
+  try {
+    await createAdminClient().from("marketing_email_events").insert({
+      campaign_key: email.campaignKey,
+      event_type: details.eventType,
+      provider: "brevo",
+      provider_message_id: details.providerMessageId,
+      error_code: details.errorCode,
+      metadata: { recipient: email.to },
+    });
+  } catch (error) {
+    console.error("Could not record marketing email event", error);
+  }
 }
