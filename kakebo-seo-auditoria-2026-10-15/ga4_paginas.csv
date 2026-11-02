@@ -1,0 +1,81 @@
+# Fuente: GA4 propiedad metodokakebo (543004992), informe Paginas y pantallas, 2026-04-15 a 2026-10-14. Totales: vistas 13755, usuarios activos 1593, eventos 32607, eventos clave 149
+ruta,vistas,usuarios_activos,vistas_por_usuario,tiempo_interaccion_medio,eventos,eventos_clave
+/herramientas/calculadora-inflacion,5869,26,225.73,29 s,16756,0
+/app,2281,172,13.26,3 min 43 s,2948,0
+/blog/plantilla-kakebo-excel,1495,734,2.04,48 s,4681,144
+/app/new,991,95,10.43,5 min 36 s,1614,0
+/,707,458,1.54,21 s,1633,0
+/login,492,323,1.52,33 s,980,4
+/app/new-income,164,55,2.98,2 min 13 s,181,0
+/auth/callback,164,134,1.22,0 s,176,1
+/herramientas/calculadora-ahorro,157,107,1.47,51 s,776,0
+/blog/libro-kakebo-pdf,145,103,1.41,1 min 06 s,234,0
+/blog/kakebo-online-guia-completa,122,82,1.49,46 s,247,0
+/app/fixed,119,45,2.64,55 s,138,0
+/tutorial,95,68,1.40,44 s,154,0
+/blog,93,69,1.35,13 s,209,0
+/app/ai-metrics,76,43,1.77,1 min 27 s,83,0
+/blog/metodo-kakebo-guia-definitiva,75,52,1.44,56 s,144,0
+/app/settings,65,27,2.41,1 min 15 s,76,0
+/en/blog/plantilla-kakebo-excel,61,49,1.24,48 s,232,0
+/app/agent,43,31,1.39,41 s,51,0
+/herramientas/regla-50-30-20,39,35,1.11,54 s,109,0
+/blog/kakebo-online-gratis,38,32,1.19,37 s,85,0
+/en,37,36,1.03,4 s,79,0
+/herramientas,37,29,1.28,11 s,56,0
+/sobre-nosotros,31,29,1.07,18 s,53,0
+/en/app,25,22,1.14,25 s,33,0
+/blog/como-hacer-un-presupuesto-personal,23,11,2.09,1 min 03 s,45,0
+/en/blog,21,20,1.05,5 s,50,0
+/en/blog/metodo-kakebo-guia-definitiva,20,19,1.05,17 s,65,0
+/privacy,16,16,1.00,19 s,33,0
+/herramientas/plantilla-kakebo-excel-premium,15,10,1.50,2 s,45,0
+/en/sobre-nosotros,12,11,1.09,4 s,20,0
+/en/tutorial,12,12,1.00,4 s,18,0
+/blog/cuentas-remuneradas,11,3,3.67,1 min 21 s,20,0
+/blog/regla-50-30-20-ejemplo,11,9,1.22,39 s,25,0
+/en/blog/como-ahorrar-dinero-cada-mes,11,11,1.00,0 s,34,0
+/blog/kakebo-vs-ynab,10,9,1.11,6 s,26,0
+/blog/alternativas-a-app-bancarias,9,8,1.13,9 s,31,0
+/blog/metodo-kakebo-para-autonomos,8,6,1.33,36 s,19,0
+/en/login,8,8,1.00,5 s,20,0
+/en/blog/kakebo-online-gratis,7,6,1.17,6 s,23,0
+/en/blog/libro-kakebo-pdf,7,7,1.00,18 s,21,0
+/blog/ahorro-pareja,6,6,1.00,11 s,20,0
+/blog/como-ahorrar-dinero-cada-mes,6,6,1.00,29 s,16,0
+/blog/eliminar-gastos-hormiga,6,5,1.20,1 min 42 s,15,0
+/cookies,6,6,1.00,14 s,14,0
+/en/blog/ahorro-pareja,6,6,1.00,1 s,19,0
+/en/blog/peligros-apps-ahorro-automatico,6,6,1.00,0 s,18,0
+/en/herramientas/calculadora-ahorro,6,6,1.00,21 s,31,0
+/terms,6,6,1.00,10 s,12,0
+/app/history,5,3,1.67,3 min 11 s,6,0
+/blog/kakebo-sueldo-minimo,5,4,1.25,37 s,12,0
+/en/blog/kakebo-online-complete-guide,5,6,0.83,0 s,18,0
+/en/herramientas/calculadora-inflacion,5,5,1.00,10 s,14,0
+/en/privacy,5,5,1.00,3 s,15,0
+/blog/kakebo-online-complete-guide,4,4,1.00,0 s,14,0
+/blog/peligros-apps-ahorro-automatico,4,4,1.00,48 s,12,0
+/en/cookies,4,4,1.00,0 s,12,0
+/en/herramientas/plantilla-kakebo-excel-premium,4,4,1.00,4 s,16,0
+/blog/regla-30-dias,3,3,1.00,3 s,11,0
+/en/app/new,3,3,1.00,24 s,8,0
+/en/app/new-income,3,3,1.00,6 s,5,0
+/en/blog/como-hacer-un-presupuesto-personal,3,3,1.00,1 s,7,0
+/en/blog/eliminar-gastos-hormiga,3,3,1.00,2 s,10,0
+/en/blog/kakebo-sueldo-minimo,3,3,1.00,0 s,9,0
+/en/blog/kakebo-vs-ynab,3,3,1.00,0 s,9,0
+/en/blog/metodo-kakebo-para-autonomos,3,3,1.00,0 s,9,0
+/en/herramientas/regla-50-30-20,3,3,1.00,5 s,11,0
+/en/app/fixed,2,2,1.00,20 s,2,0
+/en/blog/alternativas-a-app-bancarias,2,2,1.00,0 s,6,0
+/en/blog/kakebo-online-guia-completa,2,2,1.00,0 s,6,0
+/en/herramientas,2,2,1.00,0 s,6,0
+/en/terms,2,2,1.00,4 s,7,0
+/app/history/2026-09,1,1,1.00,29 s,1,0
+/app/history/2026-10,1,1,1.00,4 s,1,0
+/blog/fondo-de-emergencia,1,1,1.00,0 s,3,0
+/en/app/agent,1,1,1.00,1 min 17 s,1,0
+/en/app/ai-metrics,1,1,1.00,8 s,1,0
+/en/blog/cuentas-remuneradas,1,1,1.00,0 s,3,0
+/en/blog/regla-30-dias,1,1,1.00,6 s,4,0

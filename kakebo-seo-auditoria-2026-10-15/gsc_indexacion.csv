@@ -1,0 +1,11 @@
+# Fuente: GSC Indexacion de paginas, consultado 2026-10-15. Sitemap /sitemap.xml: 49 URL descubiertas, ultima lectura 2026-10-08, estado Success
+estado,motivo,paginas,validacion
+Indexada,,27,
+No indexada,Pagina con redireccion,12,Not Started
+No indexada,Excluida por etiqueta noindex,4,Not Started
+No indexada,Pagina alternativa con canonical adecuada,4,Not Started
+No indexada,Rastreada - actualmente sin indexar,26,Not Started
+No indexada,Descubierta - actualmente sin indexar,7,Passed
+No indexada,No encontrada (404),0,N/A
+No indexada,Bloqueada por robots.txt,0,N/A
+TOTAL_NO_INDEXADAS,,53,

@@ -1,0 +1,16 @@
+# Fuente: GA4 metodokakebo, Adquisicion de trafico por Fuente/medio de la sesion, 2026-04-15 a 2026-10-14 (filas 1-14 leidas; el resto <=3 sesiones)
+fuente_medio,sesiones,sesiones_con_interaccion,porcentaje_interaccion,tiempo_interaccion_medio,eventos,eventos_clave
+google / organic,1371,932,67.98%,1 min 28 s,9949,144
+(direct) / (none),540,160,29.63%,36 s,19913,2
+accounts.google.com / referral,208,118,56.73%,1 min 32 s,1689,0
+bing / organic,58,34,58.62%,1 min 03 s,277,1
+ig / social,29,3,10.34%,1 s,90,0
+duckduckgo / organic,10,5,50%,48 s,44,0
+chatgpt.com / ai-assistant,7,5,71.43%,10 min 42 s,253,1
+search.brave.com / referral,7,7,100%,8 min 04 s,133,0
+ecosia.org / organic,6,5,83.33%,3 min 46 s,38,0
+google / cpc,6,0,0%,0 s,18,0
+(not set),4,0,0%,7 min 53 s,22,0
+es.search.yahoo.com / referral,3,1,33.33%,33 s,13,0
+facebook.com / referral,3,1,33.33%,1 s,10,0
+linkedin.com / referral,3,2,66.67%,4 s,11,0

@@ -1,0 +1,10 @@
+# Fuente: GA4 metodokakebo, Adquisicion de trafico (grupo de canales de la sesion), 2026-04-15 a 2026-10-14. Total sesiones 2279 (la suma de filas es 2276: 3 de diferencia en el total de GA4)
+canal,sesiones,sesiones_con_interaccion,porcentaje_interacciones,tiempo_interaccion_medio,eventos_por_sesion,eventos,eventos_clave,tasa_evento_clave
+Organic Search,1455,983,67.56%,1 min 28 s,7.12,10355,146,8.93%
+Direct,540,160,29.63%,36 s,36.88,19913,2,0.19%
+Referral,218,127,58.26%,1 min 44 s,8.43,1838,0,0%
+Organic Social,38,6,15.79%,1 s,3.16,120,0,0%
+AI Assistant,10,8,80%,9 min 55 s,31.50,315,1,10%
+Unassigned,9,1,11.11%,4 min 31 s,5.33,48,0,0%
+Paid Search,6,0,0%,0 s,3.00,18,0,0%
+TOTAL,2279,1287,56.47%,1 min 18 s,14.31,32607,149,5.79%

@@ -51,7 +51,7 @@ La mayoría de apps de finanzas personales son "cajas negras" o cobran por funci
 
 **Estado actual (código en `main` y última evidencia de producción, 2026-10-05; modo compatible):** Kakebo es gratuito para todo usuario autenticado, sin planes de pago ni paywalls activos.
 
-**Decisión de producto vigente (ADR-003), todavía NO activada:** la capa gratuita permitirá como máximo **30 gastos al mes** (mes natural en Europa/Madrid), **sin chatbot/IA conversacional, sin informes PDF y sin funciones premium/Plus**. Los usuarios existentes conservarán sus privilegios actuales. El trial queda **PENDIENTE DE DECISIÓN DEL PROPIETARIO** (no se confirma ninguna duración). Stripe y los pagos siguen desactivados. Detalle y estado de producción en [`docs/planning/phase3b-migration-runbook.md`](docs/planning/phase3b-migration-runbook.md).
+**Decisión de producto vigente (ADR-003), todavía NO activada:** la capa gratuita permitirá como máximo **30 gastos al mes** (mes natural en Europa/Madrid), **sin chatbot/IA conversacional, sin informes PDF y sin funciones premium/Plus**. Los usuarios existentes conservarán sus privilegios actuales. **No hay trial premium**: las cuentas nuevas empiezan directamente en la capa gratuita. Stripe y los pagos siguen desactivados. Aparte de la aplicación, el producto digital de pago **Kakebo Master System** (plantilla Excel premium + ebook + tutorial en PDF; 9,90 € IVA incluido, compra única; ADR-004) está en preparación y no concede funciones de la app. Detalle y estado de producción en [`docs/planning/phase3b-migration-runbook.md`](docs/planning/phase3b-migration-runbook.md).
 
 La monetización futura se basa en:
 - Blog financiero con SEO orgánico

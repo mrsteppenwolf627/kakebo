@@ -4,7 +4,8 @@
 
 ### Decisión de producto documentada (NO activada)
 - **Capa gratuita:** máximo 30 gastos/mes (mes natural Europe/Madrid), sin chatbot/IA conversacional, sin informes PDF, sin funciones premium/Plus (ADR-003).
-- **Trial:** PENDIENTE DE DECISIÓN DEL PROPIETARIO; no se confirma ninguna duración.
+- **Sin trial premium:** las cuentas nuevas empiezan directamente en la capa gratuita. Los 14 y 30 días de trial citados en documentos anteriores son históricos o de diseño, no vigentes.
+- **Producto de pago (ADR-004):** Kakebo Master System (plantilla Excel premium + ebook «El arte de mirar tu dinero» de unas 20 páginas + tutorial en PDF; 9,90 € IVA incluido, compra única, acceso permanente, sin registro del comprador). Independiente de la aplicación; landing pública e indexable preparada, compra y descarga desactivadas.
 - **Estado técnico y de producción:** sin cambios. Producción (evidencia fechada del 2026-10-05, no re-verificada) servía `41a4c98`; promover el código posterior sin aplicar antes las migraciones compatibles podría romper la creación de gastos. Ver `docs/planning/phase3b-migration-runbook.md`.
 - La entrada 4.0.0 de abajo ("Kakebo pasa a ser gratuito", "Eliminado trial/premium") es **histórica y parcialmente sustituida** por ADR-003.
 

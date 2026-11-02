@@ -24,7 +24,6 @@ export type AccessState =
   | "founder"
   | "plus_active"
   | "plus_canceled_pending"
-  | "trialing"
   | "free_under_limit"
   | "free_readonly";
 
@@ -42,7 +41,10 @@ export interface AccessProfile {
    * No cambia ningún permiso (la matriz es idéntica para ambos estados).
    */
   subscriptionCancelAtPeriodEnd?: boolean;
-  /** ISO 8601. `null` si el usuario nunca tuvo periodo de prueba (p. ej. founder capturado antes de que existiera el trial). */
+  /**
+   * Legado — NUNCA se lee para decidir acceso. Decisión cerrada: no hay trial premium; las cuentas nuevas
+   * empiezan directamente en la capa gratuita. Se conserva en el tipo solo para no romper lecturas de `profiles`.
+   */
   trial_ends_at: string | null;
   /** Legado — nunca leído para decidir acceso. Presente solo para no romper tipos existentes. */
   tier?: string | null;
@@ -85,13 +87,6 @@ export function resolveAccessState(
       return profile.subscriptionCancelAtPeriodEnd
         ? "plus_canceled_pending"
         : "plus_active";
-    }
-  }
-
-  if (profile.trial_ends_at) {
-    const trialEnd = new Date(profile.trial_ends_at);
-    if (now < trialEnd) {
-      return "trialing";
     }
   }
 
@@ -138,14 +133,6 @@ export const ACCESS_PERMISSIONS: Record<AccessState, AccessPermissions> = {
     canUseAI: true,
     canExport: true,
     canManageBilling: true,
-  },
-  trialing: {
-    canCreateExpense: true,
-    canEditOrDeleteExpense: true,
-    canViewExpenses: true,
-    canUseAI: true,
-    canExport: false,
-    canManageBilling: false,
   },
   free_under_limit: {
     canCreateExpense: true,

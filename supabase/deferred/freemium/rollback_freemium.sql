@@ -6,8 +6,10 @@
 -- QUÉ HACE (todo en una transacción):
 --   1. Restituye el GRANT INSERT sobre `expenses` a authenticated (deshace 05).
 --   2. Sustituye fn_create_expense por la versión COMPATIBLE (sin límite, sin KB001).
---   3. Restituye handle_new_user a la versión compatible (alta con trial de 14 días).
---   4. Elimina fn_resolve_access_state (solo existe en modo freemium).
+--   3. Elimina fn_resolve_access_state (solo existe en modo freemium).
+--   handle_new_user NO se revierte: la versión de 01 (alta directa en free, sin trial) es válida también en
+--   modo compatible, que no depende de ella; la definición original de producción, si hiciera falta, está en la
+--   foto previa (supabase/manual-ops/phase3b_pre_apply_snapshot.sql -> phase3b_backup.function_defs_*).
 --
 -- QUÉ NO HACE (protecciones para no borrar datos críticos):
 --   * NO borra ni vacía access_grants, expense_monthly_usage, first_expense_activations,
@@ -109,24 +111,7 @@ COMMENT ON FUNCTION public.fn_create_expense(uuid, date, numeric, text, text, te
 REVOKE ALL ON FUNCTION public.fn_create_expense(uuid, date, numeric, text, text, text, text) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.fn_create_expense(uuid, date, numeric, text, text, text, text) TO authenticated;
 
--- 3. handle_new_user compatible: trial de 14 días (sin lock de fundadores ni trial_started_at).
-CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS trigger
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = public, pg_temp
-AS $$
-BEGIN
-  INSERT INTO public.profiles (id, tier, trial_ends_at)
-  VALUES (new.id, 'free', now() + interval '14 days');
-  RETURN new;
-END;
-$$;
-
-REVOKE ALL ON FUNCTION public.handle_new_user() FROM PUBLIC, anon, authenticated;
-GRANT EXECUTE ON FUNCTION public.handle_new_user() TO service_role;
-
--- 4. Función exclusiva del modo freemium.
+-- 3. Función exclusiva del modo freemium.
 DROP FUNCTION IF EXISTS public.fn_resolve_access_state(uuid);
 
 -- Verificación final: si el modo no es compatible, se deshace todo.

@@ -16,7 +16,7 @@ Decisión del propietario, **todavía NO activada en código ni en producción**
 | Chatbot / IA conversacional | **No** disponible |
 | Informes PDF | **No** disponibles |
 | Funciones premium / Plus | **No** disponibles |
-| Trial | **PENDIENTE DE DECISIÓN DEL PROPIETARIO** (si habrá trial y, en su caso, su duración) |
+| Trial | **Sin trial premium**: las cuentas nuevas empiezan directamente en la capa gratuita |
 | Usuarios existentes | Conservan sus privilegios actuales (concesión `legacy_full`, script diferido 04) |
 
 **Definición temporal del límite (ya implementada en los scripts, no se cambia):** *mes natural en zona horaria
@@ -24,10 +24,7 @@ Decisión del propietario, **todavía NO activada en código ni en producción**
 momento de **crear** el gasto, y el contador (`expense_monthly_usage`) cuenta creaciones: borrar un gasto no lo decrementa.
 Es independiente de los ciclos libres de la Fase 1. Réplica TypeScript no cableada: `getExpensePeriodKey` en `src/lib/auth/access-state.ts`.
 
-**Trial — qué NO se afirma.** La duración de 14 días (`supabase_migration_saas.sql`, commit `8346acc`, febrero de 2026) y la
-de 30 días (diseño de Fase 3, septiembre de 2026) son valores **históricos o de diseño, no verificados ni vigentes**. No se ha
-confirmado la definición actual de `handle_new_user` en producción. El script diferido `01_access_foundation.sql` contiene
-`interval '14 days'` como **valor provisional heredado**: debe revisarse (y decidirse si hay trial) **antes** de aplicarlo.
+**Trial.** Decisión cerrada: no hay trial premium. Los valores históricos (14 días: `supabase_migration_saas.sql`, commit `8346acc`, febrero de 2026; 30 días: diseño de Fase 3, septiembre de 2026) no son vigentes, y la definición **actual** de `handle_new_user` en producción no está verificada (el modo compatible no la modifica). El script diferido `01_access_foundation.sql` da de alta directamente en free (sin trial) y no existe estado `trialing`.
 
 ## 1. Evidencia fechada de producción (no re-verificada el 2026-10-06)
 
@@ -48,7 +45,7 @@ confirmado la definición actual de `handle_new_user` en producción. El script 
 | | **Modo compatible** (lo que se aplica ahora) | **Freemium** (diferido, `supabase/deferred/freemium/`) |
 |---|---|---|
 | Límite de gastos | **Ninguno.** Nunca aparece `KB001` | 30 gastos/mes (mes natural Europe/Madrid) para usuarios free |
-| Trial | No se modifica `handle_new_user` (el alta queda como esté en producción) | **PENDIENTE DE DECISIÓN DEL PROPIETARIO** (el script 01 trae 14 días provisionales) |
+| Trial | No se modifica `handle_new_user` (el alta queda como esté en producción) | **Sin trial premium** (el script 01 da de alta directamente en free) |
 | IA y PDF | Disponibles para todos (la app no los restringe) | Free: **sin** IA ni PDF; Plus/legacy: con ellos |
 | Usuarios existentes | Sin cambios | Conservan todo vía `access_grants` (`legacy_full`) |
 | `fn_create_expense` | Valida, inserta y **cuenta** (métrica) | Además aplica el límite |
@@ -80,7 +77,6 @@ Hallazgo de seguridad que corrige la 2: la política "Users can update their own
 activa el límite de 30 gastos**) · `05_close_direct_expense_insert` · `rollback_freemium`. Cada uno aborta salvo
 `SET kakebo.freemium_activation = 'confirmed';` (el rollback: `kakebo.freemium_rollback`) y va en una sola transacción.
 Orden futuro: 01 → 02 → 04 → 03 → 05. El 03 se niega a ejecutarse si algún usuario existente no tiene `legacy_full`.
-Antes del 01 hay que **resolver la decisión de trial** (§0).
 
 ## 5. Qué NO se debe ejecutar todavía
 
@@ -92,9 +88,7 @@ solo son válidas **después** de 01–03.
 
 ## 6–8. Trial, límite, IA y PDF (estado actual y decisión)
 
-- **Trial:** **PENDIENTE DE DECISIÓN DEL PROPIETARIO.** No se confirma duración alguna en producción. Antes de aplicar nada,
-  ejecutar `supabase/tests/phase3b_prod_baseline.sql` §2 para conocer la definición real de `handle_new_user`. Además, hoy la app
-  no usa el trial para restringir nada. El modo compatible no redefine `handle_new_user`, así que no cambia el comportamiento de alta.
+- **Trial:** **no hay trial premium** (decisión cerrada). En producción, la definición actual de `handle_new_user` no está verificada: antes de aplicar nada, ejecutar `supabase/tests/phase3b_prod_baseline.sql` §2. Hoy la app no usa el trial para restringir nada, y el modo compatible no redefine `handle_new_user`.
 - **Límite de 30 gastos/mes:** decisión vigente para la capa gratuita, **no activa**. No existe en ninguna migración aplicable
   (tests estático y SQL real: 45 gastos sin `KB001` en modo compatible). Solo lo activa `03_enforce_expense_limit.sql`.
 - **IA/chatbot y PDF:** decisión vigente = **no** para free. **Hoy** están disponibles para todos los usuarios autenticados
@@ -113,7 +107,7 @@ perfiles existentes en ese momento (idempotente), cubriendo:
 | `trial_ends_at` NULL | `legacy_full` (nunca quedan como free limitado) |
 | Suscripciones Stripe | `legacy_full`; `subscriptions`/`plus_access_until` los gestiona 3.C |
 | Entran antes de activar | Cubiertos por 04 (se repite justo antes del 03 por si entra alguien) |
-| Entran después de activar | Free: 30 gastos/mes, sin IA ni PDF. **Trial: PENDIENTE DE DECISIÓN DEL PROPIETARIO** |
+| Entran después de activar | Free desde el registro: 30 gastos/mes, sin IA ni PDF, **sin trial** |
 
 Nadie se convierte ahora en fundador ni Pro (`is_founder` y `plus_access_until` quedan en su valor neutro).
 
@@ -126,9 +120,7 @@ Nadie se convierte ahora en fundador ni Pro (`is_founder` y `plus_access_until` 
 ## 12–13. Orden de aplicación y verificación
 
 1. Backup (§11). 2. Aplicar 20260916 → 20260917 → 20261001 (SQL Editor, cada una en su pestaña; son idempotentes).
-3. Ejecutar `supabase/verification/phase3b_verify.sql`: **0 filas FAIL**. (La comprobación "handle_new_user conserva el trial de 14 días"
-asume el valor histórico: si falla o no aplica, revisar la definición real — no es en sí un fallo de la migración, y el resultado **no**
-confirma la política de trial.) 4. Comparar con la foto: `profiles` sin diferencias en `tier`, `manual_override`, `trial_ends_at`.
+3. Ejecutar `supabase/verification/phase3b_verify.sql`: **0 filas FAIL**. (La comprobación de `handle_new_user` solo confirma que la función existe; no valida ninguna política de trial.) 4. Comparar con la foto: `profiles` sin diferencias en `tier`, `manual_override`, `trial_ends_at`.
 5. Crear un gasto de prueba por cada canal (web, asistente legado, agente) en un entorno de preview. 6. Solo entonces, valorar la promoción (§16).
 
 ## 14. Rollback
@@ -141,7 +133,7 @@ confirma la política de trial.) 4. Comparar con la foto: `profiles` sin diferen
 ## 15. Riesgos
 
 - PGlite (Postgres en memoria) valida la lógica, no es Supabase: `phase3b_verify.sql` en staging/producción es la verificación final.
-- `handle_new_user` real en producción **no verificada**; si el propietario decide trial, el valor debe fijarse explícitamente (el 01 trae 14 días provisionales).
+- `handle_new_user` real en producción **no verificada** (el modo compatible no la modifica). Con la decisión de no tener trial, al activar freemium el script 01 la sustituye por un alta directa en free.
 - El trigger de `profiles` rechaza a `authenticated` cualquier cambio de `tier`/`trial_*`: ningún código de la app los escribe desde sesión de usuario (verificado por búsqueda en `src/`), pero revisar integraciones externas.
 - `20261001`: si la tabla ya existía con `expense_id NOT NULL ON DELETE CASCADE`, la migración la corrige.
 - **Promover Vercel antes de aplicar las migraciones puede romper la creación de gastos.**
@@ -160,10 +152,16 @@ entrega protegida del pack premium, textos legales (ver auditoría legal), event
 
 ## 18. Pendiente para freemium
 
-- **Decisión del trial** (existencia y duración) — PENDIENTE DE DECISIÓN DEL PROPIETARIO — y ajuste del script 01 en consecuencia.
+- Revisar los usuarios con `trial_ends_at` vigente en el momento de activar: los usuarios existentes quedan cubiertos por `legacy_full` (script 04); las cuentas nuevas no tendrán trial.
 - Reflejar `legacy_full` en `access-state.ts` y cablear los permisos por estado: **sin chatbot/IA conversacional y sin informes PDF para free**
   (hoy no están cableados), con su copy/UX de límite (KB001).
 - Aplicar 01 → 02 → 04 → 03 → 05 con backup y verificación; comunicar el cambio a los usuarios.
+
+## Producto de pago independiente: Kakebo Master System (ADR-004)
+
+Pack digital (plantilla Excel premium + ebook de unas 20 páginas + tutorial PDF), 9,90 € IVA incluido, compra única, acceso permanente, sin registro del comprador.
+**No forma parte de este modelo de acceso**: comprarlo no concede IA, informes de la app, Plus ni suscripciones. Su landing es pública e indexable, con compra y
+descarga desactivadas; su entrega futura está documentada en `docs/planning/premium-commerce-architecture.md`. Ninguna parte de este runbook activa Stripe.
 
 ## Pruebas de esta fase
 

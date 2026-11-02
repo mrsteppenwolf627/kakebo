@@ -79,6 +79,7 @@ async function runScenario(): Promise<Result[]> {
   const mB = (await db.query<any>(`INSERT INTO public.months (user_id,year,month) VALUES ('${B}',2026,10) RETURNING id`)).rows[0].id;
   await db.exec(`INSERT INTO public.expenses (user_id, month_id, date, amount, category) VALUES ('${A}','${mA}','2026-09-01',5,'survival'),('${A}','${mA}','2026-09-02',6,'survival');`);
   const before = (await db.query<any>("SELECT id, tier::text, manual_override, trial_ends_at FROM public.profiles ORDER BY id")).rows;
+  const hnuBefore = (await db.query<any>("SELECT pg_get_functiondef('public.handle_new_user()'::regprocedure) AS d")).rows[0].d;
 
   // ── Apply compat migrations in order ─────────────────────────────────────
   for (const f of ["20260916_phase3b_monetization_foundation.sql", "20260917_phase3b_profiles_hardening.sql", "20261001_first_expense_activation.sql"]) {
@@ -99,11 +100,13 @@ async function runScenario(): Promise<Result[]> {
   const baseline = (await db.query<any>("SELECT count(*) n FROM public.first_expense_activations")).rows[0].n;
   ok("baseline de activación para usuarios con gastos (solo A)", Number(baseline) === 1, baseline);
 
-  // ── Trial 14 días intacto para usuarios nuevos ───────────────────────────
+  // ── El modo compatible NO toca el alta de usuarios (handle_new_user) ─────
   const N = "00000000-0000-0000-0000-0000000000d1";
   await db.exec(`INSERT INTO auth.users (id,email) VALUES ('${N}','n@x');`);
   const tr = (await db.query<any>(`SELECT extract(epoch FROM (trial_ends_at - now()))/86400 AS days, trial_started_at, is_founder FROM public.profiles WHERE id='${N}'`)).rows[0];
-  ok("trial de usuario nuevo = 14 días", Math.abs(tr.days - 14) < 0.01, tr.days);
+  const hnuAfter = (await db.query<any>("SELECT pg_get_functiondef('public.handle_new_user()'::regprocedure) AS d")).rows[0].d;
+  ok("modo compatible: handle_new_user queda exactamente como estaba (el alta no cambia)", hnuBefore === hnuAfter);
+  ok("modo compatible: el alta de un usuario nuevo sigue como en la base simulada de producción", Math.abs(tr.days - 14) < 0.01, tr.days);
   ok("usuario nuevo: is_founder=false", tr.is_founder === false);
 
   // ── fn_create_expense compat: >30 gastos, sin KB001 ──────────────────────
@@ -311,14 +314,14 @@ async function runScenario(): Promise<Result[]> {
   for (let i = 0; i < 40; i++) { try { await db.query<any>(`SELECT * FROM public.fn_create_expense('${mN}','2026-10-01',1,'survival')`); legacyOk++; } catch {} }
   await reset(db);
   ok("freemium: usuario existente (legacy_full) sigue sin límite (40 más)", legacyOk === 40, legacyOk);
-  // new user handle_new_user keeps 14 days and sets trial_started_at
+  // freemium: handle_new_user da de alta DIRECTAMENTE en la capa gratuita, sin trial
   const Q = "00000000-0000-0000-0000-0000000000c2";
   await db.exec(`INSERT INTO auth.users (id,email) VALUES ('${Q}','q@x');`);
   const q = (await db.query<any>(`SELECT extract(epoch FROM (trial_ends_at - now()))/86400 d, trial_started_at IS NOT NULL ts FROM public.profiles WHERE id='${Q}'`)).rows[0];
-  ok("freemium: handle_new_user mantiene trial de 14 días", Math.abs(q.d - 14) < 0.01 && q.ts, JSON.stringify(q));
+  ok("freemium: handle_new_user NO concede trial (trial_ends_at y trial_started_at NULL)", q.d === null && q.ts === false, JSON.stringify(q));
   await db.exec("SET ROLE service_role");
   const st = (await db.query<any>(`SELECT public.fn_resolve_access_state('${Q}') s`)).rows[0].s; await reset(db);
-  ok("freemium: nuevo usuario en trial => estado 'trialing'", st === "trialing", st);
+  ok("freemium: cuenta nueva => estado 'free_under_limit' desde el primer día (no existe estado de trial)", st === "free_under_limit", st);
   await db.exec("SET kakebo.freemium_activation = 'confirmed'");
   await db.exec(read("supabase/deferred/freemium/05_close_direct_expense_insert.sql")); ok("05 aplica (modo freemium)", true);
   ok("05 revoca INSERT directo en expenses", !(await db.query<any>("SELECT has_table_privilege('authenticated','public.expenses','INSERT') v")).rows[0].v);

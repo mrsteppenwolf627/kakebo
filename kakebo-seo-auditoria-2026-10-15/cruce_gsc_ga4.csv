@@ -1,0 +1,11 @@
+# Fuentes: GSC (clics Google, tipo Web) y GA4 (sesiones Organic Search). Rangos mensuales. GA4 sin datos antes de junio 2026.
+mes,gsc_clics,gsc_impresiones,ga4_sesiones_organicas,ga4_sesiones_totales,diferencia_ga4_menos_gsc
+2026-04 (15-30),14,269,0 (sin datos),0,-14
+2026-05,64,1073,0 (sin datos),0,-64
+2026-06,132,1462,45,72,-87
+2026-07,195,1574,243,381,48
+2026-08,282,2700,336,543,54
+2026-09,489,4217,597,915,108
+2026-10 (1-14),144,1781,230,363,86
+TOTAL,1320,13076,1451,2274,
+# Paginas (GSC clics vs GA4 sesiones de entrada de todos los canales): /blog/plantilla-kakebo-excel 751 (+115 en /es/ y +33 en /en/) vs 807 sesiones; / 240 vs 397; calculadora-ahorro 65 vs 96; kakebo-online-guia-completa 43 vs 39

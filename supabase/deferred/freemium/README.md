@@ -9,13 +9,12 @@ actual de Kakebo (modo compatible: sin límite de gastos y con IA y PDF disponib
 - **Sin chatbot/IA conversacional** y **sin informes PDF** para usuarios free. *(Estos dos permisos NO los aplican los scripts SQL: hay que cablearlos en la app; ver `docs/planning/phase3b-migration-runbook.md` §18.)*
 - Sin funciones premium/Plus para free; usuarios Plus con todas las funciones.
 - Usuarios existentes antes de la activación: **conservan sus privilegios actuales** (`legacy_full`, script 04).
-- **Trial: PENDIENTE DE DECISIÓN DEL PROPIETARIO.** `01_access_foundation.sql` contiene `interval '14 days'` como **valor provisional heredado**
-  del histórico (no es una confirmación de producción). Revisarlo y decidir antes de aplicar el 01.
+- **Sin trial premium:** las cuentas nuevas empiezan directamente en la capa gratuita (`handle_new_user` de `01_access_foundation.sql` no concede trial y no existe estado `trialing`).
 
 ## Orden de aplicación (siempre en este orden, tras backup y verificación)
 | # | Archivo | Qué hace | ¿Activa el límite? |
 |---|---|---|---|
-| 1 | `01_access_foundation.sql` | `access_grants`, `fn_resolve_access_state`, `handle_new_user` freemium (**trial provisional: decidir**) | No |
+| 1 | `01_access_foundation.sql` | `access_grants`, `fn_resolve_access_state`, `handle_new_user` freemium (alta directa en free, sin trial) | No |
 | 2 | `02_usage_backfill.sql` | Rellena `expense_monthly_usage` del mes actual (idempotente, nunca reduce) | No |
 | 3 | `04_legacy_access_grants.sql` | Concede `legacy_full` a TODOS los usuarios existentes | No |
 | 4 | `03_enforce_expense_limit.sql` | **Único script que activa el límite de 30 gastos** | **Sí** |

@@ -107,7 +107,7 @@ describe("modo compatible — no hay enforcement comercial en el código de la a
   });
 });
 
-describe("modo compatible — trial de 14 días y creación de gastos sin límite (SQL)", () => {
+describe("modo compatible — sin cambios de alta y creación de gastos sin límite (SQL)", () => {
   const migrations = path.join(ROOT, "supabase", "migrations");
   const active = fs
     .readdirSync(migrations)
@@ -121,13 +121,16 @@ describe("modo compatible — trial de 14 días y creación de gastos sin límit
     expect(active).not.toMatch(/trial_ends_at\s*=/i);
   });
 
-  it("el trial de 14 días solo se (re)define en el script diferido y en su rollback", () => {
+  it("ningún script diferido concede trial: sin intervalos de prueba y 01 da de alta directamente en la capa gratuita", () => {
     const deferred = path.join(ROOT, "supabase", "deferred", "freemium");
-    expect(fs.readFileSync(path.join(deferred, "01_access_foundation.sql"), "utf8")).toMatch(/interval\s+'14\s+days'/);
-    expect(fs.readFileSync(path.join(deferred, "rollback_freemium.sql"), "utf8")).toMatch(/interval\s+'14\s+days'/);
     for (const f of fs.readdirSync(deferred).filter((x) => x.endsWith(".sql"))) {
-      expect(fs.readFileSync(path.join(deferred, f), "utf8")).not.toMatch(/interval\s+'30\s+days'/i);
+      const sql = fs.readFileSync(path.join(deferred, f), "utf8").split("\n").filter((l) => !l.trim().startsWith("--")).join("\n");
+      expect(sql).not.toMatch(/interval\s+'\d+\s+days'/i);
+      expect(sql).not.toMatch(/\btrialing\b/);
     }
+    const f01 = fs.readFileSync(path.join(deferred, "01_access_foundation.sql"), "utf8").split("\n").filter((l) => !l.trim().startsWith("--")).join("\n");
+    expect(f01).toMatch(/INSERT\s+INTO\s+public\.profiles\s*\(\s*id\s*,\s*tier\s*,\s*is_founder\s*\)/i);
+    expect(f01).not.toMatch(/trial_(started|ends)_at/i);
   });
 
   it("fn_create_expense (compat) no limita y siempre cuenta; el límite solo está en el script 03", () => {

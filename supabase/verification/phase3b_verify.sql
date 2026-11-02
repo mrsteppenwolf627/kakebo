@@ -91,8 +91,8 @@ checks(section, check_name, ok, detail) AS (
   SELECT 'compat', 'fn_create_expense no contiene KB001 ni límite',
          EXISTS (SELECT 1 FROM fn WHERE proname='fn_create_expense' AND def NOT LIKE '%KB001%' AND def NOT LIKE '%count < 30%'), NULL
   UNION ALL
-  SELECT 'compat', 'handle_new_user conserva el trial de 14 días (y no 30)',
-         EXISTS (SELECT 1 FROM fn WHERE proname='handle_new_user' AND def LIKE '%14 days%' AND def NOT LIKE '%30 days%'), NULL
+  SELECT 'compat', 'handle_new_user sigue existiendo (el modo compatible no lo sustituye)',
+         EXISTS (SELECT 1 FROM fn WHERE proname='handle_new_user'), NULL
   UNION ALL
   SELECT 'compat', 'no existe fn_resolve_access_state ni access_grants (son freemium)',
          NOT EXISTS (SELECT 1 FROM fn WHERE proname='fn_resolve_access_state') AND to_regclass('public.access_grants') IS NULL, NULL

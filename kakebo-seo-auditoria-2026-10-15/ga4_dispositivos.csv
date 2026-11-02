@@ -1,0 +1,5 @@
+# Fuente: GA4 metodokakebo, Detalles de la tecnologia: Categoria de dispositivo, 2026-04-15 a 2026-10-14. Total usuarios activos 1593
+dispositivo,usuarios_activos,sesiones_con_interaccion,porcentaje_interaccion,tiempo_interaccion_medio,eventos,eventos_clave
+desktop,1024,828,55.5%,2 min 02 s,27250,96
+mobile,559,451,58.04%,1 min 28 s,5108,52
+tablet,13,12,85.71%,5 min 15 s,249,1

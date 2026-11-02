@@ -5,10 +5,11 @@
 -- Prepara la infraestructura del modelo freemium SIN activar el límite:
 --   * `access_grants`: concesiones de acceso por usuario (la usa 04_legacy_access_grants.sql).
 --   * `fn_resolve_access_state(uuid)`: réplica SQL de src/lib/auth/access-state.ts, ampliada con
---     'legacy_full'. Orden: founder -> legacy_full -> plus_active -> trialing -> free_*.
+--     'legacy_full'. Orden: founder -> legacy_full -> plus_active -> free_*. NO existe estado de trial:
+--     decisión cerrada: las cuentas nuevas empiezan directamente en la capa gratuita, sin trial premium.
 --     (Al activar freemium habrá que reflejar 'legacy_full' también en access-state.ts.)
---   * `handle_new_user`: alta de usuarios nuevos con trial de 14 días (misma duración que hoy) y
---     is_founder=false explícito. NO cambia la duración del trial.
+--   * `handle_new_user`: alta de usuarios nuevos DIRECTAMENTE en la capa gratuita (tier 'free',
+--     is_founder=false, SIN trial: trial_started_at y trial_ends_at quedan NULL).
 -- Nada de esto limita gastos: el límite solo lo activa 03_enforce_expense_limit.sql.
 
 -- Todo el script va en UNA transacción: si el guard falla, nada posterior se ejecuta (ni en psql).
@@ -97,10 +98,6 @@ BEGIN
     RETURN 'plus_active';
   END IF;
 
-  IF v_profile.trial_ends_at IS NOT NULL AND now() < v_profile.trial_ends_at THEN
-    RETURN 'trialing';
-  END IF;
-
   v_period := to_char(now() AT TIME ZONE 'Europe/Madrid', 'YYYY-MM');
 
   SELECT count INTO v_count
@@ -119,7 +116,7 @@ REVOKE ALL ON FUNCTION public.fn_resolve_access_state(uuid) FROM PUBLIC, anon, a
 GRANT EXECUTE ON FUNCTION public.fn_resolve_access_state(uuid) TO service_role;
 
 -- =============================================================================
--- 3. handle_new_user — trial de 14 días (SIN cambiar la duración actual)
+-- 3. handle_new_user — alta directa en la capa gratuita (SIN trial premium)
 -- =============================================================================
 
 CREATE OR REPLACE FUNCTION public.handle_new_user()
@@ -131,12 +128,11 @@ AS $$
 BEGIN
   PERFORM pg_advisory_xact_lock(hashtext('kakebo:founder_capture'));
 
-  INSERT INTO public.profiles (id, tier, trial_started_at, trial_ends_at, is_founder)
+  -- Sin trial: trial_started_at y trial_ends_at no se rellenan (NULL). La cuenta nueva es free desde el primer día.
+  INSERT INTO public.profiles (id, tier, is_founder)
   VALUES (
     new.id,
     'free',
-    now(),
-    now() + interval '14 days',
     false
   );
 

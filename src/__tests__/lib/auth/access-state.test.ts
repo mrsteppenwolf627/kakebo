@@ -18,7 +18,7 @@ function baseProfile(overrides: Partial<AccessProfile> = {}): AccessProfile {
   };
 }
 
-describe("resolveAccessState — prioridad de los 6 estados", () => {
+describe("resolveAccessState — prioridad de los 5 estados (sin trial premium)", () => {
   it("founder gana siempre, aunque el resto de campos digan lo contrario", () => {
     const profile = baseProfile({
       is_founder: true,
@@ -51,26 +51,29 @@ describe("resolveAccessState — prioridad de los 6 estados", () => {
     ).toBe("plus_canceled_pending");
   });
 
-  it("trialing cuando trial_ends_at está en el futuro y no hay founder ni Plus vigente", () => {
+  it("un trial_ends_at en el futuro NO concede acceso premium: no hay trial, cae a la capa gratuita", () => {
     const profile = baseProfile({
       trial_ends_at: new Date(NOW.getTime() + 1000 * 60 * 60 * 24 * 5).toISOString(),
     });
     expect(
       resolveAccessState(profile, { expensesThisMonth: 0, now: NOW })
-    ).toBe("trialing");
+    ).toBe("free_under_limit");
+    expect(
+      resolveAccessState(profile, { expensesThisMonth: 30, now: NOW })
+    ).toBe("free_readonly");
   });
 
-  it("un plus_access_until ya vencido no bloquea caer a trialing si el trial sigue vigente", () => {
+  it("un plus_access_until vencido con trial_ends_at futuro cae igualmente a la capa gratuita", () => {
     const profile = baseProfile({
       plus_access_until: new Date(NOW.getTime() - 1000).toISOString(),
       trial_ends_at: new Date(NOW.getTime() + 1000 * 60 * 60 * 24).toISOString(),
     });
     expect(
       resolveAccessState(profile, { expensesThisMonth: 0, now: NOW })
-    ).toBe("trialing");
+    ).toBe("free_under_limit");
   });
 
-  it("free_under_limit cuando no hay founder/Plus/trial vigente y quedan menos de 30 gastos este mes", () => {
+  it("free_under_limit cuando no hay founder/Plus vigente y quedan menos de 30 gastos este mes", () => {
     const profile = baseProfile();
     expect(
       resolveAccessState(profile, { expensesThisMonth: 29, now: NOW })
@@ -91,12 +94,6 @@ describe("resolveAccessState — prioridad de los 6 estados", () => {
     ).toBe("free_readonly");
   });
 
-  it("trial recién expirado (now === trial_ends_at) cuenta como expirado, no como trialing", () => {
-    const profile = baseProfile({ trial_ends_at: NOW.toISOString() });
-    expect(
-      resolveAccessState(profile, { expensesThisMonth: 0, now: NOW })
-    ).toBe("free_under_limit");
-  });
 });
 
 describe("resolveAccessState — campos heredados tier/manual_override nunca conceden permisos", () => {
@@ -137,13 +134,6 @@ describe("getAccessPermissions — permisos de IA y exportación", () => {
     );
     expect(getAccessPermissions("plus_active").canExport).toBe(true);
   });
-
-  it("trialing: IA permitida, exportación NO permitida", () => {
-    const perms = getAccessPermissions("trialing");
-    expect(perms.canUseAI).toBe(true);
-    expect(perms.canExport).toBe(false);
-  });
-
   it("free_under_limit: sin IA, sin exportación, pero puede crear/editar gastos", () => {
     const perms = getAccessPermissions("free_under_limit");
     expect(perms.canUseAI).toBe(false);
@@ -166,7 +156,6 @@ describe("getAccessPermissions — permisos de IA y exportación", () => {
       "founder",
       "plus_active",
       "plus_canceled_pending",
-      "trialing",
       "free_under_limit",
       "free_readonly",
     ] as const;

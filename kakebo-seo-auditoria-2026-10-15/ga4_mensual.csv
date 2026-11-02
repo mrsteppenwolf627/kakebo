@@ -1,0 +1,9 @@
+# Fuente: GA4 metodokakebo, Adquisicion de trafico (sesiones por grupo de canales), por rango mensual. Sin datos entre 2026-04-15 y 2026-05-31 ni en 2025-10-15 a 2026-04-14 (la propiedad empieza a registrar en junio 2026).
+mes,sesiones,sesiones_con_interaccion,porcentaje_interaccion,tiempo_interaccion_medio,eventos,eventos_clave,organic_search,direct,referral,organic_social,ai_assistant,paid_search,unassigned
+2026-06,72,44,61.11%,1 min 09 s,479,0,45,15,3,2,0,6,1
+2026-07,381,216,56.69%,1 min 08 s,18882,0,243,117,10,6,3,0,1
+2026-08,543,288,53.04%,1 min 31 s,3889,0,336,158,24,20,2,0,2
+2026-09,915,535,58.47%,1 min 20 s,6576,143,597,193,112,8,4,0,1
+2026-10 (1-14),363,201,55.37%,1 min 08 s,2781,6,230,56,69,2,1,0,4
+SUMA_MESES,2274,1284,,,32607,149,1451,539,218,38,10,6,12
+TOTAL_PERIODO_GA4,2279,1287,56.47%,1 min 18 s,32607,149,1455,540,218,38,10,6,9

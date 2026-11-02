@@ -3,7 +3,7 @@
 -- Ver supabase/deferred/freemium/README.md y docs/planning/phase3b-migration-runbook.md.
 --
 -- Sustituye fn_create_expense por la versión que aplica el límite gratuito (KB001):
---   * founder, legacy_full, plus_active y trialing: sin límite (siguen contando).
+--   * founder, legacy_full y plus_active: sin límite (siguen contando).
 --   * free_under_limit: hasta 30 creaciones por mes natural (Europe/Madrid), de forma atómica.
 --   * free_readonly: rechaza con KB001.
 -- Las validaciones técnicas y los códigos KB002 son idénticos a la versión compatible.

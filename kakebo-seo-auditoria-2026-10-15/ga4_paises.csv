@@ -1,0 +1,12 @@
+# Fuente: GA4 metodokakebo, Detalles demograficos: Pais (top 10 de 63), 2026-04-15 a 2026-10-14. Total usuarios activos 1593
+pais,usuarios_activos,pct_usuarios,sesiones_con_interaccion,porcentaje_interaccion,tiempo_interaccion_medio_por_usuario,eventos,eventos_clave
+Spain,658,41.31%,774,66.78%,3 min 03 s,26663,92
+United States,171,10.73%,34,18.78%,30 s,816,1
+Singapore,131,8.22%,25,19.08%,1 s,455,0
+Colombia,108,6.78%,98,68.53%,1 min 10 s,988,12
+Mexico,98,6.15%,90,64.29%,1 min 51 s,959,17
+(not set),47,2.95%,0,0%,0 s,144,0
+Argentina,43,2.70%,46,79.31%,1 min 58 s,398,3
+Italy,41,2.57%,28,59.57%,1 min 09 s,274,0
+China,29,1.82%,0,0%,0 s,90,0
+Chile,27,1.69%,33,73.33%,1 min 07 s,255,5

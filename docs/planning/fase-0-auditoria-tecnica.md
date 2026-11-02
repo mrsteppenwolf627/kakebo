@@ -1,6 +1,6 @@
 # Fase 0 — Auditoría técnica de partida (Kakebo)
 
-> **Nota 2026-10-06 (auditoría histórica del 2026-09-14):** las "decisiones de producto ya cerradas" de este informe (prueba de 30 días, precios) fueron revisadas. Vigente (ADR-003): capa gratuita de 30 gastos/mes, sin IA/chatbot, sin PDF y sin funciones premium; trial **PENDIENTE DE DECISIÓN DEL PROPIETARIO**; nada de ello está activado. Ver `docs/planning/phase3b-migration-runbook.md`.
+> **Nota 2026-10-06 (auditoría histórica del 2026-09-14):** las "decisiones de producto ya cerradas" de este informe (prueba de 30 días, precios) fueron revisadas. Vigente (ADR-003): capa gratuita de 30 gastos/mes, sin IA/chatbot, sin PDF y sin funciones premium; sin trial premium; nada de ello está activado. Ver `docs/planning/phase3b-migration-runbook.md`.
 
 **Fecha de la auditoría:** 2026-09-14
 **Commit base auditado:** `4d7d1abfe1da600e165a55c53aab2a831cade3ba` (`main`, 2026-09-03 — "feat(analytics): track successful expense creation")
