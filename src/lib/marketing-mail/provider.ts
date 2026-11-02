@@ -35,6 +35,7 @@ export async function sendMarketingEmail(email: MarketingEmail): Promise<{ provi
 
   const apiKey = process.env.BREVO_API_KEY;
   const fromEmail = process.env.MARKETING_MAIL_FROM_EMAIL;
+  const replyTo = process.env.MARKETING_MAIL_REPLY_TO;
   const fromName = process.env.MARKETING_MAIL_FROM_NAME || "Kakebo";
   if (!apiKey || !fromEmail) throw new Error("Brevo marketing email variables are incomplete");
 
@@ -44,6 +45,7 @@ export async function sendMarketingEmail(email: MarketingEmail): Promise<{ provi
     body: JSON.stringify({
       sender: { email: fromEmail, name: fromName },
       to: [{ email: email.to }],
+      ...(replyTo ? { replyTo: { email: replyTo } } : {}),
       subject: email.subject,
       htmlContent: email.html,
       headers: { "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
