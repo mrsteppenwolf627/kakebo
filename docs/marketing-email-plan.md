@@ -32,7 +32,8 @@ Si no hay novedades en la semana 7, se sustituye por un consejo práctico. No se
 
 - El endpoint de previsualización permite comprobar audiencia y duplicados sin enviar.
 - El endpoint de envío requiere autenticación de administrador, una variable explícita y la confirmación `SEND`.
-- La automatización programada no se activa todavía; después de validar los primeros envíos se puede añadir un cron semanal que invoque el mismo runner.
+- La automatización programada usa un cron semanal los lunes a las 08:00 UTC. El ciclo y las campañas se calculan automáticamente y el identificador de entrega cambia por ciclo para permitir repetirlo sin duplicados.
+- La automatización permanece desactivada hasta configurar `CRON_SECRET` y cambiar `MARKETING_AUTOMATION_ENABLED=true` después de validar un envío de prueba.
 - Cada envío y fallo se registra en `marketing_email_events`, asociado al usuario y a la campaña.
 - Cada mensaje incluye baja individual y el proveedor debe mantener sus supresiones.
 
@@ -42,3 +43,4 @@ Si no hay novedades en la semana 7, se sustituye por un consejo práctico. No se
 2. Confirmar en producción `MARKETING_MAIL_PROVIDER`, `RESEND_API_KEY`, `MARKETING_MAIL_FROM_EMAIL`, `MARKETING_UNSUBSCRIBE_SECRET` y el dominio remitente.
 3. Hacer un envío de prueba a una cuenta propia.
 4. Activar el primer envío manual y observar rebotes, bajas y respuestas antes de programar el ciclo.
+5. Activar la automatización semanal con `MARKETING_AUTOMATION_ENABLED=true`.

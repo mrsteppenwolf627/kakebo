@@ -10,6 +10,8 @@ export const MARKETING_CAMPAIGNS = {
   product_news: { type: "Novedades", subject: "Novedades de Kakebo" },
 } as const;
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://www.metodokakebo.com";
+
 export type MarketingCampaignKey = keyof typeof MARKETING_CAMPAIGNS;
 
 export function isMarketingCampaignKey(value: string): value is MarketingCampaignKey {
@@ -29,7 +31,7 @@ function campaignBody(campaignKey: MarketingCampaignKey): string {
   }
 }
 
-export async function getMarketingAudience(campaignKey: MarketingCampaignKey, limit = 100) {
+export async function getMarketingAudience(campaignKey: string, limit = 100) {
   const admin = createAdminClient();
   const [{ data: preferences, error: preferencesError }, { data: events, error: eventsError }] = await Promise.all([
     admin.from("communication_preferences").select("user_id, marketing_email_consent, unsubscribed_at"),
@@ -55,8 +57,8 @@ export async function previewMarketingCampaign(campaignKey: MarketingCampaignKey
   return { campaignKey, definition: MARKETING_CAMPAIGNS[campaignKey], count: recipients.length, recipients };
 }
 
-export async function sendMarketingCampaign(campaignKey: MarketingCampaignKey, limit = 100) {
-  const recipients = await getMarketingAudience(campaignKey, limit);
+export async function sendMarketingCampaign(campaignKey: MarketingCampaignKey, limit = 100, deliveryKey: string = campaignKey) {
+  const recipients = await getMarketingAudience(deliveryKey, limit);
   const definition = MARKETING_CAMPAIGNS[campaignKey];
   const results = [] as Array<{ userId: string; email: string; status: string; messageId?: string; error?: string }>;
 
@@ -67,13 +69,15 @@ export async function sendMarketingCampaign(campaignKey: MarketingCampaignKey, l
         preheader: definition.type,
         bodyHtml: campaignBody(campaignKey),
         unsubscribeUrl: createUnsubscribeUrl(recipient.userId),
+        ctaLabel: "Abrir mi Kakebo",
+        ctaUrl: `${APP_URL}/app`,
       });
       const delivery = await sendMarketingEmail({
         userId: recipient.userId,
         to: recipient.email,
         subject: definition.subject,
         html,
-        campaignKey,
+        campaignKey: deliveryKey,
       });
       results.push({ userId: recipient.userId, email: recipient.email, status: "sent", messageId: delivery.messageId });
     } catch (error) {
