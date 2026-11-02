@@ -48,6 +48,20 @@
         "moreInfo": "Política de privacidad",
         "accept": "Aceptar"
     },
+    "MarketingConsent": {
+        "title": "Hemos actualizado la privacidad",
+        "description": "Puedes elegir si quieres recibir recordatorios de uso, consejos y novedades de Kakebo. Es opcional y no afecta al funcionamiento de la aplicación.",
+        "marketingConsent": "Quiero recibir emails de Kakebo con recordatorios, consejos y novedades.",
+        "privacyLink": "Leer la política de privacidad",
+        "continueWithout": "Continuar sin aceptar",
+        "save": "Guardar preferencias",
+        "saving": "Guardando...",
+        "saved": "Preferencias guardadas.",
+        "error": "No hemos podido guardar la preferencia. Inténtalo de nuevo.",
+        "settingsTitle": "Comunicaciones por email",
+        "settingsDescription": "Puedes activar o retirar en cualquier momento los emails opcionales de Kakebo. Los avisos técnicos y necesarios del servicio son independientes.",
+        "metaVersion": "2026-11-02"
+    },
     "Hero": {
         "badge": "Registra gastos con intención",
         "title": "Kakebo Online: <br className=\"hidden sm:inline\" />App de Control de Gastos con el Método Japonés",
@@ -1359,7 +1373,7 @@
             "description": "Cómo gestionamos tus datos en Kakebo AI."
         },
         "title": "Política de Privacidad",
-        "lastUpdate": "Última actualización: {year}",
+        "lastUpdate": "Última actualización: 2 de noviembre de 2026",
         "sections": {
             "info": {
                 "title": "1. Información que Recopilamos",
@@ -1371,7 +1385,8 @@
                 "list": {
                     "i1": "Proporcionar, mantener y mejorar nuestros servicios.",
                     "i2": "Mantener tu cuenta activa y segura.",
-                    "i3": "Enviarte notificaciones técnicas o de soporte."
+                    "i3": "Enviarte notificaciones técnicas o de soporte.",
+                    "i4": "Enviarte recordatorios, consejos y novedades de Kakebo solo si lo autorizas expresamente. Puedes retirar esta autorización en cualquier momento desde Ajustes."
                 }
             },
             "payments": {
@@ -1383,8 +1398,12 @@
                 "title": "4. Compartir Información",
                 "content": "No vendemos tus datos personales. Solo compartimos información con proveedores de servicios esenciales para operar la aplicación (como hosting), bajo estrictas cláusulas de confidencialidad."
             },
+            "marketing": {
+                "title": "5. Comunicaciones de marketing",
+                "content": "Los emails de recordatorios, consejos y novedades son opcionales y requieren tu consentimiento separado. Guardamos la fecha, el origen y la versión de la política asociada a tu consentimiento para poder demostrarlo. Cada email incluye un enlace sencillo para darse de baja."
+            },
             "rights": {
-                "title": "5. Tus Derechos",
+                "title": "6. Tus Derechos",
                 "content": "Tienes derecho a acceder, rectificar o eliminar tus datos personales. Puedes hacerlo desde la configuración de tu cuenta o contactándonos."
             }
         }

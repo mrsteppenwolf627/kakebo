@@ -48,6 +48,20 @@
         "moreInfo": "Privacy policy",
         "accept": "Accept"
     },
+    "MarketingConsent": {
+        "title": "We updated our privacy information",
+        "description": "Choose whether you want to receive Kakebo usage reminders, tips, and news. It is optional and does not affect how the app works.",
+        "marketingConsent": "I want to receive Kakebo emails with reminders, tips, and news.",
+        "privacyLink": "Read the privacy policy",
+        "continueWithout": "Continue without opting in",
+        "save": "Save preferences",
+        "saving": "Saving...",
+        "saved": "Preferences saved.",
+        "error": "We could not save your preference. Please try again.",
+        "settingsTitle": "Email communications",
+        "settingsDescription": "You can enable or withdraw optional Kakebo emails at any time. Necessary technical service messages are separate.",
+        "metaVersion": "2026-11-02"
+    },
     "Hero": {
         "badge": "Track expenses with intention",
         "title": "Kakebo Online: <br className=\"hidden sm:inline\" />Expense Tracker App with the Japanese Method",
@@ -1312,7 +1326,7 @@
             "description": "How we manage your data at Kakebo AI."
         },
         "title": "Privacy Policy",
-        "lastUpdate": "Last update: {year}",
+        "lastUpdate": "Last update: November 2, 2026",
         "sections": {
             "info": {
                 "title": "1. Information We Collect",
@@ -1324,7 +1338,8 @@
                 "list": {
                     "i1": "Provide, maintain, and improve our services.",
                     "i2": "Keep your account active and secure.",
-                    "i3": "Send you technical or support notifications."
+                    "i3": "Send you technical or support notifications.",
+                    "i4": "Send you Kakebo reminders, tips, and news only if you explicitly opt in. You can withdraw this choice at any time from Settings."
                 }
             },
             "payments": {
@@ -1336,8 +1351,12 @@
                 "title": "4. Sharing Information",
                 "content": "We do not sell your personal data. We only share information with essential service providers (such as hosting) necessary to operate the application, under strict confidentiality clauses."
             },
+            "marketing": {
+                "title": "5. Marketing communications",
+                "content": "Emails containing reminders, tips, and news are optional and require separate consent. We store the date, source, and policy version associated with your consent so we can demonstrate it. Every email includes a simple unsubscribe link."
+            },
             "rights": {
-                "title": "5. Your Rights",
+                "title": "6. Your Rights",
                 "content": "You have the right to access, rectify, or delete your personal data. You can do this from your account settings or by contacting us."
             }
         }

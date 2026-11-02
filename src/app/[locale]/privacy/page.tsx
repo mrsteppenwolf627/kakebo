@@ -49,6 +49,9 @@ export default function PrivacyPage() {
                     <h2>{t("sections.sharing.title")}</h2>
                     <p>{t("sections.sharing.content")}</p>
 
+                    <h2>{t("sections.marketing.title")}</h2>
+                    <p>{t("sections.marketing.content")}</p>
+
                     <h2>{t("sections.rights.title")}</h2>
                     <p>{t("sections.rights.content")}</p>
                 </div>

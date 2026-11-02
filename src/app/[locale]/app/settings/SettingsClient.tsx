@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { useTranslations } from "next-intl";
+import CommunicationPreferencesCard from "@/components/CommunicationPreferencesCard";
 
 type UserSettingsRow = {
     user_id: string;
@@ -493,6 +494,8 @@ export default function SettingsClient() {
                             </label>
                             <p className="text-xs text-muted-foreground">{tGen("collectiveLearningDesc")}</p>
                         </div>
+
+                        <CommunicationPreferencesCard />
 
                         <button
                             onClick={handleSave}
