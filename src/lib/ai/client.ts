@@ -1,14 +1,17 @@
 import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 
 /**
- * OpenAI client singleton
+ * Provider clients. The active chat provider is selected with AI_PROVIDER.
  *
- * Uses OPENAI_API_KEY from environment variables.
- * In development, add to .env.local:
- *   OPENAI_API_KEY=sk-...
+ * Uses provider credentials from environment variables.
+ * In development, add the selected provider's key to .env.local.
  */
 
-if (!process.env.OPENAI_API_KEY) {
+export const AI_PROVIDER = process.env.AI_PROVIDER === "anthropic" ? "anthropic" : "openai";
+export const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || "claude-haiku-5-5";
+
+if (AI_PROVIDER === "openai" && !process.env.OPENAI_API_KEY) {
   console.warn(
     "⚠️ OPENAI_API_KEY not found. AI features will not work. Add it to .env.local"
   );
@@ -17,6 +20,17 @@ if (!process.env.OPENAI_API_KEY) {
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || "",
   dangerouslyAllowBrowser: true,
+});
+
+if (AI_PROVIDER === "anthropic" && !process.env.ANTHROPIC_API_KEY) {
+  console.warn(
+    "⚠️ ANTHROPIC_API_KEY not found. Anthropic AI features will not work. Add it to .env.local"
+  );
+}
+
+export const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY || "",
+  dangerouslyAllowBrowser: process.env.NODE_ENV === "test",
 });
 
 /**
@@ -49,6 +63,20 @@ export const MODEL_CONFIG = {
     outputCostPer1M: 10,
     maxTokens: 128000,
     description: "More capable, better for complex reasoning",
+  },
+  "claude-haiku-5-5": {
+    name: "Claude Haiku 5.5",
+    inputCostPer1M: 0.1,
+    outputCostPer1M: 0.5,
+    maxTokens: 1000000,
+    description: "Fast and economical Anthropic model for high-volume agent work",
+  },
+  "claude-sonnet-5-5": {
+    name: "Claude Sonnet 5.5",
+    inputCostPer1M: 2,
+    outputCostPer1M: 10,
+    maxTokens: 1000000,
+    description: "Higher-capability Anthropic model for complex reasoning",
   },
 } as const;
 

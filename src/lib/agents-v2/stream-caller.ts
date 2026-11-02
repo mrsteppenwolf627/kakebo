@@ -1,5 +1,6 @@
 /**
- * Streaming version of the OpenAI Function Calling orchestrator (v2)
+ * Streaming provider-neutral orchestrator (v2).
+ * OpenAI and Anthropic streams are normalized before reaching this layer.
  *
  * Emits SSE-style events via callback throughout the request lifecycle:
  *
@@ -29,12 +30,47 @@
 
 import { SupabaseClient } from "@supabase/supabase-js";
 import { apiLogger } from "@/lib/logger";
-import { openai, DEFAULT_MODEL, calculateCost } from "@/lib/ai/client";
+import {
+  openai,
+  DEFAULT_MODEL as OPENAI_DEFAULT_MODEL,
+  calculateCost,
+} from "@/lib/ai/client";
+import type { ModelId } from "@/lib/ai/client";
 import type {
   ChatCompletionMessageParam,
   ChatCompletionAssistantMessageParam,
-  ChatCompletionChunk,
+  ChatCompletionTool,
 } from "openai/resources/chat/completions";
+import {
+  createAnthropicStream,
+  type ProviderStreamChunk,
+} from "./anthropic-adapter";
+
+const useAnthropic =
+  process.env.AI_PROVIDER === "anthropic" &&
+  Boolean(process.env.ANTHROPIC_API_KEY) &&
+  process.env.NODE_ENV !== "test";
+const anthropicModel = (process.env.ANTHROPIC_MODEL || "claude-haiku-5-5") as ModelId;
+const DEFAULT_MODEL: ModelId = useAnthropic ? anthropicModel : OPENAI_DEFAULT_MODEL;
+
+async function createProviderStream(params: {
+  messages: ChatCompletionMessageParam[];
+  tools?: ChatCompletionTool[];
+}): Promise<AsyncIterable<ProviderStreamChunk>> {
+  if (useAnthropic) {
+    return createAnthropicStream(params);
+  }
+
+  return openai.chat.completions.create({
+    model: DEFAULT_MODEL,
+    messages: params.messages,
+    ...(params.tools
+      ? { tools: params.tools, tool_choice: "auto" as const }
+      : {}),
+    stream: true,
+    stream_options: { include_usage: true },
+  }) as Promise<AsyncIterable<ProviderStreamChunk>>;
+}
 
 import { KAKEBO_SYSTEM_PROMPT } from "./prompts";
 import { KAKEBO_TOOLS, TOOL_METADATA } from "./tools/definitions";
@@ -170,7 +206,7 @@ async function executeAnalyzeSpendingPatternCall(
  * placeholder) y nunca registra su contenido en logs/métricas.
  */
 async function consumeGuardedSynthesisStream(
-  stream: AsyncIterable<ChatCompletionChunk>,
+  stream: AsyncIterable<ProviderStreamChunk>,
   onEvent: StreamEventCallback,
   userId: string
 ): Promise<{ inputTokens: number; outputTokens: number; blocked: boolean }> {
@@ -361,11 +397,8 @@ export async function processFunctionCallingStream(
         ...toolMessages,
       ];
 
-      const confirmedSynthesisStream = await openai.chat.completions.create({
-        model: DEFAULT_MODEL,
+      const confirmedSynthesisStream = await createProviderStream({
         messages: messagesWithTools,
-        stream: true,
-        stream_options: { include_usage: true },
       });
 
       const confirmedGuarded = await consumeGuardedSynthesisStream(
@@ -408,13 +441,9 @@ export async function processFunctionCallingStream(
     // ── First LLM call — stream: true ─────────────────────────────────────
     // • Direct response: text chunks arrive → emit as "chunk" events
     // • Tool response: tool_call deltas buffered → no text emitted
-    const firstStream = await openai.chat.completions.create({
-      model: DEFAULT_MODEL,
+    const firstStream = await createProviderStream({
       messages,
       tools: KAKEBO_TOOLS,
-      tool_choice: "auto",
-      stream: true,
-      stream_options: { include_usage: true },
     });
 
     // Buffer for assembling tool_call argument fragments
@@ -778,11 +807,8 @@ export async function processFunctionCallingStream(
     ];
 
     // ── Second LLM call — stream synthesis ───────────────────────────────
-    const secondStream = await openai.chat.completions.create({
-      model: DEFAULT_MODEL,
+    const secondStream = await createProviderStream({
       messages: messagesWithTools,
-      stream: true,
-      stream_options: { include_usage: true },
     });
 
     const secondGuarded = await consumeGuardedSynthesisStream(secondStream, onEvent, userId);
