@@ -149,19 +149,17 @@ export const POST = withLogging(async (request: NextRequest) => {
       }
     }
 
-    // Create expense
-    const { data, error } = await supabase
-      .from("expenses")
-      .insert({
-        user_id: user.id,
-        month_id: monthId,
-        date: input.date,
-        amount: input.amount,
-        category: input.category,
-        note: input.note || "",
-      })
-      .select()
-      .single();
+    // Create expense — única vía permitida: fn_create_expense (Fase 3.B).
+    // Resuelve internamente el estado de acceso, aplica el límite mensual
+    // gratuito de forma atómica y revalida propiedad/cierre del mes. Ver
+    // docs/planning/phase-3-monetizacion.md §3.B.2.
+    const { data, error } = await supabase.rpc("fn_create_expense", {
+      p_month_id: monthId,
+      p_date: input.date,
+      p_amount: input.amount,
+      p_category: input.category,
+      p_note: input.note || "",
+    });
 
     if (error) throw error;
 

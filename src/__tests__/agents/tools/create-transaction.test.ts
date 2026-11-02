@@ -11,10 +11,15 @@ describe("createTransaction", () => {
       insert: vi.fn().mockReturnThis(),
       select: vi.fn().mockReturnThis(),
       single: vi.fn().mockReturnThis(),
+      // Fase 3.B: los gastos se crean vía fn_create_expense (RPC), no INSERT
+      // directo -- ver docs/planning/phase-3-monetizacion.md §3.B.2. Los
+      // ingresos (incomes) no están sujetos al límite gratuito y se mantienen
+      // como INSERT directo, sin cambios.
+      rpc: vi.fn(),
     };
   });
 
-  it("should create an expense successfully", async () => {
+  it("should create an expense successfully (via fn_create_expense RPC)", async () => {
     const mockInsertedExpense = {
       id: "expense-uuid-123",
       user_id: userId,
@@ -24,7 +29,7 @@ describe("createTransaction", () => {
       date: "2026-02-12",
     };
 
-    mockSupabase.single.mockResolvedValue({
+    mockSupabase.rpc.mockResolvedValue({
       data: mockInsertedExpense,
       error: null,
     });
@@ -42,7 +47,26 @@ describe("createTransaction", () => {
     expect(result.amount).toBe(50);
     expect(result.category).toBe("survival");
     expect(result.message).toContain("Gasto de 50€");
-    expect(mockSupabase.from).toHaveBeenCalledWith("expenses");
+    expect(mockSupabase.rpc).toHaveBeenCalledWith(
+      "fn_create_expense",
+      expect.objectContaining({ p_amount: 50, p_category: "supervivencia" })
+    );
+  });
+
+  it("should surface the monthly free-tier limit as a clean error message", async () => {
+    mockSupabase.rpc.mockResolvedValue({
+      data: null,
+      error: { code: "KB001", message: "Límite mensual de gastos alcanzado" },
+    });
+
+    await expect(
+      createTransaction(mockSupabase, userId, {
+        type: "expense",
+        amount: 12,
+        concept: "Café",
+        category: "optional",
+      })
+    ).rejects.toThrow(/límite de 30 gastos/i);
   });
 
   it("should create an income successfully", async () => {
@@ -83,7 +107,7 @@ describe("createTransaction", () => {
       date: "2026-02-12",
     };
 
-    mockSupabase.single.mockResolvedValue({
+    mockSupabase.rpc.mockResolvedValue({
       data: mockInsertedExpense,
       error: null,
     });
@@ -95,10 +119,11 @@ describe("createTransaction", () => {
       category: "optional",
     });
 
-    // Verify insert was called with Spanish category
-    expect(mockSupabase.insert).toHaveBeenCalledWith(
+    // Verify the RPC was called with the Spanish category
+    expect(mockSupabase.rpc).toHaveBeenCalledWith(
+      "fn_create_expense",
       expect.objectContaining({
-        category: "opcional",
+        p_category: "opcional",
       })
     );
   });
@@ -113,7 +138,7 @@ describe("createTransaction", () => {
       date: expect.any(String),
     };
 
-    mockSupabase.single.mockResolvedValue({
+    mockSupabase.rpc.mockResolvedValue({
       data: mockInsertedExpense,
       error: null,
     });
@@ -176,7 +201,7 @@ describe("createTransaction", () => {
   });
 
   it("should handle database errors gracefully", async () => {
-    mockSupabase.single.mockResolvedValue({
+    mockSupabase.rpc.mockResolvedValue({
       data: null,
       error: { message: "Database connection failed" },
     });
@@ -209,7 +234,7 @@ describe("createTransaction", () => {
         date: "2026-02-12",
       };
 
-      mockSupabase.single.mockResolvedValue({
+      mockSupabase.rpc.mockResolvedValue({
         data: mockData,
         error: null,
       });
@@ -221,9 +246,10 @@ describe("createTransaction", () => {
         category: english,
       });
 
-      expect(mockSupabase.insert).toHaveBeenCalledWith(
+      expect(mockSupabase.rpc).toHaveBeenCalledWith(
+        "fn_create_expense",
         expect.objectContaining({
-          category: spanish,
+          p_category: spanish,
         })
       );
     }
