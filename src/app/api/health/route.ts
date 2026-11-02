@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
  * GET /api/health
@@ -11,7 +11,10 @@ export async function GET() {
   // Check Supabase connection
   let dbStatus = "ok";
   try {
-    const supabase = await createClient();
+    // This endpoint is intentionally unauthenticated. Use the server-only
+    // admin client so RLS for user-owned settings does not report a healthy
+    // production database as unavailable to anonymous monitoring checks.
+    const supabase = createAdminClient();
     const { error } = await supabase.from("user_settings").select("id").limit(1);
     if (error) {
       dbStatus = "error";
