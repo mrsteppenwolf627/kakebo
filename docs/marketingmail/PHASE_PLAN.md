@@ -15,7 +15,7 @@ Preparar una comunicación por correo útil y conforme a las preferencias de los
 
 ## Pendiente antes de enviar correos
 
-- Elegir proveedor de envío y configurar dominio, SPF, DKIM y DMARC.
+- Terminar la configuración de Resend, verificar el dominio y configurar sus DNS, DKIM y DMARC.
 - Definir categorías de correo y plantillas.
 - Revisar textos legales y base jurídica con asesoría profesional.
 - Crear un proceso de baja visible en cada correo y una lista de supresión.

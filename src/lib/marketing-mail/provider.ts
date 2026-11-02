@@ -30,15 +30,37 @@ export function createUnsubscribeUrl(userId: string): string {
 
 export async function sendMarketingEmail(email: MarketingEmail): Promise<{ provider: string; messageId?: string }> {
   const provider = process.env.MARKETING_MAIL_PROVIDER;
-  if (provider !== "brevo") {
+  if (provider !== "brevo" && provider !== "resend") {
     throw new Error("Marketing email provider is not configured for sending");
   }
 
-  const apiKey = process.env.BREVO_API_KEY;
+  const apiKey = provider === "resend" ? process.env.RESEND_API_KEY : process.env.BREVO_API_KEY;
   const fromEmail = process.env.MARKETING_MAIL_FROM_EMAIL;
   const replyTo = process.env.MARKETING_MAIL_REPLY_TO;
   const fromName = process.env.MARKETING_MAIL_FROM_NAME || "Kakebo";
-  if (!apiKey || !fromEmail) throw new Error("Brevo marketing email variables are incomplete");
+  if (!apiKey || !fromEmail) throw new Error(`${provider} marketing email variables are incomplete`);
+
+  if (provider === "resend") {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
+      body: JSON.stringify({
+        from: `${fromName} <${fromEmail}>`,
+        to: [email.to],
+        subject: email.subject,
+        html: email.html,
+        ...(replyTo ? { reply_to: replyTo } : {}),
+      }),
+    });
+    if (!response.ok) {
+      const error = new Error(`Resend returned HTTP ${response.status}`);
+      await recordMarketingEvent(email, { eventType: "failed", errorCode: String(response.status), provider: "resend" });
+      throw error;
+    }
+    const data = (await response.json()) as { id?: string };
+    await recordMarketingEvent(email, { eventType: "sent", providerMessageId: data.id, provider: "resend" });
+    return { provider: "resend", messageId: data.id };
+  }
 
   const response = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
@@ -55,23 +77,23 @@ export async function sendMarketingEmail(email: MarketingEmail): Promise<{ provi
 
   if (!response.ok) {
     const error = new Error(`Brevo returned HTTP ${response.status}`);
-    await recordMarketingEvent(email, { eventType: "failed", errorCode: String(response.status) });
+    await recordMarketingEvent(email, { eventType: "failed", errorCode: String(response.status), provider: "brevo" });
     throw error;
   }
   const data = (await response.json()) as { messageId?: string };
-  await recordMarketingEvent(email, { eventType: "sent", providerMessageId: data.messageId });
+  await recordMarketingEvent(email, { eventType: "sent", providerMessageId: data.messageId, provider: "brevo" });
   return { provider: "brevo", messageId: data.messageId };
 }
 
 async function recordMarketingEvent(
   email: MarketingEmail,
-  details: { eventType: string; providerMessageId?: string; errorCode?: string },
+  details: { eventType: string; providerMessageId?: string; errorCode?: string; provider?: string },
 ): Promise<void> {
   try {
     await createAdminClient().from("marketing_email_events").insert({
       campaign_key: email.campaignKey,
       event_type: details.eventType,
-      provider: "brevo",
+      provider: details.provider || "brevo",
       provider_message_id: details.providerMessageId,
       error_code: details.errorCode,
       metadata: { recipient: email.to },
