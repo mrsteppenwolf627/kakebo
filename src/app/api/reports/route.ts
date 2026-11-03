@@ -49,6 +49,15 @@ function sum(rows: Array<{ amount: number | string | null }>) {
   return rows.reduce((total, row) => total + (Number(row.amount) || 0), 0);
 }
 
+function isAdminEmail(email: string | undefined): boolean {
+  const admins = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || "")
+    .split(",")
+    .map((item) => item.trim().toLowerCase())
+    .filter(Boolean);
+
+  return Boolean(email && admins.includes(email.trim().toLowerCase()));
+}
+
 export async function POST(request: NextRequest) {
   try {
     const user = await requireAuth();
@@ -66,7 +75,7 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient();
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
-      .select("is_admin,is_founder,plus_access_until")
+      .select("is_founder,plus_access_until")
       .eq("id", user.id)
       .single();
 
@@ -96,7 +105,9 @@ export async function POST(request: NextRequest) {
       throw legacyError;
     }
 
-    const hasReportAccess = Boolean(profile?.is_admin || profile?.is_founder || hasLegacyAccess || hasActivePlus);
+    // Admins are configured server-side by email. `profiles.is_admin` is not
+    // part of the production schema and must not be queried here.
+    const hasReportAccess = Boolean(isAdminEmail(user.email) || profile?.is_founder || hasLegacyAccess || hasActivePlus);
     if (!hasReportAccess) {
       return NextResponse.json(
         { error: { code: "premium_required", message: "Los informes son una función Plus. Activa una suscripción para utilizarlos." } },
@@ -209,3 +220,4 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: { code: "report_failed", message: "No se pudo preparar el informe." } }, { status: 500 });
   }
 }
+
