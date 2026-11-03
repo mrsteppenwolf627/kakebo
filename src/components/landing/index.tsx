@@ -8,5 +8,6 @@ export { SeoContent } from "./SeoContent";
 export { Testimonials } from "./Testimonials";
 export { SavingsSimulator } from "./SavingsSimulator";
 export { AlternativesSection } from "./AlternativesSection";
+export { ToolsSection } from "./ToolsSection";
 export { CookieBanner } from "./CookieBanner";
 

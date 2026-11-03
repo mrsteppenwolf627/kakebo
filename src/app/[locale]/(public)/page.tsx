@@ -8,6 +8,7 @@ import {
   Testimonials,
   SavingsSimulator,
   AlternativesSection,
+  ToolsSection,
 } from "@/components/landing";
 import dynamic from "next/dynamic";
 
@@ -115,6 +116,8 @@ export default async function PublicHomePage({ params }: { params: Promise<{ loc
         </section>
 
         <DynamicAlternativesSection />
+
+        <ToolsSection />
 
         <div id="faq">
           <DynamicFAQ />

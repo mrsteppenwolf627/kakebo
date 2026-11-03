@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/routing";
-import { ArrowRight, PieChart, TrendingUp } from "lucide-react";
+import { ArrowRight, PieChart, PiggyBank, TrendingUp } from "lucide-react";
 
 export function ToolsSection() {
     return (
@@ -16,7 +16,7 @@ export function ToolsSection() {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
                     {/* 50/30/20 Calculator Card */}
                     <Link
@@ -62,6 +62,30 @@ export function ToolsSection() {
 
                             <div className="pt-4 flex items-center text-sm font-medium text-destructive group-hover:text-destructive transition-colors">
                                 Ver pérdida de valor <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                            </div>
+                        </div>
+                    </Link>
+
+                    {/* Savings Calculator Card */}
+                    <Link
+                        href="/herramientas/calculadora-ahorro"
+                        className="group relative bg-card border border-border rounded-2xl p-6 sm:p-8 hover:border-primary/50 hover:shadow-md transition-all duration-300"
+                    >
+                        <div className="absolute top-8 right-8 bg-muted p-3 rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                            <PiggyBank className="w-6 h-6" />
+                        </div>
+
+                        <div className="space-y-4">
+                            <h3 className="text-2xl font-serif text-foreground group-hover:text-primary transition-colors">
+                                Calculadora de Ahorro
+                            </h3>
+                            <p className="text-muted-foreground font-light leading-relaxed">
+                                Calcula tu margen real de ahorro: ingresos menos gastos fijos y variables.
+                                Sin registro, directo en tu navegador.
+                            </p>
+
+                            <div className="pt-4 flex items-center text-sm font-medium text-primary">
+                                Calcular mi ahorro <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                             </div>
                         </div>
                     </Link>

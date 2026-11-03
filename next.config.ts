@@ -7,6 +7,22 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   trailingSlash: false,
+  async redirects() {
+    // Fase 0.1 pSEO: unifica /es/... (locale por defecto con prefijo) en la URL canónica sin prefijo.
+    // Se resuelve en next.config (antes del middleware de next-intl) para emitir 301/308 permanente.
+    return [
+      {
+        source: "/es",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/es/:path*",
+        destination: "/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
