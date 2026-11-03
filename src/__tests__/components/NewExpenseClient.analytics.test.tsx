@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, cleanup, fireEvent, waitFor } from "@testing-library/react";
 
 const trackMock = vi.fn();
+vi.mock("@/components/plus/PlusRequiredNotice", () => ({ PlusRequiredNotice: () => null }));
 vi.mock("@/lib/analytics", () => ({
   analytics: {
     track: (...args: unknown[]) => trackMock(...args),

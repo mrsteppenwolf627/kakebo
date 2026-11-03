@@ -1,0 +1,108 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen, waitFor, cleanup } from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
+import messages from "../../../messages/es.json";
+import ScannerClient from "@/components/scanner/ScannerClient";
+
+const TICKET_ID = "11111111-1111-4111-8111-111111111111";
+const PATH = "user/ticket/object";
+
+function json(data: unknown, status = 200) {
+  return { ok: status >= 200 && status < 300, status, json: async () => ({ success: true, data }) };
+}
+
+function failure(message: string, status = 503) {
+  return { ok: false, status, json: async () => ({ success: false, error: { message } }) };
+}
+
+function renderScanner() {
+  return render(<NextIntlClientProvider locale="es" messages={messages}><ScannerClient /></NextIntlClientProvider>);
+}
+
+describe("ScannerClient", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.stubGlobal("crypto", { randomUUID: () => "22222222-2222-4222-8222-222222222222" });
+  });
+  afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
+
+  it("sube, procesa, permite repartir un artículo y confirma solo cuando las sumas cuadran", async () => {
+    const fetchMock = vi.mocked(global.fetch);
+    fetchMock
+      .mockResolvedValueOnce(json({ remaining: 5, limit: 5 }) as Response)
+      .mockResolvedValueOnce(json({ tickets: [] }) as Response)
+      .mockResolvedValueOnce(json({ ticketId: TICKET_ID }) as Response)
+      .mockResolvedValueOnce(json({ upload: { url: "https://storage.test/upload", path: PATH } }) as Response)
+      .mockResolvedValueOnce({ ok: true, status: 200 } as Response)
+      .mockResolvedValueOnce(json({ ticketId: TICKET_ID, status: "uploaded" }) as Response)
+      .mockResolvedValueOnce(json({ ticketId: TICKET_ID, status: "needs_review", draftVersion: 1 }) as Response)
+      .mockResolvedValueOnce(json({ ticket: { id: TICKET_ID, status: "needs_review", draftVersion: 1, merchant: "Comercio", date: "2026-10-27", totalCents: 1000, currency: "EUR", lines: [{ id: "line-1", kind: "item", description: "Compra", amountCents: 1000, categoryProposal: null, category: null, allocations: [] }] } }) as Response)
+      .mockResolvedValueOnce(json({ draftVersion: 2 }) as Response)
+      .mockResolvedValueOnce(json({ expenses: [{ expenseId: "expense-1" }] }) as Response);
+
+    renderScanner();
+    const file = new File([new Uint8Array([1, 2, 3])], "ticket-private.jpg", { type: "image/jpeg" });
+    const imageInput = document.querySelectorAll<HTMLInputElement>('input[type="file"]')[1];
+    fireEvent.change(imageInput, { target: { files: [file] } });
+
+    await waitFor(() => expect(screen.getByRole("heading", { name: messages.Scanner.flow.reviewTitle })).toBeTruthy());
+    expect(screen.getByRole("button", { name: messages.Scanner.flow.confirm })).toBeDisabled();
+    const includeLine = screen.getByRole("checkbox", { name: messages.Scanner.flow.includeLine });
+    fireEvent.click(includeLine);
+    expect(screen.getByRole("checkbox", { name: messages.Scanner.flow.excludeLine })).toBeTruthy();
+    expect(screen.getByRole("button", { name: messages.Scanner.flow.confirm })).toBeDisabled();
+    fireEvent.click(screen.getByRole("checkbox", { name: messages.Scanner.flow.excludeLine }));
+    fireEvent.click(screen.getByRole("button", { name: messages.Scanner.flow.split }));
+
+    const selects = screen.getAllByRole("combobox");
+    fireEvent.change(selects[0], { target: { value: "survival" } });
+    fireEvent.change(selects[1], { target: { value: "culture" } });
+    fireEvent.change(document.getElementById("line-1-part-amount-0") as HTMLInputElement, { target: { value: "4" } });
+    fireEvent.change(document.getElementById("line-1-part-amount-1") as HTMLInputElement, { target: { value: "6" } });
+
+    await waitFor(() => expect(screen.getByRole("button", { name: messages.Scanner.flow.confirm })).toBeEnabled());
+    fireEvent.click(screen.getByRole("button", { name: messages.Scanner.flow.confirm }));
+    await waitFor(() => expect(screen.getByRole("heading", { name: messages.Scanner.flow.doneTitle })).toBeTruthy());
+    expect(fetchMock).toHaveBeenCalledTimes(10);
+    expect(fetchMock.mock.calls[9][1]).toMatchObject({ method: "POST" });
+    expect(JSON.parse(String(fetchMock.mock.calls[9][1]?.body))).toMatchObject({ userConfirmed: true, draftVersion: 2 });
+  });
+
+  it("reintenta una confirmación con la misma clave y sin reescribir el borrador", async () => {
+    const fetchMock = vi.mocked(global.fetch);
+    fetchMock
+      .mockResolvedValueOnce(json({ remaining: 5, limit: 5 }) as Response)
+      .mockResolvedValueOnce(json({ tickets: [] }) as Response)
+      .mockResolvedValueOnce(json({ ticketId: TICKET_ID }) as Response)
+      .mockResolvedValueOnce(json({ upload: { url: "https://storage.test/upload", path: PATH } }) as Response)
+      .mockResolvedValueOnce({ ok: true, status: 200 } as Response)
+      .mockResolvedValueOnce(json({ ticketId: TICKET_ID, status: "uploaded" }) as Response)
+      .mockResolvedValueOnce(json({ ticketId: TICKET_ID, status: "needs_review", draftVersion: 1 }) as Response)
+      .mockResolvedValueOnce(json({ ticket: { id: TICKET_ID, status: "needs_review", draftVersion: 1, merchant: "Comercio", date: "2026-10-27", totalCents: 1000, currency: "EUR", lines: [{ id: "line-1", kind: "item", description: "Compra", amountCents: 1000, categoryProposal: null, category: "survival", allocations: [] }] } }) as Response)
+      .mockResolvedValueOnce(json({ draftVersion: 2 }) as Response)
+      .mockResolvedValueOnce(failure("temporary failure") as Response)
+      .mockResolvedValueOnce(json({ expenses: [{ expenseId: "expense-1" }] }) as Response);
+
+    renderScanner();
+    const file = new File([new Uint8Array([1, 2, 3])], "ticket-private.jpg", { type: "image/jpeg" });
+    const imageInput = document.querySelectorAll<HTMLInputElement>('input[type="file"]')[1];
+    fireEvent.change(imageInput, { target: { files: [file] } });
+
+    await waitFor(() => expect(screen.getByRole("heading", { name: messages.Scanner.flow.reviewTitle })).toBeTruthy());
+    const confirmButton = screen.getByRole("button", { name: messages.Scanner.flow.confirm });
+    fireEvent.change(document.getElementById("scanner-merchant") as HTMLInputElement, { target: { value: "Comercio actualizado" } });
+    fireEvent.click(confirmButton);
+    await waitFor(() => expect(screen.getByText("temporary failure")).toBeTruthy());
+    fireEvent.click(confirmButton);
+    await waitFor(() => expect(screen.getByRole("heading", { name: messages.Scanner.flow.doneTitle })).toBeTruthy());
+
+    expect(fetchMock).toHaveBeenCalledTimes(11);
+    expect(fetchMock.mock.calls[9][0]).toContain(`/api/scanner/tickets/${TICKET_ID}/confirm`);
+    expect(fetchMock.mock.calls[10][0]).toContain(`/api/scanner/tickets/${TICKET_ID}/confirm`);
+    const firstBody = JSON.parse(String(fetchMock.mock.calls[9][1]?.body));
+    const secondBody = JSON.parse(String(fetchMock.mock.calls[10][1]?.body));
+    expect(firstBody).toMatchObject({ confirmKey: "22222222-2222-4222-8222-222222222222", draftVersion: 2, userConfirmed: true });
+    expect(secondBody).toEqual(firstBody);
+    expect(fetchMock.mock.calls.filter(([url]) => String(url).endsWith(`/api/scanner/tickets/${TICKET_ID}/draft`))).toHaveLength(1);
+  });
+});

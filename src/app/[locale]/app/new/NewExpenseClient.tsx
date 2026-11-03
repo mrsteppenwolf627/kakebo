@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/browser";
 import { canUsePremium, Profile } from "@/lib/auth/access-control";
 import { analytics } from "@/lib/analytics";
 import { useTranslations } from "next-intl";
+import { PlusRequiredNotice } from "@/components/plus/PlusRequiredNotice";
 
 const KAKEBO_CATEGORIES = {
   supervivencia: { labelKey: "supervivencia", color: "#dc2626" },
@@ -87,6 +88,7 @@ export default function NewExpensePage() {
   const [aiSuggestion, setAiSuggestion] = useState<AISuggestion | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
+  const [aiPlusRequired, setAiPlusRequired] = useState(false);
   const [suggestionAccepted, setSuggestionAccepted] = useState(false);
 
   // estado del mes (si viene ym)
@@ -180,6 +182,7 @@ export default function NewExpensePage() {
 
     setAiLoading(true);
     setAiError(null);
+    setAiPlusRequired(false);
     setAiSuggestion(null);
     setSuggestionAccepted(false);
 
@@ -190,9 +193,14 @@ export default function NewExpensePage() {
         body: JSON.stringify({ text: note }),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
+        if (response.status === 403 && data?.error?.code === "PLUS_REQUIRED") {
+          // Sugerencia de IA exclusiva de Plus: el formulario y el texto del usuario se conservan intactos.
+          setAiPlusRequired(true);
+          return;
+        }
         throw new Error(data.error?.message || data.error || "Error al clasificar");
       }
 
@@ -502,6 +510,7 @@ export default function NewExpensePage() {
                   </button>
                 )}
               </div>
+              {aiPlusRequired && <PlusRequiredNotice className="mt-2" />}
               {aiError && (
                 <p className="text-xs text-destructive">{aiError}</p>
               )}

@@ -40,9 +40,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       statusBarStyle: "default",
       title: "Kakebo AI",
     },
+    // Tamaños declarados = tamaño real del archivo (lo comprueba src/__tests__/seo/icons.test.ts).
     icons: {
-      icon: "/icon.png",
-      apple: "/icon.png",
+      icon: [{ url: "/icon.png", sizes: "192x192", type: "image/png" }],
+      apple: [{ url: "/icon.png", sizes: "192x192", type: "image/png" }],
     },
     openGraph: {
       title: t("ogTitle"),
@@ -102,6 +103,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import { pickClientMessages } from '@/i18n/client-messages';
 
 export default async function LocaleLayout({
   children,
@@ -117,9 +119,9 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  // Providing all messages to the client
-  // side is the easiest way to get started
-  const messages = await getMessages();
+  // Al cliente solo van los namespaces que leen componentes cliente (ver src/i18n/client-messages.ts).
+  // Las calculadoras reciben `Tools` de ToolMessages en sus propias páginas.
+  const messages = pickClientMessages(await getMessages());
 
   return (
     <html lang={locale} className={`${inter.variable} ${playfair.variable} overflow-x-hidden`} suppressHydrationWarning>

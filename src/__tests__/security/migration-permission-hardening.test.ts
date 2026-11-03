@@ -256,6 +256,8 @@ describe("Fase 3.B — scripts diferidos de freemium (inactivos)", () => {
     }
     const strays = fs
       .readdirSync(MIGRATIONS_DIR)
+      // Excepción acotada a este fichero exacto: backfill legacy_full aplicado en producción el 15/10/2026 (decisión de producto).
+      .filter((f) => f !== "20261015120000_backfill_plus_legacy_access.sql")
       .filter((f) => /freemium|enforce_expense_limit|legacy_access|close_direct|usage_backfill|access_foundation/i.test(f));
     expect(strays).toEqual([]);
   });

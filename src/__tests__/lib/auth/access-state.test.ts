@@ -18,7 +18,7 @@ function baseProfile(overrides: Partial<AccessProfile> = {}): AccessProfile {
   };
 }
 
-describe("resolveAccessState — prioridad de los 5 estados (sin trial premium)", () => {
+describe("resolveAccessState — prioridad de los 6 estados", () => {
   it("founder gana siempre, aunque el resto de campos digan lo contrario", () => {
     const profile = baseProfile({
       is_founder: true,
@@ -51,7 +51,7 @@ describe("resolveAccessState — prioridad de los 5 estados (sin trial premium)"
     ).toBe("plus_canceled_pending");
   });
 
-  it("un trial_ends_at en el futuro NO concede acceso premium: no hay trial, cae a la capa gratuita", () => {
+  it("sin trial: un trial_ends_at futuro (columna legada) NO concede acceso; cuenta nueva en free_under_limit", () => {
     const profile = baseProfile({
       trial_ends_at: new Date(NOW.getTime() + 1000 * 60 * 60 * 24 * 5).toISOString(),
     });
@@ -63,7 +63,7 @@ describe("resolveAccessState — prioridad de los 5 estados (sin trial premium)"
     ).toBe("free_readonly");
   });
 
-  it("un plus_access_until vencido con trial_ends_at futuro cae igualmente a la capa gratuita", () => {
+  it("un plus_access_until ya vencido cae a la capa gratuita aunque trial_ends_at siga en el futuro", () => {
     const profile = baseProfile({
       plus_access_until: new Date(NOW.getTime() - 1000).toISOString(),
       trial_ends_at: new Date(NOW.getTime() + 1000 * 60 * 60 * 24).toISOString(),
@@ -94,6 +94,12 @@ describe("resolveAccessState — prioridad de los 5 estados (sin trial premium)"
     ).toBe("free_readonly");
   });
 
+  it("trial recién expirado (now === trial_ends_at) cuenta como expirado, no como trialing", () => {
+    const profile = baseProfile({ trial_ends_at: NOW.toISOString() });
+    expect(
+      resolveAccessState(profile, { expensesThisMonth: 0, now: NOW })
+    ).toBe("free_under_limit");
+  });
 });
 
 describe("resolveAccessState — campos heredados tier/manual_override nunca conceden permisos", () => {
@@ -134,6 +140,7 @@ describe("getAccessPermissions — permisos de IA y exportación", () => {
     );
     expect(getAccessPermissions("plus_active").canExport).toBe(true);
   });
+
   it("free_under_limit: sin IA, sin exportación, pero puede crear/editar gastos", () => {
     const perms = getAccessPermissions("free_under_limit");
     expect(perms.canUseAI).toBe(false);
@@ -154,6 +161,7 @@ describe("getAccessPermissions — permisos de IA y exportación", () => {
   it("ningún estado permite gestionar pago salvo los dos estados Plus", () => {
     const states = [
       "founder",
+      "legacy_full",
       "plus_active",
       "plus_canceled_pending",
       "free_under_limit",

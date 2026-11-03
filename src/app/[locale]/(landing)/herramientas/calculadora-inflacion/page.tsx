@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Navbar } from "@/components/landing/Navbar";
+import { ToolMessages } from "@/components/i18n/ToolMessages";
 import { CalculatorInflation } from "@/components/landing/tools/CalculatorInflation";
 import { getTranslations } from 'next-intl/server';
 
@@ -141,7 +142,9 @@ export default async function CalculatorInflationPage({ params }: { params: Prom
             />
 
             <main className="pt-32 pb-20 px-6">
-                <CalculatorInflation />
+                <ToolMessages locale={locale} tools={{ Inflation: true }}>
+                    <CalculatorInflation />
+                </ToolMessages>
             </main>
         </div>
     );

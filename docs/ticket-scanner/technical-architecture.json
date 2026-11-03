@@ -1,0 +1,173 @@
+{
+  "phase": 4,
+  "branch": "feature/ticket-scanner-fase-4",
+  "base_commit": "a42cfeb",
+  "status": "PROPUESTA; not implemented",
+  "legend": {
+    "DEMOSTRADO": "verified in repository",
+    "PROPUESTO": "new design, does not exist",
+    "NO DEMOSTRADO": "no evidence",
+    "PENDIENTE": "open owner decision"
+  },
+  "related_docs": [
+    "technical-architecture.md",
+    "data-model.md",
+    "api-contracts.md",
+    "implementation-plan.md",
+    "decision-log.md",
+    "state-machine.md",
+    "privacy-security-architecture.md",
+    "ux-functional-spec.md"
+  ],
+  "existing": [
+    {"item": "session auth", "path": "src/lib/api/auth.ts", "status": "DEMOSTRADO"},
+    {"item": "access resolver fn_my_access", "path": "supabase/migrations/20261013113040_plus_access_resolver.sql", "status": "DEMOSTRADO"},
+    {"item": "requireAccess open when PLUS_SUBSCRIPTIONS_ENABLED is off", "path": "src/lib/auth/require-access.ts", "status": "DEMOSTRADO"},
+    {"item": "fn_create_expense one expense per call", "path": "supabase/migrations/20260916_phase3b_monetization_foundation.sql", "status": "DEMOSTRADO"},
+    {"item": "cycle resolution in TypeScript", "path": "src/lib/months.ts", "status": "DEMOSTRADO"},
+    {"item": "expenses RLS enabled, grants", "path": "supabase/migrations/20260217_security_audit.sql", "status": "DEMOSTRADO"},
+    {"item": "expenses DDL and policies", "path": "supabase/migrations", "status": "NO DEMOSTRADO"},
+    {"item": "single-use atomic action pattern", "path": "src/lib/agents-v2/pending-actions.ts", "status": "DEMOSTRADO"},
+    {"item": "private bucket signed URL 600 s", "path": "src/app/api/premium/download/route.ts", "status": "DEMOSTRADO"},
+    {"item": "route skeleton withLogging/requireAuth/zod strict", "path": "src/app/api/stripe/checkout/route.ts", "status": "DEMOSTRADO"},
+    {"item": "response envelope and error codes", "path": "src/lib/api/responses.ts, src/lib/api/errors.ts", "status": "DEMOSTRADO"},
+    {"item": "PGlite SQL tests with real migrations", "path": "src/__tests__/helpers/plus-pglite.ts", "status": "DEMOSTRADO"},
+    {"item": "classifier with GPT fallback (not default for scanner)", "path": "src/lib/agents/tools/utils/category-suggester.ts", "status": "DEMOSTRADO"},
+    {"item": "scheduler / queue", "path": "vercel.json, .github", "status": "NO DEMOSTRADO"},
+    {"item": "rate limiting", "path": "src", "status": "NO DEMOSTRADO"},
+    {"item": "Origin/CSRF validation on mutations", "path": "src/app/api", "status": "NO DEMOSTRADO"},
+    {"item": "image/PDF libraries declared", "path": "package.json", "status": "NO DEMOSTRADO"},
+    {"item": "storage encryption at rest, backups, signed upload mechanism", "path": "-", "status": "NO DEMOSTRADO"}
+  ],
+  "to_build": [
+    "scanner access permission with default deny",
+    "private bucket and upload authorization",
+    "file validation (magic bytes, size, pixels, pages, active PDF, EXIF)",
+    "job queue and worker",
+    "ReceiptOcrProvider adapter and fake adapter",
+    "normalizer and rule-based classifier",
+    "draft, lines, allocations, confidence per field",
+    "atomic confirmation creating N expenses and links",
+    "daily quota counter and idempotent ledger",
+    "retention, expiry sweep and verified deletion",
+    "audit events without financial data"
+  ],
+  "states": ["initiated", "uploaded", "processing", "needs_review", "confirmed", "failed", "expired", "deleted"],
+  "state_deltas_vs_phase0": {
+    "added": ["initiated"],
+    "removed": ["ready_for_review", "discarded"],
+    "replacements": {"ready_for_review": "needs_review with empty review_flags", "discarded": "deleted with status_reason user_discarded"},
+    "state_machine_md_edited": false
+  },
+  "transitions": [
+    {"from": "initiated", "to": "uploaded", "actor": "user"},
+    {"from": "initiated", "to": "expired", "actor": "system"},
+    {"from": "initiated", "to": "deleted", "actor": "user"},
+    {"from": "uploaded", "to": "processing", "actor": "user", "side_effect": "consume quota (idempotent)"},
+    {"from": "uploaded", "to": "expired", "actor": "system"},
+    {"from": "uploaded", "to": "deleted", "actor": "user"},
+    {"from": "processing", "to": "needs_review", "actor": "worker"},
+    {"from": "processing", "to": "failed", "actor": "worker|system", "side_effect": "refund quota on system failure"},
+    {"from": "processing", "to": "deleted", "actor": "user"},
+    {"from": "failed", "to": "processing", "actor": "user", "limit": "MAX_RETRIES", "side_effect": "no new quota"},
+    {"from": "failed", "to": "deleted", "actor": "user"},
+    {"from": "failed", "to": "expired", "actor": "system"},
+    {"from": "needs_review", "to": "confirmed", "actor": "user", "side_effect": "create N expenses atomically"},
+    {"from": "needs_review", "to": "deleted", "actor": "user"},
+    {"from": "needs_review", "to": "expired", "actor": "system"},
+    {"from": "confirmed", "to": "deleted", "actor": "system|user", "side_effect": "delete original, verify"},
+    {"from": "expired", "to": "deleted", "actor": "system"}
+  ],
+  "terminal": ["deleted"],
+  "ttl_parameters_pending": {"initiated": "15 min (proposal)", "uploaded": "1 h (proposal)", "processing": "5 min (proposal)", "failed": "1 h (proposal)", "needs_review": "24 h (proposal)", "max_retries": "2 (proposal)"},
+  "tables_proposed": [
+    "scanner_tickets",
+    "scanner_ticket_files",
+    "scanner_ocr_attempts",
+    "scanner_receipt_drafts",
+    "scanner_receipt_lines",
+    "scanner_line_allocations",
+    "scanner_expense_links",
+    "scanner_quota_counters",
+    "scanner_quota_ledger",
+    "scanner_retention_requests",
+    "scanner_audit_events"
+  ],
+  "money": {"representation": "integer cents (bigint)", "currency": "EUR only initially", "expenses_amount_scale": "NO DEMOSTRADO"},
+  "invariants": [
+    "I1 sum(lines) = total (differences via explicit adjustment line)",
+    "I2 sum(allocations) = line amount, at least 2 parts",
+    "I3 sum(expense links) = total",
+    "I4 one expense per (ticket, group); one link per expense",
+    "I5 currency EUR",
+    "I6 0 <= tax <= total",
+    "I7 total > 0; valid date; open cycle at confirmation",
+    "I8 quota used <= daily limit; one consume and one refund per ticket",
+    "I9 duplicate is a warning, never a block or silent delete",
+    "I10 user edits never overwritten by OCR",
+    "I11 confirmation idempotent",
+    "I12 only authorized transitions",
+    "I13 per-user isolation",
+    "I14 no financial data in audit, logs, analytics",
+    "I15 deleting an expense removes its link only",
+    "I16 deletion_verified_at only after verified absence"
+  ],
+  "api": {
+    "base": "/api/v1/scanner",
+    "envelope": "success/data and success=false/error",
+    "operations": [
+      {"id": 1, "method": "GET", "path": "/capability", "idempotency_key": false},
+      {"id": 2, "method": "GET", "path": "/quota", "idempotency_key": false},
+      {"id": 3, "method": "POST", "path": "/tickets", "idempotency_key": true},
+      {"id": 4, "method": "POST", "path": "/tickets/{id}/upload-authorization", "idempotency_key": false},
+      {"id": 5, "method": "POST", "path": "/tickets/{id}/complete-upload", "idempotency_key": false},
+      {"id": 6, "method": "GET", "path": "/tickets/{id}", "idempotency_key": false},
+      {"id": 7, "method": "POST", "path": "/tickets/{id}/process", "idempotency_key": true},
+      {"id": 8, "method": "PATCH", "path": "/tickets/{id}/draft", "idempotency_key": false, "concurrency": "If-Match draftVersion"},
+      {"id": 9, "method": "POST", "path": "/tickets/{id}/retry", "idempotency_key": true},
+      {"id": 10, "method": "POST", "path": "/tickets/{id}/discard", "idempotency_key": false},
+      {"id": 11, "method": "POST", "path": "/tickets/{id}/confirm", "idempotency_key": true},
+      {"id": 12, "method": "PUT|DELETE", "path": "/tickets/{id}/retention | /tickets/{id}/original", "idempotency_key": false},
+      {"id": 13, "method": "GET", "path": "/tickets/{id}/original-url", "idempotency_key": false}
+    ],
+    "vercel_body_limit_mb": 4.5,
+    "direct_private_upload": "PROPUESTO; mechanism NO DEMOSTRADO",
+    "csrf_origin": "PROPUESTO; not present in current routes (NO DEMOSTRADO)",
+    "rate_limiting": "PENDIENTE"
+  },
+  "provider_interface": {
+    "name": "ReceiptOcrProvider",
+    "provider_chosen": false,
+    "sdk_chosen": false,
+    "fallback_default": "disabled",
+    "classification": "separate ReceiptClassifier, rules by default, no LLM by default",
+    "log_redaction": "codes and latency only"
+  },
+  "analytics": {
+    "consent_required": true,
+    "allowed_params": ["tool_name", "page_path", "page_title", "source", "state"],
+    "forbidden": ["amounts", "lines", "merchant", "date", "categories", "ratios", "derived states", "OCR text", "ticket IDs", "file URLs", "provider name", "any financial data"]
+  },
+  "blockers": {
+    "P1": [
+      "Premium = Plus; plan contents, name and price",
+      "entitlement hierarchy",
+      "real expenses schema and link policy",
+      "OCR provider, DPA, region, retention, training",
+      "real private storage: upload mechanism, encryption, keys, backups",
+      "queue and cleanup scheduler",
+      "quota day and consumption point",
+      "legal and editorial review"
+    ],
+    "P2": [
+      "file limits, antivirus, image/PDF libraries",
+      "rate limiting and cost alerts",
+      "optional retention policy and TTL",
+      "confidence thresholds and rounding tolerance",
+      "classifier rules vs LLM"
+    ]
+  },
+  "phase5_can_start": false,
+  "phase5_note": "Implementation must not start until P1 blockers affecting slices 1 and 3 are closed; only slice 0 (read-only preparation and decisions) may proceed with explicit authorization.",
+  "implementation_slices": ["0 preparation", "1 entitlement", "2 storage/upload", "3 model/states", "4 fake adapter", "5 processing", "6 review", "7 confirmation/expenses", "8 quota/cleanup", "9 i18n/a11y", "10 analytics", "11 integration/security", "12 closed beta"]
+}

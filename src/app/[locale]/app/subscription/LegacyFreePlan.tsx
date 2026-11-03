@@ -2,7 +2,7 @@
 
 import { Link } from "@/i18n/routing";
 
-export default function SubscriptionClient() {
+export default function LegacyFreePlan() {
     return (
         <main className="min-h-screen px-4 sm:px-6 py-6 sm:py-10 max-w-2xl mx-auto space-y-4 sm:space-y-6">
             <div className="space-y-2">

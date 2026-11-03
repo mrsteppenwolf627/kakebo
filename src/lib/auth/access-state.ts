@@ -22,6 +22,7 @@
 
 export type AccessState =
   | "founder"
+  | "legacy_full"
   | "plus_active"
   | "plus_canceled_pending"
   | "free_under_limit"
@@ -34,6 +35,11 @@ export type AccessState =
  */
 export interface AccessProfile {
   is_founder: boolean;
+  /**
+   * Concesión permanente `legacy_full` (access_grants sin revocar) de los usuarios previos a la activación.
+   * Prioridad: founder > legacy_full > plus.
+   */
+  hasLegacyFullGrant?: boolean;
   /** ISO 8601. `null` si nunca hubo/hay una suscripción de pago vigente. */
   plus_access_until: string | null;
   /**
@@ -42,8 +48,8 @@ export interface AccessProfile {
    */
   subscriptionCancelAtPeriodEnd?: boolean;
   /**
-   * Legado — NUNCA se lee para decidir acceso. Decisión cerrada: no hay trial premium; las cuentas nuevas
-   * empiezan directamente en la capa gratuita. Se conserva en el tipo solo para no romper lecturas de `profiles`.
+   * Legado — NUNCA se lee para decidir acceso. Decisión cerrada: no hay trial; las cuentas nuevas empiezan en la capa
+   * gratuita y Plus se activa solo al pagar. Se conserva en el tipo para no romper lecturas de `profiles`.
    */
   trial_ends_at: string | null;
   /** Legado — nunca leído para decidir acceso. Presente solo para no romper tipos existentes. */
@@ -81,6 +87,10 @@ export function resolveAccessState(
     return "founder";
   }
 
+  if (profile.hasLegacyFullGrant) {
+    return "legacy_full";
+  }
+
   if (profile.plus_access_until) {
     const plusUntil = new Date(profile.plus_access_until);
     if (now < plusUntil) {
@@ -111,6 +121,14 @@ export interface AccessPermissions {
  */
 export const ACCESS_PERMISSIONS: Record<AccessState, AccessPermissions> = {
   founder: {
+    canCreateExpense: true,
+    canEditOrDeleteExpense: true,
+    canViewExpenses: true,
+    canUseAI: true,
+    canExport: true,
+    canManageBilling: false,
+  },
+  legacy_full: {
     canCreateExpense: true,
     canEditOrDeleteExpense: true,
     canViewExpenses: true,

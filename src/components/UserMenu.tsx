@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 import type { User } from "@supabase/supabase-js";
+import { useTranslations } from "next-intl";
 
-export default function UserMenu() {
+export default function UserMenu({ showPlan = false }: { showPlan?: boolean }) {
+  const tPlus = useTranslations("Plus");
+  const tMenu = useTranslations("UserMenu");
   const supabase = createClient();
   const router = useRouter();
 
@@ -57,12 +60,12 @@ export default function UserMenu() {
         onClick={goLogin}
         className="ml-4 px-4 py-2 text-sm border border-stone-300 hover:border-stone-900 transition-colors text-stone-600 hover:text-stone-900"
       >
-        Entrar
+        {tMenu("signIn")}
       </button>
     );
   }
 
-  const label = user.email ? user.email.split('@')[0] : "Cuenta";
+  const label = user.email ? user.email.split('@')[0] : tMenu("account");
 
   return (
     <div className="relative ml-2 md:ml-4">
@@ -96,8 +99,21 @@ export default function UserMenu() {
               role="menuitem"
               className="w-full text-left px-3 py-2 text-sm text-stone-700 hover:bg-stone-200 transition-colors"
             >
-              Ajustes de Kakebo
+              {tMenu("settings")}
             </button>
+
+            {showPlan && (
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  router.push('/app/subscription');
+                }}
+                role="menuitem"
+                className="w-full text-left px-3 py-2 text-sm text-stone-700 hover:bg-stone-200 transition-colors"
+              >
+                {tPlus("navPlan")}
+              </button>
+            )}
 
             <div className="h-px bg-stone-200 my-1" />
 
@@ -106,7 +122,7 @@ export default function UserMenu() {
               role="menuitem"
               className="w-full text-left px-3 py-2 text-sm text-red-700 hover:bg-red-50 transition-colors"
             >
-              Cerrar sesión
+              {tMenu("logout")}
             </button>
           </div>
         </>

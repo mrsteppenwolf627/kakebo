@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from 'react';
+import { PlusRequiredError, isPlusRequired, readApiFailure } from '@/lib/plus/client';
 
 // Tipos basados en la respuesta de la API (src/app/api/ai/agent/route.ts)
 export interface AgentMessage {
@@ -23,6 +24,8 @@ interface UseAgentReturn {
     messages: AgentMessage[];
     isLoading: boolean;
     error: string | null;
+    /** true si el servidor respondió 403 PLUS_REQUIRED (función exclusiva de Plus). */
+    plusRequired: boolean;
     sendMessage: (content: string) => Promise<void>;
     clearHistory: () => void;
 }
@@ -31,10 +34,12 @@ export function useAgent(): UseAgentReturn {
     const [messages, setMessages] = useState<AgentMessage[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [plusRequired, setPlusRequired] = useState(false);
 
     const sendMessage = useCallback(async (content: string) => {
         if (!content.trim()) return;
 
+        setPlusRequired(false);
         setIsLoading(true);
         setError(null);
 
@@ -69,8 +74,9 @@ export function useAgent(): UseAgentReturn {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Error al comunicarse con el agente');
+                const failure = await readApiFailure(response);
+                if (isPlusRequired(failure)) throw new PlusRequiredError();
+                throw new Error(failure.message || 'Error al comunicarse con el agente');
             }
 
             const data = await response.json();
@@ -92,6 +98,10 @@ export function useAgent(): UseAgentReturn {
             }
 
         } catch (err) {
+            if (err instanceof PlusRequiredError) {
+                setPlusRequired(true); // aviso Plus; el mensaje del usuario se conserva en el chat
+                return;
+            }
             console.error('Error sending message:', err);
             setError(err instanceof Error ? err.message : 'Error desconocido');
             // Opcional: Podríamos añadir un mensaje de error visual al chat
@@ -109,6 +119,7 @@ export function useAgent(): UseAgentReturn {
         messages,
         isLoading,
         error,
+        plusRequired,
         sendMessage,
         clearHistory,
     };
@@ -233,6 +244,8 @@ export interface UseAgentStreamReturn {
     /** Current status label ("Pensando...", "Consultando herramientas...", etc.) */
     streamingStatus: string;
     error: string | null;
+    /** true si el servidor respondió 403 PLUS_REQUIRED (función exclusiva de Plus). */
+    plusRequired: boolean;
     sendMessage: (content: string) => Promise<void>;
     clearHistory: () => void;
     /**
@@ -288,6 +301,7 @@ export function useAgentStream(): UseAgentStreamReturn {
     const [streamingContent, setStreamingContent] = useState('');
     const [streamingStatus, setStreamingStatus] = useState('');
     const [error, setError] = useState<string | null>(null);
+    const [plusRequired, setPlusRequired] = useState(false);
     const [pendingConfirmationId, setPendingConfirmationIdState] = useState<string | null>(null);
     const [pendingActionMessage, setPendingActionMessage] = useState<string | null>(null);
     const [cancelError, setCancelError] = useState<string | null>(null);
@@ -320,6 +334,7 @@ export function useAgentStream(): UseAgentStreamReturn {
         ) => {
             setIsLoading(true);
             setError(null);
+            setPlusRequired(false);
             setStreamingContent('');
             setStreamingStatus('');
             accumulatedRef.current = '';
@@ -341,8 +356,9 @@ export function useAgentStream(): UseAgentStreamReturn {
                 });
 
                 if (!response.ok) {
-                    const errData = await response.json().catch(() => ({}));
-                    throw new Error(errData.error || 'Error al comunicarse con el agente');
+                    const failure = await readApiFailure(response);
+                    if (isPlusRequired(failure)) throw new PlusRequiredError();
+                    throw new Error(failure.message || 'Error al comunicarse con el agente');
                 }
 
                 await consumeAgentSSEStream(response, {
@@ -401,8 +417,12 @@ export function useAgentStream(): UseAgentStreamReturn {
                     },
                 });
             } catch (err) {
-                console.error('Stream error:', err);
-                setError(err instanceof Error ? err.message : 'Error desconocido');
+                if (err instanceof PlusRequiredError) {
+                    setPlusRequired(true); // aviso Plus; el mensaje del usuario se conserva en el chat
+                } else {
+                    console.error('Stream error:', err);
+                    setError(err instanceof Error ? err.message : 'Error desconocido');
+                }
                 setStreamingContent('');
                 setStreamingStatus('');
                 accumulatedRef.current = '';
@@ -544,6 +564,7 @@ export function useAgentStream(): UseAgentStreamReturn {
         streamingContent,
         streamingStatus,
         error,
+        plusRequired,
         sendMessage,
         clearHistory,
         pendingConfirmationId,

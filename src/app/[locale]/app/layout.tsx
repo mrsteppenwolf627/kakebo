@@ -1,4 +1,5 @@
 import TopNav from "@/components/TopNav";
+import { isPlusSubscriptionsEnabled } from "@/lib/auth/require-access";
 
 export const metadata = {
   robots: {
@@ -14,7 +15,7 @@ export default function AppLayout({
 }) {
   return (
     <>
-      <TopNav />
+      <TopNav showPlan={isPlusSubscriptionsEnabled()} />
       {children}
     </>
   );

@@ -1,27 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { readConsent, subscribeConsent, writeConsent } from "@/lib/consent";
 
 export function CookieBanner() {
     const t = useTranslations("CookieBanner");
-    const [isVisible, setIsVisible] = useState(false);
+    const consent = useSyncExternalStore(subscribeConsent, readConsent, () => "pending" as const);
 
-    useEffect(() => {
-        const consent = localStorage.getItem("kakebo-cookie-consent");
-        if (!consent) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- must read localStorage after mount (SSR safe)
-            setIsVisible(true);
-        }
-    }, []);
-
-    const acceptCookies = () => {
-        localStorage.setItem("kakebo-cookie-consent", "true");
-        setIsVisible(false);
-    };
-
-    if (!isVisible) return null;
+    // El banner solo se muestra cuando se sabe (ya hidratado) que no hay elección guardada.
+    if (consent !== "unknown") return null;
 
     return (
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border p-4 shadow-lg md:p-6">
@@ -34,7 +23,15 @@ export function CookieBanner() {
                 </p>
                 <div className="flex gap-4">
                     <button
-                        onClick={acceptCookies}
+                        type="button"
+                        onClick={() => writeConsent(false)}
+                        className="rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+                    >
+                        {t('reject')}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => writeConsent(true)}
                         className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
                     >
                         {t('accept')}

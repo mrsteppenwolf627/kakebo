@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { requireAccess } from "@/lib/auth/require-access";
 import {
   responses,
   handleApiError,
@@ -99,12 +100,15 @@ export const POST = withLogging(async (request: NextRequest) => {
     // Require authentication
     const user = await requireAuth();
 
+    // Get Supabase client for tool execution
+    const supabase = await createClient();
+
+    // Plus (solo con PLUS_SUBSCRIPTIONS_ENABLED="true"); con el interruptor apagado no hace nada.
+    await requireAccess("ai", supabase);
+
     // Parse and validate request body
     const body = await request.json();
     const input = agentRequestSchema.parse(body);
-
-    // Get Supabase client for tool execution
-    const supabase = await createClient();
 
     // Process message using OpenAI Function Calling
     const result = await processFunctionCalling(

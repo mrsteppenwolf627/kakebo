@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import SettingsClient from "./SettingsClient";
+import { isPlusSubscriptionsEnabled } from "@/lib/auth/require-access";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
   const t = await getTranslations({ locale, namespace: "Settings.SEO" });
@@ -10,5 +11,5 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 }
 
 export default function Page() {
-  return <SettingsClient />;
+  return <SettingsClient showPlanLink={isPlusSubscriptionsEnabled()} />;
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 
 interface EmbedModalProps {
@@ -9,20 +10,74 @@ interface EmbedModalProps {
     toolPath: string;
 }
 
+const FOCUSABLE =
+    'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
     const tCommon = useTranslations("Tools.Common.embed");
     const [copied, setCopied] = useState(false);
+    const overlayRef = useRef<HTMLDivElement>(null);
+    const dialogRef = useRef<HTMLDivElement>(null);
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
+    const onCloseRef = useRef(onClose);
 
     useEffect(() => {
-        if (!isOpen) return;
-        const onKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onClose();
-        };
-        document.addEventListener("keydown", onKeyDown);
-        return () => document.removeEventListener("keydown", onKeyDown);
-    }, [isOpen, onClose]);
+        onCloseRef.current = onClose;
+    }, [onClose]);
 
-    if (!isOpen) return null;
+    // Foco: al abrir entra en el diálogo, Tab/Shift+Tab se quedan dentro, Escape cierra
+    // y al cerrar el foco vuelve exactamente al control que lo abrió. Mientras está abierto, el resto
+    // del documento queda `inert` (sin foco, sin clics y fuera del árbol de accesibilidad).
+    useEffect(() => {
+        if (!isOpen) return;
+        const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        const overlay = overlayRef.current;
+        const madeInert: Element[] = [];
+        for (const child of Array.from(document.body.children)) {
+            if (child === overlay || child.hasAttribute("inert")) continue;
+            child.setAttribute("inert", "");
+            madeInert.push(child);
+        }
+        closeButtonRef.current?.focus();
+
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                e.preventDefault();
+                onCloseRef.current();
+                return;
+            }
+            if (e.key !== "Tab") return;
+            const dialog = dialogRef.current;
+            if (!dialog) return;
+            const items = Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE));
+            if (items.length === 0) {
+                e.preventDefault();
+                return;
+            }
+            const first = items[0];
+            const last = items[items.length - 1];
+            const active = document.activeElement;
+            if (!dialog.contains(active)) {
+                e.preventDefault();
+                first.focus();
+            } else if (e.shiftKey && active === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && active === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        };
+
+        document.addEventListener("keydown", onKeyDown);
+        return () => {
+            document.removeEventListener("keydown", onKeyDown);
+            madeInert.forEach((child) => child.removeAttribute("inert"));
+            opener?.focus();
+        };
+    }, [isOpen]);
+
+    if (!isOpen || typeof document === "undefined") return null;
 
     const embedCode = `<iframe src="https://kakebo.ai/es${toolPath}" width="100%" height="800" frameborder="0" style="border:1px solid #e7e5e4; border-radius:12px; max-width: 100%;"></iframe><p style="text-align:center;font-size:12px;color:#a8a29e;margin-top:8px;"><a href="https://kakebo.ai" target="_blank" style="color:#a8a29e;text-decoration:underline;">Powered by Kakebo</a></p>`;
 
@@ -34,11 +89,20 @@ export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
         }
     };
 
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm" onClick={onClose}>
-            <div role="dialog" aria-modal="true" aria-labelledby="embed-modal-title" className="bg-card w-full max-w-lg rounded-2xl shadow-xl border border-border p-6 overflow-hidden relative" onClick={e => e.stopPropagation()}>
+    // Portal a <body>: el diálogo queda fuera de la calculadora, de modo que el resto de la página puede marcarse inert.
+    return createPortal(
+        <div ref={overlayRef} className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm" onClick={onClose}>
+            <div
+                ref={dialogRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="embed-modal-title"
+                className="bg-card w-full max-w-lg rounded-2xl shadow-xl border border-border p-6 overflow-hidden relative"
+                onClick={e => e.stopPropagation()}
+            >
                 {/* Close button */}
                 <button
+                    ref={closeButtonRef}
                     type="button"
                     onClick={onClose}
                     aria-label={tCommon('close')}
@@ -64,19 +128,20 @@ export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
                     </pre>
 
                     <button
+                        type="button"
                         onClick={handleCopy}
                         className="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
                     >
                         {copied ? (
                             <>
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                                 {tCommon('copied')}
                             </>
                         ) : (
                             <>
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                                 </svg>
                                 {tCommon('copy')}
@@ -85,6 +150,7 @@ export function EmbedModal({ isOpen, onClose, toolPath }: EmbedModalProps) {
                     </button>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

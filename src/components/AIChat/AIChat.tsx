@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { useAgentStream } from '@/hooks/useAgent';
+import { PlusRequiredNotice } from '@/components/plus/PlusRequiredNotice';
 import { ChatMessage } from './ChatMessage';
 import { ConfirmationModal } from './ConfirmationModal';
 import { useTranslations } from 'next-intl';
@@ -13,6 +14,7 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
         streamingContent,
         streamingStatus,
         error,
+        plusRequired,
         sendMessage,
         clearHistory,
         pendingConfirmationId,
@@ -167,6 +169,8 @@ export function AIChat({ mode = "default", onClose }: { mode?: "default" | "full
                         )}
                     </div>
                 )}
+
+                {plusRequired && <PlusRequiredNotice className="my-4" />}
 
                 {error && (
                     <div className="flex justify-center my-4">

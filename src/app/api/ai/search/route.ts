@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { requireAccess } from "@/lib/auth/require-access";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import { searchExpensesByText } from "@/lib/ai";
 import { semanticSearchSchema } from "@/lib/schemas";
@@ -46,6 +47,7 @@ export const POST = withLogging(async (request: NextRequest) => {
   try {
     const user = await requireAuth();
     const supabase = await createClient();
+    await requireAccess("ai_search", supabase);
 
     const body = await request.json();
     const input = semanticSearchSchema.parse(body);
