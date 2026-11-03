@@ -28,7 +28,7 @@ export function ToolsSection() {
                         </div>
 
                         <div className="space-y-4">
-                            <h3 className="text-2xl font-serif text-foreground group-hover:text-primary transition-colors">
+                            <h3 className="pr-16 text-2xl font-serif text-foreground group-hover:text-primary transition-colors">
                                 Regla 50/30/20
                             </h3>
                             <p className="text-muted-foreground font-light leading-relaxed">
@@ -52,7 +52,7 @@ export function ToolsSection() {
                         </div>
 
                         <div className="space-y-4">
-                            <h3 className="text-2xl font-serif text-foreground group-hover:text-destructive transition-colors">
+                            <h3 className="pr-16 text-2xl font-serif text-foreground group-hover:text-destructive transition-colors">
                                 Calculadora de Inflación
                             </h3>
                             <p className="text-muted-foreground font-light leading-relaxed">
@@ -76,7 +76,7 @@ export function ToolsSection() {
                         </div>
 
                         <div className="space-y-4">
-                            <h3 className="text-2xl font-serif text-foreground group-hover:text-primary transition-colors">
+                            <h3 className="pr-16 text-2xl font-serif text-foreground group-hover:text-primary transition-colors">
                                 Calculadora de Ahorro
                             </h3>
                             <p className="text-muted-foreground font-light leading-relaxed">
