@@ -7,11 +7,11 @@
     "relatedTableUrl": "https://www.ine.es/jaxiT3/Tabla.htm?t=24077",
     "license": "CC BY-SA 4.0",
     "coverageStart": "2002-01",
-    "coverageEnd": "2026-06",
+    "coverageEnd": "2026-09",
     "frequency": "monthly",
     "base": "2025",
-    "recordCount": 294,
-    "updatedAt": "2026-07-16",
+    "recordCount": 297,
+    "updatedAt": "2026-11-04",
     "generator": "scripts/update-ipc-dataset.ts"
   },
   "data": [
@@ -1778,6 +1778,24 @@
       "year": 2026,
       "month": 6,
       "index": 103.598
+    },
+    {
+      "period": "2026-07",
+      "year": 2026,
+      "month": 7,
+      "index": 103.899
+    },
+    {
+      "period": "2026-08",
+      "year": 2026,
+      "month": 8,
+      "index": 104.638
+    },
+    {
+      "period": "2026-09",
+      "year": 2026,
+      "month": 9,
+      "index": 104.978
     }
   ]
 }

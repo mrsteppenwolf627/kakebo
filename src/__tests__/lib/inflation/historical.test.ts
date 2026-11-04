@@ -29,15 +29,15 @@ describe("inflation domain (src/lib/inflation)", () => {
     });
 
     it("reports the expected last period", () => {
-      expect(getLastAvailablePeriod()).toBe("2026-06");
+      expect(getLastAvailablePeriod()).toBe("2026-09");
     });
 
-    it("reports exactly 294 total periods", () => {
-      expect(getTotalPeriods()).toBe(294);
+    it("reports exactly 297 total periods", () => {
+      expect(getTotalPeriods()).toBe(297);
     });
 
     it("returns a periods list with matching length", () => {
-      expect(getAvailablePeriods().length).toBe(294);
+      expect(getAvailablePeriods().length).toBe(297);
     });
 
     it("returns periods in chronological order", () => {
@@ -47,10 +47,10 @@ describe("inflation domain (src/lib/inflation)", () => {
       }
     });
 
-    it("has '2002-01' as the first element and '2026-06' as the last", () => {
+    it("has '2002-01' as the first element and '2026-09' as the last", () => {
       const periods = getAvailablePeriods();
       expect(periods[0]).toBe("2002-01");
-      expect(periods[periods.length - 1]).toBe("2026-06");
+      expect(periods[periods.length - 1]).toBe("2026-09");
     });
 
     it("has one period per consecutive month, without gaps", () => {
