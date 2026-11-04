@@ -133,22 +133,6 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       setCurrentBalance(cb);
       setBalanceInput(cb === null ? "" : String(cb));
 
-      // 1.5) Fetch Incomes (New System)
-      const { data: incomeRows, error: incomeErr } = await supabase
-        .from("incomes")
-        .select("amount")
-        .eq("user_id", userId)
-        .gte("date", start)
-        .lt("date", end);
-
-      if (incomeErr) throw incomeErr;
-
-      const newIncomeTotal = (incomeRows || []).reduce((acc, curr) => acc + Number(curr.amount), 0);
-
-      // Sum both sources of income to avoid confusing users who have a base salary in settings
-      // and just added an extra income.
-      setIncome(legacyMi + newIncomeTotal);
-
 
       // 2) fixed expenses (need due_day)
       const { data: fx, error: fxErr } = await supabase
@@ -174,6 +158,19 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       setSavingsDone(done);
       setMonthId(mo?.[0]?.id ?? null);
       setMonthStatus((mo?.[0]?.status as "open" | "closed") ?? null);
+
+      // 3.5) Ingresos extra del ciclo: por ciclo (month_id) y no por fecha natural,
+      // igual que los gastos. Con fallback por fecha (extremos incluidos).
+      const incomeCycleId = usesCycleLedger(ym) ? (mo?.[0]?.id ?? null) : null;
+      const incomeQuery = supabase.from("incomes").select("amount").eq("user_id", userId);
+      const { data: incomeRows, error: incomeErr } = incomeCycleId
+        ? await incomeQuery.eq("month_id", incomeCycleId)
+        : await incomeQuery.gte("date", start).lte("date", end);
+
+      if (incomeErr) throw incomeErr;
+
+      const newIncomeTotal = (incomeRows || []).reduce((acc, curr) => acc + Number(curr.amount), 0);
+      setIncome(legacyMi + newIncomeTotal);
 
       // 4) cycle spent: use the cycle relationship when it exists.
       // Falling back to the date range keeps the first-use experience working
@@ -401,6 +398,13 @@ export default function DashboardMoneyPanel({ ym }: Props) {
       if (!userId) throw new Error("Auth session missing");
 
       const { y, m } = monthRangeFromYm(ym);
+
+      // No crear ciclos futuros como efecto secundario: un ciclo "abierto" de
+      // más hacía que los gastos nuevos se imputaran a un ciclo que el usuario
+      // no estaba viendo.
+      if (!monthId && compareYm(ym, todayYm()) === 1) {
+        throw new Error("Este ciclo todavía no está abierto.");
+      }
 
       const { error } = await supabase
         .from("months")

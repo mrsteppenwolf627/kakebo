@@ -51,8 +51,8 @@ export default function MonthSelector({
 
   function goToday(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    const now = new Date();
-    goTo(now.getFullYear(), now.getMonth() + 1);
+    // Sin ?ym=: el servidor resuelve el ciclo abierto actual.
+    router.push("/app");
   }
 
   const label = useMemo(() => {

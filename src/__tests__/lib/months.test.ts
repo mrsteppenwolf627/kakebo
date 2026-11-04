@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { nextYm, getPreviousMonth, type MonthRow } from "@/lib/months";
+import { nextYm, getPreviousMonth, pickCurrentOpenCycle, type MonthRow } from "@/lib/months";
 
 describe("nextYm (ciclos libres)", () => {
   it("advances to the next month within the same year", () => {
@@ -92,5 +92,46 @@ describe("getPreviousMonth (Hotfix 2.1) — ciclo inmediatamente anterior vía t
     const result = await getPreviousMonth(supabase, "user-123", 2026, 9);
 
     expect(result?.month).toBe(8);
+  });
+});
+
+/**
+ * Bug "Cerrar ciclo": con varios ciclos abiertos a la vez, el panel, las altas de
+ * gastos e ingresos y los agentes deben usar siempre el mismo ciclo actual.
+ */
+describe("pickCurrentOpenCycle — ciclo abierto actual entre varios abiertos", () => {
+  const c = (year: number, month: number) => ({ id: `c-${year}-${month}`, year, month });
+  const NOV_15 = new Date("2026-11-15T12:00:00Z");
+  const NOV_28 = new Date("2026-11-28T12:00:00Z");
+
+  it("devuelve null si no hay ciclos abiertos", () => {
+    expect(pickCurrentOpenCycle([], NOV_15)).toBeNull();
+  });
+
+  it("[nov, dic] con hoy en noviembre -> noviembre", () => {
+    expect(pickCurrentOpenCycle([c(2026, 11), c(2026, 12)], NOV_15)).toEqual(c(2026, 11));
+  });
+
+  it("[oct, nov, dic] con hoy en noviembre -> noviembre", () => {
+    expect(pickCurrentOpenCycle([c(2026, 10), c(2026, 11), c(2026, 12)], NOV_15)).toEqual(c(2026, 11));
+  });
+
+  it("[dic, ene] con hoy 28-nov (todos futuros) -> diciembre, el más antiguo", () => {
+    expect(pickCurrentOpenCycle([c(2026, 12), c(2027, 1)], NOV_28)).toEqual(c(2026, 12));
+  });
+
+  it("solo ciclos antiguos -> el más reciente de ellos", () => {
+    expect(pickCurrentOpenCycle([c(2026, 8), c(2026, 9), c(2026, 10)], NOV_15)).toEqual(c(2026, 10));
+  });
+
+  it("no depende del orden de entrada", () => {
+    expect(pickCurrentOpenCycle([c(2026, 12), c(2026, 10), c(2026, 11)], NOV_15)).toEqual(c(2026, 11));
+    expect(pickCurrentOpenCycle([c(2027, 1), c(2026, 12)], NOV_28)).toEqual(c(2026, 12));
+  });
+
+  it("usa el mes natural de Europe/Madrid, no el UTC", () => {
+    // 30-nov 23:30 UTC ya es 1-dic 00:30 en Madrid.
+    const justAfterMidnightMadrid = new Date("2026-11-30T23:30:00Z");
+    expect(pickCurrentOpenCycle([c(2026, 11), c(2026, 12)], justAfterMidnightMadrid)).toEqual(c(2026, 12));
   });
 });

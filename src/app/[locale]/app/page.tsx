@@ -1,4 +1,6 @@
 import AuthGate from "@/components/AuthGate";
+import { createClient } from "@/lib/supabase/server";
+import { getOpenMonth } from "@/lib/months";
 import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import RecentMovements from "@/components/RecentMovements";
@@ -43,8 +45,27 @@ export default async function HomePage(props: {
   const fallback = { year: now.getFullYear(), month: now.getMonth() + 1 };
 
   const parsed = parseYm(sp?.ym);
-  const year = parsed?.year ?? fallback.year;
-  const month = parsed?.month ?? fallback.month;
+
+  // Sin ?ym= se muestra el ciclo ABIERTO del usuario (no el mes natural de hoy):
+  // así, tras cerrar un ciclo, el panel muestra el nuevo y no el cerrado.
+  let resolved = fallback;
+  if (!parsed) {
+    try {
+      const supabase = await createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        const open = await getOpenMonth(supabase, user.id);
+        if (open) resolved = { year: open.year, month: open.month };
+      }
+    } catch {
+      // Si falla la consulta se mantiene el mes natural.
+    }
+  }
+
+  const year = parsed?.year ?? resolved.year;
+  const month = parsed?.month ?? resolved.month;
 
   const ym = `${year}-${pad2(month)}`;
 

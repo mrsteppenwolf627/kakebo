@@ -61,9 +61,39 @@ export async function getOrCreateMonth(
 }
 
 /**
- * Devuelve el ciclo actualmente ABIERTO del usuario (el más reciente por
- * year/month), o null si no tiene ninguno todavía. Por invariante de
- * negocio, un usuario tiene como mucho un ciclo abierto a la vez.
+ * Elige el ciclo actual entre los ciclos abiertos (en cualquier orden de
+ * entrada; se ordenan de más antiguo a más reciente). En la práctica hay usuarios con varios ciclos abiertos a la
+ * vez (p. ej. uno futuro creado por navegar o marcar el ahorro), así que:
+ * - se prefiere el más reciente cuya etiqueta no sea posterior al mes natural
+ *   actual (Europe/Madrid);
+ * - si todos son posteriores (se cerró el ciclo antes de acabar el mes), el
+ *   más antiguo de ellos, que es el que se abrió al cerrar.
+ * Función pura, compartida con el cliente para que el panel y las altas de
+ * gastos e ingresos usen siempre el mismo ciclo.
+ */
+export function pickCurrentOpenCycle<T extends { year: number; month: number }>(
+  open: T[],
+  now: Date = new Date()
+): T | null {
+  if (open.length === 0) return null;
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Madrid",
+    year: "numeric",
+    month: "2-digit",
+  }).formatToParts(now);
+  const cy = Number(parts.find((p) => p.type === "year")?.value);
+  const cm = Number(parts.find((p) => p.type === "month")?.value);
+  const key = (r: { year: number; month: number }) => r.year * 12 + r.month;
+  const nowKey = cy * 12 + cm;
+  const openAsc = [...open].sort((a, b) => key(a) - key(b));
+  const notFuture = openAsc.filter((r) => key(r) <= nowKey);
+  return notFuture.length > 0 ? notFuture[notFuture.length - 1] : openAsc[0];
+}
+
+/**
+ * Devuelve el ciclo actualmente ABIERTO del usuario (ver pickCurrentOpenCycle),
+ * o null si no tiene ninguno todavía. La invariante de negocio es un solo ciclo
+ * abierto, pero los datos reales pueden tener varios.
  */
 export async function getOpenMonth(
   supabase: SupabaseClient,
@@ -74,13 +104,13 @@ export async function getOpenMonth(
     .select("*")
     .eq("user_id", userId)
     .eq("status", "open")
-    .order("year", { ascending: false })
-    .order("month", { ascending: false })
-    .limit(1);
+    .order("year", { ascending: true })
+    .order("month", { ascending: true })
+    .limit(500);
 
   if (error) throw error;
 
-  return (data?.[0] as MonthRow | undefined) ?? null;
+  return pickCurrentOpenCycle((data || []) as MonthRow[]);
 }
 
 /**

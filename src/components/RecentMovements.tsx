@@ -92,12 +92,18 @@ export default function RecentMovements({ year, month, ym }: Props) {
       const [{ data: expensesData, error: expensesErr }, { data: incomesData, error: incomesErr }] =
         await Promise.all([
           expenseRequest,
-          supabase
-            .from("incomes")
-            .select("id,date,amount,description")
-            .eq("user_id", userId)
-            .gte("date", start)
-            .lte("date", end),
+          cycleId
+            ? supabase
+                .from("incomes")
+                .select("id,date,amount,description")
+                .eq("user_id", userId)
+                .eq("month_id", cycleId)
+            : supabase
+                .from("incomes")
+                .select("id,date,amount,description")
+                .eq("user_id", userId)
+                .gte("date", start)
+                .lte("date", end),
         ]);
 
       if (expensesErr) throw expensesErr;

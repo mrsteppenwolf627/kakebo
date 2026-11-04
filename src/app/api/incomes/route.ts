@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { getOpenMonth } from "@/lib/months";
 import { responses, handleApiError, requireAuth, withLogging } from "@/lib/api";
 import {
     createIncomeSchema,
@@ -101,7 +102,22 @@ export const POST = withLogging(async (request: NextRequest) => {
         // Get or create month for this income
         let monthId = input.month_id;
 
-        if (!monthId) {
+        if (monthId) {
+            // Ciclo explícito: debe ser del usuario y no estar cerrado.
+            const { data: targetMonth } = await supabase
+                .from("months")
+                .select("status")
+                .eq("id", monthId)
+                .eq("user_id", user.id)
+                .single();
+
+            if (!targetMonth) {
+                return responses.notFound("El ciclo indicado no existe o no te pertenece.");
+            }
+            if (targetMonth.status === "closed") {
+                return responses.conflict("Ese ciclo está cerrado. No puedes añadir ingresos.");
+            }
+        } else {
             // Extract year-month from date
             const ym = input.date.substring(0, 7); // "YYYY-MM"
             const { year, month } = parseYm(ym);
@@ -118,11 +134,19 @@ export const POST = withLogging(async (request: NextRequest) => {
             if (existingMonth) {
                 // Check if month is closed
                 if (existingMonth.status === "closed") {
-                    return responses.conflict(
-                        `El mes ${formatYm(year, month)} está cerrado. No puedes añadir ingresos.`
-                    );
+                    // La fecha cae en un ciclo ya cerrado (p. ej. se cerró el ciclo
+                    // antes de acabar el mes natural): el ingreso se imputa al
+                    // ciclo abierto actual, igual que los gastos.
+                    const openMonth = await getOpenMonth(supabase, user.id);
+                    if (!openMonth) {
+                        return responses.conflict(
+                            `El mes ${formatYm(year, month)} está cerrado. No puedes añadir ingresos.`
+                        );
+                    }
+                    monthId = openMonth.id;
+                } else {
+                    monthId = existingMonth.id;
                 }
-                monthId = existingMonth.id;
             } else {
                 // Create new month - Incomes also trigger month creation same as Expenses
                 const { data: newMonth, error: monthError } = await supabase

@@ -3,6 +3,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { createClient } from "@/lib/supabase/browser";
+import { usesCycleLedger } from "@/lib/cycles/ledger-scope";
 
 type Income = {
     id: string;
@@ -45,6 +46,9 @@ export default function ManageIncomesModal({ isOpen, onClose, ym, onUpdate }: Pr
     }, [isOpen, ym]);
 
     const [baseIncome, setBaseIncome] = useState(0);
+    const [baseInput, setBaseInput] = useState("");
+    const [savingBase, setSavingBase] = useState(false);
+    const [cycleId, setCycleId] = useState<string | null>(null);
 
     async function loadIncomes() {
         setLoading(true);
@@ -60,7 +64,9 @@ export default function ManageIncomesModal({ isOpen, onClose, ym, onUpdate }: Pr
                 .single();
 
             if (settings) {
-                setBaseIncome(Number(settings.monthly_income) || 0);
+                const base = Number(settings.monthly_income) || 0;
+                setBaseIncome(base);
+                setBaseInput(String(base));
             }
 
             // Extract year and month from ym
@@ -74,13 +80,25 @@ export default function ManageIncomesModal({ isOpen, onClose, ym, onUpdate }: Pr
                 : `${year}-${String(month + 1).padStart(2, "0")}`;
             const endDate = `${nextYm}-01`;
 
-            const { data, error } = await supabase
+            // Los ingresos extra pertenecen a un ciclo (month_id), no al mes natural.
+            const { data: cycleRows } = await supabase
+                .from("months")
+                .select("id")
+                .eq("user_id", user.id)
+                .eq("year", year)
+                .eq("month", month)
+                .limit(1);
+            const resolvedCycleId = usesCycleLedger(ym) ? (cycleRows?.[0]?.id ?? null) : null;
+            setCycleId(resolvedCycleId);
+
+            const incomesQuery = supabase
                 .from("incomes")
                 .select("*")
-                .eq("user_id", user.id)
-                .gte("date", startDate)
-                .lt("date", endDate)
-                .order("date", { ascending: false });
+                .eq("user_id", user.id);
+            const { data, error } = await (resolvedCycleId
+                ? incomesQuery.eq("month_id", resolvedCycleId)
+                : incomesQuery.gte("date", startDate).lt("date", endDate)
+            ).order("date", { ascending: false });
 
             if (error) throw error;
             setIncomes(data || []);
@@ -111,12 +129,14 @@ export default function ManageIncomesModal({ isOpen, onClose, ym, onUpdate }: Pr
                     amount: Number(amount),
                     category: "general", // Default for now
                     description: description || "Ingreso",
+                    ...(cycleId ? { month_id: cycleId } : {}),
                 }),
             });
 
             if (!response.ok) {
                 const json = await response.json();
-                throw new Error(json.error || "Error guardando ingreso");
+                const msg = typeof json.error === "string" ? json.error : json.error?.message;
+                throw new Error(msg || "Error guardando ingreso");
             }
 
             // Reload list and notify parent
@@ -132,6 +152,31 @@ export default function ManageIncomesModal({ isOpen, onClose, ym, onUpdate }: Pr
             setError(err.message);
         } finally {
             setSubmitting(false);
+        }
+    }
+
+    async function handleSaveBase() {
+        const value = Number(baseInput.replace(",", "."));
+        if (!Number.isFinite(value) || value < 0) {
+            setError("Ingreso base inválido (pon un número igual o mayor que 0).");
+            return;
+        }
+        setSavingBase(true);
+        setError(null);
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No usuario");
+            const { error } = await supabase
+                .from("user_settings")
+                .upsert({ user_id: user.id, monthly_income: value }, { onConflict: "user_id" });
+            if (error) throw error;
+            setBaseIncome(value);
+            onUpdate();
+            window.dispatchEvent(new CustomEvent("kakebo:incomes-changed"));
+        } catch (err: any) {
+            setError("Error guardando el ingreso base: " + err.message);
+        } finally {
+            setSavingBase(false);
         }
     }
 
@@ -162,6 +207,33 @@ export default function ManageIncomesModal({ isOpen, onClose, ym, onUpdate }: Pr
                 </div>
 
                 <div className="p-4 overflow-y-auto flex-1 space-y-6">
+                    {/* Ingreso base mensual (editable) */}
+                    <div className="space-y-2 bg-muted/30 p-4 rounded-lg border border-border">
+                        <h3 className="text-sm font-medium text-foreground">Ingreso base mensual</h3>
+                        <p className="text-xs text-muted-foreground">
+                            Tu ingreso fijo de cada ciclo (nómina). Se suma a los ingresos extra de abajo. Cámbialo aquí cuando varíe.
+                        </p>
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                value={baseInput}
+                                onChange={(e) => setBaseInput(e.target.value)}
+                                className="w-40 bg-background border border-border rounded p-2 text-sm"
+                                placeholder="0.00"
+                            />
+                            <button
+                                type="button"
+                                onClick={handleSaveBase}
+                                disabled={savingBase}
+                                className="bg-primary text-primary-foreground text-sm px-4 py-2 rounded shadow hover:opacity-90 disabled:opacity-50"
+                            >
+                                {savingBase ? "Guardando..." : "Guardar base"}
+                            </button>
+                        </div>
+                    </div>
+
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-4 bg-muted/30 p-4 rounded-lg border border-border">
                         <h3 className="text-sm font-medium text-foreground mb-2">Añadir nuevo ingreso</h3>

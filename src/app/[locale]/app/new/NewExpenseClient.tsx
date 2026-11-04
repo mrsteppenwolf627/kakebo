@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
+import { pickCurrentOpenCycle } from "@/lib/months";
 import { canUsePremium, Profile } from "@/lib/auth/access-control";
 import { analytics } from "@/lib/analytics";
 import { useTranslations } from "next-intl";
@@ -305,15 +306,15 @@ export default function NewExpensePage() {
       .select("id,year,month,status")
       .eq("user_id", userId)
       .eq("status", "open")
-      .order("year", { ascending: false })
-      .order("month", { ascending: false })
-      .limit(1);
+      .order("year", { ascending: true })
+      .order("month", { ascending: true })
+      .limit(500);
 
     if (error) throw error;
 
-    const openMonth = data?.[0] as
-      | { id: string; year: number; month: number; status: "open" | "closed" }
-      | undefined;
+    const openMonth = pickCurrentOpenCycle(
+      (data || []) as { id: string; year: number; month: number; status: "open" | "closed" }[]
+    );
     if (openMonth) return openMonth;
 
     // Bootstrap: el usuario todavía no tiene ningún ciclo -> se abre uno para hoy.
