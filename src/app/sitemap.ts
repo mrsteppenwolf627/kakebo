@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { getBlogPosts } from '@/lib/blog';
 import { routing } from '@/i18n/routing';
+import { getPlantillas } from '@/lib/plantillas';
 
 // Shared lastModified for static core routes (Home, tutorial, herramientas, legales, etc.).
 // Bump this date manually whenever the actual content of one of those pages changes —
@@ -95,6 +96,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
                     } as Record<string, string>)
                 }
             });
+        });
+    });
+
+    // Spanish-only template pages, read from the same data file as the route (no /es/ prefix).
+    getPlantillas().forEach((plantilla) => {
+        const url = `${baseUrl}/plantillas/${plantilla.slug}`;
+        sitemapEntries.push({
+            url,
+            lastModified: new Date(plantilla.updatedDate),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+            alternates: { languages: { es: url, 'x-default': url } },
         });
     });
 

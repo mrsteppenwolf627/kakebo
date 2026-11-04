@@ -9,7 +9,11 @@ import { PREMIUM_PACK_FILES, PREMIUM_PACK_FOLDER } from "@/lib/premium/manifest"
 const ROOT = process.cwd();
 
 // Free assets that are intentionally public.
-const ALLOWED_PUBLIC_DOCS = new Set(["docs/Plantilla_Kakebo_Simplificada.xlsx"]);
+const ALLOWED_PUBLIC_DOCS = new Set([
+  "docs/Plantilla_Kakebo_Simplificada.xlsx",
+  "docs/Kakebo_Imprimible_A4.pdf",
+  "docs/Kakebo_2027_Imprimible_A4.pdf",
+]);
 
 function walk(dir: string): string[] {
   const out: string[] = [];
@@ -32,7 +36,7 @@ describe("premium files are not exposed in public/", () => {
   });
 
   it("has no PDF files in public/", () => {
-    expect(publicFiles.filter((f) => /\.pdf$/i.test(f))).toEqual([]);
+    expect(publicFiles.filter((f) => /\.pdf$/i.test(f) && !ALLOWED_PUBLIC_DOCS.has(f))).toEqual([]);
   });
 
   it("has no archives or premium-named documents in public/", () => {

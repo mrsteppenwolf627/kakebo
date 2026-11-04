@@ -1,0 +1,108 @@
+[
+  {
+    "slug": "kakebo-para-imprimir",
+    "title": "Kakebo para imprimir gratis (PDF A4)",
+    "metaDescription": "Descarga el Kakebo en PDF para imprimir en A4: previsión del mes, cinco semanas de gastos por categoría y reflexión final. Gratis y sin registro.",
+    "h1": "Kakebo para imprimir: PDF gratis en A4",
+    "format": "pdf",
+    "year": null,
+    "asset": {
+      "path": "/docs/Kakebo_Imprimible_A4.pdf",
+      "pages": 7,
+      "sizeKb": 51,
+      "previewImage": null
+    },
+    "targetQueries": ["kakebo imprimible gratis", "método kakebo para imprimir", "kakebo pdf"],
+    "intro": "Este es un Kakebo listo para imprimir en una hoja A4: un PDF de 7 páginas con todo lo que necesitas para llevar un mes completo a mano. Lo imprimes, lo rellenas con bolígrafo y no necesitas Excel, cuenta ni conexión. Sirve para cualquier mes del año, así que puedes imprimir una copia nueva cada vez que empieces uno.",
+    "steps": [
+      "Imprime las 7 páginas en A4, una copia por cada mes que quieras llevar. Si solo quieres probar, con un mes es suficiente.",
+      "Al empezar el mes, rellena la página de previsión: ingresos netos, gastos fijos y cuánto quieres ahorrar. El resultado es tu presupuesto para gastar.",
+      "Cada día, anota lo que gastas en la semana en curso, en la columna de su categoría: Supervivencia, Ocio y vicio, Cultura o Extras.",
+      "Al cerrar cada semana, suma el total. Hay cinco páginas semanales para cubrir también los meses que acaban en una quinta semana parcial.",
+      "Al terminar el mes, rellena la última página: totales por categoría, ahorro conseguido y las preguntas de reflexión."
+    ],
+    "includes": [
+      "Página 1: previsión del mes, con ingresos, gastos fijos, dinero disponible y objetivo de ahorro.",
+      "Páginas 2 a 6: cinco semanas, con una fila por día y una columna por categoría.",
+      "Página 7: cierre del mes con totales por categoría, ahorro conseguido y reflexión."
+    ],
+    "faq": [
+      {
+        "question": "¿El Kakebo imprimible es gratis?",
+        "answer": "Sí. Se descarga directamente, sin registro y sin dejar el correo. Puedes imprimirlo cuantas veces quieras para uso personal."
+      },
+      {
+        "question": "¿Qué incluye el PDF del Kakebo para imprimir?",
+        "answer": "Siete páginas A4: la previsión del mes, cinco páginas semanales para anotar los gastos día a día y una página final de cierre con la reflexión. No tiene fecha, así que sirve para cualquier mes."
+      },
+      {
+        "question": "¿Por qué hay cinco semanas y no cuatro?",
+        "answer": "Porque muchos meses terminan con una semana parcial. La quinta página evita tener que apretar esos últimos días en la anterior o dejarlos sin anotar."
+      },
+      {
+        "question": "¿Cuántas copias tengo que imprimir?",
+        "answer": "Una copia completa por cada mes que quieras llevar. Si prefieres no gastar papel, imprime solo las páginas semanales y haz la previsión y el cierre en una libreta."
+      },
+      {
+        "question": "¿Puedo rellenarlo en el ordenador en lugar de a mano?",
+        "answer": "El PDF está pensado para imprimirlo y rellenarlo a mano. Si prefieres una hoja de cálculo con fórmulas, tienes la plantilla Kakebo en Excel gratuita."
+      }
+    ],
+    "updatedDate": "2026-11-04",
+    "related": ["plantilla-kakebo-excel", "libro-kakebo-pdf"]
+  },
+  {
+    "slug": "kakebo-2027",
+    "title": "Kakebo 2027 imprimible: plan anual y mensual (PDF)",
+    "metaDescription": "Kakebo 2027 en PDF A4 para imprimir: plan del año, resumen de los 12 meses y plantilla mensual con previsión, semanas y cierre. Gratis.",
+    "h1": "Kakebo 2027 imprimible: plan anual y plantilla mensual",
+    "format": "pdf",
+    "year": 2027,
+    "asset": {
+      "path": "/docs/Kakebo_2027_Imprimible_A4.pdf",
+      "pages": 9,
+      "sizeKb": 54,
+      "previewImage": null
+    },
+    "targetQueries": ["kakebo 2027", "kakebo 2027 pdf"],
+    "intro": "Si quieres empezar 2027 con un objetivo de ahorro por escrito, este PDF de 9 páginas añade una capa anual al Kakebo: una hoja para planificar el año, un resumen donde copiar los totales de enero a diciembre y la plantilla mensual. Está pensado para imprimirlo una vez al empezar el año y fotocopiar la parte mensual cada mes.",
+    "steps": [
+      "Imprime las 9 páginas. La del plan del año y la del resumen se usan una sola vez; las otras siete forman la plantilla mensual que repetirás.",
+      "A principios de enero, rellena el plan del año: cuánto quieres ahorrar en total, para qué, qué gastos grandes ya sabes que llegan y qué hábito quieres cambiar.",
+      "Cada mes, fotocopia las páginas de la tres a la nueve o imprime una copia nueva. Empieza por la previsión, anota los gastos por semana y cierra con la reflexión.",
+      "Al cerrar cada mes, copia ingresos, gastos y ahorro en su fila del resumen anual y compáralos con el objetivo.",
+      "En diciembre, suma el total ahorrado en el año y úsalo como punto de partida para el plan del siguiente."
+    ],
+    "includes": [
+      "Página 1: plan del año 2027 con objetivo anual, motivos, gastos grandes previstos y hábito a cambiar.",
+      "Página 2: resumen anual con una fila por mes, de enero a diciembre, y el total ahorrado.",
+      "Página 3: previsión del mes, con el año 2027 ya impreso.",
+      "Páginas 4 a 8: cinco semanas de gastos por categoría.",
+      "Página 9: cierre del mes con la reflexión."
+    ],
+    "faq": [
+      {
+        "question": "¿Qué diferencia hay entre el Kakebo 2027 y el Kakebo imprimible normal?",
+        "answer": "El Kakebo 2027 incluye dos páginas anuales que la versión normal no tiene: el plan del año y el resumen de los 12 meses. La parte mensual es la misma, con el año 2027 ya impreso en la previsión."
+      },
+      {
+        "question": "¿Puedo usarlo si empiezo a mitad de año?",
+        "answer": "Sí. Rellena el plan con el objetivo que quieras alcanzar hasta diciembre y deja en blanco las filas de los meses que ya hayan pasado en el resumen anual."
+      },
+      {
+        "question": "¿Tengo que imprimir las 9 páginas cada mes?",
+        "answer": "No. El plan del año y el resumen se imprimen una sola vez. Cada mes solo repites la previsión, las cinco semanas y el cierre, que son siete páginas."
+      },
+      {
+        "question": "¿Cómo se usa el resumen anual?",
+        "answer": "Al cerrar cada mes, copias en su fila los ingresos, los gastos y el ahorro conseguido, junto al objetivo que te marcaste. Así ves de un vistazo en qué meses cumples y en cuáles te desvías."
+      },
+      {
+        "question": "¿Es gratis?",
+        "answer": "Sí, es una descarga gratuita y sin registro, igual que el resto de plantillas de esta web."
+      }
+    ],
+    "updatedDate": "2026-11-04",
+    "related": ["plantilla-kakebo-excel", "kakebo-para-imprimir"]
+  }
+]

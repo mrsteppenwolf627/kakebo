@@ -74,13 +74,20 @@ export function ChoiceCTA({ title, description, primaryHref, primaryCta, primary
     );
 }
 
-export function DownloadCTA({ href, cta }: { href: string; cta: string }) {
+// Optional tracking props default to the blog Excel download, so existing callers are unchanged.
+export function DownloadCTA({ href, cta, templateType = "excel", location = "blog_download_cta", slug }: {
+    href: string;
+    cta: string;
+    templateType?: string;
+    location?: string;
+    slug?: string;
+}) {
     return (
         <div className="not-prose my-8 flex justify-center">
             <a
                 href={href}
                 download
-                onClick={() => analytics.track("download_template", { template_type: "excel", source_page: window.location.pathname, location: "blog_download_cta" })}
+                onClick={() => analytics.track("download_template", { template_type: templateType, source_page: window.location.pathname, location, ...(slug && { slug }) })}
                 className="inline-flex w-full max-w-sm items-center justify-center rounded-2xl bg-primary px-6 py-4 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ring-offset-background sm:w-auto sm:rounded-full sm:px-8"
             >
                 {cta}
