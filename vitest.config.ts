@@ -8,6 +8,8 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["./src/__tests__/setup.ts"],
+    // next-intl/middleware imports "next/server" without extension; inline it so Node ESM resolution works in tests.
+    server: { deps: { inline: ["next-intl"] } },
     include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     coverage: {
       provider: "v8",
