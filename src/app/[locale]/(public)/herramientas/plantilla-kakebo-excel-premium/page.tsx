@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import { PremiumViewTracker } from "@/components/premium/PremiumTracking";
+import { PremiumViewTracker, PremiumPurchaseTracker } from "@/components/premium/PremiumTracking";
 import { PremiumPurchaseButton } from "@/components/premium/PremiumPurchaseButton";
 import { isPremiumCommerceEnabled } from "@/lib/premium/config";
 import { applyLiveCopy } from "@/lib/premium/landing-live-copy";
@@ -463,6 +463,7 @@ export default async function PremiumTemplatePage({
   return (
     <div className="min-h-screen bg-sakura">
       <PremiumViewTracker />
+      <PremiumPurchaseTracker />
       {[breadcrumbs, product, faqSchema].map((schema, i) => (
         <script
           key={i}

@@ -29,7 +29,8 @@ type EventName =
     | "historical_inflation_calculation"
     | "historical_inflation_error"
     | "premium_product_viewed"
-    | "premium_product_cta_clicked";
+    | "premium_product_cta_clicked"
+    | "purchase";
 
 type EventProperties = Record<string, string | number | boolean>;
 
