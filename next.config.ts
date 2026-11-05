@@ -55,6 +55,15 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // Archivos sin valor de búsqueda: se siguen sirviendo pero no deben entrar en el índice.
+        source: "/manifest.webmanifest",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+      {
+        source: "/docs/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+      {
         // Premium pack endpoints (claim/download carry one-time ids or redirect to signed URLs):
         // never leak the URL through the Referer header. Declared after the global rule so it wins.
         source: "/api/premium/:path*",

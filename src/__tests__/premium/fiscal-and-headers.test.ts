@@ -82,9 +82,10 @@ describe("Referrer-Policy and Cache-Control configuration", () => {
     expect(global.headers.find((h) => h.key === "Referrer-Policy")?.value).toBe("strict-origin-when-cross-origin");
   });
 
-  it("only the premium rule was added to next.config.ts", () => {
+  it("next.config.ts solo declara las reglas esperadas (2 redirecciones /es, global, noindex manifest y docs, premium)", () => {
     const src = fs.readFileSync(path.join(process.cwd(), "next.config.ts"), "utf8");
-    expect(src.match(/source:/g)?.length).toBe(2);
+    expect(src.match(/source:/g)?.length).toBe(6);
+    expect(src).toContain('source: "/api/premium/:path*"');
   });
 
   it("the premium routes set Cache-Control: no-store themselves", () => {

@@ -44,6 +44,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/blog/metodo-kakebo-guia-definitiva"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
+                >
+                  {t('kakeboGuide')}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/herramientas/calculadora-ahorro"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
