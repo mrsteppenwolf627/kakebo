@@ -30,6 +30,7 @@ export default function PrivacyPage() {
                 <div className="mx-auto max-w-3xl prose prose-stone dark:prose-invert">
                     <h1>{t("title")}</h1>
                     <p className="lead">{t("lastUpdate", { year: new Date().getFullYear() })}</p>
+                    <p>{t("controller")}</p>
 
                     <h2>{t("sections.info.title")}</h2>
                     <p>{t("sections.info.content")}</p>
@@ -40,6 +41,7 @@ export default function PrivacyPage() {
                         <li>{t("sections.usage.list.i1")}</li>
                         <li>{t("sections.usage.list.i2")}</li>
                         <li>{t("sections.usage.list.i3")}</li>
+                        <li>{t("sections.usage.list.i4")}</li>
                     </ul>
 
                     <h2>{t("sections.payments.title")}</h2>

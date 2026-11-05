@@ -3,6 +3,7 @@ import { Link } from "@/i18n/routing";
 import React from "react";
 import { ToolCTA, SimpleCTA, DownloadCTA, ArticleCTA, ChoiceCTA, PremiumCTA } from "./MDXClientCTAs";
 import { LeadCaptureForm } from "./LeadCaptureForm";
+import { NewsletterConfirmationNotice } from "./NewsletterConfirmationNotice";
 
 function CustomLink(props: any) {
     const { href, className, ...restProps } = props;
@@ -125,6 +126,7 @@ export const components = {
     SimpleCTA,
     DownloadCTA,
     LeadCaptureForm,
+    NewsletterConfirmationNotice,
     PremiumCTA,
     ChoiceCTA,
     FaqSection,

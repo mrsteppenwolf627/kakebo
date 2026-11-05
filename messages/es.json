@@ -1558,11 +1558,12 @@
             "description": "Cómo gestionamos tus datos en Kakebo AI."
         },
         "title": "Política de Privacidad",
-        "lastUpdate": "Última actualización: 2 de noviembre de 2026",
+        "lastUpdate": "Última actualización: 5 de noviembre de 2026",
+        "controller": "Responsable del tratamiento: Aitor, desarrollador independiente y titular de metodokakebo.com. Los datos de contacto figuran en la página Sobre nosotros.",
         "sections": {
             "info": {
                 "title": "1. Información que Recopilamos",
-                "content": "Recopilamos información que nos proporcionas directamente, como tu correo electrónico al registrarte, y datos de uso de la aplicación (gastos registrados, categorías)."
+                "content": "Recopilamos información que nos proporcionas directamente: tu correo electrónico cuando creas una cuenta, cuando te suscribes a nuestros emails o cuando compras el pack premium; los datos de uso de la aplicación (gastos registrados, categorías); y, solo si aceptas las cookies analíticas, datos estadísticos de uso de la web mediante Google Analytics."
             },
             "usage": {
                 "title": "2. Uso de la Información",
@@ -1576,7 +1577,7 @@
             },
             "payments": {
                 "title": "3. Datos y Privacidad",
-                "p1": "Kakebo AI es una herramienta gratuita. No recopilamos datos de pago ni conectamos con tus cuentas bancarias.",
+                "p1": "La aplicación Kakebo AI es gratuita y no conectamos con tus cuentas bancarias. El pack premium opcional se paga a través de Stripe: Stripe procesa el pago y nosotros no recibimos ni guardamos los datos de tu tarjeta; solo conservamos tu correo electrónico y los datos de la compra para entregarte el producto y atender posibles reclamaciones.",
                 "p2": "<bold>Tu privacidad es nuestra prioridad.</bold> Tus datos financieros están encriptados y tú tienes el control total sobre lo que decides registrar."
             },
             "sharing": {
@@ -1585,11 +1586,11 @@
             },
             "marketing": {
                 "title": "5. Comunicaciones de marketing",
-                "content": "Los emails de recordatorios, consejos y novedades son opcionales y requieren tu consentimiento separado. Guardamos la fecha, el origen y la versión de la política asociada a tu consentimiento para poder demostrarlo. Cada email incluye un enlace sencillo para darse de baja. Para gestionar estos envíos podremos utilizar un proveedor especializado de correo electrónico, que tratará tus datos únicamente según nuestras instrucciones y las garantías legales aplicables."
+                "content": "Los emails de recordatorios, consejos y novedades son opcionales y se basan en tu consentimiento, que es independiente de cualquier otro servicio. Si te suscribes desde la web sin tener cuenta (por ejemplo, junto a la descarga de la plantilla), te enviamos un correo para que confirmes tu suscripción; hasta que pulses el enlace de confirmación no recibirás comunicaciones. Guardamos tu correo, la fecha, el origen y la versión de la política asociada a tu consentimiento para poder demostrarlo, y los conservamos hasta que te des de baja o nos pidas su supresión. Cada email incluye un enlace sencillo para darse de baja. Para gestionar estos envíos utilizamos un proveedor especializado de correo electrónico, que trata tus datos únicamente según nuestras instrucciones y las garantías legales aplicables."
             },
             "rights": {
                 "title": "6. Tus Derechos",
-                "content": "Tienes derecho a acceder, rectificar o eliminar tus datos personales. Puedes hacerlo desde la configuración de tu cuenta o contactándonos."
+                "content": "Tienes derecho a acceder, rectificar, suprimir, oponerte, limitar el tratamiento y portar tus datos personales, y a retirar tu consentimiento en cualquier momento sin que afecte a los tratamientos anteriores. Puedes hacerlo desde la configuración de tu cuenta, desde el enlace de baja de cualquier email o contactándonos. También puedes presentar una reclamación ante la Agencia Española de Protección de Datos (aepd.es)."
             }
         }
     },

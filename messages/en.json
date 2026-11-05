@@ -1558,11 +1558,12 @@
             "description": "How we manage your data at Kakebo AI."
         },
         "title": "Privacy Policy",
-        "lastUpdate": "Last update: November 2, 2026",
+        "lastUpdate": "Last update: November 5, 2026",
+        "controller": "Data controller: Aitor, independent developer and owner of metodokakebo.com. Contact details are on the About page.",
         "sections": {
             "info": {
                 "title": "1. Information We Collect",
-                "content": "We collect information you provide directly, such as your email upon registration, and app usage data (expenses tracked, categories)."
+                "content": "We collect information you provide directly: your email when you create an account, subscribe to our emails or buy the premium pack; app usage data (expenses tracked, categories); and, only if you accept analytics cookies, statistical website usage data through Google Analytics."
             },
             "usage": {
                 "title": "2. Usage of Information",
@@ -1576,7 +1577,7 @@
             },
             "payments": {
                 "title": "3. Data & Privacy",
-                "p1": "Kakebo AI is a free tool. We do not collect payment data nor connect to your bank accounts.",
+                "p1": "The Kakebo AI app is free and we do not connect to your bank accounts. The optional premium pack is paid through Stripe: Stripe processes the payment and we neither receive nor store your card details; we only keep your email and purchase data to deliver the product and handle possible claims.",
                 "p2": "<bold>Your privacy is our priority.</bold> Your financial data is encrypted and you have full control over what you choose to record."
             },
             "sharing": {
@@ -1585,11 +1586,11 @@
             },
             "marketing": {
                 "title": "5. Marketing communications",
-                "content": "Emails containing reminders, tips, and news are optional and require separate consent. We store the date, source, and policy version associated with your consent so we can demonstrate it. Every email includes a simple unsubscribe link. To manage these communications, we may use a specialized email provider that processes your data only under our instructions and applicable legal safeguards."
+                "content": "Emails containing reminders, tips, and news are optional and based on your consent, which is separate from any other service. If you subscribe from the website without an account (for example, next to the template download), we send you an email to confirm your subscription; you will not receive communications until you click the confirmation link. We store your email, the date, source, and policy version associated with your consent so we can demonstrate it, and keep them until you unsubscribe or ask us to delete them. Every email includes a simple unsubscribe link. To manage these communications we use a specialized email provider that processes your data only under our instructions and applicable legal safeguards."
             },
             "rights": {
                 "title": "6. Your Rights",
-                "content": "You have the right to access, rectify, or delete your personal data. You can do this from your account settings or by contacting us."
+                "content": "You have the right to access, rectify, erase, object to, restrict, and port your personal data, and to withdraw your consent at any time without affecting prior processing. You can do this from your account settings, from the unsubscribe link in any email, or by contacting us. You may also lodge a complaint with the Spanish Data Protection Agency (aepd.es)."
             }
         }
     },
