@@ -1559,11 +1559,11 @@
         },
         "title": "Política de Privacidad",
         "lastUpdate": "Última actualización: 5 de noviembre de 2026",
-        "controller": "Responsable del tratamiento: Aitor, desarrollador independiente y titular de metodokakebo.com. Los datos de contacto para cualquier cuestión de privacidad figuran en la página Sobre nosotros.",
+        "controller": "Responsable del tratamiento: Aitor Alarcón Muñoz, con NIF 53333533M y domicilio en Apenins 62. Contacto para cualquier cuestión de privacidad: aitor@aitoralmu.xyz.",
         "sections": {
             "info": {
                 "title": "1. Datos que tratamos",
-                "content": "Tratamos estas categorías de datos: (a) datos de cuenta: correo electrónico e identificador de usuario; (b) datos que registras tú en la aplicación: gastos, ingresos, categorías, notas, presupuestos y reflexiones mensuales; (c) datos de suscripción a emails: correo electrónico, origen, fecha y versión del consentimiento; (d) datos de compra del pack premium: correo electrónico facilitado en el pago, identificadores de la operación en Stripe, importe y estado; (e) datos de uso de la web, solo si aceptas las cookies analíticas. No buscamos tratar datos de categorías especiales: te pedimos que no los incluyas en las notas de tus gastos."
+                "content": "Tratamos estas categorías de datos: (a) datos de cuenta: correo electrónico e identificador de usuario; (b) datos que registras tú en la aplicación: gastos, ingresos, categorías, notas, presupuestos y reflexiones mensuales; (c) datos de suscripción a emails: correo electrónico, origen, fecha y versión del consentimiento; (d) datos de compra del pack premium: correo electrónico facilitado en el pago, identificadores de la operación en Stripe, importe, estado y registro de tu solicitud de acceso inmediato; (e) tickets que subes al escáner (imagen o PDF) y los datos extraídos de ellos (comercio, fecha, líneas e importes); (f) datos de uso de la web, solo si aceptas las cookies analíticas. No buscamos tratar datos de categorías especiales: te pedimos que no los incluyas en las notas de tus gastos ni en los tickets que subas."
             },
             "usage": {
                 "title": "2. Finalidades",
@@ -1572,7 +1572,8 @@
                     "i1": "Proporcionar, mantener y mejorar nuestros servicios.",
                     "i2": "Mantener tu cuenta activa y segura, y prevenir usos abusivos.",
                     "i3": "Enviarte notificaciones técnicas o de soporte, y atender tus solicitudes.",
-                    "i4": "Enviarte recordatorios, consejos y novedades de Kakebo solo si lo autorizas expresamente. Puedes retirar esta autorización en cualquier momento."
+                    "i4": "Enviarte recordatorios, consejos y novedades de Kakebo solo si lo autorizas expresamente. Puedes retirar esta autorización en cualquier momento.",
+                    "i5": "Extraer los datos de los tickets que subes para que los revises antes de añadirlos como gasto."
                 }
             },
             "legalBasis": {
@@ -1591,8 +1592,8 @@
                 "p2": "<strong>No conectamos con tu banco.</strong> Solo tratamos los datos económicos que decides registrar manualmente."
             },
             "ai": {
-                "title": "5. Funciones de inteligencia artificial",
-                "content": "Algunas funciones de la aplicación (clasificación de gastos, asistente y búsqueda semántica) envían a proveedores de inteligencia artificial el texto de tus gastos y de tus consultas, y los datos de tus gastos necesarios para responderte. Los resultados son orientativos, puedes corregirlos y no producen efectos jurídicos sobre ti. Evita incluir datos personales de terceros o datos especialmente sensibles en las descripciones."
+                "title": "5. Inteligencia artificial y escáner de tickets",
+                "content": "Algunas funciones de la aplicación (clasificación de gastos, asistente y búsqueda semántica) envían a proveedores de inteligencia artificial el texto de tus gastos y de tus consultas, y los datos de tus gastos necesarios para responderte. El escáner de tickets envía la imagen o el PDF que subes a Microsoft Azure Document Intelligence para extraer sus datos; el original se guarda en un almacenamiento privado y se elimina automáticamente en un máximo de 48 horas, o antes si lo confirmas, y no se añade ningún gasto sin tu confirmación. Los resultados son orientativos, puedes corregirlos y no producen efectos jurídicos sobre ti. Evita incluir datos personales de terceros o datos especialmente sensibles en las descripciones y en los tickets."
             },
             "sharing": {
                 "title": "6. Destinatarios",
@@ -1603,17 +1604,18 @@
                     "i3": "Stripe: procesamiento de los pagos del pack premium.",
                     "i4": "Un proveedor especializado de correo electrónico: envío de emails transaccionales y de marketing.",
                     "i5": "Anthropic y OpenAI: funciones de inteligencia artificial.",
-                    "i6": "Google (Google Analytics): analítica web, solo si aceptas las cookies analíticas."
+                    "i6": "Google (Google Analytics): analítica web, solo si aceptas las cookies analíticas.",
+                    "i7": "Microsoft (Azure Document Intelligence): lectura de los tickets que subes al escáner."
                 },
                 "outro": "También podremos comunicar datos a autoridades cuando exista una obligación legal."
             },
             "transfers": {
                 "title": "7. Transferencias internacionales",
-                "content": "Algunos de estos proveedores pueden tratar datos fuera del Espacio Económico Europeo, en particular en Estados Unidos. En esos casos, las transferencias se amparan en las garantías previstas en el RGPD, como la decisión de adecuación del Marco de Privacidad de Datos UE-EE. UU. o las cláusulas contractuales tipo, según el proveedor."
+                "content": "Algunos de estos proveedores (por ejemplo, Vercel, Stripe, Google, Anthropic, OpenAI o Microsoft) pueden tratar datos fuera del Espacio Económico Europeo, en particular en Estados Unidos. En esos casos, las transferencias se amparan en las garantías previstas en el RGPD, como la decisión de adecuación del Marco de Privacidad de Datos UE-EE. UU. o las cláusulas contractuales tipo, según el proveedor."
             },
             "retention": {
                 "title": "8. Conservación",
-                "content": "Conservamos tus datos de cuenta y los que registras en la aplicación mientras mantengas tu cuenta; tras solicitar su supresión, los mantenemos bloqueados solo durante los plazos de posible responsabilidad legal. Los datos de compra se conservan durante los plazos exigidos por la normativa fiscal y mercantil. Los datos de suscripción a emails se conservan hasta que te des de baja o solicites su supresión; de la baja guardamos únicamente el registro necesario para respetarla."
+                "content": "Conservamos tus datos de cuenta y los que registras en la aplicación mientras mantengas tu cuenta; tras solicitar su supresión, los mantenemos bloqueados solo durante los plazos de posible responsabilidad legal. Los originales de los tickets se eliminan en un máximo de 48 horas, o antes si los confirmas. Los datos de compra se conservan durante los plazos exigidos por la normativa fiscal y mercantil. Los datos de suscripción a emails se conservan hasta que te des de baja o solicites su supresión; de la baja guardamos únicamente el registro necesario para respetarla."
             },
             "marketing": {
                 "title": "9. Comunicaciones de marketing",
@@ -1684,32 +1686,37 @@
                 "title": "3. Cuentas de Usuario",
                 "content": "Para usar la aplicación debes registrarte y tener al menos 14 años; la compra del pack premium no requiere cuenta. Eres responsable de mantener la confidencialidad de tus credenciales. Nos reservamos el derecho de suspender cuentas que violen estos términos."
             },
+            "use": {
+                "title": "4. Uso aceptable",
+                "content": "Te comprometes a usar el servicio de forma lícita y de buena fe. No está permitido intentar acceder a datos de otros usuarios, eludir las medidas de seguridad, sobrecargar el servicio, usarlo para fines ilícitos ni subir contenidos que no tengas derecho a tratar. Podemos suspender o cancelar el acceso en caso de incumplimiento."
+            },
             "payments": {
-                "title": "4. Gratuidad y pack premium",
+                "title": "5. Gratuidad y pack premium",
                 "content": "La aplicación es actualmente gratuita y el pack premium es de pago único.",
                 "list": {
                     "i1": "No solicitamos datos de tarjeta ni realizamos cargos por el uso de la aplicación.",
                     "i2": "El pack Kakebo Master System (plantilla Kakebo Excel premium, ebook y tutorial en PDF) cuesta 9,90 € en pago único, procesado por Stripe, y se entrega por descarga digital.",
-                    "i3": "Como consumidor puedes tener derecho de desistimiento de 14 días conforme a la ley. En el contenido digital suministrado de forma inmediata, ese derecho se pierde solo si has dado tu consentimiento expreso previo y has reconocido que lo pierdes. Para cualquier solicitud o reclamación sobre una compra, contáctanos.",
+                    "i3": "Como consumidor puedes tener derecho de desistimiento de 14 días conforme a la ley. En el contenido digital suministrado de forma inmediata, ese derecho se pierde solo si has dado tu consentimiento expreso previo y has reconocido que lo pierdes; por eso, antes de pagar, te pedimos que marques una casilla solicitando el acceso inmediato y aceptando esa pérdida, y guardamos constancia de ello. Para cualquier solicitud o reclamación sobre una compra, contáctanos.",
                     "i4": "Cualquier cambio futuro en el modelo de negocio será notificado a los usuarios.",
-                    "i5": "No nos conectamos a tu banco ni realizamos transacciones financieras por ti."
+                    "i5": "No nos conectamos a tu banco ni realizamos transacciones financieras por ti.",
+                    "i6": "El pack digital está amparado por la garantía legal de conformidad que la ley reconoce a los consumidores. Si algún archivo no funciona o no se corresponde con lo anunciado, escríbenos y lo corregiremos o repondremos."
                 }
             },
             "ip": {
-                "title": "5. Propiedad intelectual",
+                "title": "6. Propiedad intelectual",
                 "content": "Los contenidos de la web y del pack premium pertenecen a su titular. La compra concede una licencia personal, no exclusiva e intransferible para uso propio; no está permitido revender, redistribuir ni compartir públicamente los archivos."
             },
             "liability": {
-                "title": "6. Responsabilidad",
-                "content": "Kakebo AI se proporciona \"tal cual\". No garantizamos que el servicio sea ininterrumpido o libre de errores. No somos asesores financieros; la información y las sugerencias generadas, incluidas las de inteligencia artificial, son solo orientativas y de gestión personal. Esto se entiende sin perjuicio de los derechos que la ley reconoce a los consumidores y que no pueden excluirse."
+                "title": "7. Responsabilidad",
+                "content": "Kakebo AI se proporciona \"tal cual\". No garantizamos que el servicio sea ininterrumpido o libre de errores. No somos asesores financieros, fiscales ni legales; la información y las sugerencias generadas, incluidas las de inteligencia artificial y las extraídas de tickets, son solo orientativas y de gestión personal, y eres responsable de revisarlas antes de tomar decisiones. En la máxima medida permitida por la ley, nuestra responsabilidad se limita a los daños directos y previsibles y, en el caso del pack premium, no excederá el precio pagado, salvo en caso de dolo o negligencia grave. Esto se entiende sin perjuicio de los derechos que la ley reconoce a los consumidores y que no pueden excluirse."
             },
             "modifications": {
-                "title": "7. Modificaciones",
+                "title": "8. Modificaciones",
                 "content": "Nos reservamos el derecho de modificar estos términos en cualquier momento. Te notificaremos sobre cambios significativos."
             },
             "law": {
-                "title": "8. Ley aplicable y contacto",
-                "content": "Estos términos se rigen por la legislación española, sin perjuicio de las normas imperativas de protección de los consumidores de tu país de residencia. Los datos de contacto figuran en la página Sobre nosotros."
+                "title": "9. Ley aplicable y contacto",
+                "content": "El titular del sitio y prestador del servicio es Aitor Alarcón Muñoz, con NIF 53333533M, domicilio en Apenins 62 y correo electrónico aitor@aitoralmu.xyz. Estos términos se rigen por la legislación española, sin perjuicio de las normas imperativas de protección de los consumidores de tu país de residencia."
             }
         }
     },

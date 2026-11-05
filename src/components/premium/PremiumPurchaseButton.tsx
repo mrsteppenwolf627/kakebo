@@ -10,6 +10,9 @@ type Labels = {
   buy: string;
   pending: string;
   unavailable: string;
+  /** Express request for immediate access + acknowledgement of losing the withdrawal right. */
+  consent?: string;
+  consentRequired?: string;
 };
 
 const FOCUS_RING =
@@ -31,7 +34,9 @@ const FOCUS_RING =
  */
 export function PremiumPurchaseButton({ enabled, labels }: { enabled: boolean; labels: Labels }) {
   const noteId = useId();
-  const [state, setState] = useState<"idle" | "pending" | "unavailable">("idle");
+  const consentId = useId();
+  const [state, setState] = useState<"idle" | "pending" | "unavailable" | "consent">("idle");
+  const [consent, setConsent] = useState(false);
 
   if (!enabled) {
     return (
@@ -54,9 +59,18 @@ export function PremiumPurchaseButton({ enabled, labels }: { enabled: boolean; l
 
   async function startCheckout() {
     if (state === "pending") return;
+    if (labels.consent && !consent) {
+      setState("consent");
+      return;
+    }
     setState("pending");
     try {
-      const res = await fetch("/api/premium/checkout", { method: "POST" });
+      const res = await fetch(
+        "/api/premium/checkout",
+        labels.consent
+          ? { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ withdrawalConsent: true }) }
+          : { method: "POST" }
+      );
       const body = res.ok ? await res.json().catch(() => null) : null;
       // Only ever follow a Stripe-hosted Checkout URL returned by our own server.
       if (typeof body?.url === "string" && body.url.startsWith("https://checkout.stripe.com/")) {
@@ -77,6 +91,21 @@ export function PremiumPurchaseButton({ enabled, labels }: { enabled: boolean; l
 
   return (
     <div className="space-y-2">
+      {labels.consent && (
+        <label htmlFor={consentId} className="flex max-w-md items-start gap-2 text-left text-sm text-muted-foreground">
+          <input
+            id={consentId}
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => {
+              setConsent(e.target.checked);
+              if (e.target.checked && state === "consent") setState("idle");
+            }}
+            className="mt-1 h-4 w-4 shrink-0"
+          />
+          <span>{labels.consent}</span>
+        </label>
+      )}
       <button
         type="button"
         onClick={startCheckout}
@@ -87,7 +116,13 @@ export function PremiumPurchaseButton({ enabled, labels }: { enabled: boolean; l
         {state === "pending" ? labels.pending : labels.buy}
       </button>
       <p id={noteId} role="status" className="text-sm text-muted-foreground">
-        {state === "unavailable" ? labels.unavailable : state === "pending" ? labels.pending : ""}
+        {state === "unavailable"
+          ? labels.unavailable
+          : state === "pending"
+            ? labels.pending
+            : state === "consent"
+              ? labels.consentRequired
+              : ""}
       </p>
     </div>
   );

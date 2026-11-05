@@ -27,6 +27,9 @@ const LIVE = {
     purchase: {
       pending: "Abriendo el pago seguro…",
       unavailable: "No se ha podido iniciar el pago. Inténtalo de nuevo en unos minutos.",
+      consent:
+        "Solicito el acceso inmediato al pack digital y acepto que, una vez entregado, pierdo mi derecho de desistimiento de 14 días.",
+      consentRequired: "Marca la casilla para poder continuar con la compra.",
     },
   },
   en: {
@@ -46,6 +49,9 @@ const LIVE = {
     purchase: {
       pending: "Opening secure checkout…",
       unavailable: "We couldn't start the payment. Please try again in a few minutes.",
+      consent:
+        "I request immediate access to the digital pack and accept that, once delivered, I lose my 14-day right of withdrawal.",
+      consentRequired: "Tick the box to continue with the purchase.",
     },
   },
 } as const;

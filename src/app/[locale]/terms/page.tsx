@@ -40,6 +40,9 @@ export default function TermsPage() {
                     <h2>{t("sections.account.title")}</h2>
                     <p>{t("sections.account.content")}</p>
 
+                    <h2>{t("sections.use.title")}</h2>
+                    <p>{t("sections.use.content")}</p>
+
                     <h2>{t("sections.payments.title")}</h2>
                     <p>{t("sections.payments.content")}</p>
                     <ul>
@@ -48,6 +51,7 @@ export default function TermsPage() {
                         <li>{t("sections.payments.list.i3")}</li>
                         <li>{t("sections.payments.list.i4")}</li>
                         <li>{t("sections.payments.list.i5")}</li>
+                        <li>{t("sections.payments.list.i6")}</li>
                     </ul>
 
                     <h2>{t("sections.ip.title")}</h2>

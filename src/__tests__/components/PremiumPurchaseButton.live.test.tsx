@@ -110,3 +110,27 @@ describe("PremiumPurchaseButton — checkout_started", () => {
     expect(analytics.track).not.toHaveBeenCalledWith("checkout_started", expect.anything());
   });
 });
+
+describe("PremiumPurchaseButton — consentimiento de desistimiento", () => {
+  const withConsent = { ...labels, consent: "Solicito acceso inmediato y pierdo el desistimiento.", consentRequired: "Marca la casilla." };
+
+  it("sin marcar la casilla no llama al checkout y avisa", async () => {
+    render(<PremiumPurchaseButton enabled labels={withConsent} />);
+    fireEvent.click(screen.getByRole("button", { name: labels.buy }));
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(withConsent.consentRequired));
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("con la casilla marcada envía withdrawalConsent y redirige", async () => {
+    const url = "https://checkout.stripe.com/c/pay/cs_test_c";
+    vi.mocked(fetch).mockResolvedValue({ ok: true, json: async () => ({ url }) } as Response);
+    render(<PremiumPurchaseButton enabled labels={withConsent} />);
+    fireEvent.click(screen.getByRole("checkbox", { name: withConsent.consent }));
+    fireEvent.click(screen.getByRole("button", { name: labels.buy }));
+    await waitFor(() => expect(assign).toHaveBeenCalledWith(url));
+    expect(fetch).toHaveBeenCalledWith(
+      "/api/premium/checkout",
+      expect.objectContaining({ method: "POST", body: JSON.stringify({ withdrawalConsent: true }) })
+    );
+  });
+});

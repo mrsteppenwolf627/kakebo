@@ -42,6 +42,7 @@ export default function PrivacyPage() {
                         <li>{t("sections.usage.list.i2")}</li>
                         <li>{t("sections.usage.list.i3")}</li>
                         <li>{t("sections.usage.list.i4")}</li>
+                        <li>{t("sections.usage.list.i5")}</li>
                     </ul>
 
                     <h2>{t("sections.legalBasis.title")}</h2>
@@ -69,6 +70,7 @@ export default function PrivacyPage() {
                         <li>{t("sections.sharing.list.i4")}</li>
                         <li>{t("sections.sharing.list.i5")}</li>
                         <li>{t("sections.sharing.list.i6")}</li>
+                        <li>{t("sections.sharing.list.i7")}</li>
                     </ul>
                     <p>{t("sections.sharing.outro")}</p>
 

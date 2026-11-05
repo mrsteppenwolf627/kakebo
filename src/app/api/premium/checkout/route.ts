@@ -3,12 +3,14 @@ import { isPremiumCommerceEnabled } from "@/lib/premium/config";
 import { PREMIUM_PACK_ID, PREMIUM_PRODUCT_METADATA_KEY } from "@/lib/premium/manifest";
 import { getStripe, StripeNotConfiguredError } from "@/lib/stripe/server";
 import { apiLogger } from "@/lib/logger";
+import { WITHDRAWAL_TERMS_VERSION } from "@/lib/premium/product-meta";
 
 // Premium checkout: creates a Stripe Checkout Session (mode "payment", guest, no account).
 //
-// The request body is IGNORED on purpose: price, product, quantity and email come exclusively
-// from server configuration (STRIPE_PREMIUM_PRICE_ID). Access is never granted here; only the
-// signed webhook creates the purchase.
+// The only request field read is `withdrawalConsent` (express request for immediate access and
+// acknowledgement of losing the 14-day withdrawal right, TRLGDCU art. 103.m). Price, product,
+// quantity and email come exclusively from server configuration (STRIPE_PREMIUM_PRICE_ID).
+// Access is never granted here; only the signed webhook creates the purchase.
 
 const NO_STORE = { "Cache-Control": "no-store" };
 const LANDING_PATH = "/herramientas/plantilla-kakebo-excel-premium";
@@ -34,12 +36,28 @@ export async function POST(request?: Request) {
     return fail("stripe_not_configured", "Premium checkout is enabled but Stripe is not configured yet.", 501);
   }
 
+  const payload = await request?.json().catch(() => null);
+  if (payload?.withdrawalConsent !== true) {
+    return fail("withdrawal_consent_required", "Express consent to immediate access is required.", 400);
+  }
+  const consentMetadata = {
+    withdrawal_consent: "true",
+    withdrawal_consent_at: new Date().toISOString(),
+    withdrawal_terms_version: WITHDRAWAL_TERMS_VERSION,
+  };
+
   try {
     const session = await getStripe().checkout.sessions.create({
       mode: "payment",
       line_items: [{ price: priceId, quantity: 1 }],
-      metadata: { [PREMIUM_PRODUCT_METADATA_KEY]: PREMIUM_PACK_ID },
-      payment_intent_data: { metadata: { [PREMIUM_PRODUCT_METADATA_KEY]: PREMIUM_PACK_ID } },
+      metadata: { [PREMIUM_PRODUCT_METADATA_KEY]: PREMIUM_PACK_ID, ...consentMetadata },
+      payment_intent_data: { metadata: { [PREMIUM_PRODUCT_METADATA_KEY]: PREMIUM_PACK_ID, ...consentMetadata } },
+      custom_text: {
+        submit: {
+          message:
+            "Al pagar solicitas el acceso inmediato al contenido digital y reconoces que, una vez entregado, pierdes tu derecho de desistimiento de 14 días.",
+        },
+      },
       success_url: `${origin}/api/premium/claim?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}${LANDING_PATH}?checkout=cancelled`,
     });

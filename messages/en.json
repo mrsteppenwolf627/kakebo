@@ -1559,11 +1559,11 @@
         },
         "title": "Privacy Policy",
         "lastUpdate": "Last update: November 5, 2026",
-        "controller": "Data controller: Aitor, independent developer and owner of metodokakebo.com. Contact details for any privacy matter are on the About page.",
+        "controller": "Data controller: Aitor Alarcón Muñoz, tax ID (NIF) 53333533M, address: Apenins 62. Contact for any privacy matter: aitor@aitoralmu.xyz.",
         "sections": {
             "info": {
                 "title": "1. Data we process",
-                "content": "We process these categories of data: (a) account data: email and user identifier; (b) data you record in the app: expenses, income, categories, notes, budgets and monthly reflections; (c) email subscription data: email, source, date and version of consent; (d) premium pack purchase data: email provided at payment, Stripe transaction identifiers, amount and status; (e) website usage data, only if you accept analytics cookies. We do not seek to process special categories of data: please do not include them in your expense notes."
+                "content": "We process these categories of data: (a) account data: email and user identifier; (b) data you record in the app: expenses, income, categories, notes, budgets and monthly reflections; (c) email subscription data: email, source, date and version of consent; (d) premium pack purchase data: email provided at payment, Stripe transaction identifiers, amount, status and the record of your request for immediate access; (e) tickets you upload to the scanner (image or PDF) and the data extracted from them (merchant, date, lines and amounts); (f) website usage data, only if you accept analytics cookies. We do not seek to process special categories of data: please do not include them in your expense notes or in the tickets you upload."
             },
             "usage": {
                 "title": "2. Purposes",
@@ -1572,7 +1572,8 @@
                     "i1": "Provide, maintain, and improve our services.",
                     "i2": "Keep your account active and secure, and prevent abuse.",
                     "i3": "Send you technical or support notifications, and handle your requests.",
-                    "i4": "Send you Kakebo reminders, tips, and news only if you explicitly opt in. You can withdraw this choice at any time."
+                    "i4": "Send you Kakebo reminders, tips, and news only if you explicitly opt in. You can withdraw this choice at any time.",
+                    "i5": "Extract the data from the tickets you upload so you can review it before adding it as an expense."
                 }
             },
             "legalBasis": {
@@ -1591,8 +1592,8 @@
                 "p2": "<strong>We do not connect to your bank.</strong> We only process the financial data you choose to record manually."
             },
             "ai": {
-                "title": "5. Artificial intelligence features",
-                "content": "Some app features (expense classification, assistant and semantic search) send the text of your expenses and queries, and the expense data needed to answer you, to artificial intelligence providers. Results are indicative, you can correct them, and they have no legal effect on you. Avoid including third-party personal data or especially sensitive data in descriptions."
+                "title": "5. Artificial intelligence and ticket scanner",
+                "content": "Some app features (expense classification, assistant and semantic search) send the text of your expenses and queries, and the expense data needed to answer you, to artificial intelligence providers. The ticket scanner sends the image or PDF you upload to Microsoft Azure Document Intelligence to extract its data; the original is kept in private storage and automatically deleted within 48 hours at most, or earlier once you confirm it, and no expense is added without your confirmation. Results are indicative, you can correct them, and they have no legal effect on you. Avoid including third-party personal data or especially sensitive data in descriptions and tickets."
             },
             "sharing": {
                 "title": "6. Recipients",
@@ -1603,17 +1604,18 @@
                     "i3": "Stripe: payment processing for the premium pack.",
                     "i4": "A specialized email provider: transactional and marketing emails.",
                     "i5": "Anthropic and OpenAI: artificial intelligence features.",
-                    "i6": "Google (Google Analytics): web analytics, only if you accept analytics cookies."
+                    "i6": "Google (Google Analytics): web analytics, only if you accept analytics cookies.",
+                    "i7": "Microsoft (Azure Document Intelligence): reading of the tickets you upload to the scanner."
                 },
                 "outro": "We may also disclose data to authorities where legally required."
             },
             "transfers": {
                 "title": "7. International transfers",
-                "content": "Some of these providers may process data outside the European Economic Area, in particular in the United States. In those cases, transfers rely on GDPR safeguards, such as the EU-US Data Privacy Framework adequacy decision or standard contractual clauses, depending on the provider."
+                "content": "Some of these providers (for example Vercel, Stripe, Google, Anthropic, OpenAI or Microsoft) may process data outside the European Economic Area, in particular in the United States. In those cases, transfers rely on GDPR safeguards, such as the EU-US Data Privacy Framework adequacy decision or standard contractual clauses, depending on the provider."
             },
             "retention": {
                 "title": "8. Retention",
-                "content": "We keep your account data and the data you record in the app while your account remains active; after you request erasure, we keep them blocked only for the periods of possible legal liability. Purchase data is kept for the periods required by tax and commercial law. Email subscription data is kept until you unsubscribe or request erasure; for unsubscribes we only keep the record needed to honor them."
+                "content": "We keep your account data and the data you record in the app while your account remains active; after you request erasure, we keep them blocked only for the periods of possible legal liability. Ticket originals are deleted within 48 hours at most, or earlier once you confirm them. Purchase data is kept for the periods required by tax and commercial law. Email subscription data is kept until you unsubscribe or request erasure; for unsubscribes we only keep the record needed to honor them."
             },
             "marketing": {
                 "title": "9. Marketing communications",
@@ -1684,32 +1686,37 @@
                 "title": "3. User Accounts",
                 "content": "To use the app you must register and be at least 14 years old; buying the premium pack does not require an account. You are responsible for maintaining the confidentiality of your credentials. We reserve the right to suspend accounts that violate these terms."
             },
+            "use": {
+                "title": "4. Acceptable use",
+                "content": "You agree to use the service lawfully and in good faith. You may not try to access other users' data, bypass security measures, overload the service, use it for unlawful purposes or upload content you have no right to process. We may suspend or terminate access in case of breach."
+            },
             "payments": {
-                "title": "4. Free app and premium pack",
+                "title": "5. Free app and premium pack",
                 "content": "The app is currently free and the premium pack is a one-time payment.",
                 "list": {
                     "i1": "We do not request card data nor charge for the use of the app.",
                     "i2": "The Kakebo Master System pack (premium Kakebo Excel template, ebook and PDF tutorial) costs €9.90 as a one-time payment, processed by Stripe, and is delivered as a digital download.",
-                    "i3": "As a consumer you may have a 14-day right of withdrawal under the law. For digital content supplied immediately, that right is lost only if you have given your prior express consent and acknowledged that you lose it. For any request or claim about a purchase, contact us.",
+                    "i3": "As a consumer you may have a 14-day right of withdrawal under the law. For digital content supplied immediately, that right is lost only if you have given your prior express consent and acknowledged that you lose it; that is why, before paying, we ask you to tick a box requesting immediate access and accepting that loss, and we keep a record of it. For any request or claim about a purchase, contact us.",
                     "i4": "Any future change to the business model will be communicated to users.",
-                    "i5": "We do not connect to your bank nor carry out financial transactions on your behalf."
+                    "i5": "We do not connect to your bank nor carry out financial transactions on your behalf.",
+                    "i6": "The digital pack is covered by the legal guarantee of conformity that the law grants to consumers. If a file does not work or does not match what was advertised, contact us and we will fix or replace it."
                 }
             },
             "ip": {
-                "title": "5. Intellectual property",
+                "title": "6. Intellectual property",
                 "content": "The website and premium pack contents belong to their owner. The purchase grants a personal, non-exclusive, non-transferable licence for your own use; reselling, redistributing or publicly sharing the files is not permitted."
             },
             "liability": {
-                "title": "6. Liability",
-                "content": "Kakebo AI is provided \"as is\". We do not guarantee that the service will be uninterrupted or error-free. We are not financial advisors; the information and suggestions generated, including those from artificial intelligence, are indicative and for personal management only. This is without prejudice to consumer rights that the law grants and that cannot be excluded."
+                "title": "7. Liability",
+                "content": "Kakebo AI is provided \"as is\". We do not guarantee that the service will be uninterrupted or error-free. We are not financial, tax or legal advisors; the information and suggestions generated, including those from artificial intelligence and those extracted from tickets, are indicative and for personal management only, and you are responsible for reviewing them before making decisions. To the maximum extent permitted by law, our liability is limited to direct and foreseeable damages and, for the premium pack, will not exceed the price paid, except in cases of wilful misconduct or gross negligence. This is without prejudice to consumer rights that the law grants and that cannot be excluded."
             },
             "modifications": {
-                "title": "7. Modifications",
+                "title": "8. Modifications",
                 "content": "We reserve the right to modify these terms at any time. We will notify you of significant changes."
             },
             "law": {
-                "title": "8. Governing law and contact",
-                "content": "These terms are governed by Spanish law, without prejudice to the mandatory consumer protection rules of your country of residence. Contact details are on the About page."
+                "title": "9. Governing law and contact",
+                "content": "The site owner and service provider is Aitor Alarcón Muñoz, tax ID (NIF) 53333533M, address Apenins 62, email aitor@aitoralmu.xyz. These terms are governed by Spanish law, without prejudice to the mandatory consumer protection rules of your country of residence."
             }
         }
     },

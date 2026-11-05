@@ -24,7 +24,7 @@ afterEach(() => vi.unstubAllEnvs());
 
 describe("fiscal configuration of the Checkout Session (price is tax-inclusive: 9,90 € total)", () => {
   it("sells the configured Price as is: no automatic tax, no extra tax rates, no ad-hoc price data", async () => {
-    await POST(new Request("http://localhost/api/premium/checkout", { method: "POST" }));
+    await POST(new Request("http://localhost/api/premium/checkout", { method: "POST", body: JSON.stringify({ withdrawalConsent: true }) }));
     const args = create.mock.calls[0][0];
     expect(args.line_items).toEqual([{ price: "price_test_pack", quantity: 1 }]);
     expect(args.automatic_tax).toBeUndefined();

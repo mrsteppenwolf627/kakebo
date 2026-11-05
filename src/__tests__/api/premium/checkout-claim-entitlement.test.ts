@@ -40,7 +40,7 @@ describe("POST /api/premium/checkout — Stripe TEST session", () => {
       new Request("http://localhost/api/premium/checkout", {
         method: "POST",
         // Hostile client input must be ignored.
-        body: JSON.stringify({ price: "price_evil", amount: 1, email: "x@y.z", quantity: 99 }),
+        body: JSON.stringify({ price: "price_evil", amount: 1, email: "x@y.z", quantity: 99, withdrawalConsent: true }),
       })
     );
     expect(res.status).toBe(200);
@@ -56,6 +56,26 @@ describe("POST /api/premium/checkout — Stripe TEST session", () => {
     expect(args.customer_email).toBeUndefined();
   });
 
+  it("rechaza con 400 si falta el consentimiento expreso de acceso inmediato y no llama a Stripe", async () => {
+    for (const body of [undefined, "{}", JSON.stringify({ withdrawalConsent: "true" }), JSON.stringify({ withdrawalConsent: false })]) {
+      const res = await POST(new Request("http://localhost/api/premium/checkout", { method: "POST", body }));
+      expect(res.status).toBe(400);
+      expect((await res.json()).code).toBe("withdrawal_consent_required");
+    }
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it("guarda la evidencia del consentimiento en la sesión y en el payment intent", async () => {
+    await POST(new Request("http://localhost/api/premium/checkout", { method: "POST", body: JSON.stringify({ withdrawalConsent: true }) }));
+    const args = create.mock.calls[0][0];
+    for (const meta of [args.metadata, args.payment_intent_data.metadata]) {
+      expect(meta.withdrawal_consent).toBe("true");
+      expect(meta.withdrawal_terms_version).toBe("2026-11-05");
+      expect(Number.isNaN(Date.parse(meta.withdrawal_consent_at))).toBe(false);
+    }
+    expect(args.custom_text.submit.message).toMatch(/desistimiento/);
+  });
+
   it("answers 501 when the price id is not configured and never calls Stripe", async () => {
     vi.stubEnv("STRIPE_PREMIUM_PRICE_ID", "");
     const res = await POST();
@@ -65,7 +85,7 @@ describe("POST /api/premium/checkout — Stripe TEST session", () => {
 
   it("answers a generic 502 (no Stripe details) when Stripe fails", async () => {
     create.mockRejectedValue(new Error("sk_test_LEAK something"));
-    const res = await POST();
+    const res = await POST(new Request("http://localhost/api/premium/checkout", { method: "POST", body: JSON.stringify({ withdrawalConsent: true }) }));
     const text = await res.text();
     expect(res.status).toBe(502);
     expect(text).not.toContain("sk_test_LEAK");
