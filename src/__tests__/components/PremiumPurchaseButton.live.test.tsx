@@ -4,6 +4,7 @@ import { render, screen, cleanup, fireEvent, waitFor } from "@testing-library/re
 vi.mock("@/lib/analytics", () => ({ analytics: { track: vi.fn() } }));
 
 import { PremiumPurchaseButton } from "@/components/premium/PremiumPurchaseButton";
+import { analytics } from "@/lib/analytics";
 
 const labels = {
   soon: "Disponible ahora",
@@ -87,5 +88,25 @@ describe("PremiumPurchaseButton — commerce enabled", () => {
     fireEvent.click(screen.getByRole("button", { name: labels.buy }));
     await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(labels.unavailable));
     expect(assign).not.toHaveBeenCalled();
+  });
+});
+
+describe("PremiumPurchaseButton — checkout_started", () => {
+  it("emite checkout_started antes de redirigir a Stripe", async () => {
+    vi.mocked(analytics.track).mockClear();
+    vi.mocked(fetch).mockResolvedValue({ ok: true, json: async () => ({ url: "https://checkout.stripe.com/c/pay/cs_test_x" }) } as Response);
+    render(<PremiumPurchaseButton enabled labels={labels} />);
+    fireEvent.click(screen.getByRole("button", { name: labels.buy }));
+    await waitFor(() => expect(assign).toHaveBeenCalled());
+    expect(analytics.track).toHaveBeenCalledWith("checkout_started", expect.objectContaining({ value: 9.9, currency: "EUR" }));
+  });
+
+  it("no emite checkout_started si el checkout falla", async () => {
+    vi.mocked(analytics.track).mockClear();
+    vi.mocked(fetch).mockResolvedValue({ ok: false, status: 502, json: async () => ({}) } as Response);
+    render(<PremiumPurchaseButton enabled labels={labels} />);
+    fireEvent.click(screen.getByRole("button", { name: labels.buy }));
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(labels.unavailable));
+    expect(analytics.track).not.toHaveBeenCalledWith("checkout_started", expect.anything());
   });
 });

@@ -30,6 +30,7 @@ type EventName =
     | "historical_inflation_error"
     | "premium_product_viewed"
     | "premium_product_cta_clicked"
+    | "checkout_started"
     | "purchase";
 
 type EventProperties = Record<string, string | number | boolean>;

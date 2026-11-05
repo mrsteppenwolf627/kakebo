@@ -4,8 +4,9 @@ import React, { useEffect } from "react";
 import { Link } from "@/i18n/routing";
 import { analytics } from "@/lib/analytics";
 
-export const PREMIUM_PRODUCT_NAME = "Kakebo Master System";
-export const PREMIUM_PRODUCT_PRICE = 9.9;
+import { PREMIUM_PRODUCT_NAME, PREMIUM_PRODUCT_PRICE } from "@/lib/premium/product-meta";
+
+export { PREMIUM_PRODUCT_NAME, PREMIUM_PRODUCT_PRICE };
 export const PREMIUM_PATH = "/herramientas/plantilla-kakebo-excel-premium";
 
 export function PremiumViewTracker() {

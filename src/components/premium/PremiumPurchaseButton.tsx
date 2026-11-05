@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useId, useState } from "react";
+import { analytics } from "@/lib/analytics";
+import { PREMIUM_PRODUCT_NAME, PREMIUM_PRODUCT_PRICE } from "@/lib/premium/product-meta";
 
 type Labels = {
   soon: string;
@@ -23,8 +25,9 @@ const FOCUS_RING =
  *   (and the button can be pressed again). The idle state shows no extra note: the page itself already
  *   states that the purchase is available.
  *
- * Analytics: do NOT emit `checkout_started` yet. When Stripe exists, track it right before
- * redirecting to the Checkout Session URL returned by the API.
+ * Analytics: `checkout_started` is emitted right before redirecting to the Stripe Checkout URL, and only
+ * when the API returned a valid one (a failed checkout creation is not counted as a started checkout).
+ * `purchase` is emitted on return by PremiumPurchaseTracker.
  */
 export function PremiumPurchaseButton({ enabled, labels }: { enabled: boolean; labels: Labels }) {
   const noteId = useId();
@@ -57,6 +60,12 @@ export function PremiumPurchaseButton({ enabled, labels }: { enabled: boolean; l
       const body = res.ok ? await res.json().catch(() => null) : null;
       // Only ever follow a Stripe-hosted Checkout URL returned by our own server.
       if (typeof body?.url === "string" && body.url.startsWith("https://checkout.stripe.com/")) {
+        analytics.track("checkout_started", {
+          source_page: window.location.pathname,
+          product_name: PREMIUM_PRODUCT_NAME,
+          value: PREMIUM_PRODUCT_PRICE,
+          currency: "EUR",
+        });
         window.location.assign(body.url);
         return;
       }
