@@ -14,8 +14,9 @@ export default function CommunicationPreferencesCard() {
   useEffect(() => {
     fetch("/api/communication-preferences")
       .then((response) => response.json())
-      .then(({ preferences }) => {
-        setEnabled(preferences?.marketing_email_consent === true);
+      .then((json) => {
+        // API responses are wrapped as { success, data }.
+        setEnabled(json?.data?.preferences?.marketing_email_consent === true);
         setLoaded(true);
       })
       .catch(() => setLoaded(true));

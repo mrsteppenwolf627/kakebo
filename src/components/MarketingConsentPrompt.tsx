@@ -22,10 +22,14 @@ export default function MarketingConsentPrompt() {
         if (!response.ok) throw new Error("preferences unavailable");
         return response.json();
       })
-      .then(({ preferences }) => {
+      .then((json) => {
         if (cancelled || decisionMade.current) return;
+        // API responses are wrapped as { success, data }.
+        if (json?.success !== true || !json.data) return;
+        const preferences = json.data.preferences;
+        const currentVersion = json.data.currentPrivacyPolicyVersion ?? "2026-11-02";
         const acknowledged = preferences?.privacy_policy_acknowledged_at &&
-          preferences?.privacy_policy_version === "2026-11-02";
+          preferences?.privacy_policy_version === currentVersion;
         if (!acknowledged) {
           setOpen(true);
         }
@@ -39,7 +43,7 @@ export default function MarketingConsentPrompt() {
     };
   }, []);
 
-  async function save() {
+  async function save(withConsent: boolean) {
     setSaving(true);
     setError(null);
     try {
@@ -47,7 +51,7 @@ export default function MarketingConsentPrompt() {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          marketingEmailConsent: consent,
+          marketingEmailConsent: withConsent,
           privacyPolicyAcknowledged: true,
         }),
       });
@@ -82,10 +86,10 @@ export default function MarketingConsentPrompt() {
 
         {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
         <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <button type="button" onClick={save} disabled={saving} className="rounded-md border border-border px-4 py-2 text-sm text-foreground hover:bg-muted disabled:opacity-50">
+          <button type="button" onClick={() => save(false)} disabled={saving} className="rounded-md border border-border px-4 py-2 text-sm text-foreground hover:bg-muted disabled:opacity-50">
             {t("continueWithout")}
           </button>
-          <button type="button" onClick={save} disabled={saving} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50">
+          <button type="button" onClick={() => save(consent)} disabled={saving} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50">
             {saving ? t("saving") : t("save")}
           </button>
         </div>

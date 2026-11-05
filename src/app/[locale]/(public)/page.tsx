@@ -5,14 +5,12 @@ import {
   HowItWorks,
   FAQ,
   SeoContent,
-  Testimonials,
   SavingsSimulator,
   AlternativesSection,
   ToolsSection,
 } from "@/components/landing";
 import dynamic from "next/dynamic";
 
-const DynamicTestimonials = dynamic(() => import("@/components/landing").then(mod => mod.Testimonials));
 const DynamicSavingsSimulator = dynamic(() => import("@/components/landing").then(mod => mod.SavingsSimulator));
 const DynamicAlternativesSection = dynamic(() => import("@/components/landing").then(mod => mod.AlternativesSection));
 const DynamicFAQ = dynamic(() => import("@/components/landing").then(mod => mod.FAQ));
@@ -64,8 +62,6 @@ export default async function PublicHomePage({ params }: { params: Promise<{ loc
         <div id="how-it-works">
           <HowItWorks />
         </div>
-
-        <DynamicTestimonials />
 
 
         {/* SEO Content - Kakebo Method Explanation */}

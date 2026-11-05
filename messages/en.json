@@ -905,42 +905,6 @@
             "incomeLabel": "Income"
         }
     },
-    "Testimonials": {
-        "title": "Kakebo Community",
-        "subtitle": "What our users say after trying the method",
-        "items": {
-            "t1": {
-                "body": "I had been trying to use Excel for my expenses for years, but I always quit after a week. Kakebo is the only app that has made me consistent.",
-                "author": "Elena M.",
-                "role": "Graphic Designer"
-            },
-            "t2": {
-                "body": "As a data analyst, I highly value not having to give access to my bank accounts via Open Banking. Real privacy and absolute control over what data I upload.",
-                "author": "Carlos R.",
-                "role": "Data Analyst"
-            },
-            "t3": {
-                "body": "The philosophy of categorizing 'Survival' vs 'Vice' changed my mindset. I saved €300 the first month almost without realizing it just by visualizing small expenses.",
-                "author": "Sarah J.",
-                "role": "Medical Resident"
-            },
-            "t4": {
-                "body": "Simple, beautiful and direct. Just what I was looking for to apply the Kakebo method without complicating myself with physical notebooks after reading the original book.",
-                "author": "Miguel O.",
-                "role": "Freelance Architect"
-            },
-            "t5": {
-                "body": "The AI chatbot is crazy. I ask 'how much did I spend on coffee this quarter?' or 'will I reach my 20% savings goal?' and it crosses data with my history instantly. Brutal.",
-                "author": "Laura P.",
-                "role": "Product Manager"
-            },
-            "t6": {
-                "body": "Finally an app that understands that 'saving' is not 'suffering'. Kakebo has taught me to budget my leisure better, not to stop living.",
-                "author": "David G.",
-                "role": "Teacher"
-            }
-        }
-    },
     "FAQ": {
         "title": "Frequently Asked Questions",
         "subtitle": "Direct answers to common doubts",

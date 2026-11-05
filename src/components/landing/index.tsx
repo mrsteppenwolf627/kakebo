@@ -5,7 +5,6 @@ export { HowItWorks } from "./HowItWorks";
 export { FAQ } from "./FAQ";
 export { Footer } from "./Footer";
 export { SeoContent } from "./SeoContent";
-export { Testimonials } from "./Testimonials";
 export { SavingsSimulator } from "./SavingsSimulator";
 export { AlternativesSection } from "./AlternativesSection";
 export { ToolsSection } from "./ToolsSection";
