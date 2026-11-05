@@ -99,7 +99,7 @@ export default async function BlogPostPage({ params }: Props) {
                         <div className="h-px w-8 bg-primary/30" />
                     </div>
 
-                    <div className="mb-5 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <div className="mb-5 flex flex-wrap items-center justify-center gap-2 text-sm text-muted-foreground">
                         <time dateTime={post.frontmatter.date}>
                             {new Date(post.frontmatter.date).toLocaleDateString(locale === 'es' ? "es-ES" : "en-US", {
                                 year: "numeric",
@@ -107,6 +107,21 @@ export default async function BlogPostPage({ params }: Props) {
                                 day: "numeric",
                             })}
                         </time>
+                        {post.frontmatter.updatedDate && post.frontmatter.updatedDate !== post.frontmatter.date && (
+                            <>
+                                <span aria-hidden="true">·</span>
+                                <span>
+                                    {locale === 'es' ? "Actualizado el " : "Updated "}
+                                    <time dateTime={post.frontmatter.updatedDate}>
+                                        {new Date(post.frontmatter.updatedDate).toLocaleDateString(locale === 'es' ? "es-ES" : "en-US", {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                        })}
+                                    </time>
+                                </span>
+                            </>
+                        )}
                         <span aria-hidden="true">·</span>
                         <span>{post.frontmatter.readingTime}</span>
                     </div>
