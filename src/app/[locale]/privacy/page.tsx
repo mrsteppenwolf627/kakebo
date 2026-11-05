@@ -44,18 +44,54 @@ export default function PrivacyPage() {
                         <li>{t("sections.usage.list.i4")}</li>
                     </ul>
 
+                    <h2>{t("sections.legalBasis.title")}</h2>
+                    <p>{t("sections.legalBasis.content")}</p>
+                    <ul>
+                        <li>{t("sections.legalBasis.list.i1")}</li>
+                        <li>{t("sections.legalBasis.list.i2")}</li>
+                        <li>{t("sections.legalBasis.list.i3")}</li>
+                        <li>{t("sections.legalBasis.list.i4")}</li>
+                    </ul>
+
                     <h2>{t("sections.payments.title")}</h2>
-                    <p dangerouslySetInnerHTML={{ __html: t.raw("sections.payments.p1") }} />
+                    <p>{t("sections.payments.p1")}</p>
                     <p dangerouslySetInnerHTML={{ __html: t.raw("sections.payments.p2") }} />
+
+                    <h2>{t("sections.ai.title")}</h2>
+                    <p>{t("sections.ai.content")}</p>
 
                     <h2>{t("sections.sharing.title")}</h2>
                     <p>{t("sections.sharing.content")}</p>
+                    <ul>
+                        <li>{t("sections.sharing.list.i1")}</li>
+                        <li>{t("sections.sharing.list.i2")}</li>
+                        <li>{t("sections.sharing.list.i3")}</li>
+                        <li>{t("sections.sharing.list.i4")}</li>
+                        <li>{t("sections.sharing.list.i5")}</li>
+                        <li>{t("sections.sharing.list.i6")}</li>
+                    </ul>
+                    <p>{t("sections.sharing.outro")}</p>
+
+                    <h2>{t("sections.transfers.title")}</h2>
+                    <p>{t("sections.transfers.content")}</p>
+
+                    <h2>{t("sections.retention.title")}</h2>
+                    <p>{t("sections.retention.content")}</p>
 
                     <h2>{t("sections.marketing.title")}</h2>
                     <p>{t("sections.marketing.content")}</p>
 
                     <h2>{t("sections.rights.title")}</h2>
                     <p>{t("sections.rights.content")}</p>
+
+                    <h2>{t("sections.minors.title")}</h2>
+                    <p>{t("sections.minors.content")}</p>
+
+                    <h2>{t("sections.security.title")}</h2>
+                    <p>{t("sections.security.content")}</p>
+
+                    <h2>{t("sections.changes.title")}</h2>
+                    <p>{t("sections.changes.content")}</p>
                 </div>
             </div>
         </main>

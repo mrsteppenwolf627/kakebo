@@ -1559,38 +1559,81 @@
         },
         "title": "Política de Privacidad",
         "lastUpdate": "Última actualización: 5 de noviembre de 2026",
-        "controller": "Responsable del tratamiento: Aitor, desarrollador independiente y titular de metodokakebo.com. Los datos de contacto figuran en la página Sobre nosotros.",
+        "controller": "Responsable del tratamiento: Aitor, desarrollador independiente y titular de metodokakebo.com. Los datos de contacto para cualquier cuestión de privacidad figuran en la página Sobre nosotros.",
         "sections": {
             "info": {
-                "title": "1. Información que Recopilamos",
-                "content": "Recopilamos información que nos proporcionas directamente: tu correo electrónico cuando creas una cuenta, cuando te suscribes a nuestros emails o cuando compras el pack premium; los datos de uso de la aplicación (gastos registrados, categorías); y, solo si aceptas las cookies analíticas, datos estadísticos de uso de la web mediante Google Analytics."
+                "title": "1. Datos que tratamos",
+                "content": "Tratamos estas categorías de datos: (a) datos de cuenta: correo electrónico e identificador de usuario; (b) datos que registras tú en la aplicación: gastos, ingresos, categorías, notas, presupuestos y reflexiones mensuales; (c) datos de suscripción a emails: correo electrónico, origen, fecha y versión del consentimiento; (d) datos de compra del pack premium: correo electrónico facilitado en el pago, identificadores de la operación en Stripe, importe y estado; (e) datos de uso de la web, solo si aceptas las cookies analíticas. No buscamos tratar datos de categorías especiales: te pedimos que no los incluyas en las notas de tus gastos."
             },
             "usage": {
-                "title": "2. Uso de la Información",
-                "content": "Utilizamos tu información para:",
+                "title": "2. Finalidades",
+                "content": "Utilizamos tus datos para:",
                 "list": {
                     "i1": "Proporcionar, mantener y mejorar nuestros servicios.",
-                    "i2": "Mantener tu cuenta activa y segura.",
-                    "i3": "Enviarte notificaciones técnicas o de soporte.",
-                    "i4": "Enviarte recordatorios, consejos y novedades de Kakebo solo si lo autorizas expresamente. Puedes retirar esta autorización en cualquier momento desde Ajustes."
+                    "i2": "Mantener tu cuenta activa y segura, y prevenir usos abusivos.",
+                    "i3": "Enviarte notificaciones técnicas o de soporte, y atender tus solicitudes.",
+                    "i4": "Enviarte recordatorios, consejos y novedades de Kakebo solo si lo autorizas expresamente. Puedes retirar esta autorización en cualquier momento."
+                }
+            },
+            "legalBasis": {
+                "title": "3. Base jurídica",
+                "content": "Cada tratamiento se apoya en una base del Reglamento General de Protección de Datos (RGPD):",
+                "list": {
+                    "i1": "Prestación de la aplicación y gestión de tu cuenta: ejecución del contrato o de las medidas precontractuales que solicitas (art. 6.1.b).",
+                    "i2": "Venta y entrega del pack premium, facturación y atención de reclamaciones: ejecución del contrato y cumplimiento de obligaciones legales (art. 6.1.b y 6.1.c).",
+                    "i3": "Seguridad, prevención del abuso y mejora del servicio: interés legítimo (art. 6.1.f), ponderado frente a tus derechos.",
+                    "i4": "Emails de recordatorios, consejos y novedades, y analítica web: tu consentimiento (art. 6.1.a), que puedes retirar en cualquier momento sin que afecte a los tratamientos anteriores."
                 }
             },
             "payments": {
-                "title": "3. Datos y Privacidad",
+                "title": "4. Pagos y datos financieros",
                 "p1": "La aplicación Kakebo AI es gratuita y no conectamos con tus cuentas bancarias. El pack premium opcional se paga a través de Stripe: Stripe procesa el pago y nosotros no recibimos ni guardamos los datos de tu tarjeta; solo conservamos tu correo electrónico y los datos de la compra para entregarte el producto y atender posibles reclamaciones.",
-                "p2": "<bold>Tu privacidad es nuestra prioridad.</bold> Tus datos financieros están encriptados y tú tienes el control total sobre lo que decides registrar."
+                "p2": "<strong>No conectamos con tu banco.</strong> Solo tratamos los datos económicos que decides registrar manualmente."
+            },
+            "ai": {
+                "title": "5. Funciones de inteligencia artificial",
+                "content": "Algunas funciones de la aplicación (clasificación de gastos, asistente y búsqueda semántica) envían a proveedores de inteligencia artificial el texto de tus gastos y de tus consultas, y los datos de tus gastos necesarios para responderte. Los resultados son orientativos, puedes corregirlos y no producen efectos jurídicos sobre ti. Evita incluir datos personales de terceros o datos especialmente sensibles en las descripciones."
             },
             "sharing": {
-                "title": "4. Compartir Información",
-                "content": "No vendemos tus datos personales. Solo compartimos información con proveedores de servicios esenciales para operar la aplicación (como hosting), bajo estrictas cláusulas de confidencialidad."
+                "title": "6. Destinatarios",
+                "content": "No vendemos tus datos personales. Solo los comunicamos a proveedores necesarios para prestar el servicio, que actúan como encargados del tratamiento según nuestras instrucciones y un contrato conforme al RGPD (en el caso de Stripe, como responsable independiente de los datos de pago):",
+                "list": {
+                    "i1": "Supabase: base de datos y autenticación, con servidores en la Unión Europea.",
+                    "i2": "Vercel: alojamiento de la web.",
+                    "i3": "Stripe: procesamiento de los pagos del pack premium.",
+                    "i4": "Un proveedor especializado de correo electrónico: envío de emails transaccionales y de marketing.",
+                    "i5": "Anthropic y OpenAI: funciones de inteligencia artificial.",
+                    "i6": "Google (Google Analytics): analítica web, solo si aceptas las cookies analíticas."
+                },
+                "outro": "También podremos comunicar datos a autoridades cuando exista una obligación legal."
+            },
+            "transfers": {
+                "title": "7. Transferencias internacionales",
+                "content": "Algunos de estos proveedores pueden tratar datos fuera del Espacio Económico Europeo, en particular en Estados Unidos. En esos casos, las transferencias se amparan en las garantías previstas en el RGPD, como la decisión de adecuación del Marco de Privacidad de Datos UE-EE. UU. o las cláusulas contractuales tipo, según el proveedor."
+            },
+            "retention": {
+                "title": "8. Conservación",
+                "content": "Conservamos tus datos de cuenta y los que registras en la aplicación mientras mantengas tu cuenta; tras solicitar su supresión, los mantenemos bloqueados solo durante los plazos de posible responsabilidad legal. Los datos de compra se conservan durante los plazos exigidos por la normativa fiscal y mercantil. Los datos de suscripción a emails se conservan hasta que te des de baja o solicites su supresión; de la baja guardamos únicamente el registro necesario para respetarla."
             },
             "marketing": {
-                "title": "5. Comunicaciones de marketing",
-                "content": "Los emails de recordatorios, consejos y novedades son opcionales y se basan en tu consentimiento, que es independiente de cualquier otro servicio. Si te suscribes desde la web sin tener cuenta (por ejemplo, junto a la descarga de la plantilla), te enviamos un correo para que confirmes tu suscripción; hasta que pulses el enlace de confirmación no recibirás comunicaciones. Guardamos tu correo, la fecha, el origen y la versión de la política asociada a tu consentimiento para poder demostrarlo, y los conservamos hasta que te des de baja o nos pidas su supresión. Cada email incluye un enlace sencillo para darse de baja. Para gestionar estos envíos utilizamos un proveedor especializado de correo electrónico, que trata tus datos únicamente según nuestras instrucciones y las garantías legales aplicables."
+                "title": "9. Comunicaciones de marketing",
+                "content": "Los emails de recordatorios, consejos y novedades son opcionales y se basan en tu consentimiento, que es independiente de cualquier otro servicio. Si te suscribes desde la web sin tener cuenta (por ejemplo, junto a la descarga de la plantilla), te enviamos un correo para que confirmes tu suscripción; hasta que pulses el enlace de confirmación no recibirás comunicaciones. Guardamos tu correo, la fecha, el origen y la versión de la política asociada a tu consentimiento para poder demostrarlo. Cada email incluye un enlace sencillo para darse de baja, y si tienes cuenta puedes gestionarlo también desde Ajustes."
             },
             "rights": {
-                "title": "6. Tus Derechos",
-                "content": "Tienes derecho a acceder, rectificar, suprimir, oponerte, limitar el tratamiento y portar tus datos personales, y a retirar tu consentimiento en cualquier momento sin que afecte a los tratamientos anteriores. Puedes hacerlo desde la configuración de tu cuenta, desde el enlace de baja de cualquier email o contactándonos. También puedes presentar una reclamación ante la Agencia Española de Protección de Datos (aepd.es)."
+                "title": "10. Tus derechos",
+                "content": "Tienes derecho a acceder, rectificar, suprimir, oponerte, limitar el tratamiento y portar tus datos, y a retirar tu consentimiento en cualquier momento. Puedes retirar el consentimiento de marketing desde el enlace de baja de cualquier email o desde Ajustes. Para ejercer el resto de derechos, escríbenos a los datos de contacto de la página Sobre nosotros; responderemos en el plazo legal de un mes. También puedes presentar una reclamación ante la Agencia Española de Protección de Datos (aepd.es)."
+            },
+            "minors": {
+                "title": "11. Menores",
+                "content": "El servicio no está dirigido a menores de 14 años. Si crees que un menor nos ha facilitado datos, contáctanos y los eliminaremos."
+            },
+            "security": {
+                "title": "12. Seguridad",
+                "content": "Aplicamos medidas técnicas y organizativas razonables: conexión cifrada (HTTPS), cifrado en reposo proporcionado por nuestros proveedores, control de acceso por fila en la base de datos y credenciales de servicio restringidas. Ningún sistema es infalible; si se produjera una brecha que te afecte, te lo notificaremos conforme a la ley."
+            },
+            "changes": {
+                "title": "13. Cambios en esta política",
+                "content": "Si modificamos esta política de forma relevante, lo indicaremos en esta página y, cuando proceda, te pediremos de nuevo tu consentimiento."
             }
         }
     },
@@ -1600,7 +1643,7 @@
             "description": "Uso de cookies en Kakebo AI."
         },
         "title": "Política de Cookies",
-        "lastUpdate": "Última actualización: {year}",
+        "lastUpdate": "Última actualización: 5 de noviembre de 2026",
         "sections": {
             "whatIs": {
                 "title": "1. ¿Qué son las cookies?",
@@ -1608,15 +1651,16 @@
             },
             "usage": {
                 "title": "2. Cookies que utilizamos",
-                "content": "Utilizamos cookies esenciales para el funcionamiento de la aplicación:",
+                "content": "Utilizamos cookies esenciales para el funcionamiento de la aplicación y, solo si lo aceptas, cookies analíticas:",
                 "list": {
-                    "i1": "<bold>Cookies de Sesión:</bold> Para mantener tu sesión iniciada de forma segura (Supabase Auth).",
-                    "i2": "<bold>Cookies de Preferencias:</bold> Para recordar si prefieres el modo claro u oscuro."
+                    "i1": "<strong>Cookies de Sesión:</strong> Para mantener tu sesión iniciada de forma segura (Supabase Auth).",
+                    "i2": "<strong>Cookies de Preferencias:</strong> Para recordar si prefieres el modo claro u oscuro.",
+                    "i3": "<strong>Cookies analíticas (Google Analytics):</strong> Miden de forma agregada cómo se usa la web. Solo se activan si pulsas «Aceptar» en el aviso de cookies; sin tu aceptación no se carga Google Analytics. Guardamos tu elección en el almacenamiento local de tu navegador."
                 }
             },
             "management": {
                 "title": "3. Gestión de cookies",
-                "content": "Puedes configurar tu navegador para rechazar todas las cookies o para que te avise cuando se envía una cookie. Sin embargo, algunas partes del servicio (como el inicio de sesión) no funcionarán correctamente sin ellas."
+                "content": "Puedes rechazar las cookies analíticas en el aviso de cookies y cambiar tu elección en cualquier momento borrando los datos del sitio en tu navegador, lo que volverá a mostrar el aviso. También puedes configurar tu navegador para rechazar todas las cookies o para que te avise cuando se envía una; sin las esenciales, algunas partes del servicio (como el inicio de sesión) no funcionarán correctamente."
             }
         }
     },
@@ -1626,36 +1670,46 @@
             "description": "Términos de uso y condiciones de servicio de Kakebo AI."
         },
         "title": "Términos y Condiciones",
-        "lastUpdate": "Última actualización: {year}",
+        "lastUpdate": "Última actualización: 5 de noviembre de 2026",
         "sections": {
             "intro": {
                 "title": "1. Introducción",
-                "content": "Bienvenido a Kakebo AI. Al acceder o utilizar nuestra aplicación web, aceptas estar legalmente vinculado por estos Términos de Servicio."
+                "content": "Bienvenido a Kakebo AI. Estos términos regulan el uso de la aplicación y de la web metodokakebo.com, y la compra del pack premium. Al acceder o utilizar el servicio, aceptas estos Términos de Servicio."
             },
             "desc": {
                 "title": "2. Descripción del Servicio",
-                "content": "Kakebo AI es una herramienta de gestión financiera personal gratuita basada en el método japonés Kakebo, diseñada para ayudar a los usuarios a registrar gastos y fomentar el ahorro."
+                "content": "Kakebo AI es una herramienta de gestión de gastos personales basada en el método japonés Kakebo, diseñada para ayudar a los usuarios a registrar gastos y fomentar el ahorro. La aplicación es de uso gratuito; además se ofrece de pago el pack digital Kakebo Master System."
             },
             "account": {
                 "title": "3. Cuentas de Usuario",
-                "content": "Para usar la plataforma, debes registrarte. Eres responsable de mantener la confidencialidad de tus credenciales. Nos reservamos el derecho de suspender cuentas que violen estos términos."
+                "content": "Para usar la aplicación debes registrarte y tener al menos 14 años; la compra del pack premium no requiere cuenta. Eres responsable de mantener la confidencialidad de tus credenciales. Nos reservamos el derecho de suspender cuentas que violen estos términos."
             },
             "payments": {
-                "title": "4. Gratuidad del Servicio",
-                "content": "Kakebo AI es actualmente un servicio gratuito.",
+                "title": "4. Gratuidad y pack premium",
+                "content": "La aplicación es actualmente gratuita y el pack premium es de pago único.",
                 "list": {
-                    "i1": "No solicitamos datos de tarjeta ni realizamos cargos por el uso de las funciones actuales.",
-                    "i2": "Cualquier cambio futuro en el modelo de negocio será notificado a los usuarios.",
-                    "i3": "No nos conectamos a tu banco ni realizamos transacciones financieras."
+                    "i1": "No solicitamos datos de tarjeta ni realizamos cargos por el uso de la aplicación.",
+                    "i2": "El pack Kakebo Master System (plantilla Kakebo Excel premium, ebook y tutorial en PDF) cuesta 9,90 € en pago único, procesado por Stripe, y se entrega por descarga digital.",
+                    "i3": "Como consumidor puedes tener derecho de desistimiento de 14 días conforme a la ley. En el contenido digital suministrado de forma inmediata, ese derecho se pierde solo si has dado tu consentimiento expreso previo y has reconocido que lo pierdes. Para cualquier solicitud o reclamación sobre una compra, contáctanos.",
+                    "i4": "Cualquier cambio futuro en el modelo de negocio será notificado a los usuarios.",
+                    "i5": "No nos conectamos a tu banco ni realizamos transacciones financieras por ti."
                 }
             },
+            "ip": {
+                "title": "5. Propiedad intelectual",
+                "content": "Los contenidos de la web y del pack premium pertenecen a su titular. La compra concede una licencia personal, no exclusiva e intransferible para uso propio; no está permitido revender, redistribuir ni compartir públicamente los archivos."
+            },
             "liability": {
-                "title": "5. Responsabilidad",
-                "content": "Kakebo AI se proporciona \"tal cual\". No garantizamos que el servicio sea ininterrumpido o libre de errores. No somos asesores financieros; la información proporcionada es solo para fines informativos y de gestión personal."
+                "title": "6. Responsabilidad",
+                "content": "Kakebo AI se proporciona \"tal cual\". No garantizamos que el servicio sea ininterrumpido o libre de errores. No somos asesores financieros; la información y las sugerencias generadas, incluidas las de inteligencia artificial, son solo orientativas y de gestión personal. Esto se entiende sin perjuicio de los derechos que la ley reconoce a los consumidores y que no pueden excluirse."
             },
             "modifications": {
-                "title": "6. Modificaciones",
+                "title": "7. Modificaciones",
                 "content": "Nos reservamos el derecho de modificar estos términos en cualquier momento. Te notificaremos sobre cambios significativos."
+            },
+            "law": {
+                "title": "8. Ley aplicable y contacto",
+                "content": "Estos términos se rigen por la legislación española, sin perjuicio de las normas imperativas de protección de los consumidores de tu país de residencia. Los datos de contacto figuran en la página Sobre nosotros."
             }
         }
     },

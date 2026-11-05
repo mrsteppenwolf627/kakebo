@@ -41,18 +41,26 @@ export default function TermsPage() {
                     <p>{t("sections.account.content")}</p>
 
                     <h2>{t("sections.payments.title")}</h2>
-                    <p dangerouslySetInnerHTML={{ __html: t.raw("sections.payments.content") }} />
+                    <p>{t("sections.payments.content")}</p>
                     <ul>
                         <li>{t("sections.payments.list.i1")}</li>
                         <li>{t("sections.payments.list.i2")}</li>
                         <li>{t("sections.payments.list.i3")}</li>
+                        <li>{t("sections.payments.list.i4")}</li>
+                        <li>{t("sections.payments.list.i5")}</li>
                     </ul>
+
+                    <h2>{t("sections.ip.title")}</h2>
+                    <p>{t("sections.ip.content")}</p>
 
                     <h2>{t("sections.liability.title")}</h2>
                     <p>{t("sections.liability.content")}</p>
 
                     <h2>{t("sections.modifications.title")}</h2>
                     <p>{t("sections.modifications.content")}</p>
+
+                    <h2>{t("sections.law.title")}</h2>
+                    <p>{t("sections.law.content")}</p>
                 </div>
             </div>
         </main>
