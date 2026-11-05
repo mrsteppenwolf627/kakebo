@@ -30,6 +30,7 @@ type EventName =
     | "historical_inflation_error"
     | "premium_product_viewed"
     | "premium_product_cta_clicked"
+    | "generate_lead"
     | "checkout_started"
     | "purchase";
 
