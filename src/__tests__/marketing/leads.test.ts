@@ -102,9 +102,9 @@ describe("POST /api/marketing/leads", () => {
     await post({ email: "ana@correo.es", consent: true });
     expect(sendMarketingEmail).toHaveBeenCalledTimes(1);
   });
-  it("devuelve 202 aunque falle el envío (el lead queda guardado)", async () => {
+  it("devuelve 503 si falla el envío, pero el lead queda guardado como pendiente", async () => {
     sendMarketingEmail.mockRejectedValue(new Error("provider down"));
-    expect((await post({ email: "ana@correo.es", consent: true })).status).toBe(202);
+    expect((await post({ email: "ana@correo.es", consent: true })).status).toBe(503);
     expect(rows).toHaveLength(1);
   });
   it("devuelve 503 si la base de datos falla", async () => {

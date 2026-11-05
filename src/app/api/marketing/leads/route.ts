@@ -98,6 +98,8 @@ export async function POST(request: NextRequest) {
     } catch (error) {
       // El lead queda guardado como pendiente; el envío se puede reintentar. Nunca se registra el correo.
       apiLogger.error({ reason: "lead_confirmation_failed" }, error instanceof Error ? error.message : "lead confirmation failed");
+      // Se avisa a la persona: si no, creería que llegará un correo que no se ha enviado.
+      return NextResponse.json({ ok: false, error: "email_unavailable" }, { status: 503, headers: NO_STORE });
     }
     return ACCEPTED();
   } catch (error) {
