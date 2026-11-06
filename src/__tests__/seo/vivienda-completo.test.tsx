@@ -8,6 +8,7 @@ vi.mock("@/i18n/routing", () => ({
   useRouter: () => ({ replace: vi.fn() }),
 }));
 vi.mock("@/components/landing", () => ({ Footer: () => null, Navbar: () => null }));
+vi.mock("next-intl/server", () => ({ setRequestLocale: vi.fn() }));
 vi.mock("next/navigation", () => ({
   notFound: () => {
     throw new Error("NEXT_NOT_FOUND");

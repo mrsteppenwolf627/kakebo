@@ -155,6 +155,23 @@ A diferencia de un Excel o una app bancaria, Kakebo:
 - 📉 **Calculadora de Inflación**: Visualiza la pérdida de poder adquisitivo de tus ahorros.
 - 🍰 **Regla 50/30/20**: Distribuye tu sueldo idealmente entre necesidades, caprichos y ahorro.
 
+### 🏠 SEO programático: ahorro para la entrada de vivienda (piloto, solo español)
+
+Páginas generadas desde un dato oficial, sin LLM en las cifras ni base de datos externa.
+
+- **Rutas:** `/ahorro-entrada-vivienda` (índice, `CollectionPage`) y `/ahorro-entrada-vivienda/[provincia]` (12 provincias piloto). Sin prefijo `/es/`; `/en/...` devuelve 404.
+- **Dato:** `src/content/vivienda/valor-tasado.es.json` (50 provincias, valor tasado medio de vivienda libre en €/m², 2T 2026, Ministerio de Transportes y Movilidad Sostenible). Solo las provincias con `piloto: true` tienen página. Cita obligatoria en cada página: «Origen de los datos: Ministerio de Transportes y Movilidad Sostenible», con periodo y fecha de consulta.
+- **Cálculo:** `src/lib/vivienda.ts`, funciones puras con tests (valor tasado × superficie, entrada del 20 %, ahorro mensual a 3, 5, 8 y 10 años sin intereses). El build falla si falta un campo obligatorio del JSON.
+- **Componentes:** `src/components/vivienda/CalculadoraEntrada.tsx` (superficie y % editables) y `GraficoValorTasado.tsx`.
+- **SEO:** canonical propia, `WebPage` + `FAQPage` + `BreadcrumbList`, migas visibles, imagen social por provincia (`/api/og`), sitemap (hub + 12 URLs) y cabecera `Link` sin `hreflang=en` (middleware).
+- **Tests:** `src/__tests__/seo/vivienda*.test.ts(x)` y `render-estatico-i18n.test.ts`.
+- **Medición:** reloj desde 2026-11-06. Umbrales a 6 semanas: ≥6/12 indexadas = éxito, 5 = ajustar, ≤4 = descartar; además ≥300 impresiones y ≥10 clics en 28 días, sin caída >20 % de clics en la plantilla Excel. Plan y registros en el proyecto de Claude («Plan pSEO geográfico», «Piloto vivienda»).
+- **Ampliar:** no añadir provincias, ciudades ni comarcas antes de superar la puerta de medición. No hay dato oficial por comarca.
+
+### ⚡ Renderizado estático con next-intl
+
+Para que una ruta con `[locale]` se genere de forma estática, `src/app/[locale]/layout.tsx` declara `generateStaticParams` (locales) y llama a `setRequestLocale(locale)`; **cada página** que use APIs de next-intl en servidor (p. ej. un componente con `useTranslations`, como `Footer`) debe llamar también a `setRequestLocale(locale)` al inicio. Sin eso la página se renderiza de forma dinámica (cabecera `cache-control: private, no-store`). Hoy solo las rutas de vivienda lo hacen; el resto de rutas públicas (blog, plantillas, home, herramientas) siguen siendo dinámicas. `themeColor` va en `export const viewport`, no en `metadata`.
+
 ---
 
 ## 🧾 Escáner de tickets — guía operativa completa
