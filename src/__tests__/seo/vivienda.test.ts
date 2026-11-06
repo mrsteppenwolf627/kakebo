@@ -10,6 +10,7 @@ vi.mock("@/i18n/routing", () => ({
 }));
 vi.mock("@/components/landing", () => ({ Footer: () => null, Navbar: () => null }));
 vi.mock("@/components/premium/PremiumTracking", () => ({ PremiumLink: () => null }));
+vi.mock("next-intl/server", () => ({ setRequestLocale: vi.fn() }));
 vi.mock("next/navigation", () => ({
   notFound: () => {
     throw new Error("NEXT_NOT_FOUND");

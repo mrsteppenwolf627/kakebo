@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getTranslations } from "next-intl/server";
+import type { Viewport } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Footer } from "@/components/landing";
 import "../globals.css";
+
+// themeColor va en `viewport` (en `metadata` Next.js lo marca como no soportado).
+export const viewport: Viewport = {
+  themeColor: "#fafaf9",
+};
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -34,7 +40,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       },
     },
     manifest: "/manifest.webmanifest",
-    themeColor: "#fafaf9",
     appleWebApp: {
       capable: true,
       statusBarStyle: "default",
@@ -105,6 +110,11 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { pickClientMessages } from '@/i18n/client-messages';
 
+// Los locales se conocen en build: next-intl necesita esto y setRequestLocale() para renderizar de forma estática.
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
 export default async function LocaleLayout({
   children,
   params
@@ -118,6 +128,9 @@ export default async function LocaleLayout({
   if (!routing.locales.includes(locale as any)) {
     notFound();
   }
+
+  // Fija el locale de esta petición sin leer cabeceras, para no forzar renderizado dinámico.
+  setRequestLocale(locale);
 
   // Al cliente solo van los namespaces que leen componentes cliente (ver src/i18n/client-messages.ts).
   // Las calculadoras reciben `Tools` de ToolMessages en sus propias páginas.

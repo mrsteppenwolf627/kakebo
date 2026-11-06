@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { Footer } from "@/components/landing";
 import {
@@ -65,6 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AhorroEntradaViviendaIndexPage({ params }: Props) {
     const { locale } = await params;
     if (locale !== "es") notFound();
+    setRequestLocale(locale);
 
     const meta = getViviendaMeta();
     const url = `${BASE_URL}${SECTION_PATH}`;

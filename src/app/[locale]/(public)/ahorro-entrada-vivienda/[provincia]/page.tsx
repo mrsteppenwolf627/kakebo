@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { Footer } from "@/components/landing";
 import { components } from "@/components/mdx/MDXComponents";
@@ -97,6 +98,7 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
     const content = buildContent(slug);
     // Solo español: la ruta se renderiza dinámicamente, así que /en/... se rechaza aquí.
     if (!content || locale !== "es") notFound();
+    setRequestLocale(locale);
 
     const { provincia, meta, valorEstimado, entrada, plazos, puesto, total, diferencia, pct } = content;
     const url = `${BASE_URL}${SECTION_PATH}/${provincia.slug}`;
