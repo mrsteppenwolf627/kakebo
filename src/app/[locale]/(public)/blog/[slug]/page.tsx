@@ -7,7 +7,8 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { components } from "@/components/mdx/MDXComponents";
 import { RelatedPosts } from "@/components/mdx/RelatedPosts";
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { routing } from '@/i18n/routing';
 import Image from 'next/image';
 
 interface Props {
@@ -17,8 +18,12 @@ interface Props {
     }>;
 }
 
-// Removed generateStaticParams to fix DYNAMIC_SERVER_USAGE error.
-// The `[locale]` segment is inherently dynamic due to next-intl, so we must render these dynamically.
+// Prerenderiza cada artículo en cada locale en que existe. Es seguro porque el layout raíz y esta página fijan el locale
+// con setRequestLocale (sin eso next-intl lee cabeceras y la ruta vuelve a ser dinámica: DYNAMIC_SERVER_USAGE).
+// Los slugs que no existen se resuelven con notFound() (dynamicParams por defecto).
+export function generateStaticParams() {
+    return routing.locales.flatMap((locale) => getBlogPosts(locale).map((post) => ({ locale, slug: post.slug })));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug, locale } = await params;
@@ -78,6 +83,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
     const { slug, locale } = await params;
+    setRequestLocale(locale);
     const post = getBlogPost(slug, locale);
     const t = await getTranslations({ locale, namespace: 'Blog.post' });
 

@@ -1,5 +1,4 @@
-import { getTranslations } from "next-intl/server";
-import { useTranslations } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Navbar } from "@/components/landing";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -20,8 +19,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     };
 }
 
-export default function PrivacyPage() {
-    const t = useTranslations("Privacy");
+export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    setRequestLocale(locale);
+    const t = await getTranslations("Privacy");
 
     return (
         <main className="min-h-screen bg-background text-foreground">
