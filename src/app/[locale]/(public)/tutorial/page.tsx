@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Navbar, Footer } from "@/components/landing";
-import { getTranslations } from "next-intl/server";
-import { useTranslations } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import ExpandableImage from "@/components/landing/ExpandableImage";
 import { Link } from "@/i18n/routing";
 import { PremiumLink } from "@/components/premium/PremiumTracking";
@@ -32,8 +31,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     };
 }
 
-export default function TutorialPage() {
-    const t = useTranslations("Tutorial");
+export default async function TutorialPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    setRequestLocale(locale);
+    const t = await getTranslations("Tutorial");
 
     return (
         <main className="min-h-screen overflow-x-hidden bg-background selection:bg-primary/20">

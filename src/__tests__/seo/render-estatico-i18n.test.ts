@@ -28,4 +28,22 @@ describe("render estático con next-intl y viewport", () => {
   ])("%s fija el locale con setRequestLocale", (rel) => {
     expect(read(rel)).toContain("setRequestLocale(locale)");
   });
+
+  it.each([
+    "src/app/[locale]/(public)/tutorial/page.tsx",
+    "src/app/[locale]/privacy/page.tsx",
+    "src/app/[locale]/terms/page.tsx",
+    "src/app/[locale]/cookies/page.tsx",
+  ])("%s fija el locale y usa getTranslations (sin hooks en componente async)", (rel) => {
+    const src = read(rel);
+    expect(src).toContain("setRequestLocale(locale)");
+    expect(src).not.toContain("useTranslations");
+  });
+
+  it("el blog declara generateStaticParams por locale y slug y fija el locale", () => {
+    const src = read("src/app/[locale]/(public)/blog/[slug]/page.tsx");
+    expect(src).toMatch(/export function generateStaticParams\(\)/);
+    expect(src).toContain("getBlogPosts(locale).map");
+    expect(src).toContain("setRequestLocale(locale)");
+  });
 });
