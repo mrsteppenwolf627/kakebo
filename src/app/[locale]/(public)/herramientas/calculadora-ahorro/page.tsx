@@ -4,6 +4,7 @@ import { SavingsCalculator } from "@/components/landing/tools/SavingsCalculator"
 import { Link } from "@/i18n/routing";
 import { getTranslations } from 'next-intl/server';
 import { getSavingsPageContent } from "@/content/savings-calculator-page";
+import { getProvinciasPiloto } from "@/lib/vivienda";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -195,6 +196,31 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
                             ))}
                         </div>
                     </div>
+
+                    {/* Piloto pSEO de entrada de vivienda: solo en español (las páginas destino no existen en /en/). */}
+                    {locale === 'es' && (
+                        <div className="space-y-4">
+                            <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground">
+                                ¿Ahorras para la entrada de un piso?
+                            </h2>
+                            <p className="text-sm text-muted-foreground font-light leading-relaxed">
+                                Si tu objetivo es reunir la entrada de una vivienda, consulta cuánto supone el 20 % según el valor tasado
+                                oficial de tu provincia y cuánto tendrías que apartar cada mes:
+                            </p>
+                            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm font-light">
+                                {getProvinciasPiloto().map((provincia) => (
+                                    <li key={provincia.slug}>
+                                        <Link
+                                            href={`/ahorro-entrada-vivienda/${provincia.slug}`}
+                                            className="underline text-foreground hover:text-primary"
+                                        >
+                                            Entrada de un piso en {provincia.nombre}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
 
                     {/* FAQ visible */}
                     <div className="space-y-6">

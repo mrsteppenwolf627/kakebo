@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { getBlogPosts } from '@/lib/blog';
 import { routing } from '@/i18n/routing';
 import { getPlantillas } from '@/lib/plantillas';
+import { getProvinciasPiloto, getViviendaMeta } from '@/lib/vivienda';
 
 // Shared lastModified for static core routes (Home, tutorial, herramientas, legales, etc.).
 // Bump this date manually whenever the actual content of one of those pages changes —
@@ -16,7 +17,7 @@ const ROUTE_LAST_MODIFIED: Record<string, Date> = {
     '/tutorial': new Date('2026-10-08'),
     '/herramientas': new Date('2026-10-08'),
     '/herramientas/plantilla-kakebo-excel-premium': new Date('2026-10-08'),
-    '/herramientas/calculadora-ahorro': new Date('2026-10-21'),
+    '/herramientas/calculadora-ahorro': new Date('2026-11-06'),
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -107,6 +108,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: new Date(plantilla.updatedDate),
             changeFrequency: 'monthly',
             priority: 0.7,
+            alternates: { languages: { es: url, 'x-default': url } },
+        });
+    });
+
+    // Piloto pSEO: entrada de vivienda por provincia (solo español, sin prefijo /es/).
+    const viviendaMeta = getViviendaMeta();
+    getProvinciasPiloto().forEach((provincia) => {
+        const url = `${baseUrl}/ahorro-entrada-vivienda/${provincia.slug}`;
+        sitemapEntries.push({
+            url,
+            lastModified: new Date(viviendaMeta.consultado),
+            changeFrequency: 'monthly',
+            priority: 0.6,
             alternates: { languages: { es: url, 'x-default': url } },
         });
     });

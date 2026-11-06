@@ -1,0 +1,314 @@
+{
+  "meta": {
+    "fuente": "Estadística de Valor Tasado de Vivienda (valor tasado medio de vivienda libre, euros por m², provincias)",
+    "organismo": "Ministerio de Transportes y Movilidad Sostenible",
+    "cita": "Origen de los datos: Ministerio de Transportes y Movilidad Sostenible",
+    "url": "https://apps.fomento.gob.es/BoletinOnline2/sedal/35101000.XLS",
+    "avisoLegalUrl": "https://www.transportes.gob.es/ministerio/aviso-legal",
+    "periodo": "2.º trimestre de 2026",
+    "mediaNacionalM2": 2355.0,
+    "consultado": "2026-11-06"
+  },
+  "provincias": [
+    {
+      "slug": "almeria",
+      "nombre": "Almería",
+      "valorM2": 1492.6,
+      "piloto": false
+    },
+    {
+      "slug": "cadiz",
+      "nombre": "Cádiz",
+      "valorM2": 2043.0,
+      "piloto": false
+    },
+    {
+      "slug": "cordoba",
+      "nombre": "Córdoba",
+      "valorM2": 1307.1,
+      "piloto": false
+    },
+    {
+      "slug": "granada",
+      "nombre": "Granada",
+      "valorM2": 1673.3,
+      "piloto": false
+    },
+    {
+      "slug": "huelva",
+      "nombre": "Huelva",
+      "valorM2": 1567.2,
+      "piloto": false
+    },
+    {
+      "slug": "jaen",
+      "nombre": "Jaén",
+      "valorM2": 912.7,
+      "piloto": false
+    },
+    {
+      "slug": "malaga",
+      "nombre": "Málaga",
+      "valorM2": 3083.5,
+      "piloto": true
+    },
+    {
+      "slug": "sevilla",
+      "nombre": "Sevilla",
+      "valorM2": 1889.8,
+      "piloto": true
+    },
+    {
+      "slug": "huesca",
+      "nombre": "Huesca",
+      "valorM2": 1492.9,
+      "piloto": false
+    },
+    {
+      "slug": "teruel",
+      "nombre": "Teruel",
+      "valorM2": 1052.3,
+      "piloto": false
+    },
+    {
+      "slug": "zaragoza",
+      "nombre": "Zaragoza",
+      "valorM2": 1944.3,
+      "piloto": true
+    },
+    {
+      "slug": "asturias",
+      "nombre": "Asturias",
+      "valorM2": 1798.5,
+      "piloto": false
+    },
+    {
+      "slug": "illes-balears",
+      "nombre": "Illes Balears",
+      "valorM2": 3980.8,
+      "piloto": true
+    },
+    {
+      "slug": "las-palmas",
+      "nombre": "Las Palmas",
+      "valorM2": 2263.0,
+      "piloto": true
+    },
+    {
+      "slug": "santa-cruz-de-tenerife",
+      "nombre": "Santa Cruz de Tenerife",
+      "valorM2": 2296.6,
+      "piloto": false
+    },
+    {
+      "slug": "cantabria",
+      "nombre": "Cantabria",
+      "valorM2": 2122.0,
+      "piloto": false
+    },
+    {
+      "slug": "avila",
+      "nombre": "Ávila",
+      "valorM2": 1167.0,
+      "piloto": false
+    },
+    {
+      "slug": "burgos",
+      "nombre": "Burgos",
+      "valorM2": 1500.1,
+      "piloto": false
+    },
+    {
+      "slug": "leon",
+      "nombre": "León",
+      "valorM2": 1086.7,
+      "piloto": false
+    },
+    {
+      "slug": "palencia",
+      "nombre": "Palencia",
+      "valorM2": 1127.6,
+      "piloto": false
+    },
+    {
+      "slug": "salamanca",
+      "nombre": "Salamanca",
+      "valorM2": 1503.5,
+      "piloto": false
+    },
+    {
+      "slug": "segovia",
+      "nombre": "Segovia",
+      "valorM2": 1530.1,
+      "piloto": false
+    },
+    {
+      "slug": "soria",
+      "nombre": "Soria",
+      "valorM2": 1192.6,
+      "piloto": false
+    },
+    {
+      "slug": "valladolid",
+      "nombre": "Valladolid",
+      "valorM2": 1658.4,
+      "piloto": false
+    },
+    {
+      "slug": "zamora",
+      "nombre": "Zamora",
+      "valorM2": 1005.7,
+      "piloto": false
+    },
+    {
+      "slug": "albacete",
+      "nombre": "Albacete",
+      "valorM2": 1236.2,
+      "piloto": false
+    },
+    {
+      "slug": "ciudad-real",
+      "nombre": "Ciudad Real",
+      "valorM2": 854.2,
+      "piloto": false
+    },
+    {
+      "slug": "cuenca",
+      "nombre": "Cuenca",
+      "valorM2": 950.3,
+      "piloto": false
+    },
+    {
+      "slug": "guadalajara",
+      "nombre": "Guadalajara",
+      "valorM2": 1755.3,
+      "piloto": false
+    },
+    {
+      "slug": "toledo",
+      "nombre": "Toledo",
+      "valorM2": 1261.3,
+      "piloto": false
+    },
+    {
+      "slug": "barcelona",
+      "nombre": "Barcelona",
+      "valorM2": 3204.2,
+      "piloto": true
+    },
+    {
+      "slug": "girona",
+      "nombre": "Girona",
+      "valorM2": 2162.8,
+      "piloto": false
+    },
+    {
+      "slug": "lleida",
+      "nombre": "Lleida",
+      "valorM2": 1276.5,
+      "piloto": false
+    },
+    {
+      "slug": "tarragona",
+      "nombre": "Tarragona",
+      "valorM2": 1817.9,
+      "piloto": false
+    },
+    {
+      "slug": "alicante",
+      "nombre": "Alicante",
+      "valorM2": 2020.7,
+      "piloto": true
+    },
+    {
+      "slug": "castellon",
+      "nombre": "Castellón",
+      "valorM2": 1464.5,
+      "piloto": false
+    },
+    {
+      "slug": "valencia",
+      "nombre": "Valencia",
+      "valorM2": 1980.1,
+      "piloto": true
+    },
+    {
+      "slug": "badajoz",
+      "nombre": "Badajoz",
+      "valorM2": 1029.0,
+      "piloto": false
+    },
+    {
+      "slug": "caceres",
+      "nombre": "Cáceres",
+      "valorM2": 950.5,
+      "piloto": false
+    },
+    {
+      "slug": "a-coruna",
+      "nombre": "A Coruña",
+      "valorM2": 1749.5,
+      "piloto": true
+    },
+    {
+      "slug": "lugo",
+      "nombre": "Lugo",
+      "valorM2": 1173.4,
+      "piloto": false
+    },
+    {
+      "slug": "ourense",
+      "nombre": "Ourense",
+      "valorM2": 1070.3,
+      "piloto": false
+    },
+    {
+      "slug": "pontevedra",
+      "nombre": "Pontevedra",
+      "valorM2": 1825.8,
+      "piloto": false
+    },
+    {
+      "slug": "madrid",
+      "nombre": "Madrid",
+      "valorM2": 4089.6,
+      "piloto": true
+    },
+    {
+      "slug": "murcia",
+      "nombre": "Murcia",
+      "valorM2": 1350.1,
+      "piloto": true
+    },
+    {
+      "slug": "navarra",
+      "nombre": "Navarra",
+      "valorM2": 1936.4,
+      "piloto": false
+    },
+    {
+      "slug": "araba-alava",
+      "nombre": "Araba/Álava",
+      "valorM2": 2531.3,
+      "piloto": false
+    },
+    {
+      "slug": "gipuzkoa",
+      "nombre": "Gipuzkoa",
+      "valorM2": 3514.6,
+      "piloto": false
+    },
+    {
+      "slug": "bizkaia",
+      "nombre": "Bizkaia",
+      "valorM2": 3024.7,
+      "piloto": true
+    },
+    {
+      "slug": "la-rioja",
+      "nombre": "La Rioja",
+      "valorM2": 1476.8,
+      "piloto": false
+    }
+  ]
+}
