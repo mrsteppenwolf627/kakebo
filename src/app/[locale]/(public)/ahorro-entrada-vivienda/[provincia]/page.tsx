@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/routing";
 import { Footer } from "@/components/landing";
 import { components } from "@/components/mdx/MDXComponents";
+import { CalculadoraEntrada } from "@/components/vivienda/CalculadoraEntrada";
+import { GraficoValorTasado } from "@/components/vivienda/GraficoValorTasado";
 import {
     PLAZOS_ANIOS,
     PORCENTAJE_ENTRADA,
@@ -71,7 +73,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             type: "website",
             url,
             siteName: "MetodoKakebo.com",
-            images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: title }],
+            images: [
+                {
+                    url: `/api/og?title=${encodeURIComponent(`Entrada de un piso en ${provincia.nombre}`)}&description=${encodeURIComponent(
+                        `Entrada del ${content.pct} %: ${eur(entrada)}. Valor tasado ${decimal.format(provincia.valorM2)} €/m² (${meta.periodo}).`,
+                    )}`,
+                    width: 1200,
+                    height: 630,
+                    alt: title,
+                },
+            ],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title,
+            description,
         },
     };
 }
@@ -86,6 +102,13 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
     const url = `${BASE_URL}${SECTION_PATH}/${provincia.slug}`;
     const nombre = provincia.nombre;
     const otras = getProvinciasPiloto().filter((p) => p.slug !== provincia.slug);
+    const maxM2 = Math.max(...getTodasProvincias().map((p) => p.valorM2));
+    const fechaActualizacion = new Date(meta.consultado).toLocaleDateString("es-ES", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "UTC",
+    });
     const posicion =
         diferencia === 0
             ? "prácticamente igual que la media nacional"
@@ -115,6 +138,24 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
     return (
         <main className="min-h-screen bg-background text-foreground">
             <article className="mx-auto max-w-3xl px-4 pt-24 pb-16 sm:px-6 lg:px-8">
+                <nav aria-label="Migas de pan" className="mb-6 text-sm font-light text-muted-foreground">
+                    <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                        <li>
+                            <Link href="/" className="hover:text-primary hover:underline">
+                                Inicio
+                            </Link>
+                        </li>
+                        <li aria-hidden="true">/</li>
+                        <li>
+                            <Link href={SECTION_PATH} className="hover:text-primary hover:underline">
+                                Entrada de vivienda por provincia
+                            </Link>
+                        </li>
+                        <li aria-hidden="true">/</li>
+                        <li aria-current="page">{nombre}</li>
+                    </ol>
+                </nav>
+
                 <header className="mb-8">
                     <h1 className="mb-5 text-3xl font-serif font-bold leading-tight sm:text-4xl md:text-5xl">
                         ¿Cuánto ahorrar para la entrada de un piso en {nombre}?
@@ -123,6 +164,9 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
                         En {nombre}, el valor tasado medio de la vivienda libre fue de {decimal.format(provincia.valorM2)} €/m² en el{" "}
                         {meta.periodo}, {posicion} ({decimal.format(meta.mediaNacionalM2)} €/m²). Con ese dato, la entrada del {pct} % de
                         un piso de {SUPERFICIE_TIPO_M2} m² es de {eur(entrada)}.
+                    </p>
+                    <p className="mt-3 text-sm font-light text-muted-foreground">
+                        Datos del {meta.periodo}. Última consulta de la fuente: <time dateTime={meta.consultado}>{fechaActualizacion}</time>.
                     </p>
                 </header>
 
@@ -168,6 +212,28 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
                             ))}
                         </tbody>
                     </table>
+
+                    <GraficoValorTasado
+                        nombre={nombre}
+                        valorM2={provincia.valorM2}
+                        mediaNacionalM2={meta.mediaNacionalM2}
+                        maxM2={maxM2}
+                        periodo={meta.periodo}
+                    />
+                </section>
+
+                <section className="mt-12">
+                    <h2 className="mb-4 text-2xl font-serif font-bold">Ajusta el cálculo a tu caso</h2>
+                    <p className="mb-4 font-light leading-relaxed">
+                        La tabla usa una vivienda de {SUPERFICIE_TIPO_M2} m² y una entrada del {pct} %. Cambia la superficie y el porcentaje para
+                        ver tu entrada y el ahorro mensual en {nombre}.
+                    </p>
+                    <CalculadoraEntrada
+                        nombre={nombre}
+                        valorM2={provincia.valorM2}
+                        superficieInicial={SUPERFICIE_TIPO_M2}
+                        porcentajeInicial={PORCENTAJE_ENTRADA}
+                    />
                 </section>
 
                 <section className="mt-12">
@@ -257,15 +323,38 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "BreadcrumbList",
-                        itemListElement: [
-                            { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
-                            { "@type": "ListItem", position: 2, name: "Calculadora de ahorro", item: `${BASE_URL}/herramientas/calculadora-ahorro` },
-                            { "@type": "ListItem", position: 3, name: `Entrada de un piso en ${nombre}`, item: url },
-                        ],
-                    }),
+                    __html: JSON.stringify([
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "WebPage",
+                            "@id": `${url}#webpage`,
+                            url,
+                            name: `Cuánto ahorrar para la entrada de un piso en ${nombre}`,
+                            inLanguage: "es",
+                            dateModified: meta.consultado,
+                            isPartOf: { "@type": "WebSite", name: "MetodoKakebo.com", url: BASE_URL },
+                            publisher: { "@type": "Organization", name: "MetodoKakebo.com", url: BASE_URL },
+                            citation: { "@type": "CreativeWork", name: meta.fuente, url: meta.url, publisher: { "@type": "Organization", name: meta.organismo } },
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "FAQPage",
+                            mainEntity: faq.map((item) => ({
+                                "@type": "Question",
+                                name: item.question,
+                                acceptedAnswer: { "@type": "Answer", text: item.answer },
+                            })),
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "BreadcrumbList",
+                            itemListElement: [
+                                { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+                                { "@type": "ListItem", position: 2, name: "Entrada de vivienda por provincia", item: `${BASE_URL}${SECTION_PATH}` },
+                                { "@type": "ListItem", position: 3, name: `Entrada de un piso en ${nombre}`, item: url },
+                            ],
+                        },
+                    ]),
                 }}
             />
         </main>
