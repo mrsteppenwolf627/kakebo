@@ -170,7 +170,7 @@ Páginas generadas desde un dato oficial, sin LLM en las cifras ni base de datos
 
 ### ⚡ Renderizado estático con next-intl
 
-Para que una ruta con `[locale]` se genere de forma estática, `src/app/[locale]/layout.tsx` declara `generateStaticParams` (locales) y llama a `setRequestLocale(locale)`; **cada página** que use APIs de next-intl en servidor (p. ej. un componente con `useTranslations`, como `Footer`) debe llamar también a `setRequestLocale(locale)` al inicio. Sin eso la página se renderiza de forma dinámica (cabecera `cache-control: private, no-store`). Hoy solo las rutas de vivienda lo hacen; el resto de rutas públicas (blog, plantillas, home, herramientas) siguen siendo dinámicas. `themeColor` va en `export const viewport`, no en `metadata`.
+Para que una ruta con `[locale]` se genere de forma estática, `src/app/[locale]/layout.tsx` declara `generateStaticParams` (locales) y llama a `setRequestLocale(locale)`; **cada página** que use APIs de next-intl en servidor (p. ej. un componente con `useTranslations`, como `Footer`) debe llamar también a `setRequestLocale(locale)` al inicio. Sin eso la página se renderiza de forma dinámica (cabecera `cache-control: private, no-store`). Las 64 URL del sitemap (home, herramientas, plantillas, vivienda, tutorial, páginas legales y blog) se sirven de forma estática; el blog declara `generateStaticParams` por idioma y artículo. Al añadir una página nueva con next-intl hay que repetir este patrón y comprobar la cabecera `cache-control` en producción. `themeColor` va en `export const viewport`, no en `metadata`.
 
 ---
 
