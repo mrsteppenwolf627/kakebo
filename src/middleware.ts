@@ -4,12 +4,17 @@ import { routing } from './i18n/routing';
 
 const intlMiddleware = createMiddleware(routing);
 
-// /plantillas/* is Spanish-only (/en/plantillas/* is a 404), so its responses must not
-// advertise hreflang alternates in the Link header. Everything else keeps the default.
+// /plantillas/* and /ahorro-entrada-vivienda/* are Spanish-only (their /en/ versions are a 404), so their
+// responses must not advertise hreflang alternates in the Link header. Everything else keeps the default.
 const spanishOnlyMiddleware = createMiddleware({ ...routing, alternateLinks: false });
 
 function isSpanishOnlyPath(pathname: string): boolean {
-  return pathname === '/plantillas' || pathname.startsWith('/plantillas/');
+  return (
+    pathname === '/plantillas' ||
+    pathname.startsWith('/plantillas/') ||
+    pathname === '/ahorro-entrada-vivienda' ||
+    pathname.startsWith('/ahorro-entrada-vivienda/')
+  );
 }
 
 export default function middleware(request: NextRequest) {
