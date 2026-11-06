@@ -114,6 +114,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Piloto pSEO: entrada de vivienda por provincia (solo español, sin prefijo /es/).
     const viviendaMeta = getViviendaMeta();
+    const viviendaIndexUrl = `${baseUrl}/ahorro-entrada-vivienda`;
+    sitemapEntries.push({
+        url: viviendaIndexUrl,
+        lastModified: new Date(viviendaMeta.consultado),
+        changeFrequency: 'monthly',
+        priority: 0.7,
+        alternates: { languages: { es: viviendaIndexUrl, 'x-default': viviendaIndexUrl } },
+    });
     getProvinciasPiloto().forEach((provincia) => {
         const url = `${baseUrl}/ahorro-entrada-vivienda/${provincia.slug}`;
         sitemapEntries.push({

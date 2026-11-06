@@ -219,6 +219,11 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
                                     </li>
                                 ))}
                             </ul>
+                            <p className="text-sm font-light">
+                                <Link href="/ahorro-entrada-vivienda" className="underline text-foreground hover:text-primary">
+                                    Ver la comparativa de entrada de vivienda por provincia
+                                </Link>
+                            </p>
                         </div>
                     )}
 
