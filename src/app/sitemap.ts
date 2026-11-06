@@ -17,7 +17,7 @@ const ROUTE_LAST_MODIFIED: Record<string, Date> = {
     '/tutorial': new Date('2026-10-08'),
     '/herramientas': new Date('2026-10-08'),
     '/herramientas/plantilla-kakebo-excel-premium': new Date('2026-10-08'),
-    '/herramientas/calculadora-ahorro': new Date('2026-10-21'),
+    '/herramientas/calculadora-ahorro': new Date('2026-11-06'),
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
