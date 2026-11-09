@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Metadata } from "next";
 import { Link } from "@/i18n/routing";
-import { Footer } from "@/components/landing";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PremiumLink } from "@/components/premium/PremiumTracking";
 import JsonLd from "@/components/seo/JsonLd";
@@ -149,7 +148,6 @@ export default async function ToolsIndexPage({ params }: { params: Promise<{ loc
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

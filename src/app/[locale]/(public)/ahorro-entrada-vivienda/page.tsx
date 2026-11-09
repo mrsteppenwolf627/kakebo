@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
-import { Footer } from "@/components/landing";
 import JsonLd from "@/components/seo/JsonLd";
 import * as S from "@/lib/seo/jsonld";
 import {
@@ -208,7 +207,6 @@ export default async function AhorroEntradaViviendaIndexPage({ params }: Props) 
                 </p>
             </article>
 
-            <Footer />
 
             <JsonLd graph={graph} />
         </main>

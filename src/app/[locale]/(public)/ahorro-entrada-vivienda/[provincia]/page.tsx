@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
-import { Footer } from "@/components/landing";
 import { components } from "@/components/mdx/MDXComponents";
 import { CalculadoraEntrada } from "@/components/vivienda/CalculadoraEntrada";
 import { GraficoValorTasado } from "@/components/vivienda/GraficoValorTasado";
@@ -355,7 +354,6 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
                 </p>
             </article>
 
-            <Footer />
 
             <JsonLd graph={graph} />
         </main>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Navbar, Footer } from "@/components/landing";
+import { Navbar } from "@/components/landing";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ExpandableImage from "@/components/landing/ExpandableImage";
 import { Link } from "@/i18n/routing";
@@ -152,7 +152,6 @@ export default async function TutorialPage({ params }: { params: Promise<{ local
                 </div>
             </article>
 
-            <Footer />
         </main>
     );
 }

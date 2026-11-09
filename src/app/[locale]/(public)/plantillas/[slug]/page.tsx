@@ -2,7 +2,6 @@ import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/routing";
-import { Footer } from "@/components/landing";
 import { DownloadCTA, PremiumCTA } from "@/components/mdx/MDXClientCTAs";
 import { components } from "@/components/mdx/MDXComponents";
 import { getPlantilla, getPlantillas } from "@/lib/plantillas";
@@ -194,7 +193,6 @@ export default async function PlantillaPage({ params }: Props) {
                 </p>
             </article>
 
-            <Footer />
 
             <JsonLd graph={graph} />
         </main>

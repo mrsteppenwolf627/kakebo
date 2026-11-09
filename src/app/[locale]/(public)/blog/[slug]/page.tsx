@@ -2,7 +2,7 @@ import { getBlogPost, getBlogPosts } from "@/lib/blog";
 import { Metadata } from "next";
 import { Link } from "@/i18n/routing";
 import { notFound } from "next/navigation";
-import { Footer, Navbar } from "@/components/landing";
+import { Navbar } from "@/components/landing";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { components } from "@/components/mdx/MDXComponents";
@@ -233,7 +233,6 @@ export default async function BlogPostPage({ params }: Props) {
                 </div>
             </div>
 
-            <Footer />
 
             <JsonLd graph={graph} />
         </main>

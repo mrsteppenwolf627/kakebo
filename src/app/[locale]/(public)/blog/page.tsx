@@ -1,7 +1,7 @@
 import { getBlogPosts } from "@/lib/blog";
 import { Metadata } from "next";
 import { Link } from "@/i18n/routing";
-import { Footer, Navbar } from "@/components/landing";
+import { Navbar } from "@/components/landing";
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import fs from 'fs';
@@ -214,7 +214,6 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                 </div>
             </div>
 
-            <Footer />
         </main>
     );
 }

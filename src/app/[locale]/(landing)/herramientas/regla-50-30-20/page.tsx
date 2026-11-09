@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { Navbar } from "@/components/landing/Navbar";
 import { ToolMessages } from "@/components/i18n/ToolMessages";
-import { Footer } from "@/components/landing/Footer";
 import { Calculator503020 } from "@/components/landing/tools/Calculator503020";
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from "@/i18n/routing";
@@ -159,7 +158,6 @@ export default async function Calculator503020Page({ params }: { params: Promise
                 </section>
             </main>
 
-            <Footer />
         </div>
     );
 }
