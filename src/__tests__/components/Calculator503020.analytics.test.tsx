@@ -22,6 +22,7 @@ vi.mock("next-intl", () => ({
     t.rich = (key: string) => key;
     return t;
   },
+  useLocale: () => "es",
 }));
 
 vi.mock("recharts", () => ({

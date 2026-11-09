@@ -302,9 +302,9 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
                         >
                             calculadora de ahorro
                         </Link>{" "}
-                        o registra tus gastos con el{" "}
+                        o registra tus gastos con{" "}
                         <Link href="/" className="font-medium text-primary underline-offset-4 hover:underline">
-                            Kakebo online gratis
+                            Kakebo AI, la app gratuita del método Kakebo
                         </Link>
                         . Si buscas el método paso a paso, lee la{" "}
                         <Link
@@ -312,6 +312,11 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
                             className="font-medium text-primary underline-offset-4 hover:underline"
                         >
                             guía del método Kakebo
+                        </Link>
+                        .{" "}
+                        Y para recortar gastos mes a mes, repasa estas{" "}
+                        <Link href="/blog/como-ahorrar-dinero-cada-mes" className="font-medium text-primary underline-offset-4 hover:underline">
+                            técnicas para ahorrar dinero cada mes
                         </Link>
                         .
                     </p>

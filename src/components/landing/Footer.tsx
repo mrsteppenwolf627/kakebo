@@ -1,8 +1,9 @@
 import { Link } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 export function Footer() {
   const t = useTranslations("Navigation");
+  const locale = useLocale();
 
   return (
     <footer className="relative border-t border-border bg-background">
@@ -50,6 +51,25 @@ export function Footer() {
                   {t('kakeboGuide')}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/blog/plantilla-kakebo-excel"
+                  className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
+                >
+                  {t('kakeboTemplates')}
+                </Link>
+              </li>
+              {/* La página de vivienda solo existe en español: en /en no se enlaza (evita un 404). */}
+              {locale === "es" && (
+                <li>
+                  <Link
+                    href="/ahorro-entrada-vivienda"
+                    className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
+                  >
+                    {t('housingSavings')}
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link
                   href="/herramientas/calculadora-ahorro"

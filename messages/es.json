@@ -26,6 +26,8 @@
         "toolsInflation": "Calculadora Inflación",
         "toolsInflationDesc": "Pérdida de poder adquisitivo",
         "kakeboGuide": "Guía del método Kakebo",
+        "kakeboTemplates": "Plantillas Kakebo (Excel e imprimible)",
+        "housingSavings": "Ahorro para la entrada de un piso",
         "toolsSavings": "Calculadora Ahorro",
         "toolsSavingsDesc": "Distribuye tu sueldo",
         "goToDashboard": "Ir al Dashboard",
@@ -271,8 +273,8 @@
                     "a3": "La inflación acumulada en España desde el año 2000 es considerable, aunque la cifra exacta varía según el mes de referencia. Para saber cuánto necesitarías hoy para igualar el poder adquisitivo de una cantidad del año 2000, consulta el <varipcLink>simulador oficial de variación del IPC del INE</varipcLink>."
                 },
                 "interlinkingTitle": "Sigue leyendo y protege tu patrimonio:",
-                "link1": "Alternativas a las apps bancarias que leen tus datos",
-                "link2": "Kakebo vs YNAB: ¿Cuál es mejor para ti?",
+                "link1": "Qué es una cuenta remunerada y cuándo tiene sentido",
+                "link2": "Fondo de emergencia: cuánto tener y dónde guardarlo",
                 "revisionNote": "Contenido revisado por última vez el 16 de julio de 2026. Fuentes principales: Instituto Nacional de Estadística (INE) y Boletín Oficial del Estado (BOE). Esta calculadora es orientativa y no constituye asesoramiento financiero ni legal."
             },
             "historical": {
@@ -494,7 +496,7 @@
                 "howStep3": "<bold>Automatiza tu ahorro:</bold> Configura una transferencia automática del 20% a otra cuenta (o a Kakebo) nada más cobrar.",
                 "interlinkingTitle": "Lecturas recomendadas:",
                 "link1": "La regla de los 30 días para evitar compras impulsivas",
-                "link2": "Peligros de las apps de ahorro automático"
+                "link2": "Regla 50/30/20: ejemplo real con tu sueldo"
             }
         }
     },

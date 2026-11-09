@@ -564,13 +564,14 @@ export function CalculatorInflation() {
 
                 <h3 className="mt-12 text-2xl mb-4 font-serif text-foreground">{t('content.interlinkingTitle')}</h3>
                 <ul>
+                    {/* Los artículos de cuentas remuneradas y fondo de emergencia solo existen en español: en inglés se mantienen los dos artículos EN. */}
                     <li>
-                        <Link href="/blog/alternativas-a-app-bancarias" className="text-primary hover:underline">
+                        <Link href={locale === "es" ? "/blog/cuentas-remuneradas" : "/blog/alternativas-a-app-bancarias"} className="text-primary hover:underline">
                             {t('content.link1')}
                         </Link>
                     </li>
                     <li>
-                        <Link href="/blog/kakebo-vs-ynab" className="text-primary hover:underline">
+                        <Link href={locale === "es" ? "/blog/fondo-de-emergencia" : "/blog/kakebo-vs-ynab"} className="text-primary hover:underline">
                             {t('content.link2')}
                         </Link>
                     </li>

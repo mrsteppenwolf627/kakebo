@@ -6,13 +6,14 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { analytics } from "@/lib/analytics";
 import { getSourceFromHref } from "@/lib/authIntent";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { EmbedModal } from "./EmbedModal";
 
 const CTA_HREF = "/login?source=calculator_503020";
 
 export function Calculator503020() {
     const t = useTranslations("Tools.Rule503020");
+    const locale = useLocale();
     const tCommon = useTranslations("Tools.Common.embed");
     const [isEmbedOpen, setIsEmbedOpen] = useState(false);
     const [income, setIncome] = useState(2000);
@@ -235,7 +236,8 @@ export function Calculator503020() {
                         </Link>
                     </li>
                     <li>
-                        <Link href="/blog/peligros-apps-ahorro-automatico" className="text-primary hover:underline">
+                        {/* regla-50-30-20-ejemplo solo existe en español: en inglés se mantiene el enlace actual. */}
+                        <Link href={locale === "es" ? "/blog/regla-50-30-20-ejemplo" : "/blog/peligros-apps-ahorro-automatico"} className="text-primary hover:underline">
                             {t('content.link2')}
                         </Link>
                     </li>
