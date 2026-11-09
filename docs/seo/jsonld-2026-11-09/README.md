@@ -20,4 +20,6 @@ Todos bajo `/en/blog/<slug>`. La fuente de verdad es el frontmatter (`noindex: t
 
 ## Corrección: perfiles de X
 
-`x.com/kakebo_ai` y `x.com/aitoralmu` **no pertenecen al propietario**. Aparecían como `sameAs` de la Organización y la Persona en el informe semántico, en `ejemplos/*.json` (dentro de `seo-jsonld.zip`) y en `verificacion-global.md`; esas menciones son históricas y no deben reutilizarse. Se eliminaron del código (`sameAs` y `twitter:creator`). La Organización queda sin `sameAs` (la propiedad se omite) y la Persona conserva solo GitHub. No hay enlaces visibles a esos perfiles en la web.
+Las URLs `x.com/kakebo_ai` y `x.com/aitoralmu` **no pertenecen al propietario** y se declaraban por error como `sameAs` de la Organización y la Persona. Ya se eliminaron del código (`sameAs` y `twitter:creator`) y **`seo-jsonld.zip` e `informe-semantico-jsonld.md` se regeneraron sin ellas** (verificado: ni el zip ni el informe contienen «x.com/» ni «twitter»). La Organización queda sin `sameAs` (la propiedad se omite) y la Persona conserva solo GitHub. No hay enlaces visibles a esos perfiles en la web.
+
+`verificacion-global.md` es una captura anterior a esa corrección: sus filas de X se han marcado como retiradas.
