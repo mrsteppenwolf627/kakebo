@@ -40,8 +40,8 @@ describe("sitemap - real blog content (no mocks)", () => {
         expect(urls).toContain("https://www.metodokakebo.com/blog/ahorro-pareja");
     });
 
-    it("leaves /login and /en/login untouched (out of scope for this fix)", () => {
-        expect(urls).toContain("https://www.metodokakebo.com/login");
-        expect(urls).toContain("https://www.metodokakebo.com/en/login");
+    it("excludes /login and /en/login (noindex, sin valor de búsqueda)", () => {
+        expect(urls).not.toContain("https://www.metodokakebo.com/login");
+        expect(urls).not.toContain("https://www.metodokakebo.com/en/login");
     });
 });

@@ -8,6 +8,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: t("title"),
         description: t("description"),
+        // Sin valor de búsqueda: noindex en el HTML inicial (metadata de servidor); follow para no cortar el rastreo de enlaces.
+        robots: { index: false, follow: true },
         alternates: {
             canonical: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/login`,
             languages: {
