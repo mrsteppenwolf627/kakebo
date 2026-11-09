@@ -79,7 +79,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
 
                     {/* Featured post — most recent article */}
                     {featured && (
-                        <article className="group flex flex-col md:flex-row overflow-hidden rounded-xl border border-primary/20 bg-card hover:shadow-lg hover:border-primary/50 transition-all duration-200 mb-12">
+                        <article className="group relative flex flex-col md:flex-row overflow-hidden rounded-xl border border-primary/20 bg-card hover:shadow-lg hover:border-primary/50 focus-within:ring-2 focus-within:ring-primary/40 transition-all duration-200 mb-12">
                             <div className="relative aspect-video md:aspect-auto md:w-1/2 overflow-hidden bg-muted shrink-0">
                                 {hasPublicImage(featured.frontmatter.image) ? (
                                     <Image
@@ -119,7 +119,8 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                                 </div>
 
                                 <h2 className="font-serif font-bold text-2xl sm:text-3xl text-foreground mb-4 leading-tight group-hover:text-primary transition-colors">
-                                    <Link href={`/blog/${featured.slug}`}>
+                                    {/* Enlace extendido: el pseudo-elemento cubre toda la tarjeta (un solo enlace por tarjeta). */}
+                                    <Link href={`/blog/${featured.slug}`} className="focus-visible:outline-none after:absolute after:inset-0">
                                         {featured.frontmatter.title}
                                     </Link>
                                 </h2>
@@ -128,15 +129,15 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                                     {featured.frontmatter.excerpt}
                                 </p>
 
-                                <Link
-                                    href={`/blog/${featured.slug}`}
-                                    className="inline-flex items-center text-sm font-medium text-primary hover:underline self-start"
+                                <span
+                                    aria-hidden="true"
+                                    className="inline-flex items-center text-sm font-medium text-primary group-hover:underline self-start"
                                 >
                                     {t('readMore')}
                                     <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                     </svg>
-                                </Link>
+                                </span>
                             </div>
                         </article>
                     )}
@@ -155,7 +156,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                             {rest.map((post) => (
                                 <article
                                     key={post.slug}
-                                    className="flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/50 hover:shadow-md"
+                                    className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/50 hover:shadow-md focus-within:ring-2 focus-within:ring-primary/40"
                                 >
                                     {hasPublicImage(post.frontmatter.image) ? (
                                         <div className="relative aspect-video w-full overflow-hidden">
@@ -187,7 +188,8 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                                         </div>
 
                                         <h3 className="mb-2 text-xl font-serif font-bold text-foreground">
-                                            <Link href={`/blog/${post.slug}`} className="hover:underline">
+                                            {/* Enlace extendido: toda la tarjeta es clicable con un único enlace. */}
+                                            <Link href={`/blog/${post.slug}`} className="hover:underline focus-visible:outline-none after:absolute after:inset-0">
                                                 {post.frontmatter.title}
                                             </Link>
                                         </h3>
@@ -196,15 +198,15 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                                             {post.frontmatter.excerpt}
                                         </p>
 
-                                        <Link
-                                            href={`/blog/${post.slug}`}
-                                            className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+                                        <span
+                                            aria-hidden="true"
+                                            className="inline-flex items-center text-sm font-medium text-primary group-hover:underline"
                                         >
                                             {t('readMore')}
                                             <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                             </svg>
-                                        </Link>
+                                        </span>
                                     </div>
                                 </article>
                             ))}
