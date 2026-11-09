@@ -16,6 +16,8 @@ const DynamicAlternativesSection = dynamic(() => import("@/components/landing").
 const DynamicFAQ = dynamic(() => import("@/components/landing").then(mod => mod.FAQ));
 
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import JsonLd from "@/components/seo/JsonLd";
+import * as S from "@/lib/seo/jsonld";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -48,6 +50,29 @@ export default async function PublicHomePage({ params }: { params: Promise<{ loc
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'Landing' });
+
+  // JSON-LD: un único @graph. El FAQPage usa las 5 preguntas que se ven en pantalla (namespace FAQ, el mismo que el componente FAQ).
+  const loc: S.Locale = locale === 'en' ? 'en' : 'es';
+  const tFaq = await getTranslations({ locale, namespace: 'FAQ' });
+  const faq = (['q1', 'q2', 'q3', 'q4', 'q5'] as const).map((k) => ({
+    question: tFaq(`questions.${k}.question`),
+    answer: tFaq(`questions.${k}.answer`),
+  }));
+  const graph = S.graph([
+    ...S.core(loc),
+    ...S.webPage({ locale: loc, path: '', name: t('meta.title'), description: t('meta.description'), mainEntityId: S.ids.app, about: ['kakeibo'] }),
+    S.webApplication({
+      id: S.ids.app,
+      name: 'Kakebo AI',
+      url: S.BASE_URL,
+      description: S.siteCopy[loc].appDescription,
+      featureList: S.siteCopy[loc].appFeatures,
+      inLanguage: loc,
+      operatingSystem: 'Web, PWA',
+      about: ['kakeibo'],
+    }),
+    S.faqPage(S.localeUrl(loc, ''), faq, loc),
+  ]);
   return (
     <main className="min-h-screen overflow-x-hidden">
 
@@ -123,96 +148,7 @@ export default async function PublicHomePage({ params }: { params: Promise<{ loc
 
         <SeoContent />
 
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "Organization",
-                  "@id": "https://www.metodokakebo.com/#organization",
-                  "name": "MetodoKakebo.com",
-                  "url": "https://www.metodokakebo.com",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.metodokakebo.com/logo.png"
-                  },
-                  "sameAs": ["https://x.com/kakebo_ai"],
-                  "description": "Plataforma web gratuita de herramientas y artículos para aplicar el método Kakebo de ahorro personal en formato digital, sin conectar cuentas bancarias."
-                },
-                {
-                  "@type": "WebSite",
-                  "@id": "https://www.metodokakebo.com/#website",
-                  "name": "MetodoKakebo.com",
-                  "url": "https://www.metodokakebo.com",
-                  "inLanguage": "es",
-                  "publisher": { "@id": "https://www.metodokakebo.com/#organization" },
-                  "description": "Herramientas gratuitas y guías para aplicar el método Kakebo de ahorro personal en español."
-                },
-                {
-                  "@type": "SoftwareApplication",
-                  "@id": "https://www.metodokakebo.com/#app",
-                  "name": "Kakebo AI",
-                  "url": "https://www.metodokakebo.com",
-                  "applicationCategory": "FinanceApplication",
-                  "operatingSystem": "Web, PWA, iOS, Android",
-                  "inLanguage": locale,
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "EUR",
-                    "availability": "https://schema.org/InStock"
-                  },
-                  "description": "Aplicación web gratuita de MetodoKakebo.com para registrar gastos y planificar el ahorro mensual con el método Kakebo japonés y asistencia de inteligencia artificial.",
-                  "publisher": { "@id": "https://www.metodokakebo.com/#organization" },
-                  "featureList": [
-                    "Registro manual consciente de gastos",
-                    "Agente IA financiero personal",
-                    "Sin conexión bancaria",
-                    "Categorías Kakebo nativas",
-                    "Historial y exportación"
-                  ]
-                }
-              ]
-            })
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": [
-                {
-                  "@type": "Question",
-                  "name": t('SEO.faqSchema.q1'),
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": t('SEO.faqSchema.a1')
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": t('SEO.faqSchema.q2'),
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": t('SEO.faqSchema.a2')
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": t('SEO.faqSchema.q3'),
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": t('SEO.faqSchema.a3')
-                  }
-                }
-              ]
-            })
-          }}
-        />
+        <JsonLd graph={graph} />
       </div>
     </main>
   );

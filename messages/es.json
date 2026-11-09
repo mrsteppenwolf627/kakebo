@@ -505,6 +505,7 @@
             "readMore": "Leer artículo"
         },
         "post": {
+            "faqTitle": "Preguntas frecuentes",
             "readingTime": "min lectura",
             "cta": {
                 "title": "¿Quieres aplicar el método Kakebo sin esfuerzo?",
@@ -545,14 +546,6 @@
                     "title": "Extras",
                     "desc": "Imprevistos, reparaciones, regalos y cualquier gasto no planificado del mes."
                 }
-            },
-            "faqSchema": {
-                "q1": "¿Es gratis usar Kakebo?",
-                "a1": "Sí, Kakebo tiene un plan gratuito para siempre que te permite gestionar tus gastos mensuales sin coste. Ideal para empezar con el método Kakebo.",
-                "q2": "¿Cómo funciona el método Kakebo?",
-                "a2": "Se basa en registrar gastos manualmente, categorizarlos en 4 grupos (Supervivencia, Ocio/Vicio, Cultura y Extras) y reflexionar sobre ellos a final de mes. Es más consciente que una app bancaria automática.",
-                "q3": "¿Es mejor que un Excel de gastos?",
-                "a3": "Kakebo te da lo bueno del Excel (privacidad, control) pero con una interfaz móvil rápida, análisis automático y categorías inteligentes predefinidas."
             }
         },
         "HowItWorks": {

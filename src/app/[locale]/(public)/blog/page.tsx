@@ -6,6 +6,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import fs from 'fs';
 import path from 'path';
+import JsonLd from "@/components/seo/JsonLd";
+import * as S from "@/lib/seo/jsonld";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -36,38 +38,33 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
     const posts = getBlogPosts(locale);
     const [featured, ...rest] = posts;
 
-    const baseUrl = `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}`;
+    const loc: S.Locale = locale === 'en' ? 'en' : 'es';
+    const pageUrl = S.localeUrl(loc, '/blog');
     const indexablePosts = posts.filter(p => !p.frontmatter.noindex);
-    const blogSchema = {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": t('title'),
-        "description": t('subtitle'),
-        "url": `${baseUrl}/blog`,
-        "publisher": {
-            "@type": "Organization",
-            "name": "MetodoKakebo.com",
-            "url": "https://www.metodokakebo.com"
-        },
-        "mainEntity": {
-            "@type": "ItemList",
-            "itemListElement": indexablePosts.map((post, index) => ({
-                "@type": "ListItem",
-                "position": index + 1,
-                "name": post.frontmatter.title,
-                "description": post.frontmatter.excerpt,
-                "url": `${baseUrl}/blog/${post.slug}`
-            }))
-        }
-    };
+    const graph = S.graph([
+        ...S.core(loc),
+        ...S.webPage({
+            locale: loc,
+            path: '/blog',
+            type: 'CollectionPage',
+            name: t('title'),
+            description: t('subtitle'),
+            mainEntityId: S.itemList(pageUrl, [])['@id'] as string,
+        }),
+        S.itemList(
+            pageUrl,
+            indexablePosts.map((post) => ({
+                name: post.frontmatter.title,
+                url: S.localeUrl(loc, `/blog/${post.slug}`),
+                description: post.frontmatter.excerpt,
+            })),
+        ),
+    ]);
 
     return (
         <main className="min-h-screen bg-background">
             <Navbar />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
-            />
+            <JsonLd graph={graph} />
 
             <div className="pt-24 pb-24">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">

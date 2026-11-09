@@ -6,6 +6,8 @@ import { Footer } from "@/components/landing";
 import { components } from "@/components/mdx/MDXComponents";
 import { CalculadoraEntrada } from "@/components/vivienda/CalculadoraEntrada";
 import { GraficoValorTasado } from "@/components/vivienda/GraficoValorTasado";
+import JsonLd from "@/components/seo/JsonLd";
+import * as S from "@/lib/seo/jsonld";
 import {
     PLAZOS_ANIOS,
     PORCENTAJE_ENTRADA,
@@ -136,6 +138,36 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
             answer: `No. El cálculo cubre solo el ${pct} % del valor de la vivienda. Los impuestos y gastos de compraventa se suman aparte y varían según la comunidad autónoma y el tipo de vivienda.`,
         },
     ];
+
+    // JSON-LD: WebPage + citation → Dataset (fuente oficial) + spatialCoverage → AdministrativeArea + FAQPage + migas.
+    const datasetId = `${url}#dataset`;
+    const graph = S.graph([
+        ...S.core("es"),
+        ...S.webPage({
+            locale: "es",
+            path: `${SECTION_PATH}/${provincia.slug}`,
+            name: `Cuánto ahorrar para la entrada de un piso en ${nombre}`,
+            breadcrumbs: [
+                { name: "Inicio", url: BASE_URL },
+                { name: "Entrada de vivienda por provincia", url: `${BASE_URL}${SECTION_PATH}` },
+                { name: `Entrada de un piso en ${nombre}`, url },
+            ],
+            // Fecha de consulta del dato oficial, visible como «Consultado el…».
+            dateModified: meta.consultado,
+            extra: {
+                citation: S.ref(datasetId),
+                spatialCoverage: { "@type": "AdministrativeArea", name: nombre },
+            },
+        }),
+        S.dataset({
+            id: datasetId,
+            name: meta.fuente,
+            description: `Valor tasado medio de vivienda libre, provincias, ${meta.periodo}.`,
+            url: meta.url,
+            creatorName: meta.organismo,
+        }),
+        S.faqPage(url, faq, "es"),
+    ]);
 
     return (
         <main className="min-h-screen bg-background text-foreground">
@@ -322,43 +354,7 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
 
             <Footer />
 
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify([
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "WebPage",
-                            "@id": `${url}#webpage`,
-                            url,
-                            name: `Cuánto ahorrar para la entrada de un piso en ${nombre}`,
-                            inLanguage: "es",
-                            dateModified: meta.consultado,
-                            isPartOf: { "@type": "WebSite", name: "MetodoKakebo.com", url: BASE_URL },
-                            publisher: { "@type": "Organization", name: "MetodoKakebo.com", url: BASE_URL },
-                            citation: { "@type": "CreativeWork", name: meta.fuente, url: meta.url, publisher: { "@type": "Organization", name: meta.organismo } },
-                        },
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "FAQPage",
-                            mainEntity: faq.map((item) => ({
-                                "@type": "Question",
-                                name: item.question,
-                                acceptedAnswer: { "@type": "Answer", text: item.answer },
-                            })),
-                        },
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "BreadcrumbList",
-                            itemListElement: [
-                                { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
-                                { "@type": "ListItem", position: 2, name: "Entrada de vivienda por provincia", item: `${BASE_URL}${SECTION_PATH}` },
-                                { "@type": "ListItem", position: 3, name: `Entrada de un piso en ${nombre}`, item: url },
-                            ],
-                        },
-                    ]),
-                }}
-            />
+            <JsonLd graph={graph} />
         </main>
     );
 }

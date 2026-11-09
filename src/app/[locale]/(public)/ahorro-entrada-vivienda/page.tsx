@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { Footer } from "@/components/landing";
+import JsonLd from "@/components/seo/JsonLd";
+import * as S from "@/lib/seo/jsonld";
 import {
     PLAZOS_ANIOS,
     PORCENTAJE_ENTRADA,
@@ -83,6 +85,25 @@ export default async function AhorroEntradaViviendaIndexPage({ params }: Props) 
         day: "numeric",
         timeZone: "UTC",
     });
+
+    const list = S.itemList(
+        url,
+        filas.map((p) => ({ name: `Entrada de un piso en ${p.nombre}`, url: `${url}/${p.slug}` })),
+    );
+    const graph = S.graph([
+        ...S.core("es"),
+        ...S.webPage({
+            locale: "es",
+            path: SECTION_PATH,
+            type: "CollectionPage",
+            name: "Cuánto ahorrar para la entrada de un piso por provincia",
+            breadcrumbs: S.crumbs("es", [{ name: "Entrada de vivienda por provincia", path: SECTION_PATH }]),
+            mainEntityId: list["@id"] as string,
+            // Fecha de consulta del dato oficial, visible en la página como «Consultado el…».
+            dateModified: meta.consultado,
+        }),
+        list,
+    ]);
 
     return (
         <main className="min-h-screen bg-background text-foreground">
@@ -189,40 +210,7 @@ export default async function AhorroEntradaViviendaIndexPage({ params }: Props) 
 
             <Footer />
 
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify([
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "CollectionPage",
-                            "@id": `${url}#webpage`,
-                            url,
-                            name: "Cuánto ahorrar para la entrada de un piso por provincia",
-                            inLanguage: "es",
-                            dateModified: meta.consultado,
-                            isPartOf: { "@type": "WebSite", name: "MetodoKakebo.com", url: BASE_URL },
-                            mainEntity: {
-                                "@type": "ItemList",
-                                itemListElement: filas.map((p, i) => ({
-                                    "@type": "ListItem",
-                                    position: i + 1,
-                                    name: `Entrada de un piso en ${p.nombre}`,
-                                    url: `${url}/${p.slug}`,
-                                })),
-                            },
-                        },
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "BreadcrumbList",
-                            itemListElement: [
-                                { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
-                                { "@type": "ListItem", position: 2, name: "Entrada de vivienda por provincia", item: url },
-                            ],
-                        },
-                    ]),
-                }}
-            />
+            <JsonLd graph={graph} />
         </main>
     );
 }

@@ -10,6 +10,8 @@ import { RelatedPosts } from "@/components/mdx/RelatedPosts";
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import Image from 'next/image';
+import JsonLd from "@/components/seo/JsonLd";
+import * as S from "@/lib/seo/jsonld";
 
 interface Props {
     params: Promise<{
@@ -90,6 +92,27 @@ export default async function BlogPostPage({ params }: Props) {
     if (!post) {
         notFound();
     }
+
+    // FAQ: las preguntas del frontmatter que ya se leen en el cuerpo no se repiten; las que no aparecen se muestran en una
+    // sección «Preguntas frecuentes» antes de los artículos relacionados. Así el FAQPage del JSON-LD coincide con lo que ve el usuario.
+    const loc: S.Locale = locale === 'en' ? 'en' : 'es';
+    const fmFaq = post.frontmatter.faq ?? [];
+    const bodyVisible = S.visibleFaq(fmFaq, post.content);
+    const faqToRender = fmFaq.filter((q) => !bodyVisible.includes(q));
+    const faq = S.visibleFaq(fmFaq, [post.content, ...faqToRender.map((q) => S.plain(q.question))].join(' '));
+    const graph = S.graph(
+        S.blogPost({
+            locale: loc,
+            slug,
+            title: post.frontmatter.title,
+            excerpt: post.frontmatter.excerpt,
+            author: post.frontmatter.author,
+            date: post.frontmatter.date,
+            updatedDate: post.frontmatter.updatedDate,
+            image: post.frontmatter.image,
+            faq,
+        }),
+    );
 
     return (
         <main className="min-h-screen bg-background text-foreground">
@@ -173,6 +196,19 @@ export default async function BlogPostPage({ params }: Props) {
                     />
                 </div>
 
+                {faqToRender.length > 0 && (
+                    <section aria-labelledby="blog-faq-title" className="mt-12">
+                        <h2 id="blog-faq-title" className="mb-4 text-2xl font-serif font-bold text-foreground">{t('faqTitle')}</h2>
+                        <components.FaqSection>
+                            {faqToRender.map((item) => (
+                                <components.FaqItem key={item.question} question={S.plain(item.question)}>
+                                    {S.plain(item.answer)}
+                                </components.FaqItem>
+                            ))}
+                        </components.FaqSection>
+                    </section>
+                )}
+
                 {post.frontmatter.related && post.frontmatter.related.length > 0 && (
                     <RelatedPosts slugs={post.frontmatter.related} locale={locale} />
                 )}
@@ -199,92 +235,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             <Footer />
 
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify([
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "BlogPosting",
-                            headline: post.frontmatter.title,
-                            image: [post.frontmatter.image || "https://www.metodokakebo.com/og-image.jpg"],
-                            datePublished: post.frontmatter.date,
-                            dateModified: post.frontmatter.updatedDate ?? post.frontmatter.date,
-                            author: [{
-                                "@type": "Person",
-                                name: post.frontmatter.author,
-                            }],
-                            publisher: {
-                                "@type": "Organization",
-                                name: "MetodoKakebo.com",
-                                logo: {
-                                    "@type": "ImageObject",
-                                    url: "https://www.metodokakebo.com/logo.png"
-                                }
-                            },
-                            mainEntityOfPage: {
-                                "@type": "WebPage",
-                                "@id": `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/blog/${slug}`
-                            }
-                        },
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "BreadcrumbList",
-                            itemListElement: [
-                                {
-                                    "@type": "ListItem",
-                                    position: 1,
-                                    name: locale === 'es' ? "Inicio" : "Home",
-                                    item: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}`
-                                },
-                                {
-                                    "@type": "ListItem",
-                                    position: 2,
-                                    name: "Blog",
-                                    item: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/blog`
-                                },
-                                {
-                                    "@type": "ListItem",
-                                    position: 3,
-                                    name: post.frontmatter.title,
-                                    item: `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}/blog/${slug}`
-                                }
-                            ]
-                        },
-                        ...(post.frontmatter.faq ? [{
-                            "@context": "https://schema.org",
-                            "@type": "FAQPage",
-                            mainEntity: post.frontmatter.faq.map(item => ({
-                                "@type": "Question",
-                                name: item.question,
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: item.answer
-                                }
-                            }))
-                        }] : []),
-                        ...(slug === 'plantilla-kakebo-excel' ? [{
-                            "@context": "https://schema.org",
-                            "@type": "SoftwareApplication",
-                            "name": "Plantilla Kakebo Excel Gratis",
-                            "applicationCategory": "FinanceApplication",
-                            "operatingSystem": "Excel, Google Sheets",
-                            "offers": {
-                                "@type": "Offer",
-                                "price": "0",
-                                "priceCurrency": "EUR"
-                            },
-                            "description": "Plantilla gratuita de Excel para llevar el método Kakebo de forma manual y organizada.",
-                            "featureList": [
-                                "4 categorías Kakebo",
-                                "Control de ingresos y gastos fijos",
-                                "Balance mensual automático",
-                                "Gráficos de ahorro"
-                            ]
-                        }] : [])
-                    ]),
-                }}
-            />
+            <JsonLd graph={graph} />
         </main>
     );
 }

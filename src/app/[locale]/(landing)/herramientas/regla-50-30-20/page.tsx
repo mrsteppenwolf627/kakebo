@@ -5,6 +5,8 @@ import { Footer } from "@/components/landing/Footer";
 import { Calculator503020 } from "@/components/landing/tools/Calculator503020";
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from "@/i18n/routing";
+import JsonLd from "@/components/seo/JsonLd";
+import * as S from "@/lib/seo/jsonld";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -37,73 +39,57 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     };
 }
 
-// JSON-LD Schema
-const SCHEMA = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Calculadora 50/30/20",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "Web",
-    "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "EUR"
-    },
-    "description": "Calculadora gratuita de MetodoKakebo.com para distribuir el sueldo mensual según la regla 50/30/20: 50% necesidades, 30% deseos y 20% ahorro.",
-    "publisher": { "@id": "https://www.metodokakebo.com/#organization" }
-};
-
-const HOW_TO_SCHEMA = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "Cómo aplicar la regla 50/30/20 a tu sueldo",
-    "step": [
-        {
-            "@type": "HowToStep",
-            "text": "Calcula tus ingresos netos mensuales (lo que recibes en el banco)."
-        },
-        {
-            "@type": "HowToStep",
-            "text": "Destina el 50% a gastos imprescindibles (alquiler, comida, facturas)."
-        },
-        {
-            "@type": "HowToStep",
-            "text": "Reserva un 20% para ahorro e inversión (fondo de emergencia, jubilación)."
-        },
-        {
-            "@type": "HowToStep",
-            "text": "Utiliza el 30% restante para caprichos y estilo de vida (cenas, ocio, viajes)."
-        }
-    ]
-};
+// Textos fijos de la página (en español en todos los idiomas): el HowTo del JSON-LD y la lista visible salen de esta constante.
+const PAGE_NAME = "Calculadora 50/30/20";
+const PAGE_DESCRIPTION = "Calculadora gratuita de MetodoKakebo.com para distribuir el sueldo mensual según la regla 50/30/20: 50% necesidades, 30% deseos y 20% ahorro.";
+const HOW_TO_NAME = "Cómo aplicar la regla 50/30/20 a tu sueldo";
+const HOW_TO_STEPS = [
+    "Calcula tus ingresos netos mensuales (lo que recibes en el banco).",
+    "Destina el 50% a gastos imprescindibles (alquiler, comida, facturas).",
+    "Reserva un 20% para ahorro e inversión (fondo de emergencia, jubilación).",
+    "Utiliza el 30% restante para caprichos y estilo de vida (cenas, ocio, viajes).",
+];
 
 export default async function Calculator503020Page({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     setRequestLocale(locale);
-    const localePath = locale === 'es' ? '' : '/en';
-
-    const BREADCRUMB_SCHEMA = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": locale === 'es' ? "Inicio" : "Home", "item": `https://www.metodokakebo.com${localePath}` },
-            { "@type": "ListItem", "position": 2, "name": locale === 'es' ? "Herramientas" : "Tools", "item": `https://www.metodokakebo.com${localePath}/herramientas` },
-            { "@type": "ListItem", "position": 3, "name": locale === 'es' ? "Regla 50/30/20" : "50/30/20 rule", "item": `https://www.metodokakebo.com${localePath}/herramientas/regla-50-30-20` }
-        ]
-    };
+    // JSON-LD: un único @graph. El texto visible es siempre español, por eso inLanguage es "es" también bajo /en.
+    const loc: S.Locale = locale === 'en' ? 'en' : 'es';
+    const path = '/herramientas/regla-50-30-20';
+    const pageUrl = S.localeUrl(loc, path);
+    const appId = `${pageUrl}#app`;
+    const graph = S.graph([
+        ...S.core(loc),
+        ...S.webPage({
+            locale: loc,
+            path,
+            name: PAGE_NAME,
+            description: PAGE_DESCRIPTION,
+            inLanguage: 'es',
+            mainEntityId: appId,
+            about: ['personalBudget'],
+            breadcrumbs: S.crumbs(loc, [
+                { name: S.siteCopy[loc].tools, path: '/herramientas' },
+                { name: loc === 'es' ? 'Regla 50/30/20' : '50/30/20 rule', path },
+            ]),
+        }),
+        S.webApplication({
+            id: appId,
+            name: PAGE_NAME,
+            url: pageUrl,
+            description: PAGE_DESCRIPTION,
+            inLanguage: 'es',
+            operatingSystem: 'Web',
+            about: ['personalBudget'],
+        }),
+        S.howTo(pageUrl, HOW_TO_NAME, HOW_TO_STEPS.map((text) => ({ text })), 'es'),
+    ]);
 
     return (
         <div className="min-h-screen bg-background dark:bg-background selection:bg-stone-200 dark:selection:bg-stone-800">
             <Navbar />
 
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify([SCHEMA, HOW_TO_SCHEMA]) }}
-            />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_SCHEMA) }}
-            />
+            <JsonLd graph={graph} />
 
             <main className="pt-32 pb-20 px-6">
                 <div className="max-w-4xl mx-auto text-center mb-12">
@@ -150,12 +136,12 @@ export default async function Calculator503020Page({ params }: { params: Promise
                     <div>
                         <h2 className="text-2xl font-bold font-serif mb-4">Pasos para aplicar la regla 50/30/20 en tu día a día</h2>
                         <div className="space-y-6">
-                            {HOW_TO_SCHEMA.step.map((step, index) => (
+                            {HOW_TO_STEPS.map((text, index) => (
                                 <div key={index} className="flex gap-4">
                                     <div className="flex-none w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
                                         {index + 1}
                                     </div>
-                                    <p className="text-muted-foreground mt-1">{step.text}</p>
+                                    <p className="text-muted-foreground mt-1">{text}</p>
                                 </div>
                             ))}
                         </div>

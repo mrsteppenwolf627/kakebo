@@ -6,6 +6,8 @@ import { PremiumViewTracker, PremiumPurchaseTracker } from "@/components/premium
 import { PremiumPurchaseButton } from "@/components/premium/PremiumPurchaseButton";
 import { isPremiumCommerceEnabled } from "@/lib/premium/config";
 import { applyLiveCopy } from "@/lib/premium/landing-live-copy";
+import JsonLd from "@/components/seo/JsonLd";
+import * as S from "@/lib/seo/jsonld";
 
 const PRODUCT_SLUG = "herramientas/plantilla-kakebo-excel-premium";
 const FREE_TEMPLATE_PATH = "/blog/plantilla-kakebo-excel";
@@ -412,50 +414,37 @@ export default async function PremiumTemplatePage({
   const { panel, portada } = PREVIEWS;
   const pageUrl = localizedUrl(locale, PRODUCT_SLUG);
 
-  const breadcrumbs = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: c.home, item: localizedUrl(locale, "") },
-      { "@type": "ListItem", position: 2, name: c.tools, item: localizedUrl(locale, "herramientas") },
-      { "@type": "ListItem", position: 3, name: PRODUCT_NAME, item: pageUrl },
-    ],
-  };
-
-  // Commerce off: Product WITHOUT `offers` (no price, currency or availability: it would be a false
-  // availability signal). Commerce on: an Offer consistent with the real price (9.90 EUR) and stock.
-  const product = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: PRODUCT_NAME,
-    alternateName: locale === "en" ? "Premium Kakebo Excel Template" : "Plantilla Kakebo Excel Premium",
-    description: c.productDescription,
-    image: [`${BASE_URL}${panel.src}`, `${BASE_URL}${portada.src}`],
-    url: pageUrl,
-    category: "Spreadsheet template",
-    brand: { "@type": "Brand", name: "MetodoKakebo.com" },
-    ...(commerceEnabled
-      ? {
-          offers: {
-            "@type": "Offer",
-            price: "9.90",
-            priceCurrency: "EUR",
-            availability: "https://schema.org/InStock",
-            url: pageUrl,
-          },
-        }
-      : {}),
-  };
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: c.faq.items.map(([question, answer]) => ({
-      "@type": "Question",
-      name: question,
-      acceptedAnswer: { "@type": "Answer", text: answer },
-    })),
-  };
+  // JSON-LD: un único @graph (ItemPage + Product + FAQPage + migas). Commerce off: Product SIN `offers` (ni precio, divisa ni
+  // disponibilidad: sería una señal falsa). Commerce on: una Offer coherente con el precio real (9.90 EUR).
+  const loc: S.Locale = locale === "en" ? "en" : "es";
+  const productId = `${pageUrl}#product`;
+  const graph = S.graph([
+    ...S.core(loc),
+    ...S.webPage({
+      locale: loc,
+      path: `/${PRODUCT_SLUG}`,
+      type: "ItemPage",
+      name: PRODUCT_NAME,
+      description: c.productDescription,
+      mainEntityId: productId,
+      breadcrumbs: [
+        { name: c.home, url: localizedUrl(locale, "") },
+        { name: c.tools, url: localizedUrl(locale, "herramientas") },
+        { name: PRODUCT_NAME, url: pageUrl },
+      ],
+    }),
+    S.product({
+      id: productId,
+      name: PRODUCT_NAME,
+      alternateName: locale === "en" ? "Premium Kakebo Excel Template" : "Plantilla Kakebo Excel Premium",
+      description: c.productDescription,
+      url: pageUrl,
+      images: [panel.src, portada.src],
+      category: "Spreadsheet template",
+      commerce: commerceEnabled ? { price: "9.90", currency: "EUR" } : undefined,
+    }),
+    S.faqPage(pageUrl, c.faq.items.map(([question, answer]) => ({ question, answer })), loc),
+  ]);
 
   const sectionTitle = "text-3xl font-serif text-foreground";
   const card = "rounded-2xl border border-border bg-card p-6 shadow-sm";
@@ -466,13 +455,7 @@ export default async function PremiumTemplatePage({
     <div className="min-h-screen bg-sakura">
       <PremiumViewTracker />
       <PremiumPurchaseTracker />
-      {[breadcrumbs, product, faqSchema].map((schema, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
+      <JsonLd graph={graph} />
       <main className="pt-32 pb-20 px-6">
         <div className="max-w-5xl mx-auto space-y-24">
           {/* 1. Hero */}

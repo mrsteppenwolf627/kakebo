@@ -4,6 +4,8 @@ import { Link } from "@/i18n/routing";
 import { Footer } from "@/components/landing";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PremiumLink } from "@/components/premium/PremiumTracking";
+import JsonLd from "@/components/seo/JsonLd";
+import * as S from "@/lib/seo/jsonld";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -51,38 +53,28 @@ export default async function ToolsIndexPage({ params }: { params: Promise<{ loc
     }
   ];
 
-  // Same pattern as the blog index (`src/app/[locale]/(public)/blog/page.tsx`):
-  // CollectionPage + inline Organization publisher + mainEntity ItemList.
-  const baseUrl = `https://www.metodokakebo.com${locale === 'es' ? '' : `/${locale}`}`;
-  const toolsSchema = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": tMeta('title'),
-    "description": tMeta('description'),
-    "url": `${baseUrl}/herramientas`,
-    "publisher": {
-      "@type": "Organization",
-      "name": "MetodoKakebo.com",
-      "url": "https://www.metodokakebo.com"
-    },
-    "mainEntity": {
-      "@type": "ItemList",
-      "itemListElement": tools.map((tool, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "name": tool.title,
-        "description": tool.description,
-        "url": `${baseUrl}${tool.href}`
-      }))
-    }
-  };
+  const loc: S.Locale = locale === 'en' ? 'en' : 'es';
+  const pageUrl = S.localeUrl(loc, '/herramientas');
+  const list = S.itemList(
+    pageUrl,
+    tools.map((tool) => ({ name: tool.title, url: S.localeUrl(loc, tool.href), description: tool.description })),
+  );
+  const graph = S.graph([
+    ...S.core(loc),
+    ...S.webPage({
+      locale: loc,
+      path: '/herramientas',
+      type: 'CollectionPage',
+      name: tMeta('title'),
+      description: tMeta('description'),
+      mainEntityId: list['@id'] as string,
+    }),
+    list,
+  ]);
 
   return (
     <div className="min-h-screen bg-sakura">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(toolsSchema) }}
-      />
+      <JsonLd graph={graph} />
       <main className="pt-32 pb-20 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16 space-y-4">

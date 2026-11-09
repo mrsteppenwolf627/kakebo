@@ -5,6 +5,8 @@ import { Link } from "@/i18n/routing";
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getSavingsPageContent } from "@/content/savings-calculator-page";
 import { getProvinciasPiloto } from "@/lib/vivienda";
+import JsonLd from "@/components/seo/JsonLd";
+import * as S from "@/lib/seo/jsonld";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -41,7 +43,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function SavingsCalculatorPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     setRequestLocale(locale);
-    const localePath = locale === 'es' ? '' : '/en';
     const content = getSavingsPageContent(locale);
 
     // HowTo, FAQ y fórmula salen de la misma fuente: el HTML visible y el JSON-LD no pueden divergir.
@@ -51,71 +52,41 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
     const formulaAssumptions = content.formula.assumptions;
     const formulaLimits = content.formula.limits;
 
-    const SCHEMA = {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": content.schema.name,
-        "applicationCategory": "FinanceApplication",
-        "operatingSystem": "Web",
-        "dateModified": "2026-10-21",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "EUR"
-        },
-        "featureList": content.schema.featureList,
-        "description": content.schema.description,
-        "author": {
-            "@type": "Organization",
-            "name": "MetodoKakebo.com"
-        },
-        "publisher": { "@id": "https://www.metodokakebo.com/#organization" }
-    };
-
-    const HOW_TO_SCHEMA = {
-        "@context": "https://schema.org",
-        "@type": "HowTo",
-        "name": content.howTo.schemaName,
-        "step": howToSteps.map((step) => ({
-            "@type": "HowToStep",
-            "name": step.name,
-            "text": step.text
-        }))
-    };
-
-    const FAQ_SCHEMA = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": faqItems.map((faq) => ({
-            "@type": "Question",
-            "name": faq.q,
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": faq.a
-            }
-        }))
-    };
-
-    const BREADCRUMB_SCHEMA = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": locale === 'es' ? "Inicio" : "Home", "item": `https://www.metodokakebo.com${localePath}` },
-            { "@type": "ListItem", "position": 2, "name": locale === 'es' ? "Herramientas" : "Tools", "item": `https://www.metodokakebo.com${localePath}/herramientas` },
-            { "@type": "ListItem", "position": 3, "name": locale === 'es' ? "Calculadora de ahorro" : "Savings calculator", "item": `https://www.metodokakebo.com${localePath}/herramientas/calculadora-ahorro` }
-        ]
-    };
+    // JSON-LD: un único @graph. Sin dateModified fijo (la página no muestra fecha de modificación).
+    const loc: S.Locale = locale === 'en' ? 'en' : 'es';
+    const pageUrl = S.localeUrl(loc, '/herramientas/calculadora-ahorro');
+    const appId = `${pageUrl}#app`;
+    const graph = S.graph([
+        ...S.core(loc),
+        ...S.webPage({
+            locale: loc,
+            path: '/herramientas/calculadora-ahorro',
+            name: content.schema.name,
+            description: content.schema.description,
+            mainEntityId: appId,
+            about: ['saving'],
+            breadcrumbs: S.crumbs(loc, [
+                { name: S.siteCopy[loc].tools, path: '/herramientas' },
+                { name: loc === 'es' ? 'Calculadora de ahorro' : 'Savings calculator', path: '/herramientas/calculadora-ahorro' },
+            ]),
+        }),
+        S.webApplication({
+            id: appId,
+            name: content.schema.name,
+            url: pageUrl,
+            description: content.schema.description,
+            featureList: content.schema.featureList,
+            inLanguage: loc,
+            operatingSystem: 'Web',
+            about: ['saving'],
+        }),
+        S.howTo(pageUrl, content.howTo.schemaName, howToSteps.map((step) => ({ name: step.name, text: step.text })), loc),
+        S.faqPage(pageUrl, faqItems.map((faq) => ({ question: faq.q, answer: faq.a })), loc),
+    ]);
 
     return (
         <main className="min-h-screen bg-background">
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify([SCHEMA, HOW_TO_SCHEMA, FAQ_SCHEMA]) }}
-            />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_SCHEMA) }}
-            />
+            <JsonLd graph={graph} />
             <div className="pt-32 pb-0 px-6">
                 <ToolMessages locale={locale} tools={{ Savings: true }}>
                     <SavingsCalculator />

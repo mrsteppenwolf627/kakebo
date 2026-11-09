@@ -2,6 +2,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { Shield, Target, Lightbulb, Users, Mail, Phone, MessageCircle } from "lucide-react";
 import { Metadata } from "next";
+import JsonLd from "@/components/seo/JsonLd";
+import * as S from "@/lib/seo/jsonld";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -31,45 +33,27 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
     setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'About' });
 
-    const SCHEMA = {
-        "@context": "https://schema.org",
-        "@graph": [
-            {
-                "@type": "Organization",
-                "@id": "https://www.metodokakebo.com/#organization",
-                "name": "MetodoKakebo.com",
-                "url": "https://www.metodokakebo.com",
-                "logo": "https://www.metodokakebo.com/icon.png",
-                "contactPoint": {
-                    "@type": "ContactPoint",
-                    "telephone": "+34-662-24-93-27",
-                    "contactType": "customer service",
-                    "email": "aitor@aitoralmu.xyz",
-                    "availableLanguage": ["Spanish", "English"]
-                }
-            },
-            {
-                "@type": "Person",
-                "@id": "https://www.metodokakebo.com/#person",
-                "name": "Aitor Alarcón",
-                "jobTitle": "Fundador y Desarrollador",
-                "url": "https://www.metodokakebo.com/sobre-nosotros",
-                "sameAs": [
-                    "https://x.com/aitoralmu",
-                    "https://github.com/mrsteppenwolf627"
-                ],
-                "worksFor": { "@id": "https://www.metodokakebo.com/#organization" }
-            }
-        ]
-    };
+    // JSON-LD: AboutPage con contacto leído de About.contact.* (la misma fuente que el JSX visible).
+    // Motoko Hani solo se declara como mención si el texto visible la nombra (hoy solo en español).
+    const loc: S.Locale = locale === 'en' ? 'en' : 'es';
+    const visibleText = [t.raw('story.p1'), t.raw('story.p2'), t('team.desc')].join(' ');
+    const graph = S.graph([
+        ...S.core(loc, { contact: { telephone: t('contact.phone'), email: t('contact.email') } }),
+        ...S.webPage({
+            locale: loc,
+            path: '/sobre-nosotros',
+            type: 'AboutPage',
+            name: t('meta.title'),
+            description: t('meta.description'),
+            mainEntityId: S.ids.org,
+            mentions: visibleText.includes('Motoko Hani') ? [S.motokoHani] : undefined,
+        }),
+    ]);
 
     return (
         <main className="min-h-screen bg-sakura pt-32 pb-20">
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(SCHEMA) }}
-            />
-            
+            <JsonLd graph={graph} />
+
             <article className="mx-auto max-w-4xl px-6">
                 {/* Header section */}
                 <header className="mb-20 text-center space-y-6">

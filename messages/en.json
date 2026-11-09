@@ -573,6 +573,7 @@
             "readMore": "Read article"
         },
         "post": {
+            "faqTitle": "Frequently asked questions",
             "readingTime": "min read",
             "cta": {
                 "title": "Want to apply the Kakebo method effortlessly?",
@@ -613,14 +614,6 @@
                     "title": "Culture & Growth",
                     "desc": "Books, training, hobbies, activities that add value long-term."
                 }
-            },
-            "faqSchema": {
-                "q1": "Is Kakebo free to use?",
-                "a1": "Yes, Kakebo has a free-forever plan that allows you to manage your monthly expenses at no cost. Ideal for starting with the Kakebo method.",
-                "q2": "How does the Kakebo method work?",
-                "a2": "It relies on manually tracking expenses, categorizing them into 4 groups (Survival, Leisure, Culture, Extra), and reflecting on them at the end of the month. It is more conscious than an automatic banking app.",
-                "q3": "Is it better than an expense Excel?",
-                "a3": "Kakebo gives you the best of Excel (privacy, control) but with a fast mobile interface, automatic analysis, and smart predefined categories."
             }
         },
         "HowItWorks": {

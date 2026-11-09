@@ -6,6 +6,8 @@ import { Footer } from "@/components/landing";
 import { DownloadCTA, PremiumCTA } from "@/components/mdx/MDXClientCTAs";
 import { components } from "@/components/mdx/MDXComponents";
 import { getPlantilla, getPlantillas } from "@/lib/plantillas";
+import JsonLd from "@/components/seo/JsonLd";
+import * as S from "@/lib/seo/jsonld";
 
 const BASE_URL = "https://www.metodokakebo.com";
 const { FaqSection, FaqItem } = components;
@@ -72,6 +74,36 @@ export default async function PlantillaPage({ params }: Props) {
         month: "long",
         day: "numeric",
     });
+
+    // JSON-LD: ItemPage + DigitalDocument (PDF) + FAQPage + migas, en un único @graph.
+    const docId = `${url}#document`;
+    const graph = S.graph([
+        ...S.core("es"),
+        ...S.webPage({
+            locale: "es",
+            path: `/plantillas/${plantilla.slug}`,
+            type: "ItemPage",
+            name: plantilla.h1,
+            description: plantilla.intro,
+            mainEntityId: docId,
+            breadcrumbs: [
+                { name: "Inicio", url: BASE_URL },
+                { name: "Plantillas Kakebo", url: `${BASE_URL}/blog/plantilla-kakebo-excel` },
+                { name: plantilla.h1, url },
+            ],
+        }),
+        S.digitalDocument({
+            id: docId,
+            name: plantilla.h1,
+            description: plantilla.intro,
+            url: S.abs(plantilla.asset.path),
+            encodingFormat: "application/pdf",
+            // Fecha visible como «Última actualización».
+            dateModified: plantilla.updatedDate,
+            inLanguage: "es",
+        }),
+        S.faqPage(url, plantilla.faq, "es"),
+    ]);
 
     return (
         <main className="min-h-screen bg-background text-foreground">
@@ -164,31 +196,7 @@ export default async function PlantillaPage({ params }: Props) {
 
             <Footer />
 
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify([
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "BreadcrumbList",
-                            itemListElement: [
-                                { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
-                                { "@type": "ListItem", position: 2, name: "Plantillas Kakebo", item: `${BASE_URL}/blog/plantilla-kakebo-excel` },
-                                { "@type": "ListItem", position: 3, name: plantilla.h1, item: url },
-                            ],
-                        },
-                        {
-                            "@context": "https://schema.org",
-                            "@type": "FAQPage",
-                            mainEntity: plantilla.faq.map((item) => ({
-                                "@type": "Question",
-                                name: item.question,
-                                acceptedAnswer: { "@type": "Answer", text: item.answer },
-                            })),
-                        },
-                    ]),
-                }}
-            />
+            <JsonLd graph={graph} />
         </main>
     );
 }
