@@ -29,6 +29,7 @@ vi.mock("next-intl", () => ({ useLocale: () => mockLocale }));
 import PremiumTemplatePage, { generateMetadata } from "@/app/[locale]/(public)/herramientas/plantilla-kakebo-excel-premium/page";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { PREMIUM_PATH } from "@/components/premium/PremiumTracking";
+import { ldNodes } from "@/__tests__/helpers/jsonld";
 
 const root = process.cwd();
 const read = (rel: string) => fs.readFileSync(path.join(root, rel), "utf8");
@@ -250,11 +251,13 @@ describe("7. Titles, descriptions, canonicals and hreflang", () => {
 describe("8. Product JSON-LD keeps Offer, 9.90 EUR and InStock", () => {
   it.each(["es", "en"] as const)("(%s) Product has a valid Offer while commerce is on", async (locale) => {
     const { container } = await renderLanding(locale);
-    const schemas = [...container.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent ?? "{}"));
+    expect(container.querySelectorAll('script[type="application/ld+json"]')).toHaveLength(1);
+    const schemas = ldNodes(container);
     const product = schemas.find((s) => s["@type"] === "Product");
     expect(product.offers).toMatchObject({ "@type": "Offer", price: "9.90", priceCurrency: "EUR", availability: "https://schema.org/InStock" });
     expect(product.name).toBe("Kakebo Master System");
-    expect(schemas.map((s) => s["@type"]).sort()).toEqual(["BreadcrumbList", "FAQPage", "Product"]);
+    const types = schemas.map((s) => s["@type"]);
+    for (const type of ["ItemPage", "Product", "BreadcrumbList", "FAQPage"]) expect(types).toContain(type);
   });
 });
 

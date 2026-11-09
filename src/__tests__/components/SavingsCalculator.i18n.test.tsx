@@ -34,6 +34,7 @@ vi.mock("next-intl/server", () => ({
 
 import { SavingsCalculator } from "@/components/landing/tools/SavingsCalculator";
 import SavingsCalculatorPage from "@/app/[locale]/(public)/herramientas/calculadora-ahorro/page";
+import { ldNodes } from "@/__tests__/helpers/jsonld";
 
 afterEach(() => cleanup());
 
@@ -75,7 +76,8 @@ const collectText = (root: HTMLElement) => {
     parts.push(el.getAttribute("aria-label") ?? "", el.getAttribute("placeholder") ?? "", el.getAttribute("title") ?? "");
   });
   root.querySelectorAll('script[type="application/ld+json"]').forEach((el) => parts.push(el.textContent ?? ""));
-  return parts.join("\n");
+  // «Aitor Alarcón» es un nombre propio (autor en el JSON-LD): lleva tilde en cualquier idioma.
+  return parts.join("\n").replaceAll("Aitor Alarcón", "");
 };
 
 const SPANISH_CHARS = /[¿¡áéíóúñÁÉÍÓÚÑ]/;
@@ -185,10 +187,8 @@ describe("enlace a cuentas remuneradas", () => {
 describe("HTML visible y JSON-LD comparten FAQ y HowTo", () => {
   it.each(["es", "en"] as const)("coinciden en %s", async (locale) => {
     const { container } = await renderPage(locale);
-    const blocks = Array.from(container.querySelectorAll('script[type="application/ld+json"]')).map((s) =>
-      JSON.parse(s.textContent ?? "null")
-    );
-    const flat = blocks.flat();
+    expect(container.querySelectorAll('script[type="application/ld+json"]')).toHaveLength(1);
+    const flat = ldNodes(container);
     const faq = flat.find((b) => b["@type"] === "FAQPage");
     const howTo = flat.find((b) => b["@type"] === "HowTo");
     const visible = container.textContent ?? "";
@@ -206,12 +206,11 @@ describe("HTML visible y JSON-LD comparten FAQ y HowTo", () => {
 
   it("el JSON-LD en español conserva el contenido existente (name, FAQ, HowTo)", async () => {
     const { container } = await renderPage("es");
-    const flat = Array.from(container.querySelectorAll('script[type="application/ld+json"]'))
-      .map((s) => JSON.parse(s.textContent ?? "null"))
-      .flat();
-    const app = flat.find((b) => b["@type"] === "SoftwareApplication");
+    const flat = ldNodes(container);
+    const app = flat.find((b) => b["@type"] === "WebApplication");
     expect(app.name).toBe("Calculadora de Ahorro Mensual");
-    expect(app.dateModified).toBe("2026-10-21");
+    // La página no muestra fecha de modificación: el JSON-LD tampoco la declara.
+    expect(JSON.stringify(flat)).not.toContain("2026-10-21");
     expect(app.featureList).toHaveLength(5);
     const faq = flat.find((b) => b["@type"] === "FAQPage");
     expect(faq.mainEntity[0].name).toBe("¿Cómo saber cuánto puedo ahorrar cada mes?");

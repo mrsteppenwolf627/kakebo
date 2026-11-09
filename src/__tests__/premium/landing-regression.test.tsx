@@ -27,6 +27,7 @@ vi.mock("next/image", () => ({
 import PremiumTemplatePage, { generateMetadata } from "@/app/[locale]/(public)/herramientas/plantilla-kakebo-excel-premium/page";
 import { PremiumLink } from "@/components/premium/PremiumTracking";
 import { PREMIUM_PACK_FILES } from "@/lib/premium/manifest";
+import { ldNodes } from "@/__tests__/helpers/jsonld";
 
 const FREE_PATH = "/blog/plantilla-kakebo-excel";
 
@@ -224,8 +225,10 @@ describe.each(["es", "en"] as const)("premium landing — pack, price and honest
 
   it("structured data: Breadcrumb + Product + FAQPage, and NO offer/availability while it cannot be bought", async () => {
     const { container } = await renderLanding(locale);
-    const schemas = [...container.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent ?? "{}"));
-    expect(schemas.map((s) => s["@type"]).sort()).toEqual(["BreadcrumbList", "FAQPage", "Product"]);
+    expect(container.querySelectorAll('script[type="application/ld+json"]')).toHaveLength(1);
+    const schemas = ldNodes(container);
+    const types = schemas.map((s) => s["@type"]);
+    for (const type of ["ItemPage", "Product", "BreadcrumbList", "FAQPage"]) expect(types).toContain(type);
     const product = schemas.find((s) => s["@type"] === "Product");
     expect(product.name).toBe("Kakebo Master System");
     expect(product).not.toHaveProperty("offers");

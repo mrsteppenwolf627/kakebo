@@ -17,16 +17,16 @@ vi.mock("next/navigation", () => ({
 
 import { getProvinciasPiloto } from "@/lib/vivienda";
 import sitemap from "@/app/sitemap";
+import { ldDocumentsFromTree } from "@/__tests__/helpers/jsonld";
 
 const PAGE = "@/app/[locale]/(public)/ahorro-entrada-vivienda/[provincia]/page";
 const HUB = "@/app/[locale]/(public)/ahorro-entrada-vivienda/page";
 const slugs = getProvinciasPiloto().map((p) => p.slug);
 
 function jsonLd(page: unknown): Array<Record<string, unknown>> {
-  const html = JSON.stringify(page);
-  const match = html.match(/"__html":"((?:[^"\\]|\\.)*)"/);
-  if (!match) throw new Error("sin JSON-LD");
-  return JSON.parse(JSON.parse(`"${match[1]}"`));
+  const docs = ldDocumentsFromTree(page);
+  if (docs.length !== 1) throw new Error(`se esperaba un único JSON-LD y hay ${docs.length}`);
+  return docs[0]["@graph"];
 }
 
 describe("páginas de provincia: elementos completos", () => {
@@ -34,7 +34,7 @@ describe("páginas de provincia: elementos completos", () => {
     const { default: Page } = await import(PAGE);
     const page = await Page({ params: Promise.resolve({ provincia: slug, locale: "es" }) });
     const types = jsonLd(page).map((x) => x["@type"]);
-    expect(types).toEqual(["WebPage", "FAQPage", "BreadcrumbList"]);
+    for (const type of ["WebPage", "Dataset", "FAQPage", "BreadcrumbList"]) expect(types).toContain(type);
     const faq = jsonLd(page).find((x) => x["@type"] === "FAQPage") as { mainEntity: unknown[] };
     expect(faq.mainEntity).toHaveLength(4);
     const crumbs = jsonLd(page).find((x) => x["@type"] === "BreadcrumbList") as {
@@ -83,9 +83,9 @@ describe("página índice de la sección", () => {
     const html = JSON.stringify(page);
     expect(html).toContain("Origen de los datos: Ministerio de Transportes y Movilidad Sostenible");
     const ld = jsonLd(page);
-    const list = (ld[0] as { mainEntity: { itemListElement: unknown[] } }).mainEntity.itemListElement;
+    const list = (ld.find((x) => x["@type"] === "ItemList") as { itemListElement: unknown[] }).itemListElement;
     expect(list).toHaveLength(12);
-    expect(ld[1]["@type"]).toBe("BreadcrumbList");
+    expect(ld.some((x) => x["@type"] === "BreadcrumbList")).toBe(true);
   });
 
   it("está en el sitemap sin prefijo /es/", () => {

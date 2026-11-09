@@ -18,13 +18,14 @@ vi.mock("next/image", () => ({
 }));
 
 import PremiumTemplatePage, { generateMetadata } from "@/app/[locale]/(public)/herramientas/plantilla-kakebo-excel-premium/page";
+import { ldNodes } from "@/__tests__/helpers/jsonld";
 
 async function renderLanding(locale: "es" | "en") {
   return render(await PremiumTemplatePage({ params: Promise.resolve({ locale }) }));
 }
 
 function jsonLd(container: HTMLElement) {
-  return [...container.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent ?? "{}"));
+  return ldNodes(container);
 }
 
 const COPY = {
