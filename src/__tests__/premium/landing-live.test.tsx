@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { render, cleanup } from "@testing-library/react";
 
+vi.mock("next-intl/server", () => ({ setRequestLocale: vi.fn() }));
 vi.mock("@/lib/analytics", () => ({ analytics: { track: vi.fn() } }));
 vi.mock("@/i18n/routing", () => ({
   Link: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (

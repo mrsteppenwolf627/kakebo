@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const trackMock = vi.fn();
+vi.mock("next-intl/server", () => ({ setRequestLocale: vi.fn() }));
 vi.mock("@/lib/analytics", () => ({
   analytics: { track: (...args: unknown[]) => trackMock(...args) },
 }));

@@ -3,6 +3,7 @@ import { render, cleanup } from "@testing-library/react";
 import fs from "node:fs";
 import path from "node:path";
 
+vi.mock("next-intl/server", () => ({ setRequestLocale: vi.fn() }));
 vi.mock("@/lib/analytics", () => ({ analytics: { track: vi.fn() } }));
 
 vi.mock("@/i18n/routing", () => ({

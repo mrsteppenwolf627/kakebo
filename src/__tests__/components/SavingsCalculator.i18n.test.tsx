@@ -23,6 +23,7 @@ vi.mock("@/components/i18n/ToolMessages", () => ({
 }));
 
 vi.mock("next-intl/server", () => ({
+  setRequestLocale: vi.fn(),
   getTranslations: async ({ locale, namespace }: { locale: string; namespace: string }) =>
     createTranslator({
       locale,

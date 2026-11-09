@@ -5,6 +5,7 @@ import esMessages from "../../../messages/es.json";
 import enMessages from "../../../messages/en.json";
 
 vi.mock("next-intl/server", () => ({
+  setRequestLocale: vi.fn(),
   getTranslations: async ({ locale, namespace }: { locale: string; namespace: string }) =>
     createTranslator({ locale, namespace: namespace as never, messages: (locale === "en" ? enMessages : esMessages) as never }),
   getMessages: async ({ locale }: { locale: string }) => (locale === "en" ? enMessages : esMessages),

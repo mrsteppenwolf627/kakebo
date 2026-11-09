@@ -4,6 +4,7 @@ import path from "path";
 import { describe, it, expect, vi } from "vitest";
 
 // next-intl's navigation wrapper can't resolve next/navigation under vitest; the page only needs Link/Footer to render.
+vi.mock("next-intl/server", () => ({ setRequestLocale: vi.fn() }));
 vi.mock("@/i18n/routing", () => ({
   routing: { locales: ["en", "es"], defaultLocale: "es" },
   Link: () => null,
