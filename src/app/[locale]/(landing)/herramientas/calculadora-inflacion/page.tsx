@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { Navbar } from "@/components/landing/Navbar";
 import { ToolMessages } from "@/components/i18n/ToolMessages";
 import { CalculatorInflation } from "@/components/landing/tools/CalculatorInflation";
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -116,6 +116,7 @@ const SCHEMA = {
 
 export default async function CalculatorInflationPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const localePath = locale === 'es' ? '' : '/en';
 
     const BREADCRUMB_SCHEMA = {

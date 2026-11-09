@@ -3,7 +3,7 @@ import { Navbar } from "@/components/landing/Navbar";
 import { ToolMessages } from "@/components/i18n/ToolMessages";
 import { Footer } from "@/components/landing/Footer";
 import { Calculator503020 } from "@/components/landing/tools/Calculator503020";
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from "@/i18n/routing";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -79,6 +79,7 @@ const HOW_TO_SCHEMA = {
 
 export default async function Calculator503020Page({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const localePath = locale === 'es' ? '' : '/en';
 
     const BREADCRUMB_SCHEMA = {

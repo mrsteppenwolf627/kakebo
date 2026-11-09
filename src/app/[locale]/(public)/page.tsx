@@ -15,7 +15,7 @@ const DynamicSavingsSimulator = dynamic(() => import("@/components/landing").the
 const DynamicAlternativesSection = dynamic(() => import("@/components/landing").then(mod => mod.AlternativesSection));
 const DynamicFAQ = dynamic(() => import("@/components/landing").then(mod => mod.FAQ));
 
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -45,6 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function PublicHomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'Landing' });
   return (
     <main className="min-h-screen overflow-x-hidden">

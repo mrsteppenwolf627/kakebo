@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { ToolMessages } from "@/components/i18n/ToolMessages";
 import { SavingsCalculator } from "@/components/landing/tools/SavingsCalculator";
 import { Link } from "@/i18n/routing";
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getSavingsPageContent } from "@/content/savings-calculator-page";
 import { getProvinciasPiloto } from "@/lib/vivienda";
 
@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function SavingsCalculatorPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const localePath = locale === 'es' ? '' : '/en';
     const content = getSavingsPageContent(locale);
 

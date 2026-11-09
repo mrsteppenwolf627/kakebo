@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
@@ -405,6 +406,7 @@ export default async function PremiumTemplatePage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const commerceEnabled = isPremiumCommerceEnabled();
   const c = getContent(locale, commerceEnabled);
   const { panel, portada } = PREVIEWS;

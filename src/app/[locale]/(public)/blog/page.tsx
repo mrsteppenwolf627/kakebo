@@ -2,7 +2,7 @@ import { getBlogPosts } from "@/lib/blog";
 import { Metadata } from "next";
 import { Link } from "@/i18n/routing";
 import { Footer, Navbar } from "@/components/landing";
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import fs from 'fs';
 import path from 'path';
@@ -31,6 +31,7 @@ function hasPublicImage(imagePath: string | undefined): imagePath is string {
 
 export default async function BlogIndexPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Blog.index' });
     const posts = getBlogPosts(locale);
     const [featured, ...rest] = posts;

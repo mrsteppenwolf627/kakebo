@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/routing";
@@ -60,6 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PlantillaPage({ params }: Props) {
     const { slug, locale } = await params;
+    setRequestLocale(locale);
     const plantilla = getPlantilla(slug);
     // Spanish-only: the route renders dynamically, so /en/... must be rejected here.
     if (!plantilla || locale !== "es") notFound();
