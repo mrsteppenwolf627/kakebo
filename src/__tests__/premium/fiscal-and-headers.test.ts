@@ -84,7 +84,7 @@ describe("Referrer-Policy and Cache-Control configuration", () => {
 
   it("next.config.ts solo declara las reglas esperadas (2 redirecciones /es, global, noindex manifest y docs, premium)", () => {
     const src = fs.readFileSync(path.join(process.cwd(), "next.config.ts"), "utf8");
-    expect(src.match(/source:/g)?.length).toBe(6);
+    expect(src.match(/source:/g)?.length).toBe(14); // 6 originales + 8 redirecciones 307 heredadas (/history, /history/:ym, /settings, /new, con y sin /en)
     expect(src).toContain('source: "/api/premium/:path*"');
   });
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased] - 2026-11-04 (solo documentación)
+
+### Plan Maestro de pSEO seguro — documentación
+- Nuevo `docs/seo/PSEO_PLAN_MAESTRO_ESTADO_2026-11-04.md` (estado vivo del plan: fases, decisiones, SE Ranking, datos de Search Console, afirmaciones verificadas y no verificadas).
+- Nuevo `docs/seo/PSEO_MATRIZ_B_SUELDOS_01.md` (diseño y protocolo de validación de la Matriz B, Regla 50/30/20 por sueldo; sin cambios de código).
+- Código ya en producción relacionado con el plan (commits `cd5fb8c`, `3dffe5c`): redirección permanente de `/es/*` en `next.config.ts` y tarjeta de la Calculadora de Ahorro en la Home. Sin cambios de código en esta entrada.
+
 ## [Unreleased] - 2026-10-06 (solo documentación)
 
 ### Decisión de producto documentada (NO activada)

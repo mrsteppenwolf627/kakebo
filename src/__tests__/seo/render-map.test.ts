@@ -64,11 +64,7 @@ export const ROUTE_RENDER_MAP: Record<string, Entry> = {
   "/app/new-income": { mode: "CSR", index: false },
   "/app/settings": { mode: "CSR", index: false },
   "/app/fixed-expenses": { mode: "REDIRECT", index: false },
-  // --- Heredadas: redirect() puro hacia /app/* ---
-  "/history": { mode: "REDIRECT", index: false },
-  "/history/[ym]": { mode: "REDIRECT", index: false },
-  "/new": { mode: "REDIRECT", index: false },
-  "/settings": { mode: "REDIRECT", index: false },
+  // Heredadas (/history, /history/[ym], /settings, /new): ya no hay page.tsx; las resuelve next.config.ts con redirecciones 307 a /app/*.
 };
 
 const root = process.cwd();

@@ -124,6 +124,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/app"
+                  rel="nofollow"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
                   {t('dashboard')}

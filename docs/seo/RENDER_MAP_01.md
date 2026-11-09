@@ -12,7 +12,7 @@ Test de regresión: `src/__tests__/seo/render-map.test.ts` (constante `ROUTE_REN
 | SSG + isla CSR | Página servidor estática con componentes `"use client"`. Texto, H1, FAQ y JSON-LD en el HTML inicial. |
 | SSR | Depende de usuario/petición (sesión Supabase, `searchParams`, `force-dynamic`). |
 | CSR | Página mínima que monta un `*Client`; datos cargados en el navegador. El shell sale prerenderizado (● en el build) pero sin contenido propio. |
-| REDIRECT | La página solo hace `redirect()`. |
+| REDIRECT | Sin página: redirección declarada en `next.config.ts` (307), o página que solo hace `redirect()`. |
 | API | Route handler dinámico. |
 
 ## Tabla final
@@ -50,7 +50,7 @@ Todas las rutas existen en `/` (ES, sin prefijo) y `/en/` (EN), salvo las pSEO/p
 | `/app/new`, `/app/new-income` | app | CSR | noindex | Envoltorios de `*Client` | build ●; test |
 | `/app/settings` | app | CSR | noindex | Envoltorio de `SettingsClient` | build ●; curl `noindex, nofollow` |
 | `/app/fixed-expenses` | app | REDIRECT → `/app/fixed` | noindex (layout) | `redirect()` puro | test |
-| `/history`, `/history/[ym]`, `/settings`, `/new` | raíz [locale] | REDIRECT → `/app/*` | n/a | Ver notas | curl 307 con `Location` |
+| `/history`, `/history/:ym`, `/settings`, `/new` (y `/en/...`) | next.config.ts | REDIRECT 307 → `/app/*` (sin page.tsx) | n/a | Redirección de plataforma, sin invocar páginas en servidor; conserva idioma y query | curl 307 con `Location` (incl. `/new?ym=2026-11`) |
 | `/api/*` (incl. `/api/og`) | api | API | no indexable | Route handlers dinámicos; `/api/og` no se toca | build ƒ |
 
 ## Cambios realizados
@@ -60,15 +60,17 @@ Todas las rutas existen en `/` (ES, sin prefijo) y `/en/` (EN), salvo las pSEO/p
 3. **`setRequestLocale(locale)`** añadido a 9 páginas SSG que no lo llamaban (home, blog, herramientas, sobre-nosotros, plantillas/[slug], calculadora-ahorro, calculadora-inflacion, regla-50-30-20, plantilla-excel-premium). Ya eran ● porque usan `getTranslations({ locale })` explícito; ahora quedan blindadas.
 4. Tests existentes que mockean `next-intl/server` ampliados con `setRequestLocale: vi.fn()` (mismo patrón que `vivienda.test.ts`).
 
+5. **`robots.ts`**: reglas con y sin prefijo `/en` (`/app`, `/auth/`, `/history`, `/settings`, `/new`), bloqueo de `?mode=`, `?utm_` y `?ym=`, disallow total en `VERCEL_ENV=preview` y sitemap con URL fija `https://www.metodokakebo.com/sitemap.xml`.
+
 ## Notas y puntos abiertos
 
-- **Rutas heredadas (2.2)**: no reexportan páginas de `/app`; son `redirect()` puros (`/history`, `/history/[ym]`, `/settings` → `/app/*`; `/new` conserva `?ym` y es `force-dynamic`). Emiten 307 sin HTML propio, por lo que ningún `robots` en un layout puede llegar a un rastreador. El noindex efectivo es el de la página destino (`/app/*`). **No se tocaron**: el único mecanismo real sería `X-Robots-Tag` en `next.config.ts`, fuera del alcance.
+- **Rutas heredadas**: ya no existen como páginas. Las 4 (`/history`, `/history/:ym`, `/settings`, `/new`) eran `redirect()` puros y ahora son 8 redirecciones 307 en `next.config.ts` (con y sin `/en`, conservando la query). No emiten HTML, así que el noindex efectivo es el de la página destino (`/app/*`). Se eliminaron los 4 `page.tsx`, por lo que desaparecen del mapa y del build (`/[locale]/new` ya no es ruta dinámica).
 - `/app/ai-metrics` y `/app/history/[ym]` aparecen como ƒ en el build (el primero lee `params` de forma síncrona; el segundo no tiene `generateStaticParams`). Irrelevante para SEO (noindex); no se modifica.
 - `/` y `/tutorial` declaran `robots: { index: true }` explícito, lo que **anula** el gating por entorno del layout raíz (`NEXT_PUBLIC_APP_URL`): en un preview esas dos rutas saldrían indexables. No se cambia aquí; conviene revisarlo.
 - El gating de indexación depende de `NEXT_PUBLIC_APP_URL === "https://www.metodokakebo.com"` **en build**. La verificación `index, follow` se hizo con un build con esa variable; sin ella todo el sitio sale `noindex` (comportamiento previsto en previews/local).
 - Lint: 1 error preexistente (`NewsletterConfirmationNotice.tsx:34`, `setState` en efecto), idéntico en la línea base.
 
-## Tabla de `next build` (tal como salió)
+## Tabla de `next build` (tal como salió, tras eliminar las rutas heredadas)
 
 ```
 Route (app)
@@ -142,23 +144,15 @@ Route (app)
 ├ ● /[locale]/herramientas/regla-50-30-20
 │ ├ /en/herramientas/regla-50-30-20
 │ └ /es/herramientas/regla-50-30-20
-├ ● /[locale]/history
-│ ├ /en/history
-│ └ /es/history
-├ ƒ /[locale]/history/[ym]
 ├ ● /[locale]/login
 │ ├ /en/login
 │ └ /es/login
-├ ƒ /[locale]/new
 ├ ● /[locale]/plantillas/[slug]
 │ ├ /es/plantillas/kakebo-para-imprimir
 │ └ /es/plantillas/kakebo-2027
 ├ ● /[locale]/privacy
 │ ├ /en/privacy
 │ └ /es/privacy
-├ ● /[locale]/settings
-│ ├ /en/settings
-│ └ /es/settings
 ├ ● /[locale]/sobre-nosotros
 │ ├ /en/sobre-nosotros
 │ └ /es/sobre-nosotros
@@ -232,5 +226,4 @@ Route (app)
 ○  (Static)   prerendered as static content
 ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
 ƒ  (Dynamic)  server-rendered on demand
-
 ```

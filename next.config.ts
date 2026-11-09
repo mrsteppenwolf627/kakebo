@@ -21,6 +21,16 @@ const nextConfig: NextConfig = {
         destination: "/:path*",
         permanent: true,
       },
+      // Rutas heredadas hacia el panel: se resuelven aquí (temporal, 307) para no invocar páginas en servidor.
+      // Se conserva el idioma (/en) y la query (p. ej. /new?ym=2026-11).
+      { source: "/history", destination: "/app/history", permanent: false },
+      { source: "/history/:ym", destination: "/app/history/:ym", permanent: false },
+      { source: "/settings", destination: "/app/settings", permanent: false },
+      { source: "/new", destination: "/app/new", permanent: false },
+      { source: "/en/history", destination: "/en/app/history", permanent: false },
+      { source: "/en/history/:ym", destination: "/en/app/history/:ym", permanent: false },
+      { source: "/en/settings", destination: "/en/app/settings", permanent: false },
+      { source: "/en/new", destination: "/en/app/new", permanent: false },
     ];
   },
   async headers() {

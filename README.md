@@ -184,13 +184,14 @@ Cada `page.tsx` tiene asignado un modo de renderizado y una política de indexac
 | Legales | `/privacy`, `/terms`, `/cookies` | SSG | Sí |
 | Acceso | `/login`, `/auth/callback` | SSG + formulario cliente / CSR | No (`login` fuera del sitemap) |
 | App privada | `/app/*` | SSR con sesión (`/app`, `agent`, `scanner`, `subscription`) o CSR (resto) | No |
-| Rutas heredadas | `/history`, `/history/[ym]`, `/settings`, `/new` | `redirect()` a `/app/*` | n/a (307 sin HTML propio) |
+| Rutas heredadas | `/history`, `/history/:ym`, `/settings`, `/new` (y `/en/...`) | Redirecciones 307 a `/app/*` en `next.config.ts` (ya no son páginas) | n/a |
 | API | `/api/*` | Dinámico | No |
 
 Reglas:
 - Toda página que posiciona se pre-renderiza; la interactividad vive en componentes cliente dentro de una página servidor, con texto, H1, FAQ y JSON-LD en el HTML inicial.
 - `noindex` siempre en metadata del servidor (layout o `generateMetadata`), nunca desde JavaScript cliente. No bloquear en `robots.txt` lo que deba desindexarse.
 - El control de indexación del layout raíz depende de `NEXT_PUBLIC_APP_URL === "https://www.metodokakebo.com"` en build: sin esa variable todo el sitio sale `noindex` (previews y local). La verificación de `index, follow` requiere un build con esa variable.
+- `robots.ts` bloquea `/app`, `/auth/`, `/history`, `/settings` y `/new` con y sin `/en`, además de `?mode=`, `?utm_` y `?ym=`; en `VERCEL_ENV=preview` hace disallow total y el sitemap apunta a la URL fija de producción.
 - Al añadir una página: clasificarla en `ROUTE_RENDER_MAP`, llamar a `setRequestLocale(locale)` si es SSG y comprobar la leyenda de `next build` (○ estático, ● SSG, ƒ dinámico). En los tests que mockean `next-intl/server`, incluir `setRequestLocale: vi.fn()`.
 
 ---
