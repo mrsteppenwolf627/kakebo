@@ -5,6 +5,7 @@ import { Link } from "@/i18n/routing";
 import { DownloadCTA, PremiumCTA } from "@/components/mdx/MDXClientCTAs";
 import { components } from "@/components/mdx/MDXComponents";
 import { getPlantilla, getPlantillas } from "@/lib/plantillas";
+import { getBlogPost } from "@/lib/blog";
 import JsonLd from "@/components/seo/JsonLd";
 import * as S from "@/lib/seo/jsonld";
 
@@ -72,6 +73,14 @@ export default async function PlantillaPage({ params }: Props) {
         year: "numeric",
         month: "long",
         day: "numeric",
+    });
+
+    // Relacionados (campo `related` del JSON): un slug es un artículo del blog si existe en ES; si no, otra plantilla.
+    const relatedLinks = plantilla.related.flatMap((relSlug) => {
+        const post = getBlogPost(relSlug, "es");
+        if (post) return [{ href: `/blog/${relSlug}`, label: post.frontmatter.title }];
+        const other = getPlantilla(relSlug);
+        return other ? [{ href: `/plantillas/${relSlug}`, label: other.h1 }] : [];
     });
 
     // JSON-LD: ItemPage + DigitalDocument (PDF) + FAQPage + migas, en un único @graph.
@@ -165,11 +174,26 @@ export default async function PlantillaPage({ params }: Props) {
                         </Link>
                         , donde también tienes la versión en Excel. Si prefieres no rellenar nada a mano,{" "}
                         <Link href="/" className="font-medium text-primary underline-offset-4 hover:underline">
-                            prueba el Kakebo online gratis
+                            prueba Kakebo AI, la app gratuita del método Kakebo
                         </Link>
                         .
                     </p>
                 </section>
+
+                {relatedLinks.length > 0 && (
+                    <section className="mt-12" aria-labelledby="plantilla-relacionados">
+                        <h2 id="plantilla-relacionados" className="mb-4 text-2xl font-serif font-bold">Guías y plantillas relacionadas</h2>
+                        <ul className="list-disc space-y-2 pl-6 font-light leading-relaxed marker:text-primary">
+                            {relatedLinks.map((item) => (
+                                <li key={item.href}>
+                                    <Link href={item.href} className="font-medium text-primary underline-offset-4 hover:underline">
+                                        {item.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                )}
 
                 <PremiumCTA
                     title="¿Quieres un sistema más completo? Conoce Kakebo Master System"
