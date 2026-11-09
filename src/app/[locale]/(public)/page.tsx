@@ -36,7 +36,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       title: t("ogTitle"),
       description: t("ogDescription"),
       type: "website",
-      url: `/${locale}`,
+      // Misma URL que la canonical: el español no lleva prefijo (/es redirige con 308 a /).
+      url: locale === 'es' ? '/' : `/${locale}`,
       siteName: "MetodoKakebo.com",
     },
     robots: { index: true, follow: true },

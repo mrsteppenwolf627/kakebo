@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t("ogDescription"),
       type: "website",
       locale: locale === "es" ? "es_ES" : "en_US",
-      url: "/",
+      // Sin "url" por defecto: un valor fijo "/" haría que cada página sin openGraph.url propio declarase la home como og:url.
       siteName: "MetodoKakebo.com",
       images: [
         {
