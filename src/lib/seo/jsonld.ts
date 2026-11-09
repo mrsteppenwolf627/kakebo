@@ -1,0 +1,620 @@
+/**
+ * Capa semántica única de metodokakebo.com (Schema.org / JSON-LD).
+ *
+ * - Un solo <script type="application/ld+json"> por página, con un único @graph.
+ * - Todas las entidades se enlazan por @id estable (Organization, WebSite, WebPage, entidad principal).
+ * - Los builders reciben los textos YA localizados desde el Server Component: el JSON-LD usa exactamente
+ *   la misma fuente que el HTML visible (messages/*.json, frontmatter MDX, content/*.json).
+ * - `graph()` falla si hay referencias {"@id": ...} que no resuelven dentro de la misma página.
+ *
+ * Solo sintaxis TypeScript "borrable" (sin enums ni parameter properties).
+ */
+
+export const BASE_URL = "https://www.metodokakebo.com";
+export type Locale = "es" | "en";
+export type JsonNode = { [key: string]: unknown };
+
+export const ids = {
+  org: `${BASE_URL}/#organization`,
+  website: `${BASE_URL}/#website`,
+  person: `${BASE_URL}/#person`,
+  app: `${BASE_URL}/#app`,
+  logo: `${BASE_URL}/#logo`,
+} as const;
+
+export const ref = (id: string): JsonNode => ({ "@id": id });
+
+/** URL absoluta de una ruta (sin barra final). El español no lleva prefijo; el inglés, /en. */
+export function localeUrl(locale: Locale, path = ""): string {
+  const p = path === "/" ? "" : path;
+  return `${BASE_URL}${locale === "es" ? "" : "/en"}${p}`;
+}
+
+/** @id de un fragmento de página. La home (sin ruta) usa "/#frag" para ser coherente con "/#organization". */
+const at = (url: string, fragment: string) => (url === BASE_URL ? `${url}/#${fragment}` : `${url}#${fragment}`);
+
+export function abs(url: string): string {
+  if (/^https?:\/\//.test(url)) return url;
+  return `${BASE_URL}${url.startsWith("/") ? url : `/${url}`}`;
+}
+
+/** Texto plano para Question/Answer y descripciones: quita etiquetas, énfasis Markdown y enlaces Markdown. */
+export function plain(text: string): string {
+  return text
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/<[^>]+>/g, "")
+    .replace(/(\*\*|__)/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const truncate = (s: string, max: number) => (s.length <= max ? s : `${s.slice(0, max - 1).trimEnd()}…`);
+
+/* ------------------------------------------------------------------ */
+/* 1. Entidades canónicas (desambiguación con sameAs)                   */
+/* ------------------------------------------------------------------ */
+
+const wd = (q: string) => `https://www.wikidata.org/wiki/${q}`;
+
+export type EntityKey =
+  | "kakeibo"
+  | "saving"
+  | "personalBudget"
+  | "zeroBasedBudgeting"
+  | "personalFinance"
+  | "consumerPriceIndex"
+  | "inflation"
+  | "purchasingPower"
+  | "excel"
+  | "spain";
+
+export const entities: Record<EntityKey, JsonNode> = {
+  kakeibo: {
+    "@type": "DefinedTerm",
+    "@id": `${BASE_URL}/#kakebo`,
+    name: "Kakebo",
+    alternateName: ["Kakeibo", "家計簿"],
+    description: "Método japonés de ahorro personal basado en registrar, clasificar y revisar los gastos del hogar, creado en 1904.",
+    sameAs: [wd("Q388197"), "https://en.wikipedia.org/wiki/Kakeibo", "https://es.wikipedia.org/wiki/Kakeibo"],
+  },
+  saving: {
+    "@type": "DefinedTerm",
+    "@id": `${BASE_URL}/#ahorro`,
+    name: "Ahorro",
+    alternateName: "Saving",
+    sameAs: [wd("Q319622")],
+  },
+  personalBudget: {
+    "@type": "DefinedTerm",
+    "@id": `${BASE_URL}/#presupuesto-personal`,
+    name: "Presupuesto personal",
+    alternateName: "Personal budget",
+    sameAs: [wd("Q3525860"), "https://en.wikipedia.org/wiki/Personal_budget"],
+  },
+  zeroBasedBudgeting: {
+    "@type": "DefinedTerm",
+    "@id": `${BASE_URL}/#presupuesto-base-cero`,
+    name: "Presupuesto base cero",
+    alternateName: "Zero-based budgeting",
+    sameAs: [wd("Q191900"), "https://en.wikipedia.org/wiki/Zero-based_budgeting", "https://es.wikipedia.org/wiki/Presupuesto_base_cero"],
+  },
+  personalFinance: {
+    "@type": "DefinedTerm",
+    "@id": `${BASE_URL}/#finanzas-personales`,
+    name: "Finanzas personales",
+    alternateName: "Personal finance",
+    sameAs: [wd("Q253613"), "https://en.wikipedia.org/wiki/Personal_finance", "https://es.wikipedia.org/wiki/Finanzas_personales"],
+  },
+  consumerPriceIndex: {
+    "@type": "DefinedTerm",
+    "@id": `${BASE_URL}/#ipc`,
+    name: "Índice de precios de consumo (IPC)",
+    alternateName: ["IPC", "Consumer price index"],
+    sameAs: [wd("Q180687")],
+  },
+  inflation: {
+    "@type": "DefinedTerm",
+    "@id": `${BASE_URL}/#inflacion`,
+    name: "Inflación",
+    alternateName: "Inflation",
+    sameAs: [wd("Q35865")],
+  },
+  purchasingPower: {
+    "@type": "DefinedTerm",
+    "@id": `${BASE_URL}/#poder-adquisitivo`,
+    name: "Poder adquisitivo",
+    alternateName: "Purchasing power",
+    sameAs: [wd("Q271969")],
+  },
+  excel: {
+    "@type": "SoftwareApplication",
+    "@id": `${BASE_URL}/#microsoft-excel`,
+    name: "Microsoft Excel",
+    sameAs: [wd("Q11272")],
+  },
+  spain: {
+    "@type": "Country",
+    "@id": `${BASE_URL}/#espana`,
+    name: "España",
+    // Q29 = España. No re-verificado en esta auditoría: comprobar en wikidata.org antes de publicar.
+    sameAs: [wd("Q29")],
+  },
+};
+
+/**
+ * Variantes por idioma de cada entidad: nombre y descripción en el idioma de la página (una página EN no lleva texto en
+ * español) y, en español, sin la grafía «Kakeibo» (política del sitio: en español siempre «Kakebo»; la grafía «Kakeibo»
+ * solo aparece en las páginas en inglés, incluidas las URL de Wikipedia).
+ */
+const LOCALIZED: Record<"es" | "en", Partial<Record<EntityKey, JsonNode>>> = {
+  es: {
+    kakeibo: { alternateName: ["家計簿"], sameAs: [wd("Q388197")] },
+  },
+  en: {
+    kakeibo: {
+      name: "Kakeibo",
+      alternateName: ["Kakebo", "家計簿"],
+      description: "Japanese personal savings method based on recording, classifying and reviewing household spending, created in 1904.",
+    },
+    saving: { name: "Saving", alternateName: undefined },
+    personalBudget: { name: "Personal budget", alternateName: undefined },
+    zeroBasedBudgeting: { name: "Zero-based budgeting", alternateName: undefined },
+    personalFinance: { name: "Personal finance", alternateName: undefined },
+    consumerPriceIndex: { name: "Consumer price index (CPI)", alternateName: ["CPI"] },
+    inflation: { name: "Inflation", alternateName: undefined },
+    purchasingPower: { name: "Purchasing power", alternateName: undefined },
+    spain: { name: "Spain", alternateName: undefined },
+  },
+};
+
+export const entity = (key: EntityKey, locale: Locale = "es"): JsonNode => ({ ...entities[key], ...(LOCALIZED[locale][key] ?? {}) });
+export const entityNodes = (keys: EntityKey[], locale: Locale = "es"): JsonNode[] => keys.map((k) => entity(k, locale));
+export const entityRefs = (keys: EntityKey[]): JsonNode[] => keys.map((k) => ref(entities[k]["@id"] as string));
+
+/** Autor histórico de la técnica; solo se usa como `mentions` donde el texto visible lo nombra. */
+export const motokoHani: JsonNode = {
+  "@type": "Person",
+  "@id": `${BASE_URL}/#motoko-hani`,
+  name: "Motoko Hani",
+  sameAs: ["https://en.wikipedia.org/wiki/Motoko_Hani"],
+};
+
+/** Entidades de cada artículo (solo identificadores verificados). El resto de artículos usa `kakeibo` por defecto si el slug lo contiene. */
+const BLOG_ABOUT: Record<string, EntityKey[]> = {
+  "kakebo-vs-ynab": ["kakeibo", "zeroBasedBudgeting"],
+  "regla-50-30-20-ejemplo": ["personalBudget"],
+  "como-hacer-un-presupuesto-personal": ["personalBudget"],
+  "como-ahorrar-dinero-cada-mes": ["saving"],
+  "eliminar-gastos-hormiga": ["saving"],
+  "regla-30-dias": ["saving"],
+  "ahorro-pareja": ["personalFinance"],
+  "plantilla-kakebo-excel": ["kakeibo", "excel"],
+  "kakebo-sueldo-minimo": ["kakeibo", "saving"],
+};
+export function blogAbout(slug: string): EntityKey[] {
+  if (BLOG_ABOUT[slug]) return BLOG_ABOUT[slug];
+  return slug.includes("kakebo") ? ["kakeibo"] : [];
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Textos del sitio por idioma (mover a messages/*.json si se desea) */
+/* ------------------------------------------------------------------ */
+
+export const siteCopy = {
+  es: {
+    orgDescription:
+      "Plataforma web gratuita de herramientas y artículos para aplicar el método Kakebo de ahorro personal en formato digital, sin conectar cuentas bancarias.",
+    siteDescription: "Herramientas gratuitas y guías para aplicar el método Kakebo de ahorro personal en español.",
+    appDescription:
+      "Aplicación web gratuita de MetodoKakebo.com para registrar gastos y planificar el ahorro mensual con el método Kakebo japonés y asistencia de inteligencia artificial.",
+    appFeatures: [
+      "Registro manual consciente de gastos",
+      "Agente IA financiero personal",
+      "Sin conexión bancaria",
+      "Categorías Kakebo nativas",
+      "Historial y exportación",
+    ],
+    home: "Inicio",
+    blog: "Blog",
+    tools: "Herramientas",
+  },
+  en: {
+    orgDescription:
+      "Free web platform with tools and articles to apply the Kakebo personal savings method digitally, without connecting bank accounts.",
+    siteDescription: "Free tools and guides to apply the Kakebo personal savings method.",
+    appDescription:
+      "Free web app by MetodoKakebo.com to log expenses and plan monthly savings with the Japanese Kakebo method and AI assistance.",
+    appFeatures: [
+      "Conscious manual expense logging",
+      "Personal AI finance agent",
+      "No bank connection",
+      "Native Kakebo categories",
+      "History and export",
+    ],
+    home: "Home",
+    blog: "Blog",
+    tools: "Tools",
+  },
+} as const;
+
+/* ------------------------------------------------------------------ */
+/* 3. Nodos base (idénticos en todas las páginas)                      */
+/* ------------------------------------------------------------------ */
+
+export function organization(locale: Locale, contact?: { telephone: string; email: string }): JsonNode {
+  return {
+    "@type": "Organization",
+    "@id": ids.org,
+    name: "MetodoKakebo.com",
+    url: BASE_URL,
+    logo: { "@type": "ImageObject", "@id": ids.logo, url: `${BASE_URL}/logo.png`, contentUrl: `${BASE_URL}/logo.png` },
+    image: ref(ids.logo),
+    description: siteCopy[locale].orgDescription,
+    sameAs: ["https://x.com/kakebo_ai"],
+    founder: ref(ids.person),
+    ...(contact
+      ? {
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer service",
+            telephone: contact.telephone,
+            email: contact.email,
+            availableLanguage: ["Spanish", "English"],
+          },
+        }
+      : {}),
+  };
+}
+
+export function website(locale: Locale): JsonNode {
+  return {
+    "@type": "WebSite",
+    "@id": ids.website,
+    url: BASE_URL,
+    name: "MetodoKakebo.com",
+    description: siteCopy[locale].siteDescription,
+    inLanguage: ["es", "en"],
+    publisher: ref(ids.org),
+  };
+}
+
+export function person(locale: Locale): JsonNode {
+  return {
+    "@type": "Person",
+    "@id": ids.person,
+    name: "Aitor Alarcón",
+    url: localeUrl(locale, "/sobre-nosotros"),
+    sameAs: ["https://x.com/aitoralmu", "https://github.com/mrsteppenwolf627"],
+    worksFor: ref(ids.org),
+    knowsAbout: entityRefs(["kakeibo", "personalFinance"]),
+  };
+}
+
+/** Núcleo que lleva toda página: Organization + WebSite + Person (+ entidades referenciadas). */
+export function core(locale: Locale, opts?: { contact?: { telephone: string; email: string } }): JsonNode[] {
+  return [organization(locale, opts?.contact), website(locale), person(locale), ...entityNodes(["kakeibo", "personalFinance"], locale)];
+}
+
+export type Crumb = { name: string; url: string };
+
+export function webPage(o: {
+  locale: Locale;
+  path: string;
+  type?: "WebPage" | "AboutPage" | "CollectionPage" | "ItemPage" | "ContactPage";
+  name: string;
+  description?: string;
+  inLanguage?: string;
+  breadcrumbs?: Crumb[];
+  mainEntityId?: string;
+  about?: EntityKey[];
+  mentions?: JsonNode[];
+  datePublished?: string;
+  dateModified?: string;
+  /** Propiedades adicionales del WebPage (p. ej. citation, spatialCoverage). */
+  extra?: JsonNode;
+}): JsonNode[] {
+  const url = localeUrl(o.locale, o.path);
+  const page: JsonNode = {
+    "@type": o.type ?? "WebPage",
+    "@id": at(url, "webpage"),
+    url,
+    name: o.name,
+    ...(o.description ? { description: o.description } : {}),
+    inLanguage: o.inLanguage ?? o.locale,
+    isPartOf: ref(ids.website),
+    ...(o.breadcrumbs ? { breadcrumb: ref(at(url, "breadcrumb")) } : {}),
+    ...(o.mainEntityId ? { mainEntity: ref(o.mainEntityId) } : {}),
+    ...(o.about?.length ? { about: entityRefs(o.about) } : {}),
+    ...(o.mentions?.length ? { mentions: o.mentions.map((m) => ref(m["@id"] as string)) } : {}),
+    ...(o.datePublished ? { datePublished: o.datePublished } : {}),
+    ...(o.dateModified ? { dateModified: o.dateModified } : {}),
+    ...(o.extra ?? {}),
+  };
+  const nodes: JsonNode[] = [page];
+  if (o.breadcrumbs) {
+    nodes.push({
+      "@type": "BreadcrumbList",
+      "@id": at(url, "breadcrumb"),
+      itemListElement: o.breadcrumbs.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, item: c.url })),
+    });
+  }
+  if (o.about?.length) nodes.push(...entityNodes(o.about, o.locale));
+  if (o.mentions?.length) nodes.push(...o.mentions);
+  return nodes;
+}
+
+/** Migas estándar: Inicio › sección › página. */
+export function crumbs(locale: Locale, trail: { name: string; path: string }[]): Crumb[] {
+  return [{ name: siteCopy[locale].home, url: localeUrl(locale, "") }, ...trail.map((t) => ({ name: t.name, url: localeUrl(locale, t.path) }))];
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Entidades principales por tipo de página                         */
+/* ------------------------------------------------------------------ */
+
+export function webApplication(o: {
+  id: string;
+  name: string;
+  url: string;
+  description: string;
+  featureList?: readonly string[] | string;
+  inLanguage: string;
+  operatingSystem?: string;
+  about?: EntityKey[];
+}): JsonNode {
+  return {
+    "@type": "WebApplication",
+    "@id": o.id,
+    name: o.name,
+    url: o.url,
+    description: o.description,
+    applicationCategory: "FinanceApplication",
+    operatingSystem: o.operatingSystem ?? "Web",
+    inLanguage: o.inLanguage,
+    isAccessibleForFree: true,
+    ...(o.featureList ? { featureList: o.featureList } : {}),
+    offers: { "@type": "Offer", price: "0", priceCurrency: "EUR", availability: "https://schema.org/InStock", url: o.url },
+    author: ref(ids.org),
+    publisher: ref(ids.org),
+    ...(o.about?.length ? { about: entityRefs(o.about) } : {}),
+  };
+}
+
+export type FaqItem = { question: string; answer: string };
+
+export function faqPage(pageUrl: string, items: FaqItem[], inLanguage: string): JsonNode | null {
+  if (!items.length) return null;
+  return {
+    "@type": "FAQPage",
+    "@id": at(pageUrl, "faq"),
+    isPartOf: ref(at(pageUrl, "webpage")),
+    inLanguage,
+    mainEntity: items.map((i) => ({
+      "@type": "Question",
+      name: plain(i.question),
+      acceptedAnswer: { "@type": "Answer", text: plain(i.answer) },
+    })),
+  };
+}
+
+export function howTo(pageUrl: string, name: string, steps: { name?: string; text: string }[], inLanguage: string): JsonNode {
+  return {
+    "@type": "HowTo",
+    "@id": at(pageUrl, "howto"),
+    name,
+    inLanguage,
+    isPartOf: ref(at(pageUrl, "webpage")),
+    step: steps.map((s, i) => ({ "@type": "HowToStep", position: i + 1, ...(s.name ? { name: s.name } : {}), text: plain(s.text) })),
+  };
+}
+
+export function itemList(pageUrl: string, items: { name: string; url: string; description?: string }[]): JsonNode {
+  return {
+    "@type": "ItemList",
+    "@id": at(pageUrl, "list"),
+    numberOfItems: items.length,
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      url: it.url,
+      ...(it.description ? { description: plain(it.description) } : {}),
+    })),
+  };
+}
+
+/** Un artículo del blog. Las FAQ solo se emiten si están visibles en el cuerpo (ver `visibleFaq`). */
+export function blogPost(o: {
+  locale: Locale;
+  slug: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  date: string;
+  updatedDate?: string;
+  image?: string;
+  faq?: FaqItem[];
+}): JsonNode[] {
+  const path = `/blog/${o.slug}`;
+  const url = localeUrl(o.locale, path);
+  const about = blogAbout(o.slug);
+  const isFounder = o.author.trim() === "Aitor Alarcón";
+  const article: JsonNode = {
+    "@type": "BlogPosting",
+    "@id": at(url, "article"),
+    headline: truncate(plain(o.title), 110),
+    description: plain(o.excerpt),
+    inLanguage: o.locale,
+    image: [abs(o.image || "/og-image.jpg")],
+    datePublished: o.date,
+    dateModified: o.updatedDate ?? o.date,
+    author: isFounder ? ref(ids.person) : { "@type": "Person", name: o.author },
+    publisher: ref(ids.org),
+    isPartOf: ref(at(url, "webpage")),
+    mainEntityOfPage: ref(at(url, "webpage")),
+    ...(about.length ? { about: entityRefs(about) } : {}),
+  };
+  const faq = faqPage(url, o.faq ?? [], o.locale);
+  return [
+    ...core(o.locale),
+    ...webPage({
+      locale: o.locale,
+      path,
+      name: plain(o.title),
+      description: plain(o.excerpt),
+      breadcrumbs: crumbs(o.locale, [
+        { name: siteCopy[o.locale].blog, path: "/blog" },
+        { name: plain(o.title), path },
+      ]),
+      mainEntityId: at(url, "article"),
+      datePublished: o.date,
+      dateModified: o.updatedDate ?? o.date,
+    }),
+    article,
+    ...entityNodes(about, o.locale),
+    ...(faq ? [faq] : []),
+  ];
+}
+
+/**
+ * Solo las preguntas del frontmatter cuyo texto aparece en el cuerpo renderizado.
+ * Evita declarar en JSON-LD FAQ que el usuario no ve.
+ */
+export function visibleFaq(faq: FaqItem[] | undefined, body: string): FaqItem[] {
+  if (!faq?.length) return [];
+  // El cuerpo se compara tal cual (sin quitar etiquetas): las preguntas de <FaqItem question="..."> viven en atributos JSX.
+  const norm = (s: string) => s.replace(/(\*\*|__)/g, "").toLowerCase().replace(/[¿?¡!]/g, "").replace(/\s+/g, " ").trim();
+  const haystack = norm(body);
+  return faq.filter((f) => haystack.includes(norm(plain(f.question))));
+}
+
+export function digitalDocument(o: {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  encodingFormat: string;
+  datePublished?: string;
+  dateModified?: string;
+  inLanguage: string;
+}): JsonNode {
+  return {
+    "@type": "DigitalDocument",
+    "@id": o.id,
+    name: o.name,
+    description: o.description,
+    url: o.url,
+    encodingFormat: o.encodingFormat,
+    isAccessibleForFree: true,
+    inLanguage: o.inLanguage,
+    ...(o.dateModified ? { dateModified: o.dateModified } : {}),
+    author: ref(ids.org),
+    publisher: ref(ids.org),
+  };
+}
+
+export function dataset(o: { id: string; name: string; description: string; url: string; creatorName: string }): JsonNode {
+  return {
+    "@type": "Dataset",
+    "@id": o.id,
+    name: o.name,
+    description: o.description,
+    url: o.url,
+    creator: { "@type": "Organization", name: o.creatorName },
+    isAccessibleForFree: true,
+  };
+}
+
+export function product(o: {
+  id: string;
+  name: string;
+  alternateName?: string;
+  description: string;
+  url: string;
+  images: string[];
+  category: string;
+  commerce?: { price: string; currency: string };
+}): JsonNode {
+  return {
+    "@type": "Product",
+    "@id": o.id,
+    name: o.name,
+    ...(o.alternateName ? { alternateName: o.alternateName } : {}),
+    description: o.description,
+    url: o.url,
+    image: o.images.map(abs),
+    category: o.category,
+    brand: ref(ids.org),
+    ...(o.commerce
+      ? {
+          offers: {
+            "@type": "Offer",
+            price: o.commerce.price,
+            priceCurrency: o.commerce.currency,
+            availability: "https://schema.org/InStock",
+            url: o.url,
+            seller: ref(ids.org),
+          },
+        }
+      : {}),
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. Ensamblado, validación y serialización                           */
+/* ------------------------------------------------------------------ */
+
+function stripUndefined(v: unknown): unknown {
+  if (Array.isArray(v)) return v.map(stripUndefined);
+  if (v && typeof v === "object") {
+    const out: JsonNode = {};
+    for (const [k, val] of Object.entries(v as JsonNode)) if (val !== undefined) out[k] = stripUndefined(val);
+    return out;
+  }
+  return v;
+}
+
+/** Recorre el árbol: `refs` = {"@id"} sueltos; `defs` = objetos con @id y más propiedades (definiciones, también anidadas). */
+function walk(v: unknown, refs: Set<string>, defs: Set<string>): void {
+  if (Array.isArray(v)) return v.forEach((x) => walk(x, refs, defs));
+  if (v && typeof v === "object") {
+    const o = v as JsonNode;
+    const keys = Object.keys(o);
+    if (typeof o["@id"] === "string") {
+      if (keys.length === 1) refs.add(o["@id"] as string);
+      else defs.add(o["@id"] as string);
+    }
+    for (const k of keys) if (k !== "@id") walk(o[k], refs, defs);
+  }
+}
+
+/** Une nodos por @id (el primero manda), comprueba que toda referencia resuelve y devuelve el documento JSON-LD. */
+export function graph(nodes: (JsonNode | null | undefined)[]): JsonNode {
+  const byId = new Map<string, JsonNode>();
+  const anonymous: JsonNode[] = [];
+  for (const raw of nodes) {
+    if (!raw) continue;
+    const n = stripUndefined(raw) as JsonNode;
+    const id = n["@id"] as string | undefined;
+    if (!id) anonymous.push(n);
+    else if (!byId.has(id)) byId.set(id, n);
+  }
+  const refs = new Set<string>();
+  const defs = new Set<string>();
+  const all = [...byId.values(), ...anonymous];
+  for (const n of all) walk(n, refs, defs);
+  const dangling = [...refs].filter((r) => !defs.has(r));
+  if (dangling.length) {
+    // Siempre lanza: las páginas son estáticas, así que el error rompe el build en vez de publicar un grafo roto.
+    throw new Error(`JSON-LD: referencias @id sin nodo en el @graph: ${dangling.join(", ")}`);
+  }
+  return { "@context": "https://schema.org", "@graph": all };
+}
+
+/** Serializa seguro para incrustar en <script>: escapa "<" y los separadores de línea Unicode (U+2028/U+2029). */
+export function serialize(doc: JsonNode): string {
+  return JSON.stringify(doc)
+    .replace(/</g, "\\u003c")
+    .split(String.fromCharCode(0x2028)).join("\\u2028")
+    .split(String.fromCharCode(0x2029)).join("\\u2029");
+}

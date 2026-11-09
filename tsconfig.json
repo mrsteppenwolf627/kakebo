@@ -33,5 +33,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "kakebo", "mobile"]
+  "exclude": ["node_modules", "kakebo", "mobile", "scripts/generar-ejemplos.mts"]
 }
