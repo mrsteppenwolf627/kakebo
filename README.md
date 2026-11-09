@@ -170,7 +170,28 @@ Páginas generadas desde un dato oficial, sin LLM en las cifras ni base de datos
 
 ### ⚡ Renderizado estático con next-intl
 
-Para que una ruta con `[locale]` se genere de forma estática, `src/app/[locale]/layout.tsx` declara `generateStaticParams` (locales) y llama a `setRequestLocale(locale)`; **cada página** que use APIs de next-intl en servidor (p. ej. un componente con `useTranslations`, como `Footer`) debe llamar también a `setRequestLocale(locale)` al inicio. Sin eso la página se renderiza de forma dinámica (cabecera `cache-control: private, no-store`). Las 64 URL del sitemap (home, herramientas, plantillas, vivienda, tutorial, páginas legales y blog) se sirven de forma estática; el blog declara `generateStaticParams` por idioma y artículo. Al añadir una página nueva con next-intl hay que repetir este patrón y comprobar la cabecera `cache-control` en producción. `themeColor` va en `export const viewport`, no en `metadata`.
+Para que una ruta con `[locale]` se genere de forma estática, `src/app/[locale]/layout.tsx` declara `generateStaticParams` (locales) y llama a `setRequestLocale(locale)`; **cada página** que use APIs de next-intl en servidor (p. ej. un componente con `useTranslations`, como `Footer`) debe llamar también a `setRequestLocale(locale)` al inicio. Sin eso la página se renderiza de forma dinámica (cabecera `cache-control: private, no-store`). Las 64 URL del sitemap a 2026-11-06 (home, herramientas, plantillas, vivienda, tutorial, páginas legales y blog; `/login` se retiró del sitemap después) se sirven de forma estática; el blog declara `generateStaticParams` por idioma y artículo. Al añadir una página nueva con next-intl hay que repetir este patrón y comprobar la cabecera `cache-control` en producción. `themeColor` va en `export const viewport`, no en `metadata`.
+
+### 🔎 Mapa de renderizado e indexación por ruta
+
+Cada `page.tsx` tiene asignado un modo de renderizado y una política de indexación. El mapa completo con justificación, verificación y la tabla de `next build` está en [`docs/seo/RENDER_MAP_01.md`](docs/seo/RENDER_MAP_01.md); la constante `ROUTE_RENDER_MAP` de `src/__tests__/seo/render-map.test.ts` lo hace cumplir: el test falla si aparece una página sin clasificar o si una ruta SSG usa `cookies()`, `headers()`, `searchParams` o `createClient`.
+
+| Tipo | Rutas | Renderizado | Indexación |
+|---|---|---|---|
+| Editorial | `/`, `/blog`, `/blog/[slug]`, `/tutorial`, `/sobre-nosotros`, `/herramientas` | SSG | Sí |
+| Herramientas y comercial | `/herramientas/calculadora-ahorro`, `calculadora-inflacion`, `regla-50-30-20`, `plantilla-kakebo-excel-premium` | SSG + isla CSR | Sí |
+| pSEO | `/plantillas/[slug]`, `/ahorro-entrada-vivienda`, `/ahorro-entrada-vivienda/[provincia]` | SSG (`generateStaticParams`, `dynamicParams = false`) | Sí |
+| Legales | `/privacy`, `/terms`, `/cookies` | SSG | Sí |
+| Acceso | `/login`, `/auth/callback` | SSG + formulario cliente / CSR | No (`login` fuera del sitemap) |
+| App privada | `/app/*` | SSR con sesión (`/app`, `agent`, `scanner`, `subscription`) o CSR (resto) | No |
+| Rutas heredadas | `/history`, `/history/[ym]`, `/settings`, `/new` | `redirect()` a `/app/*` | n/a (307 sin HTML propio) |
+| API | `/api/*` | Dinámico | No |
+
+Reglas:
+- Toda página que posiciona se pre-renderiza; la interactividad vive en componentes cliente dentro de una página servidor, con texto, H1, FAQ y JSON-LD en el HTML inicial.
+- `noindex` siempre en metadata del servidor (layout o `generateMetadata`), nunca desde JavaScript cliente. No bloquear en `robots.txt` lo que deba desindexarse.
+- El control de indexación del layout raíz depende de `NEXT_PUBLIC_APP_URL === "https://www.metodokakebo.com"` en build: sin esa variable todo el sitio sale `noindex` (previews y local). La verificación de `index, follow` requiere un build con esa variable.
+- Al añadir una página: clasificarla en `ROUTE_RENDER_MAP`, llamar a `setRequestLocale(locale)` si es SSG y comprobar la leyenda de `next build` (○ estático, ● SSG, ƒ dinámico). En los tests que mockean `next-intl/server`, incluir `setRequestLocale: vi.fn()`.
 
 ---
 
