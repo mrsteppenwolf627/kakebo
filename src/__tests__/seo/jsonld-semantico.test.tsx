@@ -410,3 +410,48 @@ describe("artículos MDX: el JSON-LD lo genera solo la plantilla", () => {
     expect(withScript).toEqual([]);
   });
 });
+
+describe("fechas y campos del Dataset en las páginas", () => {
+  const isoTz = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|[+-]\d{2}:\d{2})$/;
+  const datesOf = (v: any, out: string[] = []): string[] => {
+    if (Array.isArray(v)) v.forEach((x) => datesOf(x, out));
+    else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) {
+        if ((k === "datePublished" || k === "dateModified") && typeof x === "string") out.push(x);
+        else datesOf(x, out);
+      }
+    return out;
+  };
+
+  it.each([...ROUTES.map((r) => ({ name: r.name, mod: r.mod, params: r.params })), ...posts.map((p) => ({ name: p.name, mod: `${P}/(public)/blog/[slug]/page`, params: { locale: p.locale, slug: p.slug } }))])(
+    "$name: todas las fechas llevan zona horaria",
+    async ({ mod, params }) => {
+      const [doc] = ldDocumentsFromTree(await renderTree(mod, params));
+      for (const d of datesOf(doc["@graph"])) expect(d).toMatch(isoTz);
+    },
+  );
+
+  it("artículo: usa las fechas del frontmatter con el offset de su fecha", async () => {
+    const [doc] = ldDocumentsFromTree(await renderTree(`${P}/(public)/blog/[slug]/page`, { locale: "es", slug: "alternativas-a-app-bancarias" }));
+    const article = doc["@graph"].find((n: any) => n["@type"] === "BlogPosting");
+    expect(article.datePublished).toBe("2026-01-13T00:00:00+01:00");
+    expect(article.dateModified).toBe("2026-07-20T00:00:00+02:00");
+  });
+
+  it("vivienda: el Dataset declara el periodo y la descarga visibles en la página", async () => {
+    const tree = await renderTree(`${P}/(public)/ahorro-entrada-vivienda/[provincia]/page`, { locale: "es", provincia: "madrid" });
+    const [doc] = ldDocumentsFromTree(tree);
+    const ds = doc["@graph"].find((n: any) => n["@type"] === "Dataset");
+    expect(ds.temporalCoverage).toMatch(/^\d{4}-\d{2}-\d{2}\/\d{4}-\d{2}-\d{2}$/);
+    expect(ds.distribution["@type"]).toBe("DataDownload");
+    const visible = treeStrings(tree).join(" ");
+    expect(visible).toContain("trimestre de 2026"); // el periodo que origina temporalCoverage
+    expect(ds).not.toHaveProperty("license"); // el aviso legal no se muestra en la página
+  });
+
+  it("producto premium y calculadora de inflación: sin campos sin respaldo visible (rating, envío, devoluciones)", async () => {
+    for (const [mod, params] of [[`${P}/(public)/herramientas/plantilla-kakebo-excel-premium/page`, { locale: "es" }], [`${P}/(landing)/herramientas/calculadora-inflacion/page`, { locale: "es" }]] as const) {
+      const json = JSON.stringify(ldDocumentsFromTree(await renderTree(mod, params as any)));
+      expect(json).not.toMatch(/shippingDetails|hasMerchantReturnPolicy|priceValidUntil|"sku"|gtin|softwareVersion|screenshot/);
+    }
+  });
+});

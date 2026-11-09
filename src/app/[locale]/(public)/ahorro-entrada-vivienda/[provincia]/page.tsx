@@ -165,6 +165,9 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
             description: `Valor tasado medio de vivienda libre, provincias, ${meta.periodo}.`,
             url: meta.url,
             creatorName: meta.organismo,
+            // Ambos datos son visibles: el periodo («2.º trimestre de 2026») y el enlace a la hoja de la fuente (.XLS).
+            temporalCoverage: S.quarterInterval(meta.periodo),
+            distribution: /\.xls$/i.test(meta.url) ? { contentUrl: meta.url, encodingFormat: "application/vnd.ms-excel" } : undefined,
         }),
         S.faqPage(url, faq, "es"),
     ]);

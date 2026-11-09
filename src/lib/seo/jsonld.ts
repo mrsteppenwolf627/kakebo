@@ -51,6 +51,40 @@ export function plain(text: string): string {
 const truncate = (s: string, max: number) => (s.length <= max ? s : `${s.slice(0, max - 1).trimEnd()}…`);
 
 /* ------------------------------------------------------------------ */
+/* 0. Fechas ISO 8601 con zona horaria (Europe/Madrid)                  */
+/* ------------------------------------------------------------------ */
+
+const MADRID = new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Madrid", timeZoneName: "longOffset", hour: "2-digit" });
+
+/** Desplazamiento de Europe/Madrid en un instante dado, como "+01:00" / "+02:00". */
+function madridOffsetAt(instantMs: number): string {
+  const part = MADRID.formatToParts(new Date(instantMs)).find((p) => p.type === "timeZoneName")?.value ?? "GMT+01:00";
+  const m = part.match(/GMT([+-])(\d{2}):?(\d{2})?/);
+  return m ? `${m[1]}${m[2]}:${m[3] ?? "00"}` : "+01:00";
+}
+
+/**
+ * Normaliza una fecha a ISO 8601 completo con la zona de Madrid (offset real de esa fecha: +01:00 en invierno, +02:00 en verano).
+ * «2026-02-24» → «2026-02-24T00:00:00+01:00». Si la fuente ya trae hora y zona (Z o ±hh:mm) se respeta tal cual;
+ * si trae hora sin zona se le añade la de Madrid. Cualquier otro formato se devuelve sin tocar.
+ */
+export function isoMadrid(value: unknown): unknown {
+  if (typeof value !== "string") return value;
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:?\d{2})$/.test(value)) return value;
+  const m = value.match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2}))?)?$/);
+  if (!m) return value;
+  const [y, mo, d] = [Number(m[1]), Number(m[2]) - 1, Number(m[3])];
+  const [hh, mm, ss] = [Number(m[4] ?? 0), Number(m[5] ?? 0), Number(m[6] ?? 0)];
+  // El offset se calcula 2 h antes del instante «ingenuo»: los cambios horarios ocurren a las 01:00 UTC, así que la
+  // medianoche local del día del cambio todavía tiene el offset anterior.
+  const offset = madridOffsetAt(Date.UTC(y, mo, d, hh, mm, ss) - 2 * 3_600_000);
+  const pad = (n: number, w = 2) => String(n).padStart(w, "0");
+  return `${pad(y, 4)}-${pad(mo + 1)}-${pad(d)}T${pad(hh)}:${pad(mm)}:${pad(ss)}${offset}`;
+}
+
+const DATE_KEYS = new Set(["datePublished", "dateModified", "dateCreated"]);
+
+/* ------------------------------------------------------------------ */
 /* 1. Entidades canónicas (desambiguación con sameAs)                   */
 /* ------------------------------------------------------------------ */
 
@@ -136,7 +170,7 @@ export const entities: Record<EntityKey, JsonNode> = {
     "@type": "Country",
     "@id": `${BASE_URL}/#espana`,
     name: "España",
-    // Q29 = España. No re-verificado en esta auditoría: comprobar en wikidata.org antes de publicar.
+    // Q29 = Spain / España (etiquetas verificadas en wikidata.org). Hoy ninguna página emite esta entidad: solo el generador de ejemplos.
     sameAs: [wd("Q29")],
   },
 };
@@ -513,7 +547,29 @@ export function digitalDocument(o: {
   };
 }
 
-export function dataset(o: { id: string; name: string; description: string; url: string; creatorName: string }): JsonNode {
+/**
+ * Periodo «N.º trimestre de AAAA» → intervalo ISO 8601 («AAAA-MM-DD/AAAA-MM-DD»), p. ej. «2.º trimestre de 2026» → «2026-04-01/2026-06-30».
+ * Devuelve undefined si el texto no tiene ese formato (no se inventa cobertura).
+ */
+export function quarterInterval(periodo: string): string | undefined {
+  const m = periodo.match(/^([1-4])\.?\S*\s+trimestre\s+de\s+(\d{4})$/i);
+  if (!m) return undefined;
+  const q = Number(m[1]);
+  const ends = ["03-31", "06-30", "09-30", "12-31"];
+  return `${m[2]}-${String((q - 1) * 3 + 1).padStart(2, "0")}-01/${m[2]}-${ends[q - 1]}`;
+}
+
+export function dataset(o: {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  creatorName: string;
+  /** Cobertura temporal ISO 8601 (solo si el periodo es visible en la página). */
+  temporalCoverage?: string;
+  /** Descarga de la fuente (solo si el enlace es visible en la página). */
+  distribution?: { contentUrl: string; encodingFormat: string };
+}): JsonNode {
   return {
     "@type": "Dataset",
     "@id": o.id,
@@ -522,6 +578,10 @@ export function dataset(o: { id: string; name: string; description: string; url:
     url: o.url,
     creator: { "@type": "Organization", name: o.creatorName },
     isAccessibleForFree: true,
+    ...(o.temporalCoverage ? { temporalCoverage: o.temporalCoverage } : {}),
+    ...(o.distribution
+      ? { distribution: { "@type": "DataDownload", contentUrl: o.distribution.contentUrl, encodingFormat: o.distribution.encodingFormat } }
+      : {}),
   };
 }
 
@@ -564,11 +624,12 @@ export function product(o: {
 /* 5. Ensamblado, validación y serialización                           */
 /* ------------------------------------------------------------------ */
 
+/** Limpia `undefined` y normaliza datePublished/dateModified/dateCreated a ISO 8601 con zona (único punto de normalización). */
 function stripUndefined(v: unknown): unknown {
   if (Array.isArray(v)) return v.map(stripUndefined);
   if (v && typeof v === "object") {
     const out: JsonNode = {};
-    for (const [k, val] of Object.entries(v as JsonNode)) if (val !== undefined) out[k] = stripUndefined(val);
+    for (const [k, val] of Object.entries(v as JsonNode)) if (val !== undefined) out[k] = DATE_KEYS.has(k) ? isoMadrid(val) : stripUndefined(val);
     return out;
   }
   return v;
