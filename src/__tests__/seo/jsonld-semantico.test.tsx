@@ -455,3 +455,21 @@ describe("fechas y campos del Dataset en las páginas", () => {
     }
   });
 });
+
+describe("perfiles de X no verificados: no se declaran como propios", () => {
+  it.each([...ROUTES.map((r) => ({ name: r.name, mod: r.mod, params: r.params })), ...posts.slice(0, 6).map((p) => ({ name: p.name, mod: `${P}/(public)/blog/[slug]/page`, params: { locale: p.locale, slug: p.slug } }))])(
+    "$name: el grafo no contiene x.com ni twitter.com; Organization sin sameAs y Person solo con GitHub",
+    async ({ mod, params }) => {
+      const [doc] = ldDocumentsFromTree(await renderTree(mod, params));
+      expect(JSON.stringify(doc)).not.toMatch(/x\.com|twitter\.com|kakebo_ai|aitoralmu"/i);
+      const org = doc["@graph"].find((n: any) => n["@type"] === "Organization");
+      expect(org).not.toHaveProperty("sameAs"); // sin valores verificados: la propiedad se omite, no queda vacía
+      const person = doc["@graph"].find((n: any) => n["@type"] === "Person" && n["@id"] === S.ids.person);
+      expect(person.sameAs).toEqual(["https://github.com/mrsteppenwolf627"]);
+    },
+  );
+
+  it("el layout no declara @kakebo_ai como twitter:creator", () => {
+    expect(readFileSync(join(process.cwd(), "src/app/[locale]/layout.tsx"), "utf-8")).not.toMatch(/kakebo_ai/);
+  });
+});

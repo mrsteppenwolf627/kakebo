@@ -284,7 +284,6 @@ export function organization(locale: Locale, contact?: { telephone: string; emai
     logo: { "@type": "ImageObject", "@id": ids.logo, url: `${BASE_URL}/logo.png`, contentUrl: `${BASE_URL}/logo.png` },
     image: ref(ids.logo),
     description: siteCopy[locale].orgDescription,
-    sameAs: ["https://x.com/kakebo_ai"],
     founder: ref(ids.person),
     ...(contact
       ? {
@@ -318,7 +317,7 @@ export function person(locale: Locale): JsonNode {
     "@id": ids.person,
     name: "Aitor Alarcón",
     url: localeUrl(locale, "/sobre-nosotros"),
-    sameAs: ["https://x.com/aitoralmu", "https://github.com/mrsteppenwolf627"],
+    sameAs: ["https://github.com/mrsteppenwolf627"],
     worksFor: ref(ids.org),
     knowsAbout: entityRefs(["kakeibo", "personalFinance"]),
   };

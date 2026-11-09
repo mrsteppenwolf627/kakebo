@@ -17,3 +17,7 @@ Todos bajo `/en/blog/<slug>`. La fuente de verdad es el frontmatter (`noindex: t
 ## Páginas sin JSON-LD (a propósito)
 
 `/tutorial`, `/privacy`, `/terms` y `/cookies` (ES y EN) no emiten JSON-LD ni lo han hecho nunca.
+
+## Corrección: perfiles de X
+
+`x.com/kakebo_ai` y `x.com/aitoralmu` **no pertenecen al propietario**. Aparecían como `sameAs` de la Organización y la Persona en el informe semántico, en `ejemplos/*.json` (dentro de `seo-jsonld.zip`) y en `verificacion-global.md`; esas menciones son históricas y no deben reutilizarse. Se eliminaron del código (`sameAs` y `twitter:creator`). La Organización queda sin `sameAs` (la propiedad se omite) y la Persona conserva solo GitHub. No hay enlaces visibles a esos perfiles en la web.

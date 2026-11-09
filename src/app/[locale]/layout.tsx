@@ -70,7 +70,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       card: "summary_large_image",
       title: t("twitterTitle"),
       description: t("twitterDescription"),
-      creator: "@kakebo_ai",
       images: ["/og-image.jpg"],
     },
     robots: {
