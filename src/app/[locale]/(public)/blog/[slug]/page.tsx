@@ -1,4 +1,4 @@
-import { getBlogPost, getBlogPosts } from "@/lib/blog";
+import { getBlogPost, getBlogPosts, CLUSTER_HUBS } from "@/lib/blog";
 import { Metadata } from "next";
 import { Link } from "@/i18n/routing";
 import { notFound } from "next/navigation";
@@ -7,6 +7,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { components } from "@/components/mdx/MDXComponents";
 import { RelatedPosts } from "@/components/mdx/RelatedPosts";
+import { ClusterSpokes } from "@/components/mdx/ClusterSpokes";
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import Image from 'next/image';
@@ -114,6 +115,14 @@ export default async function BlogPostPage({ params }: Props) {
         }),
     );
 
+    // Hub & Spoke: migas Blog › pilar del clúster (solo si el artículo tiene clúster y no es el propio pilar).
+    const cluster = post.frontmatter.cluster;
+    const hub = cluster ? CLUSTER_HUBS[cluster] : undefined;
+    const showCrumbs = !!hub && hub.slug !== slug;
+    const hubExists = !!hub && getBlogPost(hub.slug, locale) !== null;
+    const hubAnchorEn = { metodo: 'Kakebo method', plantillas: 'Kakebo templates', ahorro: 'how to save money each month', apps: 'Fintonic alternatives' } as const;
+    const hubLabel = hub && cluster ? (locale === 'es' ? hub.anchor : hubAnchorEn[cluster]) : '';
+
     return (
         <main className="min-h-screen bg-background text-foreground">
             <Navbar />
@@ -154,6 +163,24 @@ export default async function BlogPostPage({ params }: Props) {
                         <span aria-hidden="true">·</span>
                         <span>{post.frontmatter.readingTime}</span>
                     </div>
+
+                    {showCrumbs && hub && (
+                        <nav aria-label={locale === 'es' ? 'Migas de pan' : 'Breadcrumb'} className="mb-5 text-sm text-muted-foreground">
+                            <ol className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+                                <li>
+                                    <Link href="/blog" className="hover:text-primary hover:underline">Blog</Link>
+                                </li>
+                                {hubExists && (
+                                    <>
+                                        <li aria-hidden="true">›</li>
+                                        <li>
+                                            <Link href={`/blog/${hub.slug}`} className="hover:text-primary hover:underline">{hubLabel}</Link>
+                                        </li>
+                                    </>
+                                )}
+                            </ol>
+                        </nav>
+                    )}
 
                     <h1 className="mb-7 text-3xl font-serif font-bold leading-tight sm:text-4xl md:text-5xl">
                         {post.frontmatter.title}
@@ -209,8 +236,12 @@ export default async function BlogPostPage({ params }: Props) {
                     </section>
                 )}
 
+                {post.frontmatter.role === 'pillar' && cluster && (
+                    <ClusterSpokes cluster={cluster} slug={slug} locale={locale} />
+                )}
+
                 {post.frontmatter.related && post.frontmatter.related.length > 0 && (
-                    <RelatedPosts slugs={post.frontmatter.related} locale={locale} />
+                    <RelatedPosts slugs={post.frontmatter.related} locale={locale} cluster={cluster} />
                 )}
 
             </article>

@@ -4,6 +4,16 @@ import matter from 'gray-matter';
 
 const contentDirectory = path.join(process.cwd(), 'src/content/blog');
 
+export type BlogCluster = 'metodo' | 'plantillas' | 'ahorro' | 'apps';
+
+/** Página pilar de cada clúster (existe en ES; en EN solo si hay fichero .en.mdx con ese slug). */
+export const CLUSTER_HUBS = {
+    metodo:     { slug: 'metodo-kakebo-guia-definitiva', anchor: 'método Kakebo' },
+    plantillas: { slug: 'plantilla-kakebo-excel',        anchor: 'plantillas Kakebo' },
+    ahorro:     { slug: 'como-ahorrar-dinero-cada-mes',  anchor: 'cómo ahorrar dinero cada mes' },
+    apps:       { slug: 'alternativas-a-app-bancarias',  anchor: 'alternativas a Fintonic' },
+} as const;
+
 export interface BlogPost {
     slug: string;
     frontmatter: {
@@ -19,6 +29,9 @@ export interface BlogPost {
         related?: string[];
         noindex?: boolean;
         updatedDate?: string;
+        // Hub & Spoke: clúster temático del artículo y su papel (pillar = página pilar del clúster).
+        cluster?: BlogCluster;
+        role?: 'pillar' | 'spoke';
         faq?: {
             question: string;
             answer: string;

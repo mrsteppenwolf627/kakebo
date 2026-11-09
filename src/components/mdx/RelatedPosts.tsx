@@ -1,17 +1,21 @@
-import { getBlogPost } from '@/lib/blog';
+import { getBlogPost, type BlogCluster } from '@/lib/blog';
 import { Link } from '@/i18n/routing';
 import Image from 'next/image';
 
 interface RelatedPostsProps {
     slugs: string[];
     locale?: string;
+    /** Clúster del artículo actual: sus artículos relacionados del mismo clúster se muestran primero. */
+    cluster?: BlogCluster;
 }
 
-export function RelatedPosts({ slugs, locale = 'es' }: RelatedPostsProps) {
+export function RelatedPosts({ slugs, locale = 'es', cluster }: RelatedPostsProps) {
     "use no memo";
     const posts = slugs
         .map(slug => getBlogPost(slug, locale))
-        .filter((p): p is NonNullable<typeof p> => p !== null);
+        .filter((p): p is NonNullable<typeof p> => p !== null)
+        // Orden estable: primero los del mismo clúster, el resto conserva el orden del frontmatter.
+        .sort((a, b) => Number(cluster !== undefined && b.frontmatter.cluster === cluster) - Number(cluster !== undefined && a.frontmatter.cluster === cluster));
 
     if (posts.length === 0) return null;
 
