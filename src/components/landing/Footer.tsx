@@ -28,7 +28,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="#features"
+                  href="/#features"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
                   {t('features')}
@@ -76,7 +76,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#alternatives"
+                  href="/#alternatives"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
                   {t('alternatives')}
@@ -92,7 +92,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#faq"
+                  href="/#faq"
                   className="text-sm text-muted-foreground font-light transition-colors hover:text-foreground"
                 >
                   {t('faq')}
