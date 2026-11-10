@@ -60,7 +60,7 @@ Todas las rutas existen en `/` (ES, sin prefijo) y `/en/` (EN), salvo las pSEO/p
 3. **`setRequestLocale(locale)`** añadido a 9 páginas SSG que no lo llamaban (home, blog, herramientas, sobre-nosotros, plantillas/[slug], calculadora-ahorro, calculadora-inflacion, regla-50-30-20, plantilla-excel-premium). Ya eran ● porque usan `getTranslations({ locale })` explícito; ahora quedan blindadas.
 4. Tests existentes que mockean `next-intl/server` ampliados con `setRequestLocale: vi.fn()` (mismo patrón que `vivienda.test.ts`).
 
-5. **`robots.ts`**: reglas con y sin prefijo `/en` (`/app`, `/auth/`, `/history`, `/settings`, `/new`), bloqueo de `?mode=`, `?utm_` y `?ym=`, disallow total en `VERCEL_ENV=preview` y sitemap con URL fija `https://www.metodokakebo.com/sitemap.xml`.
+5. **`robots.ts`**: bloquea `/api/`, las redirecciones heredadas con y sin prefijo `/en` (`/history`, `/settings`, `/new`) y `?utm_`; `/app`, `/auth/`, `/docs/`, `?mode=` y `?ym=` no se bloquean porque sirven `noindex`; disallow total en `VERCEL_ENV=preview` y sitemap con URL fija `https://www.metodokakebo.com/sitemap.xml`.
 
 ## Notas y puntos abiertos
 

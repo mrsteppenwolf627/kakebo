@@ -189,9 +189,9 @@ Cada `page.tsx` tiene asignado un modo de renderizado y una política de indexac
 
 Reglas:
 - Toda página que posiciona se pre-renderiza; la interactividad vive en componentes cliente dentro de una página servidor, con texto, H1, FAQ y JSON-LD en el HTML inicial.
-- `noindex` siempre en metadata del servidor (layout o `generateMetadata`), nunca desde JavaScript cliente. No bloquear en `robots.txt` una página pública que deba desindexarse (Google no leería el `noindex`); las rutas privadas (`/app`, `/auth/`) sí se bloquean ahí además de llevar `noindex`.
+- `noindex` siempre en metadata del servidor (layout o `generateMetadata`), nunca desde JavaScript cliente. No bloquear en `robots.txt` una página pública que deba desindexarse (Google no leería el `noindex`); las rutas privadas (`/app`, `/auth/callback`, `/login`) son rastreables y llevan `noindex` (layouts de `/app`, `/auth/callback` y `/login`), y `/docs/` y `/manifest.webmanifest` envían `X-Robots-Tag: noindex` desde `next.config.ts`.
 - El control de indexación del layout raíz depende de `NEXT_PUBLIC_APP_URL === "https://www.metodokakebo.com"` en build: sin esa variable el sitio sale `noindex` (previews y local), salvo `/` y `/tutorial`, que declaran `index: true` propio y no dependen de ella. La verificación de `index, follow` requiere un build con esa variable.
-- `robots.ts` bloquea `/app`, `/auth/`, `/history`, `/settings` y `/new` con y sin `/en`, además de `?mode=`, `?utm_` y `?ym=`; en `VERCEL_ENV=preview` hace disallow total y el sitemap apunta a la URL fija de producción.
+- `robots.ts` solo bloquea `/api/`, las redirecciones heredadas (`/history`, `/settings` y `/new`, con y sin `/en`) y `?utm_`; `/app`, `/auth/`, `/docs/`, `?mode=` y `?ym=` no se bloquean (sirven `noindex`). Lo comprueba `src/__tests__/seo/robots-noindex.test.ts`. En `VERCEL_ENV=preview` hace disallow total y el sitemap apunta a la URL fija de producción.
 - Al añadir una página: clasificarla en `ROUTE_RENDER_MAP`, llamar a `setRequestLocale(locale)` si es SSG y comprobar la leyenda de `next build` (○ estático, ● SSG, ƒ dinámico). En los tests que mockean `next-intl/server`, incluir `setRequestLocale: vi.fn()`.
 
 ---
