@@ -273,6 +273,12 @@ describe("serialize()", () => {
   });
 });
 
+/** Preguntas del frontmatter que NO se declaran en el JSON-LD: su texto aparece en la prosa pero no su respuesta (nada se declara sin verse). */
+const FAQ_OMITIDAS: Record<string, string[]> = {
+  "es/eliminar-gastos-hormiga": ["¿Qué son los gastos hormiga?"],
+  "es/metodo-kakebo-guia-definitiva": ["¿Qué es el método Kakebo?", "¿Cómo funciona el Kakebo?"],
+};
+
 describe("paridad FAQ: lo que declara el JSON-LD se ve en la página", () => {
   const rendered = ROUTES.filter((r) => !r.faqFromSource);
 
@@ -321,14 +327,18 @@ describe("paridad FAQ: lo que declara el JSON-LD se ve en la página", () => {
     const post = getBlogPosts(locale).find((p) => p.slug === slug)!;
     const fm = post.frontmatter.faq ?? [];
     const names = faqNames(doc).map((f) => f.question);
-    // Todo lo que declara el frontmatter queda visible: el FAQPage coincide con él (nada se declara sin mostrarse).
-    expect(names).toEqual(fm.map((f) => S.plain(f.question)));
+    // El FAQPage es el frontmatter menos las preguntas cuya respuesta no se ve (solo salen de pasada en la prosa): ver FAQ_OMITIDAS.
+    const omitted = FAQ_OMITIDAS[`${locale}/${slug}`] ?? [];
+    expect(names).toEqual(fm.map((f) => S.plain(f.question)).filter((q) => !omitted.includes(q)));
     const sectionQuestions = treeStrings(tree).map((s) => norm(s));
     const body = norm(post.content);
     for (const q of names) {
       const n = norm(q);
       expect(body.includes(n) || sectionQuestions.some((s) => s === n), `pregunta no visible en ${slug}: ${q}`).toBe(true);
     }
+    // Y cada respuesta emitida figura en el cuerpo o en la sección renderizada.
+    const visibleText = [norm(S.plain(post.content)), ...sectionQuestions].join(" ");
+    for (const { answer } of faqNames(doc)) expect(visibleText.includes(norm(answer)), `respuesta no visible en ${slug}: ${answer.slice(0, 60)}`).toBe(true);
   });
 });
 

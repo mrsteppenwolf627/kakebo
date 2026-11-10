@@ -566,6 +566,17 @@ export function withVisibleAnswers(faq: FaqItem[], body: string): FaqItem[] {
   });
 }
 
+/**
+ * FAQ para el JSON-LD de un artículo: solo preguntas cuya respuesta (la visible, ver `withVisibleAnswers`) figura en el cuerpo.
+ * Una pregunta que solo aparece de pasada en la prosa (sin su respuesta) se omite del marcado en lugar de emitir una respuesta
+ * que el usuario no ve. No cambia lo que se pinta.
+ */
+export function faqForJsonLd(faq: FaqItem[] | undefined, body: string): FaqItem[] {
+  const norm = (s: string) => plain(s).replace(/[¿?¡!]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+  const haystack = norm(body);
+  return withVisibleAnswers(visibleFaq(faq, body), body).filter((f) => haystack.includes(norm(f.answer)));
+}
+
 export function digitalDocument(o: {
   id: string;
   name: string;

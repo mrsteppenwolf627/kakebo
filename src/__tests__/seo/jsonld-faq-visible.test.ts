@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import matter from "gray-matter";
-import { plain, visibleFaq, withVisibleAnswers, type FaqItem } from "@/lib/seo/jsonld";
+import { plain, visibleFaq, withVisibleAnswers, faqForJsonLd, type FaqItem } from "@/lib/seo/jsonld";
 import { INFLATION_FORMULA } from "@/components/landing/tools/inflation-formula";
 
 const norm = (s: string) => plain(s).toLowerCase().replace(/[“”«»"']/g, "").replace(/\s+/g, " ").trim();
@@ -26,6 +26,17 @@ describe("withVisibleAnswers", () => {
     expect(withVisibleAnswers([same], '<FaqItem question="¿A?">Texto idéntico.</FaqItem>')).toEqual([same]);
     const missing: FaqItem = { question: "¿B?", answer: "Resumen." };
     expect(withVisibleAnswers([missing], "Nada relevante")).toEqual([missing]);
+  });
+});
+
+describe("faqForJsonLd", () => {
+  it("omite la pregunta que solo aparece de pasada en la prosa, sin su respuesta", () => {
+    const body = "Aquí se explica qué son los gastos hormiga de forma general.\n\n**¿Y esto?**\n\nRespuesta visible.";
+    const fm: FaqItem[] = [
+      { question: "¿Qué son los gastos hormiga?", answer: "Texto que no está en la página." },
+      { question: "¿Y esto?", answer: "Resumen." },
+    ];
+    expect(faqForJsonLd(fm, body)).toEqual([{ question: "¿Y esto?", answer: "Respuesta visible." }]);
   });
 });
 
