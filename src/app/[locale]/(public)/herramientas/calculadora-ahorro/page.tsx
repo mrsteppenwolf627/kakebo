@@ -75,7 +75,6 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
             name: content.schema.name,
             url: pageUrl,
             description: content.schema.description,
-            featureList: content.schema.featureList,
             inLanguage: loc,
             operatingSystem: 'Web',
             about: ['saving'],

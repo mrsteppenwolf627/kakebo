@@ -361,11 +361,11 @@ describe("contenido: reglas de la capa semántica", () => {
     expect(JSON.stringify(home)).not.toMatch(/iOS|Android/);
   });
 
-  it("inflación: sin DefinedTermSet «Diccionario Financiero Kakebo»; featureList es un array", async () => {
+  it("inflación: sin DefinedTermSet «Diccionario Financiero Kakebo» ni featureList (sin valores visibles)", async () => {
     const [doc] = ldDocumentsFromTree(await renderTree(`${P}/(landing)/herramientas/calculadora-inflacion/page`, { locale: "es" }));
     expect(JSON.stringify(doc)).not.toMatch(/DefinedTermSet|Diccionario Financiero/);
     const app = doc["@graph"].find((n: any) => n["@type"] === "WebApplication");
-    expect(Array.isArray(app.featureList)).toBe(true);
+    expect(app.featureList).toBeUndefined();
   });
 
   it("regla 50/30/20 e inflación llevan inLanguage «es» también bajo /en cuando su texto es fijo en español (regla)", async () => {

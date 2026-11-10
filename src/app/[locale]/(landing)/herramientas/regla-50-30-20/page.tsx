@@ -41,7 +41,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 // Textos fijos de la página (en español en todos los idiomas): el HowTo del JSON-LD y la lista visible salen de esta constante.
 const PAGE_NAME = "Calculadora 50/30/20";
 const PAGE_DESCRIPTION = "Calculadora gratuita de MetodoKakebo.com para distribuir el sueldo mensual según la regla 50/30/20: 50% necesidades, 30% deseos y 20% ahorro.";
-const HOW_TO_NAME = "Cómo aplicar la regla 50/30/20 a tu sueldo";
+// Título visible de la lista de pasos (el h2 y el HowTo del JSON-LD usan el mismo texto).
+const HOW_TO_NAME = "Pasos para aplicar la regla 50/30/20 en tu día a día";
 const HOW_TO_STEPS = [
     "Calcula tus ingresos netos mensuales (lo que recibes en el banco).",
     "Destina el 50% a gastos imprescindibles (alquiler, comida, facturas).",
@@ -133,7 +134,7 @@ export default async function Calculator503020Page({ params }: { params: Promise
                     </div>
 
                     <div>
-                        <h2 className="text-2xl font-bold font-serif mb-4">Pasos para aplicar la regla 50/30/20 en tu día a día</h2>
+                        <h2 className="text-2xl font-bold font-serif mb-4">{HOW_TO_NAME}</h2>
                         <div className="space-y-6">
                             {HOW_TO_STEPS.map((text, index) => (
                                 <div key={index} className="flex gap-4">

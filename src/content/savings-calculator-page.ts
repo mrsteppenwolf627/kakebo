@@ -6,7 +6,7 @@
 export type SavingsPageContent = {
     howTo: { title: string; schemaName: string; steps: { name: string; text: string }[] };
     faq: { title: string; items: { q: string; a: string }[] };
-    schema: { name: string; description: string; featureList: string[] };
+    schema: { name: string; description: string };
     formula: {
         title: string;
         notice: string;
@@ -78,14 +78,7 @@ export const savingsPageContent: Record<"es" | "en", SavingsPageContent> = {
         },
         "schema": {
             "name": "Calculadora de Ahorro Mensual",
-            "description": "Herramienta gratuita de MetodoKakebo.com para calcular el margen real de ahorro mensual según ingresos, gastos fijos y gastos variables.",
-            "featureList": [
-                "Cálculo de margen real de ahorro mensual",
-                "Separación de gastos fijos y variables",
-                "Estimación de tiempo para objetivo de ahorro",
-                "Visualización de distribución de ingresos",
-                "Cálculo de ahorro mensual necesario por plazo"
-            ]
+            "description": "Herramienta gratuita de MetodoKakebo.com para calcular el margen real de ahorro mensual según ingresos, gastos fijos y gastos variables."
         },
         "formula": {
             "title": "Fórmula, supuestos y límites de la estimación",
@@ -188,14 +181,7 @@ export const savingsPageContent: Record<"es" | "en", SavingsPageContent> = {
         },
         "schema": {
             "name": "Monthly Savings Calculator",
-            "description": "Free MetodoKakebo.com tool to calculate your real monthly savings margin from income, fixed expenses and variable expenses.",
-            "featureList": [
-                "Real monthly savings margin calculation",
-                "Separation of fixed and variable expenses",
-                "Estimated time to reach a savings goal",
-                "Income distribution chart",
-                "Monthly savings needed for a given timeline"
-            ]
+            "description": "Free MetodoKakebo.com tool to calculate your real monthly savings margin from income, fixed expenses and variable expenses."
         },
         "formula": {
             "title": "Formula, assumptions and limits of the estimate",

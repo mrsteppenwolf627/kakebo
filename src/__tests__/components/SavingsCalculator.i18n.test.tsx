@@ -211,7 +211,8 @@ describe("HTML visible y JSON-LD comparten FAQ y HowTo", () => {
     expect(app.name).toBe("Calculadora de Ahorro Mensual");
     // La página no muestra fecha de modificación: el JSON-LD tampoco la declara.
     expect(JSON.stringify(flat)).not.toContain("2026-10-21");
-    expect(app.featureList).toHaveLength(5);
+    // featureList retirada: ninguno de sus valores figuraba literalmente en la página.
+    expect(app.featureList).toBeUndefined();
     const faq = flat.find((b) => b["@type"] === "FAQPage");
     expect(faq.mainEntity[0].name).toBe("¿Cómo saber cuánto puedo ahorrar cada mes?");
     const howTo = flat.find((b) => b["@type"] === "HowTo");
