@@ -65,7 +65,7 @@ export default async function PlantillaPage({ params }: Props) {
     const { slug, locale } = await params;
     setRequestLocale(locale);
     const plantilla = getPlantilla(slug);
-    // Spanish-only: the route renders dynamically, so /en/... must be rejected here.
+    // Spanish-only. Defensive: with dynamicParams=false, /en/... already returns 404 before reaching here.
     if (!plantilla || locale !== "es") notFound();
 
     const url = `${BASE_URL}/plantillas/${plantilla.slug}`;

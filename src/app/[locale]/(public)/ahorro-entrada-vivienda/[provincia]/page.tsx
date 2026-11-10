@@ -97,7 +97,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AhorroEntradaViviendaPage({ params }: Props) {
     const { provincia: slug, locale } = await params;
     const content = buildContent(slug);
-    // Solo español: la ruta se renderiza dinámicamente, así que /en/... se rechaza aquí.
+    // Solo español. Defensivo: con dynamicParams=false, /en/... ya devuelve 404 antes de llegar aquí.
     if (!content || locale !== "es") notFound();
     setRequestLocale(locale);
 
@@ -149,7 +149,7 @@ export default async function AhorroEntradaViviendaPage({ params }: Props) {
             breadcrumbs: [
                 { name: "Inicio", url: BASE_URL },
                 { name: "Entrada de vivienda por provincia", url: `${BASE_URL}${SECTION_PATH}` },
-                { name: `Entrada de un piso en ${nombre}`, url },
+                { name: nombre, url },
             ],
             // Fecha de consulta del dato oficial, visible como «Consultado el…».
             dateModified: meta.consultado,

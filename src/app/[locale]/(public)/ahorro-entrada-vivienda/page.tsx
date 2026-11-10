@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (locale !== "es") return {};
     const url = `${BASE_URL}${SECTION_PATH}`;
     const title = "Cuánto ahorrar para la entrada de un piso por provincia";
-    const description = `Entrada del ${Math.round(PORCENTAJE_ENTRADA * 100)} % de un piso de ${SUPERFICIE_TIPO_M2} m² y ahorro mensual en 12 provincias, calculados con el valor tasado oficial del Ministerio de Transportes y Movilidad Sostenible.`;
+    const description = `Entrada del ${Math.round(PORCENTAJE_ENTRADA * 100)} % de un piso de ${SUPERFICIE_TIPO_M2} m² y ahorro mensual en ${getProvinciasPiloto().length} provincias, calculados con el valor tasado oficial del Ministerio de Transportes y Movilidad Sostenible.`;
     return {
         title,
         description,
