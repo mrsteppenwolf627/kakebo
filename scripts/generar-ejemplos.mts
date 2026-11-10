@@ -9,9 +9,9 @@ const OUT = process.env.JSONLD_OUT ?? path.join(os.tmpdir(), "seo-jsonld-ejemplo
 fs.mkdirSync(OUT, { recursive: true });
 
 const es = JSON.parse(fs.readFileSync(`${ROOT}/messages/es.json`, "utf8"));
-const write = (name: string, doc: S.JsonNode) => {
+const write = (name: string, doc: S.JsonLdDocument) => {
   fs.writeFileSync(path.join(OUT, name), JSON.stringify(doc, null, 2) + "\n");
-  console.log("OK", name, (doc["@graph"] as unknown[]).length, "nodos");
+  console.log("OK", name, doc["@graph"].length, "nodos");
 };
 
 /* ---------- HOME (es) ---------- */
@@ -181,7 +181,7 @@ for (const slug of ["kakebo-vs-ynab", "alternativas-a-app-bancarias", "plantilla
     url: meta.url,
     creatorName: meta.organismo,
   });
-  const place = { "@type": "AdministrativeArea", "@id": `${url}#provincia`, name: nombre, containedInPlace: S.ref(S.entities.spain["@id"] as string) };
+  const place: S.JsonNode = { "@type": "AdministrativeArea", "@id": `${url}#provincia`, name: nombre, containedInPlace: S.ref(`${S.entities.spain["@id"]}`) };
   write(
     "vivienda-provincia.es.json",
     S.graph([

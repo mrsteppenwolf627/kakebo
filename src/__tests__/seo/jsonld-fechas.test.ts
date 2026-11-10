@@ -27,16 +27,24 @@ describe("isoMadrid: ISO 8601 con zona Europe/Madrid", () => {
   });
 });
 
+/** Forma mínima que leen las aserciones (el documento se pasa por JSON para comprobar lo que se serializa). */
+interface DatedNode {
+  dateModified?: string;
+  datePublished?: string;
+  isPartOf?: { dateModified?: string };
+}
+
 describe("graph(): normaliza datePublished/dateModified en un único punto", () => {
   it("convierte las fechas de cualquier nodo, también anidado", () => {
     const doc = graph([
       { "@type": "WebPage", "@id": "https://x/#p", dateModified: "2026-11-06", datePublished: "2026-01-13" },
-      { "@type": "BlogPosting", "@id": "https://x/#a", datePublished: "2026-07-20", nested: { dateModified: "2026-02-24" } },
-    ]) as { "@graph": Array<Record<string, any>> };
-    expect(doc["@graph"][0].dateModified).toBe("2026-11-06T00:00:00+01:00");
-    expect(doc["@graph"][0].datePublished).toBe("2026-01-13T00:00:00+01:00");
-    expect(doc["@graph"][1].datePublished).toBe("2026-07-20T00:00:00+02:00");
-    expect(doc["@graph"][1].nested.dateModified).toBe("2026-02-24T00:00:00+01:00");
+      { "@type": "BlogPosting", "@id": "https://x/#a", datePublished: "2026-07-20", isPartOf: { "@type": "WebPage", dateModified: "2026-02-24" } },
+    ]);
+    const parsed: { "@graph": DatedNode[] } = JSON.parse(JSON.stringify(doc));
+    expect(parsed["@graph"][0].dateModified).toBe("2026-11-06T00:00:00+01:00");
+    expect(parsed["@graph"][0].datePublished).toBe("2026-01-13T00:00:00+01:00");
+    expect(parsed["@graph"][1].datePublished).toBe("2026-07-20T00:00:00+02:00");
+    expect(parsed["@graph"][1].isPartOf?.dateModified).toBe("2026-02-24T00:00:00+01:00");
   });
 });
 

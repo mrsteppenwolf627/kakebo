@@ -1,3 +1,10 @@
+import type {
+  Thing, Graph, IdReference,
+  Organization, WebSite, Person, WebPage, AboutPage, CollectionPage, ItemPage, ContactPage,
+  BreadcrumbList, WebApplication, FAQPage, HowTo, ItemList, BlogPosting, DigitalDocument, Dataset, Product,
+  DefinedTerm, SoftwareApplication, Country,
+} from "schema-dts";
+
 /**
  * Capa semántica única de metodokakebo.com (Schema.org / JSON-LD).
  *
@@ -12,7 +19,15 @@
 
 export const BASE_URL = "https://www.metodokakebo.com";
 export type Locale = "es" | "en";
-export type JsonNode = { [key: string]: unknown };
+/** schema-dts incluye `string` (Text) en muchas uniones de tipo; para un nodo del @graph se excluye. */
+type N<T> = Exclude<T, string>;
+
+/** Cualquier nodo Schema.org válido según schema-dts (sin el caso `string` de `Thing`). */
+export type JsonNode = Exclude<Thing, string>;
+/** Documento JSON-LD final: un único @graph tipado. */
+export type JsonLdDocument = Graph;
+/** Valor JSON arbitrario, solo para los recorridos genéricos del árbol (stripUndefined / walk). */
+type JsonValue = string | number | boolean | null | undefined | JsonValue[] | { [key: string]: JsonValue };
 
 export const ids = {
   org: `${BASE_URL}/#organization`,
@@ -22,7 +37,7 @@ export const ids = {
   logo: `${BASE_URL}/#logo`,
 } as const;
 
-export const ref = (id: string): JsonNode => ({ "@id": id });
+export const ref = (id: string): IdReference => ({ "@id": id });
 
 /** URL absoluta de una ruta (sin barra final). El español no lleva prefijo; el inglés, /en. */
 export function localeUrl(locale: Locale, path = ""): string {
@@ -102,7 +117,7 @@ export type EntityKey =
   | "excel"
   | "spain";
 
-export const entities: Record<EntityKey, JsonNode> = {
+export const entities: Record<EntityKey, N<DefinedTerm> | N<SoftwareApplication> | N<Country>> = {
   kakeibo: {
     "@type": "DefinedTerm",
     "@id": `${BASE_URL}/#kakebo`,
@@ -180,7 +195,8 @@ export const entities: Record<EntityKey, JsonNode> = {
  * español) y, en español, sin la grafía «Kakeibo» (política del sitio: en español siempre «Kakebo»; la grafía «Kakeibo»
  * solo aparece en las páginas en inglés, incluidas las URL de Wikipedia).
  */
-const LOCALIZED: Record<"es" | "en", Partial<Record<EntityKey, JsonNode>>> = {
+type EntityOverride = { name?: string; alternateName?: string | string[]; description?: string; sameAs?: string[] };
+const LOCALIZED: Record<"es" | "en", Partial<Record<EntityKey, EntityOverride>>> = {
   es: {
     kakeibo: { alternateName: ["家計簿"], sameAs: [wd("Q388197")] },
   },
@@ -201,12 +217,12 @@ const LOCALIZED: Record<"es" | "en", Partial<Record<EntityKey, JsonNode>>> = {
   },
 };
 
-export const entity = (key: EntityKey, locale: Locale = "es"): JsonNode => ({ ...entities[key], ...(LOCALIZED[locale][key] ?? {}) });
+export const entity = (key: EntityKey, locale: Locale = "es"): JsonNode => ({ ...entities[key], ...(LOCALIZED[locale][key] ?? {}) }) as JsonNode;
 export const entityNodes = (keys: EntityKey[], locale: Locale = "es"): JsonNode[] => keys.map((k) => entity(k, locale));
-export const entityRefs = (keys: EntityKey[]): JsonNode[] => keys.map((k) => ref(entities[k]["@id"] as string));
+export const entityRefs = (keys: EntityKey[]): IdReference[] => keys.map((k) => ref(`${entities[k]["@id"]}`));
 
 /** Autor histórico de la técnica; solo se usa como `mentions` donde el texto visible lo nombra. */
-export const motokoHani: JsonNode = {
+export const motokoHani: N<Person> = {
   "@type": "Person",
   "@id": `${BASE_URL}/#motoko-hani`,
   name: "Motoko Hani",
@@ -275,7 +291,7 @@ export const siteCopy = {
 /* 3. Nodos base (idénticos en todas las páginas)                      */
 /* ------------------------------------------------------------------ */
 
-export function organization(locale: Locale, contact?: { telephone: string; email: string }): JsonNode {
+export function organization(locale: Locale, contact?: { telephone: string; email: string }): N<Organization> {
   return {
     "@type": "Organization",
     "@id": ids.org,
@@ -299,7 +315,7 @@ export function organization(locale: Locale, contact?: { telephone: string; emai
   };
 }
 
-export function website(locale: Locale): JsonNode {
+export function website(locale: Locale): N<WebSite> {
   return {
     "@type": "WebSite",
     "@id": ids.website,
@@ -311,7 +327,7 @@ export function website(locale: Locale): JsonNode {
   };
 }
 
-export function person(locale: Locale): JsonNode {
+export function person(locale: Locale): N<Person> {
   return {
     "@type": "Person",
     "@id": ids.person,
@@ -340,14 +356,14 @@ export function webPage(o: {
   breadcrumbs?: Crumb[];
   mainEntityId?: string;
   about?: EntityKey[];
-  mentions?: JsonNode[];
+  mentions?: N<Person>[];
   datePublished?: string;
   dateModified?: string;
   /** Propiedades adicionales del WebPage (p. ej. citation, spatialCoverage). */
-  extra?: JsonNode;
+  extra?: Partial<N<WebPage>>;
 }): JsonNode[] {
   const url = localeUrl(o.locale, o.path);
-  const page: JsonNode = {
+  const page: N<WebPage> | N<AboutPage> | N<CollectionPage> | N<ItemPage> | N<ContactPage> = {
     "@type": o.type ?? "WebPage",
     "@id": at(url, "webpage"),
     url,
@@ -358,18 +374,19 @@ export function webPage(o: {
     ...(o.breadcrumbs ? { breadcrumb: ref(at(url, "breadcrumb")) } : {}),
     ...(o.mainEntityId ? { mainEntity: ref(o.mainEntityId) } : {}),
     ...(o.about?.length ? { about: entityRefs(o.about) } : {}),
-    ...(o.mentions?.length ? { mentions: o.mentions.map((m) => ref(m["@id"] as string)) } : {}),
+    ...(o.mentions?.length ? { mentions: o.mentions.map((m) => ref(`${m["@id"]}`)) } : {}),
     ...(o.datePublished ? { datePublished: o.datePublished } : {}),
     ...(o.dateModified ? { dateModified: o.dateModified } : {}),
     ...(o.extra ?? {}),
   };
   const nodes: JsonNode[] = [page];
   if (o.breadcrumbs) {
-    nodes.push({
+    const breadcrumbList: N<BreadcrumbList> = {
       "@type": "BreadcrumbList",
       "@id": at(url, "breadcrumb"),
       itemListElement: o.breadcrumbs.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, item: c.url })),
-    });
+    };
+    nodes.push(breadcrumbList);
   }
   if (o.about?.length) nodes.push(...entityNodes(o.about, o.locale));
   if (o.mentions?.length) nodes.push(...o.mentions);
@@ -394,7 +411,7 @@ export function webApplication(o: {
   inLanguage: string;
   operatingSystem?: string;
   about?: EntityKey[];
-}): JsonNode {
+}): N<WebApplication> {
   return {
     "@type": "WebApplication",
     "@id": o.id,
@@ -415,7 +432,7 @@ export function webApplication(o: {
 
 export type FaqItem = { question: string; answer: string };
 
-export function faqPage(pageUrl: string, items: FaqItem[], inLanguage: string): JsonNode | null {
+export function faqPage(pageUrl: string, items: FaqItem[], inLanguage: string): N<FAQPage> | null {
   if (!items.length) return null;
   return {
     "@type": "FAQPage",
@@ -430,7 +447,7 @@ export function faqPage(pageUrl: string, items: FaqItem[], inLanguage: string): 
   };
 }
 
-export function howTo(pageUrl: string, name: string, steps: { name?: string; text: string }[], inLanguage: string): JsonNode {
+export function howTo(pageUrl: string, name: string, steps: { name?: string; text: string }[], inLanguage: string): N<HowTo> {
   return {
     "@type": "HowTo",
     "@id": at(pageUrl, "howto"),
@@ -441,7 +458,7 @@ export function howTo(pageUrl: string, name: string, steps: { name?: string; tex
   };
 }
 
-export function itemList(pageUrl: string, items: { name: string; url: string; description?: string }[]): JsonNode {
+export function itemList(pageUrl: string, items: { name: string; url: string; description?: string }[]): N<ItemList> {
   return {
     "@type": "ItemList",
     "@id": at(pageUrl, "list"),
@@ -472,7 +489,7 @@ export function blogPost(o: {
   const url = localeUrl(o.locale, path);
   const about = blogAbout(o.slug);
   const isFounder = o.author.trim() === "Aitor Alarcón";
-  const article: JsonNode = {
+  const article: N<BlogPosting> = {
     "@type": "BlogPosting",
     "@id": at(url, "article"),
     headline: truncate(plain(o.title), 110),
@@ -530,7 +547,7 @@ export function digitalDocument(o: {
   datePublished?: string;
   dateModified?: string;
   inLanguage: string;
-}): JsonNode {
+}): N<DigitalDocument> {
   return {
     "@type": "DigitalDocument",
     "@id": o.id,
@@ -568,7 +585,7 @@ export function dataset(o: {
   temporalCoverage?: string;
   /** Descarga de la fuente (solo si el enlace es visible en la página). */
   distribution?: { contentUrl: string; encodingFormat: string };
-}): JsonNode {
+}): N<Dataset> {
   return {
     "@type": "Dataset",
     "@id": o.id,
@@ -593,7 +610,7 @@ export function product(o: {
   images: string[];
   category: string;
   commerce?: { price: string; currency: string };
-}): JsonNode {
+}): N<Product> {
   return {
     "@type": "Product",
     "@id": o.id,
@@ -624,45 +641,46 @@ export function product(o: {
 /* ------------------------------------------------------------------ */
 
 /** Limpia `undefined` y normaliza datePublished/dateModified/dateCreated a ISO 8601 con zona (único punto de normalización). */
-function stripUndefined(v: unknown): unknown {
+function stripUndefined(v: JsonValue): JsonValue {
   if (Array.isArray(v)) return v.map(stripUndefined);
   if (v && typeof v === "object") {
-    const out: JsonNode = {};
-    for (const [k, val] of Object.entries(v as JsonNode)) if (val !== undefined) out[k] = DATE_KEYS.has(k) ? isoMadrid(val) : stripUndefined(val);
+    const out: { [key: string]: JsonValue } = {};
+    for (const [k, val] of Object.entries(v)) if (val !== undefined) out[k] = DATE_KEYS.has(k) ? (isoMadrid(val) as JsonValue) : stripUndefined(val);
     return out;
   }
   return v;
 }
 
 /** Recorre el árbol: `refs` = {"@id"} sueltos; `defs` = objetos con @id y más propiedades (definiciones, también anidadas). */
-function walk(v: unknown, refs: Set<string>, defs: Set<string>): void {
+function walk(v: JsonValue, refs: Set<string>, defs: Set<string>): void {
   if (Array.isArray(v)) return v.forEach((x) => walk(x, refs, defs));
   if (v && typeof v === "object") {
-    const o = v as JsonNode;
-    const keys = Object.keys(o);
-    if (typeof o["@id"] === "string") {
-      if (keys.length === 1) refs.add(o["@id"] as string);
-      else defs.add(o["@id"] as string);
+    const keys = Object.keys(v);
+    const id = v["@id"];
+    if (typeof id === "string") {
+      if (keys.length === 1) refs.add(id);
+      else defs.add(id);
     }
-    for (const k of keys) if (k !== "@id") walk(o[k], refs, defs);
+    for (const k of keys) if (k !== "@id") walk(v[k], refs, defs);
   }
 }
 
-/** Une nodos por @id (el primero manda), comprueba que toda referencia resuelve y devuelve el documento JSON-LD. */
-export function graph(nodes: (JsonNode | null | undefined)[]): JsonNode {
+/** Une nodos por @id (el primero manda), comprueba que toda referencia resuelve y devuelve el documento JSON-LD tipado. */
+export function graph(nodes: (JsonNode | null | undefined)[]): Graph {
   const byId = new Map<string, JsonNode>();
   const anonymous: JsonNode[] = [];
   for (const raw of nodes) {
     if (!raw) continue;
-    const n = stripUndefined(raw) as JsonNode;
-    const id = n["@id"] as string | undefined;
+    // schema-dts → JSON puro: los tipos de entrada ya son válidos, el recorrido solo elimina `undefined` y normaliza fechas.
+    const n = stripUndefined(raw as unknown as JsonValue) as unknown as JsonNode;
+    const id = n["@id"];
     if (!id) anonymous.push(n);
     else if (!byId.has(id)) byId.set(id, n);
   }
   const refs = new Set<string>();
   const defs = new Set<string>();
   const all = [...byId.values(), ...anonymous];
-  for (const n of all) walk(n, refs, defs);
+  for (const n of all) walk(n as unknown as JsonValue, refs, defs);
   const dangling = [...refs].filter((r) => !defs.has(r));
   if (dangling.length) {
     // Siempre lanza: las páginas son estáticas, así que el error rompe el build en vez de publicar un grafo roto.
@@ -672,7 +690,7 @@ export function graph(nodes: (JsonNode | null | undefined)[]): JsonNode {
 }
 
 /** Serializa seguro para incrustar en <script>: escapa "<" y los separadores de línea Unicode (U+2028/U+2029). */
-export function serialize(doc: JsonNode): string {
+export function serialize(doc: JsonLdDocument): string {
   return JSON.stringify(doc)
     .replace(/</g, "\\u003c")
     .split(String.fromCharCode(0x2028)).join("\\u2028")

@@ -259,11 +259,17 @@ describe("JSON-LD: sin valoraciones ni reseñas inventadas", () => {
 
 describe("serialize()", () => {
   it("escapa «<» y los separadores de línea Unicode", () => {
-    const out = S.serialize({ a: "</script><script>alert(1)</script>", b: "x y z" });
+    const LS = String.fromCharCode(0x2028);
+    const PS = String.fromCharCode(0x2029);
+    const hostile = "</script><script>alert(1)</script>";
+    const separators = `x${LS}y${PS}z`;
+    const out = S.serialize({ "@context": "https://schema.org", "@graph": [{ "@type": "WebPage", name: hostile, description: separators }] });
     expect(out).not.toContain("<");
-    expect(out).not.toContain(" ");
-    expect(out).not.toContain(" ");
-    expect(JSON.parse(out).a).toBe("</script><script>alert(1)</script>");
+    expect(out).not.toContain(LS);
+    expect(out).not.toContain(PS);
+    const parsed: { "@graph": { name: string; description: string }[] } = JSON.parse(out);
+    expect(parsed["@graph"][0].name).toBe(hostile);
+    expect(parsed["@graph"][0].description).toBe(separators);
   });
 });
 
