@@ -87,7 +87,7 @@ export default async function AhorroEntradaViviendaIndexPage({ params }: Props) 
 
     const list = S.itemList(
         url,
-        filas.map((p) => ({ name: p.nombre, url: `${url}/${p.slug}` })),
+        filas.map((p) => ({ name: `Entrada de un piso en ${p.nombre}`, url: `${url}/${p.slug}` })),
     );
     const graph = S.graph([
         ...S.core("es"),
