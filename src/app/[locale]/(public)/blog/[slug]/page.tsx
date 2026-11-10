@@ -13,6 +13,7 @@ import { routing } from '@/i18n/routing';
 import Image from 'next/image';
 import JsonLd from "@/components/seo/JsonLd";
 import * as S from "@/lib/seo/jsonld";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 
 interface Props {
     params: Promise<{
@@ -101,6 +102,7 @@ export default async function BlogPostPage({ params }: Props) {
     const bodyVisible = S.visibleFaq(fmFaq, post.content);
     const faqToRender = fmFaq.filter((q) => !bodyVisible.includes(q));
     const faq = S.faqForJsonLd(fmFaq, [post.content, ...faqToRender.map((q) => `**${q.question}**\n\n${q.answer}`)].join('\n\n'));
+    const trail = S.blogCrumbs(loc, slug, post.frontmatter.title);
     const graph = S.graph(
         S.blogPost({
             locale: loc,
@@ -181,6 +183,8 @@ export default async function BlogPostPage({ params }: Props) {
                             </ol>
                         </nav>
                     )}
+
+                    {!showCrumbs && <Breadcrumbs items={trail} locale={loc} align="center" className="mb-5" />}
 
                     <h1 className="mb-7 text-3xl font-serif font-bold leading-tight sm:text-4xl md:text-5xl">
                         {post.frontmatter.title}

@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { createTranslator } from "next-intl";
 import { ldDocumentsFromTree } from "@/__tests__/helpers/jsonld";
 import * as S from "@/lib/seo/jsonld";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { getBlogPosts } from "@/lib/blog";
 import esMessages from "../../../messages/es.json";
 import enMessages from "../../../messages/en.json";
@@ -487,5 +488,71 @@ describe("perfiles de X no verificados: no se declaran como propios", () => {
 
   it("el layout no declara @kakebo_ai como twitter:creator", () => {
     expect(readFileSync(join(process.cwd(), "src/app/[locale]/layout.tsx"), "utf-8")).not.toMatch(/kakebo_ai/);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* Miga visible = BreadcrumbList del JSON-LD (una sola fuente por página) */
+/* ------------------------------------------------------------------ */
+
+/** Props de todos los elementos <Breadcrumbs/> del árbol (sin ejecutar componentes). */
+function breadcrumbElements(tree: unknown): { items: S.Crumb[]; locale: S.Locale }[] {
+  const out: { items: S.Crumb[]; locale: S.Locale }[] = [];
+  const seen = new Set<unknown>();
+  const walk = (n: any) => {
+    if (!n || typeof n !== "object" || seen.has(n)) return;
+    seen.add(n);
+    if (Array.isArray(n)) return n.forEach(walk);
+    if (n.type === Breadcrumbs) out.push({ items: n.props.items, locale: n.props.locale });
+    if (n.props) for (const v of Object.values(n.props)) walk(v);
+  };
+  walk(tree);
+  return out;
+}
+
+const jsonLdCrumbNames = (doc: any): string[] =>
+  (doc["@graph"].find((n: any) => n["@type"] === "BreadcrumbList")?.itemListElement ?? []).map((i: any) => i.name);
+
+// Plantillas que pintan la miga nueva. Quedan fuera: vivienda (lleva la suya propia), los artículos con clúster (miga del pilar) y
+// el landing premium (su test de regresión solo admite enlaces a la plantilla gratuita —el primero— y a /herramientas).
+const WITH_CRUMBS = ROUTES.filter((r) =>
+  [
+    "/herramientas/calculadora-ahorro",
+    "/en/herramientas/calculadora-ahorro",
+    "/herramientas/calculadora-inflacion",
+    "/en/herramientas/calculadora-inflacion",
+    "/herramientas/regla-50-30-20",
+    "/en/herramientas/regla-50-30-20",
+    "/plantillas/kakebo-para-imprimir",
+  ].includes(r.name),
+);
+const PILLAR_POSTS = new Set(["alternativas-a-app-bancarias", "como-ahorrar-dinero-cada-mes", "metodo-kakebo-guia-definitiva", "plantilla-kakebo-excel"]);
+
+describe("miga visible: mismos items que el BreadcrumbList del JSON-LD", () => {
+  it.each(WITH_CRUMBS)("$name", async ({ mod, params }) => {
+    const tree = await renderTree(mod, params);
+    const [doc] = ldDocumentsFromTree(tree);
+    const els = breadcrumbElements(tree);
+    expect(els).toHaveLength(1);
+    expect(els[0].items.map((i) => i.name)).toEqual(jsonLdCrumbNames(doc));
+    expect(els[0].items.map((i) => i.name)).not.toHaveLength(0);
+  });
+
+  it.each(posts)("$name", async ({ locale, slug }) => {
+    const tree = await renderTree(`${P}/(public)/blog/[slug]/page`, { locale, slug });
+    const [doc] = ldDocumentsFromTree(tree);
+    const els = breadcrumbElements(tree);
+    if (PILLAR_POSTS.has(slug)) {
+      expect(els).toHaveLength(1);
+      expect(els[0].items.map((i) => i.name)).toEqual(jsonLdCrumbNames(doc));
+    } else {
+      // Con clúster, la plantilla ya pinta la miga «Blog › pilar»: no se duplica.
+      expect(els).toHaveLength(0);
+    }
+  });
+
+  it.each(["/", "/en", "/blog", "/herramientas", "/herramientas/plantilla-kakebo-excel-premium", "/en/herramientas/plantilla-kakebo-excel-premium", "/ahorro-entrada-vivienda", "/ahorro-entrada-vivienda/madrid"])("%s no usa el componente", async (name) => {
+    const r = ROUTES.find((x) => x.name === name)!;
+    expect(breadcrumbElements(await renderTree(r.mod, r.params))).toHaveLength(0);
   });
 });

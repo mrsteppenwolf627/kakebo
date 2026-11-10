@@ -6,6 +6,7 @@ import { INFLATION_FORMULA } from "@/components/landing/tools/inflation-formula"
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import JsonLd from "@/components/seo/JsonLd";
 import * as S from "@/lib/seo/jsonld";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -64,6 +65,11 @@ export default async function CalculatorInflationPage({ params }: { params: Prom
         { question: f('q2'), answer: `${f('a2')} ${INFLATION_FORMULA} ${f('a2b')}` },
         { question: f('q3'), answer: f('a3') },
     ];
+    // Una sola fuente: las mismas migas alimentan el BreadcrumbList del JSON-LD y la miga visible.
+    const trail = S.crumbs(loc, [
+        { name: S.siteCopy[loc].tools, path: '/herramientas' },
+        { name: loc === 'es' ? 'Calculadora de inflación' : 'Inflation calculator', path },
+    ]);
     const graph = S.graph([
         ...S.core(loc),
         ...S.webPage({
@@ -73,10 +79,7 @@ export default async function CalculatorInflationPage({ params }: { params: Prom
             description: t('meta.description'),
             mainEntityId: appId,
             about: ['inflation', 'consumerPriceIndex', 'purchasingPower'],
-            breadcrumbs: S.crumbs(loc, [
-                { name: S.siteCopy[loc].tools, path: '/herramientas' },
-                { name: loc === 'es' ? 'Calculadora de inflación' : 'Inflation calculator', path },
-            ]),
+            breadcrumbs: trail,
         }),
         S.webApplication({
             id: appId,
@@ -97,6 +100,9 @@ export default async function CalculatorInflationPage({ params }: { params: Prom
             <JsonLd graph={graph} />
 
             <main className="pt-32 pb-20 px-6">
+                <div className="max-w-6xl mx-auto">
+                    <Breadcrumbs items={trail} locale={loc} />
+                </div>
                 <ToolMessages locale={locale} tools={{ Inflation: true }}>
                     <CalculatorInflation />
                 </ToolMessages>

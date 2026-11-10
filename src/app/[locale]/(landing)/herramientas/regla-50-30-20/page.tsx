@@ -6,6 +6,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from "@/i18n/routing";
 import JsonLd from "@/components/seo/JsonLd";
 import * as S from "@/lib/seo/jsonld";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -58,6 +59,11 @@ export default async function Calculator503020Page({ params }: { params: Promise
     const path = '/herramientas/regla-50-30-20';
     const pageUrl = S.localeUrl(loc, path);
     const appId = `${pageUrl}#app`;
+    // Una sola fuente: las mismas migas alimentan el BreadcrumbList del JSON-LD y la miga visible.
+    const trail = S.crumbs(loc, [
+        { name: S.siteCopy[loc].tools, path: '/herramientas' },
+        { name: loc === 'es' ? 'Regla 50/30/20' : '50/30/20 rule', path },
+    ]);
     const graph = S.graph([
         ...S.core(loc),
         ...S.webPage({
@@ -68,10 +74,7 @@ export default async function Calculator503020Page({ params }: { params: Promise
             inLanguage: 'es',
             mainEntityId: appId,
             about: ['personalBudget'],
-            breadcrumbs: S.crumbs(loc, [
-                { name: S.siteCopy[loc].tools, path: '/herramientas' },
-                { name: loc === 'es' ? 'Regla 50/30/20' : '50/30/20 rule', path },
-            ]),
+            breadcrumbs: trail,
         }),
         S.webApplication({
             id: appId,
@@ -92,6 +95,9 @@ export default async function Calculator503020Page({ params }: { params: Promise
             <JsonLd graph={graph} />
 
             <main className="pt-32 pb-20 px-6">
+                <div className="max-w-4xl mx-auto">
+                    <Breadcrumbs items={trail} locale={loc} />
+                </div>
                 <div className="max-w-4xl mx-auto text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold font-serif text-foreground mb-6">
                         Calculadora 50/30/20 Gratis

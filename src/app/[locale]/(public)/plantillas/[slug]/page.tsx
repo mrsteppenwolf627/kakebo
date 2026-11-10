@@ -8,6 +8,7 @@ import { getPlantilla, getPlantillas } from "@/lib/plantillas";
 import { getBlogPost } from "@/lib/blog";
 import JsonLd from "@/components/seo/JsonLd";
 import * as S from "@/lib/seo/jsonld";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 
 const BASE_URL = "https://www.metodokakebo.com";
 const { FaqSection, FaqItem } = components;
@@ -85,6 +86,12 @@ export default async function PlantillaPage({ params }: Props) {
 
     // JSON-LD: ItemPage + DigitalDocument (PDF) + FAQPage + migas, en un único @graph.
     const docId = `${url}#document`;
+    // Una sola fuente: las mismas migas alimentan el BreadcrumbList del JSON-LD y la miga visible.
+    const trail: S.Crumb[] = [
+        { name: "Inicio", url: BASE_URL },
+        { name: "Plantillas Kakebo", url: `${BASE_URL}/blog/plantilla-kakebo-excel` },
+        { name: plantilla.h1, url },
+    ];
     const graph = S.graph([
         ...S.core("es"),
         ...S.webPage({
@@ -94,11 +101,7 @@ export default async function PlantillaPage({ params }: Props) {
             name: plantilla.h1,
             description: plantilla.intro,
             mainEntityId: docId,
-            breadcrumbs: [
-                { name: "Inicio", url: BASE_URL },
-                { name: "Plantillas Kakebo", url: `${BASE_URL}/blog/plantilla-kakebo-excel` },
-                { name: plantilla.h1, url },
-            ],
+            breadcrumbs: trail,
         }),
         S.digitalDocument({
             id: docId,
@@ -116,6 +119,8 @@ export default async function PlantillaPage({ params }: Props) {
     return (
         <main className="min-h-screen bg-background text-foreground">
             <article className="mx-auto max-w-3xl px-4 pt-24 pb-16 sm:px-6 lg:px-8">
+                <Breadcrumbs items={trail} locale="es" />
+
                 <header className="mb-8">
                     <h1 className="mb-5 text-3xl font-serif font-bold leading-tight sm:text-4xl md:text-5xl">
                         {plantilla.h1}

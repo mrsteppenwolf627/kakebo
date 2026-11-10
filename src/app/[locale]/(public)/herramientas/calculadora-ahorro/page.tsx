@@ -7,6 +7,7 @@ import { getSavingsPageContent } from "@/content/savings-calculator-page";
 import { getProvinciasPiloto } from "@/lib/vivienda";
 import JsonLd from "@/components/seo/JsonLd";
 import * as S from "@/lib/seo/jsonld";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -56,6 +57,11 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
     const loc: S.Locale = locale === 'en' ? 'en' : 'es';
     const pageUrl = S.localeUrl(loc, '/herramientas/calculadora-ahorro');
     const appId = `${pageUrl}#app`;
+    // Una sola fuente: las mismas migas alimentan el BreadcrumbList del JSON-LD y la miga visible.
+    const trail = S.crumbs(loc, [
+        { name: S.siteCopy[loc].tools, path: '/herramientas' },
+        { name: loc === 'es' ? 'Calculadora de ahorro' : 'Savings calculator', path: '/herramientas/calculadora-ahorro' },
+    ]);
     const graph = S.graph([
         ...S.core(loc),
         ...S.webPage({
@@ -65,10 +71,7 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
             description: content.schema.description,
             mainEntityId: appId,
             about: ['saving'],
-            breadcrumbs: S.crumbs(loc, [
-                { name: S.siteCopy[loc].tools, path: '/herramientas' },
-                { name: loc === 'es' ? 'Calculadora de ahorro' : 'Savings calculator', path: '/herramientas/calculadora-ahorro' },
-            ]),
+            breadcrumbs: trail,
         }),
         S.webApplication({
             id: appId,
@@ -87,6 +90,9 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
         <main className="min-h-screen bg-background">
             <JsonLd graph={graph} />
             <div className="pt-32 pb-0 px-6">
+                <div className="max-w-5xl mx-auto">
+                    <Breadcrumbs items={trail} locale={loc} />
+                </div>
                 <ToolMessages locale={locale} tools={{ Savings: true }}>
                     <SavingsCalculator />
                 </ToolMessages>

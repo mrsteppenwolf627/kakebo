@@ -262,6 +262,7 @@ export const siteCopy = {
     home: "Inicio",
     blog: "Blog",
     tools: "Herramientas",
+    breadcrumbLabel: "Migas de pan",
   },
   en: {
     orgDescription:
@@ -273,6 +274,7 @@ export const siteCopy = {
     home: "Home",
     blog: "Blog",
     tools: "Tools",
+    breadcrumbLabel: "Breadcrumb",
   },
 } as const;
 
@@ -462,6 +464,14 @@ export function itemList(pageUrl: string, items: { name: string; url: string; de
   };
 }
 
+/** Migas de un artículo: Inicio › Blog › título. Las usan el JSON-LD (`blogPost`) y la miga visible de la plantilla. */
+export function blogCrumbs(locale: Locale, slug: string, title: string): Crumb[] {
+  return crumbs(locale, [
+    { name: siteCopy[locale].blog, path: "/blog" },
+    { name: plain(title), path: `/blog/${slug}` },
+  ]);
+}
+
 /** Un artículo del blog. Las FAQ solo se emiten si están visibles en el cuerpo (ver `visibleFaq`). */
 export function blogPost(o: {
   locale: Locale;
@@ -501,10 +511,7 @@ export function blogPost(o: {
       path,
       name: plain(o.title),
       description: plain(o.excerpt),
-      breadcrumbs: crumbs(o.locale, [
-        { name: siteCopy[o.locale].blog, path: "/blog" },
-        { name: plain(o.title), path },
-      ]),
+      breadcrumbs: blogCrumbs(o.locale, o.slug, o.title),
       mainEntityId: at(url, "article"),
       datePublished: o.date,
       dateModified: o.updatedDate ?? o.date,
