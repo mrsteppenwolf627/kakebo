@@ -15,6 +15,7 @@ import { analytics } from "@/lib/analytics";
 import { getSourceFromHref } from "@/lib/authIntent";
 import { useTranslations, useLocale } from "next-intl";
 import { EmbedModal } from "./EmbedModal";
+import { INFLATION_FORMULA } from "./inflation-formula";
 import {
     CalculatorInflationHistorical,
     type CalculatorInflationHistoricalLabels,
@@ -543,7 +544,7 @@ export function CalculatorInflation() {
                             {t('content.faq.a2')}
                         </p>
                         <code className="block bg-stone-100 dark:bg-stone-800 p-4 rounded text-sm font-mono text-stone-800 dark:text-stone-200 my-4">
-                            Tasa Variación = ((IPC Final - IPC Inicial) / IPC Inicial) x 100
+                            {INFLATION_FORMULA}
                         </code>
                         <p>
                             {t.rich('content.faq.a2b', {

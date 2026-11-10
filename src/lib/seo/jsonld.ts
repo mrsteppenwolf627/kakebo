@@ -257,13 +257,8 @@ export const siteCopy = {
     siteDescription: "Herramientas gratuitas y guías para aplicar el método Kakebo de ahorro personal en español.",
     appDescription:
       "Aplicación web gratuita de MetodoKakebo.com para registrar gastos y planificar el ahorro mensual con el método Kakebo japonés y asistencia de inteligencia artificial.",
-    appFeatures: [
-      "Registro manual consciente de gastos",
-      "Agente IA financiero personal",
-      "Sin conexión bancaria",
-      "Categorías Kakebo nativas",
-      "Historial y exportación",
-    ],
+    // Solo el valor que figura literalmente en la página (auditoría JSON-LD vs. texto visible); el resto se retiró por no ser visible.
+    appFeatures: ["Sin conexión bancaria"],
     home: "Inicio",
     blog: "Blog",
     tools: "Herramientas",
@@ -274,13 +269,7 @@ export const siteCopy = {
     siteDescription: "Free tools and guides to apply the Kakebo personal savings method.",
     appDescription:
       "Free web app by MetodoKakebo.com to log expenses and plan monthly savings with the Japanese Kakebo method and AI assistance.",
-    appFeatures: [
-      "Conscious manual expense logging",
-      "Personal AI finance agent",
-      "No bank connection",
-      "Native Kakebo categories",
-      "History and export",
-    ],
+    appFeatures: ["No bank connection"],
     home: "Home",
     blog: "Blog",
     tools: "Tools",
@@ -536,6 +525,45 @@ export function visibleFaq(faq: FaqItem[] | undefined, body: string): FaqItem[] 
   const norm = (s: string) => s.replace(/(\*\*|__)/g, "").toLowerCase().replace(/[¿?¡!]/g, "").replace(/\s+/g, " ").trim();
   const haystack = norm(body);
   return faq.filter((f) => haystack.includes(norm(plain(f.question))));
+}
+
+/**
+ * Pares pregunta/respuesta tal y como se leen en el cuerpo MDX: bloques `<FaqItem question="…">respuesta</FaqItem>` o
+ * preguntas en negrita (`**¿…?**`) seguidas de su respuesta hasta la siguiente pregunta, encabezado o separador.
+ */
+function bodyQa(body: string): { question: string; answer: string }[] {
+  const out: { question: string; answer: string }[] = [];
+  for (const m of body.matchAll(/<FaqItem\s+question="([^"]+)"\s*>([\s\S]*?)<\/FaqItem>/g)) out.push({ question: m[1], answer: m[2] });
+  const lines = body.split(/\r?\n/);
+  for (let i = 0; i < lines.length; i++) {
+    const q = /^\*\*(.+?)\*\*\s*$/.exec(lines[i].trim());
+    if (!q) continue;
+    const answer: string[] = [];
+    for (let j = i + 1; j < lines.length; j++) {
+      const t = lines[j].trim();
+      if (/^\*\*.+\*\*$/.test(t) || /^#{1,6}\s/.test(t) || /^---+$/.test(t) || t.startsWith("<FaqItem")) break;
+      answer.push(lines[j]);
+    }
+    out.push({ question: q[1], answer: answer.join(String.fromCharCode(10)) });
+  }
+  return out;
+}
+
+/**
+ * Hace que `Answer.text` sea la respuesta que ve el usuario. Si la respuesta del frontmatter ya figura en el cuerpo se
+ * respeta tal cual; si el cuerpo redacta la misma pregunta con otra respuesta, se usa la del cuerpo (sin marcas MDX).
+ * Una pregunta que no se encuentra en el cuerpo (se pinta con la respuesta del frontmatter) no se modifica.
+ */
+export function withVisibleAnswers(faq: FaqItem[], body: string): FaqItem[] {
+  const norm = (s: string) => s.replace(/(\*\*|__)/g, "").toLowerCase().replace(/[¿?¡!]/g, "").replace(/\s+/g, " ").trim();
+  const haystack = norm(plain(body));
+  const qa = bodyQa(body);
+  return faq.map((f) => {
+    if (haystack.includes(norm(plain(f.answer)))) return f;
+    const hit = qa.find((x) => norm(plain(x.question)) === norm(plain(f.question)));
+    const visible = hit ? plain(hit.answer) : "";
+    return visible ? { question: f.question, answer: visible } : f;
+  });
 }
 
 export function digitalDocument(o: {

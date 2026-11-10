@@ -100,7 +100,10 @@ export default async function BlogPostPage({ params }: Props) {
     const fmFaq = post.frontmatter.faq ?? [];
     const bodyVisible = S.visibleFaq(fmFaq, post.content);
     const faqToRender = fmFaq.filter((q) => !bodyVisible.includes(q));
-    const faq = S.visibleFaq(fmFaq, [post.content, ...faqToRender.map((q) => S.plain(q.question))].join(' '));
+    const faq = S.withVisibleAnswers(
+        S.visibleFaq(fmFaq, [post.content, ...faqToRender.map((q) => S.plain(q.question))].join(' ')),
+        [post.content, ...faqToRender.map((q) => `**${q.question}**\n\n${q.answer}`)].join('\n\n'),
+    );
     const graph = S.graph(
         S.blogPost({
             locale: loc,

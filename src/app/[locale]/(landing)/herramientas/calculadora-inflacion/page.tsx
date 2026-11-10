@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { Navbar } from "@/components/landing/Navbar";
 import { ToolMessages } from "@/components/i18n/ToolMessages";
 import { CalculatorInflation } from "@/components/landing/tools/CalculatorInflation";
+import { INFLATION_FORMULA } from "@/components/landing/tools/inflation-formula";
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import JsonLd from "@/components/seo/JsonLd";
 import * as S from "@/lib/seo/jsonld";
@@ -52,7 +53,7 @@ export default async function CalculatorInflationPage({ params }: { params: Prom
     const t = await getTranslations({ locale, namespace: 'Tools.Inflation' });
 
     // JSON-LD: un único @graph. El FAQPage usa las 3 preguntas que se ven en pantalla (Tools.Inflation.content.faq),
-    // con las mismas claves que renderiza CalculatorInflation; las etiquetas de texto enriquecido las quita plain().
+    // con las mismas claves que renderiza CalculatorInflation (la respuesta 2 incluye el bloque de la fórmula, que va entre a2 y a2b); las etiquetas de texto enriquecido las quita plain().
     const loc: S.Locale = locale === 'en' ? 'en' : 'es';
     const path = '/herramientas/calculadora-inflacion';
     const pageUrl = S.localeUrl(loc, path);
@@ -60,7 +61,7 @@ export default async function CalculatorInflationPage({ params }: { params: Prom
     const f = (k: string) => t.raw(`content.faq.${k}`) as string;
     const faq = [
         { question: f('q1'), answer: f('a1') },
-        { question: f('q2'), answer: `${f('a2')} ${f('a2b')}` },
+        { question: f('q2'), answer: `${f('a2')} ${INFLATION_FORMULA} ${f('a2b')}` },
         { question: f('q3'), answer: f('a3') },
     ];
     const graph = S.graph([
@@ -82,11 +83,6 @@ export default async function CalculatorInflationPage({ params }: { params: Prom
             name: t('meta.title'),
             url: pageUrl,
             description: t('meta.description'),
-            featureList: [
-                loc === 'es' ? 'Cálculo de valor real' : 'Real value calculation',
-                loc === 'es' ? 'Proyección de inflación' : 'Inflation projection',
-                loc === 'es' ? 'Gráfico de pérdida de valor' : 'Value-loss chart',
-            ],
             inLanguage: loc,
             operatingSystem: 'Web',
             about: ['inflation', 'consumerPriceIndex', 'purchasingPower'],
