@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased] - 2026-11-10
+
+### pSEO vivienda — parches de la auditoría (commit `61e80d6`, ya en producción)
+- **Miga del JSON-LD alineada con la visible** en las 12 páginas `/ahorro-entrada-vivienda/[provincia]`: la última miga del `BreadcrumbList` pasa de «Entrada de un piso en {provincia}» a «{provincia}». Es el único cambio en lo que ve Google; título, descripción, canonical, hreflang, og/twitter, texto visible y resto del JSON-LD no cambian.
+- **Índice de vivienda:** la descripción calcula el número de provincias (`getProvinciasPiloto().length`) en lugar de escribir «12». Hoy sigue siendo 12 y el texto final es idéntico.
+- **Comentarios de `dynamicParams` corregidos** en la ruta de provincia y en `plantillas/[slug]`: con `dynamicParams = false`, `/en/...` ya devuelve 404 antes de llegar al componente (sin cambio de comportamiento).
+- Nuevo `docs/seo/auditoria-pseo-2026-11-09.md` con el resumen de la auditoría (solo documentación).
+
 ## [Unreleased] - 2026-11-04 (solo documentación)
 
 ### Plan Maestro de pSEO seguro — documentación
