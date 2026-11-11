@@ -55,3 +55,6 @@ docs/seo/*.zip
 # Premium commercial files (never commit; never put in public/)
 /private/premium/*
 !/private/premium/README.md
+
+# Configuracion local de Claude Code (no versionar)
+.claude/settings.local.json
