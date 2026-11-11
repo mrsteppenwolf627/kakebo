@@ -7,8 +7,8 @@ vi.mock("next-intl/server", () => ({ setRequestLocale: vi.fn() }));
 vi.mock("@/lib/analytics", () => ({ analytics: { track: vi.fn() } }));
 
 vi.mock("@/i18n/routing", () => ({
-  Link: ({ href, children, onClick, className }: { href: string; children: React.ReactNode; onClick?: () => void; className?: string }) => (
-    <a href={href} onClick={onClick} className={className}>
+  Link: ({ href, children, onClick, className, "aria-label": ariaLabel }: { href: string; children: React.ReactNode; onClick?: () => void; className?: string; "aria-label"?: string }) => (
+    <a href={href} onClick={onClick} className={className} aria-label={ariaLabel}>
       {children}
     </a>
   ),
@@ -311,7 +311,8 @@ describe("11. Small accessibility / anchor fixes", () => {
   ])("the language switcher accessible name starts with its visible text (%s)", (locale, visible) => {
     mockLocale = locale;
     const { getByRole } = render(<LanguageSwitcher />);
-    const btn = getByRole("button");
+    // El selector es ahora un enlace real (<a href>) hacia la versión equivalente: el contrato (nombre accesible) no cambia.
+    const btn = getByRole("link");
     expect(btn.textContent).toContain(visible);
     expect(btn.getAttribute("aria-label")!.startsWith(visible)).toBe(true);
   });
