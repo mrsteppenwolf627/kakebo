@@ -1,6 +1,6 @@
 # Kakebo Staging Audit - Detailed Schema Analysis (UPDATED)
 
-> **Histórico:** ya no se usa (rama y entorno retirados el 2026-11-10; tag archive/feat-plus-subscriptions-staging). Este documento se conserva como registro técnico.
+> **Histórico, ya no se usa.** Retirados el 2026-11-10: las ramas feat/plus-subscriptions-e2e-test, feat/plus-subscriptions-staging y staging y el worktree kk-plus (tags archive/feat-plus-subscriptions-e2e-test, archive/feat-plus-subscriptions-staging, archive/staging). El estado del proyecto Supabase de staging y de la configuración de Stripe TEST no se ha verificado. Este documento se conserva como registro técnico.
 
 **Date Created:** 2026-10-06  
 **Last Updated:** 2026-10-06 (corrections applied)  

@@ -2,8 +2,6 @@
 
 ## [Unreleased] - 2026-11-10 (auditoría de schema y robots)
 
-- docs: el entorno staging de Plus/Stripe TEST figura como histórico en README, STAGING_*.md y guías; rama y entorno retirados el 2026-11-10, tag `archive/feat-plus-subscriptions-staging`. Sin cambios de código.
-
 ### Cambios en lo que ve Google
 - **robots.txt:** deja de bloquear `/app`, `/auth/`, `/docs/`, `?mode=` y `?ym=` (sirven `noindex`; bloquearlas impedía leerlo). Sigue bloqueando `/api/`, `/history`, `/settings`, `/new` y `?utm_`. Test de regresión `robots-noindex.test.ts`.
 - **FAQPage:** `Answer.text` pasa a ser la respuesta visible del artículo o de la calculadora de inflación (incluye la fórmula). Se omiten del JSON-LD las preguntas cuya respuesta no se ve: 1 en `eliminar-gastos-hormiga` y 2 en `metodo-kakebo-guia-definitiva` (su `FAQPage` desaparece).
@@ -12,6 +10,9 @@
 
 ### Herramientas
 - Capa JSON-LD tipada con `schema-dts`; scripts `type-check`, `test:graph` y `validate`; `scripts/check-graph-integrity.mjs` (huérfanas, cruza el sitemap) y `scripts/audit-jsonld-visible.mjs`.
+
+### Documentación
+- docs: el staging de Plus/Stripe TEST figura como histórico en README, STAGING_*.md y guías, sin cambios de código. Retirados el 2026-11-10: las ramas feat/plus-subscriptions-e2e-test, feat/plus-subscriptions-staging y staging y el worktree kk-plus (tags archive/feat-plus-subscriptions-e2e-test, archive/feat-plus-subscriptions-staging, archive/staging).
 
 ## [Unreleased] - 2026-11-10
 
