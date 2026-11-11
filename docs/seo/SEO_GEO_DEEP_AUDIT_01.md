@@ -1,5 +1,7 @@
 # SEO_GEO_DEEP_AUDIT_01 — Auditoría SEO/GEO Profunda de MetodoKakebo.com
 
+> **Nota de actualización (2026-11-11): documento histórico.** Lo que dice sobre `robots.txt` ya no es cierto: `robots.ts` solo bloquea `/api/`, `/history`, `/settings`, `/new` (con y sin `/en`) y `?utm_`; `/app`, `/auth/`, `/docs/`, `?mode=` y `?ym=` se dejan rastrear porque sirven `noindex` o `X-Robots-Tag` (bloquearlos impediría leerlo). La recomendación de añadir `Disallow: /app/` y `/auth/` queda descartada. Estado vigente: `docs/seo/ESTADO_SEO_TECNICO_2026-11-11.md`.
+
 **Fecha:** 2026-07-07
 **Tarea:** SEO-GEO-DEEP-AUDIT-01
 **Tipo:** Solo diagnóstico — sin cambios en código, contenido ni configuración SEO

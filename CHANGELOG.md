@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased] - 2026-11-11 (cierre de la fase de SEO técnico)
+
+### Cambios en lo que ve Google
+- **Migas visibles** con los mismos items que el `BreadcrumbList` (calculadoras, plantillas imprimibles y 8 artículos pilar, ES y EN); JSON-LD sin cambios. Las 25 páginas de clúster conservan «Blog › pilar» y las landings premium no tienen miga visible (decisión del propietario).
+- `HowTo.name` de la calculadora de ahorro = h2 visible de los pasos; `WebApplication.name` = h1 visible en 4 calculadoras.
+
+### Accesibilidad
+- FAQ de la home: `aria-expanded`, `aria-controls` y `role="region"` en el panel. Sin cambios visuales.
+
+### Herramientas
+- Audit estricto del JSON-LD (`scripts/audit-jsonld-visible.mjs` + `scripts/lib/visible-estricto.mjs`), manual y fuera de `validate`/CI. `.claude/settings.local.json` deja de versionarse.
+- Línea base técnica en `docs/seo/baselines/2026-11-11/`.
+
 ## [Unreleased] - 2026-11-10 (auditoría de schema y robots)
 
 ### Cambios en lo que ve Google
