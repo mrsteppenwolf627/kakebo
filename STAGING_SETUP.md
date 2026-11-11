@@ -1,6 +1,6 @@
 # Kakebo Staging Configuration - 2026-10-06
 
-> **Histórico:** ya no se usa (rama y entorno retirados el 2026-11-10; tag archive/feat-plus-subscriptions-staging). Este documento se conserva como registro técnico.
+> **Histórico, ya no se usa.** Retirados el 2026-11-10: las ramas feat/plus-subscriptions-e2e-test, feat/plus-subscriptions-staging y staging y el worktree kk-plus (tags archive/feat-plus-subscriptions-e2e-test, archive/feat-plus-subscriptions-staging, archive/staging). El estado del proyecto Supabase de staging y de la configuración de Stripe TEST no se ha verificado. Este documento se conserva como registro técnico.
 
 ## Overview
 This document tracks manual schema changes applied to Supabase staging (`gqnsanzsdnbufwicjtiw`) that are **NOT** part of production migrations. These are one-time setup changes specific to the staging environment.
