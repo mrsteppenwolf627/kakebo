@@ -4,7 +4,7 @@
 // Los textos en español de HowTo, FAQ y JSON-LD son los que ya existían en la página.
 
 export type SavingsPageContent = {
-    howTo: { title: string; schemaName: string; steps: { name: string; text: string }[] };
+    howTo: { title: string; steps: { name: string; text: string }[] };
     faq: { title: string; items: { q: string; a: string }[] };
     schema: { name: string; description: string };
     formula: {
@@ -27,7 +27,6 @@ export const savingsPageContent: Record<"es" | "en", SavingsPageContent> = {
     "es": {
         "howTo": {
             "title": "¿Cómo usar la calculadora de ahorro mensual?",
-            "schemaName": "Cómo calcular tu margen real de ahorro mensual",
             "steps": [
                 {
                     "name": "Introduce tus ingresos netos",
@@ -130,7 +129,6 @@ export const savingsPageContent: Record<"es" | "en", SavingsPageContent> = {
     "en": {
         "howTo": {
             "title": "How to use the monthly savings calculator",
-            "schemaName": "How to calculate your real monthly savings margin",
             "steps": [
                 {
                     "name": "Enter your net income",

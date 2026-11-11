@@ -82,7 +82,7 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
             operatingSystem: 'Web',
             about: ['saving'],
         }),
-        S.howTo(pageUrl, content.howTo.schemaName, howToSteps.map((step) => ({ name: step.name, text: step.text })), loc),
+        S.howTo(pageUrl, content.howTo.title, howToSteps.map((step) => ({ name: step.name, text: step.text })), loc),
         S.faqPage(pageUrl, faqItems.map((faq) => ({ question: faq.q, answer: faq.a })), loc),
     ]);
 
