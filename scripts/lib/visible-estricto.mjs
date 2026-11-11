@@ -168,8 +168,12 @@ function containedIn(root, tags, value) {
 /**
  * Devuelve filas { type, prop, value, visible, where, rule } para los nodos con regla estricta.
  * `root` ya está limpio (cleanDom). `graph` es el @graph del JSON-LD.
+ *
+ * Excepción documentada (docs/seo/AUDIT_JSONLD_VISIBLE_ESTRICTO.md): con `opts.homeTitle` (el <title> de la home) un
+ * `WebApplication.name` se acepta aunque no sea un encabezado si es el nombre de producto que abre ese <title>
+ * (p. ej. «Kakebo AI | App Gratis…»). Solo se pasa `homeTitle` para la home (/ y /en).
  */
-export function strictChecks(graph, root) {
+export function strictChecks(graph, root, opts = {}) {
   const rows = [];
   const add = (type, prop, value, visible, where, rule) => rows.push({ type, prop, value: String(value), visible: !!visible, where: where ?? '', rule });
   tagCrumbItems(graph);
@@ -237,7 +241,9 @@ export function strictChecks(graph, root) {
       add('ItemList.ListItem', 'name', n.name, part, part && `${e ? 'exacto' : 'parcial'}: ${selectorOf(part)}`, 'enlace/encabezado/li');
     } else if (t === 'WebApplication') {
       const h = exactElement(root, new Set(HEADINGS), n.name);
-      add('WebApplication', 'name', n.name, h, h && selectorOf(h), 'encabezado h1-h6');
+      const title = opts.homeTitle ? collapse(opts.homeTitle) : '';
+      const inTitle = !h && !!title && title.startsWith(n.name) && !/[\p{L}\p{N}]/u.test(title.charAt(n.name.length) || ' ');
+      add('WebApplication', 'name', n.name, h || inTitle, h ? selectorOf(h) : inTitle ? `excepción: nombre de producto al inicio del <title> de la home ("${title.slice(0, 50)}")` : '', 'encabezado h1-h6 (o excepción de la home)');
       for (const f of asArr(n.featureList)) {
         const e = exactElement(root, ELEMENT_TAGS, f) ?? containedIn(root, BLOCKS_TEXT, f);
         add('WebApplication', 'featureList', f, e, e && selectorOf(e), 'elemento/li visible');

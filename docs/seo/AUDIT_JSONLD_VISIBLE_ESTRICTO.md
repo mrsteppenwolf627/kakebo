@@ -32,6 +32,12 @@ Siempre se excluyen: `<script>`, `<style>`, `<noscript>`, `<template>`, `<svg>`,
 - **Criterio aprobado (2026-11-11): una respuesta colapsada, accesible por interacción, cuenta como visible.** Es el caso del FAQ de la home (`section#faq`, 5 preguntas): las respuestas están en el DOM con `max-h-0 opacity-0` y se revelan al hacer clic. Ni `display:none` ni `hidden`, así que tampoco están ocultas a los lectores de pantalla. El audit estricto sigue pasando sus 5 preguntas y 5 respuestas sin cambios.
 - **Mejora de accesibilidad pendiente (no implementada):** los `<button>` de ese acordeón (`src/components/landing/FAQ.tsx`) no llevan `aria-expanded` ni `aria-controls`, y los paneles de respuesta no tienen `id`.
 
+## Excepción documentada: nombre de producto de la home
+
+`WebApplication.name` debe ser, en general, un encabezado visible. **Excepción (aprobada 2026-11-11, solo `/` y `/en`):** se acepta aunque no sea un encabezado si es el nombre de producto con el que empieza el `<title>` de la home (separado por un carácter que no sea letra ni número). Hoy: «Kakebo AI», que abre «Kakebo AI | App Gratis del Método Kakebo» (ES) y «Kakebo AI: Free Online Kakeibo App…» (EN). La fila del informe lo indica en la columna «dónde». En ninguna otra página se aplica; en las herramientas el nombre debe ser su h1.
+
+Tests: `src/__tests__/seo/audit-visible-estricto.test.ts` (sección «excepción de la home»).
+
 ## Limitaciones
 
 - No ejecuta JavaScript: audita el HTML prerenderizado.
