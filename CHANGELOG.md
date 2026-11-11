@@ -2,6 +2,8 @@
 
 ## [Unreleased] - 2026-11-10 (auditoría de schema y robots)
 
+- docs: el entorno staging de Plus/Stripe TEST figura como histórico en README, STAGING_*.md y guías; rama y entorno retirados el 2026-11-10, tag `archive/feat-plus-subscriptions-staging`. Sin cambios de código.
+
 ### Cambios en lo que ve Google
 - **robots.txt:** deja de bloquear `/app`, `/auth/`, `/docs/`, `?mode=` y `?ym=` (sirven `noindex`; bloquearlas impedía leerlo). Sigue bloqueando `/api/`, `/history`, `/settings`, `/new` y `?utm_`. Test de regresión `robots-noindex.test.ts`.
 - **FAQPage:** `Answer.text` pasa a ser la respuesta visible del artículo o de la calculadora de inflación (incluye la fórmula). Se omiten del JSON-LD las preguntas cuya respuesta no se ve: 1 en `eliminar-gastos-hormiga` y 2 en `metodo-kakebo-guia-definitiva` (su `FAQPage` desaparece).

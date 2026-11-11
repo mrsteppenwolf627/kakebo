@@ -1,5 +1,7 @@
 # Kakebo Staging Audit - Detailed Schema Analysis (UPDATED)
 
+> **Histórico:** ya no se usa (rama y entorno retirados el 2026-11-10; tag archive/feat-plus-subscriptions-staging). Este documento se conserva como registro técnico.
+
 **Date Created:** 2026-10-06  
 **Last Updated:** 2026-10-06 (corrections applied)  
 **Preview Commit:** `c3a7300` (feat/premium-pack-landing)  
