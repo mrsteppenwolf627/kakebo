@@ -29,7 +29,8 @@ Siempre se excluyen: `<script>`, `<style>`, `<noscript>`, `<template>`, `<svg>`,
 
 - **filas** = una por página y nodo; **páginasAfectadas** = páginas distintas con al menos un fallo; **nombresUnicos** = combinaciones `tipo.propiedad|valor` distintas. Son tres cifras distintas: etiquétalas siempre.
 - `falsosVisiblesDeLaSubcadena` son las filas que la comprobación antigua (subcadena en todo el texto de la página) daba por visibles y la estricta no. La sección `noVisibles*` heredada sigue siendo la de subcadena y es solo informativa.
-- Un acordeón colapsado cuenta como visible (la respuesta está en el DOM); si se quiere exigir que esté desplegada, hay que decidirlo aparte.
+- **Criterio aprobado (2026-11-11): una respuesta colapsada, accesible por interacción, cuenta como visible.** Es el caso del FAQ de la home (`section#faq`, 5 preguntas): las respuestas están en el DOM con `max-h-0 opacity-0` y se revelan al hacer clic. Ni `display:none` ni `hidden`, así que tampoco están ocultas a los lectores de pantalla. El audit estricto sigue pasando sus 5 preguntas y 5 respuestas sin cambios.
+- **Mejora de accesibilidad pendiente (no implementada):** los `<button>` de ese acordeón (`src/components/landing/FAQ.tsx`) no llevan `aria-expanded` ni `aria-controls`, y los paneles de respuesta no tienen `id`.
 
 ## Limitaciones
 
