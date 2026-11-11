@@ -84,10 +84,11 @@ describe("integración Stripe Plus: guardas", () => {
 });
 
 describe("pack Excel/PDF: regresión", () => {
-  it("el webhook y la librería del pack no han cambiado respecto a la base b8e9468", () => {
+  // Base 1615788: última modificación legítima del pack (analítica de checkout y textos legales), ya en producción. Antes b8e9468.
+  it("el webhook y la librería del pack no han cambiado respecto a la base 1615788", () => {
     let changed: string;
     try {
-      changed = execFileSync("git", ["diff", "--name-only", "b8e9468", "--", "src/app/api/webhooks/stripe/route.ts", "src/lib/premium", "src/app/api/premium"], {
+      changed = execFileSync("git", ["diff", "--name-only", "1615788", "--", "src/app/api/webhooks/stripe/route.ts", "src/lib/premium", "src/app/api/premium"], {
         cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"],
       }).trim();
     } catch {

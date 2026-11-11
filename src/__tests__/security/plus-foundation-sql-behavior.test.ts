@@ -125,7 +125,9 @@ describe("migraciones Plus: orden y aplicación", () => {
     expect(plusMigrations).toHaveLength(6);
     for (const f of plusMigrations) expect(f.slice(0, 8) <= "20261231").toBe(true);
     const all = fs.readdirSync(MIG_DIR).filter((f) => f.endsWith(".sql")).sort();
-    expect(all.slice(-7)).toEqual([...plusMigrations, BACKFILL]);
+    // Las migraciones Plus (+ backfill) forman un bloque contiguo y ordenado; pueden existir migraciones posteriores de otras funciones.
+    const start = all.indexOf(plusMigrations[0]);
+    expect(all.slice(start, start + plusMigrations.length + 1)).toEqual([...plusMigrations, BACKFILL]);
   });
 });
 
