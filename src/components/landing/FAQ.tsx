@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 
 interface FaqItemProps {
   question: string;
@@ -43,10 +43,17 @@ export function FAQ() {
 
 function FaqItem({ question, answer }: FaqItemProps) {
   const [isOpen, setIsOpen] = useState(false);
+  // ids únicos y estables (useId, sin colisiones entre instancias ni idiomas) para enlazar botón y panel.
+  const uid = useId();
+  const buttonId = `${uid}-button`;
+  const panelId = `${uid}-panel`;
 
   return (
     <div className="border border-border bg-card transition-colors hover:border-foreground/50">
       <button
+        id={buttonId}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between p-6 text-left transition-colors"
       >
@@ -63,6 +70,9 @@ function FaqItem({ question, answer }: FaqItemProps) {
       </button>
 
       <div
+        id={panelId}
+        role="region"
+        aria-labelledby={buttonId}
         className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
       >
