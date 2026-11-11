@@ -1,0 +1,896 @@
+{
+ "sitemapUrls": 62,
+ "paginasAuditadas": 72,
+ "auditadasEnSitemap": 62,
+ "auditadasFueraDeSitemapConJsonLd": 10,
+ "sitemapSinHtml": 0,
+ "paginasConJsonLd": 64,
+ "sinJsonLd": 8,
+ "estructurales": 0,
+ "colgantes": 0,
+ "noVisiblesPagina": 135,
+ "noVisiblesPaginaPorTipo": {
+  "WebPage.description": 41,
+  "WebApplication.description": 8,
+  "ListItem.name": 29,
+  "Dataset.description": 12,
+  "BlogPosting.description": 33,
+  "CollectionPage.description": 2,
+  "Offer.priceCurrency": 4,
+  "ItemPage.description": 2,
+  "Product.description": 2,
+  "AboutPage.description": 2
+ },
+ "noVisiblesEntidad": 462,
+ "vocabulario": "no verificado (sin --vocab)"
+}
+
+URL auditadas (72):
+  sitemap ld  /
+  sitemap ld  /ahorro-entrada-vivienda
+  sitemap ld  /ahorro-entrada-vivienda/a-coruna
+  sitemap ld  /ahorro-entrada-vivienda/alicante
+  sitemap ld  /ahorro-entrada-vivienda/barcelona
+  sitemap ld  /ahorro-entrada-vivienda/bizkaia
+  sitemap ld  /ahorro-entrada-vivienda/illes-balears
+  sitemap ld  /ahorro-entrada-vivienda/las-palmas
+  sitemap ld  /ahorro-entrada-vivienda/madrid
+  sitemap ld  /ahorro-entrada-vivienda/malaga
+  sitemap ld  /ahorro-entrada-vivienda/murcia
+  sitemap ld  /ahorro-entrada-vivienda/sevilla
+  sitemap ld  /ahorro-entrada-vivienda/valencia
+  sitemap ld  /ahorro-entrada-vivienda/zaragoza
+  sitemap ld  /blog
+  sitemap ld  /blog/ahorro-pareja
+  sitemap ld  /blog/alternativas-a-app-bancarias
+  sitemap ld  /blog/como-ahorrar-dinero-cada-mes
+  sitemap ld  /blog/como-hacer-un-presupuesto-personal
+  sitemap ld  /blog/cuentas-remuneradas
+  sitemap ld  /blog/eliminar-gastos-hormiga
+  sitemap ld  /blog/fondo-de-emergencia
+  sitemap ld  /blog/kakebo-online-gratis
+  sitemap ld  /blog/kakebo-online-guia-completa
+  sitemap ld  /blog/kakebo-sueldo-minimo
+  sitemap ld  /blog/kakebo-vs-ynab
+  sitemap ld  /blog/libro-kakebo-pdf
+  sitemap ld  /blog/metodo-kakebo-guia-definitiva
+  sitemap ld  /blog/metodo-kakebo-para-autonomos
+  sitemap ld  /blog/peligros-apps-ahorro-automatico
+  sitemap ld  /blog/plantilla-kakebo-excel
+  sitemap ld  /blog/regla-30-dias
+  sitemap ld  /blog/regla-50-30-20-ejemplo
+  sitemap sin-ld /cookies
+  sitemap ld  /en
+  sitemap ld  /en/blog
+  noindex ld  /en/blog/ahorro-pareja
+  noindex ld  /en/blog/alternativas-a-app-bancarias
+  sitemap ld  /en/blog/como-ahorrar-dinero-cada-mes
+  sitemap ld  /en/blog/como-hacer-un-presupuesto-personal
+  sitemap ld  /en/blog/eliminar-gastos-hormiga
+  noindex ld  /en/blog/kakebo-online-gratis
+  noindex ld  /en/blog/kakebo-online-guia-completa
+  noindex ld  /en/blog/kakebo-sueldo-minimo
+  noindex ld  /en/blog/kakebo-vs-ynab
+  noindex ld  /en/blog/libro-kakebo-pdf
+  sitemap ld  /en/blog/metodo-kakebo-guia-definitiva
+  noindex ld  /en/blog/metodo-kakebo-para-autonomos
+  noindex ld  /en/blog/peligros-apps-ahorro-automatico
+  sitemap ld  /en/blog/plantilla-kakebo-excel
+  noindex ld  /en/blog/regla-30-dias
+  sitemap sin-ld /en/cookies
+  sitemap ld  /en/herramientas
+  sitemap ld  /en/herramientas/calculadora-ahorro
+  sitemap ld  /en/herramientas/calculadora-inflacion
+  sitemap ld  /en/herramientas/plantilla-kakebo-excel-premium
+  sitemap ld  /en/herramientas/regla-50-30-20
+  sitemap sin-ld /en/privacy
+  sitemap ld  /en/sobre-nosotros
+  sitemap sin-ld /en/terms
+  sitemap sin-ld /en/tutorial
+  sitemap ld  /herramientas
+  sitemap ld  /herramientas/calculadora-ahorro
+  sitemap ld  /herramientas/calculadora-inflacion
+  sitemap ld  /herramientas/plantilla-kakebo-excel-premium
+  sitemap ld  /herramientas/regla-50-30-20
+  sitemap ld  /plantillas/kakebo-2027
+  sitemap ld  /plantillas/kakebo-para-imprimir
+  sitemap sin-ld /privacy
+  sitemap ld  /sobre-nosotros
+  sitemap sin-ld /terms
+  sitemap sin-ld /tutorial
+
+COMPROBACIÓN ESTRICTA (filas = una por página y nodo; nombres únicos = tipo.propiedad|valor distintos):
+{
+ "filasComprobadas": 726,
+ "paginasConComprobacion": 62,
+ "noVisibles": {
+  "filas": 95,
+  "paginasAfectadas": 28,
+  "nombresUnicos": 68
+ },
+ "falsosVisiblesDeLaSubcadena": {
+  "filas": 66,
+  "paginasAfectadas": 27,
+  "nombresUnicos": 56
+ },
+ "porTipo": {
+  "WebApplication.name": {
+   "filas": 8,
+   "noVisibles": 0,
+   "falsosVisibles": 0
+  },
+  "WebApplication.featureList": {
+   "filas": 2,
+   "noVisibles": 0,
+   "falsosVisibles": 0
+  },
+  "FAQPage.Question.name": {
+   "filas": 212,
+   "noVisibles": 0,
+   "falsosVisibles": 0
+  },
+  "FAQPage.Answer.text": {
+   "filas": 212,
+   "noVisibles": 0,
+   "falsosVisibles": 0
+  },
+  "BreadcrumbList.ListItem.name": {
+   "filas": 167,
+   "noVisibles": 56,
+   "falsosVisibles": 39
+  },
+  "BreadcrumbList.ListItem.aria-current (último)": {
+   "filas": 56,
+   "noVisibles": 27,
+   "falsosVisibles": 27
+  },
+  "ItemList.ListItem.name": {
+   "filas": 41,
+   "noVisibles": 12,
+   "falsosVisibles": 0
+  },
+  "HowTo.name": {
+   "filas": 4,
+   "noVisibles": 0,
+   "falsosVisibles": 0
+  },
+  "HowTo.HowToStep.name": {
+   "filas": 8,
+   "noVisibles": 0,
+   "falsosVisibles": 0
+  },
+  "HowTo.HowToStep.text": {
+   "filas": 16,
+   "noVisibles": 0,
+   "falsosVisibles": 0
+  }
+ }
+}
+
+TABLA ESTRICTA (url | tipo.prop | visible | subcadena global | valor | dónde):
+/ | WebApplication.name | sí | sí | Kakebo AI | excepción: nombre de producto al inicio del <title> de la home ("Kakebo AI | App Gratis del Método Kakebo")
+/ | WebApplication.featureList | sí | sí | Sin conexión bancaria | main > section#alternatives > td
+/ | FAQPage.Question.name | sí | sí | ¿Realmente es gratis empezar? | contenedor #faq (acordeón): main > div#faq
+/ | FAQPage.Answer.text | sí | sí | Sí, 100%. Puedes registrarte y usar el Plan Manual (control de gastos  | contenedor #faq (acordeón): main > div#faq
+/ | FAQPage.Question.name | sí | sí | ¿Qué incluye Kakebo? | contenedor #faq (acordeón): main > div#faq
+/ | FAQPage.Answer.text | sí | sí | Incluye todo: registro ilimitado de gastos, gestión de gastos fijos, a | contenedor #faq (acordeón): main > div#faq
+/ | FAQPage.Question.name | sí | sí | ¿Habrá que pagar en el futuro? | contenedor #faq (acordeón): main > div#faq
+/ | FAQPage.Answer.text | sí | sí | Las funciones actuales seguirán siendo gratuitas. Nuestro objetivo es  | contenedor #faq (acordeón): main > div#faq
+/ | FAQPage.Question.name | sí | sí | ¿Kakebo sirve aunque ya use una app bancaria? | contenedor #faq (acordeón): main > div#faq
+/ | FAQPage.Answer.text | sí | sí | Sí. Tu banco te muestra movimientos; Kakebo te obliga a entender decis | contenedor #faq (acordeón): main > div#faq
+/ | FAQPage.Question.name | sí | sí | ¿Mis datos están seguros? | contenedor #faq (acordeón): main > div#faq
+/ | FAQPage.Answer.text | sí | sí | Sí. Usamos Supabase para autenticación y seguridad de datos. Tus datos | contenedor #faq (acordeón): main > div#faq
+/ahorro-entrada-vivienda | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en Madrid | 
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en Illes Balears | 
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en Barcelona | 
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en Málaga | 
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en Bizkaia | 
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en Las Palmas | 
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en Alicante | 
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en Valencia | 
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en Zaragoza | 
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en Sevilla | 
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en A Coruña | 
+/ahorro-entrada-vivienda | ItemList.ListItem.name | NO | no | Entrada de un piso en Murcia | 
+/ahorro-entrada-vivienda/a-coruna | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/a-coruna | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/a-coruna | BreadcrumbList.ListItem.name | sí | sí | A Coruña | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/a-coruna | BreadcrumbList.ListItem.aria-current (último) | sí | sí | A Coruña | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/a-coruna | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en A Coruña? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/a-coruna | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 1.749,5 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/a-coruna | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en A Coruña? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/a-coruna | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 778 € al mes en 3 años, 467 € al | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/a-coruna | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en A Coruña? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/a-coruna | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/a-coruna | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en A Coruña? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/a-coruna | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/alicante | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/alicante | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/alicante | BreadcrumbList.ListItem.name | sí | sí | Alicante | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/alicante | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Alicante | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/alicante | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en Alicante? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/alicante | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 2.020,7 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/alicante | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en Alicante? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/alicante | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 899 € al mes en 3 años, 539 € al | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/alicante | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en Alicante? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/alicante | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/alicante | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en Alicante? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/alicante | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/barcelona | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/barcelona | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/barcelona | BreadcrumbList.ListItem.name | sí | sí | Barcelona | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/barcelona | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Barcelona | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/barcelona | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en Barcelona? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/barcelona | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 3.204,2 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/barcelona | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en Barcelona? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/barcelona | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 1.425 € al mes en 3 años, 855 €  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/barcelona | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en Barcelona? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/barcelona | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/barcelona | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en Barcelona? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/barcelona | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/bizkaia | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/bizkaia | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/bizkaia | BreadcrumbList.ListItem.name | sí | sí | Bizkaia | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/bizkaia | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Bizkaia | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/bizkaia | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en Bizkaia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/bizkaia | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 3.024,7 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/bizkaia | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en Bizkaia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/bizkaia | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 1.345 € al mes en 3 años, 807 €  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/bizkaia | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en Bizkaia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/bizkaia | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/bizkaia | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en Bizkaia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/bizkaia | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/illes-balears | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/illes-balears | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/illes-balears | BreadcrumbList.ListItem.name | sí | sí | Illes Balears | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/illes-balears | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Illes Balears | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/illes-balears | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en Illes Balears? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/illes-balears | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 3.980,8 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/illes-balears | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en Illes Balears? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/illes-balears | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 1.770 € al mes en 3 años, 1.062  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/illes-balears | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en Illes Balears | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/illes-balears | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/illes-balears | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en Illes Balea | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/illes-balears | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/las-palmas | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/las-palmas | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/las-palmas | BreadcrumbList.ListItem.name | sí | sí | Las Palmas | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/las-palmas | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Las Palmas | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/las-palmas | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en Las Palmas? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/las-palmas | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 2.263,0 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/las-palmas | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en Las Palmas? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/las-palmas | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 1.006 € al mes en 3 años, 604 €  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/las-palmas | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en Las Palmas? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/las-palmas | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/las-palmas | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en Las Palmas? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/las-palmas | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/madrid | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/madrid | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/madrid | BreadcrumbList.ListItem.name | sí | sí | Madrid | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/madrid | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Madrid | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/madrid | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en Madrid? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/madrid | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 4.089,6 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/madrid | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en Madrid? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/madrid | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 1.818 € al mes en 3 años, 1.091  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/madrid | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en Madrid? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/madrid | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/madrid | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en Madrid? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/madrid | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/malaga | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/malaga | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/malaga | BreadcrumbList.ListItem.name | sí | sí | Málaga | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/malaga | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Málaga | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/malaga | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en Málaga? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/malaga | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 3.083,5 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/malaga | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en Málaga? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/malaga | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 1.371 € al mes en 3 años, 823 €  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/malaga | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en Málaga? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/malaga | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/malaga | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en Málaga? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/malaga | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/murcia | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/murcia | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/murcia | BreadcrumbList.ListItem.name | sí | sí | Murcia | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/murcia | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Murcia | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/murcia | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en Murcia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/murcia | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 1.350,1 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/murcia | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en Murcia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/murcia | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 601 € al mes en 3 años, 361 € al | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/murcia | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en Murcia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/murcia | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/murcia | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en Murcia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/murcia | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/sevilla | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/sevilla | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/sevilla | BreadcrumbList.ListItem.name | sí | sí | Sevilla | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/sevilla | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Sevilla | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/sevilla | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en Sevilla? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/sevilla | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 1.889,8 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/sevilla | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en Sevilla? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/sevilla | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 840 € al mes en 3 años, 504 € al | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/sevilla | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en Sevilla? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/sevilla | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/sevilla | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en Sevilla? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/sevilla | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/valencia | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/valencia | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/valencia | BreadcrumbList.ListItem.name | sí | sí | Valencia | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/valencia | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Valencia | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/valencia | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en Valencia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/valencia | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 1.980,1 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/valencia | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en Valencia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/valencia | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 881 € al mes en 3 años, 529 € al | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/valencia | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en Valencia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/valencia | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/valencia | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en Valencia? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/valencia | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/zaragoza | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/ahorro-entrada-vivienda/zaragoza | BreadcrumbList.ListItem.name | sí | sí | Entrada de vivienda por provincia | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/ahorro-entrada-vivienda/zaragoza | BreadcrumbList.ListItem.name | sí | sí | Zaragoza | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/zaragoza | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Zaragoza | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/ahorro-entrada-vivienda/zaragoza | FAQPage.Question.name | sí | sí | ¿Cuánto es la entrada de un piso de 80 m² en Zaragoza? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/zaragoza | FAQPage.Answer.text | sí | sí | Con el valor tasado medio de 1.944,3 €/m² (2.º trimestre de 2026), un  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/zaragoza | FAQPage.Question.name | sí | sí | ¿Cuánto hay que ahorrar al mes para esa entrada en Zaragoza? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/zaragoza | FAQPage.Answer.text | sí | sí | Sin contar intereses ni rentabilidad, 865 € al mes en 3 años, 519 € al | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/zaragoza | FAQPage.Question.name | sí | sí | ¿El valor tasado es el precio al que se vende un piso en Zaragoza? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/zaragoza | FAQPage.Answer.text | sí | sí | No. El valor tasado es el que fijan las sociedades de tasación al valo | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/zaragoza | FAQPage.Question.name | sí | sí | ¿La entrada incluye los impuestos y gastos de la compra en Zaragoza? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/ahorro-entrada-vivienda/zaragoza | FAQPage.Answer.text | sí | sí | No. El cálculo cubre solo el 20 % del valor de la vivienda. Los impues | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/blog | ItemList.ListItem.name | sí | sí | Fondo de emergencia: cuánto dinero tener y dónde guardarlo | exacto: main > article > h2
+/blog | ItemList.ListItem.name | sí | sí | Regla 50/30/20: ejemplo real con tu sueldo | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Qué es una cuenta remunerada y cuándo tiene sentido para tu ahorro | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Cómo hacer un presupuesto personal paso a paso (y que dure más de dos  | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Cómo ahorrar dinero cada mes: 15 técnicas prácticas de ahorro y presup | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Kakebo online: guía completa del método Kakebo (2026) | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Método Kakebo: La técnica japonesa para ahorrar dinero sin esfuerzo | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Kakebo Online Gratis: Aplica el Método Japonés sin Conectar el Banco ( | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Plantilla Kakebo en Excel Gratis: Cómo empezar y por qué (casi) siempr | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Cómo eliminar los gastos hormiga con el método Kakebo | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Alternativas a Fintonic: 8 apps para controlar tus gastos sin ceder tu | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Kakebo vs YNAB: diferencias entre registro consciente y presupuesto ba | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Método Kakebo para autónomos: presupuesto personal con ingresos irregu | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Libro Kakebo en PDF: formatos disponibles, limitaciones prácticas y al | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | La regla de los 30 días para ahorrar: cómo aplazar las compras no esen | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Cómo ahorrar con el salario mínimo: método Kakebo para ingresos ajusta | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Cómo ahorrar en pareja: presupuesto compartido, gastos comunes y métod | exacto: main > article > h3
+/blog | ItemList.ListItem.name | sí | sí | Peligros de las apps de ahorro automático y el Open Banking | exacto: main > article > h3
+/blog/ahorro-pareja | BreadcrumbList.ListItem.name | NO | no | Inicio | no está en la miga visible
+/blog/ahorro-pareja | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/ahorro-pareja | BreadcrumbList.ListItem.name | NO | sí | Cómo ahorrar en pareja: presupuesto compartido, gastos comunes y métod | no está en la miga visible
+/blog/ahorro-pareja | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Cómo ahorrar en pareja: presupuesto compartido, gastos comunes y métod | sin miga visible
+/blog/ahorro-pareja | FAQPage.Question.name | sí | sí | ¿Es mejor juntar el dinero en pareja o tener cuentas separadas? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/ahorro-pareja | FAQPage.Answer.text | sí | sí | Depende de la confianza y el momento de la relación. El modelo híbrido | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/ahorro-pareja | FAQPage.Question.name | sí | sí | ¿Cómo hablar de dinero con tu pareja sin discutir? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/ahorro-pareja | FAQPage.Answer.text | sí | sí | Reservando un momento mensual tranquilo y fijo — fuera de situaciones  | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/alternativas-a-app-bancarias | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/alternativas-a-app-bancarias | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/blog/alternativas-a-app-bancarias | BreadcrumbList.ListItem.name | sí | sí | Alternativas a Fintonic: 8 apps para controlar tus gastos sin ceder tu | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/blog/alternativas-a-app-bancarias | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Alternativas a Fintonic: 8 apps para controlar tus gastos sin ceder tu | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/blog/alternativas-a-app-bancarias | FAQPage.Question.name | sí | sí | ¿Cuál es la mejor alternativa a Fintonic? | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/alternativas-a-app-bancarias | FAQPage.Answer.text | sí | sí | Depende de lo que busques. Si quieres automatización similar a Fintoni | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/alternativas-a-app-bancarias | FAQPage.Question.name | sí | sí | ¿Hay una alternativa a Fintonic sin conectar el banco? | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/alternativas-a-app-bancarias | FAQPage.Answer.text | sí | sí | Sí. Money Manager y Kakebo AI son alternativas a Fintonic y a otras ap | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/alternativas-a-app-bancarias | FAQPage.Question.name | sí | sí | ¿Qué aplicación es más privada que Fintonic? | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/alternativas-a-app-bancarias | FAQPage.Answer.text | sí | sí | Money Manager y Kakebo AI son las más privadas de esta comparativa: ni | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/alternativas-a-app-bancarias | FAQPage.Question.name | sí | sí | ¿Hay alternativas gratuitas a Fintonic? | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/alternativas-a-app-bancarias | FAQPage.Answer.text | sí | sí | Sí. Money Manager y Kakebo AI son completamente gratuitas. Spendee y T | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/alternativas-a-app-bancarias | FAQPage.Question.name | sí | sí | ¿Cuál es mejor para controlar gastos personales sin complicarse? | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/alternativas-a-app-bancarias | FAQPage.Answer.text | sí | sí | Para la mayoría de usuarios que buscan simplicidad: Kakebo AI (sin ban | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/alternativas-a-app-bancarias | FAQPage.Question.name | sí | sí | ¿Es mejor usar una app automática o registrar los gastos manualmente? | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/alternativas-a-app-bancarias | FAQPage.Answer.text | sí | sí | Depende de tu prioridad: la automatización ahorra tiempo pero reduce l | h2 "Preguntas frecuentes sobre alternativas " → siguiente h2: main > article > h2
+/blog/como-ahorrar-dinero-cada-mes | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/como-ahorrar-dinero-cada-mes | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/blog/como-ahorrar-dinero-cada-mes | BreadcrumbList.ListItem.name | sí | sí | Cómo ahorrar dinero cada mes: 15 técnicas prácticas de ahorro y presup | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/blog/como-ahorrar-dinero-cada-mes | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Cómo ahorrar dinero cada mes: 15 técnicas prácticas de ahorro y presup | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/blog/como-ahorrar-dinero-cada-mes | FAQPage.Question.name | sí | sí | ¿Cuál es el método más rápido para empezar a ahorrar dinero? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/como-ahorrar-dinero-cada-mes | FAQPage.Answer.text | sí | sí | El enfoque más directo es destinar una cantidad fija al ahorro el mism | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/como-ahorrar-dinero-cada-mes | FAQPage.Question.name | sí | sí | ¿Cuánto dinero debería ahorrar cada mes? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/como-ahorrar-dinero-cada-mes | FAQPage.Answer.text | sí | sí | La regla 50/30/20 sugiere destinar el 20% de los ingresos netos al aho | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/como-ahorrar-dinero-cada-mes | FAQPage.Question.name | sí | sí | ¿Es posible ahorrar ganando el sueldo mínimo? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/como-ahorrar-dinero-cada-mes | FAQPage.Answer.text | sí | sí | Sí, aunque el margen es estrecho. En esos casos, el registro metódico  | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/como-hacer-un-presupuesto-personal | BreadcrumbList.ListItem.name | NO | sí | Inicio | no está en la miga visible
+/blog/como-hacer-un-presupuesto-personal | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/como-hacer-un-presupuesto-personal | BreadcrumbList.ListItem.name | NO | sí | Cómo hacer un presupuesto personal paso a paso (y que dure más de dos  | no está en la miga visible
+/blog/como-hacer-un-presupuesto-personal | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Cómo hacer un presupuesto personal paso a paso (y que dure más de dos  | sin miga visible
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | ¿Cuánto tiempo lleva hacer un presupuesto personal por primera vez? | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | La primera vez, entre 45 minutos y una hora si tienes el extracto banc | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | ¿Cuánto dinero debería reservar para el ahorro cada mes? | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | No hay una cifra universal. La regla más citada es el 20%, pero lo más | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | ¿Es mejor llevar el presupuesto en papel, en Excel o con una app? | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | Depende de tu perfil. El papel —en la tradición del método Kakebo orig | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | ¿Qué hago si mis ingresos cambian cada mes? | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | Calcula el promedio de los últimos seis meses y úsalo como base conser | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | ¿Cuál es la diferencia entre hacer un presupuesto y controlar los gast | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | El presupuesto es el plan: decides de antemano adónde va cada euro ant | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | ¿Cada cuánto debo revisar mi presupuesto? | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | Una revisión mensual es obligatoria y no debería llevar más de 20 minu | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | ¿Puede funcionar un presupuesto con sueldo mínimo? | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | Sí, aunque con limitaciones estructurales reales que hay que reconocer | h2 "Preguntas frecuentes sobre cómo hacer un" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | BreadcrumbList.ListItem.name | NO | no | Inicio | no está en la miga visible
+/blog/cuentas-remuneradas | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/cuentas-remuneradas | BreadcrumbList.ListItem.name | NO | sí | Qué es una cuenta remunerada y cuándo tiene sentido para tu ahorro | no está en la miga visible
+/blog/cuentas-remuneradas | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Qué es una cuenta remunerada y cuándo tiene sentido para tu ahorro | sin miga visible
+/blog/cuentas-remuneradas | FAQPage.Question.name | sí | sí | ¿Qué es una cuenta remunerada? | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | FAQPage.Answer.text | sí | sí | Es una cuenta bancaria a la vista que paga intereses por el dinero dep | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | FAQPage.Question.name | sí | sí | ¿Es segura una cuenta remunerada? | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | FAQPage.Answer.text | sí | sí | Puede ser una opción razonable para el ahorro de corto plazo. La segur | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | FAQPage.Question.name | sí | sí | ¿Qué diferencia hay entre TIN y TAE? | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | FAQPage.Answer.text | sí | sí | El TIN es el tipo de interés nominal pactado. La TAE intenta mostrar e | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | FAQPage.Question.name | sí | sí | ¿Hay que declarar los intereses? | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | FAQPage.Answer.text | sí | sí | Sí. Los intereses son rendimientos del capital mobiliario según el IRP | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | FAQPage.Question.name | sí | sí | ¿Sirve para guardar el fondo de emergencia? | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | FAQPage.Answer.text | sí | sí | En muchos casos, sí. Es probablemente uno de sus usos más sensatos: co | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | FAQPage.Question.name | sí | sí | ¿Es mejor una cuenta remunerada o un depósito a plazo? | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/cuentas-remuneradas | FAQPage.Answer.text | sí | sí | Depende del uso. Si necesitas liquidez o no sabes cuándo vas a necesit | h2 "Preguntas frecuentes sobre cuentas remun" → siguiente h2: main > article > h2
+/blog/eliminar-gastos-hormiga | BreadcrumbList.ListItem.name | NO | no | Inicio | no está en la miga visible
+/blog/eliminar-gastos-hormiga | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/eliminar-gastos-hormiga | BreadcrumbList.ListItem.name | NO | sí | Cómo eliminar los gastos hormiga con el método Kakebo | no está en la miga visible
+/blog/eliminar-gastos-hormiga | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Cómo eliminar los gastos hormiga con el método Kakebo | sin miga visible
+/blog/eliminar-gastos-hormiga | FAQPage.Question.name | sí | sí | ¿Cómo ayuda el método Kakebo a eliminar gastos hormiga? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/eliminar-gastos-hormiga | FAQPage.Answer.text | sí | sí | El método Kakebo incluye una categoría específica para este tipo de ga | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/fondo-de-emergencia | BreadcrumbList.ListItem.name | NO | no | Inicio | no está en la miga visible
+/blog/fondo-de-emergencia | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/fondo-de-emergencia | BreadcrumbList.ListItem.name | NO | sí | Fondo de emergencia: cuánto dinero tener y dónde guardarlo | no está en la miga visible
+/blog/fondo-de-emergencia | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Fondo de emergencia: cuánto dinero tener y dónde guardarlo | sin miga visible
+/blog/fondo-de-emergencia | FAQPage.Question.name | sí | sí | ¿Cuánto dinero debería tener en mi fondo de emergencia? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/fondo-de-emergencia | FAQPage.Answer.text | sí | sí | Como referencia general, entre 3 y 6 meses de tus gastos fijos mensual | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/fondo-de-emergencia | FAQPage.Question.name | sí | sí | ¿Dónde es mejor guardar el fondo de emergencia? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/fondo-de-emergencia | FAQPage.Answer.text | sí | sí | En un sitio líquido, separado de tu cuenta de gasto diario y con acces | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/fondo-de-emergencia | FAQPage.Question.name | sí | sí | ¿Es buena idea invertir el fondo de emergencia? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/fondo-de-emergencia | FAQPage.Answer.text | sí | sí | No. El fondo de emergencia prioriza disponibilidad inmediata sobre ren | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/fondo-de-emergencia | FAQPage.Question.name | sí | sí | ¿Cuántos meses de gastos debería cubrir? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/fondo-de-emergencia | FAQPage.Answer.text | sí | sí | Entre 3 y 6 meses de gastos fijos es la referencia habitual. Con ingre | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/fondo-de-emergencia | FAQPage.Question.name | sí | sí | ¿Puedo tener el fondo de emergencia en una cuenta remunerada? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/fondo-de-emergencia | FAQPage.Answer.text | sí | sí | Sí. De hecho es una de las combinaciones más razonables: mantiene el d | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/fondo-de-emergencia | FAQPage.Question.name | sí | sí | ¿Qué hago si todavía no puedo ahorrar tres meses de gastos? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/fondo-de-emergencia | FAQPage.Answer.text | sí | sí | Empieza por un objetivo más pequeño y alcanzable, como un mes de gasto | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/kakebo-online-gratis | BreadcrumbList.ListItem.name | NO | sí | Inicio | no está en la miga visible
+/blog/kakebo-online-gratis | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/kakebo-online-gratis | BreadcrumbList.ListItem.name | NO | sí | Kakebo Online Gratis: Aplica el Método Japonés sin Conectar el Banco ( | no está en la miga visible
+/blog/kakebo-online-gratis | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Kakebo Online Gratis: Aplica el Método Japonés sin Conectar el Banco ( | sin miga visible
+/blog/kakebo-online-gratis | FAQPage.Question.name | sí | sí | ¿Existe alguna aplicación de Kakebo online que sea realmente gratis? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-online-gratis | FAQPage.Answer.text | sí | sí | Sí, Kakebo AI ofrece un plan manual 100% gratuito para siempre. Puedes | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-online-gratis | FAQPage.Question.name | sí | sí | ¿Qué ventajas tiene llevar el Kakebo online frente al papel? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-online-gratis | FAQPage.Answer.text | sí | sí | Llevar el Kakebo online te permite tener tus presupuestos siempre actu | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-online-guia-completa | BreadcrumbList.ListItem.name | NO | sí | Inicio | no está en la miga visible
+/blog/kakebo-online-guia-completa | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/kakebo-online-guia-completa | BreadcrumbList.ListItem.name | NO | sí | Kakebo online: guía completa del método Kakebo (2026) | no está en la miga visible
+/blog/kakebo-online-guia-completa | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Kakebo online: guía completa del método Kakebo (2026) | sin miga visible
+/blog/kakebo-online-guia-completa | FAQPage.Question.name | sí | sí | ¿Es seguro llevar mi contabilidad en un software Kakebo online? | h2 "Preguntas frecuentes sobre el Kakebo onl" → siguiente h2: main > article > h2
+/blog/kakebo-online-guia-completa | FAQPage.Answer.text | sí | sí | Sí. Un Kakebo online que no requiere conexión bancaria solo almacena l | h2 "Preguntas frecuentes sobre el Kakebo onl" → siguiente h2: main > article > h2
+/blog/kakebo-online-guia-completa | FAQPage.Question.name | sí | sí | ¿Puedo usar el método Kakebo online si comparto gastos con mi pareja? | h2 "Preguntas frecuentes sobre el Kakebo onl" → siguiente h2: main > article > h2
+/blog/kakebo-online-guia-completa | FAQPage.Answer.text | sí | sí | Sí. La opción más práctica es que cada uno lleve su registro individua | h2 "Preguntas frecuentes sobre el Kakebo onl" → siguiente h2: main > article > h2
+/blog/kakebo-online-guia-completa | FAQPage.Question.name | sí | sí | ¿Tengo que saber de finanzas para usar el método Kakebo? | h2 "Preguntas frecuentes sobre el Kakebo onl" → siguiente h2: main > article > h2
+/blog/kakebo-online-guia-completa | FAQPage.Answer.text | sí | sí | No. El método organiza todos los gastos en cuatro categorías sin termi | h2 "Preguntas frecuentes sobre el Kakebo onl" → siguiente h2: main > article > h2
+/blog/kakebo-online-guia-completa | FAQPage.Question.name | sí | sí | ¿Dónde descargo un Kakebo 2027 para imprimir? | h2 "Preguntas frecuentes sobre el Kakebo onl" → siguiente h2: main > article > h2
+/blog/kakebo-online-guia-completa | FAQPage.Answer.text | sí | sí | Puedes descargar gratis el Kakebo 2027 imprimible, un PDF A4 de 9 pági | h2 "Preguntas frecuentes sobre el Kakebo onl" → siguiente h2: main > article > h2
+/blog/kakebo-online-guia-completa | FAQPage.Question.name | sí | sí | ¿Es mejor la agenda de papel o el Kakebo digital? | h2 "Preguntas frecuentes sobre el Kakebo onl" → siguiente h2: main > article > h2
+/blog/kakebo-online-guia-completa | FAQPage.Answer.text | sí | sí | Depende de cuál vayas a rellenar con constancia. El papel encaja si di | h2 "Preguntas frecuentes sobre el Kakebo onl" → siguiente h2: main > article > h2
+/blog/kakebo-sueldo-minimo | BreadcrumbList.ListItem.name | NO | no | Inicio | no está en la miga visible
+/blog/kakebo-sueldo-minimo | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/kakebo-sueldo-minimo | BreadcrumbList.ListItem.name | NO | sí | Cómo ahorrar con el salario mínimo: método Kakebo para ingresos ajusta | no está en la miga visible
+/blog/kakebo-sueldo-minimo | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Cómo ahorrar con el salario mínimo: método Kakebo para ingresos ajusta | sin miga visible
+/blog/kakebo-sueldo-minimo | FAQPage.Question.name | sí | sí | ¿Se puede ahorrar ganando el salario mínimo? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-sueldo-minimo | FAQPage.Answer.text | sí | sí | Sí, aunque el margen es pequeño. La clave no es la cantidad de euros a | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-sueldo-minimo | FAQPage.Question.name | sí | sí | ¿Por qué el método Kakebo es útil con ingresos ajustados? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-sueldo-minimo | FAQPage.Answer.text | sí | sí | Porque el método Kakebo organiza el gasto en cuatro categorías —Superv | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-sueldo-minimo | FAQPage.Question.name | sí | sí | ¿Qué hago si mis gastos de supervivencia superan el 80% de mi sueldo? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-sueldo-minimo | FAQPage.Answer.text | sí | sí | En esa situación, la prioridad no es recortar en Ocio/Vicio —que ya es | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-sueldo-minimo | FAQPage.Question.name | sí | sí | ¿Vale la pena usar el método Kakebo si no llego a fin de mes? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-sueldo-minimo | FAQPage.Answer.text | sí | sí | Sí. Cuando el presupuesto no alcanza, el registro sistemático de gasto | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-vs-ynab | BreadcrumbList.ListItem.name | NO | no | Inicio | no está en la miga visible
+/blog/kakebo-vs-ynab | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/kakebo-vs-ynab | BreadcrumbList.ListItem.name | NO | sí | Kakebo vs YNAB: diferencias entre registro consciente y presupuesto ba | no está en la miga visible
+/blog/kakebo-vs-ynab | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Kakebo vs YNAB: diferencias entre registro consciente y presupuesto ba | sin miga visible
+/blog/kakebo-vs-ynab | FAQPage.Question.name | sí | sí | ¿Qué diferencia hay entre Kakebo y YNAB (You Need A Budget)? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-vs-ynab | FAQPage.Answer.text | sí | sí | YNAB aplica el presupuesto de base cero: cada euro recibido se asigna  | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-vs-ynab | FAQPage.Question.name | sí | sí | ¿Cuál es más fácil de usar para principiantes? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/kakebo-vs-ynab | FAQPage.Answer.text | sí | sí | El método Kakebo tiene una curva de aprendizaje menor: cuatro categorí | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/libro-kakebo-pdf | BreadcrumbList.ListItem.name | NO | no | Inicio | no está en la miga visible
+/blog/libro-kakebo-pdf | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/libro-kakebo-pdf | BreadcrumbList.ListItem.name | NO | sí | Libro Kakebo en PDF: formatos disponibles, limitaciones prácticas y al | no está en la miga visible
+/blog/libro-kakebo-pdf | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Libro Kakebo en PDF: formatos disponibles, limitaciones prácticas y al | sin miga visible
+/blog/libro-kakebo-pdf | FAQPage.Question.name | sí | sí | ¿Dónde puedo descargar el libro Kakebo en PDF? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/libro-kakebo-pdf | FAQPage.Answer.text | sí | sí | Existen webs que ofrecen plantillas y resúmenes del método Kakebo en f | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/libro-kakebo-pdf | FAQPage.Question.name | sí | sí | ¿Es mejor el Kakebo en libro físico o en app digital? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/libro-kakebo-pdf | FAQPage.Answer.text | sí | sí | El libro físico ofrece el registro manual que el método Kakebo propone | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/libro-kakebo-pdf | FAQPage.Question.name | sí | sí | ¿Existen diferentes versiones del libro Kakebo en España? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/libro-kakebo-pdf | FAQPage.Answer.text | sí | sí | Sí, la editorial Blackie Books popularizó la edición anual en España,  | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/libro-kakebo-pdf | FAQPage.Question.name | sí | sí | ¿Se puede aplicar el método Kakebo sin el libro original impreso? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/libro-kakebo-pdf | FAQPage.Answer.text | sí | sí | Sí. El método Kakebo se basa en cuatro categorías de gasto y una revis | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/metodo-kakebo-guia-definitiva | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/metodo-kakebo-guia-definitiva | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/blog/metodo-kakebo-guia-definitiva | BreadcrumbList.ListItem.name | sí | sí | Método Kakebo: La técnica japonesa para ahorrar dinero sin esfuerzo | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/blog/metodo-kakebo-guia-definitiva | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Método Kakebo: La técnica japonesa para ahorrar dinero sin esfuerzo | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/blog/metodo-kakebo-para-autonomos | BreadcrumbList.ListItem.name | NO | no | Inicio | no está en la miga visible
+/blog/metodo-kakebo-para-autonomos | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/metodo-kakebo-para-autonomos | BreadcrumbList.ListItem.name | NO | sí | Método Kakebo para autónomos: presupuesto personal con ingresos irregu | no está en la miga visible
+/blog/metodo-kakebo-para-autonomos | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Método Kakebo para autónomos: presupuesto personal con ingresos irregu | sin miga visible
+/blog/metodo-kakebo-para-autonomos | FAQPage.Question.name | sí | sí | ¿Se puede usar el método Kakebo si mis ingresos varían cada mes? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/metodo-kakebo-para-autonomos | FAQPage.Answer.text | sí | sí | Sí. La adaptación para autónomos parte de calcular un sueldo base mens | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/metodo-kakebo-para-autonomos | FAQPage.Question.name | sí | sí | ¿Cómo calculo mi presupuesto si soy freelancer? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/metodo-kakebo-para-autonomos | FAQPage.Answer.text | sí | sí | Promedia tus ingresos de los últimos 6 meses y usa la cifra más baja c | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/peligros-apps-ahorro-automatico | BreadcrumbList.ListItem.name | NO | no | Inicio | no está en la miga visible
+/blog/peligros-apps-ahorro-automatico | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/peligros-apps-ahorro-automatico | BreadcrumbList.ListItem.name | NO | sí | Peligros de las apps de ahorro automático y el Open Banking | no está en la miga visible
+/blog/peligros-apps-ahorro-automatico | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Peligros de las apps de ahorro automático y el Open Banking | sin miga visible
+/blog/peligros-apps-ahorro-automatico | FAQPage.Question.name | sí | sí | ¿Qué es el Open Banking o la Banca Abierta? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/peligros-apps-ahorro-automatico | FAQPage.Answer.text | sí | sí | Es un marco regulatorio (PSD2 en Europa) que permite a terceros (apps  | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/peligros-apps-ahorro-automatico | FAQPage.Question.name | sí | sí | ¿Qué limitaciones tienen las apps de ahorro automático? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/peligros-apps-ahorro-automatico | FAQPage.Answer.text | sí | sí | Las principales son tres: ceden acceso a datos bancarios a terceros, l | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/plantilla-kakebo-excel | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/plantilla-kakebo-excel | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/blog/plantilla-kakebo-excel | BreadcrumbList.ListItem.name | sí | sí | Plantilla Kakebo en Excel Gratis: Cómo empezar y por qué (casi) siempr | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/blog/plantilla-kakebo-excel | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Plantilla Kakebo en Excel Gratis: Cómo empezar y por qué (casi) siempr | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/blog/plantilla-kakebo-excel | FAQPage.Question.name | sí | sí | ¿La plantilla es completamente gratuita? | h2 "Preguntas frecuentes sobre la plantilla " → siguiente h2: main > article > h2
+/blog/plantilla-kakebo-excel | FAQPage.Answer.text | sí | sí | Sí, la descarga es 100% gratuita y sin registro. Puedes usarla indefin | h2 "Preguntas frecuentes sobre la plantilla " → siguiente h2: main > article > h2
+/blog/plantilla-kakebo-excel | FAQPage.Question.name | sí | sí | ¿Funciona en Google Sheets además de Excel? | h2 "Preguntas frecuentes sobre la plantilla " → siguiente h2: main > article > h2
+/blog/plantilla-kakebo-excel | FAQPage.Answer.text | sí | sí | Sí. La plantilla es compatible con Google Sheets sin necesidad de ajus | h2 "Preguntas frecuentes sobre la plantilla " → siguiente h2: main > article > h2
+/blog/plantilla-kakebo-excel | FAQPage.Question.name | sí | sí | ¿Sirve para gestionar las finanzas en pareja? | h2 "Preguntas frecuentes sobre la plantilla " → siguiente h2: main > article > h2
+/blog/plantilla-kakebo-excel | FAQPage.Answer.text | sí | sí | Puedes adaptarla fácilmente: añade una columna de "responsable" por ga | h2 "Preguntas frecuentes sobre la plantilla " → siguiente h2: main > article > h2
+/blog/plantilla-kakebo-excel | FAQPage.Question.name | sí | sí | ¿Funciona si soy autónomo o freelancer con ingresos irregulares? | h2 "Preguntas frecuentes sobre la plantilla " → siguiente h2: main > article > h2
+/blog/plantilla-kakebo-excel | FAQPage.Answer.text | sí | sí | Sí, con un pequeño ajuste. En lugar de usar tu ingreso mensual real, c | h2 "Preguntas frecuentes sobre la plantilla " → siguiente h2: main > article > h2
+/blog/plantilla-kakebo-excel | FAQPage.Question.name | sí | sí | ¿Necesito conocimientos avanzados de Excel para usarla? | h2 "Preguntas frecuentes sobre la plantilla " → siguiente h2: main > article > h2
+/blog/plantilla-kakebo-excel | FAQPage.Answer.text | sí | sí | No. La plantilla está diseñada para usuarios sin conocimientos técnico | h2 "Preguntas frecuentes sobre la plantilla " → siguiente h2: main > article > h2
+/blog/regla-30-dias | BreadcrumbList.ListItem.name | NO | no | Inicio | no está en la miga visible
+/blog/regla-30-dias | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/regla-30-dias | BreadcrumbList.ListItem.name | NO | sí | La regla de los 30 días para ahorrar: cómo aplazar las compras no esen | no está en la miga visible
+/blog/regla-30-dias | BreadcrumbList.ListItem.aria-current (último) | NO | sí | La regla de los 30 días para ahorrar: cómo aplazar las compras no esen | sin miga visible
+/blog/regla-30-dias | FAQPage.Question.name | sí | sí | ¿Qué es la regla de los 30 días? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/regla-30-dias | FAQPage.Answer.text | sí | sí | Es una técnica para aplazar las compras no esenciales: cuando sientes  | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/regla-30-dias | FAQPage.Question.name | sí | sí | ¿Por qué funciona la regla de los 30 días? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/regla-30-dias | FAQPage.Answer.text | sí | sí | Porque la mayoría de los impulsos de compra responden a un estímulo em | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/blog/regla-50-30-20-ejemplo | BreadcrumbList.ListItem.name | NO | no | Inicio | no está en la miga visible
+/blog/regla-50-30-20-ejemplo | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/blog/regla-50-30-20-ejemplo | BreadcrumbList.ListItem.name | NO | sí | Regla 50/30/20: ejemplo real con tu sueldo | no está en la miga visible
+/blog/regla-50-30-20-ejemplo | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Regla 50/30/20: ejemplo real con tu sueldo | sin miga visible
+/blog/regla-50-30-20-ejemplo | FAQPage.Question.name | sí | sí | ¿Cómo funciona la regla 50/30/20? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/regla-50-30-20-ejemplo | FAQPage.Answer.text | sí | sí | Divide tus ingresos netos mensuales en tres bloques: 50% para necesida | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/regla-50-30-20-ejemplo | FAQPage.Question.name | sí | sí | ¿Cuál es un ejemplo de la regla 50/30/20? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/regla-50-30-20-ejemplo | FAQPage.Answer.text | sí | sí | Con un sueldo neto de 1.800 €: 900 € para necesidades, 540 € para dese | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/regla-50-30-20-ejemplo | FAQPage.Question.name | sí | sí | ¿Qué pasa si gasto más del 50 % en necesidades? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/regla-50-30-20-ejemplo | FAQPage.Answer.text | sí | sí | Es habitual, sobre todo con alquileres altos o en ciudades caras. No s | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/regla-50-30-20-ejemplo | FAQPage.Question.name | sí | sí | ¿Es mejor la regla 50/30/20 o la 70/20/10? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/regla-50-30-20-ejemplo | FAQPage.Answer.text | sí | sí | Ninguna es mejor de forma absoluta. La 50/30/20 deja más margen a gast | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/regla-50-30-20-ejemplo | FAQPage.Question.name | sí | sí | ¿Puedo usar la regla 50/30/20 con sueldo bajo? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/regla-50-30-20-ejemplo | FAQPage.Answer.text | sí | sí | Sí, pero con menos margen. Con sueldos ajustados, el bloque de necesid | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/regla-50-30-20-ejemplo | FAQPage.Question.name | sí | sí | ¿Dónde calculo la regla 50/30/20 con mis propios ingresos? | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/blog/regla-50-30-20-ejemplo | FAQPage.Answer.text | sí | sí | En la calculadora 50/30/20 de MetodoKakebo.com: introduces tu sueldo n | h2 "Preguntas frecuentes" → siguiente h2: main > article > h2
+/en | WebApplication.name | sí | sí | Kakebo AI | excepción: nombre de producto al inicio del <title> de la home ("Kakebo AI: Free Online Kakeibo App | No Bank, AI-P")
+/en | WebApplication.featureList | sí | sí | No bank connection | main > section#alternatives > td
+/en | FAQPage.Question.name | sí | sí | Is it really free to start? | contenedor #faq (acordeón): main > div#faq
+/en | FAQPage.Answer.text | sí | sí | Yes, 100%. You can sign up and use the Manual Plan (full expense track | contenedor #faq (acordeón): main > div#faq
+/en | FAQPage.Question.name | sí | sí | What does Kakebo include? | contenedor #faq (acordeón): main > div#faq
+/en | FAQPage.Answer.text | sí | sí | Everything: unlimited expense tracking, fixed expense management, AI a | contenedor #faq (acordeón): main > div#faq
+/en | FAQPage.Question.name | sí | sí | Will I have to pay in the future? | contenedor #faq (acordeón): main > div#faq
+/en | FAQPage.Answer.text | sí | sí | The current features will remain free. Our goal is to always keep a po | contenedor #faq (acordeón): main > div#faq
+/en | FAQPage.Question.name | sí | sí | Is Kakebo useful even if I already use a banking app? | contenedor #faq (acordeón): main > div#faq
+/en | FAQPage.Answer.text | sí | sí | Yes. Your bank shows you transactions; Kakebo forces you to understand | contenedor #faq (acordeón): main > div#faq
+/en | FAQPage.Question.name | sí | sí | Are my data secure? | contenedor #faq (acordeón): main > div#faq
+/en | FAQPage.Answer.text | sí | sí | Yes. We use Supabase for authentication and data security. Your financ | contenedor #faq (acordeón): main > div#faq
+/en/blog | ItemList.ListItem.name | sí | sí | How to Make a Personal Budget Step by Step (and Actually Stick to It) | exacto: main > article > h2
+/en/blog | ItemList.ListItem.name | sí | sí | How to save money every month: 15 proven techniques that actually work | exacto: main > article > h3
+/en/blog | ItemList.ListItem.name | sí | sí | The Kakeibo (Kakebo) Method: A Complete Guide to Japanese Budgeting | exacto: main > article > h3
+/en/blog | ItemList.ListItem.name | sí | sí | Free Kakeibo Excel Template: How to Start and Why It (Almost) Always F | exacto: main > article > h3
+/en/blog | ItemList.ListItem.name | sí | sí | How to eliminate "gastos hormiga" (Latte Factor): The foolproof Japane | exacto: main > article > h3
+/en/blog/ahorro-pareja | BreadcrumbList.ListItem.name | NO | sí | Home | no está en la miga visible
+/en/blog/ahorro-pareja | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/ahorro-pareja | BreadcrumbList.ListItem.name | NO | sí | How to save money as a couple without fighting: The ultimate guide | no está en la miga visible
+/en/blog/ahorro-pareja | BreadcrumbList.ListItem.aria-current (último) | NO | sí | How to save money as a couple without fighting: The ultimate guide | sin miga visible
+/en/blog/ahorro-pareja | FAQPage.Question.name | sí | sí | Is it better to join money as a couple or have separate accounts? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/ahorro-pareja | FAQPage.Answer.text | sí | sí | It depends on the trust and the stage of the relationship. The hybrid  | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/ahorro-pareja | FAQPage.Question.name | sí | sí | How to talk about money with your partner without arguing? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/ahorro-pareja | FAQPage.Answer.text | sí | sí | By scheduling a monthly 'financial date'. Do not talk about money when | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/alternativas-a-app-bancarias | BreadcrumbList.ListItem.name | sí | sí | Home | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/alternativas-a-app-bancarias | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(2)
+/en/blog/alternativas-a-app-bancarias | BreadcrumbList.ListItem.name | sí | sí | Mint and Fintonic Alternative without Bank Connection: Reclaim your Pr | article > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/blog/alternativas-a-app-bancarias | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Mint and Fintonic Alternative without Bank Connection: Reclaim your Pr | article > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/blog/alternativas-a-app-bancarias | FAQPage.Question.name | sí | sí | Why is it dangerous to give bank passwords to an App? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/alternativas-a-app-bancarias | FAQPage.Answer.text | sí | sí | Connecting your bank via Open Banking (PSD2) implies that a third-part | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/alternativas-a-app-bancarias | FAQPage.Question.name | sí | sí | Is there an alternative to Mint that doesn't require a bank connection | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/alternativas-a-app-bancarias | FAQPage.Answer.text | sí | sí | Yes. Kakebo AI uses conversational artificial intelligence so you can  | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/como-ahorrar-dinero-cada-mes | BreadcrumbList.ListItem.name | sí | sí | Home | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/como-ahorrar-dinero-cada-mes | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(2)
+/en/blog/como-ahorrar-dinero-cada-mes | BreadcrumbList.ListItem.name | sí | sí | How to save money every month: 15 proven techniques that actually work | article > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/blog/como-ahorrar-dinero-cada-mes | BreadcrumbList.ListItem.aria-current (último) | sí | sí | How to save money every month: 15 proven techniques that actually work | article > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/blog/como-ahorrar-dinero-cada-mes | FAQPage.Question.name | sí | sí | What is the fastest method to start saving money? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/como-ahorrar-dinero-cada-mes | FAQPage.Answer.text | sí | sí | The fastest and most effective method is 'Pay yourself first'. It cons | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/como-ahorrar-dinero-cada-mes | FAQPage.Question.name | sí | sí | How much money should I save every month? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/como-ahorrar-dinero-cada-mes | FAQPage.Answer.text | sí | sí | The general recommendation (based on the 50/30/20 rule) suggests savin | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/como-ahorrar-dinero-cada-mes | FAQPage.Question.name | sí | sí | Is it possible to save on a minimum wage? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/como-ahorrar-dinero-cada-mes | FAQPage.Answer.text | sí | sí | Yes, although the margin is narrow. In these cases, micro-saving metho | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/como-hacer-un-presupuesto-personal | BreadcrumbList.ListItem.name | NO | sí | Home | no está en la miga visible
+/en/blog/como-hacer-un-presupuesto-personal | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/como-hacer-un-presupuesto-personal | BreadcrumbList.ListItem.name | NO | sí | How to Make a Personal Budget Step by Step (and Actually Stick to It) | no está en la miga visible
+/en/blog/como-hacer-un-presupuesto-personal | BreadcrumbList.ListItem.aria-current (último) | NO | sí | How to Make a Personal Budget Step by Step (and Actually Stick to It) | sin miga visible
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | How long does it take to make a personal budget for the first time? | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | The first time, between 45 minutes and one hour if you have last month | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | How much should I save each month? | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | There is no universal figure. The most cited rule is 20%, but the most | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | Is it better to use paper, Excel, or an app? | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | It depends. Paper — in the Kakebo tradition — generates the most aware | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | What if my income changes every month? | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | Calculate the average of the last six months and use that as a conserv | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | What is the difference between budgeting and tracking expenses? | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | The budget is the plan: you decide in advance where each euro goes bef | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | How often should I review my budget? | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | A monthly review is mandatory and should take no more than 20 minutes. | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Question.name | sí | sí | Can a budget work on minimum wage? | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/como-hacer-un-presupuesto-personal | FAQPage.Answer.text | sí | sí | Yes, though with real structural limitations worth acknowledging. With | h2 "Frequently Asked Questions About Making " → siguiente h2: main > article > h2
+/en/blog/eliminar-gastos-hormiga | BreadcrumbList.ListItem.name | NO | no | Home | no está en la miga visible
+/en/blog/eliminar-gastos-hormiga | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/eliminar-gastos-hormiga | BreadcrumbList.ListItem.name | NO | sí | How to eliminate "gastos hormiga" (Latte Factor): The foolproof Japane | no está en la miga visible
+/en/blog/eliminar-gastos-hormiga | BreadcrumbList.ListItem.aria-current (último) | NO | sí | How to eliminate "gastos hormiga" (Latte Factor): The foolproof Japane | sin miga visible
+/en/blog/eliminar-gastos-hormiga | FAQPage.Question.name | sí | sí | What are 'gastos hormiga' or the Latte Factor? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/eliminar-gastos-hormiga | FAQPage.Answer.text | sí | sí | They are small, daily, often invisible expenses that add up over the m | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/eliminar-gastos-hormiga | FAQPage.Question.name | sí | sí | How does the Kakebo method help eliminate small expenses? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/eliminar-gastos-hormiga | FAQPage.Answer.text | sí | sí | Kakebo forces you to categorize these expenses under 'Optional and Vic | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-online-gratis | BreadcrumbList.ListItem.name | NO | sí | Home | no está en la miga visible
+/en/blog/kakebo-online-gratis | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/kakebo-online-gratis | BreadcrumbList.ListItem.name | NO | sí | Free Kakebo Online: The Best App to Track Your Expenses (2026) | no está en la miga visible
+/en/blog/kakebo-online-gratis | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Free Kakebo Online: The Best App to Track Your Expenses (2026) | sin miga visible
+/en/blog/kakebo-online-gratis | FAQPage.Question.name | sí | sí | Is there a truly free online Kakebo application? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-online-gratis | FAQPage.Answer.text | sí | sí | Yes, Kakebo AI offers a 100% free manual plan forever. You can track y | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-online-gratis | FAQPage.Question.name | sí | sí | What are the advantages of keeping a Kakebo online versus paper? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-online-gratis | FAQPage.Answer.text | sí | sí | Using an online Kakebo allows you to have your budgets always updated, | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-online-guia-completa | BreadcrumbList.ListItem.name | NO | no | Home | no está en la miga visible
+/en/blog/kakebo-online-guia-completa | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/kakebo-online-guia-completa | BreadcrumbList.ListItem.name | NO | sí | Kakebo Online: How to Use the Japanese Method Digitally (Complete 2026 | no está en la miga visible
+/en/blog/kakebo-online-guia-completa | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Kakebo Online: How to Use the Japanese Method Digitally (Complete 2026 | sin miga visible
+/en/blog/kakebo-sueldo-minimo | BreadcrumbList.ListItem.name | NO | sí | Home | no está en la miga visible
+/en/blog/kakebo-sueldo-minimo | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/kakebo-sueldo-minimo | BreadcrumbList.ListItem.name | NO | sí | How to save money on minimum wage or as a college student | no está en la miga visible
+/en/blog/kakebo-sueldo-minimo | BreadcrumbList.ListItem.aria-current (último) | NO | sí | How to save money on minimum wage or as a college student | sin miga visible
+/en/blog/kakebo-sueldo-minimo | FAQPage.Question.name | sí | sí | Can you save earning the minimum wage? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-sueldo-minimo | FAQPage.Answer.text | sí | sí | Yes, although the margin is small. The key is not the amount of dollar | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-sueldo-minimo | FAQPage.Question.name | sí | sí | Why is the Kakebo method good for students? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-sueldo-minimo | FAQPage.Answer.text | sí | sí | Because Kakebo does not judge you for spending on entertainment or sma | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-sueldo-minimo | FAQPage.Question.name | sí | sí | What should I do if my survival expenses exceed 80% of my salary? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-sueldo-minimo | FAQPage.Answer.text | sí | sí | In emergency situations where rent and food absorb almost all the mini | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-sueldo-minimo | FAQPage.Question.name | sí | sí | Is it worth using the Kakebo method if I can't make ends meet? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-sueldo-minimo | FAQPage.Answer.text | sí | sí | Absolutely yes. When you don't reach the end of the month, you are nav | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-vs-ynab | BreadcrumbList.ListItem.name | NO | no | Home | no está en la miga visible
+/en/blog/kakebo-vs-ynab | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/kakebo-vs-ynab | BreadcrumbList.ListItem.name | NO | sí | Kakebo vs YNAB: Which is the best budgeting method for you? | no está en la miga visible
+/en/blog/kakebo-vs-ynab | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Kakebo vs YNAB: Which is the best budgeting method for you? | sin miga visible
+/en/blog/kakebo-vs-ynab | FAQPage.Question.name | sí | sí | What is the difference between Kakebo and YNAB (You Need A Budget)? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-vs-ynab | FAQPage.Answer.text | sí | sí | YNAB is a strict zero-based budgeting method (every dollar is assigned | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-vs-ynab | FAQPage.Question.name | sí | sí | Which is easier to use for beginners? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/kakebo-vs-ynab | FAQPage.Answer.text | sí | sí | Kakebo has a much smoother learning curve because it doesn't penalize  | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/libro-kakebo-pdf | BreadcrumbList.ListItem.name | NO | sí | Home | no está en la miga visible
+/en/blog/libro-kakebo-pdf | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/libro-kakebo-pdf | BreadcrumbList.ListItem.name | NO | sí | Free Kakebo Book PDF: Pros, cons, and the modern alternative | no está en la miga visible
+/en/blog/libro-kakebo-pdf | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Free Kakebo Book PDF: Pros, cons, and the modern alternative | sin miga visible
+/en/blog/libro-kakebo-pdf | FAQPage.Question.name | sí | sí | Where can I download the Kakebo book in PDF? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/libro-kakebo-pdf | FAQPage.Answer.text | sí | sí | There are numerous websites offering free templates and summaries of M | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/libro-kakebo-pdf | FAQPage.Question.name | sí | sí | Is the Kakebo better in a physical book or an App? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/libro-kakebo-pdf | FAQPage.Answer.text | sí | sí | The physical book provides a writing ritual that fosters awareness. Th | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/libro-kakebo-pdf | FAQPage.Question.name | sí | sí | Are there different versions of the Kakebo book in English? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/libro-kakebo-pdf | FAQPage.Answer.text | sí | sí | Yes, publishers like Harper Design popularized the annual edition in E | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/libro-kakebo-pdf | FAQPage.Question.name | sí | sí | Can Kakebo be applied without the original printed book? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/libro-kakebo-pdf | FAQPage.Answer.text | sí | sí | Absolutely. The immense value of Kakebo does not lie in the binding of | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/metodo-kakebo-guia-definitiva | BreadcrumbList.ListItem.name | sí | sí | Home | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/metodo-kakebo-guia-definitiva | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(2)
+/en/blog/metodo-kakebo-guia-definitiva | BreadcrumbList.ListItem.name | sí | sí | The Kakeibo (Kakebo) Method: A Complete Guide to Japanese Budgeting | article > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/blog/metodo-kakebo-guia-definitiva | BreadcrumbList.ListItem.aria-current (último) | sí | sí | The Kakeibo (Kakebo) Method: A Complete Guide to Japanese Budgeting | article > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/blog/metodo-kakebo-guia-definitiva | FAQPage.Question.name | sí | sí | What is the kakeibo (Kakebo) method? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/metodo-kakebo-guia-definitiva | FAQPage.Answer.text | sí | sí | Kakeibo, also spelled kakebo, is a Japanese budgeting method from 1904 | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/metodo-kakebo-guia-definitiva | FAQPage.Question.name | sí | sí | How does the Kakebo cycle work? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/metodo-kakebo-guia-definitiva | FAQPage.Answer.text | sí | sí | It consists of 4 monthly steps: 1. Forecast (income minus fixed expens | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/metodo-kakebo-guia-definitiva | FAQPage.Question.name | sí | sí | What are the Kakebo categories? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/metodo-kakebo-guia-definitiva | FAQPage.Answer.text | sí | sí | There are four: Survival (basic needs), Optional and Leisure (wants),  | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/metodo-kakebo-para-autonomos | BreadcrumbList.ListItem.name | NO | sí | Home | no está en la miga visible
+/en/blog/metodo-kakebo-para-autonomos | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/metodo-kakebo-para-autonomos | BreadcrumbList.ListItem.name | NO | sí | Kakebo Method for Freelancers: How to save with irregular income | no está en la miga visible
+/en/blog/metodo-kakebo-para-autonomos | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Kakebo Method for Freelancers: How to save with irregular income | sin miga visible
+/en/blog/metodo-kakebo-para-autonomos | FAQPage.Question.name | sí | sí | Can Kakebo be used if my income varies every month? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/metodo-kakebo-para-autonomos | FAQPage.Answer.text | sí | sí | Yes, in fact it is vital. Instead of budgeting on what you 'think' you | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/metodo-kakebo-para-autonomos | FAQPage.Question.name | sí | sí | How do I calculate my budget if I am a freelancer? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/metodo-kakebo-para-autonomos | FAQPage.Answer.text | sí | sí | Average your income from the last 6 months. Assign the lowest figure a | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/peligros-apps-ahorro-automatico | BreadcrumbList.ListItem.name | NO | no | Home | no está en la miga visible
+/en/blog/peligros-apps-ahorro-automatico | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/peligros-apps-ahorro-automatico | BreadcrumbList.ListItem.name | NO | sí | The dangers of automatic savings apps and Open Banking | no está en la miga visible
+/en/blog/peligros-apps-ahorro-automatico | BreadcrumbList.ListItem.aria-current (último) | NO | sí | The dangers of automatic savings apps and Open Banking | sin miga visible
+/en/blog/peligros-apps-ahorro-automatico | FAQPage.Question.name | sí | sí | What is Open Banking? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/peligros-apps-ahorro-automatico | FAQPage.Answer.text | sí | sí | It is a regulation that allows third parties (Financial Apps, FinTechs | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/peligros-apps-ahorro-automatico | FAQPage.Question.name | sí | sí | Why do you not recommend using automatic budgeting apps? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/peligros-apps-ahorro-automatico | FAQPage.Answer.text | sí | sí | Because by delegating 100% of the control to an algorithm, you generat | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/plantilla-kakebo-excel | BreadcrumbList.ListItem.name | sí | sí | Home | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/plantilla-kakebo-excel | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(2)
+/en/blog/plantilla-kakebo-excel | BreadcrumbList.ListItem.name | sí | sí | Free Kakeibo Excel Template: How to Start and Why It (Almost) Always F | article > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/blog/plantilla-kakebo-excel | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Free Kakeibo Excel Template: How to Start and Why It (Almost) Always F | article > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/blog/plantilla-kakebo-excel | FAQPage.Question.name | sí | sí | What should a Kakebo Excel template include? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/plantilla-kakebo-excel | FAQPage.Answer.text | sí | sí | It should include four main categories (Survival, Optional/Vices, Cult | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/plantilla-kakebo-excel | FAQPage.Question.name | sí | sí | Is it better to use Excel or a Kakebo app? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/plantilla-kakebo-excel | FAQPage.Answer.text | sí | sí | Excel requires extreme manual discipline to log every coffee or small  | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/regla-30-dias | BreadcrumbList.ListItem.name | NO | sí | Home | no está en la miga visible
+/en/blog/regla-30-dias | BreadcrumbList.ListItem.name | sí | sí | Blog | article > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/blog/regla-30-dias | BreadcrumbList.ListItem.name | NO | sí | The 30-day savings rule: The ultimate shield against impulse buying | no está en la miga visible
+/en/blog/regla-30-dias | BreadcrumbList.ListItem.aria-current (último) | NO | sí | The 30-day savings rule: The ultimate shield against impulse buying | sin miga visible
+/en/blog/regla-30-dias | FAQPage.Question.name | sí | sí | What is the 30-day rule? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/regla-30-dias | FAQPage.Answer.text | sí | sí | It is a behavioral financial technique that consists of postponing any | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/regla-30-dias | FAQPage.Question.name | sí | sí | Why does the 30-day rule work? | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/blog/regla-30-dias | FAQPage.Answer.text | sí | sí | Because it neutralizes the dopamine spike generated by neuromarketing. | section[aria-labelledby]: main > article > section[aria-labelledby="blog-faq-title"]
+/en/herramientas | ItemList.ListItem.name | sí | sí | Savings Calculator | exacto: main > h2
+/en/herramientas | ItemList.ListItem.name | sí | sí | 50/30/20 Rule | exacto: main > h2
+/en/herramientas | ItemList.ListItem.name | sí | sí | Inflation Calculator | exacto: main > h2
+/en/herramientas/calculadora-ahorro | BreadcrumbList.ListItem.name | sí | sí | Home | main > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/herramientas/calculadora-ahorro | BreadcrumbList.ListItem.name | sí | sí | Tools | main > nav[aria-label="Breadcrumb"] > li:nth-child(2)
+/en/herramientas/calculadora-ahorro | BreadcrumbList.ListItem.name | sí | sí | Savings calculator | main > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/herramientas/calculadora-ahorro | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Savings calculator | main > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/herramientas/calculadora-ahorro | WebApplication.name | sí | sí | Kakebo Savings Calculator | main > h1
+/en/herramientas/calculadora-ahorro | HowTo.name | sí | sí | How to use the monthly savings calculator | main > section > h2
+/en/herramientas/calculadora-ahorro | HowTo.HowToStep.name | sí | sí | Enter your net income | main > section > p
+/en/herramientas/calculadora-ahorro | HowTo.HowToStep.text | sí | sí | Type the amount you receive in your bank account each month, after tax | main > section > p
+/en/herramientas/calculadora-ahorro | HowTo.HowToStep.name | sí | sí | Add your fixed expenses | main > section > p
+/en/herramientas/calculadora-ahorro | HowTo.HowToStep.text | sí | sí | Enter the monthly total of commitments that repeat with the same amoun | main > section > p
+/en/herramientas/calculadora-ahorro | HowTo.HowToStep.name | sí | sí | Add your variable expenses | main > section > p
+/en/herramientas/calculadora-ahorro | HowTo.HowToStep.text | sí | sí | Enter the monthly average of expenses that change from month to month: | main > section > p
+/en/herramientas/calculadora-ahorro | HowTo.HowToStep.name | sí | sí | Read your real savings margin | main > section > p
+/en/herramientas/calculadora-ahorro | HowTo.HowToStep.text | sí | sí | The calculator shows your real margin (income minus all your expenses) | main > section > p
+/en/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | How do I know how much I can save each month? | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | Subtract your fixed and variable expenses from your net income. The re | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | What is the difference between fixed and variable expenses? | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | Fixed expenses are commitments that repeat every month with the same a | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | How long will it take me to reach my savings goal? | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | It depends on your real monthly margin. Turn on the 'Add savings goal' | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | What monthly savings percentage is enough? | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | The Kakebo method recommends 20% as a minimum. Below 10%, the margin i | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | How do I work out the money I need for an emergency fund? | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | A standard emergency fund covers between 3 and 6 months of your monthl | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | How is this calculator different from the 50/30/20 rule? | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | The 50/30/20 rule takes your income and splits it into theoretical per | h2 "Frequently asked questions about monthly" → siguiente h2: main > section > h2
+/en/herramientas/calculadora-inflacion | BreadcrumbList.ListItem.name | sí | sí | Home | main > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/herramientas/calculadora-inflacion | BreadcrumbList.ListItem.name | sí | sí | Tools | main > nav[aria-label="Breadcrumb"] > li:nth-child(2)
+/en/herramientas/calculadora-inflacion | BreadcrumbList.ListItem.name | sí | sí | Inflation calculator | main > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/herramientas/calculadora-inflacion | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Inflation calculator | main > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/herramientas/calculadora-inflacion | WebApplication.name | sí | sí | Inflation Calculator in Spain | main > h1
+/en/herramientas/calculadora-inflacion | FAQPage.Question.name | sí | sí | What is the difference between CPI and Inflation? | h2 "Frequently Asked Questions about CPI in " → siguiente h2: main > h2
+/en/herramientas/calculadora-inflacion | FAQPage.Answer.text | sí | sí | Although used interchangeably, inflation is the economic phenomenon (p | h2 "Frequently Asked Questions about CPI in " → siguiente h2: main > h2
+/en/herramientas/calculadora-inflacion | FAQPage.Question.name | sí | sí | How to calculate accumulated CPI between two years? | h2 "Frequently Asked Questions about CPI in " → siguiente h2: main > h2
+/en/herramientas/calculadora-inflacion | FAQPage.Answer.text | sí | sí | The official formula to calculate the CPI variation is: Tasa Variación | h2 "Frequently Asked Questions about CPI in " → siguiente h2: main > h2
+/en/herramientas/calculadora-inflacion | FAQPage.Question.name | sí | sí | How much is my money from 2000 worth today in Spain? | h2 "Frequently Asked Questions about CPI in " → siguiente h2: main > h2
+/en/herramientas/calculadora-inflacion | FAQPage.Answer.text | sí | sí | Accumulated inflation in Spain since the year 2000 is substantial, alt | h2 "Frequently Asked Questions about CPI in " → siguiente h2: main > h2
+/en/herramientas/plantilla-kakebo-excel-premium | BreadcrumbList.ListItem.name | NO | no | Home | la página no tiene <nav> de miga
+/en/herramientas/plantilla-kakebo-excel-premium | BreadcrumbList.ListItem.name | NO | sí | Tools | la página no tiene <nav> de miga
+/en/herramientas/plantilla-kakebo-excel-premium | BreadcrumbList.ListItem.name | NO | sí | Kakebo Master System | la página no tiene <nav> de miga
+/en/herramientas/plantilla-kakebo-excel-premium | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Kakebo Master System | sin miga visible
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | What is Kakebo Master System? | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | It is a paid digital pack with three files: a premium Kakebo Excel tem | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | How much does it cost? | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | €9.90, VAT included. It is a one-time purchase, not a subscription. | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | What is included in the pack? | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | The premium Excel template with 12 sheets and no macros, the ebook as  | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | Do I need to create an account to buy it? | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | No. You do not need to sign up to buy the pack. | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | Will I have permanent access to the files? | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | Yes. The purchase is one-time and gives permanent access to the pack f | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | Can I buy it now? | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | Not yet. Purchase is not available for now; when it opens, it will be  | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | Is it the same as the free template? | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | No. The free Excel template is a different product: it is free, has a  | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | Does buying the pack give access to the Kakebo app or Plus features? | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | No. The pack is a set of independent files: it does not grant app feat | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | Does it work with Excel and Google Sheets? | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | Designed for Microsoft Excel and prepared to work in Google Sheets wit | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | Does it use macros? | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | No. It uses no macros and needs no extra software. | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | Does it guarantee that I will save money? | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | No. It is an organization tool: results depend on your decisions and o | h2 "Frequently asked questions" → siguiente h2: main > section > h2
+/en/herramientas/regla-50-30-20 | BreadcrumbList.ListItem.name | sí | sí | Home | main > nav[aria-label="Breadcrumb"] > li:nth-child(1)
+/en/herramientas/regla-50-30-20 | BreadcrumbList.ListItem.name | sí | sí | Tools | main > nav[aria-label="Breadcrumb"] > li:nth-child(2)
+/en/herramientas/regla-50-30-20 | BreadcrumbList.ListItem.name | sí | sí | 50/30/20 rule | main > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/herramientas/regla-50-30-20 | BreadcrumbList.ListItem.aria-current (último) | sí | sí | 50/30/20 rule | main > nav[aria-label="Breadcrumb"] > li:nth-child(3)
+/en/herramientas/regla-50-30-20 | WebApplication.name | sí | sí | Calculadora 50/30/20 Gratis | main > h1
+/en/herramientas/regla-50-30-20 | HowTo.name | sí | sí | Pasos para aplicar la regla 50/30/20 en tu día a día | main > section > h2
+/en/herramientas/regla-50-30-20 | HowTo.HowToStep.text | sí | sí | Calcula tus ingresos netos mensuales (lo que recibes en el banco). | main > section > p
+/en/herramientas/regla-50-30-20 | HowTo.HowToStep.text | sí | sí | Destina el 50% a gastos imprescindibles (alquiler, comida, facturas). | main > section > p
+/en/herramientas/regla-50-30-20 | HowTo.HowToStep.text | sí | sí | Reserva un 20% para ahorro e inversión (fondo de emergencia, jubilació | main > section > p
+/en/herramientas/regla-50-30-20 | HowTo.HowToStep.text | sí | sí | Utiliza el 30% restante para caprichos y estilo de vida (cenas, ocio,  | main > section > p
+/herramientas | ItemList.ListItem.name | sí | sí | Calculadora Ahorro | exacto: main > h2
+/herramientas | ItemList.ListItem.name | sí | sí | Regla 50/30/20 | exacto: main > h2
+/herramientas | ItemList.ListItem.name | sí | sí | Calculadora Inflación | exacto: main > h2
+/herramientas/calculadora-ahorro | BreadcrumbList.ListItem.name | sí | sí | Inicio | main > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/herramientas/calculadora-ahorro | BreadcrumbList.ListItem.name | sí | sí | Herramientas | main > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/herramientas/calculadora-ahorro | BreadcrumbList.ListItem.name | sí | sí | Calculadora de ahorro | main > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/herramientas/calculadora-ahorro | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Calculadora de ahorro | main > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/herramientas/calculadora-ahorro | WebApplication.name | sí | sí | Calculadora de Ahorro Mensual | main > h1
+/herramientas/calculadora-ahorro | HowTo.name | sí | sí | ¿Cómo usar la calculadora de ahorro mensual? | main > section > h2
+/herramientas/calculadora-ahorro | HowTo.HowToStep.name | sí | sí | Introduce tus ingresos netos | main > section > p
+/herramientas/calculadora-ahorro | HowTo.HowToStep.text | sí | sí | Escribe la cantidad que recibes en tu cuenta bancaria cada mes, despué | main > section > p
+/herramientas/calculadora-ahorro | HowTo.HowToStep.name | sí | sí | Añade tus gastos fijos | main > section > p
+/herramientas/calculadora-ahorro | HowTo.HowToStep.text | sí | sí | Introduce el total mensual de compromisos que se repiten siempre con e | main > section > p
+/herramientas/calculadora-ahorro | HowTo.HowToStep.name | sí | sí | Añade tus gastos variables | main > section > p
+/herramientas/calculadora-ahorro | HowTo.HowToStep.text | sí | sí | Introduce el promedio mensual de gastos que cambian cada mes: alimenta | main > section > p
+/herramientas/calculadora-ahorro | HowTo.HowToStep.name | sí | sí | Lee tu margen real de ahorro | main > section > p
+/herramientas/calculadora-ahorro | HowTo.HowToStep.text | sí | sí | La calculadora muestra tu margen real (ingresos menos todos tus gastos | main > section > p
+/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | ¿Cómo saber cuánto puedo ahorrar cada mes? | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | Resta tus gastos fijos y variables a tus ingresos netos. El resultado  | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | ¿Cuál es la diferencia entre gastos fijos y variables? | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | Los gastos fijos son compromisos que se repiten cada mes con el mismo  | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | ¿Cuánto tiempo tardaré en alcanzar mi objetivo de ahorro? | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | Depende de tu margen mensual real. Activa la sección 'Añadir objetivo' | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | ¿Qué porcentaje de ahorro mensual es suficiente? | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | El método Kakebo recomienda el 20% como mínimo. Por debajo del 10%, el | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | ¿Cómo calculo el dinero que necesito para un fondo de emergencia? | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | Un fondo de emergencia estándar cubre entre 3 y 6 meses de tus gastos  | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-ahorro | FAQPage.Question.name | sí | sí | ¿En qué se diferencia esta calculadora de la regla 50/30/20? | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-ahorro | FAQPage.Answer.text | sí | sí | La regla 50/30/20 toma tus ingresos y los distribuye en porcentajes te | h2 "Preguntas frecuentes sobre el ahorro men" → siguiente h2: main > section > h2
+/herramientas/calculadora-inflacion | BreadcrumbList.ListItem.name | sí | sí | Inicio | main > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/herramientas/calculadora-inflacion | BreadcrumbList.ListItem.name | sí | sí | Herramientas | main > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/herramientas/calculadora-inflacion | BreadcrumbList.ListItem.name | sí | sí | Calculadora de inflación | main > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/herramientas/calculadora-inflacion | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Calculadora de inflación | main > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/herramientas/calculadora-inflacion | WebApplication.name | sí | sí | Calculadora de Inflación e IPC en España | main > h1
+/herramientas/calculadora-inflacion | FAQPage.Question.name | sí | sí | ¿Cuál es la diferencia entre IPC e Inflación? | h2 "Preguntas Frecuentes sobre el IPC en Esp" → siguiente h2: main > h2
+/herramientas/calculadora-inflacion | FAQPage.Answer.text | sí | sí | Aunque se usan indistintamente, la inflación es el fenómeno económico  | h2 "Preguntas Frecuentes sobre el IPC en Esp" → siguiente h2: main > h2
+/herramientas/calculadora-inflacion | FAQPage.Question.name | sí | sí | ¿Cómo calcular el IPC acumulado entre dos años? | h2 "Preguntas Frecuentes sobre el IPC en Esp" → siguiente h2: main > h2
+/herramientas/calculadora-inflacion | FAQPage.Answer.text | sí | sí | La fórmula oficial para calcular la variación del IPC es: Tasa Variaci | h2 "Preguntas Frecuentes sobre el IPC en Esp" → siguiente h2: main > h2
+/herramientas/calculadora-inflacion | FAQPage.Question.name | sí | sí | ¿Cuánto vale mi dinero de 2000 hoy en España? | h2 "Preguntas Frecuentes sobre el IPC en Esp" → siguiente h2: main > h2
+/herramientas/calculadora-inflacion | FAQPage.Answer.text | sí | sí | La inflación acumulada en España desde el año 2000 es considerable, au | h2 "Preguntas Frecuentes sobre el IPC en Esp" → siguiente h2: main > h2
+/herramientas/plantilla-kakebo-excel-premium | BreadcrumbList.ListItem.name | NO | no | Inicio | la página no tiene <nav> de miga
+/herramientas/plantilla-kakebo-excel-premium | BreadcrumbList.ListItem.name | NO | sí | Herramientas | la página no tiene <nav> de miga
+/herramientas/plantilla-kakebo-excel-premium | BreadcrumbList.ListItem.name | NO | sí | Kakebo Master System | la página no tiene <nav> de miga
+/herramientas/plantilla-kakebo-excel-premium | BreadcrumbList.ListItem.aria-current (último) | NO | sí | Kakebo Master System | sin miga visible
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | ¿Qué es Kakebo Master System? | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | Es un pack digital de pago con tres archivos: una plantilla Kakebo Exc | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | ¿Cuánto cuesta? | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | 9,90 € con el IVA incluido. Es una compra única, no una suscripción. | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | ¿Qué incluye el pack? | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | La plantilla Excel premium sin macros con 12 hojas, el ebook en PDF y  | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | ¿Necesito crear una cuenta para comprarlo? | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | No. No hace falta registrarse para comprar el pack. | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | ¿Tendré acceso permanente a los archivos? | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | Sí. La compra es única y da acceso permanente a los archivos del pack. | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | ¿Ya se puede comprar? | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | Todavía no. La compra no está disponible por ahora; cuando se abra, se | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | ¿Es lo mismo que la plantilla gratuita? | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | No. La plantilla gratuita de Excel es otro producto: es gratuita, tien | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | ¿Comprar el pack da acceso a la aplicación Kakebo o a funciones Plus? | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | No. El pack son archivos independientes: no concede funciones de la ap | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | ¿Funciona con Excel y con Google Sheets? | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | Está diseñada para Microsoft Excel y preparada para funcionar en Googl | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | ¿Utiliza macros? | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | No. No utiliza macros ni requiere instalar software adicional. | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Question.name | sí | sí | ¿Garantiza que ahorraré? | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/plantilla-kakebo-excel-premium | FAQPage.Answer.text | sí | sí | No. Es una herramienta de organización: el resultado depende de tus de | h2 "Preguntas frecuentes" → siguiente h2: main > section > h2
+/herramientas/regla-50-30-20 | BreadcrumbList.ListItem.name | sí | sí | Inicio | main > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/herramientas/regla-50-30-20 | BreadcrumbList.ListItem.name | sí | sí | Herramientas | main > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/herramientas/regla-50-30-20 | BreadcrumbList.ListItem.name | sí | sí | Regla 50/30/20 | main > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/herramientas/regla-50-30-20 | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Regla 50/30/20 | main > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/herramientas/regla-50-30-20 | WebApplication.name | sí | sí | Calculadora 50/30/20 | main > h2
+/herramientas/regla-50-30-20 | HowTo.name | sí | sí | Pasos para aplicar la regla 50/30/20 en tu día a día | main > section > h2
+/herramientas/regla-50-30-20 | HowTo.HowToStep.text | sí | sí | Calcula tus ingresos netos mensuales (lo que recibes en el banco). | main > section > p
+/herramientas/regla-50-30-20 | HowTo.HowToStep.text | sí | sí | Destina el 50% a gastos imprescindibles (alquiler, comida, facturas). | main > section > p
+/herramientas/regla-50-30-20 | HowTo.HowToStep.text | sí | sí | Reserva un 20% para ahorro e inversión (fondo de emergencia, jubilació | main > section > p
+/herramientas/regla-50-30-20 | HowTo.HowToStep.text | sí | sí | Utiliza el 30% restante para caprichos y estilo de vida (cenas, ocio,  | main > section > p
+/plantillas/kakebo-2027 | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/plantillas/kakebo-2027 | BreadcrumbList.ListItem.name | sí | sí | Plantillas Kakebo | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/plantillas/kakebo-2027 | BreadcrumbList.ListItem.name | sí | sí | Kakebo 2027 imprimible: plan anual y plantilla mensual | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/plantillas/kakebo-2027 | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Kakebo 2027 imprimible: plan anual y plantilla mensual | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/plantillas/kakebo-2027 | FAQPage.Question.name | sí | sí | ¿Qué diferencia hay entre el Kakebo 2027 y el Kakebo imprimible normal | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-2027 | FAQPage.Answer.text | sí | sí | El Kakebo 2027 incluye dos páginas anuales que la versión normal no ti | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-2027 | FAQPage.Question.name | sí | sí | ¿Puedo usarlo si empiezo a mitad de año? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-2027 | FAQPage.Answer.text | sí | sí | Sí. Rellena el plan con el objetivo que quieras alcanzar hasta diciemb | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-2027 | FAQPage.Question.name | sí | sí | ¿Tengo que imprimir las 9 páginas cada mes? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-2027 | FAQPage.Answer.text | sí | sí | No. El plan del año y el resumen se imprimen una sola vez. Cada mes so | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-2027 | FAQPage.Question.name | sí | sí | ¿Cómo se usa el resumen anual? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-2027 | FAQPage.Answer.text | sí | sí | Al cerrar cada mes, copias en su fila los ingresos, los gastos y el ah | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-2027 | FAQPage.Question.name | sí | sí | ¿Es gratis? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-2027 | FAQPage.Answer.text | sí | sí | Sí, es una descarga gratuita y sin registro, igual que el resto de pla | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-para-imprimir | BreadcrumbList.ListItem.name | sí | sí | Inicio | article > nav[aria-label="Migas de pan"] > li:nth-child(1)
+/plantillas/kakebo-para-imprimir | BreadcrumbList.ListItem.name | sí | sí | Plantillas Kakebo | article > nav[aria-label="Migas de pan"] > li:nth-child(2)
+/plantillas/kakebo-para-imprimir | BreadcrumbList.ListItem.name | sí | sí | Kakebo para imprimir: PDF gratis en A4 | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/plantillas/kakebo-para-imprimir | BreadcrumbList.ListItem.aria-current (último) | sí | sí | Kakebo para imprimir: PDF gratis en A4 | article > nav[aria-label="Migas de pan"] > li:nth-child(3)
+/plantillas/kakebo-para-imprimir | FAQPage.Question.name | sí | sí | ¿El Kakebo imprimible es gratis? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-para-imprimir | FAQPage.Answer.text | sí | sí | Sí. Se descarga directamente, sin registro y sin dejar el correo. Pued | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-para-imprimir | FAQPage.Question.name | sí | sí | ¿Qué incluye el PDF del Kakebo para imprimir? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-para-imprimir | FAQPage.Answer.text | sí | sí | Siete páginas A4: la previsión del mes, cinco páginas semanales para a | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-para-imprimir | FAQPage.Question.name | sí | sí | ¿Por qué hay cinco semanas y no cuatro? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-para-imprimir | FAQPage.Answer.text | sí | sí | Porque muchos meses terminan con una semana parcial. La quinta página  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-para-imprimir | FAQPage.Question.name | sí | sí | ¿Cuántas copias tengo que imprimir? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-para-imprimir | FAQPage.Answer.text | sí | sí | Una copia completa por cada mes que quieras llevar. Si prefieres no ga | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-para-imprimir | FAQPage.Question.name | sí | sí | ¿Puedo rellenarlo en el ordenador en lugar de a mano? | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
+/plantillas/kakebo-para-imprimir | FAQPage.Answer.text | sí | sí | El PDF está pensado para imprimirlo y rellenarlo a mano. Si prefieres  | h2 "Preguntas frecuentes" → siguiente h2: article > section > h2
