@@ -10,11 +10,15 @@
  *     visible. Los que no, se INFORMAN (no se corrigen aquí). Las entidades globales (Organization, WebSite, Person, DefinedTerm…)
  *     se informan aparte: su nombre/descripción solo es visible en algunas páginas por diseño.
  *
- * Uso: node scripts/audit-jsonld-visible.mjs [directorio] [--vocab=ruta] [--out=informe.json] [--json]
+ * Uso: node scripts/audit-jsonld-visible.mjs [directorio] [--vocab=ruta] [--out=informe.json] [--json] [--tabla]
+ * Comprobación ESTRICTA (scripts/lib/visible-estricto.mjs): BreadcrumbList contra el <nav> de miga, FAQ contra el bloque de FAQ,
+ * HowTo/ItemList/WebApplication contra encabezados y listas. Las comprobaciones antiguas por subcadena global se conservan
+ * como INFORMATIVAS (sección noVisibles*), pero dan falsos «visible». Script manual: no forma parte de validate ni de CI.
  * Salida: resumen en consola (con la lista exacta de URL auditadas) y, con --out, el detalle en JSON.
  */
 import { readdirSync, readFileSync, statSync, existsSync, writeFileSync } from 'node:fs';
 import { join, relative, sep, resolve } from 'node:path';
+import { parseHtml, cleanDom, strictChecks } from './lib/visible-estricto.mjs';
 
 const args = process.argv.slice(2);
 const opt = (name) => args.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
@@ -105,6 +109,7 @@ const sitemapWithoutHtml = sitemap.filter((u) => !files.has(u));
 /* ---------------- auditoría ---------------- */
 const ENTITY_TYPES = new Set(['Organization', 'WebSite', 'Person', 'DefinedTerm', 'ImageObject', 'SoftwareApplication', 'Country']);
 const structural = [], dangling = [], invisible = [], noJsonLd = [];
+const strictRows = []; // comprobación estricta por tipo de nodo y ubicación (ver scripts/lib/visible-estricto.mjs)
 
 for (const { url, html, scripts } of audited) {
   const loc = url === '/en' || url.startsWith('/en/') ? 'en' : 'es';
@@ -166,6 +171,10 @@ for (const { url, html, scripts } of audited) {
     for (const k of Object.keys(n)) if (k !== '@id') walk(n[k]);
   };
   walk(doc['@graph']);
+
+  // Comprobación estricta: DOM sin cabecera/pie globales ni script/style/noscript; cada tipo de nodo contra su bloque.
+  const dom = cleanDom(parseHtml(html));
+  for (const r of strictChecks(doc['@graph'], dom)) strictRows.push({ url, ...r, subcadenaGlobal: vis.includes(norm(r.value)) });
 }
 
 /* ---------------- informe ---------------- */
@@ -189,6 +198,7 @@ const report = {
   noVisiblesPagina: group(invisible.filter((x) => x.kind === 'pagina'), (a) => `${a.type}.${a.prop}|${a.value}`),
   noVisiblesEntidad: group(invisible.filter((x) => x.kind === 'entidad-global'), (a) => `${a.type}.${a.prop}|${a.value}`),
 };
+report.estricto = strictRows;
 if (outPath) writeFileSync(outPath, JSON.stringify(report, null, 1));
 
 const byType = {};
@@ -214,5 +224,32 @@ else {
   console.log(`\nURL auditadas (${report.auditadas.length}):`);
   for (const p of audited) console.log(`  ${p.inSitemap ? 'sitemap ' : 'noindex '}${p.scripts.length ? 'ld ' : 'sin-ld'} ${p.url}`);
   if (sitemapWithoutHtml.length) console.log(`\nURL del sitemap sin HTML auditable (${sitemapWithoutHtml.length}):\n  ${sitemapWithoutHtml.join('\n  ')}`);
+}
+/* ---------------- resumen estricto ---------------- */
+{
+  const bad = strictRows.filter((r) => !r.visible);
+  const falsos = strictRows.filter((r) => !r.visible && r.subcadenaGlobal);
+  const uniq = (rows) => new Set(rows.map((r) => `${r.type}.${r.prop}|${r.value}`)).size;
+  const pages = (rows) => new Set(rows.map((r) => r.url)).size;
+  const porTipo = {};
+  for (const r of strictRows) {
+    const k = `${r.type}.${r.prop}`;
+    porTipo[k] ??= { filas: 0, noVisibles: 0, falsosVisibles: 0 };
+    porTipo[k].filas++;
+    if (!r.visible) porTipo[k].noVisibles++;
+    if (!r.visible && r.subcadenaGlobal) porTipo[k].falsosVisibles++;
+  }
+  const est = {
+    filasComprobadas: strictRows.length,
+    paginasConComprobacion: pages(strictRows),
+    noVisibles: { filas: bad.length, paginasAfectadas: pages(bad), nombresUnicos: uniq(bad) },
+    falsosVisiblesDeLaSubcadena: { filas: falsos.length, paginasAfectadas: pages(falsos), nombresUnicos: uniq(falsos) },
+    porTipo,
+  };
+  if (!args.includes('--json')) console.log(`\nCOMPROBACIÓN ESTRICTA (filas = una por página y nodo; nombres únicos = tipo.propiedad|valor distintos):\n${JSON.stringify(est, null, 1)}`);
+  if (args.includes('--tabla')) {
+    console.log('\nTABLA ESTRICTA (url | tipo.prop | visible | subcadena global | valor | dónde):');
+    for (const r of strictRows) console.log(`${r.url} | ${r.type}.${r.prop} | ${r.visible ? 'sí' : 'NO'} | ${r.subcadenaGlobal ? 'sí' : 'no'} | ${r.value.slice(0, 70).replace(/\|/g, '/')} | ${r.where}`);
+  }
 }
 process.exit(sitemapWithoutHtml.length || structural.length || dangling.length ? 1 : 0);
