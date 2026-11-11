@@ -106,6 +106,7 @@ for (const [url, file] of [...files].sort(([a], [b]) => a.localeCompare(b))) {
 }
 const sitemapWithoutHtml = sitemap.filter((u) => !files.has(u));
 
+const decodeTitle = (s) => dec(s);
 /* ---------------- auditoría ---------------- */
 const ENTITY_TYPES = new Set(['Organization', 'WebSite', 'Person', 'DefinedTerm', 'ImageObject', 'SoftwareApplication', 'Country']);
 const structural = [], dangling = [], invisible = [], noJsonLd = [];
@@ -174,7 +175,9 @@ for (const { url, html, scripts } of audited) {
 
   // Comprobación estricta: DOM sin cabecera/pie globales ni script/style/noscript; cada tipo de nodo contra su bloque.
   const dom = cleanDom(parseHtml(html));
-  for (const r of strictChecks(doc['@graph'], dom)) strictRows.push({ url, ...r, subcadenaGlobal: vis.includes(norm(r.value)) });
+  const isHome = url === '/' || url === '/en';
+  const homeTitle = isHome ? decodeTitle(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '') : '';
+  for (const r of strictChecks(doc['@graph'], dom, { homeTitle })) strictRows.push({ url, ...r, subcadenaGlobal: vis.includes(norm(r.value)) });
 }
 
 /* ---------------- informe ---------------- */

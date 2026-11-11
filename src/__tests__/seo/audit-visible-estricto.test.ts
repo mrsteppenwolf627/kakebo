@@ -90,3 +90,25 @@ describe("audit estricto: otros tipos", () => {
     expect(r.map((x) => `${x.type}:${x.visible}`)).toEqual(["ItemList.ListItem:true", "ItemList.ListItem:false", "HowTo:true", "HowTo:false"]);
   });
 });
+
+describe("audit estricto: excepción de la home (WebApplication.name = nombre de producto del <title>)", () => {
+  const html = wrap(`<h1>Kakebo Online: App de Control de Gastos</h1>`);
+  const graph = [{ "@type": "WebApplication", name: "Kakebo AI" }];
+  const run = (opts: { homeTitle?: string }) =>
+    strictChecks(graph, cleanDom(parseHtml(html)), opts) as Array<{ visible: boolean; where: string }>;
+
+  it("sin <title> de la home (resto de páginas) el nombre no visible falla", () => {
+    expect(run({})[0].visible).toBe(false);
+  });
+
+  it("con el <title> de la home que abre con ese nombre, se acepta y la fila lo documenta", () => {
+    const r = run({ homeTitle: "Kakebo AI | App Gratis del Método Kakebo" });
+    expect(r[0].visible).toBe(true);
+    expect(r[0].where).toMatch(/excepción/);
+  });
+
+  it("no se acepta si el nombre solo es el comienzo de otra palabra o no abre el <title>", () => {
+    expect(run({ homeTitle: "Kakebo AIRE | otra cosa" })[0].visible).toBe(false);
+    expect(run({ homeTitle: "App Gratis | Kakebo AI" })[0].visible).toBe(false);
+  });
+});
