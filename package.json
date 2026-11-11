@@ -12,6 +12,7 @@
     "test:coverage": "vitest run --coverage",
     "type-check": "tsc --noEmit",
     "test:graph": "node scripts/check-graph-integrity.mjs",
+    "audit:logs": "node scripts/audit-access-logs.mjs",
     "validate": "npm run type-check && next build && npm run test:graph"
   },
   "dependencies": {
