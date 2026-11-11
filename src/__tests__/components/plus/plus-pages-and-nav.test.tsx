@@ -59,7 +59,8 @@ describe("/app/subscription — flag apagado", () => {
   it.each([undefined, "", "false", "TRUE"])("PLUS_SUBSCRIPTIONS_ENABLED=%j: muestra la pantalla actual, sin consultar acceso ni botones de pago", async (v) => {
     if (v !== undefined) vi.stubEnv("PLUS_SUBSCRIPTIONS_ENABLED", v);
     render(await SubscriptionPage({ searchParams: {} }));
-    expect(screen.getByText("Acceso Completo Gratuito")).toBeInTheDocument();
+    // Pantalla actual (LegacyFreePlan): el título del bloque es «Plan actual: gratuito».
+    expect(screen.getByText("Plan actual: gratuito")).toBeInTheDocument();
     expect(screen.queryByRole("button")).toBeNull(); // ningún botón que llame a rutas desactivadas
     expect(screen.queryByText(text("subscribeButton"))).toBeNull();
     expect(h.viewCalls).toBe(0);

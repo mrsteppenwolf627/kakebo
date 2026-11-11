@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 type Outcome = "confirmed" | "invalid" | "error";
 
@@ -19,22 +19,33 @@ const MESSAGES: Record<Outcome, { title: string; body: string }> = {
   },
 };
 
+const subscribeNoop = () => () => {};
+const readSearch = () => window.location.search;
+const readServerSearch = () => "";
+
+function outcomeFromSearch(search: string): Outcome | null {
+  const value = new URLSearchParams(search).get("newsletter");
+  return value === "confirmed" || value === "invalid" || value === "error" ? value : null;
+}
+
 /**
  * Muestra el resultado de la confirmación de newsletter (`?newsletter=confirmed|invalid|error`)
  * y elimina el parámetro de la URL para que no reaparezca al recargar.
  */
 export function NewsletterConfirmationNotice() {
+  // La query solo existe en el cliente: en el servidor (y en la hidratación) el snapshot es "" y no se renderiza nada.
+  const fromUrl = outcomeFromSearch(useSyncExternalStore(subscribeNoop, readSearch, readServerSearch));
+  // El resultado se conserva aunque después se limpie la URL (ajuste de estado durante el render, sin setState dentro de un efecto).
   const [outcome, setOutcome] = useState<Outcome | null>(null);
+  if (fromUrl && outcome !== fromUrl) setOutcome(fromUrl);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!fromUrl) return;
     const url = new URL(window.location.href);
-    const value = url.searchParams.get("newsletter");
-    if (value !== "confirmed" && value !== "invalid" && value !== "error") return;
-    setOutcome(value);
     url.searchParams.delete("newsletter");
     window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
-  }, []);
+  }, [fromUrl]);
 
   useEffect(() => {
     if (outcome && typeof ref.current?.scrollIntoView === "function") {

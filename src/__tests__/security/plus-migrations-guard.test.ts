@@ -65,9 +65,11 @@ describe("migraciones Plus: guardas", () => {
     const all = fs.readdirSync(MIG_DIR).filter((f) => f.endsWith(".sql")).sort();
     const plusVersions = plus.map((f) => f.split("_")[0]);
     expect(new Set(plusVersions).size).toBe(plusVersions.length);
-    const maxOther = all.filter((f) => !plus.includes(f)).map((f) => f.split("_")[0]).sort().pop()!;
-    expect(plusVersions.every((v) => v > maxOther)).toBe(true);
-    expect(all.slice(-7)).toEqual(plus);
+    // Las migraciones Plus van después de todas las que ya existían y forman un bloque contiguo; pueden haberse añadido otras después.
+    const start = all.indexOf(plus[0]);
+    expect(all.slice(start, start + plus.length)).toEqual(plus);
+    const before = all.slice(0, start).map((f) => f.split("_")[0]);
+    expect(before.every((v) => v < plusVersions[0])).toBe(true);
     // Una versión con fecha posterior a hoy bloquearía las siguientes migraciones (orden). Margen de 1 día.
     const limit = new Date(Date.now() + 24 * 3600 * 1000).toISOString().replace(/\D/g, "").slice(0, 14);
     for (const f of plus) expect(f.split("_")[0] <= limit, f).toBe(true);
@@ -82,10 +84,11 @@ describe("pack Excel/PDF: webhook y rutas intactos", () => {
     expect(route).not.toMatch(/fn_apply_subscription_event|stripe_webhook_events|billing_customers|access_grants/);
   });
 
-  it("el diff de la rama respecto a b8e9468 no modifica el pack premium", () => {
+  // Base 1615788: última modificación legítima del pack (analítica de checkout y textos legales), ya en producción. Antes b8e9468.
+  it("el diff de la rama respecto a 1615788 no modifica el pack premium", () => {
     let changed = "";
     try {
-      changed = execFileSync("git", ["diff", "--name-only", "b8e9468", "HEAD", "--", ...packPaths], {
+      changed = execFileSync("git", ["diff", "--name-only", "1615788", "HEAD", "--", ...packPaths], {
         cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"],
       }).trim();
     } catch {

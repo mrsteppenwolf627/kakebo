@@ -36,6 +36,9 @@ const dict: Record<string, string> = {
   toolsSavings: "toolsSavings",
   tools503020: "tools503020",
   toolsInflation: "toolsInflation",
+  // El botón del menú móvil toma su nombre accesible de estas claves (antes literales en el componente).
+  menuOpen: "Abrir menú",
+  menuClose: "Cerrar menú",
 };
 
 vi.mock("next-intl", () => ({

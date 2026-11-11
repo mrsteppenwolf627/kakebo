@@ -84,7 +84,10 @@ describe("authIntent", () => {
       "https://x.test/auth/callback?source=calculator_503020"
     );
     expect(buildEmailCallbackUrl("https://x.test")).toBe("https://x.test/auth/callback?source=direct");
-    expect(buildEmailCallbackUrl("https://x.test", "a b&c")).toBe("https://x.test/auth/callback?source=a%20b%26c");
+    // URLSearchParams codifica el espacio como «+» (equivalente a %20 en una query): lo que importa es que el valor se recupere intacto.
+    const encoded = buildEmailCallbackUrl("https://x.test", "a b&c");
+    expect(encoded).toBe("https://x.test/auth/callback?source=a+b%26c");
+    expect(new URL(encoded).searchParams.get("source")).toBe("a b&c");
   });
 
   it("reads the source from a callback search string and returns null when absent", () => {
