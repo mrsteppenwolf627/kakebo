@@ -1,6 +1,8 @@
 # Kakebo Plus — integración Stripe TEST (Bloque 3)
 
 Estado: implementada y probada con Stripe TEST simulado y SQL real (PGlite). **Sin desplegar. `PLUS_SUBSCRIPTIONS_ENABLED` apagado por defecto.**
+> **Histórico:** el entorno de staging asociado a esta integración ya no se usa (rama y entorno retirados el 2026-11-10; tag archive/feat-plus-subscriptions-staging).
+
 
 ## Recursos en Stripe TEST (cuenta sandbox `acct_1UNsUn3o8LT24HJF`)
 

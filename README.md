@@ -234,6 +234,8 @@ La prueba interactiva completa del flujo Premium queda pendiente hasta disponer
 de una cuenta Plus de prueba en staging. No se debe registrar una cuenta Free y
 esperar que pueda usar el escáner: ese bloqueo es intencionado.
 
+> **Nota:** el staging Plus/Stripe TEST citado aquí es histórico: ya no se usa (rama y entorno retirados el 2026-11-10; tag archive/feat-plus-subscriptions-staging).
+
 ### Flujo funcional
 
 1. El usuario autenticado entra en la pantalla del escáner.
@@ -279,6 +281,8 @@ que `supabase db push` la aplique accidentalmente.
 
 Los valores reales nunca se guardan en Git, README, capturas ni mensajes. Solo
 se documentan los nombres y su finalidad:
+
+> **Nota:** las menciones de «staging» y «Stripe TEST» de la tabla siguiente describen el entorno Plus/Stripe de pruebas, histórico: ya no se usa (rama y entorno retirados el 2026-11-10; tag archive/feat-plus-subscriptions-staging). Los nombres de variable se conservan como referencia técnica.
 
 | Variable | Finalidad | Dónde se configura |
 |---|---|---|

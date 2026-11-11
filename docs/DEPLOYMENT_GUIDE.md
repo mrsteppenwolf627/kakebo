@@ -175,6 +175,8 @@ Ensure no TypeScript errors or build failures.
 
 ## Staging Deployment
 
+> **Histórico:** ya no se usa (rama y entorno retirados el 2026-11-10; tag archive/feat-plus-subscriptions-staging). Los pasos siguientes se conservan como referencia y no describen un entorno activo.
+
 ### Step 1: Prepare Staging Branch
 
 ```bash

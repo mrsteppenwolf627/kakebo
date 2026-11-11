@@ -518,6 +518,7 @@ npm test -- agents-v2
 - Feature flag: `USE_FUNCTION_CALLING_AGENT=true` (optional)
 
 **Staging:**
+- **Histórico:** ya no se usa (rama y entorno retirados el 2026-11-10; tag archive/feat-plus-subscriptions-staging).
 - Branch: `staging`
 - Endpoint: `https://staging.kakebo.app/api/ai/agent-v2`
 - Feature flag: Enabled by default for staging

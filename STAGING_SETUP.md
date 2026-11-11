@@ -1,5 +1,7 @@
 # Kakebo Staging Configuration - 2026-10-06
 
+> **Histórico:** ya no se usa (rama y entorno retirados el 2026-11-10; tag archive/feat-plus-subscriptions-staging). Este documento se conserva como registro técnico.
+
 ## Overview
 This document tracks manual schema changes applied to Supabase staging (`gqnsanzsdnbufwicjtiw`) that are **NOT** part of production migrations. These are one-time setup changes specific to the staging environment.
 
