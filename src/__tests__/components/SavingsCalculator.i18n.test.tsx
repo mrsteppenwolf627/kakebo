@@ -216,7 +216,8 @@ describe("HTML visible y JSON-LD comparten FAQ y HowTo", () => {
     const faq = flat.find((b) => b["@type"] === "FAQPage");
     expect(faq.mainEntity[0].name).toBe("¿Cómo saber cuánto puedo ahorrar cada mes?");
     const howTo = flat.find((b) => b["@type"] === "HowTo");
-    expect(howTo.name).toBe("Cómo calcular tu margen real de ahorro mensual");
+    // HowTo.name = h2 visible que encabeza los pasos (antes un nombre propio que no aparecía en la página).
+    expect(howTo.name).toBe(savingsPageContent.es.howTo.title);
   });
 });
 
