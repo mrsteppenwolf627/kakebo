@@ -45,6 +45,7 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
     const { locale } = await params;
     setRequestLocale(locale);
     const content = getSavingsPageContent(locale);
+    const tSavings = await getTranslations({ locale, namespace: 'Tools.Savings' });
 
     // HowTo, FAQ y fórmula salen de la misma fuente: el HTML visible y el JSON-LD no pueden divergir.
     const howToSteps = content.howTo.steps;
@@ -75,7 +76,8 @@ export default async function SavingsCalculatorPage({ params }: { params: Promis
         }),
         S.webApplication({
             id: appId,
-            name: content.schema.name,
+            // WebApplication.name = texto visible del h1 (misma clave que renderiza SavingsCalculator).
+            name: tSavings('header.title'),
             url: pageUrl,
             description: content.schema.description,
             inLanguage: loc,

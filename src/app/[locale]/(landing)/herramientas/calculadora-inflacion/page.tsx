@@ -60,6 +60,8 @@ export default async function CalculatorInflationPage({ params }: { params: Prom
     const pageUrl = S.localeUrl(loc, path);
     const appId = `${pageUrl}#app`;
     const f = (k: string) => t.raw(`content.faq.${k}`) as string;
+    // WebApplication.name = texto visible del h1 (misma clave que renderiza CalculatorInflation; sin la etiqueta <italic> del rich text).
+    const h1Text = (t.raw('header.title') as string).replace(/<\/?italic>/g, '');
     const faq = [
         { question: f('q1'), answer: f('a1') },
         { question: f('q2'), answer: `${f('a2')} ${INFLATION_FORMULA} ${f('a2b')}` },
@@ -83,7 +85,7 @@ export default async function CalculatorInflationPage({ params }: { params: Prom
         }),
         S.webApplication({
             id: appId,
-            name: t('meta.title'),
+            name: h1Text,
             url: pageUrl,
             description: t('meta.description'),
             inLanguage: loc,

@@ -41,6 +41,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 // Textos fijos de la página (en español en todos los idiomas): el HowTo del JSON-LD y la lista visible salen de esta constante.
 const PAGE_NAME = "Calculadora 50/30/20";
+// Texto del h1 visible (el h1 y el WebApplication.name de /en salen de esta constante).
+const H1_TEXT = "Calculadora 50/30/20 Gratis";
 const PAGE_DESCRIPTION = "Calculadora gratuita de MetodoKakebo.com para distribuir el sueldo mensual según la regla 50/30/20: 50% necesidades, 30% deseos y 20% ahorro.";
 // Título visible de la lista de pasos (el h2 y el HowTo del JSON-LD usan el mismo texto).
 const HOW_TO_NAME = "Pasos para aplicar la regla 50/30/20 en tu día a día";
@@ -78,7 +80,8 @@ export default async function Calculator503020Page({ params }: { params: Promise
         }),
         S.webApplication({
             id: appId,
-            name: PAGE_NAME,
+            // /en: se alinea con el h1 visible (en español: la página no está traducida). /es conserva PAGE_NAME, que ya coincide con un encabezado de la herramienta.
+            name: loc === 'en' ? H1_TEXT : PAGE_NAME,
             url: pageUrl,
             description: PAGE_DESCRIPTION,
             inLanguage: 'es',
@@ -100,7 +103,7 @@ export default async function Calculator503020Page({ params }: { params: Promise
                 </div>
                 <div className="max-w-4xl mx-auto text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold font-serif text-foreground mb-6">
-                        Calculadora 50/30/20 Gratis
+                        {H1_TEXT}
                     </h1>
                     <p className="text-lg text-muted-foreground">
                         Divide tu sueldo mensual entre necesidades, deseos y ahorro. Calcula tu presupuesto con la regla 50/30/20.
