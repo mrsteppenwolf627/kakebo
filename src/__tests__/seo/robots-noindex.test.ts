@@ -36,10 +36,10 @@ const NOINDEX_PATHS = [
 ] as const;
 
 /** Rutas que SÍ deben seguir bloqueadas (sin página propia o sin valor de búsqueda): sirven también para validar el matcher. */
-const BLOCKED_PATHS = ["/api/health", "/history", "/history/2026-11", "/settings", "/new", "/new?ym=2026-11", "/en/history", "/en/new", "/blog?utm_source=x", "/blog?a=1&utm_medium=y"] as const;
+const BLOCKED_PATHS = ["/api/health", "/history", "/history/2026-11", "/settings", "/new", "/new?ym=2026-11", "/en/history", "/en/new"] as const;
 
 /** Rutas públicas indexables que nunca deben bloquearse. */
-const INDEXABLE_PATHS = ["/", "/blog", "/blog/plantilla-kakebo-excel", "/herramientas/calculadora-ahorro", "/ahorro-entrada-vivienda/madrid", "/plantillas/kakebo-2027", "/newsletter", "/en", "/en/blog"] as const;
+const INDEXABLE_PATHS = ["/", "/blog", "/blog/plantilla-kakebo-excel", "/herramientas/calculadora-ahorro", "/ahorro-entrada-vivienda/madrid", "/plantillas/kakebo-2027", "/newsletter", "/en", "/en/blog", "/?ref=producthunt", "/?utm_source=test", "/blog?utm_source=x", "/blog?a=1&utm_medium=y", "/en?utm_campaign=z"] as const;
 
 /** Semántica de robots.txt (Google): el patrón se compara con ruta+query desde el inicio; `*` = cualquier secuencia; `$` final = fin de URL. */
 function matches(pattern: string, urlPath: string): boolean {

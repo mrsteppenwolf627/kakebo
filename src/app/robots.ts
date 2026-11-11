@@ -26,10 +26,8 @@ export default function robots(): MetadataRoute.Robots {
             disallow: [
                 '/api/',
                 ...PREFIXES.flatMap((prefix) => LEGACY_REDIRECT_PATHS.map((path) => `${prefix}${path}`)),
-                // Parámetros de campaña sin contenido propio en páginas INDEXABLES (la canonical ya los descarta).
-                // Se retiran '?mode=' (variantes de /login, que lleva noindex) y '?ym=' (panel /app, noindex): bloquearlas ocultaría el noindex.
-                '/*?utm_',
-                '/*&utm_',
+                // Sin reglas para parámetros de campaña (?utm_*, ?ref=…): esas URL llevan canonical a la URL limpia y Google solo puede leerla si
+                // las rastrea (bloquearlas dejaba URL «Indexadas, pero bloqueadas por robots.txt»). Tampoco ?mode= ni ?ym= (noindex): se verían ocultas.
             ],
         },
         sitemap: `${PRODUCTION_URL}/sitemap.xml`,

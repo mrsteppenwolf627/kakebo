@@ -3,7 +3,7 @@
 Cierre de la fase de SEO técnico. Producción: `main` en `4186f5d` y esta rama (accesibilidad del FAQ, documentación y línea base). Lo no verificado se dice como tal.
 
 ## 1. robots.txt y noindex
-- `src/app/robots.ts` solo bloquea `/api/`, `/history`, `/settings`, `/new` (con y sin `/en`) y `?utm_`. En despliegues de preview devuelve `Disallow: /`.
+- `src/app/robots.ts` solo bloquea `/api/`, `/history`, `/settings`, `/new` (con y sin `/en`). Los parámetros de campaña (`?utm_*`, `?ref=`) no se bloquean: su canonical es la URL limpia y Google debe poder leerla. En despliegues de preview devuelve `Disallow: /`.
 - `/app*`, `/auth/callback`, `/login`, `/docs/*` y `/manifest.webmanifest` **no se bloquean**: sirven `noindex` (metadata de servidor o cabecera `X-Robots-Tag`), y bloquearlos impediría leerlo. Lo impone `src/__tests__/seo/robots-noindex.test.ts`.
 - Verificado en producción: los 3 archivos de `/docs/*` y el manifest devuelven `X-Robots-Tag: noindex`; `robots.txt` y `sitemap.xml` (62 URL) dan 200.
 - Aviso: el control de indexación del layout raíz depende de `NEXT_PUBLIC_APP_URL` en build; un build local sin esa variable sale `noindex`.

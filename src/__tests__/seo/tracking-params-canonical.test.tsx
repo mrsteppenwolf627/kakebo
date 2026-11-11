@@ -104,11 +104,13 @@ describe("robots.txt y parámetros de seguimiento", () => {
   const escape = (s: string) => [...s].map((c) => (SPECIAL.includes(c) ? String.fromCharCode(92) + c : c)).join("");
   const blocked = (path: string) => rules().some((p) => new RegExp(`^${p.split("*").map(escape).join(".*")}`).test(path));
 
-  it("?ref= se deja rastrear (Google debe ver la canonical limpia); ?utm_ sigue bloqueado como antes", () => {
+  it("?ref= y ?utm_* se dejan rastrear: Google debe poder leer la canonical limpia (bloquear la URL la ocultaba)", () => {
     expect(blocked("/?ref=producthunt")).toBe(false);
     expect(blocked("/blog?ref=producthunt")).toBe(false);
     expect(blocked("/en?ref=producthunt")).toBe(false);
-    expect(blocked("/?utm_source=test")).toBe(true);
-    expect(blocked("/?ref=x&utm_medium=y")).toBe(true);
+    expect(blocked("/?utm_source=test")).toBe(false);
+    expect(blocked("/?ref=x&utm_medium=y")).toBe(false);
+    expect(blocked("/blog?a=1&utm_medium=y")).toBe(false);
+    expect(rules().some((r) => r.includes("utm_"))).toBe(false);
   });
 });

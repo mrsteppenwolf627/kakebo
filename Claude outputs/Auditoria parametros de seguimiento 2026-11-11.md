@@ -1,5 +1,7 @@
 # Auditoría de URLs con parámetro de seguimiento — 2026-11-11
 
+> **Actualización (rama `seo-robots-utm`):** las reglas `/*?utm_` y `/*&utm_` de `robots.ts` se han retirado; donde este informe dice que `utm_` está bloqueado, describe el estado anterior.
+
 Rama: `seo-params-canonical` (desde `main` = `b84c92b`). Sin merge, sin despliegue, sin cambios de configuración de Vercel.
 
 ## Resumen
