@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { DownloadCTA, PremiumCTA } from "@/components/mdx/MDXClientCTAs";
 import { components } from "@/components/mdx/MDXComponents";
@@ -135,6 +136,22 @@ export default async function PlantillaPage({ params }: Props) {
                     location="plantillas_page"
                     slug={plantilla.slug}
                 />
+
+                {plantilla.asset.previewImage && (
+                    <figure className="mt-8">
+                        <Image
+                            src={plantilla.asset.previewImage}
+                            alt={`Vista previa de la primera página del PDF: ${plantilla.h1}`}
+                            width={662}
+                            height={936}
+                            sizes="(min-width: 640px) 320px, 80vw"
+                            className="mx-auto h-auto w-full max-w-xs rounded-lg border border-border shadow-sm"
+                        />
+                        <figcaption className="mt-2 text-center text-sm text-muted-foreground">
+                            Primera página del PDF: así se ve lo que vas a imprimir.
+                        </figcaption>
+                    </figure>
+                )}
 
                 <section className="mt-12">
                     <h2 className="mb-4 text-2xl font-serif font-bold">Qué incluye</h2>

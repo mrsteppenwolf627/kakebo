@@ -10,7 +10,7 @@
       "path": "/docs/Kakebo_Imprimible_A4.pdf",
       "pages": 7,
       "sizeKb": 51,
-      "previewImage": null
+      "previewImage": "/images/plantillas/kakebo-para-imprimir-preview.png"
     },
     "targetQueries": ["kakebo imprimible gratis", "método kakebo para imprimir", "kakebo pdf"],
     "intro": "Este es un Kakebo listo para imprimir en una hoja A4: un PDF de 7 páginas con todo lo que necesitas para llevar un mes completo a mano. Lo imprimes, lo rellenas con bolígrafo y no necesitas Excel, cuenta ni conexión. Sirve para cualquier mes del año, así que puedes imprimir una copia nueva cada vez que empieces uno.",
@@ -62,7 +62,7 @@
       "path": "/docs/Kakebo_2027_Imprimible_A4.pdf",
       "pages": 9,
       "sizeKb": 54,
-      "previewImage": null
+      "previewImage": "/images/plantillas/kakebo-2027-preview.png"
     },
     "targetQueries": ["kakebo 2027", "kakebo 2027 pdf"],
     "intro": "Si quieres empezar 2027 con un objetivo de ahorro por escrito, este PDF de 9 páginas añade una capa anual al Kakebo: una hoja para planificar el año, un resumen donde copiar los totales de enero a diciembre y la plantilla mensual. Está pensado para imprimirlo una vez al empezar el año y fotocopiar la parte mensual cada mes.",
